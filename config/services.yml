@@ -25,3 +25,14 @@ services:
             - '%core.table_prefix%'
         tags:
             - { name: event.listener }
+    jeb.snahp.admin:
+        class: jeb\snahp\controller\admin
+        arguments:
+            - '@user'
+            - '@auth'
+            - '@request'
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '@template'
