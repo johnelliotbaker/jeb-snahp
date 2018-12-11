@@ -1,0 +1,28 @@
+<!-- INCLUDE ucp_header.html -->
+
+<form id="ucp" method="post" action="{S_UCP_ACTION}">
+<h2>Settings</h2>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+				<dl>
+					<dt><label for="snp_disable_avatar_thanks_link0">Disable thanks link under avatar:</label><br />
+            <span>Choosing yes will disable displaying links to your thanks given and received.<br />For items under avatar.</span></dt>
+					<dd><label for="snp_disable_avatar_thanks_link1"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link1" value="1"<!-- IF S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_disable_avatar_thanks_link0"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link0" value="0"<!-- IF not S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+				<input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+
+<!-- INCLUDE ucp_footer.html -->
