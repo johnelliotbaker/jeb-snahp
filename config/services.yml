@@ -1,0 +1,27 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    jeb.snahp.core:
+        class: jeb\snahp\core\core
+        abstract: true
+        calls:
+            - [set_user, ['@user']]
+            - [set_template_context, ['@template_context']]
+    jeb.snahp.service:
+        class: jeb\snahp\service
+        arguments:
+            - '@user'
+            - '%jeb.snahp.tables.snp_table%'
+    jeb.snahp.listener:
+        class: jeb\snahp\event\main_listener
+        parent: jeb.snahp.core
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '%core.table_prefix%'
+        tags:
+            - { name: event.listener }

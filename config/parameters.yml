@@ -1,0 +1,2 @@
+parameters:
+    jeb.snahp.tables.snp_table: '%core.table_prefix%snp_table'
