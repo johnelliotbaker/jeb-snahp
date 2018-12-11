@@ -1,0 +1,3 @@
+jeb_snahp_admin:
+    path: /snahp/admin/
+    defaults: { _controller: jeb.snahp.admin:handle}
