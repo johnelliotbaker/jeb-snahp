@@ -19,8 +19,6 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-    'DISABLE_HIDDEN_LISTING'      => 'Hide posts with locked contents',
-    'DISABLE_HIDDEN_LISTING_DESC' => 'Choosing Yes will hide posts that contain locked contents.',
 	'UCP_SNP'                     => 'Settings',
 	'UCP_SNP_TITLE'               => 'Snahp',
     'UCP_SNP_VIS'                 => 'Visibility',

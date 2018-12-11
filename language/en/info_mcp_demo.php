@@ -19,6 +19,6 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'MCP_SNP'				=> 'Snahp',
-	'MCP_SNP_TITLE'		=> 'Snahp',
+	'MCP_SNP'       => 'Snahp',
+	'MCP_SNP_TITLE' => 'Snahp',
 ));
