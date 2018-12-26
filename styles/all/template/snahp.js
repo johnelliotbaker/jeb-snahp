@@ -106,7 +106,7 @@ function getResponseType(response)
 }
 
 
-function start_handling_imdb_ajax()
+function startHandlingImdbAjax()
 {
     $imdb_input = $("#imdb_input");
     var term = $imdb_input.val();
@@ -124,7 +124,6 @@ function start_handling_imdb_ajax()
         handle(response);
     });
 }
-
 
 var imdb_dialog_template = `
     <div id="imdb_dialog" class="modal">
@@ -144,6 +143,20 @@ var imdb_dialog_template = `
     </div>
 `
 
+function getImdbChunkiness(entry)
+{
+    var aCat = ['Poster', 'Title', 'Year', 'imdbID', 'Type',];
+    var chunkiness = 0;
+    for (var cat in aCat)
+    {
+        if (entry[cat] != "N/A")
+        {
+            chunkiness += 1;
+        }
+    }
+    return chunkiness;
+}
+
 function handle(response)
 {
     $imdb_dialog = $(imdb_dialog_template).appendTo($("body"));
@@ -157,9 +170,15 @@ function handle(response)
     var responseType = getResponseType(response);
     var aEntry = response['Search'] || [response];
     var count = 0;
+    var aExclusion = ["N/A"];
     for (var entry of aEntry)
     {
-        if (entry['Poster'] != "N/A")
+        console.log(entry);
+        var minChunk = 3;
+        var posterUrl = entry['Poster'];
+        if (posterUrl &&
+            !aExclusion.includes(posterUrl) &&
+            getImdbChunkiness(entry) > minChunk)
         {
             $li = $("<li/>")
                 .addClass("img_li")
@@ -183,10 +202,12 @@ function handle(response)
                 })
                 .appendTo($imgDiv)
             $type_txt = $("<div/>")
-            .addClass("bottom-left")
+            .addClass("bottom-right")
                 .html(`
+                ${entry["Title"]}<br>
                 ${entry["Year"]}<br>
-                ${entry["Type"]}
+                ${entry["Type"]}<br>
+                <a href="https://www.imdb.com/title/${entry["imdbID"]}">IMDb</a>
             `)
             .appendTo($imgDiv);
             count++;
@@ -194,22 +215,21 @@ function handle(response)
     }
     if (count == 0)
     {
-        var notfound = document.createElement("h");
-        notfound.innerHTML = "Not found";
-        imdb_dialog.appendChild(notfound);
+        $notfound = $("<h>Not Found</h>").css({"font-size": "200%"});
+        $imdb_content.append($notfound);
     }
     $('.modal').toggleClass('is-visible');
 }
 
 
 
-phpbb.addAjaxCallback('snahp.imdbCallback', start_handling_imdb_ajax);
+phpbb.addAjaxCallback('snahp.imdbCallback', startHandlingImdbAjax);
 
 $(document).ready(function() {
     $("#imdb_input").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            start_handling_imdb_ajax();
+            startHandlingImdbAjax();
         }
     });
 });
