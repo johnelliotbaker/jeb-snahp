@@ -173,10 +173,8 @@ function handle(response)
     var aExclusion = ["N/A"];
     for (var entry of aEntry)
     {
-        console.log(entry);
         var minChunk = 4;
         var posterUrl = entry['Poster'];
-        console.log(getImdbChunkiness(entry));
         if (getImdbChunkiness(entry) > minChunk ||
             posterUrl && !aExclusion.includes(posterUrl)
             )
