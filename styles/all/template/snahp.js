@@ -149,7 +149,7 @@ function getImdbChunkiness(entry)
     var chunkiness = 0;
     for (var cat in aCat)
     {
-        if (entry[cat] != "N/A")
+        if (entry[cat] && entry[cat] != "N/A")
         {
             chunkiness += 1;
         }
