@@ -19,7 +19,10 @@ class v_0_1_0 extends \phpbb\db\migration\migration
 
     static public function depends_on()
     {
-        return array('\phpbb\db\migration\data\v31x\v314');
+        return array(
+            '\jeb\snahp\migrations\install_user_schema',
+            '\jeb\snahp\migrations\install_acp_module',
+        );
     }
 
     public function update_schema()
@@ -27,7 +30,7 @@ class v_0_1_0 extends \phpbb\db\migration\migration
         return array(
             'add_columns'	=> array(
                 $this->table_prefix . 'groups'  => array(
-                    'snp_enable_signature' => array('TINT', 0),
+                    'snp_enable_signature' => array('BOOL', 0),
                     'snp_signature_rows' => array('UINT', 0),
                 ),
             ),
@@ -43,6 +46,20 @@ class v_0_1_0 extends \phpbb\db\migration\migration
                     'snp_signature_rows',
                 ),
             ),
+        );
+    }
+
+    public function update_data()
+    {
+        return array(
+            array('module.add', array(
+                'acp',
+                'ACP_SNP_TITLE',
+                array(
+                    'module_basename'	=> '\jeb\snahp\acp\main_module',
+                    'modes'				=> array('signature'),
+                ),
+            )),
         );
     }
 
