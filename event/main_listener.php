@@ -21,10 +21,49 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
+function closetags($html) {
+    preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
+    $openedtags = $result[1];
+    preg_match_all('#</([a-z]+)>#iU', $html, $result);
+    $closedtags = $result[1];
+    $len_opened = count($openedtags);
+    if (count($closedtags) == $len_opened) {
+        return $html;
+    }
+    $openedtags = array_reverse($openedtags);
+    for ($i=0; $i < $len_opened; $i++) {
+        if (!in_array($openedtags[$i], $closedtags)) {
+            $html .= '</'.$openedtags[$i].'>';
+        } else {
+            unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+        }
+    }
+    return $html;
+}
+
+
 function prn($var) {
     if (is_array($var))
     { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
     } else { echo "$var<br>"; }
+}
+
+
+function fwrite($filepath, $var, $bNew=true)
+{
+    if ($bNew) file_put_contents($filepath, '');
+    if (is_array($var))
+    {
+        foreach ($var as $k => $v)
+        {
+            file_put_contents($filepath, "$k => ", FILE_APPEND);
+            fwrite($filepath, $v, false);
+        }
+    }
+    else
+    {
+        file_put_contents($filepath, "$var\n", FILE_APPEND);
+    }
 }
 
 
@@ -62,7 +101,59 @@ class main_listener extends core implements EventSubscriberInterface
     {
         return array(
             'gfksx.thanksforposts.output_thanks_before' => 'modify_avatar_thanks',
+            'core.ucp_profile_modify_signature_sql_ary' => 'modify_signature',
+            'core.viewtopic_modify_post_row' => 'disable_signature',
         );
+    }
+
+    public function disable_signature($event)
+    {
+        $t = $this->template;
+        $pr = $event['post_row'];
+        $poster_id = $pr['POSTER_ID'];
+        $sql = 'SELECT group_id from ' . USERS_TABLE .
+            ' WHERE user_id=' . $poster_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $gid = $row['group_id'];
+        $this->db->sql_freeresult($result);
+        $sql = "SELECT snp_enable_signature from " . GROUPS_TABLE .
+            " WHERE group_id =" . $gid;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $bShowSignature = $row['snp_enable_signature'] ? true : false;
+        $this->db->sql_freeresult($result);
+        if (!$bShowSignature)
+        {
+            $pr['SIGNATURE'] = false;
+            $event['post_row'] = $pr;
+        }
+    }
+
+    public function modify_signature($event)
+    {
+        $t = $this->template;
+        $pr = $event['post_row'];
+        $user_id = $this->user->data['user_id'];
+        $sql = 'SELECT group_id from ' . USERS_TABLE .
+            ' WHERE user_id=' . $user_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $gid = $row['group_id'];
+        $this->db->sql_freeresult($result);
+        $sql = "SELECT snp_signature_rows from " . GROUPS_TABLE .
+            " WHERE group_id =" . $gid;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $nSignatureRow = $row['snp_signature_rows'] or 0;
+        $this->db->sql_freeresult($result);
+        $sql_ary = $event['sql_ary'];
+        $user_sig = &$sql_ary['user_sig'];
+        $split = explode("\n", $user_sig);
+        $split = array_slice($split, 0, $nSignatureRow);
+        $user_sig = implode("\n", $split);
+        $user_sig = closetags($user_sig);
+        $event['sql_ary'] = $sql_ary;
     }
 
     public function modify_avatar_thanks($event) 
