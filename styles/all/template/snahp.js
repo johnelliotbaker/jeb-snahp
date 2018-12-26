@@ -174,11 +174,12 @@ function handle(response)
     for (var entry of aEntry)
     {
         console.log(entry);
-        var minChunk = 3;
+        var minChunk = 4;
         var posterUrl = entry['Poster'];
-        if (posterUrl &&
-            !aExclusion.includes(posterUrl) &&
-            getImdbChunkiness(entry) > minChunk)
+        console.log(getImdbChunkiness(entry));
+        if (getImdbChunkiness(entry) > minChunk ||
+            posterUrl && !aExclusion.includes(posterUrl)
+            )
         {
             $li = $("<li/>")
                 .addClass("img_li")
