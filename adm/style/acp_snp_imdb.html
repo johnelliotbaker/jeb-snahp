@@ -1,0 +1,62 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{L_ACP_SNP_TITLE}</h1>
+
+
+
+
+<form id="acp_board" method="post" action="{U_ACTION}">
+<h2>Settings</h2>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+				<dl>
+					<dt><label>Permissions</label><br />
+            <span><br>
+              Check Allowed to enable IMDb form generator for that group.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aSignature -->
+                  <tr>
+                    <td>{aSignature.gid}</td>
+                    <td>{aSignature.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="imdb-{aSignature.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="imdb-{aSignature.gid}"
+                               id="imdb-{aSignature.gname}"
+                             {% if aSignature.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aSignature -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+        </dl>
+			</fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+				<input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

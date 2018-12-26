@@ -14,7 +14,8 @@ class install_acp_module extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
     {
-        return isset($this->config['b_snahp_install']);
+        // return isset($this->config['b_snahp_install']);
+        return false;
     }
 
     static public function depends_on()

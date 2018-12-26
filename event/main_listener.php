@@ -102,6 +102,7 @@ class main_listener extends core implements EventSubscriberInterface
         return array(
             'gfksx.thanksforposts.output_thanks_before' => 'modify_avatar_thanks',
             'core.ucp_profile_modify_signature_sql_ary' => 'modify_signature',
+            'core.posting_modify_template_vars' => 'modify_posting_for_imdb',
             'core.viewtopic_modify_post_row' => 'disable_signature',
         );
     }
@@ -154,6 +155,33 @@ class main_listener extends core implements EventSubscriberInterface
         $user_sig = implode("\n", $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
+    }
+
+    public function modify_posting_for_imdb($event) 
+    {
+        global $user;
+        $forum_id = $this->request->variable("f", "");
+        $topic_id = $this->request->variable("t", "");
+        if ($forum_id && !($topic_id))
+        {
+            $user_id = $user->data['user_id'];
+            $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
+                WHERE user_id = ' . $user_id;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $gid = $row['group_id'];
+            $this->db->sql_freeresult($result);
+            $sql = 'SELECT snp_imdb_enable FROM ' . GROUPS_TABLE . '
+                WHERE group_id = ' . $gid;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $bGroupEnable = $row['snp_imdb_enable'];
+            $this->db->sql_freeresult($result);
+            if ($bGroupEnable)
+            {
+                $this->template->assign_vars(["bShowImdb" => true,]);
+            }
+        }
     }
 
     public function modify_avatar_thanks($event) 

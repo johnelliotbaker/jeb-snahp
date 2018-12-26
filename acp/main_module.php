@@ -54,6 +54,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_signature($cfg);
             break;
+        case 'imdb':
+            $cfg['tpl_name'] = 'acp_snp_imdb';
+            $cfg['b_feedback'] = false;
+            $this->handle_imdb($cfg);
+            break;
         case 'settings':
             $cfg['tpl_name'] = 'acp_snp_settings';
             $cfg['b_feedback'] = false;
@@ -137,8 +142,8 @@ class main_module
             ));
             // Code to show signature configuration in ACP
             $sql = "SELECT * from " . GROUPS_TABLE;
-            $resultGroups = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($resultGroups))
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
             {
                 $group = array(
                     "gid"=>$row["group_id"],
@@ -148,7 +153,58 @@ class main_module
                 );
                 $template->assign_block_vars('aSignature', $group);
             };
-            $db->sql_freeresult($resultGroups);
+            $db->sql_freeresult($result);
+        }
+    }
+
+    public function handle_imdb($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                // Code to limit IMDb based on group membership
+                $aImdbEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match("/imdb-(\d+)/", $varname, $match_imdb_toggle);
+                    if ($match_imdb_toggle)
+                    {
+                        $gid = $match_imdb_toggle[1];
+                        $var = "imdb-$gid";
+                        $var = $request->variable($var, "0");
+                        $aImdbEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_imdb_enable', $aImdbEnable);
+                $db->sql_query($sql);
+                trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'U_ACTION'				=> $this->u_action,
+            ));
+            // Code to show imdb configuration in ACP
+            $sql = "SELECT * from " . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    "gid"=>$row["group_id"],
+                    "gname"=>$row["group_name"],
+                    "gcheck"=> $row["snp_imdb_enable"],
+                );
+                $template->assign_block_vars('aSignature', $group);
+            };
+            $db->sql_freeresult($result);
         }
     }
 }

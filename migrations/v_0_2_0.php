@@ -10,7 +10,7 @@
 
 namespace jeb\snahp\migrations;
 
-class v_0_1_0 extends \phpbb\db\migration\migration
+class v_0_2_0 extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
     {
@@ -21,8 +21,7 @@ class v_0_1_0 extends \phpbb\db\migration\migration
     static public function depends_on()
     {
         return array(
-            '\jeb\snahp\migrations\install_user_schema',
-            '\jeb\snahp\migrations\install_acp_module',
+            '\jeb\snahp\migrations\v_0_1_0',
         );
     }
 
@@ -31,8 +30,7 @@ class v_0_1_0 extends \phpbb\db\migration\migration
         return array(
             'add_columns'	=> array(
                 $this->table_prefix . 'groups'  => array(
-                    'snp_enable_signature' => array('BOOL', 0),
-                    'snp_signature_rows' => array('UINT', 0),
+                    'snp_imdb_enable' => array('BOOL', 0),
                 ),
             ),
         );
@@ -43,8 +41,7 @@ class v_0_1_0 extends \phpbb\db\migration\migration
         return array(
             'drop_columns'	=> array(
                 $this->table_prefix . 'groups'  => array(
-                    'snp_enable_signature',
-                    'snp_signature_rows',
+                    'snp_imdb_enable',
                 ),
             ),
         );
@@ -58,10 +55,9 @@ class v_0_1_0 extends \phpbb\db\migration\migration
                 'ACP_SNP_TITLE',
                 array(
                     'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> array('signature'),
+                    'modes'				=> array('imdb'),
                 ),
             )),
         );
     }
-
 }

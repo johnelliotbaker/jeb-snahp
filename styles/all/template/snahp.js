@@ -1,0 +1,215 @@
+// KEYS KEYS AND MORE KEYS
+aKey = [
+    "b0dea1ac",
+    "b10ca448",
+    "bb3702c0"
+]
+
+
+function maketemplate(imdb)
+{
+    try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
+    } catch(err) { var img      = ""; }
+    try { var title             = `[center][size=150][color=#FF0000][b]${imdb['Title']} (${imdb['Year']})[/b][/color][/size][/center]\n`;
+    } catch(err) { var title    = ""; }
+    try { var year              = `(${imdb['Year']})`;
+    } catch(err) { var year     = ""; }
+    try { var director          = `[color=#FF8000][b]Director[/b][/color]: ${imdb['Director']}\n`
+    } catch(err) { var director = ""; }
+    try { var actors            = `[color=#FF8000][b]Stars[/b][/color]: ${imdb['Actors']}\n`
+    } catch(err) { var actors   = ""; }
+    try { var runtime           = `[color=#FF8000][b]Runtime[/b][/color]: ${imdb['Runtime']}\n`
+    } catch(err) { var runtime  = ""; }
+    try { var genre             = `[color=#FF8000][b]Genre[/b][/color]: ${imdb['Genre']}\n`
+    } catch(err) { var genre    = ""; }
+    try { 
+        var rr = /(.*)\/(.*)/.exec(imdb['Ratings'][0]['Value']);
+        var rating            = `[color=#FF8000][b]Rating[/b][/color]: [b]${rr[1]}[/b]\n`
+    } catch(err) { var rating   = ""; }
+    try { var votes             = `[color=#FF8000][b]Votes[/b][/color]: ${imdb['imdbVotes']}\n`
+    } catch(err) { var votes    = ""; }
+    try { var reldate           = `[color=#FF8000][b]Release Date[/b][/color]: ${imdb['Released']}\n`
+    } catch(err) { var reldate  = ""; }
+    try { var vrating           = `[color=#FF8000][b]Viewer Rating (TV/MPAA)[/b][/color]: ${imdb['Rated']}\n`
+    } catch(err) { var vrating  = ""; }
+    try { var summary           = `[quote]${imdb['Plot']}[/quote]\n`
+    } catch(err) { var summary  = ""; }
+    try { var links             = `[color=#FF8000][b]Links[/b][/color]: [b]`
+    } catch(err) { var links    = ""; }
+    try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]iMDB[/url]\n`
+    } catch(err) { var imdburl  = ""; }
+    try { var ddl               = `[color=#0000FF][b]Direct Download Links[/color][/b]: \n`
+    } catch(err) { var ddl      = ""; }
+    try { var dlink             = `
+[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]\n
+[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]\n
+[url=https://snahp.it/?s=tt1270797][color=#FF0000]ZippyShare[/color][/url]
+[/b][/hide]\n`
+    } catch(err) { var dlink    = ""; }
+    var text = img + '\n' + title + '\n' + 
+        director + actors + '\n' +
+        runtime + genre + '\n' +
+        rating + votes +'\n' +
+        reldate + vrating + '\n' +
+        summary + '\n' +
+        links +  imdburl + '\n' +
+        ddl + dlink;
+    return text;
+}
+
+
+function getKey()
+{
+    var max = aKey.length;
+    var min = 0;
+    var index = Math.floor(Math.random() * (max - min) + min);
+    return aKey[index];
+}
+
+function space2dash(strn)
+{
+    return strn.replace(/\s+/g, '+').toLowerCase();
+}
+
+
+function fillPostMessage(term)
+{
+    var url = `http://www.omdbapi.com/?apikey=${getKey()}&i=${term}`
+    $ajax = $.ajax({url: url, dataType:'jsonp'});
+    $ajax.done(function(response){
+        var summary = maketemplate(response);
+        var text = summary;
+        $('#message').val(text);
+    });
+}
+
+
+function isImdbID(strn)
+{
+    var regex = /ev\d{7}\/\d{4}(-\d)?|(ch|co|ev|nm|tt)\d{7}/;
+    var match = strn.match(regex);
+    return match
+}
+
+
+function getResponseType(response)
+{
+    if ('Search' in response)
+    {
+        return 'search';
+    }
+    else if ('Title' in response)
+    {
+        return 'title';
+    }
+    return false;
+}
+
+
+function start_handling_imdb_ajax()
+{
+    $imdb_input = $("#imdb_input");
+    var term = $imdb_input.val();
+    var match = isImdbID(term)
+    if (match && match[0])
+    {
+        var url = `http://www.omdbapi.com/?apikey=${getKey()}&i=${match[0]}`
+    }
+    else
+    {
+        var url = `http://www.omdbapi.com/?apikey=${getKey()}&s=` + space2dash(term);
+    }
+    $ajax = $.ajax({url: url, dataType:'jsonp'});
+    $ajax.done(function(response){
+        handle(response);
+    });
+}
+
+
+var imdb_dialog_template = `
+    <div id="imdb_dialog" class="modal">
+    <div class="modal-overlay modal-toggle"></div>
+    <div class="modal-wrapper modal-transition">
+    <div id="imdb_header" class="modal-header">
+    <h2 id = ""class="modal-heading">
+    <button type="button" id="close_btn">Close</button>
+    </h2>
+    </div>
+
+    <div class="modal-body">
+    <div id="imdb_content" class="modal-content">
+    </div>
+    </div>
+    </div>
+    </div>
+`
+
+function handle(response)
+{
+    $imdb_dialog = $(imdb_dialog_template).appendTo($("body"));
+    $imdb_header = $("#imdb_header");
+    $imdb_content = $("#imdb_content");
+    $close_btn = $("#close_btn")
+        .click(function(){
+            $('.modal').remove();
+        })
+
+    var responseType = getResponseType(response);
+    var aEntry = response['Search'] || [response];
+    var count = 0;
+    for (var entry of aEntry)
+    {
+        if (entry['Poster'] != "N/A")
+        {
+            $li = $("<li/>")
+                .addClass("img_li")
+                .appendTo($imdb_content);
+            $imgDiv = $("<div/>")
+                .addClass("img_container")
+                .appendTo($li);
+            $img = $("<img/>")
+                .attr({
+                    "id": "img-" + count,
+                    "src": entry["Poster"],
+                    "imdbID": entry["imdbID"],
+                    })
+                .width("150")
+                .height("225")
+                .click( function(e) {
+                    target = e.target;
+                    var imdbid = $(target).attr("imdbid");
+                    fillPostMessage(imdbid);
+                    $('.modal').remove();
+                })
+                .appendTo($imgDiv)
+            $type_txt = $("<div/>")
+            .addClass("bottom-left")
+                .html(`
+                ${entry["Year"]}<br>
+                ${entry["Type"]}
+            `)
+            .appendTo($imgDiv);
+            count++;
+        }
+    }
+    if (count == 0)
+    {
+        var notfound = document.createElement("h");
+        notfound.innerHTML = "Not found";
+        imdb_dialog.appendChild(notfound);
+    }
+    $('.modal').toggleClass('is-visible');
+}
+
+
+
+phpbb.addAjaxCallback('snahp.imdbCallback', start_handling_imdb_ajax);
+
+$(document).ready(function() {
+    $("#imdb_input").keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            start_handling_imdb_ajax();
+        }
+    });
+});
