@@ -74,7 +74,7 @@ function space2dash(strn)
 
 function fillPostMessage(term)
 {
-    var url = `http://www.omdbapi.com/?apikey=${getKey()}&i=${term}`
+    var url = `https://www.omdbapi.com/?apikey=${getKey()}&i=${term}`
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
         var summary = maketemplate(response);
@@ -113,11 +113,11 @@ function startHandlingImdbAjax()
     var match = isImdbID(term)
     if (match && match[0])
     {
-        var url = `http://www.omdbapi.com/?apikey=${getKey()}&i=${match[0]}`
+        var url = `https://www.omdbapi.com/?apikey=${getKey()}&i=${match[0]}`
     }
     else
     {
-        var url = `http://www.omdbapi.com/?apikey=${getKey()}&s=` + space2dash(term);
+        var url = `https://www.omdbapi.com/?apikey=${getKey()}&s=` + space2dash(term);
     }
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
