@@ -111,10 +111,21 @@ class main_listener extends core implements EventSubscriberInterface
     public function insert_new_topic_button($event)
     {
         $forum_id = $this->request->variable("f", "");
+        // Note that this means user must properly walk their way into
+        // a forum. viewtopic.php?t=3 for example will not work.
+        // This is done to reduce the number of sql calls.
         if ($forum_id && is_numeric($forum_id))
         {
-            $this->template->assign_vars(["snp_forum_id" => $forum_id,]);
+            $this->template->assign_vars([
+                "snp_forum_id" => $forum_id,
+            ]);
         }
+        // viewtopic_buttons_top_after.html may require theme specific configuration:
+        // {% if T_THEME_NAME == 'prosilver' %}
+        // <a href="./posting.php?mode=post&amp;f={snp_forum_id}" class="button" title="Post a new topic">
+        //   <span>New Topic</span> <i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
+        // </a>
+        // {% elseif T_THEME_NAME == 'basic' %}
     }
 
     public function disable_signature($event)
