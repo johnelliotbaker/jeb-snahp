@@ -66,15 +66,11 @@
  * `border-box`... ALL THE THINGS - http://cbrac.co/RQrDL5
  */
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-/**
- * Modals ($modals)
- */
+/* *, */
+/* *:before, */
+/* *:after { */
+/*   box-sizing: border-box; */
+/* } */
 
 /* 1. Ensure this sits above everything when visible */
 .modal {
