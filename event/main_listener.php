@@ -104,7 +104,17 @@ class main_listener extends core implements EventSubscriberInterface
             'core.ucp_profile_modify_signature_sql_ary' => 'modify_signature',
             'core.posting_modify_template_vars' => 'modify_posting_for_imdb',
             'core.viewtopic_modify_post_row' => 'disable_signature',
+            'core.viewtopic_assign_template_vars_before' => 'insert_new_topic_button',
         );
+    }
+
+    public function insert_new_topic_button($event)
+    {
+        $forum_id = $this->request->variable("f", "");
+        if ($forum_id && is_numeric($forum_id))
+        {
+            $this->template->assign_vars(["snp_forum_id" => $forum_id,]);
+        }
     }
 
     public function disable_signature($event)
