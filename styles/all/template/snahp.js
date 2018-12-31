@@ -5,9 +5,35 @@ aKey = [
     "bb3702c0"
 ]
 
+function getRating(aRating)
+{
+    strn = "";
+    for (var i in aRating)
+    {
+        var rating = aRating[i];
+        var source = rating['Source'];
+        var value = rating['Value'];
+        console.log(source);
+        console.log(value);
+        switch (source)
+        {
+            case "Internet Movie Database":
+                strn = strn + `IMDb: ${value} `;
+                break;
+            case "Rotten Tomatoes":
+                strn = strn + `RT: ${value} `;
+                break;
+            case "Metacritic":
+                strn = strn + `MC: ${value} `;
+                break;
+        }
+    }
+    return strn;
+}
 
 function maketemplate(imdb)
 {
+    console.log(imdb);
     try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
     } catch(err) { var img      = ""; }
     try { var title             = `[center][size=150][color=#FF0000][b]${imdb['Title']} (${imdb['Year']})[/b][/color][/size][/center]\n`;
@@ -18,31 +44,31 @@ function maketemplate(imdb)
     } catch(err) { var director = ""; }
     try { var actors            = `[color=#FF8000][b]Stars[/b][/color]: ${imdb['Actors']}\n`
     } catch(err) { var actors   = ""; }
-    try { var runtime           = `[color=#FF8000][b]Runtime[/b][/color]: ${imdb['Runtime']}\n`
+    try { var runtime           = `[color=#FF8000][b]Runtime[/b][/color]: ${imdb['Runtime']} (taken from IMDb)\n`
     } catch(err) { var runtime  = ""; }
     try { var genre             = `[color=#FF8000][b]Genre[/b][/color]: ${imdb['Genre']}\n`
     } catch(err) { var genre    = ""; }
     try { 
         var rr = /(.*)\/(.*)/.exec(imdb['Ratings'][0]['Value']);
-        var rating            = `[color=#FF8000][b]Rating[/b][/color]: [b]${rr[1]}[/b]\n`
+        // rr = getRating(imdb['Ratings']);
+        var rating            = `[color=#FF8000][b]Rating[/b][/color]: ${rr[0]}* (may differ)\n`
     } catch(err) { var rating   = ""; }
-    try { var votes             = `[color=#FF8000][b]Votes[/b][/color]: ${imdb['imdbVotes']}\n`
+    try { var votes             = `[color=#FF8000][b]Votes[/b][/color]: ${imdb['imdbVotes']} (may differ)\n`
     } catch(err) { var votes    = ""; }
-    try { var reldate           = `[color=#FF8000][b]Release Date[/b][/color]: ${imdb['Released']}\n`
+    try { var reldate           = `[color=#FF8000][b]Release Date[/b][/color]: ${imdb['Released']} (taken from IMDb)\n`
     } catch(err) { var reldate  = ""; }
-    try { var vrating           = `[color=#FF8000][b]Viewer Rating (TV/MPAA)[/b][/color]: ${imdb['Rated']}\n`
+    try { var vrating           = `[color=#FF8000][b]Viewer Rating (TV/MPAA)[/b][/color]: ${imdb['Rated']} (taken from IMDb)\n`
     } catch(err) { var vrating  = ""; }
-    try { var summary           = `[quote]${imdb['Plot']}[/quote]\n`
+    try { var summary           = `[color=#FF8000][b]Summary[/b][/color]: [i]${imdb['Plot']}[/i]\n`
     } catch(err) { var summary  = ""; }
     try { var links             = `[color=#FF8000][b]Links[/b][/color]: [b]`
     } catch(err) { var links    = ""; }
-    try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]iMDB[/url]\n`
+    try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]IMDb[/url]\n`
     } catch(err) { var imdburl  = ""; }
     try { var ddl               = `[color=#0000FF][b]Direct Download Links[/color][/b]: \n`
     } catch(err) { var ddl      = ""; }
-    try { var dlink             = `
-[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]\n
-[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]\n
+    try { var dlink             = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
+[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
 [url=https://snahp.it/?s=tt1270797][color=#FF0000]ZippyShare[/color][/url]
 [/b][/hide]\n`
     } catch(err) { var dlink    = ""; }
