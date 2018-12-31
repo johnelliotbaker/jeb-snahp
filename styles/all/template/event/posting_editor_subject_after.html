@@ -2,6 +2,17 @@
 <dt>
   <label for="imdb_term">IMDb:</label>
 </dt>
-<input type="text" name="imdb_input" id="imdb_input" value="">
-<button type="button" data-ajax="snahp.imdbCallback">Search</button>
+<dd>
+  <input type="text" name="imdb_input" id="imdb_input" value="">
+  <button type="button" data-ajax="snahp.imdbCallback">Search</button>
+</dd>
+{% endif %}
+{% if bShowAnilist %}
+<dt>
+  <label for="anilist_term">Anilist:</label>
+</dt>
+<dd>
+  <input type="text" name="anilist_input" id="anilist_input" value="cowboy bebop">
+  <button type="button" data-ajax="snahp.anilistCallback">Search</button>
+</dd>
 {% endif %}

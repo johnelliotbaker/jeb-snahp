@@ -100,10 +100,13 @@ class main_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'gfksx.thanksforposts.output_thanks_before' => 'modify_avatar_thanks',
-            'core.ucp_profile_modify_signature_sql_ary' => 'modify_signature',
-            'core.posting_modify_template_vars' => 'modify_posting_for_imdb',
-            'core.viewtopic_modify_post_row' => 'disable_signature',
+            'gfksx.thanksforposts.output_thanks_before'  => 'modify_avatar_thanks',
+            'core.ucp_profile_modify_signature_sql_ary'  => 'modify_signature',
+            'core.posting_modify_template_vars'          => array(
+                array('modify_posting_for_imdb', 0),
+                array('modify_posting_for_anilist', 0),
+            ),
+            'core.viewtopic_modify_post_row'             => 'disable_signature',
             'core.viewtopic_assign_template_vars_before' => 'insert_new_topic_button',
         );
     }
@@ -178,12 +181,29 @@ class main_listener extends core implements EventSubscriberInterface
         $event['sql_ary'] = $sql_ary;
     }
 
+    public function modify_posting_for_anilist($event) 
+    {
+        $anime_forum_id = [13, 16,];
+        $anime_forum_id = [2];
+        $forum_id = $this->request->variable("f", "");
+        if ($forum_id && is_numeric($forum_id) &&
+            in_array($forum_id, $anime_forum_id))
+        {
+            $this->template->assign_vars([
+                "bShowAnilist" => true,
+            ]);
+        }
+    }
+
     public function modify_posting_for_imdb($event) 
     {
         global $user;
+        $listing_forum_id = [4, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,];
+        $listing_forum_id = [2];
         $forum_id = $this->request->variable("f", "");
         $topic_id = $this->request->variable("t", "");
-        if ($forum_id && !($topic_id))
+        if ($forum_id && is_numeric($forum_id) && !($topic_id) &&
+            in_array($forum_id, $listing_forum_id))
         {
             $user_id = $user->data['user_id'];
             $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
