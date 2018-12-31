@@ -106,9 +106,26 @@ class main_listener extends core implements EventSubscriberInterface
                 array('modify_posting_for_imdb', 0),
                 array('modify_posting_for_anilist', 0),
             ),
+            'core.modify_posting_parameters'             => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'             => 'disable_signature',
             'core.viewtopic_assign_template_vars_before' => 'insert_new_topic_button',
         );
+    }
+
+    public function include_assets_before_posting($event)
+    {
+        $anime_forum_id = [13, 16,];
+        $listing_forum_id = [4, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,];
+        $anime_forum_id = [2];
+        $listing_forum_id = [2];
+        $forum_id = $this->request->variable("f", "");
+        if ($forum_id && is_numeric($forum_id) && !($topic_id))
+        {
+            if (in_array($forum_id, $listing_forum_id))
+            $this->template->assign_vars([ "snp_include_imdb" => $forum_id, ]);
+            if (in_array($forum_id, $anime_forum_id))
+            $this->template->assign_vars([ "snp_include_anilist" => $forum_id, ]);
+        }
     }
 
     public function insert_new_topic_button($event)
