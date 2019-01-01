@@ -13,8 +13,6 @@ function getRating(aRating)
         var rating = aRating[i];
         var source = rating['Source'];
         var value = rating['Value'];
-        console.log(source);
-        console.log(value);
         switch (source)
         {
             case "Internet Movie Database":
@@ -33,7 +31,6 @@ function getRating(aRating)
 
 function maketemplate(imdb)
 {
-    console.log(imdb);
     try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
     } catch(err) { var img      = ""; }
     try { var title             = `[center][size=150][color=#FF0000][b]${imdb['Title']} (${imdb['Year']})[/b][/color][/size][/center]\n`;
@@ -147,7 +144,7 @@ function startHandlingImdbAjax()
     }
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
-        handle(response);
+        handle_imdb(response);
     });
 }
 
@@ -183,7 +180,7 @@ function getImdbChunkiness(entry)
     return chunkiness;
 }
 
-function handle(response)
+function handle_imdb(response)
 {
     $imdb_dialog = $(imdb_dialog_template).appendTo($("body"));
     $imdb_header = $("#imdb_header");
@@ -246,10 +243,7 @@ function handle(response)
     $('.modal').toggleClass('is-visible');
 }
 
-
-
 phpbb.addAjaxCallback('snahp.imdbCallback', startHandlingImdbAjax);
-
 $(document).ready(function() {
     $("#imdb_input").keydown(function(event){
         if(event.keyCode == 13) {
