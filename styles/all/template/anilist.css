@@ -45,37 +45,91 @@
     -1px  1px   0  #000,
     1px   1px   0  #000;
 }
-.twbs.modal,
-.twbs.modal-backdrop
-{
-    background-image: url("https://i.imgur.com/xkatFe1.jpg");
-    background-color: black;
-}
-
 
 
 body {
     border: black;
 }
-.twbs#anilist_poster_list,
-.twbs.modal-body,
-.twbs.modal-header,
-.twbs.modal-content
+
+.twbs.card,
+.twbs.card-body,
+.twbs.card-title,
+.twbs.card.dialog_content,
+.twbs.card.dialog_top_menu
 {
     background-color: #18110B;
+    margin: auto;
+    left: 10% auto;
+    right: 10% auto;
+    text-align: center;
 }
 
-.twbs.modal-title {
+.twbs.card.document {
+    max-width: 840px;
+    margin: 3% auto;
+}
+
+.dialog_top_menu {
+    text-align: center;
+}
+
+.twbs.card.modal-title {
     color: #e3a21a;
 }
 
-.twbs.form-check-label {
-    color: #e3a21a;
+.twbs.card-title {
+    font-size: 2.5em;
+}
+
+.checkbox_label {
     font-size: 1.5em;
+}
+
+.checkbox_label, .twbs.card-title {
+    color: #e3a21a;
     font-weight: bold;
 }
 
-.twbs.modal-dialog.modal-xl {
-    width: 90%;
-    max-width: 880px;
+.rounded {
+    border-radius:.25rem!important;
 }
+
+/* https://www.webdesignerdepot.com/2012/10/creating-a-modal-window-with-html5-and-css3/ */
+.modalDialog {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+    background-image: url("https://i.imgur.com/xkatFe1.jpg");
+    background-color: black;
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+    overflow-y: auto;
+}
+
+.twbs.dialog_close_btn
+{
+    font-size: 4em;
+    font-weight: bold;
+	line-height: 25px;
+	position: absolute;
+	right: 0px;
+	text-align: center;
+	top: -35px;
+	width: 24px;
+	/* text-decoration: none; */
+	/* font-weight: bold; */
+	/* -webkit-border-radius: 12px; */
+	/* -moz-border-radius: 12px; */
+	/* border-radius: 12px; */
+	/* -moz-box-shadow: 1px 1px 3px #000; */
+	/* -webkit-box-shadow: 1px 1px 3px #000; */
+	/* box-shadow: 1px 1px 3px #000; */
+}
+
+/* .close:hover { background: #00d9ff; } */

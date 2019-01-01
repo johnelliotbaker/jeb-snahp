@@ -1,55 +1,62 @@
-function getEntryOrEmpty(template, strn)
+function getEntryOrEmpty(template, text, url=0)
 {
-    try
-    {
-        if (strn)
-        {
-            return template.replace('{{}}', strn);
-        }
-        else
-        {
-            return "";
-        }
-    }
-    catch(err)
-    {
-        return "";
-    }
+    if (text)
+        template = template.replace('{text}', text);
+    else
+        template = "";
+    if (url)
+        template = template.replace('{url}', url);
+    return template;
 
 }
 
 function makeAnilistTemplate(data)
 {
-    var titleRomaji  = getEntryOrEmpty(`[center][size=150][color=#FF0000][b]{{}}[/b][/color][/size][/center]\n`, data['title']['romaji']);
-    var img          = getEntryOrEmpty(`[center][img width="300"]{{}}[/img][/center]\n`, data['coverImage']['large']);
-    var year         = getEntryOrEmpty(`[center][size=150][color=#000000][b]({{}})[/b][/color][/size][/center]\n`, data['startDate']['year']);
-    var titleEnglish = getEntryOrEmpty(`[center][size=150][color=#FF0000][b]{{}}[/b][/color][/size][/center]\n`, data['title']['english']);
-    var titleNative  = getEntryOrEmpty(`[center][size=150][color=#FF0000][b]{{}}[/b][/color][/size][/center]\n`, data['title']['native']);
-    var director     = getEntryOrEmpty(`[color=#FF8000][b]Director[/b][/color]: {{}}\n`, data['Director']);
-    var actors       = getEntryOrEmpty(`[color=#FF8000][b]Stars[/b][/color]: {{}}\n`, data['Actors']);
-    var runtime      = getEntryOrEmpty(`[color=#FF8000][b]Runtime[/b][/color]: {{}} minutes\n`, data['duration']);
-    var genre        = getEntryOrEmpty(`[color=#FF8000][b]Genre[/b][/color]: {{}}\n`, data['genres'].join(', '));
-    var rating       = getEntryOrEmpty(`[color=#FF8000][b]Rating[/b][/color]: {{}}\n`, data['averageScore']);
-    var votes        = getEntryOrEmpty(`[color=#FF8000][b]Votes[/b][/color]: {{}}\n`, numberWithCommas(data['popularity']));
-    var reldate      = getEntryOrEmpty(`[color=#FF8000][b]Release Date[/b][/color]: {{}}\n`, data['startDate']['year']);
-    var vrating      = getEntryOrEmpty(`[color=#FF8000][b]Viewer Rating (TV/MPAA)[/b][/color]: {{}}\n`, data['Rated']);
-    var summary      = getEntryOrEmpty(`[color=#FF8000][b]Summary[/b][/color]: [i]{{}}[/i]\n`, data['description']);
+    console.log(data);
+    var type = data['type'];
+    var id = data['id'];
+    var url = data['siteUrl'];
+
+    var img          = getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['coverImage']['large']);
+    var bannerImage  = data['bannerImage'] ? getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['bannerImage']) : "";
+    // var year         = getEntryOrEmpty(`[center][size=150][color=#000000][b]({text})[/b][/color][/size][/center]\n`, data['startDate']['year']);
+    var year = data['startDate']['year'] ? ' (' + data['startDate']['year'] + ')' : "";
+    var titleNative  = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}${year}[/url][/b][/size][/center]\n`, data['title']['native'], url);
+    var titleRomaji  = getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['romaji']);
+    var titleEnglish = getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['english']);
+
+    var rating       = getEntryOrEmpty(`[center][size=150][b]Rating: {text} / 10[/b][/size][/center]\n`, (data['averageScore']/10).toFixed(1));
+
+    var genre        = getEntryOrEmpty(`[center][b][size=120]{text}[/size][/b][/center]\n`, data['genres'].join(', '));
+
+    var summary      = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, data['description']);
+
+    var volumes     = getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
+    var trailer = "";
+    try 
+    {
+        var trailer = getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id'])
+    }catch{}
+    var episodes     = getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
+    var chapters     = getEntryOrEmpty(`[color=#FF8000][b]Chapters[/b][/color]: {text}\n`, data['chapters']);
+    var runtime      = getEntryOrEmpty(`[color=#FF8000][b]Runtime[/b][/color]: {text} minutes\n`, data['duration']);
+    var votes        = getEntryOrEmpty(`[color=#FF8000][b]Votes[/b][/color]: {text}\n`, numberWithCommas(data['popularity']));
     var links        = `[color=#FF8000][b]Links[/b][/color]: [b]`;
     var ddl          = `[color=#0000FF][b]Direct Download Links[/color][/b]: \n`;
     var dlink        = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
 [url=https://snahp.it/?s=tt1270797][color=#FF0000]ZippyShare[/color][/url]
 [/b][/hide]\n`
-    var text = img + '\n';
+    var text = img + bannerImage + '\n\n';
     if (titleNative && titleNative != 'null') text += titleNative + '\n';
     if (titleRomaji && titleRomaji != 'null') text += titleRomaji + '\n';
     if (titleEnglish && titleEnglish != 'null') text += titleEnglish + '\n';
-    text += year + '\n\n' +
-    runtime + genre + '\n' +
-    rating + votes +'\n' +
-    reldate + '\n' +
-    summary + '\n' +
-    ddl + dlink;
+    text += '\n\n' + rating + '\n\n\n' +
+        genre + '\n\n' +
+        summary + '\n\n' +
+        runtime + episodes + volumes + chapters +
+        votes + trailer + '\n' +
+        ddl + dlink;
     return text;
 }
 
@@ -66,38 +73,6 @@ function fillAnilistPostMessage(entry)
     $('#message').val(text);
 }
 
-
-var anilist_dialog_template = `
-<!-- Modal -->
-<div class="twbs modal fade" id="anilist_dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="twbs modal-dialog modal-xl" role="document">
-    <div class="twbs modal-content">
-      <div class="twbs modal-header">
-        <h5 class="twbs modal-title" id="anilist_title"></h5>
-        <button id="close_btn" type="button" class="twbs close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="twbs modal-body" id="anilist_content">
-      <div class="twbs modal-body" id="anilist_top_filter">
-	  <div class="twbs form-check form-check-inline">
-	    <input class="twbs form-check-input" type="checkbox" id="cb_show_anime" value="1" checked>
-	    <label class="twbs form-check-label" for="cb_show_anime">Anime</label>
-	    <input class="twbs form-check-input" type="checkbox" id="cb_show_manga" value="1" checked>
-	    <label class="twbs form-check-label" for="cb_show_manga">Manga</label>
-	  </div>
-      </div>
-      <div class="twbs modal-body" id="anilist_poster_list">
-      </div>
-      </div>
-      <div class="twbs modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-`;
-
 function updatePosters(media)
 {
     $anilist_dialog = $("#anilist_dialog");
@@ -110,10 +85,10 @@ function updatePosters(media)
         $li = $("<li/>")
             .addClass("img_li")
             .appendTo($anilist_content);
-        $imgDiv = $("<div/>")
-            .addClass("img_container")
+        $imgDiv = $('<div/>')
+            .addClass('img_container')
             .appendTo($li);
-        $img = $("<img/>")
+        $img = $('<img class="rounded"/>')
             .attr({
                 "id": "img-" + count,
                 "src": entry["coverImage"]["large"],
@@ -127,6 +102,7 @@ function updatePosters(media)
                 tid = parseInt(match[1], 10);
                 var anilistid = $(target).attr("anilistid");
                 fillAnilistPostMessage(media[tid]);
+                $("#anilist_dialog").remove();
                 // $('#anilist_dialog').modal("hide");
                 // $('.modal').remove();
             })
@@ -146,7 +122,10 @@ function updatePosters(media)
         $notfound = $("<h>Not Found</h>").css({"font-size": "200%"});
         $anilist_content.append($notfound);
     }
-    $("#anilist_dialog").modal('handleUpdate');
+    $("#anilist_dialog").css({
+        "opacity": "1",
+        "pointer-events": "auto"
+    });
 }
 
 function filterMedia(media)
@@ -170,6 +149,31 @@ function filterMedia(media)
     return selectedMedia;
 }
 
+
+var anilist_dialog_template = `
+<div id="anilist_dialog" class="modalDialog">
+  <div class="twbs card document rounded">
+    <div class="twbs card-body rounded">
+      <div class="twbs card-title">
+        <h5 id="anilist_title"></h5>
+      </div>
+      <div class="twbs card dialog_content" id="anilist_content">
+        <button id="close_btn" type="button" class="twbs dialog_close_btn">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="dialog_top_menu" id="anilist_top_filter">
+          <input type="checkbox" id="cb_show_anime" value="1" checked>
+          <label class="checkbox_label" for="cb_show_anime">Anime</label>
+          <input type="checkbox" id="cb_show_manga" value="1" checked>
+          <label class="checkbox_label" for="cb_show_manga">Manga</label>
+        </div>
+        <div id="anilist_poster_list">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 
 function handle_anilist(response, searchTerm)
@@ -196,11 +200,7 @@ function handle_anilist(response, searchTerm)
     var media = response['data']['Page']['media'];
     var selectedMedia = filterMedia(media);
     updatePosters(selectedMedia);
-    $("#anilist_dialog").modal('show');
-    $('.modal').toggleClass('is-visible');
-    console.log(jQuery.fn.jquery);
 }
-
 
 function startHandlingAnilistAjax()
 {
@@ -235,6 +235,12 @@ function startHandlingAnilistAjax()
             large
           },
           genres,
+          bannerImage,
+          trailer {
+            id
+          },
+          siteUrl,
+          volumes
         }
       }
     }
