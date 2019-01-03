@@ -187,6 +187,22 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_imdb_enable', $aImdbEnable);
                 $db->sql_query($sql);
+                // Code to limit anilist based on group membership
+                $aAnilistEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match("/anilist-(\d+)/", $varname, $match_anilist_toggle);
+                    if ($match_anilist_toggle)
+                    {
+                        $gid = $match_anilist_toggle[1];
+                        $var = "anilist-$gid";
+                        $var = $request->variable($var, "0");
+                        $aAnilistEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_anilist_enable', $aAnilistEnable);
+                $db->sql_query($sql);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(
@@ -202,7 +218,20 @@ class main_module
                     "gname"=>$row["group_name"],
                     "gcheck"=> $row["snp_imdb_enable"],
                 );
-                $template->assign_block_vars('aSignature', $group);
+                $template->assign_block_vars('aImdb', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show anilist configuration in ACP
+            $sql = "SELECT * from " . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    "gid"=>$row["group_id"],
+                    "gname"=>$row["group_name"],
+                    "gcheck"=> $row["snp_anilist_enable"],
+                );
+                $template->assign_block_vars('aAnilist', $group);
             };
             $db->sql_freeresult($result);
         }

@@ -11,7 +11,7 @@
 		<div class="inner">
 			<fieldset>
 				<dl>
-					<dt><label>Permissions</label><br />
+					<dt><label>IMDb</label><br />
             <span><br>
               Check Allowed to enable IMDb form generator for that group.
             </span>
@@ -25,21 +25,54 @@
                     <td>Group Name</td>
                     <td>Allowed</td>
                   </tr>
-                  <!-- BEGIN aSignature -->
+                  <!-- BEGIN aImdb -->
                   <tr>
-                    <td>{aSignature.gid}</td>
-                    <td>{aSignature.gname}</td>
+                    <td>{aImdb.gid}</td>
+                    <td>{aImdb.gname}</td>
                     <td>
                       <input type="hidden"
-                               name="imdb-{aSignature.gid}"
+                               name="imdb-{aImdb.gid}"
                                value="0">
                       <input type="checkbox"
-                               name="imdb-{aSignature.gid}"
-                               id="imdb-{aSignature.gname}"
-                             {% if aSignature.gcheck %}value="1" checked{% endif %}>
+                               name="imdb-{aImdb.gid}"
+                               id="imdb-{aImdb.gname}"
+                             {% if aImdb.gcheck %}value="1" checked{% endif %}>
                     </td>
                   </tr>
-                  <!-- END aSignature -->
+                  <!-- END aImdb -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+					<dt><label>Anime</label><br />
+            <span><br>
+              Check Allowed to enable Anime form generator for that group.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aAnilist -->
+                  <tr>
+                    <td>{aAnilist.gid}</td>
+                    <td>{aAnilist.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="anilist-{aAnilist.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="anilist-{aAnilist.gid}"
+                               id="anilist-{aAnilist.gname}"
+                             {% if aAnilist.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aAnilist -->
                 </tbody>
               </table>
             </span>

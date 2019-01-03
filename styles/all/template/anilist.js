@@ -13,7 +13,9 @@ function getEntryOrEmpty(template, text, url=0)
 function getEndDateOrEmpty(template, endDate, url=0)
 {
     var year = endDate['year'];
-    if (year)
+    var month = endDate['month'];
+    var day = endDate['day'];
+    if (year && month && day)
     {
         var dateString = `${endDate['year']}/${endDate['month']}/${endDate['day']}`
         return getEntryOrEmpty(template, dateString, url);
@@ -29,6 +31,13 @@ function getRatingOrEmpty(template, rating, url=0)
         return getEntryOrEmpty(template, (rating/10).toFixed(1), url);
     }
     return "";
+}
+
+function toTitleCase(str) {
+    // https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
 function makeAnilistTemplate(data)
@@ -49,6 +58,7 @@ function makeAnilistTemplate(data)
     var summary       = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, data['description']);
 
     var volumes       = getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
+    var format        = getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, data['format']);
     var trailer       = "";
     try { var trailer = getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id']) } catch {};
     var episodes      = getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
@@ -71,7 +81,7 @@ function makeAnilistTemplate(data)
     text += '\n\n' + rating + '\n\n\n' +
         genre + '\n\n' +
         summary + '\n\n' +
-        runtime + episodes + volumes + chapters + endDate +
+        toTitleCase(format) + runtime + episodes + volumes + chapters + endDate +
         votes + trailer + '\n' +
         ddl + dlink;
     text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
@@ -266,7 +276,8 @@ function startHandlingAnilistAjax()
             id
           },
           siteUrl,
-          volumes
+          volumes,
+          format,
         }
       }
     }

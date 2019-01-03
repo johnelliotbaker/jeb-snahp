@@ -203,18 +203,32 @@ class main_listener extends core implements EventSubscriberInterface
         $anime_forum_id = [13, 16,];
         $anime_forum_id = [2];
         $forum_id = $this->request->variable("f", "");
-        if ($forum_id && is_numeric($forum_id) &&
+        $topic_id = $this->request->variable("t", "");
+        if ($forum_id && is_numeric($forum_id) && !($topic_id) &&
             in_array($forum_id, $anime_forum_id))
         {
-            $this->template->assign_vars([
-                "bShowAnilist" => true,
-            ]);
+            $user_id = $this->user->data['user_id'];
+            $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
+                WHERE user_id = ' . $user_id;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $gid = $row['group_id'];
+            $this->db->sql_freeresult($result);
+            $sql = 'SELECT snp_anilist_enable FROM ' . GROUPS_TABLE . '
+                WHERE group_id = ' . $gid;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $bGroupEnable = $row['snp_anilist_enable'];
+            $this->db->sql_freeresult($result);
+            if ($bGroupEnable)
+            {
+                $this->template->assign_vars(["bShowAnilist" => true,]);
+            }
         }
     }
 
     public function modify_posting_for_imdb($event) 
     {
-        global $user;
         $listing_forum_id = [4, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,];
         $listing_forum_id = [2];
         $forum_id = $this->request->variable("f", "");
@@ -222,7 +236,7 @@ class main_listener extends core implements EventSubscriberInterface
         if ($forum_id && is_numeric($forum_id) && !($topic_id) &&
             in_array($forum_id, $listing_forum_id))
         {
-            $user_id = $user->data['user_id'];
+            $user_id = $this->user->data['user_id'];
             $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
                 WHERE user_id = ' . $user_id;
             $result = $this->db->sql_query($sql);
