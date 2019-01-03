@@ -1,27 +1,22 @@
 function getEntryOrEmpty(template, text, url=0)
 {
-    if (text)
-        template = template.replace('{text}', text);
-    else
-        template = "";
-    if (url)
-        template = template.replace('{url}', url);
+    if (text) { template = template.replace('{text}', text);}
+    else      { template = "";}
+    if (url)  { template = template.replace('{url}', url);}
     return template;
 
 }
 
 function getEndDateOrEmpty(template, endDate, url=0)
 {
-    var year = endDate['year'];
+    var year  = endDate['year'];
     var month = endDate['month'];
-    var day = endDate['day'];
-    if (year && month && day)
-    {
-        var dateString = `${endDate['year']}/${endDate['month']}/${endDate['day']}`
-        return getEntryOrEmpty(template, dateString, url);
-    }
-    else
-        return "";
+    var day   = endDate['day'];
+    var strn  = "";
+    if (year)  { strn += year;}
+    if (month) { strn += '/' + month;}
+    if (day)   { strn += '/' + day;}
+    return getEntryOrEmpty(template, strn, url);
 }
 
 function getRatingOrEmpty(template, rating, url=0)
@@ -35,14 +30,17 @@ function getRatingOrEmpty(template, rating, url=0)
 
 function toTitleCase(str) {
     // https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
-    return str.replace(/\w\S*/g, function(txt){
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
+    if (str)
+    {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+    return "";
 }
 
 function makeAnilistTemplate(data)
 {
-    console.log(data);
     var type          = data['type'];
     var id            = data['id'];
     var url           = data['siteUrl'];
@@ -58,7 +56,7 @@ function makeAnilistTemplate(data)
     var summary       = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, data['description']);
 
     var volumes       = getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
-    var format        = getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, data['format']);
+    var format        = getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, toTitleCase(data['format']));
     var trailer       = "";
     try { var trailer = getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id']) } catch {};
     var episodes      = getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
@@ -81,7 +79,7 @@ function makeAnilistTemplate(data)
     text += '\n\n' + rating + '\n\n\n' +
         genre + '\n\n' +
         summary + '\n\n' +
-        toTitleCase(format) + runtime + episodes + volumes + chapters + endDate +
+        format + runtime + episodes + volumes + chapters + endDate +
         votes + trailer + '\n' +
         ddl + dlink;
     text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
@@ -155,6 +153,11 @@ function updatePosters(media)
     setTimeout(function(){
         $("#modalTriggerLink")[0].click();
         $("#modalTriggerLink").remove();
+        var match = /(.*)(#.*)/.exec(window.location.href);
+        if (match && match[1])
+        {
+            window.history.replaceState("", "", match[1]);
+        }
     }, 100);
     // $("#anilist_dialog").css({ "opacity": "1", "pointer-events": "auto" });
 }
