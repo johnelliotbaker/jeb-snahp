@@ -34,7 +34,7 @@
 
 .img_li {
     display: inline-block;
-    padding: 3px;
+    padding: 5px;
 }
 
 #close_btn {
@@ -57,15 +57,23 @@ body {
 .twbs.card.dialog_content,
 .twbs.card.dialog_top_menu
 {
-    background-color: #18110B;
-    margin: auto;
-    left: 10% auto;
-    right: 10% auto;
+    background-color: #1c1502;
     text-align: center;
+    border-radius:.7rem!important;
+}
+
+span.dialog.border {
+    border: 1px solid #1c1502 !important;
+    border-top: 0px !important;
+    border-bottom: 0px !important;
+}
+
+.twbs.rounded img{
+    border-radius:.7rem!important;
 }
 
 .twbs.card.document {
-    max-width: 840px;
+    max-width: 870px;
     margin: 3% auto;
 }
 
@@ -90,26 +98,25 @@ body {
     font-weight: bold;
 }
 
-.rounded {
-    border-radius:.25rem!important;
-}
-
 /* https://www.webdesignerdepot.com/2012/10/creating-a-modal-window-with-html5-and-css3/ */
 .modalDialog {
 	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-image: url("https://i.imgur.com/xkatFe1.jpg");
-    background-color: black;
+    /* background-image: url("https://i.imgur.com/G8tOaeY.png"); */
 	z-index: 99999;
 	opacity:0;
-	-webkit-transition: opacity 400ms ease-in;
-	-moz-transition: opacity 400ms ease-in;
-	transition: opacity 400ms ease-in;
-	pointer-events: none;
+    /* Allow scroll */
     overflow-y: auto;
+    /* remove scroll on the right bar */
+    right: -17px;
+	-webkit-transition: opacity 350ms ease-in;
+	-moz-transition:    opacity 350ms ease-in;
+	transition:         opacity 350ms ease-in;
+	pointer-events: none;
 }
 
 .twbs.dialog_close_btn
@@ -132,4 +139,8 @@ body {
 	/* box-shadow: 1px 1px 3px #000; */
 }
 
-/* .close:hover { background: #00d9ff; } */
+.modalDialog:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
