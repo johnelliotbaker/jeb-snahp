@@ -170,7 +170,7 @@ function getImdbChunkiness(entry)
 {
     var aCat = ['Poster', 'Title', 'Year', 'imdbID', 'Type',];
     var chunkiness = 0;
-    for (var cat in aCat)
+    for (var cat of aCat)
     {
         if (entry[cat] && entry[cat] != "N/A")
         {
@@ -196,9 +196,9 @@ function handle_imdb(response)
     var aExclusion = ["N/A"];
     for (var entry of aEntry)
     {
-        var minChunk = 4;
+        var minChunkiness = 3;
         var posterUrl = entry['Poster'];
-        if (getImdbChunkiness(entry) > minChunk ||
+        if (getImdbChunkiness(entry) > minChunkiness ||
             posterUrl && !aExclusion.includes(posterUrl)
             )
         {
