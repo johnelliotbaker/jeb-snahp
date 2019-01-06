@@ -125,6 +125,19 @@ class main_listener extends core implements EventSubscriberInterface
         $topic_id = $this->request->variable("t", "");
         if ($forum_id && is_numeric($forum_id) && !($topic_id))
         {
+
+            $sql = 'SELECT * FROM ' . $this->table_prefix . 'snahp_pg_fid';
+            $result_pg_fid = $this->db->sql_query($sql);
+            $fid_allowed = [];
+            while ($row = $this->db->sql_fetchrow($result_pg_fid))
+            {
+                $name = $row['name'];
+                $fid = $row['fid'];
+                $fid = explode(',', $fid);
+                $fid_allowed[$name] = $fid;
+            }
+            $this->db->sql_freeresult($result_pg_fid);
+
             $user_id = $this->user->data['user_id'];
             $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
                 WHERE user_id = ' . $user_id;
@@ -140,23 +153,14 @@ class main_listener extends core implements EventSubscriberInterface
             $bGroupEnable = $row['snp_imdb_enable'];
             $this->db->sql_freeresult($result);
 
-            if ($row['snp_imdb_enable'] && in_array($forum_id, $listing_forum_id))
-            {
-                $this->template->assign_vars(["bShowImdb" => true,
-                    "snp_include_imdb" => true, ]);
-            }
+            if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
+                $this->template->assign_vars(["bShowImdb" => true, "snp_include_imdb" => true, ]);
 
-            if ($row['snp_anilist_enable'] && in_array($forum_id, $anime_forum_id))
-            {
-                $this->template->assign_vars(["bShowAnilist" => true,
-                    "snp_include_anilist" => true, ]);
-            }
+            if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
+                $this->template->assign_vars(["bShowAnilist" => true, "snp_include_anilist" => true, ]);
 
-            if ($row['snp_googlebooks_enable'] && in_array($forum_id, $book_forum_id))
-            {
-                $this->template->assign_vars(["bShowGooglebooks" => true,
-                    "snp_include_googlebooks" => true, ]);
-            }
+            if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
+                $this->template->assign_vars(["bShowGooglebooks" => true, "snp_include_googlebooks" => true, ]);
         }
     }
 

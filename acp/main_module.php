@@ -159,7 +159,7 @@ class main_module
 
     public function handle_imdb($cfg)
     {
-		global $config, $request, $template, $user, $db;
+		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
@@ -219,6 +219,33 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
+
+                // Store Forum IDs from template
+                $sql = 'SELECT * FROM ' . $table_prefix . 'snahp_pg_fid';
+                $result = $db->sql_query($sql);
+                while ($row = $db->sql_fetchrow($result))
+                {
+                    $name = $row['name'];
+                    $fid = $request->variable($name . "_fid", "");
+                    $fid1 = explode(',', $fid);
+                    $fid_sane = [];
+                    foreach($fid1 as $k => $v)
+                    {
+                        if (is_numeric($v))
+                        {
+                            $sanitized = preg_replace('/\s+/', '', $v);
+                            array_push($fid_sane, $sanitized);
+                        }
+                    }
+                    $fid_sane = array_unique($fid_sane);
+                    sort($fid_sane);
+                    $fid_sane = implode(', ', $fid_sane);
+                    $sql = 'UPDATE ' . $table_prefix . 'snahp_pg_fid SET fid="' . $fid_sane . '" WHERE name="' . $name . '"';
+                    $db->sql_query($sql);
+                }
+                $db->sql_freeresult($result);
+
+                // show status screen
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(
@@ -262,6 +289,20 @@ class main_module
                 );
                 $template->assign_block_vars('aGooglebooks', $group);
             };
+            $db->sql_freeresult($result);
+
+            // To fill the forum id for the textarea
+            $sql = 'SELECT * FROM ' . $table_prefix . 'snahp_pg_fid';
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $name = $row['name'];
+                $fid = $row['fid'];
+                $template->assign_vars(array(
+                    $name . '_fid' => $fid,
+                ));
+
+            }
             $db->sql_freeresult($result);
         }
     }
