@@ -88,11 +88,6 @@ function makeAnilistTemplate(data)
 }
 
 
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
 function fillAnilistPostMessage(entry)
 {
     var summary = makeAnilistTemplate(entry);
@@ -162,7 +157,7 @@ function updatePosters(media)
     // $("#anilist_dialog").css({ "opacity": "1", "pointer-events": "auto" });
 }
 
-function filterMedia(media)
+function filterAnilistMedia(media)
 {
     var aType = [];
     if ($("#cb_show_anime").prop("checked"))
@@ -185,9 +180,9 @@ function filterMedia(media)
 
 
 var anilist_dialog_template = `
-<div id="anilist_dialog" class="modalDialog">
-  <div class="twbs card document rounded" style="border: 10px; border-color:white;">
-    <div class="twbs card-body">
+<div id="anilist_dialog" class="twbs modalDialog anilist">
+  <div class="twbs card document rounded">
+    <div class="twbs card-body dialog rounded">
       <div class="twbs card-title">
         <h5 id="anilist_title"></h5>
       </div>
@@ -195,14 +190,21 @@ var anilist_dialog_template = `
         <button id="close_btn" type="button" class="twbs dialog_close_btn">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div class="dialog_top_menu" id="anilist_top_filter">
-          <input type="checkbox" id="cb_show_anime" value="1" checked>
-          <label class="checkbox_label" for="cb_show_anime">Anime</label>
-          <input type="checkbox" id="cb_show_manga" value="1" checked>
-          <label class="checkbox_label" for="cb_show_manga">Manga</label>
+        <div class="twbs card text-center">
+          <div class="twbs card-body">
+            <div class="twbs row">
+              <div class="twbs card col-12">
+                <div class="modal-menu">
+                  <input type="checkbox" id="cb_show_anime" value="1" checked>
+                  <label class="checkbox_label" for="cb_show_anime">Anime</label>
+                  <input type="checkbox" id="cb_show_manga" value="1" checked>
+                  <label class="checkbox_label" for="cb_show_manga">Manga</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="anilist_poster_list">
-        </div>
+        <div id="anilist_poster_list"></div>
       </div>
     </div>
   </div>
@@ -223,16 +225,16 @@ function handle_anilist(response, searchTerm)
             // $('#anilist_dialog').modal("hide");
         })
     $("#cb_show_manga").change(function(event){
-            var selectedMedia = filterMedia(media);
+            var selectedMedia = filterAnilistMedia(media);
             updatePosters(selectedMedia);
         });
     $("#cb_show_anime").change(function(event){
-            var selectedMedia = filterMedia(media);
+            var selectedMedia = filterAnilistMedia(media);
             updatePosters(selectedMedia);
         });
 
     var media = response['data']['Page']['media'];
-    var selectedMedia = filterMedia(media);
+    var selectedMedia = filterAnilistMedia(media);
     updatePosters(selectedMedia);
 }
 

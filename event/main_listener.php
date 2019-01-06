@@ -105,6 +105,7 @@ class main_listener extends core implements EventSubscriberInterface
             'core.posting_modify_template_vars'          => array(
                 array('modify_posting_for_imdb', 0),
                 array('modify_posting_for_anilist', 0),
+                array('modify_posting_for_googlebooks', 0),
             ),
             'core.modify_posting_parameters'             => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'             => 'disable_signature',
@@ -116,15 +117,19 @@ class main_listener extends core implements EventSubscriberInterface
     {
         $anime_forum_id = [13, 16,];
         $listing_forum_id = [4, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,];
+        $book_forum_id = [15, 37, 38, 39, 43, 44, 59];
         $anime_forum_id = [2];
         $listing_forum_id = [2];
+        $book_forum_id = [2];
         $forum_id = $this->request->variable("f", "");
         if ($forum_id && is_numeric($forum_id) && !($topic_id))
         {
             if (in_array($forum_id, $listing_forum_id))
-            $this->template->assign_vars([ "snp_include_imdb" => $forum_id, ]);
+                $this->template->assign_vars([ "snp_include_imdb" => $forum_id, ]);
             if (in_array($forum_id, $anime_forum_id))
-            $this->template->assign_vars([ "snp_include_anilist" => $forum_id, ]);
+                $this->template->assign_vars([ "snp_include_anilist" => $forum_id, ]);
+            if (in_array($forum_id, $anime_forum_id))
+                $this->template->assign_vars([ "snp_include_googlebooks" => $forum_id, ]);
         }
     }
 
@@ -196,6 +201,35 @@ class main_listener extends core implements EventSubscriberInterface
         $user_sig = implode("\n", $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
+    }
+
+    public function modify_posting_for_googlebooks($event) 
+    {
+        $book_forum_id = [15, 37, 38, 39, 43, 44, 59];
+        $book_forum_id = [2];
+        $forum_id = $this->request->variable("f", "");
+        $topic_id = $this->request->variable("t", "");
+        if ($forum_id && is_numeric($forum_id) && !($topic_id) &&
+            in_array($forum_id, $book_forum_id))
+        {
+            $user_id = $this->user->data['user_id'];
+            $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
+                WHERE user_id = ' . $user_id;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $gid = $row['group_id'];
+            $this->db->sql_freeresult($result);
+            $sql = 'SELECT snp_googlebooks_enable FROM ' . GROUPS_TABLE . '
+                WHERE group_id = ' . $gid;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $bGroupEnable = $row['snp_googlebooks_enable'];
+            $this->db->sql_freeresult($result);
+            if ($bGroupEnable)
+            {
+                $this->template->assign_vars(["bShowGooglebooks" => true,]);
+            }
+        }
     }
 
     public function modify_posting_for_anilist($event) 

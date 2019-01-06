@@ -1,0 +1,14 @@
+#googlebooks_input_author {
+    width: 70px;
+    color: red;
+}
+
+.twbs.card {
+    border-color:none;
+}
+
+.modalDialog.googlebooks {
+    background-image: url("https://i.imgur.com/W39BNGH.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}

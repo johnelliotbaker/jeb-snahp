@@ -1,10 +1,19 @@
+<!-- INCLUDEJS utility.js -->
 {% if snp_include_imdb %}
 <!-- INCLUDEJS @jeb_snahp/snahp.js -->
 <!-- INCLUDECSS @jeb_snahp/imdb.css -->
 {% endif %}
 {% if snp_include_anilist %}
-<!-- INCLUDEJS anilist.js -->
-<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
-<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- INCLUDEJS @jeb_snahp/anilist.js -->
 <!-- INCLUDECSS @jeb_snahp/anilist.css -->
 {% endif %}
+{% if snp_include_googlebooks %}
+<!-- INCLUDEJS @jeb_snahp/googlebooks.js -->
+<!-- INCLUDECSS @jeb_snahp/googlebooks.css -->
+{% endif %}
+{% if snp_include_anilist || snp_include_googlebooks %}
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- INCLUDECSS @jeb_snahp/pg-modal.css -->
+{% endif %}
+

@@ -203,6 +203,22 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_anilist_enable', $aAnilistEnable);
                 $db->sql_query($sql);
+                // Code to limit googlebooks based on group membership
+                $aGooglebooksEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match("/googlebooks-(\d+)/", $varname, $match_googlebooks_toggle);
+                    if ($match_googlebooks_toggle)
+                    {
+                        $gid = $match_googlebooks_toggle[1];
+                        $var = "googlebooks-$gid";
+                        $var = $request->variable($var, "0");
+                        $aGooglebooksEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
+                $db->sql_query($sql);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(
@@ -232,6 +248,19 @@ class main_module
                     "gcheck"=> $row["snp_anilist_enable"],
                 );
                 $template->assign_block_vars('aAnilist', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show googlebooks configuration in ACP
+            $sql = "SELECT * from " . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    "gid"=>$row["group_id"],
+                    "gname"=>$row["group_name"],
+                    "gcheck"=> $row["snp_googlebooks_enable"],
+                );
+                $template->assign_block_vars('aGooglebooks', $group);
             };
             $db->sql_freeresult($result);
         }

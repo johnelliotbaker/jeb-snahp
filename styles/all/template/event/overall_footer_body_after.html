@@ -3,6 +3,7 @@ $("body").keydown(function(event){
     if(event.keyCode == 27) {
         event.preventDefault();
         $("#anilist_dialog").remove();
+        $("#googlebooks_dialog").remove();
         $(".modal").remove();
     }
 });

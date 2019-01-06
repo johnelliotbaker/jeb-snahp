@@ -3,7 +3,7 @@
   <label for="imdb_term">IMDb:</label>
 </dt>
 <dd>
-  <input type="text" name="imdb_input" id="imdb_input" value="">
+  <input placeholder="" type="text" name="imdb_input" id="imdb_input" class="pg_input" value="tt0071022">
   <button type="button" data-ajax="snahp.imdbCallback">Search</button>
 </dd>
 {% endif %}
@@ -12,7 +12,17 @@
   <label for="anilist_term">Anilist:</label>
 </dt>
 <dd>
-  <input type="text" name="anilist_input" id="anilist_input" value="">
+  <input placeholder="" type="text" name="anilist_input" id="anilist_input" class="pg_input" value="naruto">
   <button type="button" data-ajax="snahp.anilistCallback">Search</button>
+</dd>
+{% endif %}
+{% if bShowGooglebooks %}
+<dt>
+  <label for="googlebooks_term">Books:</label>
+</dt>
+<dd>
+  <input value="lord of the rings" type="text" placeholder="" name="googlebooks_input" class="pg_input" id="googlebooks_input" >
+  <input value="" type="text" placeholder="Author" name="googlebooks_input_author" class="pg_input" id="googlebooks_input_author">
+  <button type="button" data-ajax="snahp.googlebooksCallback">Search</button>
 </dd>
 {% endif %}

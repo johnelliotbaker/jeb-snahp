@@ -77,6 +77,39 @@
               </table>
             </span>
           </dd>
+					<dt><label>Google Books</label><br />
+            <span><br>
+              Check Allowed to enable Google Books form generator for that group.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aGooglebooks -->
+                  <tr>
+                    <td>{aGooglebooks.gid}</td>
+                    <td>{aGooglebooks.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="googlebooks-{aGooglebooks.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="googlebooks-{aGooglebooks.gid}"
+                               id="googlebooks-{aGooglebooks.gname}"
+                             {% if aGooglebooks.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aGooglebooks -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
         </dl>
 			</fieldset>
 		</div>
