@@ -30,3 +30,8 @@ function toTitleCase(str) {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+function space2dash(strn)
+{
+    return strn.replace(/\s+/g, '+').toLowerCase();
+}
