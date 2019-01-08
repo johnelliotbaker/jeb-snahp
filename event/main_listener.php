@@ -17,6 +17,7 @@ use phpbb\template\template;
 use phpbb\config\config;
 use phpbb\request\request_interface;
 use phpbb\db\driver\driver_interface;
+use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -78,6 +79,7 @@ class main_listener extends core implements EventSubscriberInterface
     protected $db;
     protected $template;
     protected $table_prefix;
+    protected $notification;
 
     public function __construct(
         auth $auth,
@@ -85,7 +87,8 @@ class main_listener extends core implements EventSubscriberInterface
         config $config,
         driver_interface $db,
         template $template,
-        $table_prefix
+        $table_prefix,
+        manager $notification
     )
     {
 
@@ -95,6 +98,7 @@ class main_listener extends core implements EventSubscriberInterface
         $this->db           = $db;
         $this->template     = $template;
         $this->table_prefix = $table_prefix;
+        $this->notification = $notification;
     }
 
     static public function getSubscribedEvents()
@@ -110,7 +114,68 @@ class main_listener extends core implements EventSubscriberInterface
             'core.modify_posting_parameters'             => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'             => 'disable_signature',
             'core.viewtopic_assign_template_vars_before' => 'insert_new_topic_button',
+            'core.notification_manager_add_notifications' => 'notify_op_on_report',
         );
+    }
+
+    public function notify_op_on_report($event)
+    {
+        // data, notification_type_name, notify_users, options
+        $data = $event['data'];
+        $tid = $data['topic_id'];
+        $fid = $data['forum_id'];
+        $pid = $data['post_id'];
+        $topic_poster = $data['topic_poster'];
+        $notification_type_name = $event['notification_type_name'];
+        switch($notification_type_name)
+        {
+        case 'notification.type.report_post':
+            $reason = $data['reason_description'];
+            $aPattern = [
+                '/The post contains links to illegal or pirated software./'
+            ];
+            foreach ($aPattern as $pattern)
+            {
+                $match = preg_match($pattern, $reason);
+                if ($match)
+                {
+                    $text = 'This post was reported for: broken link.';
+                    $data = array(
+                        'user_id'   => $topic_poster,
+                        'post_id'   => $pid,
+                        'poster_id' => $topic_poster,
+                        'topic_id'  => $tid,
+                        'forum_id'  => $fid,
+                        'time'      => time(),
+                        'post_subject'    => $text,
+                    );
+                    $this->notification->add_notifications(array(
+                        'jeb.snahp.notification.type.basic',
+                    ), $data);
+                }
+            }
+            break;
+        case 'notification.type.report_post_closed':
+            $pre = $this->table_prefix;
+            $sql = 'SELECT * FROM ' . $pre . 'notifications as n 
+                LEFT JOIN ' . $pre . 'notification_types as t 
+                ON n.notification_type_id=t.notification_type_id
+                WHERE notification_type_name="jeb.snahp.notification.type.basic" AND
+                item_id=' . $pid;
+            $result = $this->db->sql_query($sql);
+            if ($row = $this->db->sql_fetchrow($result))
+            {
+                $nid = $row['notification_id'];
+            }
+            $this->db->sql_freeresult($result);
+            if ($nid)
+            {
+                $sql = 'DELETE FROM ' . $pre . 'notifications 
+                    WHERE notification_id=' . $nid;
+                $result = $this->db->sql_query($sql);
+            }
+            break;
+        }
     }
 
     public function include_assets_before_posting($event)
