@@ -62,6 +62,7 @@ class main_module
         case 'settings':
             $cfg['tpl_name'] = 'acp_snp_settings';
             $cfg['b_feedback'] = false;
+            $this->handle_settings($cfg);
             break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
@@ -94,6 +95,32 @@ class main_module
             ));
         }
     }
+
+    public function handle_settings($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $config->set('snp_b_send_noti_to_op', $request->variable('b_send_noti_to_op', "0"));
+                trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+
+            $template->assign_vars(array(
+                'b_send_noti_to_op_checked' => $config['snp_b_send_noti_to_op'],
+                'U_ACTION'          => $this->u_action,
+            ));
+        }
+    }
+
 
     public function handle_signature($cfg)
     {

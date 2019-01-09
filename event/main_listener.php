@@ -120,6 +120,9 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function notify_op_on_report($event)
     {
+        if (!$this->config['snp_b_send_noti_to_op'])
+            return false;
+
         // data, notification_type_name, notify_users, options
         $data = $event['data'];
         $tid = $data['topic_id'];
