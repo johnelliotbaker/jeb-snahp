@@ -58,7 +58,7 @@ function maketemplate(imdb)
     } catch(err) { var vrating  = ""; }
     try { var summary           = `[color=#FF8000][b]Summary[/b][/color]: [i]${imdb['Plot']}[/i]\n`
     } catch(err) { var summary  = ""; }
-    try { var links             = `[color=#FF8000][b]Links[/b][/color]: [b]`
+    try { var links             = `[color=#FF8000][b]Links[/b][/color]: `
     } catch(err) { var links    = ""; }
     try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]IMDb[/url]\n`
     } catch(err) { var imdburl  = ""; }
@@ -75,7 +75,7 @@ function maketemplate(imdb)
         rating + votes +'\n' +
         reldate + vrating + '\n' +
         summary + '\n' +
-        links +  imdburl + '\n' +
+        links + '[b]' +  imdburl + '[/b]' + '\n' +
         ddl + dlink;
     return text;
 }
