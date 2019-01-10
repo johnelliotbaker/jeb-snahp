@@ -104,30 +104,85 @@ class main_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'gfksx.thanksforposts.output_thanks_before'  => 'modify_avatar_thanks',
-            'core.ucp_profile_modify_signature_sql_ary'  => 'modify_signature',
-            // 'core.posting_modify_template_vars'          => array(
-            //     array('modify_posting_for_imdb', 0),
-            //     array('modify_posting_for_anilist', 0),
-            //     array('modify_posting_for_googlebooks', 0),
-            // ),
-            'core.modify_posting_parameters'             => 'include_assets_before_posting',
-            'core.viewtopic_modify_post_row'             => 'disable_signature',
-            'core.viewtopic_assign_template_vars_before' => 'insert_new_topic_button',
+            'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
+            'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
+            'core.modify_posting_parameters'              => 'include_assets_before_posting',
+            'core.viewtopic_modify_post_row'              => 'disable_signature',
+            'core.viewtopic_assign_template_vars_before'  => 'insert_new_topic_button',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
+            'core.posting_modify_submit_post_after'       => 'send_notification_if_ref',
+            'core.posting_modify_message_text'            => 'regularize_custom_tags',
         );
+    }
+
+    public function regularize_custom_tags($event)
+    {
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $aTagDef = [
+            '@@'=>[
+                "selectionPattern" => "#@@([A-Za-z0-9-_]+)#is",
+                "replaceTemplate" => '[ref]$1[/ref]',
+            ],
+        ];
+        foreach ($aTagDef as $tagDef)
+            $message = preg_replace($tagDef['selectionPattern'], $tagDef['replaceTemplate'], $message);
+    }
+
+    public function send_notification_if_ref($event)
+    {
+        $MAX_RECIPIENT = 10;
+
+        $data    = $event['data'];
+        $tid     = $data['topic_id'];
+        $fid     = $data['forum_id'];
+        $pid     = $data['post_id'];
+        $message = $data['message'];
+        preg_match_all('#\[ref\](.*?)\[/ref\]#is', $message, $matchall);
+        $count = 0;
+        foreach($matchall[1] as $match)
+        {
+            if ($count >= $MAX_RECIPIENT)
+                return;
+            $count += 1;
+            $receiver_name = strip_tags($match);
+            $sql = 'SELECT user_id FROM ' . USERS_TABLE . ' WHERE username="' . $receiver_name . '"';
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            if ($row)
+            {
+                $user_id  = $this->user->data['user_id'];
+                $username = $this->user->data['username'];
+                $username_string = get_username_string('no_profile', $user_id, $username, $this->user->data['user_colour']);
+                $receiver_id = $row['user_id'];
+                $text     = $username_string . ' poked @' . $receiver_name;
+                $data = array(
+                    'user_id'      => $user_id,
+                    'username'     => $username,
+                    'post_id'      => $pid,
+                    'poster_id'    => $receiver_id,
+                    'topic_id'     => $tid,
+                    'forum_id'     => $fid,
+                    'time'         => time(),
+                    'post_subject' => $text,
+                );
+                $this->notification->add_notifications(array(
+                    'jeb.snahp.notification.type.basic',
+                ), $data);
+            }
+        }
     }
 
     public function notify_op_on_report($event)
     {
         if (!$this->config['snp_b_send_noti_to_op'])
             return false;
-
         // data, notification_type_name, notify_users, options
-        $data = $event['data'];
-        $tid = $data['topic_id'];
-        $fid = $data['forum_id'];
-        $pid = $data['post_id'];
+        $data         = $event['data'];
+        $tid          = $data['topic_id'];
+        $fid          = $data['forum_id'];
+        $pid          = $data['post_id'];
         $topic_poster = $data['topic_poster'];
         $notification_type_name = $event['notification_type_name'];
         switch($notification_type_name)
