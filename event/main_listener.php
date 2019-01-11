@@ -108,11 +108,60 @@ class main_listener extends core implements EventSubscriberInterface
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => 'disable_signature',
-            'core.viewtopic_assign_template_vars_before'  => 'insert_new_topic_button',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.posting_modify_submit_post_after'       => 'send_notification_if_ref',
             'core.posting_modify_message_text'            => 'regularize_custom_tags',
+            'core.viewtopic_assign_template_vars_before'  => array(
+                array('insert_new_topic_button',0),
+                array('show_dibs',0),
+            ),
         );
+    }
+
+    public function show_dibs($event)
+    {
+        $data = $event['topic_data'];
+        $title = $data['topic_title'];
+        $tid = $event['topic_id'];
+        $sql = 'SELECT * FROM ' . $this->table_prefix . 'snahp_dibs WHERE tid=' . $tid;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+            return;
+        $uid  = $row['fulfiller_uid'];
+        $username = $row['fulfiller_username'];
+        $requester_uid = $row['requester_uid'];
+        $colour = $row['fulfiller_colour'];
+        $username_string = get_username_string('no_profile', $uid, $username, $colour);
+        $fulfilled_time = $row['fulfilled_time'];
+        $confirmed_time = $row['confirmed_time'];
+        if ($fulfilled_time)
+        {
+            $dt = new \DateTime(date('r', $fulfilled_time));
+            $datetime = $dt->format('m/d H:i');
+            $strn = "$username_string fulfilled this request on $datetime";
+            $this->template->assign_vars([
+                "dibsText" => $strn,
+                'bHideDibsIcon' => true,
+            ]);
+            if ($this->user->data['user_id'] == $requester_uid && !$confirmed_time)
+            {
+                $this->template->assign_vars([ "bShowConfirm" => true, ]);
+            }
+        }
+        else
+        {
+            $strn = $username_string . ' has offered to fulfill this request.';
+            $this->template->assign_vars([
+                "dibsText" => $strn,
+                'bHideDibsIcon' => true,
+            ]);
+            if ($this->user->data['username'] == $username)
+            {
+                $this->template->assign_vars([ 'bShowSolved' => true, ]);
+            }
+        }
     }
 
     public function regularize_custom_tags($event)
@@ -183,7 +232,7 @@ class main_listener extends core implements EventSubscriberInterface
         $tid          = $data['topic_id'];
         $fid          = $data['forum_id'];
         $pid          = $data['post_id'];
-        $topic_poster = $data['topic_poster'];
+        $topic_poster = $data['poster_id'];
         $notification_type_name = $event['notification_type_name'];
         switch($notification_type_name)
         {

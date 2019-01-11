@@ -26,6 +26,19 @@ services:
             - '@notification_manager'
         tags:
             - { name: event.listener }
+    jeb.snahp.dibs:
+        class: jeb\snahp\controller\dibs
+        arguments:
+            - '@user'
+            - '@auth'
+            - '@request'
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '@template'
+            - '%core.table_prefix%'
+            - '@notification_manager'
     jeb.snahp.admin:
         class: jeb\snahp\controller\admin
         arguments:

@@ -1,3 +1,11 @@
 jeb_snahp_admin:
     path: /snahp/admin/
     defaults: { _controller: jeb.snahp.admin:handle}
+jeb_snahp_dibs:
+    path: /snahp/dibs/{fid}/{tid}/{pid}/{mode}/
+    defaults: { _controller: jeb.snahp.dibs:handle}
+    requirements:
+        fid: \d+
+        tid: \d+
+        pid: \d+
+        mode: \d+
