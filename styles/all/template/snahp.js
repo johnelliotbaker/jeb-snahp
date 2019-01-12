@@ -66,7 +66,7 @@ function maketemplate(imdb)
     } catch(err) { var ddl      = ""; }
     try { var dlink             = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
-[url=https://snahp.it/?s=tt1270797][color=#FF0000]ZippyShare[/color][/url]
+[url=https://snahp.it/?s=${imdb['imdbID']}][color=#FF0000]ZippyShare[/color][/url]
 [/b][/hide]\n`
     } catch(err) { var dlink    = ""; }
     var text = img + '\n' + title + '\n' + 
