@@ -62,7 +62,7 @@ function maketemplate(imdb)
     } catch(err) { var links    = ""; }
     try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]IMDb[/url]\n`
     } catch(err) { var imdburl  = ""; }
-    try { var ddl               = `[color=#0000FF][b]Direct Download Links[/color][/b]: \n`
+    try { var ddl               = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`
     } catch(err) { var ddl      = ""; }
     try { var dlink             = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]

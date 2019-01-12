@@ -123,6 +123,7 @@ class dibs
             'forum_id'     => $fid,
             'time'         => time(),
             'post_subject' => $text,
+            'type'         => 'dibs_fulfill',
         );
         $this->notification->add_notifications(array(
             'jeb.snahp.notification.type.basic',

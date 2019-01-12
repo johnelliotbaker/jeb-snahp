@@ -45,6 +45,11 @@ class v_0_7_0 extends \phpbb\db\migration\migration
                     'tid' => array('tid'),
                 )
             ),
+			'add_columns'	=> array(
+				$this->table_prefix . 'users'  => array(
+					'snp_enable_at_notify' => array('UINT', 1),
+				),
+			),
 		);
     }
 
@@ -60,7 +65,8 @@ class v_0_7_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return array(
-			array('config.add', array('snp_b_enable_snahp_notification', 1)),
+			array('config.add', array('snp_b_snahp_notify', 1)),
+			array('config.add', array('snp_b_notify_on_poke', 1)),
 			array('config.add', array('snp_b_enable_basic_notification', 1)),
             array('module.add', array(
                 'acp',

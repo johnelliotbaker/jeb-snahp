@@ -115,7 +115,7 @@ class main_listener extends core implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => 'disable_signature',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
-            'core.posting_modify_submit_post_after'       => 'send_notification_if_at',
+            'core.posting_modify_submit_post_after'       => 'notify_on_poke',
             'core.posting_modify_message_text'            => 'colorize_at',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_new_topic_button',0),
@@ -173,12 +173,9 @@ class main_listener extends core implements EventSubscriberInterface
         }
     }
 
-    public function get_user_string_from_usernames_sql($aUsername, $prepend='')
+    public function get_user_string_from_usernames_sql($aUserdata, $prepend='')
     {
-        $IN = "('" . implode("', '", $aUsername) . "')";
-        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
-        $result = $this->db->sql_query_limit($sql, $this->sql_limit);
-        while ($row = $this->db->sql_fetchrow($result))
+        while ($row = array_pop($aUserdata))
         {
             $uname = $row['username'];
             $uid = $row['user_id'];
@@ -187,9 +184,22 @@ class main_listener extends core implements EventSubscriberInterface
             $username_string = "[color=#$color][b]$prepend$uname"."[/b][/color]";
             $a_user_string[$uname] = $username_string;
         }
-        $this->db->sql_freeresult($result);
         return $a_user_string;
     }
+
+    public function get_user_data($aUsername)
+    {
+        $IN = "('" . implode("', '", $aUsername) . "')";
+        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
+        $result = $this->db->sql_query_limit($sql, $this->sql_limit);
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            $data[] = $row;
+        }
+        $this->db->sql_freeresult($result);
+        return $data;
+    }
+
 
     public function colorize_at($event)
     {
@@ -201,9 +211,9 @@ class main_listener extends core implements EventSubscriberInterface
         // Collect Usernames
         $aUsername = [];
         foreach($matchall[1] as $match) $aUsername[$match] = $match;
-        foreach($aUsername as $username) $order[] = $username;
         if (!$aUsername) return;
-        $aUserString = $this->get_user_string_from_usernames_sql($aUsername, $at_prefix);
+        $aUserdata = $this->get_user_data($aUsername);
+        $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
         foreach($aUsername as $username)
@@ -214,8 +224,12 @@ class main_listener extends core implements EventSubscriberInterface
         }
     }
 
-    public function send_notification_if_at($event)
+    public function notify_on_poke($event)
     {
+        if (!$this->config['snp_b_snahp_notify'])
+            return false;
+        if (!$this->config['snp_b_notify_on_poke'])
+            return false;
         $at_prefix = $this->at_prefix;
         $data     = $event['data'];
         $tid      = $data['topic_id'];
@@ -224,29 +238,28 @@ class main_listener extends core implements EventSubscriberInterface
         $message  = strip_tags($data['message']);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-        foreach($matchall[1] as $match)
-            $aUsername[$match] = $match;
-        if (!$aUsername)
-            return;
+        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        if (!$aUsername) return;
         // Build sql query
-        $IN = "('" . implode("', '", $aUsername) . "')";
-        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
-        $result = $this->db->sql_query($sql);
         $count = 0;
-        while ($row = $this->db->sql_fetchrow($result))
+        $user_id         = $this->user->data['user_id'];
+        $username        = $this->user->data['username'];
+        $color           = $this->user->data['user_colour'];
+        $username_string = get_username_string('no_profile', $user_id, $username, $color);
+        $aReceiverData = $this->get_user_data($aUsername);
+        while ($row = array_pop($aReceiverData))
         {
-            if ($count > $this->notification_limit)
-                break;
+            // If too many notifications are being sent, stop
+            if ($count > $this->notification_limit) break;
+            // If user doesn't want to receive notify skip this user
+            if (!$row['snp_enable_at_notify']) continue;
             $count++;
-            $user_id         = $this->user->data['user_id'];
-            $username        = $this->user->data['username'];
-            $color           = $this->user->data['user_colour'];
-            $username_string = get_username_string('no_profile', $user_id, $username, $color);
             $receiver_id     = $row['user_id'];
             $receiver_name   = $row['username'];
             $receiver_color  = $row['user_colour'];
             $receiver_string = get_username_string('no_profile', $receiver_id, $receiver_name, $receiver_color);
             $text            = $username_string . ' poked @' . $receiver_string;
+            $type            = "at";
             $data = array(
                 'user_id'      => $user_id,
                 'username'     => $username,
@@ -256,17 +269,19 @@ class main_listener extends core implements EventSubscriberInterface
                 'forum_id'     => $fid,
                 'time'         => time(),
                 'post_subject' => $text,
+                'type'         => $type,
             );
             $this->notification->add_notifications(array(
                 'jeb.snahp.notification.type.basic',
             ), $data);
         }
-        $this->db->sql_freeresult($result);
     }
 
     public function notify_op_on_report($event)
     {
-        if (!$this->config['snp_b_send_noti_to_op'])
+        if (!$this->config['snp_b_snahp_notify'])
+            return false;
+        if (!$this->config['snp_b_notify_op_on_report'])
             return false;
         // data, notification_type_name, notify_users, options
         $data         = $event['data'];
@@ -280,7 +295,7 @@ class main_listener extends core implements EventSubscriberInterface
         case 'notification.type.report_post':
             $reason = $data['reason_description'];
             $aPattern = [
-                '/The post contains links to illegal or pirated software./'
+                '/contains links to illegal or pirated software./'
             ];
             foreach ($aPattern as $pattern)
             {
@@ -289,13 +304,14 @@ class main_listener extends core implements EventSubscriberInterface
                 {
                     $text = 'This post was reported for: broken link.';
                     $data = array(
-                        'user_id'   => $topic_poster,
-                        'post_id'   => $pid,
-                        'poster_id' => $topic_poster,
-                        'topic_id'  => $tid,
-                        'forum_id'  => $fid,
-                        'time'      => time(),
-                        'post_subject'    => $text,
+                        'user_id'      => $topic_poster,
+                        'post_id'      => $pid,
+                        'poster_id'    => $topic_poster,
+                        'topic_id'     => $tid,
+                        'forum_id'     => $fid,
+                        'time'         => time(),
+                        'post_subject' => $text,
+                        'type'         => 'open_report',
                     );
                     $this->notification->add_notifications(array(
                         'jeb.snahp.notification.type.basic',
@@ -328,12 +344,6 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function include_assets_before_posting($event)
     {
-        $anime_forum_id = [13, 16,];
-        $listing_forum_id = [4, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,];
-        $book_forum_id = [15, 37, 38, 39, 43, 44, 59];
-        $anime_forum_id = [4];
-        $listing_forum_id = [3, 4, 5,];
-        $book_forum_id = [5];
         $forum_id = $this->request->variable("f", "");
         $topic_id = $this->request->variable("t", "");
         if ($forum_id && is_numeric($forum_id) && !($topic_id))
@@ -352,13 +362,7 @@ class main_listener extends core implements EventSubscriberInterface
             $this->db->sql_freeresult($result_pg_fid);
 
             $user_id = $this->user->data['user_id'];
-            $sql = 'SELECT group_id FROM ' . USERS_TABLE . '
-                WHERE user_id = ' . $user_id;
-            $result = $this->db->sql_query($sql);
-            $row = $this->db->sql_fetchrow($result);
-            $gid = $row['group_id'];
-            $this->db->sql_freeresult($result);
-
+            $gid = $this->user->data['group_id'];
             $sql = 'SELECT snp_imdb_enable, snp_anilist_enable, snp_googlebooks_enable FROM ' . GROUPS_TABLE . '
                 WHERE group_id = ' . $gid;
             $result = $this->db->sql_query($sql);
@@ -426,12 +430,7 @@ class main_listener extends core implements EventSubscriberInterface
         $t = $this->template;
         $pr = $event['post_row'];
         $user_id = $this->user->data['user_id'];
-        $sql = 'SELECT group_id from ' . USERS_TABLE .
-            ' WHERE user_id=' . $user_id;
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $gid = $row['group_id'];
-        $this->db->sql_freeresult($result);
+        $gid = $this->user->data['group_id'];
         $sql = "SELECT snp_signature_rows from " . GROUPS_TABLE .
             " WHERE group_id =" . $gid;
         $result = $this->db->sql_query($sql);

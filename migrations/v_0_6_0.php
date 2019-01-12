@@ -35,7 +35,7 @@ class v_0_6_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return array(
-			array('config.add', array('snp_b_send_noti_to_op', 1)),
+			array('config.add', array('snp_b_notify_op_on_report', 1)),
         );
     }
 }

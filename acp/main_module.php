@@ -116,21 +116,24 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $config->set('snp_b_send_noti_to_op', $request->variable('b_send_noti_to_op', "0"));
-                $config->set('snp_b_enable_snahp_notification', $request->variable('b_enable_snahp_notification', "0"));
-                if ($config['snp_b_enable_snahp_notification'])
+                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
+                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', "0"));
+                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', "0"));
+                if ($config['snp_b_snahp_notify'])
                 {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
                 } else {
                     $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
+                    // $phpbb_notifications->purge_notifications('jeb.snahp.notification.type.basic');
                 }
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
             $template->assign_vars(array(
-                'b_enable_snahp_notification_checked' => $config['snp_b_enable_snahp_notification'],
-                'b_send_noti_to_op_checked' => $config['snp_b_send_noti_to_op'],
-                'U_ACTION'          => $this->u_action,
+                'b_snahp_notify_checked'        => $config['snp_b_snahp_notify'],
+                'b_notify_on_poke_checked'      => $config['snp_b_notify_on_poke'],
+                'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
+                'U_ACTION'                      => $this->u_action,
             ));
         }
     }
@@ -149,12 +152,12 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $config->set('snp_b_send_noti_to_op', $request->variable('b_send_noti_to_op', "0"));
+                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
             $template->assign_vars(array(
-                'b_send_noti_to_op_checked' => $config['snp_b_send_noti_to_op'],
+                'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
                 'U_ACTION'          => $this->u_action,
             ));
         }

@@ -12,13 +12,8 @@
               <label>Enable Snahp Notification System</label>
           </dt>
 					<dd>
-              {% if  b_enable_snahp_notification_checked %}
-              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="1" checked="checked"> Yes</label>
-              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="0"> No</label>
-              {% else %}
-              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="1"> Yes</label>
-              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="0" checked="checked"> No</label>
-              {% endif %}
+              <label><input type="radio" name="b_snahp_notify" class="radio" value="1" {% if b_snahp_notify_checked %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="b_snahp_notify" class="radio" value="0" {% if not b_snahp_notify_checked %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
 			</fieldset>
@@ -30,16 +25,20 @@
         <legend>Notification Type Dependent Settings</legend>
         <dl>
           <dt>
-              <label>Send notification to the OP when the post is reported for having broken links.</label>
+              <label>Send a notification to the OP when her post is reported for having broken links.</label>
           </dt>
 					<dd>
-              {% if  b_send_noti_to_op_checked %}
-              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="1" checked="checked"> Yes</label>
-              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="0"> No</label>
-              {% else %}
-              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="1"> Yes</label>
-              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="0" checked="checked"> No</label>
-              {% endif %}
+              <label><input type="radio" name="b_notify_op_on_report" class="radio" value="1" {% if b_notify_op_on_report_checked %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="b_notify_op_on_report" class="radio" value="0" {% if not b_notify_op_on_report_checked %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+              <label>Allow users to dispatch notification when using @@username in post</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="b_notify_on_poke" class="radio" value="1" {% if b_notify_on_poke_checked %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="b_notify_on_poke" class="radio" value="0" {% if not b_notify_on_poke_checked %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
 			</fieldset>
