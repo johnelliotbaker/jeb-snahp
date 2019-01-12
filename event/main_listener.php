@@ -80,6 +80,9 @@ class main_listener extends core implements EventSubscriberInterface
     protected $template;
     protected $table_prefix;
     protected $notification;
+    protected $sql_limit;
+    protected $notification_limit;
+    protected $at_prefix;
 
     public function __construct(
         auth $auth,
@@ -92,13 +95,16 @@ class main_listener extends core implements EventSubscriberInterface
     )
     {
 
-        $this->auth         = $auth;
-        $this->request      = $request;
-        $this->config       = $config;
-        $this->db           = $db;
-        $this->template     = $template;
-        $this->table_prefix = $table_prefix;
-        $this->notification = $notification;
+        $this->auth               = $auth;
+        $this->request            = $request;
+        $this->config             = $config;
+        $this->db                 = $db;
+        $this->template           = $template;
+        $this->table_prefix       = $table_prefix;
+        $this->notification       = $notification;
+        $this->sql_limit          = 10;
+        $this->notification_limit = 10;
+        $this->at_prefix          = "@@";
     }
 
     static public function getSubscribedEvents()
@@ -109,8 +115,8 @@ class main_listener extends core implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => 'disable_signature',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
-            'core.posting_modify_submit_post_after'       => 'send_notification_if_ref',
-            'core.posting_modify_message_text'            => 'regularize_custom_tags',
+            'core.posting_modify_submit_post_after'       => 'send_notification_if_at',
+            'core.posting_modify_message_text'            => 'colorize_at',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_new_topic_button',0),
                 array('show_dibs',0),
@@ -127,8 +133,13 @@ class main_listener extends core implements EventSubscriberInterface
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
+        // If no one called dibs, show dibs button and quit
         if (!$row)
+        {
+            $this->template->assign_var('bShowdibsButton', true);
             return;
+        }
+        // If someone called dibs (i.e. entry in snahp_dibs)
         $uid  = $row['fulfiller_uid'];
         $username = $row['fulfiller_username'];
         $requester_uid = $row['requester_uid'];
@@ -136,27 +147,25 @@ class main_listener extends core implements EventSubscriberInterface
         $username_string = get_username_string('no_profile', $uid, $username, $colour);
         $fulfilled_time = $row['fulfilled_time'];
         $confirmed_time = $row['confirmed_time'];
+        // If someone actually fulfilled (by checking fulfilled_time)
         if ($fulfilled_time)
         {
             $dt = new \DateTime(date('r', $fulfilled_time));
             $datetime = $dt->format('m/d H:i');
             $strn = "$username_string fulfilled this request on $datetime";
-            $this->template->assign_vars([
-                "dibsText" => $strn,
-                'bHideDibsIcon' => true,
-            ]);
+            // Show fulfilled text and hide fulfill button
+            $this->template->assign_var("dibsText", $strn);
+            // If fulfilled and user is the requester, show close button
             if ($this->user->data['user_id'] == $requester_uid && !$confirmed_time)
             {
-                $this->template->assign_vars([ "bShowConfirm" => true, ]);
+                $this->template->assign_var("bShowConfirm", true);
             }
         }
         else
         {
+            // Show dibs info and fulfill button for dibber
             $strn = $username_string . ' has offered to fulfill this request.';
-            $this->template->assign_vars([
-                "dibsText" => $strn,
-                'bHideDibsIcon' => true,
-            ]);
+            $this->template->assign_vars([ "dibsText" => $strn, ]);
             if ($this->user->data['username'] == $username)
             {
                 $this->template->assign_vars([ 'bShowSolved' => true, ]);
@@ -164,63 +173,95 @@ class main_listener extends core implements EventSubscriberInterface
         }
     }
 
-    public function regularize_custom_tags($event)
+    public function get_user_string_from_usernames_sql($aUsername, $prepend='')
     {
-        $mp = $event['message_parser'];
-        $message = &$mp->message;
-        $aTagDef = [
-            '@@'=>[
-                "selectionPattern" => "#@@([A-Za-z0-9-_]+)#is",
-                "replaceTemplate" => '[ref]$1[/ref]',
-            ],
-        ];
-        foreach ($aTagDef as $tagDef)
-            $message = preg_replace($tagDef['selectionPattern'], $tagDef['replaceTemplate'], $message);
+        $IN = "('" . implode("', '", $aUsername) . "')";
+        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
+        $result = $this->db->sql_query_limit($sql, $this->sql_limit);
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            $uname = $row['username'];
+            $uid = $row['user_id'];
+            $color = $row['user_colour'];
+            if (!$color) $color = "000000";
+            $username_string = "[color=#$color][b]$prepend$uname"."[/b][/color]";
+            $a_user_string[$uname] = $username_string;
+        }
+        $this->db->sql_freeresult($result);
+        return $a_user_string;
     }
 
-    public function send_notification_if_ref($event)
+    public function colorize_at($event)
     {
-        $MAX_RECIPIENT = 10;
-
-        $data    = $event['data'];
-        $tid     = $data['topic_id'];
-        $fid     = $data['forum_id'];
-        $pid     = $data['post_id'];
-        $message = $data['message'];
-        preg_match_all('#\[ref\](.*?)\[/ref\]#is', $message, $matchall);
-        $count = 0;
-        foreach($matchall[1] as $match)
+        $at_prefix = $this->at_prefix;
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $message = strip_tags($message);
+        preg_match_all('#' . $at_prefix . '([A-Za-z0-9_\-]+)#is', $message, $matchall);
+        // Collect Usernames
+        $aUsername = [];
+        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        foreach($aUsername as $username) $order[] = $username;
+        if (!$aUsername) return;
+        $aUserString = $this->get_user_string_from_usernames_sql($aUsername, $at_prefix);
+        array_multisort(array_map('strlen', $aUsername), $aUsername);
+        $aUsername = array_reverse($aUsername);
+        foreach($aUsername as $username)
         {
-            if ($count >= $MAX_RECIPIENT)
-                return;
-            $count += 1;
-            $receiver_name = strip_tags($match);
-            $sql = 'SELECT user_id FROM ' . USERS_TABLE . ' WHERE username="' . $receiver_name . '"';
-            $result = $this->db->sql_query($sql);
-            $row = $this->db->sql_fetchrow($result);
-            $this->db->sql_freeresult($result);
-            if ($row)
-            {
-                $user_id  = $this->user->data['user_id'];
-                $username = $this->user->data['username'];
-                $username_string = get_username_string('no_profile', $user_id, $username, $this->user->data['user_colour']);
-                $receiver_id = $row['user_id'];
-                $text     = $username_string . ' poked @' . $receiver_name;
-                $data = array(
-                    'user_id'      => $user_id,
-                    'username'     => $username,
-                    'post_id'      => $pid,
-                    'poster_id'    => $receiver_id,
-                    'topic_id'     => $tid,
-                    'forum_id'     => $fid,
-                    'time'         => time(),
-                    'post_subject' => $text,
-                );
-                $this->notification->add_notifications(array(
-                    'jeb.snahp.notification.type.basic',
-                ), $data);
-            }
+            $b = $aUserString[$username] . " ";
+            $a = "#(?<!])". $at_prefix . $username . "#is";
+            $message = preg_replace($a, $b, $message);
         }
+    }
+
+    public function send_notification_if_at($event)
+    {
+        $at_prefix = $this->at_prefix;
+        $data     = $event['data'];
+        $tid      = $data['topic_id'];
+        $fid      = $data['forum_id'];
+        $pid      = $data['post_id'];
+        $message  = strip_tags($data['message']);
+        preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
+        // Collect Usernames
+        foreach($matchall[1] as $match)
+            $aUsername[$match] = $match;
+        if (!$aUsername)
+            return;
+        // Build sql query
+        $IN = "('" . implode("', '", $aUsername) . "')";
+        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
+        $result = $this->db->sql_query($sql);
+        $count = 0;
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            if ($count > $this->notification_limit)
+                break;
+            $count++;
+            $user_id         = $this->user->data['user_id'];
+            $username        = $this->user->data['username'];
+            $color           = $this->user->data['user_colour'];
+            $username_string = get_username_string('no_profile', $user_id, $username, $color);
+            $receiver_id     = $row['user_id'];
+            $receiver_name   = $row['username'];
+            $receiver_color  = $row['user_colour'];
+            $receiver_string = get_username_string('no_profile', $receiver_id, $receiver_name, $receiver_color);
+            $text            = $username_string . ' poked @' . $receiver_string;
+            $data = array(
+                'user_id'      => $user_id,
+                'username'     => $username,
+                'post_id'      => $pid,
+                'poster_id'    => $receiver_id,
+                'topic_id'     => $tid,
+                'forum_id'     => $fid,
+                'time'         => time(),
+                'post_subject' => $text,
+            );
+            $this->notification->add_notifications(array(
+                'jeb.snahp.notification.type.basic',
+            ), $data);
+        }
+        $this->db->sql_freeresult($result);
     }
 
     public function notify_op_on_report($event)
