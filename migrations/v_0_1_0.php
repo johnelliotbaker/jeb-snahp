@@ -23,8 +23,6 @@ class v_0_1_0 extends \phpbb\db\migration\migration
         return array(
             '\jeb\snahp\migrations\install_user_schema',
             '\jeb\snahp\migrations\install_acp_module',
-            '\jeb\snahp\migrations\install_ucp_module',
-            '\jeb\snahp\migrations\install_mcp_module',
         );
     }
 

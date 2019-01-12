@@ -173,13 +173,16 @@ class main_listener extends core implements EventSubscriberInterface
         }
     }
 
-    public function get_user_string_from_usernames_sql($aUserdata, $prepend='')
+    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
     {
         while ($row = array_pop($aUserdata))
         {
             $uname = $row['username'];
             $uid = $row['user_id'];
-            $color = $row['user_colour'];
+            if ($bDullBlocked && !$row['snp_enable_at_notify'])
+                $color = "555588";
+            else
+                $color = $row['user_colour'];
             if (!$color) $color = "000000";
             $username_string = "[color=#$color][b]$prepend$uname"."[/b][/color]";
             $a_user_string[$uname] = $username_string;
@@ -213,7 +216,7 @@ class main_listener extends core implements EventSubscriberInterface
         foreach($matchall[1] as $match) $aUsername[$match] = $match;
         if (!$aUsername) return;
         $aUserdata = $this->get_user_data($aUsername);
-        $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix);
+        $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
         foreach($aUsername as $username)
