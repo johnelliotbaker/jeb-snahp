@@ -1,0 +1,58 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_SNP_TITLE}</h1>
+
+<form id="acp_board" method="post" action="{U_ACTION}">
+<h2>Notification Settings</h2>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+        <legend>General Settings</legend>
+        <dl>
+          <dt>
+              <label>Enable Snahp Notification System</label>
+          </dt>
+					<dd>
+              {% if  b_enable_snahp_notification_checked %}
+              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="1" checked="checked"> Yes</label>
+              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="0"> No</label>
+              {% else %}
+              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="1"> Yes</label>
+              <label><input type="radio" name="b_enable_snahp_notification" class="radio" value="0" checked="checked"> No</label>
+              {% endif %}
+          </dd>
+        </dl>
+			</fieldset>
+		</div>
+	</div>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+        <legend>Notification Type Dependent Settings</legend>
+        <dl>
+          <dt>
+              <label>Send notification to the OP when the post is reported for having broken links.</label>
+          </dt>
+					<dd>
+              {% if  b_send_noti_to_op_checked %}
+              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="1" checked="checked"> Yes</label>
+              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="0"> No</label>
+              {% else %}
+              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="1"> Yes</label>
+              <label><input type="radio" name="b_send_noti_to_op" class="radio" value="0" checked="checked"> No</label>
+              {% endif %}
+          </dd>
+        </dl>
+			</fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+				<input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

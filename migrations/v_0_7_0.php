@@ -59,5 +59,17 @@ class v_0_7_0 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
+        return array(
+			array('config.add', array('snp_b_enable_snahp_notification', 1)),
+			array('config.add', array('snp_b_enable_basic_notification', 1)),
+            array('module.add', array(
+                'acp',
+                'ACP_SNP_TITLE',
+                array(
+                    'module_basename'	=> '\jeb\snahp\acp\main_module',
+                    'modes'				=> array('notification'),
+                ),
+            )),
+        );
     }
 }

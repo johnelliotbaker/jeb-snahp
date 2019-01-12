@@ -64,6 +64,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_settings($cfg);
             break;
+        case 'notification':
+            $cfg['tpl_name'] = 'acp_snp_notification';
+            $cfg['b_feedback'] = false;
+            $this->handle_notification($cfg);
+            break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
             $cfg['b_feedback'] = false;
@@ -92,6 +97,40 @@ class main_module
             }
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
+            ));
+        }
+    }
+
+    public function handle_notification($cfg)
+    {
+		global $config, $request, $template, $user, $db, $phpbb_container;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                $phpbb_notifications = $phpbb_container->get('notification_manager');
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $config->set('snp_b_send_noti_to_op', $request->variable('b_send_noti_to_op', "0"));
+                $config->set('snp_b_enable_snahp_notification', $request->variable('b_enable_snahp_notification', "0"));
+                if ($config['snp_b_enable_snahp_notification'])
+                {
+                    $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
+                } else {
+                    $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
+                }
+                trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+
+            $template->assign_vars(array(
+                'b_enable_snahp_notification_checked' => $config['snp_b_enable_snahp_notification'],
+                'b_send_noti_to_op_checked' => $config['snp_b_send_noti_to_op'],
+                'U_ACTION'          => $this->u_action,
             ));
         }
     }
