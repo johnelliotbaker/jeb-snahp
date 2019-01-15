@@ -1,0 +1,9 @@
+{% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
+{% if B_SHOW_CLOSE_BTN %}
+<li>
+  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/9/" title="Terminate Request" class="button button-icon-only">
+    <i class="icon fa-trash fa-fw" aria-hidden="true"></i><span class="sr-only">Terminate Request</span>
+  </a>
+</li>
+{% endif %}
+{% endif %}

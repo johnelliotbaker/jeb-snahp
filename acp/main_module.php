@@ -29,6 +29,22 @@ function buildSqlSetCase($casename, $varname, $arr)
     return $strn;
 }
 
+function sanitize_fid($fid)
+{
+    $fid1 = explode(',', $fid);
+    $fid_sane = [];
+    foreach($fid1 as $k => $v)
+    {
+        if (is_numeric($v))
+        {
+            $fid_sane[] = preg_replace('/\s+/', '', $v);
+        }
+    }
+    $fid_sane = array_unique($fid_sane);
+    sort($fid_sane);
+    $fid_sane = implode(', ', $fid_sane);
+    return $fid_sane;
+}
 
 /**
  * snahp ACP module.
@@ -55,9 +71,9 @@ class main_module
             $this->handle_signature($cfg);
             break;
         case 'imdb':
-            $cfg['tpl_name'] = 'acp_snp_imdb';
+            $cfg['tpl_name'] = 'acp_snp_pg';
             $cfg['b_feedback'] = false;
-            $this->handle_imdb($cfg);
+            $this->handle_pg($cfg);
             break;
         case 'settings':
             $cfg['tpl_name'] = 'acp_snp_settings';
@@ -68,6 +84,11 @@ class main_module
             $cfg['tpl_name'] = 'acp_snp_notification';
             $cfg['b_feedback'] = false;
             $this->handle_notification($cfg);
+            break;
+        case 'request':
+            $cfg['tpl_name'] = 'acp_snp_request';
+            $cfg['b_feedback'] = false;
+            $this->handle_request($cfg);
             break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
@@ -97,6 +118,34 @@ class main_module
             }
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
+            ));
+        }
+    }
+
+    public function handle_request($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
+                $config->set('snp_request_fid', sanitize_fid($request->variable('request_fid', "0")));
+                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', "0"));
+                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', "0"));
+                meta_refresh(0.4, $this->u_action);
+                trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'request_fid' => $config['snp_request_fid'],
+                'U_ACTION'    => $this->u_action,
             ));
         }
     }
@@ -226,10 +275,11 @@ class main_module
         }
     }
 
-    public function handle_imdb($cfg)
+    public function handle_pg($cfg)
     {
 		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
+        $pg_names = ['anime', 'listing', 'book'];
         if ($tpl_name)
         {
             $this->tpl_name = $tpl_name;
@@ -288,33 +338,13 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
-
                 // Store Forum IDs from template
-                $sql = 'SELECT * FROM ' . $table_prefix . 'snahp_pg_fid';
-                $result = $db->sql_query($sql);
-                while ($row = $db->sql_fetchrow($result))
+                foreach ($pg_names as $pg_name)
                 {
-                    $name = $row['name'];
-                    $fid = $request->variable($name . "_fid", "");
-                    $fid1 = explode(',', $fid);
-                    $fid_sane = [];
-                    foreach($fid1 as $k => $v)
-                    {
-                        if (is_numeric($v))
-                        {
-                            $sanitized = preg_replace('/\s+/', '', $v);
-                            array_push($fid_sane, $sanitized);
-                        }
-                    }
-                    $fid_sane = array_unique($fid_sane);
-                    sort($fid_sane);
-                    $fid_sane = implode(', ', $fid_sane);
-                    $sql = 'UPDATE ' . $table_prefix . 'snahp_pg_fid SET fid="' . $fid_sane . '" WHERE name="' . $name . '"';
-                    $db->sql_query($sql);
+                    $config->set('snp_pg_fid_' . $pg_name, sanitize_fid($request->variable($pg_name . "_fid", "")));
                 }
-                $db->sql_freeresult($result);
-
                 // show status screen
+                meta_refresh(1, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(
@@ -361,18 +391,11 @@ class main_module
             $db->sql_freeresult($result);
 
             // To fill the forum id for the textarea
-            $sql = 'SELECT * FROM ' . $table_prefix . 'snahp_pg_fid';
-            $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
+            foreach ($pg_names as $pg_name)
             {
-                $name = $row['name'];
-                $fid = $row['fid'];
-                $template->assign_vars(array(
-                    $name . '_fid' => $fid,
-                ));
-
+                $fid = $config['snp_pg_fid_' . $pg_name];
+                $template->assign_var($pg_name . '_fid', $fid);
             }
-            $db->sql_freeresult($result);
         }
     }
 }

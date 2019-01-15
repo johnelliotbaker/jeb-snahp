@@ -75,7 +75,7 @@ class admin
         {
             if (!check_form_key('jeb/snahp'))
             {
-                trigger_error("Form Key Error");
+                trigger_error('Form Key Error');
             }
             // Check form for processing parameters
             $thanks_limit = (int)$request->variable('thanks_limit', '0');
@@ -92,7 +92,7 @@ class admin
             if (true)
             {
                 meta_refresh(2, $this->u_action);
-                $message = "Processed without an error.";
+                $message = 'Processed without an error.';
                 trigger_error($message);
             }
         }

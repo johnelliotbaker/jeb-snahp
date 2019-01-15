@@ -1,0 +1,35 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_SNP_TITLE}</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+<h2>Settings</h2>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+				<dl>
+					<dt><label>Request</label><br />
+            <span><br>
+              Add forum ID to the textarea to apply request statistics and rules.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <label for="request_fid">Request Forum ID: </label>
+              <textarea name="request_fid" rows="4" style="width:100%">{request_fid}</textarea>
+            </span>
+          </dd>
+          <br>
+			</fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+				<input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

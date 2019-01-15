@@ -13,6 +13,19 @@ services:
         arguments:
             - '@user'
             - '%jeb.snahp.tables.snp_table%'
+    jeb.snahp.request_listener:
+        class: jeb\snahp\event\request_listener
+        parent: jeb.snahp.core
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '%core.table_prefix%'
+            - '@notification_manager'
+        tags:
+            - { name: event.listener }
     jeb.snahp.listener:
         class: jeb\snahp\event\main_listener
         parent: jeb.snahp.core
@@ -26,8 +39,8 @@ services:
             - '@notification_manager'
         tags:
             - { name: event.listener }
-    jeb.snahp.dibs:
-        class: jeb\snahp\controller\dibs
+    jeb.snahp.reqs:
+        class: jeb\snahp\controller\reqs
         arguments:
             - '@user'
             - '@auth'
