@@ -1,0 +1,57 @@
+<!-- INCLUDE mcp_header.html -->
+{% if B_ENABLE %}
+<form id="mcp_ban" method="post" action="{U_ACTION}">
+<div class="panel">
+	<div class="inner">
+	<h3>Ban dibber</h3>
+	<p>Disallow user from dibbing</p>
+
+	<fieldset>
+	<dl>
+    <dt><label for="ban">Usernames:</label><br>
+      - All lowercase<br>
+      - Separated by Enter or comma<br>
+    </dt>
+		<dd><label for="ban"><textarea name="ban" id="ban" class="inputbox" cols="40" rows="3">{BAN_QUANTIFIER}</textarea></label></dd>
+		<!-- IF S_USERNAME_BAN --><dd><strong><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a></strong></dd><!-- ENDIF -->
+	</dl>
+	<dl>
+		<dt><label for="banreason">Reason for ban (private):</label></dt>
+		<dd><input name="banreason" id="banreason" type="text" class="inputbox" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="bangivereason">Reason for ban (public):</label></dt>
+		<dd><input name="bangivereason" id="bangivereason" type="text" class="inputbox" maxlength="255" /></dd>
+	</dl>
+
+	<hr />
+
+	<dl>
+		<dt><label for="banexclude0">Unban:</label><br /><span>Select Yes to unban the users instead.</span></dt>
+		<dd>
+			<label for="banexclude1"><input type="radio" name="banexclude" id="banexclude1" value="1" /> {L_YES}</label>
+			<label for="banexclude0"><input type="radio" name="banexclude" id="banexclude0" value="0" checked="checked" /> {L_NO}</label>
+		</dd>
+	</dl>
+	<!-- EVENT mcp_ban_fields_after -->
+	</fieldset>
+
+	</div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="reset" name="reset" class="button2" />&nbsp;
+	<input type="submit" name="submit" value="submit" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+
+</form>
+{% else %}
+<div class="panel">
+	<div class="inner">
+    <h3>Requests disabled</h3>
+    <p>Request feature is currently disabled by the site admin.</p>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE mcp_footer.html -->

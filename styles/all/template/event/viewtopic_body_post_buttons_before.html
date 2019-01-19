@@ -1,20 +1,20 @@
 {% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
-{% if bShowConfirm %}
+{% if B_SHOW_SOLVE_BTN %}
 <li>
-  <a href="./app.php/snahp/dibs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/3/" title="Mark Solved" class="button button-icon-only">
-    <i class="icon fa-check-square fa-fw" aria-hidden="true"></i><span class="sr-only">Mark Solved</span>
+  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Solved" class="button button-icon-only">
+    <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Solved</span>
   </a>
 </li>
-{% elseif bShowSolved %}
+{% elseif B_SHOW_FULFILL_BTN %}
 <li>
-  <a href="./app.php/snahp/dibs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Fulfilled" class="button button-icon-only">
-    <i class="icon fa-gift fa-fw" aria-hidden="true"></i><span class="sr-only">Mark Fulfilled</span>
+  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/4/" title="Mark Fulfilled" class="button button-icon-only">
+    <i class="icon fa-gift fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Fulfilled</span>
   </a>
 </li>
-{% elseif bShowdibsButton%}
+{% elseif B_SHOW_DIBS_BTN %}
 <li>
-  <a href="./app.php/snahp/dibs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/1/" title="Call dibs" class="button button-icon-only">
-    <i class="icon fa-flag fa-fw" aria-hidden="true"></i><span class="sr-only">Call dibs</span>
+  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/3/" title="Call dibs" class="button button-icon-only">
+    <i class="icon fa-flag fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Call dibs</span>
   </a>
 </li>
 {% endif %}

@@ -1,0 +1,145 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_SNP_TITLE}</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+  <h2>Settings</h2>
+
+  <fieldset>
+    <dl>
+      <dt><label>Enable Request System</label>
+        <span><br>
+          Master switch to enable/disable request system
+        </span>
+      </dt>
+      <dd>
+        <label><input type="radio" name="snp_b_request" class="radio" value="1" {% if SNP_B_REQUEST %}checked="checked"{% endif %}> Yes</label>
+        <label><input type="radio" name="snp_b_request" class="radio" value="0" {% if not SNP_B_REQUEST %}checked="checked"{% endif %}> No</label>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <dl>
+      <dt><label>Request Users Settings</label><br />
+        <span><br>
+          Active: Allowed to make requests<br>
+          base:   Default allowed slots<br>
+          bonus*:  Bonus slots<br>
+          nolim:  Unlimited slots<br>
+          give:   Allowed to give slots<br>
+          take:   Allowed to take slots<br>
+          cycle:   Maximum requests per cycle<br><br>
+          *Bonus request slots are special. They override most forms of restrictions.
+        </span>
+      </dt>
+      <dd>
+        <span>
+          <table>
+            <tbody>
+              <tr>
+                <td>GID</td>
+                <td>Group Name</td>
+                <td>Active</td>
+                <!-- <td>Nolim</td> -->
+                <td>Base</td>
+                <td>bonus</td>
+                <td>cycle</td>
+              </tr>
+              <!-- BEGIN aSignature -->
+              <tr>
+                <td>{aSignature.gid}</td>
+                <td>{aSignature.gname}</td>
+                <td>
+                  <input type="hidden"
+                         name="active-{aSignature.gid}"
+                         value="0">
+                  <input type="checkbox"
+                         name="active-{aSignature.gid}"
+                         id="active-{aSignature.gname}"
+                         {% if aSignature.active %}value="1" checked{% endif %}>
+                </td>
+                <!-- <td> <input type="hidden" name="nolimit-{aSignature.gid}" value="0"> <input type="checkbox" name="nolimit-{aSignature.gid}" id="nolimit-{aSignature.nolimit}" {% if aSignature.nolimit %}value="1" checked{% endif %}> </td> -->
+                <td>
+                  <input type="number" min="0"
+                                       style="text-align:center; width:34px;"
+                                       name="base-{aSignature.gid}"
+                                       value="{aSignature.base}">
+                </td>
+                <td>
+                  <input type="number" min="0"
+                                       style="text-align:center; width:34px;"
+                                       name="offset-{aSignature.gid}"
+                                       value="{aSignature.offset}">
+                </td>
+                <td>
+                  <input type="number" min="0"
+                                       style="text-align:center; width:34px;"
+                                       name="cycle-{aSignature.gid}"
+                                       value="{aSignature.cycle}">
+                </td>
+              </tr>
+              <!-- END aSignature -->
+            </tbody>
+          </table>
+        </span>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <dl>
+      <dt><label>Cycle Time (in seconds)</label>
+        <span><br>
+          Used to determine how many requests can be made per cycle.<br>
+          Bonus request slots are exempted from cycle limit.
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:80px;"
+                             name="cycle_time"
+                             value="{cycle_time}"> seconds
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Re-dib Cooldown</label>
+        <span><br>
+          Once a dibber undibs, she needs to wait before re-dibbing the same request.
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:80px;"
+                             name="redib_cooldown_time"
+                             value="{redib_cooldown_time}"> seconds
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <dl>
+      <dt><label>Request Forum ID</label><br />
+        <span><br>
+          Add forum ID to the textarea to apply request statistics and rules.
+        </span>
+      </dt>
+      <dd>
+        <span>
+          <textarea name="request_fid" rows="4" style="width:98%">{request_fid}</textarea>
+        </span>
+      </dd>
+      <br>
+  </fieldset>
+
+  <fieldset>
+    <dl>
+      <dt>&nbsp;</dt>
+      <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+    </dl>
+    {S_HIDDEN_FIELDS}
+    {S_FORM_TOKEN}
+  </fieldset>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

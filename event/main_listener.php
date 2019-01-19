@@ -104,7 +104,7 @@ class main_listener extends core implements EventSubscriberInterface
         $this->notification       = $notification;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
-        $this->at_prefix          = "@@";
+        $this->at_prefix          = '@@';
     }
 
     static public function getSubscribedEvents()
@@ -119,58 +119,8 @@ class main_listener extends core implements EventSubscriberInterface
             'core.posting_modify_message_text'            => 'colorize_at',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_new_topic_button',0),
-                array('show_dibs',0),
             ),
         );
-    }
-
-    public function show_dibs($event)
-    {
-        $data = $event['topic_data'];
-        $title = $data['topic_title'];
-        $tid = $event['topic_id'];
-        $sql = 'SELECT * FROM ' . $this->table_prefix . 'snahp_dibs WHERE tid=' . $tid;
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        // If no one called dibs, show dibs button and quit
-        if (!$row)
-        {
-            $this->template->assign_var('bShowdibsButton', true);
-            return;
-        }
-        // If someone called dibs (i.e. entry in snahp_dibs)
-        $uid  = $row['fulfiller_uid'];
-        $username = $row['fulfiller_username'];
-        $requester_uid = $row['requester_uid'];
-        $colour = $row['fulfiller_colour'];
-        $username_string = get_username_string('no_profile', $uid, $username, $colour);
-        $fulfilled_time = $row['fulfilled_time'];
-        $confirmed_time = $row['confirmed_time'];
-        // If someone actually fulfilled (by checking fulfilled_time)
-        if ($fulfilled_time)
-        {
-            $dt = new \DateTime(date('r', $fulfilled_time));
-            $datetime = $dt->format('m/d H:i');
-            $strn = "$username_string fulfilled this request on $datetime";
-            // Show fulfilled text and hide fulfill button
-            $this->template->assign_var("dibsText", $strn);
-            // If fulfilled and user is the requester, show close button
-            if ($this->user->data['user_id'] == $requester_uid && !$confirmed_time)
-            {
-                $this->template->assign_var("bShowConfirm", true);
-            }
-        }
-        else
-        {
-            // Show dibs info and fulfill button for dibber
-            $strn = $username_string . ' has offered to fulfill this request.';
-            $this->template->assign_vars([ "dibsText" => $strn, ]);
-            if ($this->user->data['username'] == $username)
-            {
-                $this->template->assign_vars([ 'bShowSolved' => true, ]);
-            }
-        }
     }
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
@@ -180,11 +130,11 @@ class main_listener extends core implements EventSubscriberInterface
             $uname = $row['username'];
             $uid = $row['user_id'];
             if ($bDullBlocked && !$row['snp_enable_at_notify'])
-                $color = "555588";
+                $color = '555588';
             else
                 $color = $row['user_colour'];
-            if (!$color) $color = "000000";
-            $username_string = "[color=#$color][b]$prepend$uname"."[/b][/color]";
+            if (!$color) $color = '000000';
+            $username_string = "[color=#$color][b]$prepend$uname".'[/b][/color]';
             $a_user_string[$uname] = $username_string;
         }
         return $a_user_string;
@@ -192,8 +142,8 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function get_user_data($aUsername)
     {
-        $IN = "('" . implode("', '", $aUsername) . "')";
-        $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username IN $IN";
+        $sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
+            $this->db->sql_in_set('username_clean', $aUsername);
         $result = $this->db->sql_query_limit($sql, $this->sql_limit);
         while ($row = $this->db->sql_fetchrow($result))
         {
@@ -202,7 +152,6 @@ class main_listener extends core implements EventSubscriberInterface
         $this->db->sql_freeresult($result);
         return $data;
     }
-
 
     public function colorize_at($event)
     {
@@ -213,7 +162,7 @@ class main_listener extends core implements EventSubscriberInterface
         preg_match_all('#' . $at_prefix . '([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
         $aUsername = [];
-        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         $aUserdata = $this->get_user_data($aUsername);
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
@@ -221,8 +170,8 @@ class main_listener extends core implements EventSubscriberInterface
         $aUsername = array_reverse($aUsername);
         foreach($aUsername as $username)
         {
-            $b = $aUserString[$username] . " ";
-            $a = "#(?<!])". $at_prefix . $username . "#is";
+            $b = $aUserString[$username] . ' ';
+            $a = '#(?<!])'. $at_prefix . $username . '#is';
             $message = preg_replace($a, $b, $message);
         }
     }
@@ -241,7 +190,7 @@ class main_listener extends core implements EventSubscriberInterface
         $message  = strip_tags($data['message']);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         // Build sql query
         $count = 0;
@@ -262,7 +211,7 @@ class main_listener extends core implements EventSubscriberInterface
             $receiver_color  = $row['user_colour'];
             $receiver_string = get_username_string('no_profile', $receiver_id, $receiver_name, $receiver_color);
             $text            = $username_string . ' poked @' . $receiver_string;
-            $type            = "at";
+            $type            = 'at';
             $data = array(
                 'user_id'      => $user_id,
                 'username'     => $username,
@@ -296,6 +245,7 @@ class main_listener extends core implements EventSubscriberInterface
         switch($notification_type_name)
         {
         case 'notification.type.report_post':
+            // When post is reported, send notification to OP
             $reason = $data['reason_description'];
             $aPattern = [
                 '/contains links to illegal or pirated software./'
@@ -323,6 +273,7 @@ class main_listener extends core implements EventSubscriberInterface
             }
             break;
         case 'notification.type.report_post_closed':
+            // When report is closed by mod, remove the notification
             $pre = $this->table_prefix;
             $sql = 'SELECT * FROM ' . $pre . 'notifications as n 
                 LEFT JOIN ' . $pre . 'notification_types as t 
@@ -347,23 +298,15 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function include_assets_before_posting($event)
     {
-        $forum_id = $this->request->variable("f", "");
-        $topic_id = $this->request->variable("t", "");
+        $forum_id = $this->request->variable('f', '');
+        $topic_id = $this->request->variable('t', '');
+        $pg_names = ['anime', 'listing', 'book'];
         if ($forum_id && is_numeric($forum_id) && !($topic_id))
         {
-
-            $sql = 'SELECT * FROM ' . $this->table_prefix . 'snahp_pg_fid';
-            $result_pg_fid = $this->db->sql_query($sql);
-            $fid_allowed = [];
-            while ($row = $this->db->sql_fetchrow($result_pg_fid))
+            foreach ($pg_names as $pg_name)
             {
-                $name = $row['name'];
-                $fid = $row['fid'];
-                $fid = explode(',', $fid);
-                $fid_allowed[$name] = $fid;
+                $fid_allowed[$pg_name] = explode(',', $this->config['snp_pg_fid_' . $pg_name]);
             }
-            $this->db->sql_freeresult($result_pg_fid);
-
             $user_id = $this->user->data['user_id'];
             $gid = $this->user->data['group_id'];
             $sql = 'SELECT snp_imdb_enable, snp_anilist_enable, snp_googlebooks_enable FROM ' . GROUPS_TABLE . '
@@ -374,26 +317,26 @@ class main_listener extends core implements EventSubscriberInterface
             $this->db->sql_freeresult($result);
 
             if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
-                $this->template->assign_vars(["bShowImdb" => true, "snp_include_imdb" => true, ]);
+                $this->template->assign_vars(['B_SHOW_IMDB' => true, 'snp_include_imdb' => true, ]);
 
             if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
-                $this->template->assign_vars(["bShowAnilist" => true, "snp_include_anilist" => true, ]);
+                $this->template->assign_vars(['B_SHOW_ANILIST' => true, 'snp_include_anilist' => true, ]);
 
             if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
-                $this->template->assign_vars(["bShowGooglebooks" => true, "snp_include_googlebooks" => true, ]);
+                $this->template->assign_vars(['B_SHOW_BOOKS' => true, 'snp_include_googlebooks' => true, ]);
         }
     }
 
     public function insert_new_topic_button($event)
     {
-        $forum_id = $this->request->variable("f", "");
+        $forum_id = $this->request->variable('f', '');
         // Note that this means user must properly walk their way into
         // a forum. viewtopic.php?t=3 for example will not work.
         // This is done to reduce the number of sql calls.
         if ($forum_id && is_numeric($forum_id))
         {
             $this->template->assign_vars([
-                "snp_forum_id" => $forum_id,
+                'snp_forum_id' => $forum_id,
             ]);
         }
         // viewtopic_buttons_top_after.html may require theme specific configuration:
@@ -415,8 +358,8 @@ class main_listener extends core implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $gid = $row['group_id'];
         $this->db->sql_freeresult($result);
-        $sql = "SELECT snp_enable_signature from " . GROUPS_TABLE .
-            " WHERE group_id =" . $gid;
+        $sql = 'SELECT snp_enable_signature from ' . GROUPS_TABLE .
+            ' WHERE group_id =' . $gid;
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $bShowSignature = $row['snp_enable_signature'] ? true : false;
@@ -434,17 +377,17 @@ class main_listener extends core implements EventSubscriberInterface
         $pr = $event['post_row'];
         $user_id = $this->user->data['user_id'];
         $gid = $this->user->data['group_id'];
-        $sql = "SELECT snp_signature_rows from " . GROUPS_TABLE .
-            " WHERE group_id =" . $gid;
+        $sql = 'SELECT snp_signature_rows from ' . GROUPS_TABLE .
+            ' WHERE group_id =' . $gid;
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $nSignatureRow = $row['snp_signature_rows'] or 0;
         $this->db->sql_freeresult($result);
         $sql_ary = $event['sql_ary'];
         $user_sig = &$sql_ary['user_sig'];
-        $split = explode("\n", $user_sig);
+        $split = explode('\n', $user_sig);
         $split = array_slice($split, 0, $nSignatureRow);
-        $user_sig = implode("\n", $split);
+        $user_sig = implode('\n', $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
     }
@@ -467,18 +410,6 @@ class main_listener extends core implements EventSubscriberInterface
             $event['u_receive_count_url'] = false;
             $event['u_give_count_url'] = false;
         }
-    }
-
-    public function modify_posting_for_googlebooks($event) 
-    {
-    }
-
-    public function modify_posting_for_anilist($event) 
-    {
-    }
-
-    public function modify_posting_for_imdb($event) 
-    {
     }
 
 }

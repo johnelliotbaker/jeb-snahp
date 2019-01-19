@@ -27,29 +27,6 @@ class v_0_7_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
 		return array(
-			'add_tables'		=> array(
-				$this->table_prefix . 'snahp_dibs'	=> array(
-					'COLUMNS'       => array(
-						'id'  => array('UINT', null, 'auto_increment'),
-						'tid' => array('INT:10', null),
-						'pid' => array('INT:10', null),
-                        'fid' => array('UINT', null),
-                        'requester_uid'      => array('INT:10', null),
-                        'fulfiller_uid'      => array('INT:10', null),
-                        'fulfiller_username' => array('VCHAR', ''),
-                        'fulfiller_colour'   => array('VCHAR:6', ''),
-                        'commit_time'        => array('INT:11', null),
-                        'fulfilled_time'     => array('INT:11', null),
-                        'confirmed_time'     => array('INT:11', null),
-                    ),
-					'PRIMARY_KEY'   => 'id',
-				),
-			),
-            'add_unique_index' => array(
-				$this->table_prefix . 'snahp_dibs'	=> array(
-                    'tid' => array('tid'),
-                )
-            ),
 			'add_columns'	=> array(
 				$this->table_prefix . 'users'  => array(
 					'snp_enable_at_notify' => array('UINT', 1),
@@ -61,9 +38,6 @@ class v_0_7_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
 		return array(
-			'drop_tables'		=> array(
-				$this->table_prefix . 'snahp_dibs',
-			),
 			'drop_columns'	=> array(
 				$this->table_prefix . 'users'  => array(
 					'snp_enable_at_notify',
