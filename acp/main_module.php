@@ -42,7 +42,7 @@ function sanitize_fid($fid)
     }
     $fid_sane = array_unique($fid_sane);
     sort($fid_sane);
-    $fid_sane = implode(', ', $fid_sane);
+    $fid_sane = implode(',', $fid_sane);
     return $fid_sane;
 }
 
@@ -100,9 +100,36 @@ class main_module
         }
 	}
 
+    public function select_groups()
+    {
+        global $db;
+        $sql = 'SELECT * from ' . GROUPS_TABLE;
+        $result = $db->sql_query($sql);
+        $data = [];
+        while ($row = $db->sql_fetchrow($result))
+            $data[] = $row;
+        $db->sql_freeresult($result);
+        return $data;
+    }
+
+    public function update_groups($casename, $varname, $arr)
+    {
+        global $db;
+        $strn = " SET $varname = CASE $casename ";
+        foreach($arr as $k => $v)
+        {
+            $strn .= "WHEN '$k' THEN '$v' ";
+        }
+        $strn .= "ELSE $varname END ";
+
+        $sql = 'UPDATE ' . GROUPS_TABLE . $strn;
+        $db->sql_query($sql);
+    }
+
     public function handle_default($cfg)
     {
 		global $config, $request, $template, $user, $db;
+        // prn(array_keys($GLOBALS)); // Lists all available globals
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
@@ -130,22 +157,65 @@ class main_module
         {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
+            $groupdata = $this->select_groups();
             if ($request->is_set_post('submit'))
             {
                 if (!check_form_key('jeb_snp'))
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
-                $config->set('snp_request_fid', sanitize_fid($request->variable('request_fid', "0")));
-                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', "0"));
-                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', "0"));
+                $config->set('snp_b_request', $request->variable('snp_b_request', '0'));
+                $config->set('snp_req_fid', sanitize_fid($request->variable('request_fid', '0')));
+                $config->set('snp_req_cycle_time', $request->variable('cycle_time', '0'));
+                $fields = [
+                // snp_req_XXXX => template name
+                    'n_base'    => 'base',
+                    'n_offset'  => 'offset',
+                    'b_active'  => 'active',
+                    'b_nolimit' => 'nolimit',
+                    'n_cycle'   => 'cycle',
+                ];
+                foreach ($fields as $name => $field)
+                {
+                    $data = [];
+                    foreach ($groupdata as $group)
+                    {
+                        $gid = $group['group_id'];
+                        $html_name = "$field-$gid";
+                        if ($name[0] == 'b')
+                        {
+                            $var = $request->variable($html_name, '0');
+                            $var = $var ? 1 : 0;
+                        }
+                        else
+                        {
+                            $var = $request->variable($html_name, '0');
+                        }
+                        $data[$gid] = $var;
+                    }
+                    $this->update_groups('group_id', "snp_req_$name", $data);
+                }
                 meta_refresh(0.4, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
+            foreach($groupdata as $row)
+            {
+                $group = array(
+                    'gid'     => $row['group_id'],
+                    'gname'   => substr($row['group_name'], 0, 13),
+                    'base'    => $row['snp_req_n_base'],
+                    'offset'  => $row['snp_req_n_offset'],
+                    'active'  => $row['snp_req_b_active'],
+                    'nolimit' => $row['snp_req_b_nolimit'],
+                    'cycle'   => $row['snp_req_n_cycle'],
+                );
+                $template->assign_block_vars('aSignature', $group);
+            };
             $template->assign_vars(array(
-                'request_fid' => $config['snp_request_fid'],
-                'U_ACTION'    => $this->u_action,
+                'SNP_B_REQUEST' => $config['snp_b_request'],
+                'request_fid'   => $config['snp_req_fid'],
+                'cycle_time'    => $config['snp_req_cycle_time'],
+                'U_ACTION'      => $this->u_action,
             ));
         }
     }
@@ -165,9 +235,9 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
-                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', "0"));
-                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', "0"));
+                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', '0'));
+                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', '0'));
+                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', '0'));
                 if ($config['snp_b_snahp_notify'])
                 {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
@@ -201,12 +271,10 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', "0"));
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
             $template->assign_vars(array(
-                'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
                 'U_ACTION'          => $this->u_action,
             ));
         }
@@ -230,20 +298,20 @@ class main_module
                 $aSigRows = $aSigEnable = [];
                 foreach ($request->variable_names() as $k => $varname)
                 {
-                    preg_match("/sig-(\d+)/", $varname, $match_sig_toggle);
+                    preg_match('/sig-(\d+)/', $varname, $match_sig_toggle);
                     if ($match_sig_toggle)
                     {
                         $gid = $match_sig_toggle[1];
                         $var = "sig-$gid";
-                        $var = $request->variable($var, "0");
+                        $var = $request->variable($var, '0');
                         $aSigEnable[$gid] = $var ? 1 : 0;
                     }
-                    preg_match("/sigrows-(\d+)/", $varname, $match_sig_rows);
+                    preg_match('/sigrows-(\d+)/', $varname, $match_sig_rows);
                     if ($match_sig_rows)
                     {
                         $gid = $match_sig_rows[1];
                         $sid = "sigrows-$gid";
-                        $var = $request->variable($sid, "0");
+                        $var = $request->variable($sid, '0');
                         $aSigRows[$gid] = (int) $var;
                     }
                 }
@@ -259,15 +327,15 @@ class main_module
                 'U_ACTION'				=> $this->u_action,
             ));
             // Code to show signature configuration in ACP
-            $sql = "SELECT * from " . GROUPS_TABLE;
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
             while ($row = $db->sql_fetchrow($result))
             {
                 $group = array(
-                    "gid"=>$row["group_id"],
-                    "gname"=>$row["group_name"],
-                    "gcheck"=> $row["snp_enable_signature"],
-                    "grows"=> $row["snp_signature_rows"],
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_enable_signature'],
+                    'grows'=> $row['snp_signature_rows'],
                 );
                 $template->assign_block_vars('aSignature', $group);
             };
@@ -294,12 +362,12 @@ class main_module
                 $aImdbEnable = [];
                 foreach ($request->variable_names() as $k => $varname)
                 {
-                    preg_match("/imdb-(\d+)/", $varname, $match_imdb_toggle);
+                    preg_match('/imdb-(\d+)/', $varname, $match_imdb_toggle);
                     if ($match_imdb_toggle)
                     {
                         $gid = $match_imdb_toggle[1];
                         $var = "imdb-$gid";
-                        $var = $request->variable($var, "0");
+                        $var = $request->variable($var, '0');
                         $aImdbEnable[$gid] = $var ? 1 : 0;
                     }
                 }
@@ -310,12 +378,12 @@ class main_module
                 $aAnilistEnable = [];
                 foreach ($request->variable_names() as $k => $varname)
                 {
-                    preg_match("/anilist-(\d+)/", $varname, $match_anilist_toggle);
+                    preg_match('/anilist-(\d+)/', $varname, $match_anilist_toggle);
                     if ($match_anilist_toggle)
                     {
                         $gid = $match_anilist_toggle[1];
                         $var = "anilist-$gid";
-                        $var = $request->variable($var, "0");
+                        $var = $request->variable($var, '0');
                         $aAnilistEnable[$gid] = $var ? 1 : 0;
                     }
                 }
@@ -326,12 +394,12 @@ class main_module
                 $aGooglebooksEnable = [];
                 foreach ($request->variable_names() as $k => $varname)
                 {
-                    preg_match("/googlebooks-(\d+)/", $varname, $match_googlebooks_toggle);
+                    preg_match('/googlebooks-(\d+)/', $varname, $match_googlebooks_toggle);
                     if ($match_googlebooks_toggle)
                     {
                         $gid = $match_googlebooks_toggle[1];
                         $var = "googlebooks-$gid";
-                        $var = $request->variable($var, "0");
+                        $var = $request->variable($var, '0');
                         $aGooglebooksEnable[$gid] = $var ? 1 : 0;
                     }
                 }
@@ -341,7 +409,7 @@ class main_module
                 // Store Forum IDs from template
                 foreach ($pg_names as $pg_name)
                 {
-                    $config->set('snp_pg_fid_' . $pg_name, sanitize_fid($request->variable($pg_name . "_fid", "")));
+                    $config->set('snp_pg_fid_' . $pg_name, sanitize_fid($request->variable($pg_name . '_fid', '')));
                 }
                 // show status screen
                 meta_refresh(1, $this->u_action);
@@ -351,40 +419,40 @@ class main_module
                 'U_ACTION'				=> $this->u_action,
             ));
             // Code to show imdb configuration in ACP
-            $sql = "SELECT * from " . GROUPS_TABLE;
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
             while ($row = $db->sql_fetchrow($result))
             {
                 $group = array(
-                    "gid"=>$row["group_id"],
-                    "gname"=>$row["group_name"],
-                    "gcheck"=> $row["snp_imdb_enable"],
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_imdb_enable'],
                 );
                 $template->assign_block_vars('aImdb', $group);
             };
             $db->sql_freeresult($result);
             // Code to show anilist configuration in ACP
-            $sql = "SELECT * from " . GROUPS_TABLE;
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
             while ($row = $db->sql_fetchrow($result))
             {
                 $group = array(
-                    "gid"=>$row["group_id"],
-                    "gname"=>$row["group_name"],
-                    "gcheck"=> $row["snp_anilist_enable"],
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_anilist_enable'],
                 );
                 $template->assign_block_vars('aAnilist', $group);
             };
             $db->sql_freeresult($result);
             // Code to show googlebooks configuration in ACP
-            $sql = "SELECT * from " . GROUPS_TABLE;
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
             while ($row = $db->sql_fetchrow($result))
             {
                 $group = array(
-                    "gid"=>$row["group_id"],
-                    "gname"=>$row["group_name"],
-                    "gcheck"=> $row["snp_googlebooks_enable"],
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_googlebooks_enable'],
                 );
                 $template->assign_block_vars('aGooglebooks', $group);
             };

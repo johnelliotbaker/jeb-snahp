@@ -8,6 +8,23 @@ services:
         calls:
             - [set_user, ['@user']]
             - [set_template_context, ['@template_context']]
+    jeb.snahp.base:
+        class: jeb\snahp\core\base
+        abstract: true
+        arguments:
+            - 'phpbb_'
+        calls:
+            - [set_template_context, ['@template_context']]
+            - [set_container,        ['@service_container']]
+            - [set_user,             ['@user']]
+            - [set_auth,             ['@auth']]
+            - [set_request,          ['@request']]
+            - [set_db,               ['@dbal.conn']]
+            - [set_config,           ['@config']]
+            - [set_helper,           ['@controller.helper']]
+            - [set_language,         ['@language']]
+            - [set_template,         ['@template']]
+            - [set_notification,     ['@notification_manager']]
     jeb.snahp.service:
         class: jeb\snahp\service
         arguments:
@@ -15,15 +32,9 @@ services:
             - '%jeb.snahp.tables.snp_table%'
     jeb.snahp.request_listener:
         class: jeb\snahp\event\request_listener
-        parent: jeb.snahp.core
+        parent: jeb.snahp.base
         arguments:
-            - '@auth'
-            - '@request'
-            - '@config'
-            - '@dbal.conn'
-            - '@template'
             - '%core.table_prefix%'
-            - '@notification_manager'
         tags:
             - { name: event.listener }
     jeb.snahp.listener:
@@ -41,17 +52,9 @@ services:
             - { name: event.listener }
     jeb.snahp.reqs:
         class: jeb\snahp\controller\reqs
+        parent: jeb.snahp.base
         arguments:
-            - '@user'
-            - '@auth'
-            - '@request'
-            - '@dbal.conn'
-            - '@config'
-            - '@controller.helper'
-            - '@language'
-            - '@template'
             - '%core.table_prefix%'
-            - '@notification_manager'
     jeb.snahp.admin:
         class: jeb\snahp\controller\admin
         arguments:

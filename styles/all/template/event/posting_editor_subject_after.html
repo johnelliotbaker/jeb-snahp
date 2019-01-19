@@ -1,4 +1,4 @@
-{% if bShowImdb %}
+{% if B_SHOW_IMDB %}
 <dt>
   <label for="imdb_term">IMDb:</label>
 </dt>
@@ -7,7 +7,7 @@
   <button type="button" data-ajax="snahp.imdbCallback">Search</button>
 </dd>
 {% endif %}
-{% if bShowAnilist %}
+{% if B_SHOW_ANILIST %}
 <dt>
   <label for="anilist_term">Anime:</label>
 </dt>
@@ -16,7 +16,7 @@
   <button type="button" data-ajax="snahp.anilistCallback">Search</button>
 </dd>
 {% endif %}
-{% if bShowGooglebooks %}
+{% if B_SHOW_BOOKS %}
 <dt>
   <label for="googlebooks_term">Books:</label>
 </dt>

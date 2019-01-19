@@ -143,7 +143,7 @@ class main_listener extends core implements EventSubscriberInterface
     public function get_user_data($aUsername)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
-            $this->db->sql_in_set('username', $aUsername);
+            $this->db->sql_in_set('username_clean', $aUsername);
         $result = $this->db->sql_query_limit($sql, $this->sql_limit);
         while ($row = $this->db->sql_fetchrow($result))
         {
@@ -162,7 +162,7 @@ class main_listener extends core implements EventSubscriberInterface
         preg_match_all('#' . $at_prefix . '([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
         $aUsername = [];
-        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         $aUserdata = $this->get_user_data($aUsername);
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
@@ -190,7 +190,7 @@ class main_listener extends core implements EventSubscriberInterface
         $message  = strip_tags($data['message']);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-        foreach($matchall[1] as $match) $aUsername[$match] = $match;
+        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         // Build sql query
         $count = 0;
@@ -245,6 +245,7 @@ class main_listener extends core implements EventSubscriberInterface
         switch($notification_type_name)
         {
         case 'notification.type.report_post':
+            // When post is reported, send notification to OP
             $reason = $data['reason_description'];
             $aPattern = [
                 '/contains links to illegal or pirated software./'
@@ -272,6 +273,7 @@ class main_listener extends core implements EventSubscriberInterface
             }
             break;
         case 'notification.type.report_post_closed':
+            // When report is closed by mod, remove the notification
             $pre = $this->table_prefix;
             $sql = 'SELECT * FROM ' . $pre . 'notifications as n 
                 LEFT JOIN ' . $pre . 'notification_types as t 
@@ -303,7 +305,7 @@ class main_listener extends core implements EventSubscriberInterface
         {
             foreach ($pg_names as $pg_name)
             {
-                $fid_allowed[$pg_name] = explode(', ', $this->config['snp_pg_fid_' . $pg_name]);
+                $fid_allowed[$pg_name] = explode(',', $this->config['snp_pg_fid_' . $pg_name]);
             }
             $user_id = $this->user->data['user_id'];
             $gid = $this->user->data['group_id'];
@@ -315,13 +317,13 @@ class main_listener extends core implements EventSubscriberInterface
             $this->db->sql_freeresult($result);
 
             if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
-                $this->template->assign_vars(['bShowImdb' => true, 'snp_include_imdb' => true, ]);
+                $this->template->assign_vars(['B_SHOW_IMDB' => true, 'snp_include_imdb' => true, ]);
 
             if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
-                $this->template->assign_vars(['bShowAnilist' => true, 'snp_include_anilist' => true, ]);
+                $this->template->assign_vars(['B_SHOW_ANILIST' => true, 'snp_include_anilist' => true, ]);
 
             if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
-                $this->template->assign_vars(['bShowGooglebooks' => true, 'snp_include_googlebooks' => true, ]);
+                $this->template->assign_vars(['B_SHOW_BOOKS' => true, 'snp_include_googlebooks' => true, ]);
         }
     }
 

@@ -11,7 +11,7 @@
 namespace jeb\snahp\event;
 
 
-use jeb\snahp\core\core;
+use jeb\snahp\core\base;
 use phpbb\auth\auth;
 use phpbb\template\template;
 use phpbb\config\config;
@@ -20,20 +20,14 @@ use phpbb\db\driver\driver_interface;
 use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use jeb\snahp\controller\reqs;
 
 
 /**
  * snahp Event listener.
  */
-class request_listener extends core implements EventSubscriberInterface
+class request_listener extends base implements EventSubscriberInterface
 {
-    protected $auth;
-    protected $request;
-    protected $config;
-    protected $db;
-    protected $template;
-    protected $table_prefix;
-    protected $notification;
     protected $sql_limit;
     protected $notification_limit;
     protected $at_prefix;
@@ -42,24 +36,9 @@ class request_listener extends core implements EventSubscriberInterface
     protected $dibs_tbl;
 
 
-    public function __construct(
-        auth $auth,
-        request_interface $request,
-        config $config,
-        driver_interface $db,
-        template $template,
-        $table_prefix,
-        manager $notification
-    )
+    public function __construct($table_prefix)
     {
-
-        $this->auth               = $auth;
-        $this->request            = $request;
-        $this->config             = $config;
-        $this->db                 = $db;
-        $this->template           = $template;
         $this->table_prefix       = $table_prefix;
-        $this->notification       = $notification;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->req_tbl            = $table_prefix . 'snahp_request';
@@ -70,7 +49,6 @@ class request_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'core.posting_modify_submit_post_after' => 'notify_on_poke',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('show_request_icons', 1),
                 array('show_dibs',0),
@@ -78,24 +56,8 @@ class request_listener extends core implements EventSubscriberInterface
             'core.posting_modify_template_vars'     => array(
                 array('disable_user_posting', 0),
             ),
-            'core.posting_modify_submit_post_after' => 'add_request',
+            'core.posting_modify_submit_post_after' => 'create_request',
         );
-    }
-
-    public function select_dibs($tid)
-    {
-        $sql = 'SELECT * FROM ' . $this->dibs_tbl ." WHERE tid=$tid";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        return $row;
-    }
-
-    public function select_request($tid)
-    {
-        $sql = 'SELECT * FROM ' . $this->req_tbl ." WHERE tid=$tid";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        return $row;
     }
 
     public function select_open_request($uid)
@@ -104,6 +66,7 @@ class request_listener extends core implements EventSubscriberInterface
             " WHERE requester_uid=$uid AND " .
             $this->db->sql_in_set('status', [2, 9], true);
         $result = $this->db->sql_query($sql);
+        $data = [];
         while($row = $this->db->sql_fetchrow($result))
         {
             $data[] = $row;
@@ -112,55 +75,116 @@ class request_listener extends core implements EventSubscriberInterface
         return $data;
     }
 
-    public function select_user($user_id)
+    public function insert_request_users($user_id, $b_return=false)
     {
-        $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        return $row;
-    }
-
-    public function select_request_user($user_id)
-    {
-        $sql = 'SELECT * FROM ' . $this->req_users_tbl ." WHERE user_id=$user_id";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        return $row;
-    }
-
-    public function insert_request_user($user_id)
-    {
-        $data = ['user_id' => $user_id];
+        $gid = $this->user->data['group_id'];
+        $gd = $this->select_group($gid);
+        $data = [
+            'user_id'   => $user_id,
+            'n_use'     => 0,
+            'n_offset'  => $gd['snp_req_n_offset'],
+            'b_nolimit' => $gd['snp_req_b_nolimit'],
+            'b_give'    => $gd['snp_req_b_give'],
+            'b_take'    => $gd['snp_req_b_take'],
+            'b_active'  => $gd['snp_req_b_active'],
+        ];
         $sql = 'INSERT INTO ' . $this->req_users_tbl . $this->db->sql_build_array('INSERT', $data); 
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
+        if ($b_return)
+        {
+            return $this->select_request_users($user_id);
+        }
+        return [];
     }
 
-    public function add_request($event)
+    public function reject_cycle($reqdata, $gdata)
     {
-        prn($event['data']);
+        if ($this->auth->acl_gets('a_', 'm_')) return false;
+        if ($reqdata['b_nolimit']) return false;
+        $user_id = $this->user->data['user_id'];
+        $time = time();
+        $reset_time = $reqdata['reset_time'];
+        $dt = new \DateTime(date('r', $reset_time));
+        $reset_time_strn = $dt->format('Y/m/d h:i a');
+        if ($time < $reset_time)
+        {
+            $n_use_per_cycle = $gdata['snp_req_n_cycle'];
+            $n_use_this_cycle = $reqdata['n_use_this_cycle'];
+            if ($n_use_this_cycle >= $n_use_per_cycle)
+            {
+                $dt = new \DateTime(date('r', $reset_time));
+                $reset_time_strn = $dt->format('Y/m/d h:i a');
+                $a_strn = [
+                    'You cannot make more than ' . $n_use_per_cycle . ' requests per request cycle.',
+                    'Your next cycle begins on ' . $reset_time_strn,
+                ];
+                $strn = implode('<br>', $a_strn);
+                trigger_error($strn);
+            }
+        }
+        else
+        {
+            $cycle_time = $this->config['snp_req_cycle_time'];
+            $data = [
+                'reset_time' => $time + $cycle_time,
+                'n_use_this_cycle' => 0,
+            ];
+            $this->update_request_users($user_id, $data);
+        }
+
+    }
+
+    public function reject_request_disabled($reqdata, $gdata)
+    {
+        if ($reqdata['b_active_override'])
+        {
+            // override has top priority
+            if (!$reqdata['b_active'])
+            {
+                trigger_error('You are banned from making requests.');
+            }
+        }
+        else
+        {
+            if (!$gdata['snp_req_b_active'])
+            {
+                // Group active state takes precedence unless overridden
+                $groupname = $gdata['group_name'];
+                trigger_error("$groupname cannot make requests.");
+            }
+        }
+
+    }
+
+    public function create_request($event)
+    {
+        if (!$this->config['snp_b_request'])
+            return false;
         if ($event['mode']!='post') return false;
         $fid = $this->request->variable('f', '');
-        $request_fid = explode(',', $this->config['snp_request_fid']);
+        $request_fid = explode(',', $this->config['snp_req_fid']);
         if (!in_array($fid, $request_fid)) return false;
         $user_id = $this->user->data['user_id'];
-        if (!$row = $this->select_request_user($user_id))
-        {
-            $this->insert_request_user($user_id);
-            $row = $this->select_request_user($user_id);
-        }
-        if ($row['b_unlimited']) return false;
-        if ($row['n_left'] > 0)
-            $row['n_left'] -= 1; 
+        $gid = $this->user->data['group_id'];
+        $gdata = $this->select_group($gid);
+        if (!$reqdata = $this->select_request_users($user_id))
+            $reqdata = $this->insert_request_users($user_id, true);
+        // Check if has unlimited requests
+        $this->reject_request_disabled($reqdata, $gdata);
+        $this->reject_cycle($reqdata, $gdata);
+        if ($reqdata['b_nolimit'] || $gdata['snp_req_b_nolimit']) {}
         else
-            $row['n_offset'] -= 1;
-        $sql = 'UPDATE ' . $this->req_users_tbl . '
-            SET ' . $this->db->sql_build_array('UPDATE', $row) . '
-            WHERE user_id = ' . $user_id;
-        $result = $this->db->sql_query($sql);
-        $this->db->sql_freeresult($result);
+        {
+            if ($reqdata['n_use'] < $gdata['snp_req_n_base'])
+                $reqdata['n_use'] += 1; 
+            else
+                $reqdata['n_offset'] -= 1;
+            $data['n_use'] = $reqdata['n_use'];
+            $data['n_offset'] = $reqdata['n_offset'];
+            $data['n_use_this_cycle'] = $reqdata['n_use_this_cycle'] + 1;
+            $this->update_request_users($user_id, $data);
+        }
         $userdata = $this->select_user($user_id);
         $data = [
             'fid'                => $event['data']['forum_id'],
@@ -180,31 +204,31 @@ class request_listener extends core implements EventSubscriberInterface
 
     public function disable_user_posting($event)
     {
+        if (!$this->config['snp_b_request'])
+            return false;
         if ($event['mode']!='post') return false;
-        $user_id = $this->user->data['user_id'];
         $fid = $this->request->variable('f', '');
-        $request_fid = explode(',', $this->config['snp_request_fid']);
+        $request_fid = explode(',', $this->config['snp_req_fid']);
         if (!in_array($fid, $request_fid)) return false;
-        $sql = 'SELECT * FROM ' . $this->req_users_tbl ." WHERE user_id=$user_id";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        if (!$row)
-        {
-            $this->insert_request_user($user_id);
-            $row = $this->select_request_user($user_id);
-        }
-        $n_left = $row['n_left'];
-        $n_base = $row['n_base'];
-        $n_offset = $row['n_offset'];
-        if ($row['b_unlimited'])
+        $user_id = $this->user->data['user_id'];
+        $gid = $this->user->data['group_id'];
+        $gdata = $this->select_group($gid);
+        if (!$reqdata = $this->select_request_users($user_id))
+            $reqdata = $this->insert_request_users($user_id, true);
+        $this->reject_request_disabled($reqdata, $gdata);
+        $this->reject_cycle($reqdata, $gdata);
+        $n_use = $reqdata['n_use'];
+        $n_base = $gdata['snp_req_n_base'];
+        $n_left = $n_base - $n_use;
+        $n_offset = $reqdata['n_offset'];
+        if ($reqdata['b_nolimit'] || $gdata['snp_req_b_nolimit'])
         {
             $strn = 'You have unlimited request slots.';
             $this->template->assign_var('S_UNLIMITED_REQUEST', $strn);
         }
         else
         {
-            $strn = "You have $n_left of $n_base request slots left.";
+            $strn = "Available request slots: $n_left of $n_base";
             if (!($n_left > 0))
             {
                 if ($n_offset > 0)
@@ -213,38 +237,26 @@ class request_listener extends core implements EventSubscriberInterface
                 }
                 else
                 {
-                    $dt = new \DateTime(date('r', $row['reset_time']));
+                    $dt = new \DateTime(date('r', $reqdata['reset_time']));
                     $reset_time_strn = $dt->format('Y/m/d h:i a');
                     $strn = "<h2>You don't have any request slots left ($n_left of $n_base).<br>
-                        You may close some of your open requests<br>or wait until your next reset period ($reset_time_strn).</h2>";
+                        You may close some of your open requests to reclaim your slots.</h2>";
+                    // or wait until your next reset period ($reset_time_strn).</h2>";
                     $open_request = $this->select_open_request($user_id);
+                    $open_link = [];
                     foreach($open_request as $openreq)
                     {
                         $tid = $openreq['tid'];
                         $url = "/viewtopic.php?t=$tid";
                         $open_link[] = '<a href="' . $url . '">' . $url . '</a>';
                     }
+                    // TODO: For new user, it shows error
                     $strn .= implode('<br>', $open_link);
                     trigger_error($strn);
-                    trigger_error('error');
-
                 }
             }
         }
         $this->template->assign_var('S_REQUEST_USER_INFO', $strn);
-    }
-
-    public function show_request_icons($event)
-    {
-        $data = $event['topic_data'];
-        $title = $data['topic_title'];
-        $tid = $event['topic_id'];
-        $reqdata = $this->select_request($tid);
-        // If no request entry or request was closed
-        $closed = [2, 9]; // 2=solved, 9=terminated
-        if (!$reqdata || in_array($reqdata['status'], $closed)) return false;
-        $ctx['B_SHOW_CLOSE_BTN'] = true;
-        $this->template->assign_vars($ctx);
     }
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
@@ -264,19 +276,52 @@ class request_listener extends core implements EventSubscriberInterface
         return $a_user_string;
     }
 
-    public function show_dibs($event)
+    public function show_request_icons($event)
     {
+        if (!$this->config['snp_b_request'])
+            return false;
         $data = $event['topic_data'];
         $title = $data['topic_title'];
         $tid = $event['topic_id'];
-        // $sql = 'SELECT * FROM ' . $this->dibs_tbl . ' WHERE tid=' . $tid;
-        // $result = $this->db->sql_query($sql);
-        // $row = $this->db->sql_fetchrow($result);
-        // $this->db->sql_freeresult($result);
-        // If no one called dibs, show dibs button and quit
+        $reqdata = $this->select_request($tid);
+        if (!$reqdata) return false;
+        $closed = [2, 9]; // 2=solved, 9=terminated
+        $b_open = !in_array($reqdata['status'], $closed);
+        $b_op = $this->user->data['user_id'] == $reqdata['requester_uid'];
+        $b_fulfilled = $reqdata['status'] == 4; // fulfilled id = 4
+        $b_mod = $this->auth->acl_gets('a_', 'm_');
+        $ctx = [];
+        if (!$b_op && !$b_mod)
+            return false;
+        else
+        {
+            if ($b_open)
+                $ctx['B_SHOW_CLOSE_BTN'] = true;
+            if ($b_fulfilled)
+                $ctx['B_SHOW_SOLVE_BTN'] = true;
+        }
+        $this->template->assign_vars($ctx);
+    }
+
+    public function show_dibs($event)
+    {
+        if (!$this->config['snp_b_request'])
+            return false;
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $data = $event['topic_data'];
+        $title = $data['topic_title'];
+        $tid = $event['topic_id'];
         $req = $this->select_request($tid);
-        $reqOpenStatus = [1]; // Open request has status of 1
+        $reqOpenStatus = [$def['open']]; // Open request has status of 1
         if (!$req) return false;
+        $dibdata = $this->select_dibs($tid);
+        $b_dibber = $this->user->data['user_id'] == $dibdata['dibber_uid'];
+        $b_mod = $this->auth->acl_gets('a_', 'm_');
+        $b_dibbed = $req['status'] == $def['dib'];
+        if ($b_dibbed && ($b_dibber || $b_mod))
+        {
+            $this->template->assign_var('B_SHOW_UNDIB_BTN', true);
+        }
         $uid            = $req['fulfiller_uid'];
         $username       = $req['fulfiller_username'];
         $colour         = $req['fulfiller_colour'];
@@ -285,6 +330,15 @@ class request_listener extends core implements EventSubscriberInterface
         if (in_array($req['status'], $reqOpenStatus))
         {
             $this->template->assign_var('B_SHOW_DIBS_BTN', true);
+        }
+        elseif($req['status'] == 4)
+        {
+            $fulfilled_time = $req['fulfilled_time'];
+            $dt              = new \DateTime(date('r', $fulfilled_time));
+            $datetime = $dt->format('D M d, Y  H:i a');
+            $username_string = get_username_string('no_profile', $uid, $username, $colour);
+            $strn            = "$username_string has fulfilled this request on $datetime";
+            $this->template->assign_var('S_REQUEST_INFO', $strn);
         }
         elseif($req['status'] == 3)
         {
@@ -295,21 +349,6 @@ class request_listener extends core implements EventSubscriberInterface
             $this->template->assign_var('S_REQUEST_INFO', $strn);
             if ($this->user->data['username'] == $username)
                 $this->template->assign_vars([ 'B_SHOW_FULFILL_BTN' => true, ]);
-        }
-        elseif($req['status'] == 4)
-        {
-            $fulfilled_time = $req['fulfilled_time'];
-            $dt              = new \DateTime(date('r', $fulfilled_time));
-            $datetime = $dt->format('D M d, Y  H:i a');
-            $username_string = get_username_string('no_profile', $uid, $username, $colour);
-            $strn            = "$username_string has fulfilled this request on $datetime";
-            // Show fulfilled text and hide fulfill button
-            $this->template->assign_var('S_REQUEST_INFO', $strn);
-            // If fulfilled and user is the requester, show solve button
-            if ($this->user->data['user_id'] == $requester_uid)
-            {
-                $this->template->assign_var('B_SHOW_SOLVE_BTN', true);
-            }
         }
         elseif($req['status'] == 2)
         {

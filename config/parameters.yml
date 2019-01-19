@@ -1,2 +1,27 @@
 parameters:
     jeb.snahp.tables.snp_table: '%core.table_prefix%snp_table'
+    jeb.snahp.tables: 
+        req:    '%core.table_prefix%snahp_request'
+        requsr: '%core.table_prefix%snahp_request_users'
+        dibs:   '%core.table_prefix%snahp_dibs'
+    jeb.snahp.req:
+        def:
+            open: 1
+            solve: 2
+            dib: 3
+            fulfill: 4
+            undib: 5
+            terminate: 9
+            set:
+                closed:
+                    - 2
+                    - 9
+                open:
+                    - 1
+                    - 3
+                    - 4
+    jeb.snahp.reqsmcp:
+        def:
+            disable: 9
+            enable: 1
+

@@ -9,3 +9,9 @@ jeb_snahp_reqs:
         tid: \d+
         pid: \d+
         mode: \d+
+jeb_snahp_reqsmcp:
+    path: /snahp/reqsmcp/{mode}/{uid}/
+    defaults: { _controller: jeb.snahp.reqs:handle_mcp}
+    requirements:
+        mode: \d+
+        uid: \d+
