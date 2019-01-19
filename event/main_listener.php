@@ -110,6 +110,7 @@ class main_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
+            'core.user_setup'                             => 'include_donation_navlink',
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
@@ -121,6 +122,14 @@ class main_listener extends core implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function include_donation_navlink($event)
+    {
+        $this->template->assign_vars([
+            'B_SHOW_DONATION_NAVLINK' => $this->config['snp_don_b_show_navlink'],
+            'DON_URL' => $this->config['snp_don_url'],
+        ]);
     }
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)

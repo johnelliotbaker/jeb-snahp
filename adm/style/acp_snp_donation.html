@@ -1,0 +1,36 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_SNP_TITLE}</h1>
+
+<form id="acp_board" method="post" action="{U_ACTION}">
+<h2>Notification Settings</h2>
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+        <legend>Donation Settings</legend>
+        <dl>
+          <dt>
+              <label>Show Donation button on Navbar</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="b_show_navlink" class="radio" value="1" {% if B_SHOW_NAVLINK %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="b_show_navlink" class="radio" value="0" {% if not B_SHOW_NAVLINK %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt><label for="don_url">Url to donation page</label></dt>
+          <dd><input value={DON_URL} name="don_url" id="don_url" type="text" class="inputbox" maxlength="255" /></dd>
+        </dl>
+      </fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+				<input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

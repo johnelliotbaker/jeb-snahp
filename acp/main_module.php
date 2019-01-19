@@ -65,6 +65,11 @@ class main_module
         $cfg = array();
         switch ($mode)
         {
+        case 'donation':
+            $cfg['tpl_name'] = 'acp_snp_donation';
+            $cfg['b_feedback'] = false;
+            $this->handle_donation($cfg);
+            break;
         case 'signature':
             $cfg['tpl_name'] = 'acp_snp_signature';
             $cfg['b_feedback'] = false;
@@ -468,4 +473,35 @@ class main_module
             }
         }
     }
+
+    public function handle_donation($cfg)
+    {
+		global $config, $request, $template, $user, $db, $phpbb_container;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                $phpbb_notifications = $phpbb_container->get('notification_manager');
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $config->set('snp_don_b_show_navlink', $request->variable('b_show_navlink', 0));
+                $config->set('snp_don_url', $request->variable('don_url', ''));
+                trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'B_SHOW_NAVLINK'                => $config['snp_don_b_show_navlink'],
+                'DON_URL'                       => $config['snp_don_url'],
+                'b_snahp_notify_checked'        => $config['snp_b_snahp_notify'],
+                'b_notify_on_poke_checked'      => $config['snp_b_notify_on_poke'],
+                'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
+                'U_ACTION'                      => $this->u_action,
+            ));
+        }
+    }
+
 }

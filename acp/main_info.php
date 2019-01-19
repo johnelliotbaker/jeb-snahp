@@ -21,6 +21,11 @@ class main_info
 			'filename'	=> '\jeb\snahp\acp\main_module',
 			'title'		=> 'ACP_SNP_TITLE',
 			'modes'		=> array(
+				'donation'	=> array(
+					'title'	=> 'ACP_SNP_DONATION',
+					'auth'	=> 'ext_jeb/snahp && acl_a_board',
+					'cat'	=> array('ACP_SNP_TITLE')
+				),
 				'signature'	=> array(
 					'title'	=> 'ACP_SNP_SIGNATURE',
 					'auth'	=> 'ext_jeb/snahp && acl_a_board',
