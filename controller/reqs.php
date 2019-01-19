@@ -32,12 +32,12 @@ class reqs extends base
         {
             case $def['enable']: // Disallow user from dib
                 $this->enable_dibber($uid, true);
-                meta_refresh(3, '/');
+                meta_refresh(2, '/');
                 trigger_error('User is now allowed to dib.');
                 break;
             case $def['disable']: // Allow user to dib
                 $this->enable_dibber($uid, false);
-                meta_refresh(3, '/');
+                meta_refresh(2, '/');
                 trigger_error('User is now banned from dibbing.');
                 break;
         }
@@ -66,7 +66,11 @@ class reqs extends base
         $def = $this->def;
         $this->u_action = "viewtopic.php?f=$fid&t=$tid&p=$pid";
         $reqdata = $this->select_request($tid);
-        if (!$reqdata) trigger_error('That request does not exist.');
+        if (!$reqdata)
+        {
+			meta_refresh(2, $this->u_action);
+            trigger_error('That request does not exist.');
+        }
         switch ($mode)
         {
             case $def['solve']: // To solve request
@@ -178,19 +182,19 @@ class reqs extends base
         $resolvedStatus = [$def['solve'], $def['terminate']];
         if (!$req)
         {
-			meta_refresh(3, $this->u_action);
+			meta_refresh(2, $this->u_action);
 			trigger_error('That request does not exist.');
 		}
         if (in_array($req['status'], $resolvedStatus))
 		{
-			meta_refresh(3, $this->u_action);
+			meta_refresh(2, $this->u_action);
 			trigger_error('That request had already been terminated.');
 		}
         $user_id = $this->user_id;
         if ($user_id != $req['requester_uid'] && !$this->auth->acl_gets('a_', 'm_'))
         {
             //TODO: Send notification to user if closed by mod
-            meta_refresh(3, $this->u_action);
+            meta_refresh(2, $this->u_action);
             trigger_error('Only the requester and the moderators are allowed to close this request.');
         }
         $time = time();
@@ -217,7 +221,7 @@ class reqs extends base
             $data = ['topic_title' => $topic_title];
             $this->update_topic($tid, $data);
         }
-        meta_refresh(.3, $this->u_action);
+        meta_refresh(2, $this->u_action);
         if ($new_status == $def['solve'])
         {
             trigger_error('This request was solved.');
@@ -245,7 +249,7 @@ class reqs extends base
         $topicdata = $this->select_topic($tid);
         if (!$topicdata)
         {
-            meta_refresh(0.5, $this->u_action);
+            meta_refresh(2, $this->u_action);
             trigger_error('That topic doesn\'t exist');
         }
         $topic_title = $topicdata['topic_title'];
@@ -257,7 +261,7 @@ class reqs extends base
             'status'         => 4,
         ];
         $this->update_request($tid, $data);
-        meta_refresh(.2, $this->u_action);
+        meta_refresh(2, $this->u_action);
         $message = 'Thank you for fulfilling this request!';
         trigger_error($message);
     }
@@ -275,7 +279,7 @@ class reqs extends base
         $topicdata = $this->select_topic($tid);
         if (!$topicdata)
         {
-            meta_refresh(0.5, $this->u_action);
+            meta_refresh(2, $this->u_action);
             trigger_error('That topic doesn\'t exist');
         }
         $topic_title = $topicdata['topic_title'];
@@ -297,7 +301,7 @@ class reqs extends base
             'status' => $this->def['undib'],
         ];
         $this->update_dibs($tid, $data);
-        meta_refresh(.2, $this->u_action);
+        meta_refresh(2, $this->u_action);
         $message = 'You have undibbed this request.';
         trigger_error($message);
     }
@@ -306,7 +310,7 @@ class reqs extends base
     {
         if (!$this->user->data['snp_req_dib_enable'])
         {
-            meta_refresh(.2, $this->u_action);
+            meta_refresh(2, $this->u_action);
             trigger_error('You are not allowed to dib requests.');
         }
         $dibdata = $this->select_dibs($tid);
@@ -337,7 +341,7 @@ class reqs extends base
         $topicdata = $this->select_topic($tid);
         if (!$topicdata)
         {
-            meta_refresh(0.5, $this->u_action);
+            meta_refresh(2, $this->u_action);
             trigger_error('That topic doesn\'t exist');
         }
         $topic_title = $topicdata['topic_title'];
@@ -359,7 +363,7 @@ class reqs extends base
             'status' => $this->def['dib'],
         ];
         $this->insert_dibs($data);
-        meta_refresh(.2, $this->u_action);
+        meta_refresh(2, $this->u_action);
         $message = 'You called dibs on a request! Thanks a lot for your help.';
         trigger_error($message);
     }

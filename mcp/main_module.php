@@ -233,7 +233,7 @@ class main_module extends base
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                meta_refresh(0.4, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('MCP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $per_page = $config['posts_per_page'];
@@ -336,7 +336,7 @@ class main_module extends base
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                meta_refresh(0.4, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('MCP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $per_page = $config['posts_per_page'];

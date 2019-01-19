@@ -75,7 +75,7 @@ class main_module
             $db->sql_freeresult($result);
             if ($cfg['b_feedback'])
             {
-                meta_refresh(1, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 $message = $user->lang('UCP_SNP_SAVED') . '<br /><br />' . $user->lang('RETURN_UCP', '<a href="' . $this->u_action . '">', '</a>');
                 trigger_error($message);
             }
@@ -97,7 +97,7 @@ class main_module
             }
             if ($cfg['b_feedback'])
             {
-                meta_refresh(1, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 $message = $user->lang('UCP_SNP_SAVED') . '<br /><br />' . $user->lang('RETURN_UCP', '<a href="' . $this->u_action . '">', '</a>');
                 trigger_error($message);
             }

@@ -196,7 +196,7 @@ class main_module
                     }
                     $this->update_groups('group_id', "snp_req_$name", $data);
                 }
-                meta_refresh(0.4, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             foreach($groupdata as $row)
@@ -414,7 +414,7 @@ class main_module
                     $config->set('snp_pg_fid_' . $pg_name, sanitize_fid($request->variable($pg_name . '_fid', '')));
                 }
                 // show status screen
-                meta_refresh(1, $this->u_action);
+                meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(

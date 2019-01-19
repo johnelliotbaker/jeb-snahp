@@ -125,6 +125,7 @@ class v_0_8_0 extends \phpbb\db\migration\migration
                     'snp_req_b_give',
                     'snp_req_b_take',
                     'snp_req_b_active',
+                    'snp_req_dib_enable',
                 ),
             ),
             'drop_tables' => array(
