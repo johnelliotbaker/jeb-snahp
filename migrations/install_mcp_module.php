@@ -1,4 +1,4 @@
-// <?php
+<?php
 /**
  *
  * snahp. An extension for the phpBB Forum Software package.

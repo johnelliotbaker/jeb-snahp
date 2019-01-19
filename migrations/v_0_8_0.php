@@ -125,6 +125,8 @@ class v_0_8_0 extends \phpbb\db\migration\migration
                     'snp_req_b_give',
                     'snp_req_b_take',
                     'snp_req_b_active',
+                ),
+                $this->table_prefix . 'users'  => array(
                     'snp_req_dib_enable',
                 ),
             ),
