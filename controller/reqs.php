@@ -312,7 +312,7 @@ class reqs extends base
         $dibdata = $this->select_dibs($tid);
         $def = $this->def;
         $time = time();
-        $undib_cooldown = 60; // In seconds
+        $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
         if ($dibdata)
         {
             if ($dibdata['status'] == $def['dib'])
@@ -325,9 +325,11 @@ class reqs extends base
                 $b_dibber = $this->is_dibber($dibdata);
                 if ($b_dibber && !$this->b_mod)
                 {
-                    if ($time < ($dibdata['undib_time'] + $undib_cooldown))
+                    $redib_time = $dibdata['undib_time'] + $undib_cooldown;
+                    if ($time < $redib_time)
                     {
-                        trigger_error('Cannot dib so soon after undibbing a request.');
+                        trigger_error('Cannot dib so soon after undibbing a request.<br>
+                            You can dib this request again on ' . $this->get_dt($redib_time));
                     }
                 }
             }

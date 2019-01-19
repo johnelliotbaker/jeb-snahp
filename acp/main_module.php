@@ -167,6 +167,7 @@ class main_module
                 $config->set('snp_b_request', $request->variable('snp_b_request', '0'));
                 $config->set('snp_req_fid', sanitize_fid($request->variable('request_fid', '0')));
                 $config->set('snp_req_cycle_time', $request->variable('cycle_time', '0'));
+                $config->set('snp_req_redib_cooldown_time', $request->variable('redib_cooldown_time', '0'));
                 $fields = [
                 // snp_req_XXXX => template name
                     'n_base'    => 'base',
@@ -214,6 +215,7 @@ class main_module
             $template->assign_vars(array(
                 'SNP_B_REQUEST' => $config['snp_b_request'],
                 'request_fid'   => $config['snp_req_fid'],
+                'redib_cooldown_time' => $config['snp_req_redib_cooldown_time'],
                 'cycle_time'    => $config['snp_req_cycle_time'],
                 'U_ACTION'      => $this->u_action,
             ));

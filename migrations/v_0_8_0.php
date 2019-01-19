@@ -138,9 +138,11 @@ class v_0_8_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         $sevendays = 60*60*24*7;
+        $threedays = 60*60*24*3;
         return array(
             array('config.add', array('snp_b_request', 1)),
             array('config.add', array('snp_req_cycle_time', $sevendays)),
+            array('config.add', array('snp_req_redib_cooldown_time', $threedays)),
             array('config.add', array('snp_req_fid', '5,16,67,17,68,69,18')),
             array('module.add', array(
                 'acp',
