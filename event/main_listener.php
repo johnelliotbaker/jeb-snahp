@@ -248,7 +248,8 @@ class main_listener extends core implements EventSubscriberInterface
             // When post is reported, send notification to OP
             $reason = $data['reason_description'];
             $aPattern = [
-                '/contains links to illegal or pirated software./'
+                '/contains links to illegal or pirated software./',
+                '/post has dead links or an incorrect password/',
             ];
             foreach ($aPattern as $pattern)
             {
