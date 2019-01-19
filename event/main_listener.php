@@ -116,12 +116,36 @@ class main_listener extends core implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => 'disable_signature',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
+            'core.modify_submit_post_data'                => 'modify_quickreply_signature',
             'core.posting_modify_submit_post_after'       => 'notify_on_poke',
             'core.posting_modify_message_text'            => 'colorize_at',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function modify_quickreply_signature($event)
+    {
+        // quickreply adds hidden checkbox with name=attach_sig to always
+        // enable signatures. To make this a choice
+        // 1) quickreply_editor_message_after.html to add checkbox
+        // 2) utility.js to remove the hidden checkbox
+        // 3) this event listener to get checkbox data and set enable_sig
+        $varnames = $this->request->variable_names();
+        if (!in_array('qr_exists', $varnames))
+            return false;
+        $var = $this->request->variable('qr_attach_sig', '0');
+        $enable_sig = $var ? 1 : 0;
+        $data = $event['data'];
+        if ($enable_sig){
+            $data['enable_sig'] = 1;
+        }
+        else
+        {
+            $data['enable_sig'] = 0;
+        }
+        $event['data'] = $data;
     }
 
     public function include_donation_navlink($event)
