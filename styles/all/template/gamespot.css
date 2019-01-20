@@ -1,0 +1,9 @@
+.twbs.card {
+    border-color:none;
+}
+
+.modalDialog.gamespot {
+    background-image: url("https://i.imgur.com/SbmseDd.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}

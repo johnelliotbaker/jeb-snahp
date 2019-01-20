@@ -334,7 +334,7 @@ class main_listener extends core implements EventSubscriberInterface
     {
         $forum_id = $this->request->variable('f', '');
         $topic_id = $this->request->variable('t', '');
-        $pg_names = ['anime', 'listing', 'book'];
+        $pg_names = ['anime', 'listing', 'book', 'game'];
         if ($forum_id && is_numeric($forum_id) && !($topic_id))
         {
             foreach ($pg_names as $pg_name)
@@ -343,21 +343,26 @@ class main_listener extends core implements EventSubscriberInterface
             }
             $user_id = $this->user->data['user_id'];
             $gid = $this->user->data['group_id'];
-            $sql = 'SELECT snp_imdb_enable, snp_anilist_enable, snp_googlebooks_enable FROM ' . GROUPS_TABLE . '
-                WHERE group_id = ' . $gid;
+            $sql = 'SELECT snp_imdb_enable, snp_anilist_enable,
+                    snp_googlebooks_enable, snp_gamespot_enable 
+                    FROM ' . GROUPS_TABLE . '
+                    WHERE group_id = ' . $gid;
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $bGroupEnable = $row['snp_imdb_enable'];
             $this->db->sql_freeresult($result);
 
             if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
-                $this->template->assign_vars(['B_SHOW_IMDB' => true, 'snp_include_imdb' => true, ]);
+                $this->template->assign_vars(['B_SHOW_IMDB' => true,]);
 
             if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
-                $this->template->assign_vars(['B_SHOW_ANILIST' => true, 'snp_include_anilist' => true, ]);
+                $this->template->assign_vars(['B_SHOW_ANILIST' => true,]);
 
             if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
-                $this->template->assign_vars(['B_SHOW_BOOKS' => true, 'snp_include_googlebooks' => true, ]);
+                $this->template->assign_vars(['B_SHOW_BOOKS' => true,]);
+
+            if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
+                $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
         }
     }
 

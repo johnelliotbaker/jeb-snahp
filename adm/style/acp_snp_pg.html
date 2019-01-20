@@ -47,7 +47,9 @@
               </table>
             </span>
           </dd>
-          <br>
+        </dl>
+        <br>
+        <dl>
 					<dt><label>Anime</label><br />
             <span><br>
               Check Allowed to enable Anime form generator for that group.<br><br>
@@ -84,7 +86,9 @@
               </table>
             </span>
           </dd>
-          <br>
+        </dl>
+        <br>
+        <dl>
 					<dt><label>Google Books</label><br />
             <span><br>
               Check Allowed to enable Google Books form generator for that group.<br><br>
@@ -117,6 +121,44 @@
                     </td>
                   </tr>
                   <!-- END aGooglebooks -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+        </dl>
+        <br>
+        <dl>
+					<dt><label>Gamespot</label><br />
+            <span><br>
+              Check Allowed to enable Gamespot form generator for that group.<br><br>
+              Add forum ID to the textarea to show the form generator on that forum.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <label for="game_fid">Gamespot Forum ID: </label>
+              <textarea name="game_fid" rows="3" style="width:98%">{game_fid}</textarea> <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aGamespot -->
+                  <tr>
+                    <td>{aGamespot.gid}</td>
+                    <td>{aGamespot.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="gamespot-{aGamespot.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="gamespot-{aGamespot.gid}"
+                               id="gamespot-{aGamespot.gname}"
+                             {% if aGamespot.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aGamespot -->
                 </tbody>
               </table>
             </span>

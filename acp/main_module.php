@@ -354,7 +354,7 @@ class main_module
     {
 		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
-        $pg_names = ['anime', 'listing', 'book'];
+        $pg_names = ['anime', 'listing', 'book', 'game'];
         if ($tpl_name)
         {
             $this->tpl_name = $tpl_name;
@@ -413,6 +413,22 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
+                // Code to limit gamespot based on group membership
+                $aGamespotEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/gamespot-(\d+)/', $varname, $match_gamespot_toggle);
+                    if ($match_gamespot_toggle)
+                    {
+                        $gid = $match_gamespot_toggle[1];
+                        $var = "gamespot-$gid";
+                        $var = $request->variable($var, '0');
+                        $aGamespotEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_gamespot_enable', $aGamespotEnable);
+                $db->sql_query($sql);
                 // Store Forum IDs from template
                 foreach ($pg_names as $pg_name)
                 {
@@ -462,6 +478,19 @@ class main_module
                     'gcheck'=> $row['snp_googlebooks_enable'],
                 );
                 $template->assign_block_vars('aGooglebooks', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show gamespot configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_gamespot_enable'],
+                );
+                $template->assign_block_vars('aGamespot', $group);
             };
             $db->sql_freeresult($result);
 
