@@ -39,6 +39,11 @@ class basic extends \phpbb\notification\type\base
 		$this->user_loader = $user_loader;
 	}
 
+    public static $notification_option = array(
+        'lang' => 'Receive generic notification from Snahp',
+        'group' => 'Notification From Snahp',
+    );
+
 	public function users_to_query()
 	{
         // prn("users_to_query");
