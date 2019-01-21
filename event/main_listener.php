@@ -158,6 +158,8 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
     {
+        if (!$aUserdata)
+            return [];
         while ($row = array_pop($aUserdata))
         {
             $uname = $row['username'];
