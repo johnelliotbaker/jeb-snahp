@@ -203,9 +203,9 @@ class main_listener extends core implements EventSubscriberInterface
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
-        foreach($aUsername as $username)
+        foreach($aUsername as $key => $username)
         {
-            $b = $aUserString[$username] . ' ';
+            $b = $aUserString[$key] . ' ';
             $a = '#(?<!])'. $at_prefix . $username . '#is';
             $message = preg_replace($a, $b, $message);
         }
