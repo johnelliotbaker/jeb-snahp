@@ -39,6 +39,7 @@ abstract class base
     protected $template;
     protected $table_prefix;
     protected $notification;
+	protected $u_action;
 
     public function set_template_context(context $ctx)
     {

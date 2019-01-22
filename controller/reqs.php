@@ -14,7 +14,6 @@ function prn($var) {
 
 class reqs extends base
 {
-	protected $u_action;
 
     public function __construct()
     {
