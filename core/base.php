@@ -116,6 +116,7 @@ abstract class base
         {
             return 'That topic doesn\'t exist';
         }
+        $topic_last_pid = $topicdata['topic_last_post_id'];
         $topic_title = $topicdata['topic_title'];
         $topic_title = preg_replace($ptn, '', $topic_title);
         $topic_title = implode(' ', [$repl, $topic_title]);
@@ -128,8 +129,8 @@ abstract class base
             $post_subject = $postdata['post_subject'];
             $post_subject = preg_replace($ptn, '', $post_subject);
             $post_subject = implode(' ', [$repl, $post_subject]);
-            $this->update_post($pid, ['post_subject' => $post_subject,]);
-            $this->update_forum_last_post($fid, $pid);
+            $this->update_post([$topic_last_pid, $pid], ['post_subject' => $post_subject,]);
+            $this->update_forum_last_post($fid);
         }
         return false;
     }
@@ -144,7 +145,7 @@ abstract class base
         return $row;
     }
 
-    public function update_forum_last_post($fid, $pid)
+    public function update_forum_last_post($fid)
     {
         include_once('includes/functions_posting.php');
         $type = 'forum';
@@ -166,7 +167,7 @@ abstract class base
     {
         $sql = 'UPDATE ' . POSTS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-            WHERE post_id=' . $pid;
+            WHERE ' . $this->db->sql_in_set('post_id', $pid);
         $this->db->sql_query($sql);
     }
 
