@@ -18,6 +18,7 @@ class reqs extends base
 
     public function __construct()
     {
+        $this->ptn = '#\[(accepted|request|closed|fulfilled|solved)\]\s*#is';
     }
 
 	public function handle_mcp($mode, $uid)
@@ -142,7 +143,7 @@ class reqs extends base
         return;
     }
 
-    public function increment_request_users_slot($uid, $data, $slot=1)
+    public function increment_request_users_slot($uid, $slot=1)
     {
         $ru   = $this->select_request_users($uid);
         $udata = $this->select_user($ru['user_id']);
@@ -203,23 +204,22 @@ class reqs extends base
             'solved_time' => $time,
         ];
         $this->update_request($tid, $data);
-        $this->increment_request_users_slot($req['requester_uid'], ['n_use' => 'n_use + 1']);
-        $topicdata = $this->select_topic($tid);
-        if ($topicdata)
+        $this->increment_request_users_slot($req['requester_uid'], 1);
+        $ptn = $this->ptn;
+        $repl = '';
+        if ($new_status == $def['solve'])
         {
-            $topic_title = $topicdata['topic_title'];
-            if ($new_status == $def['solve'])
-            {
-                $topic_title = preg_replace('#\[(accepted|request|closed|fulfilled)\]\s*#is', '', $topic_title);
-                $topic_title = implode(' ', ['[Solved]', $topic_title]);
-            }
-            elseif ($new_status == $def['terminate'])
-            {
-                $topic_title = preg_replace('#\[(accepted|request|solved|fulfilled)\]\s*#is', '', $topic_title);
-                $topic_title = implode(' ', ['[Closed]', $topic_title]);
-            }
-            $data = ['topic_title' => $topic_title];
-            $this->update_topic($tid, $data);
+            $repl = '[Solved]';
+        }
+        elseif ($new_status == $def['terminate'])
+        {
+            $repl = '[Closed]';
+        }
+        $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
+        if ($status)
+        {
+            meta_refresh(2, $this->u_action);
+            trigger_error($status);
         }
         meta_refresh(2, $this->u_action);
         if ($new_status == $def['solve'])
@@ -246,16 +246,15 @@ class reqs extends base
 
 	public function fulfill_request($fid, $tid, $pid)
     {
-        $topicdata = $this->select_topic($tid);
-        if (!$topicdata)
+        // Update titles on topic & posts also forum summary
+        $ptn = $this->ptn;
+        $repl = '[Fulfilled]';
+        $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
+        if ($status)
         {
             meta_refresh(2, $this->u_action);
-            trigger_error('That topic doesn\'t exist');
+            trigger_error($status);
         }
-        $topic_title = $topicdata['topic_title'];
-        $topic_title = preg_replace('#\[(accepted)\]\s*#is', '', $topic_title);
-        $topic_title = implode(' ', ['[Fulfilled]', $topic_title]);
-        $this->update_topic($tid, ['topic_title' => $topic_title]);
         $data = [
             'fulfilled_time' => time(),
             'status'         => 4,
@@ -276,16 +275,15 @@ class reqs extends base
         $b_mod = $this->is_mod();
         if (!$b_dibber && !$b_mod)
             trigger_error('Only dibber or moderators may undib.');
-        $topicdata = $this->select_topic($tid);
-        if (!$topicdata)
+        // Update titles on topic & posts also forum summary
+        $ptn = $this->ptn;
+        $repl = '[Request]';
+        $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
+        if ($status)
         {
             meta_refresh(2, $this->u_action);
-            trigger_error('That topic doesn\'t exist');
+            trigger_error($status);
         }
-        $topic_title = $topicdata['topic_title'];
-        $topic_title = preg_replace('#\[(request|accepted)\]\s*#is', '', $topic_title);
-        $topic_title = implode(' ', ['[Request]', $topic_title]);
-        $this->update_topic($tid, ['topic_title' => $topic_title]);
         $time = time();
         $data = [
             'fulfiller_uid'      => null,
@@ -338,16 +336,15 @@ class reqs extends base
                 }
             }
         }
-        $topicdata = $this->select_topic($tid);
-        if (!$topicdata)
+        // Update titles on topic & posts also forum summary
+        $ptn = $this->ptn;
+        $repl = '[Accepted]';
+        $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
+        if ($status)
         {
             meta_refresh(2, $this->u_action);
-            trigger_error('That topic doesn\'t exist');
+            trigger_error($status);
         }
-        $topic_title = $topicdata['topic_title'];
-        $topic_title = preg_replace('#\[(request|accepted)\]\s*#is', '', $topic_title);
-        $topic_title = implode(' ', ['[Accepted]', $topic_title]);
-        $this->update_topic($tid, ['topic_title' => $topic_title]);
         $data = [
             'fulfiller_uid'      => $this->user->data['user_id'],
             'fulfiller_username' => $this->user->data['username'],

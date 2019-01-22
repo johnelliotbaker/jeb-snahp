@@ -109,6 +109,67 @@ abstract class base
         $this->db->sql_query($sql);
     }
 
+    public function update_topic_title($fid, $tid, $pid, $ptn, $repl)
+    {
+        $topicdata = $this->select_topic($tid);
+        if (!$topicdata)
+        {
+            return 'That topic doesn\'t exist';
+        }
+        $topic_title = $topicdata['topic_title'];
+        $topic_title = preg_replace($ptn, '', $topic_title);
+        $topic_title = implode(' ', [$repl, $topic_title]);
+        $this->update_topic($tid, [
+            'topic_title' => $topic_title,
+            'topic_last_post_subject' => $topic_title,
+        ]);
+        if ($postdata = $this->select_post($pid, 'post_subject'))
+        {
+            $post_subject = $postdata['post_subject'];
+            $post_subject = preg_replace($ptn, '', $post_subject);
+            $post_subject = implode(' ', [$repl, $post_subject]);
+            $this->update_post($pid, ['post_subject' => $post_subject,]);
+            $this->update_forum_last_post($fid, $pid);
+        }
+        return false;
+    }
+
+    // Forum
+    public function select_forum($pid, $field='*')
+    {
+        $sql = 'SELECT '. $field . ' FROM ' . FORUMS_TABLE ." WHERE forum_id=$pid";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
+    public function update_forum_last_post($fid, $pid)
+    {
+        include_once('includes/functions_posting.php');
+        $type = 'forum';
+        $ids = [$fid];
+        update_post_information($type, $ids, $return_update_sql = false);
+    }
+
+    // POST
+    public function select_post($pid, $field='*')
+    {
+        $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
+    public function update_post($pid, $data)
+    {
+        $sql = 'UPDATE ' . POSTS_TABLE . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+            WHERE post_id=' . $pid;
+        $this->db->sql_query($sql);
+    }
+
     // USERS
     public function select_user($user_id)
     {
