@@ -190,6 +190,10 @@ class main_listener extends core implements EventSubscriberInterface
 
     public function colorize_at($event)
     {
+        if (!$this->config['snp_b_snahp_notify'])
+            return false;
+        if (!$this->config['snp_b_notify_on_poke'])
+            return false;
         $at_prefix = $this->at_prefix;
         $mp = $event['message_parser'];
         $message = &$mp->message;
