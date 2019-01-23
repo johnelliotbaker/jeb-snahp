@@ -40,7 +40,7 @@ class basic extends \phpbb\notification\type\base
 	}
 
     public static $notification_option = array(
-        'lang' => 'Receive generic notification from Snahp',
+        'lang' => 'Receive notifications from Snahp',
         'group' => 'Notification From Snahp',
     );
 
