@@ -281,23 +281,6 @@ class request_listener extends base implements EventSubscriberInterface
         $this->template->assign_var('S_REQUEST_USER_INFO', $strn);
     }
 
-    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
-    {
-        while ($row = array_pop($aUserdata))
-        {
-            $uname = $row['username'];
-            $uid = $row['user_id'];
-            if ($bDullBlocked && !$row['snp_enable_at_notify'])
-                $color = '555588';
-            else
-                $color = $row['user_colour'];
-            if (!$color) $color = '000000';
-            $username_string = "[color=#$color][b]$prepend$uname".'[/b][/color]';
-            $a_user_string[$uname] = $username_string;
-        }
-        return $a_user_string;
-    }
-
     public function show_request_icons($event)
     {
         if (!$this->config['snp_b_request'])

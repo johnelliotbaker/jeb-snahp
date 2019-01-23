@@ -160,17 +160,18 @@ class main_listener extends core implements EventSubscriberInterface
     {
         if (!$aUserdata)
             return [];
-        while ($row = array_pop($aUserdata))
+        foreach ($aUserdata as $key => $row)
         {
-            $uname = $row['username'];
+            $username_clean = $row['username_clean'];
+            $username = $row['username'];
             $uid = $row['user_id'];
             if ($bDullBlocked && !$row['snp_enable_at_notify'])
                 $color = '555588';
             else
                 $color = $row['user_colour'];
             if (!$color) $color = '000000';
-            $username_string = "[color=#$color][b]$prepend$uname".'[/b][/color]';
-            $a_user_string[$uname] = $username_string;
+            $username_string = "[color=#$color][b]$prepend$username".'[/b][/color]';
+            $a_user_string[$username_clean] = $username_string;
         }
         return $a_user_string;
     }
@@ -207,10 +208,10 @@ class main_listener extends core implements EventSubscriberInterface
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
-        foreach($aUsername as $key => $username)
+        foreach($aUsername as $username_in_msg => $username_clean)
         {
-            $b = $aUserString[$key] . ' ';
-            $a = '#(?<!])'. $at_prefix . $username . '#is';
+            $b = $aUserString[$username_clean] . ' ';
+            $a = '#(?<!])'. $at_prefix . $username_in_msg . '#is';
             $message = preg_replace($a, $b, $message);
         }
     }
@@ -229,7 +230,11 @@ class main_listener extends core implements EventSubscriberInterface
         $message  = strip_tags($data['message']);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
+
+        foreach($matchall[1] as $match)
+        {
+            $aUsername[$match] = utf8_clean_string($match);
+        }
         if (!$aUsername) return;
         // Build sql query
         $count = 0;
@@ -238,7 +243,7 @@ class main_listener extends core implements EventSubscriberInterface
         $color           = $this->user->data['user_colour'];
         $username_string = get_username_string('no_profile', $user_id, $username, $color);
         $aReceiverData = $this->get_user_data($aUsername);
-        while ($row = array_pop($aReceiverData))
+        foreach ($aReceiverData as $row)
         {
             // If too many notifications are being sent, stop
             if ($count > $this->notification_limit) break;
