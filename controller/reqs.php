@@ -259,6 +259,41 @@ class reqs extends base
             'status'         => 4,
         ];
         $this->update_request($tid, $data);
+        // Send notification on fulfillment to requester
+        $requestdata = $this->select_request($tid);
+        $ruid = $requestdata['requester_uid'];
+        $fuid = $requestdata['fulfiller_uid'];
+        $requesterdata = $this->select_user($ruid);
+        // If user doesn't want to receive notify skip this user
+        if ($requesterdata['snp_enable_at_notify'])
+        {
+            $requester_id     = $requestdata['requester_uid'];
+            $requester_name   = $requestdata['requester_username'];
+            $requester_color  = $requestdata['requester_colour'];
+            $fulfiller_id     = $requestdata['fulfiller_uid'];
+            $fulfiller_name   = $requestdata['fulfiller_username'];
+            $fulfiller_color  = $requestdata['fulfiller_colour'];
+            $requester_string = get_username_string('no_profile', $requester_id, $requester_name, $requester_color);
+            $fulfiller_string = get_username_string('no_profile', $fulfiller_id, $fulfiller_name, $fulfiller_color);
+            $text             = $fulfiller_string . ' fulfilled your request<br>Please confirm request resolution.';
+            $type            = 'request_fulfillment';
+            $data = array(
+                'user_id'      => $requester_id,
+                'username'     => $requester_name,
+                'post_id'      => $pid,
+                'poster_id'    => $requester_id,
+                'topic_id'     => $tid,
+                'forum_id'     => $fid,
+                'time'         => time(),
+                'post_subject' => $text,
+                'type'         => $type,
+            );
+            $this->notification->add_notifications(array(
+                'jeb.snahp.notification.type.basic',
+            ), $data);
+        }
+
+
         meta_refresh(2, $this->u_action);
         $message = 'Thank you for fulfilling this request!';
         trigger_error($message);
