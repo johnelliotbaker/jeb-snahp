@@ -50,6 +50,11 @@ services:
             - '@notification_manager'
         tags:
             - { name: event.listener }
+    jeb.snahp.acp_reqs:
+        class: jeb\snahp\controller\acp_reqs
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.reqs:
         class: jeb\snahp\controller\reqs
         parent: jeb.snahp.base

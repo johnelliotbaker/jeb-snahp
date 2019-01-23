@@ -3,7 +3,7 @@
   <label for="imdb_term">IMDb:</label>
 </dt>
 <dd>
-  <input value="" placeholder="" type="text" name="imdb_input" id="imdb_input" class="pg_input">
+  <input value="" placeholder="" type="text" name="imdb_input" id="imdb_input" class="inputbox autowidth">
   <button type="button" data-ajax="snahp.imdbCallback">Search</button>
 </dd>
 {% endif %}
@@ -12,7 +12,7 @@
   <label for="anilist_term">Anime:</label>
 </dt>
 <dd>
-  <input  value="" placeholder="" type="text" name="anilist_input" id="anilist_input" class="pg_input">
+  <input  value="" placeholder="" type="text" name="anilist_input" id="anilist_input" class="inputbox autowidth">
   <button type="button" data-ajax="snahp.anilistCallback">Search</button>
 </dd>
 {% endif %}
@@ -21,8 +21,8 @@
   <label for="googlebooks_term">Books:</label>
 </dt>
 <dd>
-  <input value="" type="text" placeholder="" name="googlebooks_input" class="pg_input" id="googlebooks_input" >
-  <input value="" type="text" placeholder="Author" name="googlebooks_input_author" class="pg_input" id="googlebooks_input_author">
+  <input value="" type="text" placeholder="" name="googlebooks_input" id="googlebooks_input" class="inputbox autowidth">
+  <input value="" type="text" placeholder="Author" name="googlebooks_input_author" id="googlebooks_input_author" class="inputbox autowidth" style="max-width: 80px;">
   <button type="button" data-ajax="snahp.googlebooksCallback">Search</button>
 </dd>
 {% endif %}
@@ -31,7 +31,7 @@
   <label for="gamespot_term">Games:</label>
 </dt>
 <dd>
-  <input value="" type="text" placeholder="" name="gamespot_input" class="pg_input" id="gamespot_input" >
+  <input value="" type="text" placeholder="" name="gamespot_input" id="gamespot_input" class="inputbox autowidth">
   <button type="button" data-ajax="snahp.gamespotCallback">Search</button>
 </dd>
 {% endif %}

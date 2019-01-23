@@ -173,6 +173,15 @@ abstract class base
     }
 
     // USERS
+    public function select_user_by_username($username)
+    {
+        $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE username_clean='$username'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
     public function select_user($user_id)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
@@ -193,6 +202,19 @@ abstract class base
     }
 
     // REQUEST USERS
+    public function select_request_users_by_username($username)
+    {
+        $username = utf8_clean_string($username);
+        $userdata = $this->select_user_by_username($username);
+        $user_id = $userdata['user_id'];
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['requsr'] ." WHERE user_id=$user_id";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
     public function select_request_users($user_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -322,6 +344,23 @@ abstract class base
     {
         $dt = new \DateTime(date('r', $time));
         return $dt->format('Y/m/d h:i a');
+    }
+
+    public function add_tag($strn)
+    {
+        $strn = str_replace('[Request]', '<span class="btn open">[Request]</span>', $strn);
+        $strn = str_replace('[Solved]', '<span class="btn solve">[Solved]</span>', $strn);
+        $strn = str_replace('[Accepted]', '<span class="btn dib">[Accepted]</span>', $strn);
+        $strn = str_replace('[Fulfilled]', '<span class="btn fulfill">[Fulfilled]</span>', $strn);
+        $strn = str_replace('[Closed]', '<span class="btn terminate">[Closed]</span>', $strn);
+        return $strn;
+    }
+
+    public function remove_tag($strn)
+    {
+        $ptn = '#<span[^>]*"(btn){1}.*">([^<]*)</span>#is';
+        $strn = preg_replace($ptn, '', $strn);
+        return $strn;
     }
 
 }

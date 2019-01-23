@@ -15,3 +15,17 @@ jeb_snahp_reqsmcp:
     requirements:
         mode: \d+
         uid: \d+
+jeb_snahp_acp_reqs_manage_user:
+    path: /snahp/acp_reqs_manage_user/
+    defaults: { _controller: jeb.snahp.acp_reqs:handle_manage_user}
+    requirements:
+jeb_snahp_acp_reqs_reset_user:
+    path: /snahp/acp_reqs_reset_user/{username}/
+    defaults: { _controller: jeb.snahp.acp_reqs:handle_reset_user}
+    requirements:
+        username: \S+
+jeb_snahp_acp_reqs_userinfo:
+    path: /snahp/acp_reqs_get_userinfo/{username}/
+    defaults: { _controller: jeb.snahp.acp_reqs:get_userinfo}
+    requirements:
+        username: \S+

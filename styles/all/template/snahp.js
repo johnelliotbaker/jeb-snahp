@@ -125,7 +125,7 @@ function getResponseType(response)
 
 function startHandlingImdbAjax()
 {
-    $imdb_input = $("#imdb_input").addClass("pg_input");
+    $imdb_input = $("#imdb_input");
     var term = $imdb_input.val();
     var match = isImdbID(term)
     if (match && match[0])

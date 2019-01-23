@@ -1,0 +1,36 @@
+span.btn {
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  cursor: pointer;
+  padding: 1px 3px 2px 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal normal bold 16px/normal Verdana, Geneva, sans-serif;
+  color: rgba(255,255,255,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  font-size: 1em;
+}
+span.btn.open {
+  background: #b22117;
+  border: 1px solid #b22117;
+}
+span.btn.solve {
+  background: #128b09;
+  border: 1px solid #128b09;
+}
+span.btn.dib {
+  color: black;
+  background: #f4bf42;
+  border: 1px solid #f4bf42;
+}
+span.btn.fulfill {
+  background: #007bff;
+  border: 1px solid #007bff;
+}
+span.btn.terminate {
+  background: #6c757d;
+  border: 1px solid #6c757d;
+}

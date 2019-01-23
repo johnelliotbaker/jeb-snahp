@@ -44,6 +44,7 @@ class request_listener extends base implements EventSubscriberInterface
         $this->req_tbl            = $table_prefix . 'snahp_request';
         $this->req_users_tbl      = $table_prefix . 'snahp_request_users';
         $this->dibs_tbl           = $table_prefix . 'snahp_dibs';
+        $this->dt_ptn             = 'D M d, Y  g:i a';
     }
 
     static public function getSubscribedEvents()
@@ -57,7 +58,21 @@ class request_listener extends base implements EventSubscriberInterface
                 array('disable_user_posting', 0),
             ),
             'core.posting_modify_submit_post_after' => 'create_request',
+            'core.viewforum_modify_topics_data' => 'modify_request_tags',
         );
+    }
+
+    public function modify_request_tags($event)
+    {
+        $rowset = $event['rowset'];
+        if (!$rowset) return false;
+        foreach($rowset as $key => $row)
+        {
+            $tt = $row['topic_title'];
+            $row['topic_title'] = $this->add_tag($tt, 'open');
+            $rowset[$key] = $row;
+        }
+        $event['rowset'] = $rowset;
     }
 
     public function select_open_request($uid)
@@ -106,7 +121,7 @@ class request_listener extends base implements EventSubscriberInterface
         $time = time();
         $reset_time = $reqdata['reset_time'];
         $dt = new \DateTime(date('r', $reset_time));
-        $reset_time_strn = $dt->format('Y/m/d h:i a');
+        $reset_time_strn = $dt->format($this->dt_ptn);
         if ($time < $reset_time)
         {
             $n_use_per_cycle = $gdata['snp_req_n_cycle'];
@@ -114,7 +129,7 @@ class request_listener extends base implements EventSubscriberInterface
             if ($n_use_this_cycle >= $n_use_per_cycle)
             {
                 $dt = new \DateTime(date('r', $reset_time));
-                $reset_time_strn = $dt->format('Y/m/d h:i a');
+                $reset_time_strn = $dt->format($this->dt_ptn);
                 $a_strn = [
                     'You cannot make more than ' . $n_use_per_cycle . ' requests per request cycle.',
                     'Your next cycle begins on ' . $reset_time_strn,
@@ -199,6 +214,13 @@ class request_listener extends base implements EventSubscriberInterface
             $this->db->sql_build_array('INSERT', $data);
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
+        // Tag the title
+        $fid = $event['data']['forum_id'];
+        $tid = $event['data']['topic_id'];
+        $pid = $event['data']['post_id'];
+        $ptn = '#\[(accepted|request|closed|fulfilled|solved)\]\s*#is';
+        $repl = '[Request]';
+        $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
         return true;
     }
 
@@ -238,7 +260,7 @@ class request_listener extends base implements EventSubscriberInterface
                 else
                 {
                     $dt = new \DateTime(date('r', $reqdata['reset_time']));
-                    $reset_time_strn = $dt->format('Y/m/d h:i a');
+                    $reset_time_strn = $dt->format($this->dt_ptn);
                     $strn = "<h2>You don't have any request slots left ($n_left of $n_base).<br>
                         You may close some of your open requests to reclaim your slots.</h2>";
                     // or wait until your next reset period ($reset_time_strn).</h2>";
@@ -335,7 +357,7 @@ class request_listener extends base implements EventSubscriberInterface
         {
             $fulfilled_time = $req['fulfilled_time'];
             $dt              = new \DateTime(date('r', $fulfilled_time));
-            $datetime = $dt->format('D M d, Y  H:i a');
+            $datetime = $dt->format($this->dt_ptn);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
             $strn            = "$username_string has fulfilled this request on $datetime";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
@@ -344,7 +366,7 @@ class request_listener extends base implements EventSubscriberInterface
         {
             $commit_time     = $req['commit_time'];
             $dt       = new \DateTime(date('r', $commit_time));
-            $datetime = $dt->format('D M d, Y  H:i a');
+            $datetime = $dt->format($this->dt_ptn);
             $strn     = "$username_string has offered to fulfill this request on $datetime";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
             if ($this->user->data['username'] == $username)
@@ -354,7 +376,7 @@ class request_listener extends base implements EventSubscriberInterface
         {
             $solved_time     = $req['solved_time'];
             $dt              = new \DateTime(date('r', $solved_time));
-            $datetime        = $dt->format('D M d, Y  H:i a');
+            $datetime        = $dt->format($this->dt_ptn);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
             $strn            = "This request was solved by $username_string on $datetime";
             // Show fulfilled text and hide fulfill button

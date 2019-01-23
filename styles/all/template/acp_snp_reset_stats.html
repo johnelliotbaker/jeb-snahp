@@ -1,0 +1,160 @@
+<!-- INCLUDE mcp_header.html -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var req_user_row_template = `
+<style>
+  table, th, td {
+    border: 1px solid black;
+  }
+  td {
+    text-align: right;
+  }
+  td > input {
+    max-width:70px;
+    border:0px;
+    text-align: right;
+  }
+  #user_id {
+    width: 25px;
+  }
+</style>
+<table>
+  <thead>
+    <tr>
+      <th class="tbl user_id">UID</th>
+      <th class="tbl">Used (0)</th>
+      <th class="tbl">Cycle (0)</th>
+      <th class="tbl">Bonus (1)</th>
+      <th class="tbl">Next Reset Time</th>
+      <th class="tbl">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" name="user_id" id="user_id" value="{USER_ID}"></td>
+      <td><input type="text" name="n_use" id="n_use" value="{N_USE}"></td>
+      <td><input type="text" name="n_use_this_cycle" id="n_use_this_cycle" value="{N_USE_THIS_CYCLE}"></td>
+      <td><input type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
+      <td><input type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
+      <td><input type="text" name="status" id="status" value="{STATUS}"></td>
+    </tr>
+  </tbody>
+</table>
+`
+
+function get_username()
+{
+  var username = $("#usernames").val();
+  return username;
+}
+
+function reset_user()
+{
+  $('#content').empty();
+  var username = get_username();
+  if (!username)
+  {
+    $('#info').text('Username cannot be empty.');
+    return false;
+  }
+  $.get(`/app.php/snahp/acp_reqs_reset_user/` + username + `/`)
+  .done((resp) => {
+    $('#info').text('Status: ' + resp['status']);
+    populate_request_user();
+  })
+  .fail(()=>
+  {
+    $('#info').text('Error: User not found in request user database.');
+  });
+}
+
+function populate_request_user()
+{
+  $('#content').empty();
+  var username = get_username();
+  if (!username)
+  {
+    $('#info').text('Username cannot be empty.');
+    return;
+  }
+  $.get(`/app.php/snahp/acp_reqs_get_userinfo/` + username + `/`)
+    .done((resp) => {
+      $('#info').text('');
+      var user_id = resp.user_id;
+      if (!user_id)
+      {
+        $('#info').text('Error: User not found in request user database.');
+        return;
+      }
+      $(req_user_row_template).appendTo($('#content'));
+      var n_use = resp.n_use;
+      var n_offset = resp.n_offset;
+      var reset_time = resp.reset_time;
+      var status = resp.status;
+      for (var field in resp)
+      {
+        $('#'+field).val(resp[field]);
+      }
+    })
+    .fail(()=>
+      {
+        $('#info').text('Enter Valid Username.');
+        $('#content').empty();
+      });
+}
+
+$(document).ready(function()
+{
+  populate_request_user();
+  $("#usernames").on('keydown', (e) => {
+  if (e.which == 13) {
+    e.preventDefault();
+    populate_request_user();
+  }
+  });
+});
+// ]]>
+</script>
+
+<form id="acp" method="post" action="{U_ACTION}">
+<h2>Manage User Request Statistics</h2>
+<div class="panel">
+	<div class="inner">
+	<h3>User Management</h3>
+	<fieldset>
+	<dl>
+    <dt><label for="usernames">Username</label><br>
+      Enter username (case insensitive) then press enter.<br>
+      If Request User Data is not populated with data, then either that username doesn't exist, or that user has never made a request.
+    </dt>
+    <dd><label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}"></label></dd>
+		<dd><strong><a href="/memberlist.php?mode=searchuser&form=acp&field=usernames" onclick="find_username(this.href); return false;">Find a member</a></strong></dd>
+	</dl>
+	<hr />
+  <div id='reset'>
+    <button type="button" onClick="reset_user();">Reset this user</button>
+  </div>
+	<hr />
+  <h2 id="info"></h2>
+	<hr />
+	<dl>
+		<dt><label for="usernames">Request User Data</label></dt>
+	</dl>
+  <div id='content'>
+  </div>
+	<hr />
+	</fieldset>
+	</div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}
+  <input type="reset" value="Reset" name="reset" class="button2" />&nbsp;
+	<input type="submit" value="submit" name="submit" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+<!-- INCLUDE mcp_footer.html -->
