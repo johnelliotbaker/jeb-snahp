@@ -33,12 +33,12 @@ var req_user_row_template = `
   </thead>
   <tbody>
     <tr>
-      <td><input type="text" name="user_id" id="user_id" value="{USER_ID}"></td>
-      <td><input type="text" name="n_use" id="n_use" value="{N_USE}"></td>
-      <td><input type="text" name="n_use_this_cycle" id="n_use_this_cycle" value="{N_USE_THIS_CYCLE}"></td>
-      <td><input type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
-      <td><input type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
-      <td><input type="text" name="status" id="status" value="{STATUS}"></td>
+      <td><input class="inputbox autowidth" type="text" name="user_id" id="user_id" value="{USER_ID}"></td>
+      <td><input class="inputbox autowidth" type="text" name="n_use" id="n_use" value="{N_USE}"></td>
+      <td><input class="inputbox autowidth" type="text" name="n_use_this_cycle" id="n_use_this_cycle" value="{N_USE_THIS_CYCLE}"></td>
+      <td><input class="inputbox autowidth" type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
+      <td><input class="inputbox autowidth" type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
+      <td><input class="inputbox autowidth" type="text" name="status" id="status" value="{STATUS}"></td>
     </tr>
   </tbody>
 </table>
@@ -129,7 +129,7 @@ $(document).ready(function()
       Enter username (case insensitive) then press enter.<br>
       If Request User Data is not populated with data, then either that username doesn't exist, or that user has never made a request.
     </dt>
-    <dd><label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}"></label></dd>
+    <dd><label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}" class="inputbox autowidth"></label></dd>
 		<dd><strong><a href="/memberlist.php?mode=searchuser&form=acp&field=usernames" onclick="find_username(this.href); return false;">Find a member</a></strong></dd>
 	</dl>
 	<hr />
