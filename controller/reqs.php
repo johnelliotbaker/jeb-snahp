@@ -17,7 +17,7 @@ class reqs extends base
 
     public function __construct()
     {
-        $this->ptn = '#\[(accepted|request|closed|fulfilled|solved)\]\s*#is';
+        $this->ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
     }
 
 	public function handle_mcp($mode, $uid)

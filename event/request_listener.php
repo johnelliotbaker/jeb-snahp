@@ -120,16 +120,13 @@ class request_listener extends base implements EventSubscriberInterface
         $user_id = $this->user->data['user_id'];
         $time = time();
         $reset_time = $reqdata['reset_time'];
-        $dt = new \DateTime(date('r', $reset_time));
-        $reset_time_strn = $dt->format($this->dt_ptn);
         if ($time < $reset_time)
         {
             $n_use_per_cycle = $gdata['snp_req_n_cycle'];
             $n_use_this_cycle = $reqdata['n_use_this_cycle'];
             if ($n_use_this_cycle >= $n_use_per_cycle)
             {
-                $dt = new \DateTime(date('r', $reset_time));
-                $reset_time_strn = $dt->format($this->dt_ptn);
+                $reset_time_strn = $this->user->format_date($reset_time);
                 $a_strn = [
                     'You cannot make more than ' . $n_use_per_cycle . ' requests per request cycle.',
                     'Your next cycle begins on ' . $reset_time_strn,
@@ -219,6 +216,7 @@ class request_listener extends base implements EventSubscriberInterface
         $tid = $event['data']['topic_id'];
         $pid = $event['data']['post_id'];
         $ptn = '#\[(accepted|request|closed|fulfilled|solved)\]\s*#is';
+        $ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
         $repl = '[Request]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
         return true;
@@ -259,8 +257,7 @@ class request_listener extends base implements EventSubscriberInterface
                 }
                 else
                 {
-                    $dt = new \DateTime(date('r', $reqdata['reset_time']));
-                    $reset_time_strn = $dt->format($this->dt_ptn);
+                    $reset_time_strn = $this->user->format_date($reqdata['reset_time']);
                     $strn = "<h2>You don't have any request slots left ($n_left of $n_base).<br>
                         You may close some of your open requests to reclaim your slots.</h2>";
                     // or wait until your next reset period ($reset_time_strn).</h2>";
@@ -339,8 +336,7 @@ class request_listener extends base implements EventSubscriberInterface
         elseif($req['status'] == 4)
         {
             $fulfilled_time = $req['fulfilled_time'];
-            $dt              = new \DateTime(date('r', $fulfilled_time));
-            $datetime = $dt->format($this->dt_ptn);
+            $datetime = $this->user->format_date($fulfilled_time);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
             $strn            = "$username_string has fulfilled this request on $datetime";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
@@ -348,8 +344,7 @@ class request_listener extends base implements EventSubscriberInterface
         elseif($req['status'] == 3)
         {
             $commit_time     = $req['commit_time'];
-            $dt       = new \DateTime(date('r', $commit_time));
-            $datetime = $dt->format($this->dt_ptn);
+            $datetime = $this->user->format_date($commit_time);
             $strn     = "$username_string has offered to fulfill this request on $datetime";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
             if ($this->user->data['username'] == $username)
@@ -358,8 +353,7 @@ class request_listener extends base implements EventSubscriberInterface
         elseif($req['status'] == 2)
         {
             $solved_time     = $req['solved_time'];
-            $dt              = new \DateTime(date('r', $solved_time));
-            $datetime        = $dt->format($this->dt_ptn);
+            $datetime        = $this->user->format_date($solved_time);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
             $strn            = "This request was solved by $username_string on $datetime";
             // Show fulfilled text and hide fulfill button

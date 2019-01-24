@@ -342,17 +342,21 @@ abstract class base
 
     public function get_dt($time)
     {
-        $dt = new \DateTime(date('r', $time));
-        return $dt->format('Y/m/d h:i a');
+        return $this->user->format_date($time);
     }
 
     public function add_tag($strn)
     {
-        $strn = str_replace('[Request]', '<span class="btn open">[Request]</span>', $strn);
-        $strn = str_replace('[Solved]', '<span class="btn solve">[Solved]</span>', $strn);
-        $strn = str_replace('[Accepted]', '<span class="btn dib">[Accepted]</span>', $strn);
-        $strn = str_replace('[Fulfilled]', '<span class="btn fulfill">[Fulfilled]</span>', $strn);
-        $strn = str_replace('[Closed]', '<span class="btn terminate">[Closed]</span>', $strn);
+        $ptn = '#((\(|\[|\{)(request)(\)|\]|\}))#is';
+        $strn = preg_replace($ptn, '<span class="btn open">\1</span>', $strn);
+        $ptn = '#((\(|\[|\{)(solved)(\)|\]|\}))#is';
+        $strn = preg_replace($ptn, '<span class="btn solve">\1</span>', $strn);
+        $ptn = '#((\(|\[|\{)(accepted)(\)|\]|\}))#is';
+        $strn = preg_replace($ptn, '<span class="btn dib">\1</span>', $strn);
+        $ptn = '#((\(|\[|\{)(fulfilled)(\)|\]|\}))#is';
+        $strn = preg_replace($ptn, '<span class="btn fulfill">\1</span>', $strn);
+        $ptn = '#((\(|\[|\{)(closed)(\)|\]|\}))#is';
+        $strn = preg_replace($ptn, '<span class="btn terminate">\1</span>', $strn);
         return $strn;
     }
 
