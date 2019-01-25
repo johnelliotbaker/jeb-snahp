@@ -200,6 +200,7 @@ class main_module extends base
             $where = ' WHERE user_id="' . $data . '"';
             break;
         case 'username':
+            $data = utf8_clean_string($data);
             $where = ' WHERE username_clean="' . $data . '"';
             break;
         default:
@@ -248,8 +249,8 @@ class main_module extends base
             foreach($dibdata as $row)
             {
                 $tid = $row['tid'];
-                $topic_time = $this->get_dt($row['topic_time']);
-                $undib_time = $this->get_dt($row['undib_time']);
+                $topic_time = $user->format_date($row['topic_time']);
+                $undib_time = $user->format_date($row['undib_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;
                 $group = array(
                     'DIBBER_USERNAME' => $row['username'],
@@ -305,7 +306,7 @@ class main_module extends base
             foreach($reqdata as $row)
             {
                 $tid = $row['tid'];
-                $topic_time = $this->get_dt($row['topic_time']);
+                $topic_time = $user->format_date($row['topic_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;
                 $group = array(
                     'TOPIC_TITLE'     => $row['topic_title'],
@@ -351,7 +352,7 @@ class main_module extends base
             foreach($reqdata as $row)
             {
                 $tid = $row['tid'];
-                $topic_time = $this->get_dt($row['topic_time']);
+                $topic_time = $user->format_date($row['topic_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;
                 $group = array(
                     'TOPIC_TITLE'     => $row['topic_title'],

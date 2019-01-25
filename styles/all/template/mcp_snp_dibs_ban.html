@@ -1,4 +1,33 @@
 <!-- INCLUDE mcp_header.html -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function add_username(e, id)
+{
+  $textarea = $('#ban');
+  var strn = $textarea.val();
+  strn += e.data.username + '\n';
+  $textarea.val(strn);
+}
+
+$(document).ready(()=>{
+  $banned_users = $("#banned_users");
+  $usernames = $("#ban");
+  $.get('http://192.168.2.12:888/app.php/snahp/acp_reqs_get_banned_dibbers/', (resp)=>{
+    var strn = '';
+    var user_colour = '';
+    var username_clean = '';
+    for (var userdata of resp)
+    {
+      user_colour = userdata['user_colour'];
+      username_clean = userdata['username_clean'];
+      $elem = $('<button type="button" style="margin-right:6px;color:#' + user_colour + ';"><b>' + ' ' + username_clean + ' ' + '</b></button>').click({username:username_clean}, add_username);
+      $banned_users.append($elem);
+    }
+  });
+});
+</script>
+
+
 {% if B_ENABLE %}
 <form id="mcp_ban" method="post" action="{U_ACTION}">
 <div class="panel">
@@ -54,4 +83,16 @@
   </div>
 </div>
 {% endif %}
+<div class="panel">
+	<div class="inner">
+    <fieldset>
+      <dl>
+        <dt><label>Banned Users</label><br /><span>List of users who are banned from dibbing requests.</span><br>
+          <span>Click a username to add it to the textarea.</span></dt>
+        <dd id="banned_users">
+        </dd>
+      </dl>
+    </fieldset>
+  </div>
+</div>
 <!-- INCLUDE mcp_footer.html -->

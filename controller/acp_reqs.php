@@ -93,6 +93,25 @@ class acp_reqs extends base
         return $data;
     }
 
+    public function get_banned_dibbers()
+    {
+        $this->reject_non_moderator();
+        $sql = 'SELECT user_colour, username_clean FROM ' . USERS_TABLE ." WHERE snp_req_dib_enable=0";
+        $result = $this->db->sql_query($sql);
+        $data = [];
+        while($row = $this->db->sql_fetchrow($result))
+        {
+            $data[] = [
+                'username_clean' => $row['username_clean'],
+                'user_colour' => $row['user_colour'],
+            ];
+        }
+        $this->db->sql_freeresult($result);
+        $json = new \Symfony\Component\HttpFoundation\JsonResponse();
+        $json->setData($data);
+        return $json;
+    }
+
     public function get_userinfo($username)
     {
         $this->reject_non_moderator();
