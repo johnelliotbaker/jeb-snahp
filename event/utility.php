@@ -1,11 +1,5 @@
 <?php
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 function filter_quote($strn)
 {
     $ptn = '#(\[(quote|\/quote)|$)#is';
@@ -18,7 +12,6 @@ function filter_quote($strn)
         $n_stack = count($stack);
         $i_match = $match[0][1];
         $word = $match[0][0];
-        prn($word);
         if ($word == '[quote' || !$word)
         {
             if (count($stack) == 0)
@@ -30,9 +23,17 @@ function filter_quote($strn)
         }
         else
         {
-            array_pop($stack);
+            if (count($stack) > 0)
+            {
+                array_pop($stack);
+            }
+            else
+            {
+                $partial = substr($strn, $start, $i_match-$start);
+                $non_quoted[] = $partial;
+            }
         }
-        $start = $i_match + 8;
+        $start = $i_match + 1;
         preg_match($ptn, $strn, $match, PREG_OFFSET_CAPTURE, $start);
     }
     return implode(' ' , $non_quoted);
