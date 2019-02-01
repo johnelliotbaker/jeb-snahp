@@ -1,0 +1,41 @@
+#req_v_size_min,
+#req_v_size_max,
+input[type="number"]
+{
+    background: white;
+    color: black;
+}
+
+#show_advanced,
+input
+{
+    outline: 0;
+}
+
+label
+{
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+label.required 
+{
+    color: #AA1111;
+    font-weight: bold;
+}
+
+#reference_url::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: .3; /* Firefox */
+}
+
+#reference_url:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity: .3; /* Firefox */
+}
+
+#reference_url::-ms-input-placeholder { /* Microsoft Edge */
+    opacity: .3; /* Firefox */
+}

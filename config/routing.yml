@@ -32,3 +32,10 @@ jeb_snahp_acp_reqs_userinfo:
     defaults: { _controller: jeb.snahp.acp_reqs:get_userinfo}
     requirements:
         username: \S+
+# This is used for completely custom request form. Not implemented.
+jeb_snahp_reqs_post:
+    path: /snahp/reqs_post/{mode}/{fid}/
+    defaults: { _controller: jeb.snahp.reqs_post:handle}
+    requirements:
+        mode: \S+
+        fid: \d+

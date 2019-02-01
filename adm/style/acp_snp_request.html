@@ -34,6 +34,39 @@
 
   <fieldset>
     <dl>
+      <dt><label>Request Template Association</label><br />
+        <span><br>
+          Set correct FID for each category.<br>
+          For example, "Movies Requests" has fid of 17.<br>
+        </span>
+      </dt>
+      <dd>
+        <span>
+          <table>
+            <tbody>
+              <tr>
+                <td>Category</td>
+                <td>FID</td>
+              </tr>
+              <!-- BEGIN POSTFORM_FID -->
+              <tr>
+                <td>{POSTFORM_FID.name}</td>
+                <td>
+                  <input type="number" style="text-align:center; width:40px;"
+                                       name="postform-{POSTFORM_FID.name}"
+                                       value="{POSTFORM_FID.fid}">
+                </td>
+              </tr>
+              <!-- END POSTFORM_FID -->
+            </tbody>
+          </table>
+        </span>
+      </dd>
+      <br>
+  </fieldset>
+
+  <fieldset>
+    <dl>
       <dt><label>Request Users Settings</label><br />
         <span><br>
           Active: (bool) Can make requests<br>

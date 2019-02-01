@@ -367,5 +367,23 @@ abstract class base
         return $strn;
     }
 
+    public function interpolate_curly_tags($strn)
+    {
+        $ptn = '#({\s*/?(script|form|a|img|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
+        $strn = preg_replace($ptn, '###################', $strn);
+        $ptn = '/{([^}]*)}/is';
+        $strn = preg_replace($ptn, '<\1>', $strn);
+        $ptn = '#(.*)(<table.*</table>)(.*)#is';
+        preg_match($ptn, $strn, $match);
+        if ($match)
+        {
+            $title = $match[2];
+            $title = str_replace('<br>', '', $title);
+            $strn = $match[1] . $title . $match[3];
+        }
+		// prn($strn);
+        return $strn;
+    }
+
 }
 

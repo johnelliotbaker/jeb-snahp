@@ -59,7 +59,56 @@ class request_listener extends base implements EventSubscriberInterface
             ),
             'core.posting_modify_submit_post_after' => 'create_request',
             'core.viewforum_modify_topics_data' => 'modify_request_tags',
+            'core.posting_modify_message_text' => 'compose_request_form',
+            'core.modify_posting_parameters' => 'show_request_post_form',
+            'core.viewtopic_modify_post_row' => 'show_request_form_as_table',
         );
+    }
+
+    public function show_request_form_as_table($event)
+    {
+        $i_row = $event['current_row_number'];
+        if ($i_row > 0)
+            return false;
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $message = $this->interpolate_curly_tags($message);
+        $event['post_row'] = $post_row;
+    }
+
+    public function show_request_post_form($event)
+    {
+        $preview = $this->request->variable('preview', '');
+        $post = $this->request->variable('p', '');
+        $fid = $this->request->variable('f', '');
+        if ($preview || $post) return false;
+        $this->template->assign_var('B_REQUEST_POST', true);
+        $afid = unserialize($this->config['snp_req_postform_fid']);
+        $data = [];
+        foreach($afid as $name => $pf_fid)
+        {
+            if ($pf_fid == $fid)
+            {
+                $data['B_POSTFORM_' . strtoupper($name)] = true;
+            }
+        }
+        $this->template->assign_vars($data);
+        $this->template->assign_var('B_REQUEST_POST', true);
+    }
+
+    public function compose_request_form($event)
+    {
+        include_once('request_form.php');
+        if ($event['mode'] != 'post')
+            return false;
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $res = make_request_form($this->request);
+        if ($message)
+        {
+            $res .= PHP_EOL . PHP_EOL . '<br><br>============= Additional Comments =============<br>' . PHP_EOL;
+        }
+        $message = $res . $message;
     }
 
     public function modify_request_tags($event)

@@ -201,9 +201,19 @@ class main_module
                     }
                     $this->update_groups('group_id', "snp_req_$name", $data);
                 }
+                // POSTFORM
+                $postform_fid = unserialize($config['snp_req_postform_fid']);
+                $postform_data = [];
+                foreach($postform_fid as $name => $a_fid)
+                {
+                    $pf_fid_entry = $request->variable('postform-'.$name, 0);
+                    $postform_data[$name] = $pf_fid_entry;
+                }
+                $config->set('snp_req_postform_fid', serialize($postform_data));
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
+            // Request Users Properties
             foreach($groupdata as $row)
             {
                 $group = array(
@@ -217,6 +227,14 @@ class main_module
                 );
                 $template->assign_block_vars('aSignature', $group);
             };
+            // Postform FID
+            $postform_fid = unserialize($config['snp_req_postform_fid']);
+            foreach ($postform_fid as $name => $fid)
+            {
+                $fid_data['name'] = $name;
+                $fid_data['fid'] = $fid;
+                $template->assign_block_vars('POSTFORM_FID', $fid_data);
+            }
             $template->assign_vars(array(
                 'SNP_B_REQUEST' => $config['snp_b_request'],
                 'request_fid'   => $config['snp_req_fid'],

@@ -1,0 +1,110 @@
+<input id="request_type" name="request_type" type="hidden" value="tv">
+<div id="request_form" class="request_form">
+  {% include '@jeb_snahp/reqs/ctrl_click.html' %}
+  <dl>
+    <dt>
+      <label>Host:</label>
+    </dt>
+    <dd>
+      <input type="radio" name="req_v_host" id="req_v_host_mega" value="MEGA">
+      <label for="req_v_host_mega">MEGA</label>
+      <input type="radio" name="req_v_host" id="req_v_host_zippyshare" value="Zippyshare">
+      <label for="req_v_host_zippyshare">Zippyshare</label>
+      <input type="radio" name="req_v_host" id="req_v_host_either" value="Mega or Zippyshare" checked="checked">
+      <label for="req_v_host_either">Either</label>
+    </dd>
+  </dl>
+  <dl>
+    <dt>
+      <label>Resolution:</label>
+    </dt>
+    <dd>
+      <input class="req_cb" type="checkbox" name="req_v_res_sd" id="req_v_res_sd" value="1">
+      <label class="req_cb_label" for="req_v_res_sd">SD/480p</label>
+      <input class="req_cb" type="checkbox" name="req_v_res_720" id="req_v_res_720" value="1">
+      <label class="req_cb_label" for="req_v_res_720">720p</label>
+      <input class="req_cb" type="checkbox" name="req_v_res_1080" id="req_v_res_1080" value="1">
+      <label class="req_cb_label" for="req_v_res_1080">1080p</label>
+      <input class="req_cb" type="checkbox" name="req_v_res_4k" id="req_v_res_4k" value="1">
+      <label class="req_cb_label" for="req_v_res_4k">4K</label>
+    </dd>
+  </dl>
+  <dl>
+    <dt>
+      <label>Codec:</label>
+    </dt>
+    <dd>
+      <input class="req_cb" type="checkbox" name="req_v_codec_264" id="req_v_codec_264" value="1">
+      <label class="req_cb_label" for="req_v_codec_264">x264/H264</label>
+      <input class="req_cb" type="checkbox" name="req_v_codec_265" id="req_v_codec_265" value="1">
+      <label class="req_cb_label" for="req_v_codec_265">x265/HEVC</label>
+      <input class="req_cb" type="checkbox" name="req_v_codec_vp9" id="req_v_codec_vp9" value="1">
+      <label class="req_cb_label" for="req_v_codec_vp9">VP9</label>
+      <input class="req_cb" type="checkbox" name="req_v_codec_xvid" id="req_v_codec_xvid" value="1">
+      <label class="req_cb_label" for="req_v_codec_xvid">XviD</label>
+    </dd>
+  </dl>
+  <dl>
+    <dt>
+      <label>Size:</label>
+    </dt>
+    <dd>
+      <label for="req_v_size_min">Minimum (GB)</label>
+      <input name="req_v_size_min" id="req_v_size_min" value="0" type="number" min="0" style="text-align:center; width:38px;">
+      <label for="req_v_size_max">Maximum (GB)</label>
+      <input name="req_v_size_max" id="req_v_size_max" value="0" type="number" min="0" style="text-align:center; width:38px;">
+    </dd>
+  </dl>
+  <div id="request_advanced">
+    <dl>
+      <dt>
+        <label>Size vs Quality:</label>
+      </dt>
+      <input type="radio" name="req_quality_balance" id="req_favor_size" value="Prefer smaller size">
+      <label for="req_favor_size">Smaller size</label>
+      <input type="radio" name="req_quality_balance" id="req_favor_quality" value="Prefer higher quality">
+      <label for="req_favor_quality">Higher quality</label>
+    </dl>
+    <dl>
+      <dt>
+        <label>Source:</label>
+      </dt>
+      <dd>
+        <input class="req_cb" type="checkbox" name="req_v_src_bluray" id="req_v_src_bluray" value="1">
+        <label class="req_cb_label" for="req_v_src_bluray">Blu-Ray/REMUX</label>
+        <input class="req_cb" type="checkbox" name="req_v_src_dvd" id="req_v_src_dvd" value="1">
+        <label class="req_cb_label" for="req_v_src_dvd">DVDRip</label>
+        <input class="req_cb" type="checkbox" name="req_v_src_web" id="req_v_src_web" value="1">
+        <label class="req_cb_label" for="req_v_src_web">Web-DL/WEBRip</label>
+        <input class="req_cb" type="checkbox" name="req_v_src_hdtv" id="req_v_src_hdtv" value="1">
+        <label class="req_cb_label" for="req_v_src_hdtv">HDTV</label>
+        <input class="req_cb" type="checkbox" name="req_v_src_sdtv" id="req_v_src_sdtv" value="1">
+        <label class="req_cb_label" for="req_v_src_sdtv">SDTV</label>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label>Format:</label>
+      </dt>
+      <dd>
+        <input class="req_cb" type="checkbox" name="req_v_format_3d" id="req_v_format_3d" value="1">
+        <label class="req_cb_label" for="req_v_format_3d">3D</label>
+        <input class="req_cb" type="checkbox" name="req_v_format_fulldisc" id="req_v_format_fulldisc" value="1">
+        <label class="req_cb_label" for="req_v_format_fulldisc">Full Disc</label>
+        <input class="req_cb" type="checkbox" name="req_v_format_remux" id="req_v_format_remux" value="1">
+        <label class="req_cb_label" for="req_v_format_remux">Remux</label>
+        <input class="req_cb" type="checkbox" name="req_v_format_encode" id="req_v_format_encode" value="1">
+        <label class="req_cb_label" for="req_v_format_encode">Encode</label>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label>Reference URL:</label>
+      </dt>
+      <dd>
+        <input placeholder="https://www.google.com/" value="" name="req_v_reference_url" id="reference_url" type="text" class="inputbox autowidth" maxlength="255">
+      </dd>
+    </dl>
+  </div>
+  {% include '@jeb_snahp/reqs/show_advanced.html' %}
+</div>
