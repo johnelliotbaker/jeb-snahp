@@ -117,7 +117,9 @@ class main_listener extends core implements EventSubscriberInterface
             'core.viewtopic_modify_post_row'              => 'disable_signature',
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => 'modify_quickreply_signature',
-            'core.posting_modify_submit_post_after'       => 'notify_on_poke',
+            'core.posting_modify_submit_post_after'       => array(
+                array('notify_on_poke', 0),
+            ),
             'core.posting_modify_message_text'            => 'colorize_at',
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_new_topic_button',0),
@@ -228,9 +230,10 @@ class main_listener extends core implements EventSubscriberInterface
         $fid      = $data['forum_id'];
         $pid      = $data['post_id'];
         $message  = strip_tags($data['message']);
+        include_once('ext/jeb/snahp/event/utility.php');
+        $message = filter_quote($message);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-
         foreach($matchall[1] as $match)
         {
             $aUsername[$match] = utf8_clean_string($match);
