@@ -29,9 +29,6 @@
 }
 
 
-
-
-
 /*** Table Styles  for request form ***/
 .host-icon
 {
@@ -47,7 +44,6 @@
 
 /* Basic entry color scheme */
 .table-fill tr {
-    color:#666B85;
     color:#404050;
     font-size:16px;
     font-weight:normal;
@@ -63,7 +59,6 @@
     font-weight:900;
 }
 .table-fill tr:nth-child(odd) td .bold{
-    color:#f94a4a;
     color:#ff3030;
 }
 
@@ -76,7 +71,6 @@
     font-weight: 100;
     padding:24px;
     text-align:left;
-    /* text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
     vertical-align:middle;
 }
 
