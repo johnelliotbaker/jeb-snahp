@@ -35,9 +35,8 @@
 /*** Table Styles  for request form ***/
 .host-icon
 {
-    max-height:36px;
-    padding: 0px;
-    margin: 0px;
+    max-height:24px;
+    margin: 0px 4px 0px 0px;
 }
 
 .table-fill {
