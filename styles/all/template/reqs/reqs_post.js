@@ -31,6 +31,12 @@ function eventFire(el, etype, b_ctrl=false){
     }
 }
 
+
+var jui = `<script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>`;
+
 $(document).ready(function(){
     var type = $("#request_type").val();
     $postingbox = $('#postingbox');
@@ -52,7 +58,6 @@ $(document).ready(function(){
         eventFire(document.getElementById(id), 'click', b_ctrl);
     });
     $('.req_cb').click((e) => {
-        console.log(e);
         $target = $(e.target);
         $label = $target.next();
         if (e.ctrlKey)
@@ -70,15 +75,15 @@ $(document).ready(function(){
             };
         }
     });
-    if (type == 'music')
+    if (['music'].includes(type))
     {
         var background = $('#req_mus_url').css('background');
-        $('.request_form').animate({'opacity': '.6'}, 800);
+        $('.request_form').animate({'opacity': '0'}, 800);
         setTimeout(()=>{
-            for (var i=0; i<3; i++)
+            for (var i=0; i<4; i++)
             {
-                $('#req_mus_url').animate({'opacity': 0.1}, 800);
-                $('#req_mus_url').animate({'opacity': 1}, 800);
+                $('#req_mus_url').animate({'opacity': 0.2}, {duration:650, queue:true});
+                $('#req_mus_url').animate({'opacity': 1.0}, {duration:650, queue:true});
             }
         }, 0);
         setTimeout(()=>{
@@ -86,4 +91,5 @@ $(document).ready(function(){
             $('#req_mus_reminder').animate({ opacity: "toggle", height: "toggle", });
         }, 6000);
     }
+    $('head').prepend(jui);
 });

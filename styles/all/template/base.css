@@ -31,7 +31,14 @@
 
 
 
+
 /*** Table Styles  for request form ***/
+.host-icon
+{
+    max-height:36px;
+    padding: 0px;
+    margin: 0px;
+}
 
 .table-fill {
     border-radius:9px;

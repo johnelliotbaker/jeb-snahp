@@ -140,7 +140,12 @@ function make_request_form($request)
             switch ($key)
             {
             case 'req_v_host':
-                $data[] = $var;
+                $b_mega = stripos($var, 'mega');
+                $b_zippy = stripos($var, 'zippy');
+                if ($b_mega !== false)
+                    $data[] = '{img class="host-icon" src="//i.imgur.com/kkmC4dv.png"}';
+                if ($b_zippy !== false)
+                    $data[] = '{img class="host-icon" src="//i.imgur.com/EO7Nyo7.png"}';
                 break;
             case 'req_quality_balance':
                 $data[] = $var;

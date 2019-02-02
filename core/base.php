@@ -369,17 +369,19 @@ abstract class base
 
     public function interpolate_curly_tags($strn)
     {
-        $ptn = '#({\s*/?(script|form|a|img|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
-        $strn = preg_replace($ptn, '###################', $strn);
+        // $ptn = '#({\s*/?(script|form|a|img|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
+        $ptn = '#({\s*/?(script|form|a|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
+        $warning = '<br /><strong style="color:red;">####### DO NOT ABUSE THE TEMPLATE SYSTEM. THIS ATTEMPT HAS BEEN LOGGED AND REPORTED TO THE ADMINISTRATORS. ######<br /> TIME: '. time() . '<br /></strong>';
+        $strn = preg_replace($ptn, $warning, $strn);
         $ptn = '/{([^}]*)}/is';
         $strn = preg_replace($ptn, '<\1>', $strn);
         $ptn = '#(.*)(<table.*</table>)(.*)#is';
         preg_match($ptn, $strn, $match);
         if ($match)
         {
-            $title = $match[2];
-            $title = str_replace('<br>', '', $title);
-            $strn = $match[1] . $title . $match[3];
+            $table = $match[2];
+            $table = str_replace('<br>', '', $table);
+            $strn = $match[1] . $table . $match[3];
         }
 		// prn($strn);
         return $strn;
