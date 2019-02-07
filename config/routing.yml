@@ -32,6 +32,9 @@ jeb_snahp_acp_reqs_userinfo:
     defaults: { _controller: jeb.snahp.acp_reqs:get_userinfo}
     requirements:
         username: \S+
+jeb_snahp_graveyard_request:
+    path: /snahp/graveyard_request/
+    defaults: { _controller: jeb.snahp.graveyard_request:handle}
 # This is used for completely custom request form. Not implemented.
 jeb_snahp_reqs_post:
     path: /snahp/reqs_post/{mode}/{fid}/

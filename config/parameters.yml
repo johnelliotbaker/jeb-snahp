@@ -11,6 +11,7 @@ parameters:
             dib: 3
             fulfill: 4
             undib: 5
+            graveyard: 8
             terminate: 9
             set:
                 closed:

@@ -210,6 +210,12 @@ class main_module
                     $postform_data[$name] = $pf_fid_entry;
                 }
                 $config->set('snp_req_postform_fid', serialize($postform_data));
+                // Graveyard
+                $config->set('snp_cron_b_graveyard', $request->variable('cron_b_graveyard', '0'));
+                $graveyard_fid['default'] = $request->variable('graveyard_fid', '0');
+                $config->set('snp_cron_graveyard_fid', serialize($graveyard_fid));
+                $config->set('snp_cron_graveyard_gc', $request->variable('cron_graveyard', '0'));
+                $config->set('snp_cron_graveyard_last_gc', $request->variable('cron_graveyard_last', '0'));
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
@@ -235,12 +241,26 @@ class main_module
                 $fid_data['fid'] = $fid;
                 $template->assign_block_vars('POSTFORM_FID', $fid_data);
             }
+            // Graveyard Request
+            $graveyard_fid = unserialize($config['snp_cron_graveyard_fid'])['default'];
+            $cron_last = $config['snp_cron_graveyard_last_gc'];
+            $cron_last_human = $user->format_date($config['snp_cron_graveyard_last_gc']);
+            $cron_interval = $config['snp_cron_graveyard_gc'];
+            $cron_next = $cron_last + $cron_interval;
+            $cron_next_human = $user->format_date($cron_next);
+
             $template->assign_vars(array(
-                'SNP_B_REQUEST' => $config['snp_b_request'],
-                'request_fid'   => $config['snp_req_fid'],
-                'redib_cooldown_time' => $config['snp_req_redib_cooldown_time'],
-                'cycle_time'    => $config['snp_req_cycle_time'],
-                'U_ACTION'      => $this->u_action,
+                'SNP_B_REQUEST'        => $config['snp_b_request'],
+                'request_fid'          => $config['snp_req_fid'],
+                'redib_cooldown_time'  => $config['snp_req_redib_cooldown_time'],
+                'cycle_time'           => $config['snp_req_cycle_time'],
+                'CRON_B_GRAVEYARD'     => $config['snp_cron_b_graveyard'],
+                'GRAVEYARD_FID'        => $graveyard_fid,
+                'CRON_GRAVEYARD_LAST'  => $cron_last,
+                'CRON_GRAVEYARD_LAST0' => $cron_last_human,
+                'CRON_GRAVEYARD'       => $cron_interval,
+                'CRON_GRAVEYARD_NEXT'  => $cron_next_human,
+                'U_ACTION'             => $this->u_action,
             ));
         }
     }

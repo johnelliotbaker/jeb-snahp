@@ -46,11 +46,91 @@ class reqs_post extends base
             $fid = 5;
             return $this->handle_request_form($cfg, $fid);
             break;
+        case 'spam':
+            $cfg['tpl_name'] = 'reqs_post_movies.html';
+            $cfg['b_feedback'] = false;
+            $fid = 24;
+            return $this->handle_spam($cfg, $fid);
+            break;
+        case 'thanks':
+            $cfg['tpl_name'] = 'reqs_post_movies.html';
+            $cfg['b_feedback'] = false;
+            $fid = 24;
+            return $this->handle_thanks($cfg, $fid);
+            break;
         default:
             trigger_error('Invalid request category.');
             break;
         }
 	}
+
+    public function handle_thanks()
+    {
+        $sql = 'SELECT post_id, topic_id from phpbb_posts order by post_time desc';
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data = [];
+        $data['user_id']     = $this->user->data['user_id'];
+        $data['poster_id']   = 48;
+        $data['thanks_time'] = 1549238692;
+        $data['forum_id']    = 24;
+        $i = 1;
+        $topic_id_0 = $row['topic_id'];
+        $post_id_0 = $row['post_id'];
+        while ($i < 100000)
+        {
+            $data['post_id']     = $post_id_0 - $i;
+            $data['topic_id']    = $topic_id_0 - $i;
+            $sql = 'INSERT INTO phpbb_thanks
+                ' . $this->db->sql_build_array('INSERT', $data) . '
+                ON DUPLICATE KEY update thanks_time=0';
+            $this->db->sql_query($sql);
+            $i += 1;
+        }
+        trigger_error('thanked' . " $i times");
+        // $sql = 'INSERT INTO phpbb_thanks (`post_id`, `poster_id`, `user_id`, `topic_id`, `forum_id`, `thanks_time`) VALUES ' .
+        //     ('4367', '2', '48', '3554', '24', '1549237197');
+    }
+
+    public function handle_spam($cfg, $fid)
+    {
+        $mode = 'post';
+        $message = 'spam';
+        $subject = 'spam';
+        $username = '***Request Username***';
+        $topic_type = 0;
+        $data_ary = [];
+        $data_ary['topic_title'] = 'topic_title';
+        $data_ary['icon_id'] = 0;
+        $data_ary['forum_id'] = $fid;
+        $data_ary['topic_time_limit'] = 0;
+        $data_ary['enable_bbcode'] = true;
+        $data_ary['enable_smilies'] = true;
+        $data_ary['enable_urls'] = true;
+        $data_ary['enable_sig'] = true;
+        $data_ary['bbcode_bitfield'] = '';
+        $bbcode_uid = substr(base_convert(unique_id(), 16, 36), 0, BBCODE_UID_LEN);
+        $data_ary['bbcode_uid'] = $bbcode_uid;
+        $data_ary['post_edit_locked'] = 0;
+        $data_ary['icon_id'] = 0;
+        $data_ary['enable_indexing'] = true;
+        $data_ary['notify_set'] = false;
+        $data_ary['notify'] = false;
+        // $vars = array('message', 'forum_id',);
+        // $message_parser = new \parse_message();
+        // $message_parser->message = $message ? $message : ' ';
+        // $message_parser->parse($data_ary['enable_bbcode'], ($this->config['allow_post_links']) ? $data_ary['enable_urls'] : false, $data_ary['enable_smilies'], true, true, true, $this->config['allow_post_links']);
+        // $message = $message_parser->message;
+        $data_ary['message'] = $message;
+        $data_ary['message_md5'] = md5($data_ary['message']);
+        $i = 0;
+        while($i < 50000)
+        {
+            submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
+            $i += 1;
+        }
+    }
 
     public function handle_request_form($cfg, $fid)
     {

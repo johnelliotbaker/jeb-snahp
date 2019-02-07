@@ -63,6 +63,7 @@
         </span>
       </dd>
       <br>
+    </dl>
   </fieldset>
 
   <fieldset>
@@ -155,6 +156,66 @@
                              style="text-align:center; width:80px;"
                              name="redib_cooldown_time"
                              value="{redib_cooldown_time}"> seconds
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <h2>Moving Closed Requests to Graveyard</h2><br>
+    <dl>
+      <dt><label>Enable Cron</label><br>
+        <span><br>
+          The forum id of the graveyard.<br>
+          Closed requests will be sent to this forum.
+        </span>
+      </dt>
+      <dd>
+        <label><input type="radio" name="cron_b_graveyard" class="radio" value="1" {% if CRON_B_GRAVEYARD %}checked="checked"{% endif %}> Yes</label>
+        <label><input type="radio" name="cron_b_graveyard" class="radio" value="0" {% if not CRON_B_GRAVEYARD %}checked="checked"{% endif %}> No</label>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Graveyard FID</label><br>
+        <span><br>
+          The forum id of the graveyard.<br>
+          Closed requests will be sent to this forum.
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:40px;"
+                             name="graveyard_fid"
+                             value="{GRAVEYARD_FID}">
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Last Moved Time</label>
+        <span><br>
+          Last time closed requests were moved to the graveyard.<br>
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:96px;"
+                             name="cron_graveyard_last"
+                             value="{CRON_GRAVEYARD_LAST}">
+        <br>
+        <span>{CRON_GRAVEYARD_LAST0}</span>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Graveyard Cycle Time</label>
+        <span><br>
+          Minimum time between cron task to move closed requests to graveyard.<br>
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:96px;"
+                             name="cron_graveyard"
+                             value="{CRON_GRAVEYARD}"> seconds
+        <br>
+        <span>{CRON_GRAVEYARD_NEXT}</span>
       </dd>
     </dl>
   </fieldset>

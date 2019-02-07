@@ -235,6 +235,22 @@ abstract class base
     }
 
     // REQUEST
+    public function select_request_closed()
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_closed = $def['set']['closed'];
+        $sql = 'SELECT * FROM ' . $tbl['req'] .
+            ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
+            ' AND b_graveyard = 0';
+        $result = $this->db->sql_query($sql);
+        $data = [];
+        while ($row = $this->db->sql_fetchrow($result))
+            $data[] = $row;
+        $this->db->sql_freeresult($result);
+        return $data;
+    }
+
     public function select_request($tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');

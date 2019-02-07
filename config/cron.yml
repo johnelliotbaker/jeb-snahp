@@ -1,0 +1,12 @@
+services:
+    jeb.snahp.cron.task.graveyard_request:
+        class: jeb\snahp\cron\graveyard_request
+        arguments:
+            - '@config'
+            - '@jeb.snahp.topic_mover'
+            - '@dbal.conn'
+            - '@service_container'
+        calls:
+            - [set_name, [cron.task.graveyard_request]]
+        tags:
+            - { name: cron.task }

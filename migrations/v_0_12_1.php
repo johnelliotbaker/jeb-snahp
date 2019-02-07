@@ -27,10 +27,27 @@ class v_0_12_1 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return array(
+            'add_columns'	=> array(
+                $this->table_prefix . 'snahp_request'  => array(
+                    'b_graveyard'  => array('BOOL', 0),
+                ),
+            ),
             'add_index'	=> array(
                 $this->table_prefix . 'snahp_request'  => array(
-                    'status' => array('status'),
-                    'fid'    => array('fid'),
+                    'status'      => array('status'),
+                    'fid'         => array('fid'),
+                    'b_graveyard' => array('b_graveyard'),
+                ),
+            ),
+        );
+    }
+
+    public function revert_schema()
+    {
+        return array(
+            'drop_columns'	=> array(
+                $this->table_prefix . 'snahp_request'  => array(
+                    'b_graveyard',
                 ),
             ),
         );

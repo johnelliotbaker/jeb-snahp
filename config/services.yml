@@ -1,6 +1,6 @@
 imports:
     - { resource: parameters.yml }
-
+    - { resource: cron.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
@@ -12,7 +12,7 @@ services:
         class: jeb\snahp\core\base
         abstract: true
         arguments:
-            - 'phpbb_'
+            - '%core.table_prefix%'
         calls:
             - [set_template_context, ['@template_context']]
             - [set_container,        ['@service_container']]
@@ -92,3 +92,17 @@ services:
             - '@user_loader'
         tags:
             - { name: notification.type }
+    jeb.snahp.topic_mover:
+        class: jeb\snahp\core\topic_mover
+        arguments:
+            - '@user'
+            - '@dbal.conn'
+            - '@log'
+            - '@dispatcher'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+    jeb.snahp.graveyard_request:
+        class: jeb\snahp\controller\graveyard_request
+        parent: jeb.snahp.base
+        arguments:
+            - '@jeb.snahp.topic_mover'
