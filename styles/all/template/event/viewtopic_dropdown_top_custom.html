@@ -1,0 +1,32 @@
+{% if B_MOD_MOVE_TOPIC %}
+<script>
+  window.onload = () => {
+    var tid = {S_TOPIC_ID};
+    $to_forum_id = $("#to_forum_id");
+    var fid = $to_forum_id.children("option:selected").val();
+    $to_forum_id.change(()=>{
+      fid = $to_forum_id.children("option:selected").val();
+    });
+    $('#mod_move_topic').click(()=>{
+      var url = '/app.php/snahp/admin/move_topic/' + tid + '/' + fid + '/';
+      $.get(url, (resp)=>{
+        if (resp['status'] == 'SUCCESS')
+        {
+          location.reload();
+        }
+        else
+        {
+          alert('Something went wrong. Could not move the topic.');
+        }
+      });
+    })
+  }
+</script>
+<button id="mod_move_topic" class="button" title="Post a new topic"
+  style="float:none">
+  <span>Move Topic</span> <i class="icon fa-arrows fa-fw" aria-hidden="true"></i>
+</button>
+<label>
+  <select id="to_forum_id" name="to_forum_id">{S_FORUM_SELECT}</select>
+</label>
+{% endif %}

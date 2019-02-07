@@ -1,60 +1,41 @@
 <?php
 
-use \Symfony\Component\HttpFoundation\Response;
-
 namespace jeb\snahp\controller;
+use \Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\JsonResponse;
+use jeb\snahp\core\base;
+use jeb\snahp\core\topic_mover;
 
-use phpbb\user;
-use phpbb\auth\auth;
-use phpbb\request\request_interface;
-use phpbb\db\driver\driver_interface;
-
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
-class admin
+class admin extends base
 {
-	protected $u_action;
-    protected $user;
-    protected $auth;
-    protected $request;
-    protected $db;
-    protected $config;
-    protected $helper;
-    protected $language;
-    protected $template;
-
-    /**
-     * Constructor
-     *
-     * @param \phpbb\config\config      $config
-     * @param \phpbb\controller\helper  $helper
-     * @param \phpbb\language\language  $language
-     * @param \phpbb\template\template  $template
-     */
-    public function __construct(
-        user $user,
-        auth $auth,
-        request_interface $request,
-        driver_interface $db,
-        \phpbb\config\config $config,
-        \phpbb\controller\helper $helper,
-        \phpbb\language\language $language,
-        \phpbb\template\template $template
-    )
+    protected $prefix;
+    protected $topic_mover;
+    public function __construct( $prefix, topic_mover $topic_mover)
     {
-        $this->user     = $user;
-        $this->auth     = $auth;
-        $this->request  = $request;
-        $this->config   = $config;
-        $this->helper   = $helper;
-        $this->language = $language;
-        $this->template = $template;
-        $this->db       = $db;
+        $this->prefix = $prefix;
+        $this->topic_mover = $topic_mover;
         $this->u_action = 'app.php/snahp/admin/';
+    }
+
+    protected function get_topic_data(array $topic_ids)
+    {
+        if (!function_exists('phpbb_get_topic_data'))
+        {
+            include('includes/functions_mcp.php');
+        }
+
+        return phpbb_get_topic_data($topic_ids);
+    }
+
+    public function handle_move_single_topic($tid, $fid)
+    {
+        $this->reject_non_moderator();
+        $a_tid = [$tid];
+        $td = $this->get_topic_data($a_tid);
+        $this->topic_mover->move_topics($td, $fid);
+        $data = ['status' => 'SUCCESS'];
+        $json = new JsonResponse($data);
+        return $json;
     }
 
     public function handle()

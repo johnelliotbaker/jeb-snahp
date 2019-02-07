@@ -1,6 +1,12 @@
 jeb_snahp_admin:
     path: /snahp/admin/
     defaults: { _controller: jeb.snahp.admin:handle}
+jeb_snahp_mod_move_topic:
+    path: /snahp/admin/move_topic/{tid}/{fid}/
+    defaults: { _controller: jeb.snahp.admin:handle_move_single_topic}
+    requirements:
+        tid: \d+
+        fid: \d+
 jeb_snahp_reqs:
     path: /snahp/reqs/{fid}/{tid}/{pid}/{mode}/
     defaults: { _controller: jeb.snahp.reqs:handle}

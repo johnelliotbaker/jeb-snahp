@@ -50,6 +50,19 @@ services:
             - '@notification_manager'
         tags:
             - { name: event.listener }
+    jeb.snahp.mod_listener:
+        class: jeb\snahp\event\mod_listener
+        parent: jeb.snahp.core
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '%core.table_prefix%'
+            - '@notification_manager'
+        tags:
+            - { name: event.listener }
 # Unimplemented
     jeb.snahp.reqs_post:
         class: jeb\snahp\controller\reqs_post
@@ -68,15 +81,9 @@ services:
             - '%core.table_prefix%'
     jeb.snahp.admin:
         class: jeb\snahp\controller\admin
+        parent: jeb.snahp.base
         arguments:
-            - '@user'
-            - '@auth'
-            - '@request'
-            - '@dbal.conn'
-            - '@config'
-            - '@controller.helper'
-            - '@language'
-            - '@template'
+            - '@jeb.snahp.topic_mover'
     jeb.snahp.notification.type.basic:
         class: jeb\snahp\notification\basic
         scope: prototype # scope MUST be prototype for this to work!
