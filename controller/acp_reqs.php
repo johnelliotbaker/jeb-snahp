@@ -127,10 +127,10 @@ class acp_reqs extends base
         $data = $this->user->data;
         $auth = $this->auth;
         $request = $this->request;
-        if (!$auth->acl_gets('a_'))
-        {
-            trigger_error('Lasciate ogne speranza, voi ch’intrate.');
-        }
+        // if (!$auth->acl_gets('a_'))
+        // {
+        //     trigger_error('Lasciate ogne speranza, voi ch’intrate.');
+        // }
         // Add security for CSRF
         add_form_key('jeb/snahp');
         if ($request->is_set_post('submit'))

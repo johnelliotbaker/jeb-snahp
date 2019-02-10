@@ -40,6 +40,7 @@ abstract class base
     protected $table_prefix;
     protected $notification;
 	protected $u_action;
+    protected $allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
 
     public function set_template_context(context $ctx)
     {
@@ -92,6 +93,81 @@ abstract class base
     }
 
     // DATABASE Functions
+    // ALL SUBFORUM ID
+    public function select_subforum($parent_id)
+    {
+        $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $parent_left_id = $row['left_id'];
+        $parent_right_id = $row['right_id'];
+        $sql = 'SELECT * FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
+        $result = $this->db->sql_query($sql);
+        $data = [];
+        while($row = $this->db->sql_fetchrow($result))
+        {
+            $data[] = $row['forum_id'];
+        }
+        $this->db->sql_freeresult($result);
+        return $data;
+    }
+
+    // FAVORITE CONTENTS
+    public function select_one_day($parent_id, $per_page, $start, $sort_mode)
+    {
+        $a_fid = $this->select_subforum($parent_id);
+        // Get total for pagination. This is very expensive.
+        // $sql = 'SELECT COUNT(*) as total FROM ' . TOPICS_TABLE .
+        //     ' WHERE ' . $this->db->sql_in_set('forum_id', $a_fid) .
+        //     ' ORDER BY topic_id DESC';
+        // $result = $this->db->sql_query($sql);
+        // $row = $this->db->sql_fetchrow($result);
+        // $this->db->sql_freeresult($result);
+        $total = 300;
+        // $total = min($row['total'], $total);
+        switch ($sort_mode)
+        {
+        case 'views':
+            $order_by = 't.topic_views DESC';
+            break;
+        case 'replies':
+            $order_by = 't.topic_posts_approved DESC';
+            break;
+        case 'id':
+        default:
+            $order_by = 't.topic_id DESC';
+            break;
+        }
+        $sql_array = [
+            'SELECT'	=> '
+                    t.forum_id, topic_id, topic_title, topic_views, topic_time, 
+                    topic_visibility, topic_posts_approved,
+                    topic_poster, topic_first_poster_name, topic_first_poster_colour,
+                    topic_last_poster_id, topic_last_poster_name, topic_last_poster_colour,
+                    topic_last_post_subject, topic_last_post_time,
+                    forum_name',
+            'FROM'		=> [ TOPICS_TABLE	=> 't', ],
+            'LEFT_JOIN'	=> [
+                [
+                    'FROM'	=> [FORUMS_TABLE => 'f'],
+                    'ON'	=> 't.forum_id=f.forum_id',
+                ],
+            ],
+            'WHERE'		=> $this->db->sql_in_set('t.forum_id', $a_fid),
+            'ORDER_BY' => $order_by,
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $data = [];
+        while($row = $this->db->sql_fetchrow($result))
+        {
+            $data[] = $row;
+        }
+        $this->db->sql_freeresult($result);
+        return [$data, $total];
+    }
+
     // TOPIC
     public function select_topic($tid)
     {
@@ -251,6 +327,24 @@ abstract class base
         return $data;
     }
 
+    public function select_request_open_by_uid($uid)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_closed = $def['set']['closed'];
+        $sql = 'SELECT * FROM ' . $tbl['req'] .
+            ' WHERE ' . $this->db->sql_in_set('status', $def_closed, true) .
+            ' AND b_graveyard = 0 AND requester_uid=' . $uid;
+        $result = $this->db->sql_query_limit($sql, 20);
+        $data = [];
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            $data[] = $row;
+        }
+        $this->db->sql_freeresult($result);
+        return $data;
+    }
+
     public function select_request($tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -383,23 +477,98 @@ abstract class base
         return $strn;
     }
 
+    public function validate_curly_tags($html)
+    {
+        preg_match_all('#{([a-z]+)(?: .*)?(?<![/|/ ])}#iU', $html, $result);
+        $openedtags = $result[1];   #put all closed tags into an array
+        preg_match_all('#{/([a-z]+)}#iU', $html, $result);
+        $closedtags = $result[1];
+        $len_opened = count($openedtags);
+        $len_closed = count($closedtags);
+        if ($len_closed != $len_opened) {
+            return False;
+        }
+        $openedtags = array_reverse($openedtags);
+        for ($i=0; $i < $len_opened; $i++)
+        {
+            if (!in_array($openedtags[$i], $closedtags))
+            {
+                return False;
+            }
+            else
+            {
+                unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+            }
+        }
+        return True;
+    }
+
     public function interpolate_curly_tags($strn)
     {
-        // $ptn = '#({\s*/?(script|form|a|img|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
-        $ptn = '#({\s*/?(script|form|a|noframes|marquee|style|button|input|xml|base|html|head|title|body|applet|object|embed|iframe|frame|layer|ilayer|meta|link)([^}]*)})#is';
-        $warning = '<br /><strong style="color:red;">####### DO NOT ABUSE THE TEMPLATE SYSTEM. THIS ATTEMPT HAS BEEN LOGGED AND REPORTED TO THE ADMINISTRATORS. ######<br /> TIME: '. time() . '<br /></strong>';
-        $strn = preg_replace($ptn, $warning, $strn);
+        $valid = $this->validate_curly_tags($strn) ? 1 : 0;
+        if (!$valid) return $strn;
         $ptn = '/{([^}]*)}/is';
-        $strn = preg_replace($ptn, '<\1>', $strn);
+        $strn = preg_replace_callback($ptn, function($m) {
+            $allowed_directive = $this->allowed_directive;
+            $sub = $m[1];
+            $b_open = False;
+            if ($sub && $sub[0] == '/')
+            {
+                $sub = substr($sub, 1);
+            }
+            else
+            {
+                $b_open = True;
+            }
+            preg_match('/(\w+)/is', $sub, $match);
+            if ($match && in_array($match[0], $allowed_directive))
+            {
+                switch ($match[0])
+                {
+                case 'table':
+                    if ($b_open)
+                    {
+                        $tag = '<div class="request_table container"><div class="request_table wrapper">';
+                        $tag .= "<$m[1]>";
+                    }
+                    else
+                    {
+                        $tag = "<$m[1]>";
+                        $tag .= '</div></div>';
+                    }
+                    return $tag;
+                    break;
+                case 'iframe':
+                    $ptn = '#src=("|\')([^("|\')]*)("|\')#is';
+                    $text = $m[1];
+                    preg_match($ptn, $m[1], $match);
+                    if (!$match)
+                    {
+                        return "<$m[1]>";
+                    }
+                    $url = parse_url($match[2]);
+                    $allowed_hosts = ['www.youtube.com', 'streamable.com'];
+                    if (in_array($url['host'], $allowed_hosts))
+                    {
+                        return "<$m[1]>";
+                    }
+                    return '';
+                    break;
+                default:
+                    return "<$m[1]>";
+                }
+            }
+        }, $strn);
         $ptn = '#(.*)(<table.*</table>)(.*)#is';
         preg_match($ptn, $strn, $match);
         if ($match)
         {
             $table = $match[2];
             $table = str_replace('<br>', '', $table);
-            $strn = $match[1] . $table . $match[3];
+            $strn = $match[1];
+            $strn .= $table;
+            $strn .= $match[3];
         }
-		// prn($strn);
         return $strn;
     }
 

@@ -23,7 +23,6 @@ class admin extends base
         {
             include('includes/functions_mcp.php');
         }
-
         return phpbb_get_topic_data($topic_ids);
     }
 
@@ -43,7 +42,6 @@ class admin extends base
         $data = $this->user->data;
         $auth = $this->auth;
         $request = $this->request;
-
         if (!$auth->acl_gets('a_'))
         {
             // If not site admin, throw error

@@ -63,6 +63,11 @@ services:
             - '@notification_manager'
         tags:
             - { name: event.listener }
+    jeb.snahp.favorite:
+        class: jeb\snahp\controller\favorite
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
 # Unimplemented
     jeb.snahp.reqs_post:
         class: jeb\snahp\controller\reqs_post

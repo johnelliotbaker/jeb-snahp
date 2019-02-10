@@ -12,7 +12,7 @@ function add_username(e, id)
 $(document).ready(()=>{
   $banned_users = $("#banned_users");
   $usernames = $("#ban");
-  $.get('http://192.168.2.12:888/app.php/snahp/acp_reqs_get_banned_dibbers/', (resp)=>{
+  $.get('/app.php/snahp/acp_reqs_get_banned_dibbers/', (resp)=>{
     var strn = '';
     var user_colour = '';
     var username_clean = '';
@@ -32,9 +32,15 @@ $(document).ready(()=>{
 <form id="mcp_ban" method="post" action="{U_ACTION}">
 <div class="panel">
 	<div class="inner">
+	<h3>Reset Request Statitics for a User</h3>
+  <fieldset>
+    <dl>
+      <dt><label for="reset_request_stat">Click on the link to the right:</label></dt>
+      <dd><a href="/app.php/snahp/acp_reqs_manage_user/">Click to modify a user's request statistics</a></dd>
+    </dl>
+  </fieldset>
 	<h3>Ban dibber</h3>
 	<p>Disallow user from dibbing</p>
-
 	<fieldset>
 	<dl>
     <dt><label for="ban">Usernames:</label><br>

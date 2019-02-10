@@ -1,9 +1,16 @@
+<!-- IF not $INCLUDED_JQUERYUIJS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- DEFINE $INCLUDED_JQUERYUIJS = true -->
+<!-- ENDIF -->
+<!-- INCLUDEJS @jeb_snahp/base.js -->
 <script>
 $("body").keydown(function(event){
     if(event.keyCode == 27) {
         event.preventDefault();
         $("#anilist_dialog").remove();
         $("#googlebooks_dialog").remove();
+        $("#gamespot_dialog").remove();
         $(".modal").remove();
     }
 });

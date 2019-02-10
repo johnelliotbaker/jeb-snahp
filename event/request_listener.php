@@ -67,9 +67,8 @@ class request_listener extends base implements EventSubscriberInterface
 
     public function show_request_form_as_table($event)
     {
-        $i_row = $event['current_row_number'];
-        if ($i_row > 0)
-            return false;
+        // $i_row = $event['current_row_number'];
+        // if ($i_row > 0) return false;
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);
@@ -98,9 +97,13 @@ class request_listener extends base implements EventSubscriberInterface
 
     public function compose_request_form($event)
     {
-        include_once('request_form.php');
-        if ($event['mode'] != 'post')
+        $postform_fid = unserialize($this->config['snp_req_postform_fid']);
+        if ($event['mode'] != 'post' ||
+            !in_array($event['forum_id'], $postform_fid))
+        {
             return false;
+        }
+        include_once('request_form.php');
         $mp = $event['message_parser'];
         $message = &$mp->message;
         $res = make_request_form($this->request);
@@ -109,6 +112,10 @@ class request_listener extends base implements EventSubscriberInterface
             $res .= PHP_EOL . PHP_EOL . '<br><br>============= Additional Comments =============<br>' . PHP_EOL;
         }
         $message = $res . $message;
+        $post_data = $event['post_data'];
+        $post_data['enable_magic_url'] = 0;
+        $post_data['enable_urls'] = 0;
+        $event['post_data'] = $post_data;
     }
 
     public function modify_request_tags($event)

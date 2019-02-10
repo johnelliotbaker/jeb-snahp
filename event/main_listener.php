@@ -334,7 +334,7 @@ class main_listener extends core implements EventSubscriberInterface
                 $nid = $row['notification_id'];
             }
             $this->db->sql_freeresult($result);
-            if ($nid)
+            if (isset($nid))
             {
                 $sql = 'DELETE FROM ' . $pre . 'notifications 
                     WHERE notification_id=' . $nid;

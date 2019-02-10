@@ -316,11 +316,15 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
+                $fid_listings = $request->variable('fid_listings', '0');
+                $config->set('snp_fid_listings', $fid_listings);
+                meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
             $template->assign_vars(array(
-                'U_ACTION'          => $this->u_action,
+                'FID_LISTINGS' => $config['snp_fid_listings'],
+                'U_ACTION'     => $this->u_action,
             ));
         }
     }

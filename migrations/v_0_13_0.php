@@ -35,6 +35,7 @@ class v_0_13_0 extends \phpbb\db\migration\migration
             array('config.add', array('snp_cron_graveyard_fid', serialize($snp_cron_graveyard_fid))),
             array('config.add', array('snp_cron_graveyard_last_gc', 0)),
             array('config.add', array('snp_cron_graveyard_gc', $default_cron_interval)),
+            array('config.add', array('snp_fid_listings', 4)),
         );
     }
 

@@ -46,7 +46,6 @@ class graveyard_request extends \phpbb\cron\task\base
         {
             include('includes/functions_mcp.php');
         }
-
         return phpbb_get_topic_data($topic_ids);
     }
 
@@ -74,7 +73,8 @@ class graveyard_request extends \phpbb\cron\task\base
             $a_tid[] = $req['tid'];
         if (!$a_tid) return false;
         $td = $this->get_topic_data($a_tid);
-        $this->topic_mover->move_topics($td, 24);
+        $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
+        $this->topic_mover->move_topics($td, $graveyard_fid);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['req'] .
             ' SET b_graveyard = 1 ' .
@@ -95,7 +95,6 @@ class graveyard_request extends \phpbb\cron\task\base
 
     public function should_run()
     {
-        // return true;
         return $this->config['snp_cron_graveyard_last_gc'] < time() - $this->config['snp_cron_graveyard_gc'];
     }
 }

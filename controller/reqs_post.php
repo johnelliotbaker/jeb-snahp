@@ -180,8 +180,6 @@ class reqs_post extends base
                 $data_ary['message'] = $message;
                 $data_ary['message_md5'] = md5($data_ary['message']);
                 submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
-                // meta_refresh(0, 'http://192.168.2.12:888/app.php/snahp/reqs_post/tvshows/5/');
-                // trigger_error('error');
                 meta_refresh(2, $this->u_action);
                 trigger_error($this->user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }

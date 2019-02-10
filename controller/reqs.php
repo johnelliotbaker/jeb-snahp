@@ -1,9 +1,9 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Response;
 
 namespace jeb\snahp\controller;
-
+use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
 function prn($var) {
@@ -408,6 +408,46 @@ class reqs extends base
     public function is_requester($reqdata)
     {
         return $this->user_id = $reqdata['requester_uid'];
+    }
+
+    public function get_requests_as_json()
+    {
+        $this->reject_anon();
+        $user_id = $this->user->data['user_id'];
+        $reqdata = $this->select_request_open_by_uid($user_id);
+        $data = [];
+        foreach ($reqdata as $entry)
+        {
+            $tid = $entry['tid'];
+            $status = $entry['status'];
+            $date = $this->user->format_date($entry['created_time']);
+            switch ($status)
+            {
+            case 1:
+                $status = 'Open';
+                break;
+            case 3:
+                $status = 'Accepted';
+                break;
+            case 4:
+                $status = 'Fulfilled';
+                break;
+            default:
+                $status = 'Error';
+                break;
+            }
+            $tdata = $this->select_topic($tid);
+            $title = $tdata['topic_title'];
+            $jsonentry = [
+                't' => $tid,
+                's' => $status,
+                'd' => $date,
+                'ti' => $title,
+            ];
+            $data[] = $jsonentry;
+        }
+        $json = new JsonResponse($data);
+        return $json;
     }
 
 }

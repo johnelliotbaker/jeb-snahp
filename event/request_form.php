@@ -121,7 +121,7 @@ define('DEFINITION', [
 function make_request_form($request)
 {
     $res = [];
-    $res[] = '{table class="table-fill"}' . PHP_EOL;
+    $res[] = '{table}' . PHP_EOL;
     $varnames = $request->variable_names();
     $type = $request->variable('request_type', 'video');
     if (in_array($type, ['tv', 'movie', 'video']))
@@ -143,9 +143,13 @@ function make_request_form($request)
                 $b_mega = stripos($var, 'mega');
                 $b_zippy = stripos($var, 'zippy');
                 if ($b_mega !== false)
-                    $data[] = '{img class="host-icon" src="//i.imgur.com/kkmC4dv.png"}';
+                {
+                    $data[] = '{img class="host-icon" src="//i.imgur.com/kkmC4dv.png"}{/img}';
+                }
                 if ($b_zippy !== false)
-                    $data[] = '{img class="host-icon" src="//i.imgur.com/EO7Nyo7.png"}';
+                {
+                    $data[] = '{img class="host-icon" src="//i.imgur.com/EO7Nyo7.png"}{/img}';
+                }
                 break;
             case 'req_quality_balance':
                 $data[] = $var;
@@ -210,7 +214,7 @@ function make_request_form($request)
         $res[] = '{/tr}' . PHP_EOL;
     }
     $res[] = '{/table}' . PHP_EOL;
-    $res[] = '* Items in [b]bold[/b] are required or strongly preferred.';
+    $res[] = '[center]* Items in [b]bold[/b] are required or strongly preferred.[/center]';
     $res = implode('', $res);
     return $res;
 }

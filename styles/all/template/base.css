@@ -29,40 +29,39 @@
 }
 
 
-/*** Table Styles  for request form ***/
-.host-icon
+/*** Table Styles for request form ***/
+.request_table.container {
+    text-align: center;
+}
+.request_table.wrapper {
+    border: 5px solid #410;
+    background: #410;
+    border-radius: 12px;
+    width: auto;
+    display:inline-block;
+}
+
+.request_table .host-icon
 {
     max-height:24px;
     margin: 0px 4px 0px 0px;
 }
 
-.table-fill {
-    border-radius:9px;
-    border-collapse: collapse;
-    max-width: 800px;
-}
-
-/* Basic entry color scheme */
-.table-fill tr {
-    color:#404050;
-    font-size:16px;
-    font-weight:normal;
-}
-.table-fill tr:nth-child(odd) td {
+.request_table tr:nth-child(odd) td {
     color:#D5DDE5;;
     background:#1b1e24;
 }
 
 /* Bold entries */
-.table-fill td .bold {
+.request_table td .bold {
     color: #991111;
     font-weight:900;
 }
-.table-fill tr:nth-child(odd) td .bold{
+.request_table tr:nth-child(odd) td .bold{
     color:#ff3030;
 }
 
-.table-fill th {
+.request_table th {
     color:#D5DDE5;;
     background:#1b1e24;
     border-bottom:4px solid #9ea7af;
@@ -75,21 +74,22 @@
 }
 
 /* Rounded outer corners */
-.table-fill tr:first-child td:first-child {
+.request_table tr:first-child td:first-child {
     border-top-left-radius:9px;
 }
-.table-fill tr:first-child td:last-child {
+.request_table tr:first-child td:last-child {
     border-top-right-radius:9px;
 }
-.table-fill tr:last-child td:first-child {
+.request_table tr:last-child td:first-child {
     border-bottom-left-radius:9px;
 }
-.table-fill tr:last-child td:last-child {
+.request_table tr:last-child td:last-child {
     border-bottom-right-radius:9px;
 }
 
-.table-fill td {
+.request_table td {
     background:#eee;
+    color: #1b1e24;
     padding:10px;
     text-align:left;
     vertical-align:middle;
@@ -98,22 +98,43 @@
     border-right: 1px solid #C1C3D1;
 }
 
-.table-fill td:first-child {
+.request_table td:first-child {
     text-align: right;
 }
 
-.table-fill td:last-child {
+.request_table td:last-child {
     border-right: 0px;
 }
 
-.table-fill td.text-left {
+.request_table td.text-left {
     text-align: left;
 }
 
-.table-fill td.text-center {
+.request_table td.text-center {
     text-align: center;
 }
 
-.table-fill td.text-right {
+.request_table td.text-right {
     text-align: right;
 }
+
+/*** Table Styles for my open requests modal ***/
+#open_request_dialog {
+    font-size: 1.7em;
+}
+#open_request_dialog td {
+    padding: 5px 28px 5px 5px;
+    width:auto;
+}
+#open_request_dialog tr:nth-child(odd) td {
+    background:#CCC;
+}
+#open_request_dialog .ui-widget-header {
+    background:#F00;
+}
+
+.ui-dialog-title {
+    font-size: 2em;
+    text-align: center;
+}
+
