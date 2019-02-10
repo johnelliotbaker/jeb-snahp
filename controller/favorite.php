@@ -93,7 +93,7 @@ class favorite extends base
                 $this->template->assign_block_vars('postrow', $group);
             }
             $this->template->assign_var('TITLE', $cfg['title']);
-            return $this->helper->render($tpl_name, 'title');
+            return $this->helper->render($tpl_name, $cfg['title']);
         }
     }
 
