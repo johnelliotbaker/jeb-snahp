@@ -32,11 +32,6 @@ function eventFire(el, etype, b_ctrl=false){
 }
 
 
-var jui = `<script
-  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-  crossorigin="anonymous"></script>`;
-
 $(document).ready(function(){
     var type = $("#request_type").val();
     $postingbox = $('#postingbox');
@@ -44,8 +39,6 @@ $(document).ready(function(){
     $('#request_advanced').animate({ opacity: "toggle", height: "toggle"}, 0);
     $('#subject').prop({'required': 'required'})
     $('label[for="subject"]').text('Request:');
-    $('input[name="preview"]').remove();
-    $('input[name="save"]').remove();
     $('.req_cb_label').click((e) => {
         // For firefox compatibility
         $target = $(e.target);
@@ -91,5 +84,4 @@ $(document).ready(function(){
             $('#req_mus_reminder').animate({ opacity: "toggle", height: "toggle", });
         }, 6000);
     }
-    $('head').prepend(jui);
 });
