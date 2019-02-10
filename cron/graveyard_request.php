@@ -49,7 +49,7 @@ class graveyard_request extends \phpbb\cron\task\base
         return phpbb_get_topic_data($topic_ids);
     }
 
-    public function select_request_closed()
+    public function select_request_closed($limit=100)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
@@ -57,7 +57,7 @@ class graveyard_request extends \phpbb\cron\task\base
         $sql = 'SELECT * FROM ' . $tbl['req'] .
             ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
             ' AND b_graveyard = 0';
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query_limit($sql, $limit);
         $data = [];
         while ($row = $this->db->sql_fetchrow($result))
             $data[] = $row;
@@ -67,7 +67,8 @@ class graveyard_request extends \phpbb\cron\task\base
 
     public function exec_move()
     {
-        $requestdata = $this->select_request_closed();
+        $batch_limit = 100;
+        $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
         foreach ($requestdata as $req)
             $a_tid[] = $req['tid'];
