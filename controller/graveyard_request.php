@@ -21,53 +21,30 @@ class graveyard_request extends base
         $this->topic_mover = $topic_mover;
     }
 
-    public function handle_working()
+    public function handle()
     {
         $this->reject_non_moderator();
-        $requestdata = $this->select_request_closed();
+        $batch_limit = 100;
+        $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
         foreach ($requestdata as $req)
             $a_tid[] = $req['tid'];
-        if (!$a_tid) return false;
+        $len = count($a_tid);
+        if (!$a_tid)
+        {
+            $len = count($a_tid);
+            trigger_error("$len items have been moved to graveyard.");
+        }
         $td = $this->get_topic_data($a_tid);
-        $this->topic_mover->move_topics($td, 24);
+        $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
+        $this->topic_mover->move_topics($td, $graveyard_fid);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['req'] .
             ' SET b_graveyard = 1 ' .
             ' WHERE ' . $this->db->sql_in_set('tid', $a_tid);
         $this->db->sql_query($sql);
-        trigger_error('Items have been moved to graveyard.');
+        trigger_error("$len items have been moved to graveyard.");
     }
-
-    public function handle()
-    {
-        $this->reject_non_moderator();
-        $count = 0;
-        $to = 24;
-        while ($count < 100000)
-        {
-            if ($to == 24)
-            {
-                $to = 21;
-            }
-            // $requestdata = $this->select_request_closed();
-            // $a_tid = [];
-            // foreach ($requestdata as $req)
-            //     $a_tid[] = $req['tid'];
-            $a_tid = [1434];
-            if (!$a_tid) return false;
-            $td = $this->get_topic_data($a_tid);
-            $this->topic_mover->move_topics($td, $to);
-            $tbl = $this->container->getParameter('jeb.snahp.tables');
-            $sql = 'UPDATE ' . $tbl['req'] .
-                ' SET b_graveyard = 1 ' .
-                ' WHERE ' . $this->db->sql_in_set('tid', $a_tid);
-            $this->db->sql_query($sql);
-            $count += 1;
-        }
-        trigger_error('Items have been moved to graveyard.');
-    }
-
 
     protected function get_topic_data(array $topic_ids)
     {
@@ -75,9 +52,7 @@ class graveyard_request extends base
         {
             include('includes/functions_mcp.php');
         }
-
         return phpbb_get_topic_data($topic_ids);
     }
-
 
 }
