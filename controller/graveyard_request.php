@@ -21,6 +21,22 @@ class graveyard_request extends base
         $this->topic_mover = $topic_mover;
     }
 
+    public function select_request_closed($limit=100)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_closed = $def['set']['closed'];
+        $sql = 'SELECT * FROM ' . $tbl['req'] .
+            ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
+            ' AND b_graveyard = 0';
+        $result = $this->db->sql_query_limit($sql, $limit);
+        $data = [];
+        while ($row = $this->db->sql_fetchrow($result))
+            $data[] = $row;
+        $this->db->sql_freeresult($result);
+        return $data;
+    }
+
     public function handle()
     {
         $this->reject_non_moderator();
