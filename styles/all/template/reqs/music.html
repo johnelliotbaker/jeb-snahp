@@ -1,126 +1,20 @@
 <input id="request_type" name="request_type" type="hidden" value="music">
+<input id="enable_request_form" name="enable_request_form" type="hidden" value="1">
 <div id="request_form" class="request_form">
   {% include '@jeb_snahp/reqs/ctrl_click.html' %}
-  <dl>
-    <dt>
-      <label>Host:</label>
-    </dt>
-    <dd>
-      <input type="radio" name="req_v_host" id="req_v_host_mega" value="MEGA">
-      <label for="req_v_host_mega">MEGA</label>
-      <input type="radio" name="req_v_host" id="req_v_host_zippyshare" value="Zippyshare">
-      <label for="req_v_host_zippyshare">Zippyshare</label>
-      <input type="radio" name="req_v_host" id="req_v_host_either" value="Mega or Zippyshare" checked="checked">
-      <label for="req_v_host_either">Either</label>
-    </dd>
-  </dl>
-  <dl>
-    <dt>
-      <label>Audio Compression:</label>
-    </dt>
-    <dd>
-      <input class="req_cb" type="checkbox" name="req_v_comp_flac" id="req_v_comp_flac" value="1">
-      <label class="req_cb_label" for="req_v_comp_flac">FLAC</label>
-      <input class="req_cb" type="checkbox" name="req_v_comp_mp3" id="req_v_comp_mp3" value="1">
-      <label class="req_cb_label" for="req_v_comp_mp3">MP3</label>
-      <!-- <input class="req_cb" type="checkbox" name="req_v_comp_wav" id="req_v_comp_wav" value="1"> -->
-      <!-- <label class="req_cb_label" for="req_v_comp_wav">WAV</label> -->
-    </dd>
-  </dl>
+  {% include '@jeb_snahp/reqs/component/host.html' %}
+  {% include '@jeb_snahp/reqs/component/audio_compression.html' %}
 </div>
-  <dl id="req_mus_reminder">
-    <dt>
-      <label>Pro Tip<i class="icon fa-lightbulb-o fa-fw" style="color:#660000" aria-hidden="true"></i>:</label>
-    </dt>
-    <dd>
-      <p style="color:#a20;">
-        <b>
-          For music requests, try including relevant reference link.<br>
-          Your request will be fulfilled more quickly and accurately.<br>
-        </b>
-      </p>
-    </dd>
-  </dl>
-  <dl id="req_mus_url">
-    <dt>
-      <label>Reference Link:</label>
-    </dt>
-    <dd>
-      <input placeholder="https://www.discogs.com/" value="" name="req_v_reference_url" id="reference_url" type="text" class="inputbox autowidth">
-    </dd>
-  </dl>
+  {% include '@jeb_snahp/reqs/component/audio_tip.html' %}
+  {% include '@jeb_snahp/reqs/component/audio_reference_link.html' %}
 <div class="request_form">
-  <dl>
-    <dt>
-      <label for="req_a_min_bitrate">Minimum Bitrate:</label>
-    </dt>
-    <dd>
-      <select name="req_a_min_bitrate" id="req_a_min_bitrate">
-        <option value="x0">96 kbps</option>
-        <option value="x1">128 kbps</option>
-        <option value="x2">160 kbps</option>
-        <option value="x3" selected="selected">192 kbps</option>
-        <option value="x4">256 kbps</option>
-        <option value="x5">320 kbps</option>
-      </select>
-    </dd>
-  </dl>
-  <dl>
-    <dt>
-      <label>Sampling Rate:</label>
-    </dt>
-    <dd>
-      <select name="req_a_min_sample" id="req_a_min_sample">
-        <option value="x0" selected="selected">44100 Hz</option>
-        <option value="x1">48000 Hz</option>
-      </select>
-    </dd>
-  </dl>
-  <dl>
-    <dt>
-      <label>Audio Channels:</label>
-    </dt>
-    <dd>
-      <select name="req_a_channel" id="req_a_channel">
-        <option value="x0">Mono</option>
-        <option value="x1" selected="selected">Stereo</option>
-      </select>
-    </dd>
-  </dl>
-  <dl>
-    <dt>
-      <label>Bit Depth:</label>
-    </dt>
-    <dd>
-      <select name="req_a_bitrate" id="req_a_bitrate">
-        <option value="x0">8-Bit</option>
-        <option value="x1" selected="selected">16-Bit</option>
-        <option value="x2">24-Bit</option>
-        <option value="x3">32-Bit</option>
-      </select>
-    </dd>
-  </dl>
+  {% include '@jeb_snahp/reqs/component/audio_bitrate.html' %}
+  {% include '@jeb_snahp/reqs/component/audio_samplerate.html' %}
+  {% include '@jeb_snahp/reqs/component/audio_channels.html' %}
+  {% include '@jeb_snahp/reqs/component/audio_bitdepth.html' %}
   <div id="request_advanced" class="request advanced">
-    <dl>
-      <dt>
-        <label>Size:</label>
-      </dt>
-      <dd>
-        <label for="req_v_size_min">Minimum (GB)</label>
-        <input name="req_v_size_min" id="req_v_size_min" value="0" type="number" min="0" style="text-align:center; width:38px;">
-        <label for="req_v_size_max">Maximum (GB)</label>
-        <input name="req_v_size_max" id="req_v_size_max" value="0" type="number" min="0" style="text-align:center; width:38px;">
-      </dd>
-    </dl>
-    <dl>
-      <dt>
-        <label>Size vs Quality:</label>
-      </dt>
-      <input type="radio" name="req_quality_balance" id="req_favor_size" value="Prefer smaller size">
-      <label for="req_favor_size">Smaller size</label>
-      <input type="radio" name="req_quality_balance" id="req_favor_quality" value="Prefer higher quality">
-      <label for="req_favor_quality">Higher quality</label>
-    </dl>
+    {% include '@jeb_snahp/reqs/component/size.html' %}
+    {% include '@jeb_snahp/reqs/component/quality_balance.html' %}
   </div>
   {% include '@jeb_snahp/reqs/show_advanced.html' %}
 </div>

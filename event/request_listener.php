@@ -81,7 +81,6 @@ class request_listener extends base implements EventSubscriberInterface
         $post = $this->request->variable('p', '');
         $fid = $this->request->variable('f', '');
         if ($preview || $post) return false;
-        $this->template->assign_var('B_REQUEST_POST', true);
         $afid = unserialize($this->config['snp_req_postform_fid']);
         $data = [];
         foreach($afid as $name => $pf_fid)
@@ -89,10 +88,11 @@ class request_listener extends base implements EventSubscriberInterface
             if ($pf_fid == $fid)
             {
                 $data['B_POSTFORM_' . strtoupper($name)] = true;
+                $this->template->assign_var('B_REQUEST_POST', true);
+                break;
             }
         }
         $this->template->assign_vars($data);
-        $this->template->assign_var('B_REQUEST_POST', true);
     }
 
     public function compose_request_form($event)
@@ -103,6 +103,9 @@ class request_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
+        $post_data = $event['post_data'];
+        $b_request_form = $this->request->variable('enable_request_form', '0');
+        if (!$b_request_form) return false;
         include_once('request_form.php');
         $mp = $event['message_parser'];
         $message = &$mp->message;
@@ -112,7 +115,6 @@ class request_listener extends base implements EventSubscriberInterface
             $res .= PHP_EOL . PHP_EOL . '<br><br>============= Additional Comments =============<br>' . PHP_EOL;
         }
         $message = $res . $message;
-        $post_data = $event['post_data'];
         $post_data['enable_magic_url'] = 0;
         $post_data['enable_urls'] = 0;
         $event['post_data'] = $post_data;

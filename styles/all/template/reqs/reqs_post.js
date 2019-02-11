@@ -34,10 +34,6 @@ function eventFire(el, etype, b_ctrl=false){
 
 $(document).ready(function(){
     var type = $("#request_type").val();
-    if (!type)
-    {
-        return false;
-    }
     $postingbox = $('#postingbox');
     $postingbox.parent().find('h3').text('Create a new ' + type + ' request');
     $('#request_advanced').animate({ opacity: "toggle", height: "toggle"}, 0);

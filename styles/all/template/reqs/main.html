@@ -1,10 +1,24 @@
 {% if B_REQUEST_POST and not S_TOPIC_ID %}
+
   {% include '@jeb_snahp/reqs/header.html' %}
+
   {% if B_POSTFORM_TV %}
-  {% include '@jeb_snahp/reqs/tv.html' %}
+    {% include '@jeb_snahp/reqs/tv.html' %}
+
   {% elseif B_POSTFORM_MOVIE %}
-  {% include '@jeb_snahp/reqs/movie.html' %}
+    {% include '@jeb_snahp/reqs/movie.html' %}
+
   {% elseif B_POSTFORM_MUSIC %}
-  {% include '@jeb_snahp/reqs/music.html' %}
+    {% include '@jeb_snahp/reqs/music.html' %}
+
+  {% elseif B_POSTFORM_APP %}
+    {% include '@jeb_snahp/reqs/app.html' %}
+
+  {% elseif B_POSTFORM_GAME %}
+    {% include '@jeb_snahp/reqs/game.html' %}
+
+  {% elseif B_POSTFORM_MISC %}
+    {% include '@jeb_snahp/reqs/misc.html' %}
+
   {% endif %}
 {% endif %}
