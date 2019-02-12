@@ -110,7 +110,7 @@ class main_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'core.user_setup'                             => [
+            'core.user_setup' => [
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
             ],

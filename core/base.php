@@ -91,6 +91,21 @@ abstract class base
     {
         $this->notification = $manager;
     }
+    
+    // SESSION MANAGEMENT
+    public function set_cookie($key, $data)
+    {
+        $last_visit = $this->user->data['user_lastvisit'];
+        $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
+        $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
+    }
+
+    public function get_cookie($key)
+    {
+        $cookie = $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
+        $cookie = ($cookie) ? tracking_unserialize($cookie) : [];
+        return $cookie;
+    }
 
     // DATABASE Functions
     // ALL SUBFORUM ID
