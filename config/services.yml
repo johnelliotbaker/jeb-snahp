@@ -52,15 +52,7 @@ services:
             - { name: event.listener }
     jeb.snahp.mod_listener:
         class: jeb\snahp\event\mod_listener
-        parent: jeb.snahp.core
-        arguments:
-            - '@auth'
-            - '@request'
-            - '@config'
-            - '@dbal.conn'
-            - '@template'
-            - '%core.table_prefix%'
-            - '@notification_manager'
+        parent: jeb.snahp.base
         tags:
             - { name: event.listener }
     jeb.snahp.favorite:

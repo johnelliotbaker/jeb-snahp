@@ -11,55 +11,25 @@
 namespace jeb\snahp\event;
 
 
-use jeb\snahp\core\core;
-use phpbb\auth\auth;
-use phpbb\template\template;
-use phpbb\config\config;
-use phpbb\request\request_interface;
-use phpbb\db\driver\driver_interface;
-use phpbb\notification\manager;
-use Symfony\Component\EventDispatcher\Event;
+use jeb\snahp\core\base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * snahp Event listener.
  */
-class mod_listener extends core implements EventSubscriberInterface
+class mod_listener extends base implements EventSubscriberInterface
 {
-    protected $auth;
-    protected $request;
-    protected $config;
-    protected $db;
-    protected $template;
-    protected $table_prefix;
-    protected $notification;
-    protected $sql_limit;
-    protected $notification_limit;
-    protected $at_prefix;
 
-    public function __construct(
-        auth $auth,
-        request_interface $request,
-        config $config,
-        driver_interface $db,
-        template $template,
-        $table_prefix,
-        manager $notification
-    )
+    public function __construct()
     {
-
-        $this->auth               = $auth;
-        $this->request            = $request;
-        $this->config             = $config;
-        $this->db                 = $db;
-        $this->template           = $template;
-        $this->table_prefix       = $table_prefix;
-        $this->notification       = $notification;
     }
 
     static public function getSubscribedEvents()
     {
         return array(
+            'core.user_setup' => [
+                ['setup_moderator', 0],
+            ],
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_move_topic_button', 0),
             ),
@@ -72,6 +42,29 @@ class mod_listener extends core implements EventSubscriberInterface
     public function is_mod()
     {
         return $this->auth->acl_gets('a_', 'm_');
+    }
+
+    public function modify_session()
+    {
+        $fid['mcp_move_to'] = 1;
+        $last_visit = $this->user->data['user_lastvisit'];
+        $this->user->set_cookie('fid', tracking_serialize($fid), $last_visit + 31536000);
+        $this->request->overwrite($this->config['cookie_name'] . '_fid', tracking_serialize($fid), \phpbb\request\request_interface::COOKIE);
+    }
+
+    public function check_session()
+    {
+        $tracking = $this->request->variable($this->config['cookie_name'] . '_fid', '', true, \phpbb\request\request_interface::COOKIE);
+        $tracking = ($tracking) ? tracking_unserialize($tracking) : array();
+        prn($tracking);
+    }
+
+    public function setup_moderator($event)
+    {
+        if (!$this->is_mod()) return false;
+        $this->template->assign_vars([
+            'B_MOD' => true,
+        ]);
     }
 
     public function Show_report_details_in_post($event)
@@ -146,7 +139,9 @@ class mod_listener extends core implements EventSubscriberInterface
         // For use with: viewtopic_dropdown_top_custom.html
         if (!$this->is_mod()) return false;
         include_once('includes/functions_admin.php');
-        $forum_select = make_forum_select($select_id = false, $ignore_id = false, $ignore_acl = false, $ignore_nonpost = false, $ignore_emptycat = true, $only_acl_post = false, $return_array = false);
+        $select_id = $this->get_cookie('mcp_move_topic_to_fid');
+        $select_id = $select_id ? $select_id : false;
+        $forum_select = make_forum_select($select_id = $select_id, $ignore_id = false, $ignore_acl = false, $ignore_nonpost = false, $ignore_emptycat = true, $only_acl_post = false, $return_array = false);
         $this->template->assign_vars([
             'S_FORUM_SELECT' => $forum_select,
             'B_MOD_MOVE_TOPIC' => true,
