@@ -110,7 +110,10 @@ class main_listener extends core implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'core.user_setup'                             => 'include_donation_navlink',
+            'core.user_setup'                             => [
+                ['include_donation_navlink', 0],
+                ['include_quick_link', 0],
+            ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
@@ -148,6 +151,18 @@ class main_listener extends core implements EventSubscriberInterface
             $data['enable_sig'] = 0;
         }
         $event['data'] = $data;
+    }
+
+    public function include_quick_link($event)
+    {
+        $this->template->assign_vars([
+            'S_LOAD_UNREADS' => False,
+            'B_SHOW_QL_REPLIES' => $this->config['snp_ql_fav_b_replies'],
+            'B_SHOW_QL_VIEWS' => $this->config['snp_ql_fav_b_views'],
+            'B_SHOW_QL_TIME' => $this->config['snp_ql_fav_b_time'],
+            'B_SHOW_BOOKMARK' => $this->config['snp_ql_ucp_bookmark'],
+            'B_SHOW_OPEN_REQUESTS' => $this->config['snp_ql_req_open_requests'],
+        ]);
     }
 
     public function include_donation_navlink($event)
