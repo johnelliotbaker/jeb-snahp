@@ -85,7 +85,7 @@ abstract class base
     public function set_table_prefix($table_prefix)
     {
         $this->table_prefix = $table_prefix;
-        $this->table_prefix = 'phpbb_';
+        // $this->table_prefix = 'phpbb_';
     }
     public function set_notification(manager $manager)
     {
@@ -102,13 +102,9 @@ abstract class base
         $this->db->sql_freeresult($result);
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
-        $sql = 'SELECT * FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
+        $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
         $result = $this->db->sql_query($sql);
-        $data = [];
-        while($row = $this->db->sql_fetchrow($result))
-        {
-            $data[] = $row['forum_id'];
-        }
+        $data = array_map(function($array){return $array['forum_id'];}, $this->db->sql_fetchrowset($result));
         $this->db->sql_freeresult($result);
         return $data;
     }
@@ -117,26 +113,27 @@ abstract class base
     public function select_one_day($parent_id, $per_page, $start, $sort_mode)
     {
         $a_fid = $this->select_subforum($parent_id);
-        // Get total for pagination. This is very expensive.
-        // $sql = 'SELECT COUNT(*) as total FROM ' . TOPICS_TABLE .
-        //     ' WHERE ' . $this->db->sql_in_set('forum_id', $a_fid) .
-        //     ' ORDER BY topic_id DESC';
-        // $result = $this->db->sql_query($sql);
-        // $row = $this->db->sql_fetchrow($result);
-        // $this->db->sql_freeresult($result);
-        $total = 300;
-        // $total = min($row['total'], $total);
+        $maxi_query = $this->config['snp_ql_fav_limit'];
+        $timedelta = $this->config['snp_ql_fav_duration'];
+        $time = time();
+        $lastdt = $time - $timedelta;
         switch ($sort_mode)
         {
         case 'views':
             $order_by = 't.topic_views DESC';
+            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
+            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         case 'replies':
             $order_by = 't.topic_posts_approved DESC';
+            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
+            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         case 'id':
         default:
             $order_by = 't.topic_id DESC';
+            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
+            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         }
         $sql_array = [
@@ -154,18 +151,18 @@ abstract class base
                     'ON'	=> 't.forum_id=f.forum_id',
                 ],
             ],
-            'WHERE'		=> $this->db->sql_in_set('t.forum_id', $a_fid),
+            'WHERE'		=> $where,
             'ORDER_BY' => $order_by,
         ];
         $sql = $this->db->sql_build_query('SELECT', $sql_array);
-        $result = $this->db->sql_query_limit($sql, $per_page, $start);
-        $data = [];
-        while($row = $this->db->sql_fetchrow($result))
-        {
-            $data[] = $row;
-        }
+        $result = $this->db->sql_query_limit($sql, $maxi_query);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
         $this->db->sql_freeresult($result);
-        return [$data, $total];
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
     }
 
     // TOPIC
@@ -320,9 +317,7 @@ abstract class base
             ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
             ' AND b_graveyard = 0';
         $result = $this->db->sql_query($sql);
-        $data = [];
-        while ($row = $this->db->sql_fetchrow($result))
-            $data[] = $row;
+        $data = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $data;
     }
@@ -336,11 +331,7 @@ abstract class base
             ' WHERE ' . $this->db->sql_in_set('status', $def_closed, true) .
             ' AND b_graveyard = 0 AND requester_uid=' . $uid;
         $result = $this->db->sql_query_limit($sql, 20);
-        $data = [];
-        while ($row = $this->db->sql_fetchrow($result))
-        {
-            $data[] = $row;
-        }
+        $data = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $data;
     }
@@ -547,7 +538,7 @@ abstract class base
                         return "<$m[1]>";
                     }
                     $url = parse_url($match[2]);
-                    $allowed_hosts = ['www.youtube.com', 'streamable.com'];
+                    $allowed_hosts = ['www.youtube.com'];
                     if (in_array($url['host'], $allowed_hosts))
                     {
                         return "<$m[1]>";
