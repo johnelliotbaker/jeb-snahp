@@ -1,4 +1,5 @@
 $(document).ready(()=>{
+    $('input#username').focus();
     $('body').append('<span id="nothing"></span>');
     $oneday = $("#my_open_requests");
     $oneday.click((e)=>{
