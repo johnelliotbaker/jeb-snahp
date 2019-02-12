@@ -48,7 +48,6 @@ class graveyard_request extends base
         $len = count($a_tid);
         if (!$a_tid)
         {
-            $len = count($a_tid);
             trigger_error("$len items have been moved to graveyard.");
         }
         $td = $this->get_topic_data($a_tid);

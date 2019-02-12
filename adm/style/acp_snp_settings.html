@@ -15,6 +15,52 @@
             </dd>
           </dt>
         </dl>
+        <dl>
+          <dt>
+            <label for="snp_ql_fav_b_time">Show Most Recent:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="1" {% if SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="0" {% if not SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_ql_fav_b_views">Show Most Viewed:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="1" {% if SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="0" {% if not SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_ql_fav_b_replies">Show Most Discussed:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="1" {% if SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="0" {% if not SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_ql_ucp_bookmark">Show Bookmarks:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="1" {% if SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="0" {% if not SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_ql_req_open_requests">Show Open Requests:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="1" {% if SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="0" {% if not SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+
       </fieldset>
     </div>
   </div>

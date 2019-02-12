@@ -316,15 +316,36 @@ class main_module
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $fid_listings = $request->variable('fid_listings', '0');
+                $fid_listings = $request->variable('fid_listings', '4');
                 $config->set('snp_fid_listings', $fid_listings);
+                $snp_ql_fav_limit = $request->variable('snp_ql_fav_limit', '300');
+                $config->set('snp_ql_fav_limit', $snp_ql_fav_limit);
+                $snp_ql_fav_duration = $request->variable('snp_ql_fav_duration', '86400');
+                $config->set('snp_ql_fav_duration', $snp_ql_fav_duration);
+                $snp_ql_fav_b_replies = $request->variable('snp_ql_fav_b_replies', '0');
+                $config->set('snp_ql_fav_b_replies', $snp_ql_fav_b_replies);
+                $snp_ql_fav_b_views = $request->variable('snp_ql_fav_b_views', '1');
+                $config->set('snp_ql_fav_b_views', $snp_ql_fav_b_views);
+                $snp_ql_fav_b_time = $request->variable('snp_ql_fav_b_time', '1');
+                $config->set('snp_ql_fav_b_time', $snp_ql_fav_b_time);
+                $snp_ql_ucp_bookmark = $request->variable('snp_ql_ucp_bookmark', '1');
+                $config->set('snp_ql_ucp_bookmark', $snp_ql_ucp_bookmark);
+                $snp_ql_req_open_requests = $request->variable('snp_ql_req_open_requests', '1');
+                $config->set('snp_ql_req_open_requests', $snp_ql_req_open_requests);
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
             $template->assign_vars(array(
-                'FID_LISTINGS' => $config['snp_fid_listings'],
-                'U_ACTION'     => $this->u_action,
+                'SNP_QL_FAV_LIMIT'         => $config['snp_ql_fav_limit'],
+                'SNP_QL_FAV_DURATION'      => $config['snp_ql_fav_duration'],
+                'SNP_QL_FAV_B_REPLIES'     => $config['snp_ql_fav_b_replies'],
+                'SNP_QL_FAV_B_VIEWS'       => $config['snp_ql_fav_b_views'],
+                'SNP_QL_FAV_B_TIME'        => $config['snp_ql_fav_b_time'],
+                'SNP_QL_UCP_BOOKMARK'      => $config['snp_ql_ucp_bookmark'],
+                'SNP_QL_REQ_OPEN_REQUESTS' => $config['snp_ql_req_open_requests'],
+                'FID_LISTINGS'             => $config['snp_fid_listings'],
+                'U_ACTION'                 => $this->u_action,
             ));
         }
     }
