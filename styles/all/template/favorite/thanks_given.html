@@ -1,0 +1,60 @@
+<!-- INCLUDE overall_header.html -->
+{% if true %}
+<h2 class="forum-title">{TITLE}</h2>
+<div class="action-bar bar-top">
+  <div class="pagination">
+    <!-- IF .pagination -->
+      <!-- INCLUDE pagination.html -->
+    <!-- ELSE -->
+       &bull; {PAGE_NUMBER}
+    <!-- ENDIF -->
+  </div>
+</div>
+<div class="forumbg">
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+        <dl class="row-item">
+          <dt><div class="list-inner">Topics</div></dt>
+        </dl>
+			</li>
+		</ul>
+	<!-- IF .postrow -->
+		<ul class="topiclist">
+		<!-- BEGIN postrow -->
+			<li class="row<!-- IF postrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+				<dl>
+					<dt>
+						<div class="list-inner" style="width:100%;">
+							<a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.POST_SUBJECT}</a><br />
+              <span>{L_POSTED} {L_POST_BY_AUTHOR} <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.POSTER_ID}" style="color: #{postrow.POSTER_COLOUR};" class="username-coloured">{postrow.POSTER_NAME}</a> &raquo; {postrow.POST_TIME}</span><br>
+              <span>Thanked on {postrow.THANKS_TIME}</span>
+						</div>
+					</dt>
+				</dl>
+			</li>
+		<!-- END postrow -->
+		</ul>
+	<!-- ELSE -->
+	<!-- ENDIF -->
+	</div>
+</div>
+<div class="action-bar bottom">
+  <div class="pagination">
+    {TOTAL_REQUEST}
+    <!-- IF .pagination -->
+      <!-- INCLUDE pagination.html -->
+    <!-- ELSE -->
+       &bull; {PAGE_NUMBER}
+    <!-- ENDIF -->
+  </div>
+</div>
+{% else %}
+<div class="panel">
+	<div class="inner">
+    <h3>Requests disabled</h3>
+    <p>Request feature is currently disabled by the site admin.</p>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE overall_footer.html -->

@@ -125,6 +125,38 @@ abstract class base
     }
 
     // FAVORITE CONTENTS
+    public function select_thanks_given($per_page, $start, $user_id=null)
+    {
+        $maxi_query = 300;
+        if ($user_id===null)
+        {
+            $user_id = $this->user->data['user_id'];
+        }
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT 
+            t.topic_id, t.post_id, t.poster_id, t.forum_id,
+            t.thanks_time,
+            u.username, u.user_colour,
+            p.post_time, p.post_subject, p.post_time
+            FROM
+                ('. $tbl['thanks'] . ' t)
+                    LEFT JOIN ' .
+                POSTS_TABLE . ' p ON (p.post_id = t.post_id)
+                LEFT JOIN ' .
+                USERS_TABLE . ' u ON (u.user_id = t.poster_id)
+            WHERE
+                t.user_id = ' . $user_id . '
+            ORDER BY t.thanks_time DESC';
+        $result = $this->db->sql_query_limit($sql, $maxi_query);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
+        $this->db->sql_freeresult($result);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }
+
     public function select_one_day($parent_id, $per_page, $start, $sort_mode)
     {
         $a_fid = $this->select_subforum($parent_id);

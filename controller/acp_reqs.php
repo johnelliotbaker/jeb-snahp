@@ -32,6 +32,35 @@ class acp_reqs extends base
         return $json;
     }
 
+    public function update_deleted_requests($uid)
+    {
+        // Get all request entry for user
+        $sql = 'SELECT tid, status FROM ' . $this->tbl['req'] ." WHERE requester_uid=$uid" . '
+            AND ' . $this->db->sql_in_set('status', $this->def['set']['closed'], true);
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $a_tid_req = array_map(function($a) {return $a['tid'];}, $rowset);
+        // Check against topics that exists
+        $sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . ' WHERE ' .
+            $this->db->sql_in_set('topic_id', $a_tid_req);
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $a_tid = array_map(function($a) {return $a['topic_id'];}, $rowset);
+        $a_diff = array_diff($a_tid_req, $a_tid);
+        if (!$a_diff) return false;
+        // Update request entries
+        $data = [
+            'b_graveyard' => 1,
+            'status' => $this->def['deleted'],
+        ];
+        $sql = 'UPDATE ' . $this->tbl['req'] . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data). '
+            WHERE ' . $this->db->sql_in_set('tid', $a_diff);
+        $this->db->sql_query($sql);
+    }
+
     public function recalculate_request_users($username)
     {
         $this->reject_non_moderator();
@@ -45,17 +74,18 @@ class acp_reqs extends base
             return $data;
         }
         $uid = $userdata['user_id'];
+        $this->update_deleted_requests($uid);
         $cdef = $this->def['set']['closed'];
         $gid = $userdata['group_id'];
         $gdata = $this->select_group($gid);
-        $sql = 'SELECT count(*) as total FROM ' . $this->tbl['req'] ." WHERE requester_uid=$uid AND " .
+        $sql = 'SELECT tid FROM ' . $this->tbl['req'] ." WHERE requester_uid=$uid AND " .
             $this->db->sql_in_set('status', $cdef, true);
         $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
+        $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         $time = time();
         $cycle_time = $this->config['snp_req_cycle_time'];
-        $total = $row['total'];
+        $total = count($rowset);
         $goffset = $gdata['snp_req_n_offset'];
         $gbase = $gdata['snp_req_n_base'];
         if ($total >= $gbase)

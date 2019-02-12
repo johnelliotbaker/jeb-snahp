@@ -160,6 +160,7 @@ class main_listener extends core implements EventSubscriberInterface
             'B_SHOW_QL_REPLIES' => $this->config['snp_ql_fav_b_replies'],
             'B_SHOW_QL_VIEWS' => $this->config['snp_ql_fav_b_views'],
             'B_SHOW_QL_TIME' => $this->config['snp_ql_fav_b_time'],
+            'B_SHOW_THANKS_GIVEN' => $this->config['snp_ql_thanks_given'],
             'B_SHOW_BOOKMARK' => $this->config['snp_ql_ucp_bookmark'],
             'B_SHOW_OPEN_REQUESTS' => $this->config['snp_ql_req_open_requests'],
         ]);

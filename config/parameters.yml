@@ -4,6 +4,7 @@ parameters:
         req:    '%core.table_prefix%snahp_request'
         requsr: '%core.table_prefix%snahp_request_users'
         dibs:   '%core.table_prefix%snahp_dibs'
+        thanks: '%core.table_prefix%thanks'
     jeb.snahp.req:
         def:
             open: 1
@@ -13,14 +14,17 @@ parameters:
             undib: 5
             graveyard: 8
             terminate: 9
+            deleted: 19
             set:
                 closed:
                     - 2
                     - 9
+                    - 19
                 open:
                     - 1
                     - 3
                     - 4
+                    - 5
     jeb.snahp.reqsmcp:
         def:
             disable: 9

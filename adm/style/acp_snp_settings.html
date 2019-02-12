@@ -44,6 +44,15 @@
         </dl>
         <dl>
           <dt>
+            <label for="snp_ql_thanks_given">Show My Thanks:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="1" {% if SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="0" {% if not SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
             <label for="snp_ql_ucp_bookmark">Show Bookmarks:</label><br>
           </dt>
           <dd>

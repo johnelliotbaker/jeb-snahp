@@ -45,6 +45,7 @@ class v_0_13_1 extends \phpbb\db\migration\migration
             array('config.add', array('snp_ql_fav_b_replies', 0)),
             array('config.add', array('snp_ql_fav_b_views', 1)),
             array('config.add', array('snp_ql_fav_b_time', 1)),
+            array('config.add', array('snp_ql_thanks_given', 1)),
             array('config.add', array('snp_ql_ucp_bookmark', 1)),
             array('config.add', array('snp_ql_req_open_requests', 1)),
         );

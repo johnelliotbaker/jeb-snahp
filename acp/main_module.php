@@ -328,6 +328,8 @@ class main_module
                 $config->set('snp_ql_fav_b_views', $snp_ql_fav_b_views);
                 $snp_ql_fav_b_time = $request->variable('snp_ql_fav_b_time', '1');
                 $config->set('snp_ql_fav_b_time', $snp_ql_fav_b_time);
+                $snp_ql_thanks_given = $request->variable('snp_ql_thanks_given', '1');
+                $config->set('snp_ql_thanks_given', $snp_ql_thanks_given);
                 $snp_ql_ucp_bookmark = $request->variable('snp_ql_ucp_bookmark', '1');
                 $config->set('snp_ql_ucp_bookmark', $snp_ql_ucp_bookmark);
                 $snp_ql_req_open_requests = $request->variable('snp_ql_req_open_requests', '1');
@@ -342,6 +344,7 @@ class main_module
                 'SNP_QL_FAV_B_REPLIES'     => $config['snp_ql_fav_b_replies'],
                 'SNP_QL_FAV_B_VIEWS'       => $config['snp_ql_fav_b_views'],
                 'SNP_QL_FAV_B_TIME'        => $config['snp_ql_fav_b_time'],
+                'SNP_QL_THANKS_GIVEN'      => $config['snp_ql_thanks_given'],
                 'SNP_QL_UCP_BOOKMARK'      => $config['snp_ql_ucp_bookmark'],
                 'SNP_QL_REQ_OPEN_REQUESTS' => $config['snp_ql_req_open_requests'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],
