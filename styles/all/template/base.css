@@ -119,17 +119,17 @@
 }
 
 /*** Table Styles for my open requests modal ***/
-#open_request_dialog {
+.open_request_dialog {
     font-size: 1.7em;
 }
-#open_request_dialog td {
+.open_request_dialog td {
     padding: 5px 28px 5px 5px;
     width:auto;
 }
-#open_request_dialog tr:nth-child(odd) td {
+.open_request_dialog tr:nth-child(odd) td {
     background:#CCC;
 }
-#open_request_dialog .ui-widget-header {
+.open_request_dialog .ui-widget-header {
     background:#F00;
 }
 

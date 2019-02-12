@@ -50,9 +50,48 @@ function get_username()
   return username;
 }
 
+function show_user_requests()
+{
+  $('#user_request_details').empty();
+  var username = get_username();
+  if (!username)
+  {
+    $('#info').text('Username cannot be empty.');
+    return false;
+  }
+  $.get(`/app.php/snahp/reqs/myrequests/` + username + `/`)
+    .done((resp) => {
+    populate_request_details(resp);
+  })
+}
+
+function populate_request_details(resp)
+{
+    $table = $("#user_request_details");
+    $table.empty();
+    $dialog = $("#open_request_dialog_mcp");
+    $dialog.dialog();
+    $dialog.dialog("option", "minWidth", 600);
+    $('.ui-button').css('outline', 'none');
+    var count = 0;
+    for (var entry of resp)
+    {
+      var title = entry.ti;
+      if (title)
+      {
+        var index = '<td style="padding: 4px 10px 4px 10px;">' + count++ + '</td>';
+        var url = '<td style="padding: 4px 10px 4px 10px;"><b><a href="/viewtopic.php?t=' + entry.t + '">' + title + '</a></b></td>';
+        var datetime = '<td style="padding: 4px 10px 4px 10px;">' + entry.d + '</td>';
+        var status = '<td style="padding: 4px 10px 4px 10px;">' + entry.s + '</td>';
+        var row = '<tr>' + index + url + datetime + status + '</tr>';
+        $table.append($(row));
+      }
+    }
+}
+
 function reset_user()
 {
-  $('#content').empty();
+  $('#request_stat_content').empty();
   var username = get_username();
   if (!username)
   {
@@ -72,7 +111,7 @@ function reset_user()
 
 function populate_request_user()
 {
-  $('#content').empty();
+  $('#request_stat_content').empty();
   var username = get_username();
   if (!username)
   {
@@ -88,7 +127,7 @@ function populate_request_user()
         $('#info').text('Error: User not found in request user database.');
         return;
       }
-      $(req_user_row_template).appendTo($('#content'));
+      $(req_user_row_template).appendTo($('#request_stat_content'));
       var n_use = resp.n_use;
       var n_offset = resp.n_offset;
       var reset_time = resp.reset_time;
@@ -101,7 +140,7 @@ function populate_request_user()
     .fail(()=>
       {
         $('#info').text('Enter Valid Username.');
-        $('#content').empty();
+        $('#request_stat_content').empty();
       });
 }
 
@@ -136,13 +175,22 @@ $(document).ready(function()
   <div id='reset'>
     <button type="button" onClick="reset_user();">Reset this user</button>
   </div>
+  <div id='show_requests'>
+    <button type="button" onClick="show_user_requests();">Show User's Requests</button>
+  </div>
 	<hr />
   <h2 id="info"></h2>
 	<hr />
 	<dl>
-		<dt><label for="usernames">Request User Data</label></dt>
+		<dt><label>Request User Data</label></dt>
 	</dl>
-  <div id='content'>
+  <div id='request_stat_content'>
+  </div>
+	<hr />
+	<dl>
+		<dt><label>User Requests Details</label></dt>
+	</dl>
+  <div id='user_request_details'>
   </div>
 	<hr />
 	</fieldset>
@@ -156,5 +204,4 @@ $(document).ready(function()
 	{S_FORM_TOKEN}
 </fieldset>
 </form>
-
 <!-- INCLUDE mcp_footer.html -->

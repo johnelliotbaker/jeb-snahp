@@ -294,6 +294,7 @@ abstract class base
     {
         $username = utf8_clean_string($username);
         $userdata = $this->select_user_by_username($username);
+        if (!$userdata) return [];
         $user_id = $userdata['user_id'];
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['requsr'] ." WHERE user_id=$user_id";

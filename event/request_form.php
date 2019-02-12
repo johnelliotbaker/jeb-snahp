@@ -210,7 +210,7 @@ function make_request_form($request)
         $parsed_url = parse_url($url);
         $host = $parsed_url['host'];
         $res[] = '{tr}' . PHP_EOL;
-        $res[] = '{td} Link {/td}{td} ' . "[url=$url]$host" . ' [/url] {/td}' . PHP_EOL;
+        $res[] = '{td} Link {/td}{td} ' . "{a href=\"$url\" target=\"_blank\"}$host" . ' {/a}{/td}' . PHP_EOL;
         $res[] = '{/tr}' . PHP_EOL;
     }
     $res[] = '{/table}' . PHP_EOL;

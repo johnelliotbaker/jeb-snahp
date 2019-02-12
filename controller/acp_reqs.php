@@ -1,10 +1,7 @@
 <?php
-
+namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
-
-namespace jeb\snahp\controller;
-
 use jeb\snahp\core\base;
 
 function prn($var) {
@@ -30,7 +27,7 @@ class acp_reqs extends base
         $data = $this->recalculate_request_users($username);
         // meta_refresh(2, $this->u_action);
         // $message = 'Processed without an error.';
-        $json = new \Symfony\Component\HttpFoundation\JsonResponse();
+        $json = new JsonResponse();
         $json->setData($data);
         return $json;
     }
@@ -47,7 +44,6 @@ class acp_reqs extends base
             ];
             return $data;
         }
-        $userdata = $this->select_user_by_username($username);
         $uid = $userdata['user_id'];
         $cdef = $this->def['set']['closed'];
         $gid = $userdata['group_id'];
@@ -107,7 +103,7 @@ class acp_reqs extends base
             ];
         }
         $this->db->sql_freeresult($result);
-        $json = new \Symfony\Component\HttpFoundation\JsonResponse();
+        $json = new JsonResponse();
         $json->setData($data);
         return $json;
     }
@@ -115,8 +111,15 @@ class acp_reqs extends base
     public function get_userinfo($username)
     {
         $this->reject_non_moderator();
-        $json = new \Symfony\Component\HttpFoundation\JsonResponse();
-        $userdata = $this->select_request_users_by_username($username);
+        if (!$username)
+        {
+            $userdata = [];
+        }
+        else
+        {
+            $userdata = $this->select_request_users_by_username($username);
+        }
+        $json = new JsonResponse();
         $json->setData($userdata);
         return $json;
     }

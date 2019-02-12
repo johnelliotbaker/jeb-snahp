@@ -23,6 +23,11 @@ jeb_snahp_reqs:
 jeb_snahp_reqs_my_request:
     path: /snahp/reqs/myrequests/
     defaults: { _controller: jeb.snahp.reqs:get_requests_as_json}
+jeb_snahp_reqs_user_request:
+    path: /snahp/reqs/myrequests/{username}/
+    defaults: { _controller: jeb.snahp.reqs:get_requests_as_json}
+    requirements:
+        username: \S+
 jeb_snahp_reqsmcp:
     path: /snahp/reqsmcp/{mode}/{uid}/
     defaults: { _controller: jeb.snahp.reqs:handle_mcp}

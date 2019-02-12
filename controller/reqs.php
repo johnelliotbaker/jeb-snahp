@@ -410,10 +410,23 @@ class reqs extends base
         return $this->user_id = $reqdata['requester_uid'];
     }
 
-    public function get_requests_as_json()
+    public function get_requests_as_json($username='')
     {
         $this->reject_anon();
-        $user_id = $this->user->data['user_id'];
+        if (!$username)
+        {
+            $user_id = $this->user->data['user_id'];
+        }
+        else
+        {
+            $this->reject_non_moderator();
+            $userdata = $this->select_user_by_username($username);
+            if (!$userdata)
+            {
+                return new JsonResponse([]);
+            }
+            $user_id = $userdata['user_id'];
+        }
         $reqdata = $this->select_request_open_by_uid($user_id);
         $data = [];
         foreach ($reqdata as $entry)
