@@ -63,7 +63,7 @@ define('DEFINITION', [
         ],
         'Size' => [
             'req_v_size_min' => ['Minimum Size', 0],
-            'req_v_size_max' => ['Maximum Size', 2],
+            'req_v_size_max' => ['Maximum Size', 0],
         ],
         'Quality Balance' => [
             'req_quality_balance' => ['', ''],
@@ -107,7 +107,7 @@ define('DEFINITION', [
         ],
         'Size' => [
             'req_v_size_min' => ['Minimum Size', 0],
-            'req_v_size_max' => ['Maximum Size', 4],
+            'req_v_size_max' => ['Maximum Size', 0],
         ],
         'Quality Balance' => [
             'req_quality_balance' => ['', ''],
