@@ -69,9 +69,6 @@ function populate_request_details(resp)
 {
     $table = $("#user_request_details");
     $table.empty();
-    $dialog = $("#open_request_dialog_mcp");
-    $dialog.dialog();
-    $dialog.dialog("option", "minWidth", 600);
     $('.ui-button').css('outline', 'none');
     var count = 1;
     for (var entry of resp)

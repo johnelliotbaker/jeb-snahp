@@ -30,9 +30,7 @@ class graveyard_request extends base
             ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
             ' AND b_graveyard = 0';
         $result = $this->db->sql_query_limit($sql, $limit);
-        $data = [];
-        while ($row = $this->db->sql_fetchrow($result))
-            $data[] = $row;
+        $data = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $data;
     }
@@ -40,15 +38,14 @@ class graveyard_request extends base
     public function handle()
     {
         $this->reject_non_moderator();
-        $batch_limit = 100;
+        $batch_limit = 1000;
         $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
         foreach ($requestdata as $req)
             $a_tid[] = $req['tid'];
-        $len = count($a_tid);
         if (!$a_tid)
         {
-            trigger_error("$len items have been moved to graveyard.");
+            trigger_error("There are no closed requests to move.");
         }
         $td = $this->get_topic_data($a_tid);
         $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
@@ -58,6 +55,7 @@ class graveyard_request extends base
             ' SET b_graveyard = 1 ' .
             ' WHERE ' . $this->db->sql_in_set('tid', $a_tid);
         $this->db->sql_query($sql);
+        $len = count($a_tid);
         trigger_error("$len items have been moved to graveyard.");
     }
 

@@ -114,14 +114,11 @@ class main_module extends base
                     'LEFT JOIN ' .
                         USERS_TABLE . ' AS users ON request.requester_uid=users.user_id ' .
                     'LEFT JOIN ' .
-                    TOPICS_TABLE .' AS topics ON request.tid=topics.topic_id ' .
-                    'ORDER BY id DESC';
+                    TOPICS_TABLE .' AS topics ON request.tid=topics.topic_id ' .'
+                    WHERE request.status<>19
+                    ORDER BY id DESC';
         $result = $db->sql_query_limit($sql, $per_page, $start);
-        $data = [];
-        while($row = $db->sql_fetchrow($result))
-        {
-            $data[] = $row;
-        }
+        $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         return $data;
     }
@@ -141,11 +138,7 @@ class main_module extends base
                     'WHERE status=5 ' .
                     'ORDER BY undib_time DESC';
         $result = $db->sql_query_limit($sql, $per_page, $start);
-        $data = [];
-        while($row = $db->sql_fetchrow($result))
-        {
-            $data[] = $row;
-        }
+        $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         return $data;
     }
@@ -155,7 +148,7 @@ class main_module extends base
         global $db;
         $sql_arr = [
             'SELECT'   => 'count(*) as total',
-            'FROM'     => [$tbl => 'dibs'],
+            'FROM'     => [$tbl => 't'],
             'WHERE'    => $condition,
         ];
         $sql    = $db->sql_build_query('SELECT', $sql_arr);

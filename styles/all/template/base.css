@@ -138,3 +138,8 @@
     text-align: center;
 }
 
+
+/* quick links */
+.dropdown-contents {
+    max-height: 600px !important;
+}

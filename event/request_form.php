@@ -121,7 +121,7 @@ define('DEFINITION', [
 function make_request_form($request)
 {
     $res = [];
-    $res[] = '{table}' . PHP_EOL;
+    $res[] = '{snahp}{table}' . PHP_EOL;
     $varnames = $request->variable_names();
     $type = $request->variable('request_type', 'video');
     if (in_array($type, ['tv', 'movie', 'video']))
@@ -213,7 +213,7 @@ function make_request_form($request)
         $res[] = '{td} Link {/td}{td} ' . "{a href=\"$url\" target=\"_blank\"}$host" . ' {/a}{/td}' . PHP_EOL;
         $res[] = '{/tr}' . PHP_EOL;
     }
-    $res[] = '{/table}' . PHP_EOL;
+    $res[] = '{/table}{/snahp}' . PHP_EOL;
     $res[] = '[center]* Items in [b]bold[/b] are required or strongly preferred.[/center]';
     $res = implode('', $res);
     return $res;

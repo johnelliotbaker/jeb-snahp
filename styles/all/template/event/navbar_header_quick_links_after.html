@@ -15,25 +15,21 @@
 {% if B_SHOW_THANKS_GIVEN %}
 <li>
   <a href="/app.php/snahp/favorite/thanks_given/" id="quicklinks_thanks_given" role="menuitem" style="cursor:pointer;">
-    <i class="icon fa-thumbs-up fa-fw" aria-hidden="true"></i><span>My Thanks</span>
+    <i class="icon fa-thumbs-up fa-fw" aria-hidden="true"></i><span>Thanks Given</span>
   </a>
 </li>
 {% endif %}
 {% if B_SHOW_BOOKMARK %}
 <li>
   <a href="/ucp.php?i=ucp_main&mode=bookmarks" id="quicklinks_bookmark" role="menuitem" style="cursor:pointer;">
-    <i class="icon fa-bookmark fa-fw" aria-hidden="true"></i><span>My Bookmarks</span>
+    <i class="icon fa-bookmark fa-fw" aria-hidden="true"></i><span>Bookmarks</span>
   </a>
 </li>
 {% endif %}
 {% if B_SHOW_OPEN_REQUESTS %}
 <li>
-  <a type="button" id="my_open_requests" role="menuitem" style="cursor:pointer;">
-    <i class="icon fa-folder-open fa-fw" aria-hidden="true"></i><span>My Open Requests</span>
+  <a href="/app.php/snahp/favorite/open_requests/" id="quicklinks_open_requests" role="menuitem" style="cursor:pointer;">
+    <i class="icon fa-folder-open fa-fw" aria-hidden="true"></i><span>Open Requests</span>
   </a>
 </li>
-<div id="open_request_dialog" class="open_request_dialog" title="My Open Requests" style="display:none;">
-  <table id="open_request_table">
-  </table>
-</div>
 {% endif %}

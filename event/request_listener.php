@@ -62,13 +62,50 @@ class request_listener extends base implements EventSubscriberInterface
             'core.posting_modify_message_text' => 'compose_request_form',
             'core.modify_posting_parameters' => 'show_request_post_form',
             'core.viewtopic_modify_post_row' => 'show_request_form_as_table',
+            'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
         );
+    }
+
+    public function update_request_user_after_topic_deletion($event)
+    {
+        $a_tid = $event['topic_ids'];
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_deleted = $def['deleted'];
+        $sql = 'SELECT requester_uid, tid FROM ' . $tbl['req'] . '
+            WHERE ' . $this->db->sql_in_set('tid', $a_tid);
+        $result = $this->db->sql_query_limit($sql, 1000);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        foreach ($rowset as $row)
+        {
+            $tid = $row['tid'];
+            $data = [
+                'status' => $def_deleted,
+                'b_graveyard' => 1,
+            ];
+            $this->update_request($tid, $data);
+            $requester_uid = $row['requester_uid'];
+            $requesterdata = $this->select_request_users($requester_uid);
+            $n_use = $requesterdata['n_use'];
+            if ($n_use > 0)
+            {
+                $data = [ 'n_use' => $n_use - 1, ];
+            }
+            else
+            {
+                $n_offset = $requesterdata['n_offset'];
+                $data = [ 'n_offset' => $n_offset + 1, ];
+            }
+            $this->update_request_users($requester_uid, $data);
+        }
     }
 
     public function show_request_form_as_table($event)
     {
-        // $i_row = $event['current_row_number'];
-        // if ($i_row > 0) return false;
+        $fid = $event['row']['forum_id'];
+        $afid = unserialize($this->config['snp_req_postform_fid']);
+        if (!in_array($fid, $afid)) return false;
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);

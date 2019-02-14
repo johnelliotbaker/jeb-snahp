@@ -18,10 +18,19 @@ use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\notification\manager;
 
-function prn($var) {
+function prn($var, $b_html=false) {
     if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
+    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
+    } else {
+        if ($b_html)
+        {
+            echo htmlspecialchars($var) . '<br>';
+        }
+        else
+        {
+            echo $var . '<br>';
+        }
+    }
 }
 
 
@@ -125,6 +134,38 @@ abstract class base
     }
 
     // FAVORITE CONTENTS
+    public function select_open_requests($per_page, $start, $user_id=null)
+    {
+        $maxi_query = 300;
+        if ($user_id===null)
+        {
+            $user_id = $this->user->data['user_id'];
+        }
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_closed = $def['set']['closed'];
+        $sql = 'SELECT 
+            r.tid, r.fid, r.pid, r.created_time,
+            r.requester_uid, r.status,
+            t.topic_title
+            FROM
+                ('. $tbl['req'] . ' r)
+            LEFT JOIN ('. TOPICS_TABLE .' t) 
+            ON (t.topic_id=r.tid)
+            WHERE
+                r.requester_uid=' . $user_id . '
+            AND ' . $this->db->sql_in_set('status', $def_closed, true) .'
+            ORDER BY r.created_time DESC';
+        $result = $this->db->sql_query_limit($sql, $maxi_query);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
+        $this->db->sql_freeresult($result);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }
+
     public function select_thanks_given($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
@@ -542,10 +583,9 @@ abstract class base
         return True;
     }
 
-    public function interpolate_curly_tags($strn)
+    public function interpolate_curly_table($strn)
     {
-        $valid = $this->validate_curly_tags($strn) ? 1 : 0;
-        if (!$valid) return $strn;
+        $ptn = '/{{([^}]*)}}/is';
         $ptn = '/{([^}]*)}/is';
         $strn = preg_replace_callback($ptn, function($m) {
             $allowed_directive = $this->allowed_directive;
@@ -598,6 +638,27 @@ abstract class base
                 }
             }
         }, $strn);
+        $strn = $strn[0];
+        $ptn = '#(.*)(<table.*</table>)(.*)#is';
+        preg_match($ptn, $strn, $match);
+        if ($match)
+        {
+            $table = $match[2];
+            $table = str_replace('<br>', '', $table);
+            $strn = $match[1];
+            $strn .= $table;
+            $strn .= $match[3];
+        }
+        return $strn;
+    }
+
+    public function interpolate_curly_tags($strn)
+    {
+        $valid = $this->validate_curly_tags($strn) ? 1 : 0;
+        if (!$valid) return $strn;
+        $ptn = '#({snahp})(.*?)({/snahp})#is';
+        $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
+        $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
         $ptn = '#(.*)(<table.*</table>)(.*)#is';
         preg_match($ptn, $strn, $match);
         if ($match)
