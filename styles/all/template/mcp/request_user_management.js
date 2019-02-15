@@ -1,23 +1,23 @@
 var req_user_row_template = `
 <table>
   <thead>
-    <tr>
-      <th class="tbl user_id">UID</th>
-      <th class="tbl">Used (0)</th>
-      <th class="tbl">Cycle (0)</th>
-      <th class="tbl">Bonus (1)</th>
-      <th class="tbl">Next Reset Time</th>
-      <th class="tbl">Status</th>
+    <tr style="border-top:1px solid black;">
+      <th>UID</th>
+      <th>Used (0)</th>
+      <th>Cycle (0)</th>
+      <th>Bonus (1)</th>
+      <th>Next Reset Time</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><input class="inputbox autowidth" type="text" name="user_id" id="user_id" value="{USER_ID}"></td>
-      <td><input class="inputbox autowidth" type="text" name="n_use" id="n_use" value="{N_USE}"></td>
-      <td><input class="inputbox autowidth" type="text" name="n_use_this_cycle" id="n_use_this_cycle" value="{N_USE_THIS_CYCLE}"></td>
-      <td><input class="inputbox autowidth" type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
-      <td><input class="inputbox autowidth" type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
-      <td><input class="inputbox autowidth" type="text" name="status" id="status" value="{STATUS}"></td>
+      <td><input style="width:98%;" type="text" name="user_id" id="user_id" value="{USER_ID}"></td>
+      <td><input style="width:98%;" type="text" name="n_use" id="n_use" value="{N_USE}"></td>
+      <td><input style="width:98%;" type="text" name="n_use_this_cycle" id="n_use_this_cycle" value="{N_USE_THIS_CYCLE}"></td>
+      <td><input style="width:98%;" type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
+      <td><input style="width:98%;" type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
+      <td><input style="width:98%;" type="text" name="status" id="status" value="{STATUS}"></td>
     </tr>
   </tbody>
 </table>`
@@ -55,7 +55,7 @@ function populate_request_details(resp)
       if (title)
       {
         var index = '<td>' + count++ + '</td>';
-        var url = '<td><b><a href="/viewtopic.php?t=' + entry.t + '">' + title + '</a></b></td>';
+        var url = '<td><b><a target="_blank" href="/viewtopic.php?t=' + entry.t + '">' + title + '</a></b></td>';
         var datetime = '<td>' + entry.d + '</td>';
         var status = '<td>' + entry.s + '</td>';
         var row = '<tr>' + index + url + datetime + status + '</tr>';

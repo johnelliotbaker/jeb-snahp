@@ -3,9 +3,12 @@ table, th, td {
 }
 td {
     text-align: right;
+    color: black;
+}
+td a{
+    color: #0080EE;
 }
 td > input {
-    max-width:70px;
     border:0px;
     text-align: right;
 }

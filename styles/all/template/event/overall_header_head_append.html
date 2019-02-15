@@ -2,25 +2,27 @@
 <!-- INCLUDEJS @jeb_snahp/utility.js -->
 <!-- INCLUDECSS @jeb_snahp/base.css -->
 <!-- INCLUDECSS @jeb_snahp/request_tags.css -->
+{% if STYLE_NAME %}
 <!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_NAME}.css -->
+{% endif %}
 {% if B_SHOW_IMDB %}
-<!-- INCLUDEJS @jeb_snahp/snahp.js -->
-<!-- INCLUDECSS @jeb_snahp/imdb.css -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/imdb.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/imdb.css -->
 {% endif %}
 {% if B_SHOW_ANILIST %}
-<!-- INCLUDEJS @jeb_snahp/anilist.js -->
-<!-- INCLUDECSS @jeb_snahp/anilist.css -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/anilist.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/anilist.css -->
 {% endif %}
 {% if B_SHOW_BOOKS %}
-<!-- INCLUDEJS @jeb_snahp/googlebooks.js -->
-<!-- INCLUDECSS @jeb_snahp/googlebooks.css -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/googlebooks.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/googlebooks.css -->
 {% endif %}
 {% if B_SHOW_GAMES %}
-<!-- INCLUDEJS @jeb_snahp/gamespot.js -->
-<!-- INCLUDECSS @jeb_snahp/gamespot.css -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/gamespot.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/gamespot.css -->
 {% endif %}
 {% if B_SHOW_ANILIST || B_SHOW_BOOKS || B_SHOW_GAMES %}
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
 <!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
-<!-- INCLUDECSS @jeb_snahp/pg-modal.css -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->
 {% endif %}

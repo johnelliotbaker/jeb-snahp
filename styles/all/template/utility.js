@@ -35,8 +35,3 @@ function space2dash(strn)
 {
     return strn.replace(/\s+/g, '+').toLowerCase();
 }
-
-$(document).ready(function(){
-    // remove quick reply's automatic signature attachment
-    $("input:hidden[name='attach_sig']").remove();
-});
