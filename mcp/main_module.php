@@ -28,17 +28,17 @@ class main_module extends base
         switch ($mode)
         {
         case 'dibs':
-            $cfg['tpl_name'] = 'mcp_snp_list_dibs';
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/mcp_snp_list_dibs';
             $cfg['b_feedback'] = false;
             $this->handle_list_dibs($cfg);
             break;
         case 'ban':
-            $cfg['tpl_name'] = 'mcp_snp_dibs_ban';
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/mcp_snp_dibs_ban';
             $cfg['b_feedback'] = false;
             $this->handle_dibs_ban($cfg);
             break;
         case 'request':
-            $cfg['tpl_name'] = 'mcp_snp_list_request';
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/mcp_snp_list_request';
             $cfg['b_feedback'] = false;
             $this->handle_list_request($cfg);
             break;

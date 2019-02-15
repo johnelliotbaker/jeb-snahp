@@ -1,0 +1,27 @@
+/* hidebox */
+div.content > dl.hidebox.hi
+{
+    background-color: #f8c301;
+    border: 0;
+}
+div.content > dl.hidebox.hi dd
+{
+    color: black;
+}
+div.content > dl.hidebox.unhide
+{
+    background-color: black;
+}
+div.content > dl.hidebox.hi dd i
+{
+    color: black;
+}
+
+/* Request Template */
+.request_table.wrapper {
+    border: 5px solid #f8c301;
+    background: #f8c301;j
+}
+.request_table.wrapper a {
+    color: #0080FF;
+}

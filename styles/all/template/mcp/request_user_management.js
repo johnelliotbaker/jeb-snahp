@@ -1,25 +1,4 @@
-<!-- INCLUDE mcp_header.html -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-// <![CDATA[
-
 var req_user_row_template = `
-<style>
-  table, th, td {
-    border: 1px solid black;
-  }
-  td {
-    text-align: right;
-  }
-  td > input {
-    max-width:70px;
-    border:0px;
-    text-align: right;
-  }
-  #user_id {
-    width: 25px;
-  }
-</style>
 <table>
   <thead>
     <tr>
@@ -41,8 +20,8 @@ var req_user_row_template = `
       <td><input class="inputbox autowidth" type="text" name="status" id="status" value="{STATUS}"></td>
     </tr>
   </tbody>
-</table>
-`
+</table>`
+
 
 function get_username()
 {
@@ -52,7 +31,6 @@ function get_username()
 
 function show_user_requests()
 {
-  $('#user_request_details').empty();
   var username = get_username();
   if (!username)
   {
@@ -67,7 +45,7 @@ function show_user_requests()
 
 function populate_request_details(resp)
 {
-    $table = $("#user_request_details");
+    $table = $("#mcp_req_user_details");
     $table.empty();
     $('.ui-button').css('outline', 'none');
     var count = 1;
@@ -76,13 +54,19 @@ function populate_request_details(resp)
       var title = entry.ti;
       if (title)
       {
-        var index = '<td style="padding: 4px 10px 4px 10px;">' + count++ + '</td>';
-        var url = '<td style="padding: 4px 10px 4px 10px;"><b><a href="/viewtopic.php?t=' + entry.t + '">' + title + '</a></b></td>';
-        var datetime = '<td style="padding: 4px 10px 4px 10px;">' + entry.d + '</td>';
-        var status = '<td style="padding: 4px 10px 4px 10px;">' + entry.s + '</td>';
+        var index = '<td>' + count++ + '</td>';
+        var url = '<td><b><a href="/viewtopic.php?t=' + entry.t + '">' + title + '</a></b></td>';
+        var datetime = '<td>' + entry.d + '</td>';
+        var status = '<td>' + entry.s + '</td>';
         var row = '<tr>' + index + url + datetime + status + '</tr>';
         $table.append($(row));
       }
+    }
+    if (!resp)
+    {
+        var index = '<td>No Requests</td>';
+        var row = '<tr>' + index + '</tr>';
+        $table.append($(row));
     }
 }
 
@@ -99,6 +83,7 @@ function reset_user()
   .done((resp) => {
     $('#info').text('Status: ' + resp['status']);
     populate_request_user();
+    show_user_requests();
   })
   .fail(()=>
   {
@@ -148,57 +133,7 @@ $(document).ready(function()
   if (e.which == 13) {
     e.preventDefault();
     populate_request_user();
+    show_user_requests();
   }
   });
 });
-// ]]>
-</script>
-
-<form id="acp" method="post" action="{U_ACTION}">
-<h2>Manage User Request Statistics</h2>
-<div class="panel">
-	<div class="inner">
-	<h3>User Management</h3>
-	<fieldset>
-	<dl>
-    <dt><label for="usernames">Username</label><br>
-      Enter username (case insensitive) then press enter.<br>
-      If Request User Data is not populated with data, then either that username doesn't exist, or that user has never made a request.
-    </dt>
-    <dd><label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}" class="inputbox autowidth"></label></dd>
-		<dd><strong><a href="/memberlist.php?mode=searchuser&form=acp&field=usernames" onclick="find_username(this.href); return false;">Find a member</a></strong></dd>
-	</dl>
-	<hr />
-  <div id='reset'>
-    <button type="button" onClick="reset_user();">Reset this user</button>
-  </div>
-  <div id='show_requests'>
-    <button type="button" onClick="show_user_requests();">Show User's Requests</button>
-  </div>
-	<hr />
-  <h2 id="info"></h2>
-	<hr />
-	<dl>
-		<dt><label>Request User Data</label></dt>
-	</dl>
-  <div id='request_stat_content'>
-  </div>
-	<hr />
-	<dl>
-		<dt><label>User Requests Details</label></dt>
-	</dl>
-  <div id='user_request_details'>
-  </div>
-	<hr />
-	</fieldset>
-	</div>
-</div>
-
-<fieldset class="submit-buttons">
-	{S_HIDDEN_FIELDS}
-  <input type="reset" value="Reset" name="reset" class="button2" />&nbsp;
-	<input type="submit" value="submit" name="submit" class="button1" />
-	{S_FORM_TOKEN}
-</fieldset>
-</form>
-<!-- INCLUDE mcp_footer.html -->

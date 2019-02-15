@@ -1,0 +1,18 @@
+table, th, td {
+    border: 1px solid black;
+}
+td {
+    text-align: right;
+}
+td > input {
+    max-width:70px;
+    border:0px;
+    text-align: right;
+}
+#user_id {
+    width: 25px;
+}
+
+.mcp_table td {
+    padding: 4px 10px 4px 10px;
+}

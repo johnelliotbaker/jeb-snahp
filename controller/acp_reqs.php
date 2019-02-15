@@ -212,7 +212,7 @@ class acp_reqs extends base
             'RESET_TIME'       => $reset_time,
             'STATUS'           => $status,
         ]);
-        return $this->helper->render('acp_snp_reset_stats.html');
+        return $this->helper->render('@jeb_snahp/mcp/mcp_snp_reset_stats.html');
     }
 
 }

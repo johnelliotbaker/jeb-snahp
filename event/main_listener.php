@@ -113,6 +113,7 @@ class main_listener extends core implements EventSubscriberInterface
             'core.user_setup' => [
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
+                ['setup_custom_css', 0],
             ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
@@ -128,6 +129,33 @@ class main_listener extends core implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function setup_custom_css($event)
+    {
+        $user_style = $this->user->data['user_style'];
+        $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
+            WHERE style_id=' . $user_style;
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $style_name = $row['style_name'];
+        switch ($style_name)
+        {
+        case 'Acieeed!':
+            $this->template->assign_var('STYLE_NAME', 'acieeed');
+            break;
+        case 'Basic':
+            $this->template->assign_var('STYLE_NAME', 'basic');
+            break;
+        case 'Hexagon':
+            $this->template->assign_var('STYLE_NAME', 'hexagon');
+            break;
+        case 'prosilver':
+        default:
+            $this->template->assign_var('STYLE_NAME', 'prosilver');
+            break;
+        }
     }
 
     public function modify_quickreply_signature($event)
