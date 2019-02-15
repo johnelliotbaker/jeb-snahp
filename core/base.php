@@ -585,7 +585,6 @@ abstract class base
 
     public function interpolate_curly_table($strn)
     {
-        $ptn = '/{{([^}]*)}}/is';
         $ptn = '/{([^}]*)}/is';
         $strn = preg_replace_callback($ptn, function($m) {
             $allowed_directive = $this->allowed_directive;
