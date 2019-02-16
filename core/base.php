@@ -600,7 +600,6 @@ abstract class base
         // $strn = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $strn);
         $ptn = '#{table_autofill}(.*?){/table_autofill}#is';
         preg_match($ptn, $strn, $match);
-        prn($match, 1);
         $content = $match[1];
         $content = preg_replace("#<br>#", PHP_EOL, $content);
         $arr = explode(PHP_EOL, $content);
@@ -624,7 +623,7 @@ abstract class base
 
     public function interpolate_curly_table($strn)
     {
-        $ptn = '/{([^}]*)}/is';
+        $ptn = '#{([^}]*)}#is';
         $strn = preg_replace_callback($ptn, function($m) {
             $allowed_directive = $this->allowed_directive;
             $sub = $m[1];
@@ -704,25 +703,26 @@ abstract class base
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;
         if (!$valid) return $strn;
         $strn = $this->replace_snahp($strn);
+        return $strn;
+    }
 
-
-
-
-
-        // $strn = $this->interpolate_curly_table_autofill($strn);
-        // $ptn = '#({snahp})(.*?)({/snahp})#is';
-        // $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
-        // $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
-        // $ptn = '#(.*)(<table.*</table>)(.*)#is';
-        // preg_match($ptn, $strn, $match);
-        // if ($match)
-        // {
-        //     $table = $match[2];
-        //     $table = str_replace('<br>', '', $table);
-        //     $strn = $match[1];
-        //     $strn .= $table;
-        //     $strn .= $match[3];
-        // }
+    public function interpolate_curly_tags_deprecated($strn)
+    {
+        $valid = $this->validate_curly_tags($strn) ? 1 : 0;
+        if (!$valid) return $strn;
+        $ptn = '#({snahp})(.*?)({/snahp})#is';
+        $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
+        $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
+        $ptn = '#(.*)(<table.*</table>)(.*)#is';
+        preg_match($ptn, $strn, $match);
+        if ($match)
+        {
+            $table = $match[2];
+            $table = str_replace('<br>', '', $table);
+            $strn = $match[1];
+            $strn .= $table;
+            $strn .= $match[3];
+        }
         return $strn;
     }
 

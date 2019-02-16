@@ -12,6 +12,7 @@ namespace jeb\snahp\event;
 
 
 use jeb\snahp\core\core;
+use jeb\snahp\core\base;
 use phpbb\auth\auth;
 use phpbb\template\template;
 use phpbb\config\config;
@@ -71,37 +72,12 @@ function fwrite($filepath, $var, $bNew=true)
 /**
  * snahp Event listener.
  */
-class main_listener extends core implements EventSubscriberInterface
+class main_listener extends base implements EventSubscriberInterface
 {
-    protected $auth;
-    protected $request;
-    protected $config;
-    protected $db;
-    protected $template;
     protected $table_prefix;
-    protected $notification;
-    protected $sql_limit;
-    protected $notification_limit;
-    protected $at_prefix;
-
-    public function __construct(
-        auth $auth,
-        request_interface $request,
-        config $config,
-        driver_interface $db,
-        template $template,
-        $table_prefix,
-        manager $notification
-    )
+    public function __construct($table_prefix)
     {
-
-        $this->auth               = $auth;
-        $this->request            = $request;
-        $this->config             = $config;
-        $this->db                 = $db;
-        $this->template           = $template;
-        $this->table_prefix       = $table_prefix;
-        $this->notification       = $notification;
+        $this->table_prefix = $table_prefix;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->at_prefix          = '@@';
@@ -118,7 +94,10 @@ class main_listener extends core implements EventSubscriberInterface
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
-            'core.viewtopic_modify_post_row'              => 'disable_signature',
+            'core.viewtopic_modify_post_row'              => [
+                ['disable_signature', 1],
+                ['process_curly_tags', 2],
+            ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => 'modify_quickreply_signature',
             'core.posting_modify_submit_post_after'       => array(
@@ -129,6 +108,14 @@ class main_listener extends core implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function process_curly_tags($event)
+    {
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $message = $this->interpolate_curly_tags($message);
+        $event['post_row'] = $post_row;
     }
 
     public function setup_custom_css($event)

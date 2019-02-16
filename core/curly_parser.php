@@ -97,7 +97,20 @@ class curly_parser
         return $strn;
     }
 
-    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false, $b_dark=false)
+    public function interpolate_table_search_master($strn, $tag_name)
+    {
+        $uuid = uniqid();
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        $res = [];
+        $class = ['search_master'];
+        $class_strn = implode(' ', $class);
+        $res[] = '<input id="searchbox_' . $uuid . '"type="search" class="' . $class_strn . '" placeholder="Omni Search"></input>';
+        $res = implode(PHP_EOL, $res);
+        $strn = preg_replace($ptn, $res, $strn);
+        return $strn;
+    }
+
+    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)
     {
         $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
@@ -112,6 +125,7 @@ class curly_parser
         $content = $match[1];
         $content = preg_replace("#<br>#", PHP_EOL, $content);
         $arr = explode(PHP_EOL, $content);
+        $res[] = "<div class=\"$class_strn\">";
         $res[] = "<table id=\"table_$uuid\" class=\"$class_strn\">";
         $res[] = '<tbody>';
         foreach($arr as $entry)
@@ -129,7 +143,7 @@ class curly_parser
                 $res[] = "<tr>$tmp</tr>";
             }
         }
-        $res[] = '</tbody></table>';
+        $res[] = '</tbody></table></div>';
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
@@ -161,6 +175,9 @@ class curly_parser
                 break;
             case 'table_autofill':
                 $res = $this->interpolate_curly_table_autofill($content, $tag_type);
+                break;
+            case 'table_search_master':
+                $res = $this->interpolate_table_search_master($content, $tag_type);
                 break;
             case 'table':
                 $res = $this->interpolate_curly_table($content);

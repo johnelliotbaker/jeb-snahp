@@ -61,7 +61,9 @@ class request_listener extends base implements EventSubscriberInterface
             'core.viewforum_modify_topics_data' => 'modify_request_tags',
             'core.posting_modify_message_text' => 'compose_request_form',
             'core.modify_posting_parameters' => 'show_request_post_form',
-            'core.viewtopic_modify_post_row' => 'show_request_form_as_table',
+            'core.viewtopic_modify_post_row' => [
+                ['show_request_form_as_table', 0],
+            ],
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
         );
     }
@@ -108,7 +110,7 @@ class request_listener extends base implements EventSubscriberInterface
         if (!in_array($fid, $afid)) return false;
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
-        $message = $this->interpolate_curly_tags($message);
+        $message = $this->interpolate_curly_tags_deprecated($message);
         $event['post_row'] = $post_row;
     }
 

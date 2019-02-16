@@ -27,16 +27,8 @@ div.content > dl.hidebox.hi dd i
 }
 
 /* Curlies */
-table.autofill{
-    background:#111;
-    color:white;
-}
 table.autofill td{
     color: white;
-    padding:4px 8px 4px;
-}
-table.autofill td.hidden{
-    display: none;
 }
 table.autofill tr{
     background:#000;
@@ -47,7 +39,8 @@ table.autofill tr:nth-child(odd) {
 input.autofill {
     background:black;
     border: 2px solid #f8c301;
-    margin: 3px 0 5px;
-    padding: 0px;
-    text-align: left;
+}
+input.search_master {
+    background:black;
+    border: 2px solid #f8c301;
 }
