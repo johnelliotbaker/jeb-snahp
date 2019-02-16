@@ -38,7 +38,7 @@ class graveyard_request extends base
     public function handle()
     {
         $this->reject_non_moderator();
-        $batch_limit = 1000;
+        $batch_limit = 50;
         $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
         foreach ($requestdata as $req)
