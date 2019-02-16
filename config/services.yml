@@ -40,6 +40,8 @@ services:
     jeb.snahp.listener:
         class: jeb\snahp\event\main_listener
         parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
         tags:
             - { name: event.listener }
     jeb.snahp.mod_listener:
