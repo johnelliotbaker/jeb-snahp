@@ -117,6 +117,18 @@ abstract class base
     }
 
     // DATABASE Functions
+    // GET STYLE INFORMATION
+    public function select_style_name()
+    {
+        $user_style = $this->user->data['user_style'];
+        $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
+            WHERE style_id=' . $user_style;
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $style_name = $row['style_name'];
+        return $style_name;
+    }
     // ALL SUBFORUM ID
     public function select_subforum($parent_id)
     {
@@ -583,6 +595,33 @@ abstract class base
         return True;
     }
 
+    public function interpolate_curly_table_autofill($strn)
+    {
+        // $strn = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $strn);
+        $ptn = '#{table_autofill}(.*?){/table_autofill}#is';
+        preg_match($ptn, $strn, $match);
+        prn($match, 1);
+        $content = $match[1];
+        $content = preg_replace("#<br>#", PHP_EOL, $content);
+        $arr = explode(PHP_EOL, $content);
+        $res = [];
+        $res[] = '<style>td.hidden {display: none}</style>';
+        $res[] = '<table class="autofill search">';
+        $res[] = '<thead><tr><th></th></tr></thead>';
+        $res[] = '<tbody>';
+        foreach($arr as $entry)
+        {
+            if ($entry)
+            {
+                $res[] = "<tr><td style='text-align:left;'>$entry</td></tr>";
+            }
+        }
+        $res[] = '</tbody></table>';
+        $res = implode(PHP_EOL, $res);
+        $strn = preg_replace($ptn, $res, $strn);
+        return $strn;
+    }
+
     public function interpolate_curly_table($strn)
     {
         $ptn = '/{([^}]*)}/is';
@@ -651,23 +690,39 @@ abstract class base
         return $strn;
     }
 
+    public function replace_snahp($strn)
+    {
+        $parser = new \jeb\snahp\core\curly_parser();
+        $strn = $parser->parse_snahp($strn);
+        // $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
+        // $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
+        return $strn;
+    }
+    
     public function interpolate_curly_tags($strn)
     {
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;
         if (!$valid) return $strn;
-        $ptn = '#({snahp})(.*?)({/snahp})#is';
-        $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
-        $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
-        $ptn = '#(.*)(<table.*</table>)(.*)#is';
-        preg_match($ptn, $strn, $match);
-        if ($match)
-        {
-            $table = $match[2];
-            $table = str_replace('<br>', '', $table);
-            $strn = $match[1];
-            $strn .= $table;
-            $strn .= $match[3];
-        }
+        $strn = $this->replace_snahp($strn);
+
+
+
+
+
+        // $strn = $this->interpolate_curly_table_autofill($strn);
+        // $ptn = '#({snahp})(.*?)({/snahp})#is';
+        // $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
+        // $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
+        // $ptn = '#(.*)(<table.*</table>)(.*)#is';
+        // preg_match($ptn, $strn, $match);
+        // if ($match)
+        // {
+        //     $table = $match[2];
+        //     $table = str_replace('<br>', '', $table);
+        //     $strn = $match[1];
+        //     $strn .= $table;
+        //     $strn .= $match[3];
+        // }
         return $strn;
     }
 

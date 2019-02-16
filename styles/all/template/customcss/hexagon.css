@@ -25,3 +25,29 @@ div.content > dl.hidebox.hi dd i
 .request_table.wrapper a {
     color: #0080FF;
 }
+
+/* Curlies */
+table.autofill{
+    background:#111;
+    color:white;
+}
+table.autofill td{
+    color: white;
+    padding:4px 8px 4px;
+}
+table.autofill td.hidden{
+    display: none;
+}
+table.autofill tr{
+    background:#000;
+}
+table.autofill tr:nth-child(odd) {
+    background:#0A0A0A;
+}
+input.autofill {
+    background:black;
+    border: 2px solid #de7300;
+    margin: 3px 0 5px;
+    padding: 0px;
+    text-align: left;
+}

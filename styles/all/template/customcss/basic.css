@@ -3,3 +3,30 @@ div.content > dl.hidebox.unhide
 {
     background-color: #EEEEE4;
 }
+
+/* curlies */
+table.autofill{
+    font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size:1em;
+    width: 98%;
+    text-align:left;
+    border-collapse:collapse;
+}
+table.autofill td{
+    color: black;
+    padding:4px 8px 4px;
+}
+table.autofill td.hidden{
+    display: none;
+}
+table.autofill tr{
+    background:#FFF;
+}
+table.autofill tr:nth-child(odd) {
+    background:#F4F4F4;
+}
+input.autofill {
+    margin: 3px 0 5px;
+    text-align: left;
+}
+
