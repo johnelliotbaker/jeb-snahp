@@ -174,9 +174,10 @@ class request_listener extends base implements EventSubscriberInterface
 
     public function select_open_request($uid)
     {
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $sql = 'SELECT * FROM ' . $this->req_tbl . 
             " WHERE requester_uid=$uid AND " .
-            $this->db->sql_in_set('status', [2, 9], true);
+            $this->db->sql_in_set('status', $def['set']['open']);
         $result = $this->db->sql_query($sql);
         $data = [];
         while($row = $this->db->sql_fetchrow($result))
