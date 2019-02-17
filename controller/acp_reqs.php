@@ -32,6 +32,67 @@ class acp_reqs extends base
         return $json;
     }
 
+    public function resynchronize_requests()
+    {
+        $this->reject_non_moderator();
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $sql = 'SELECT * from ' . $tbl['req'];
+        $result = $this->db->sql_query($sql);
+        $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
+        $res = [];
+        while ($reqdata = $this->db->sql_fetchrow($result))
+        {
+            $status = $reqdata['status'];
+            $tid = $reqdata['tid'];
+            $fid = $reqdata['fid'];
+            $topicdata = $this->select_topic($tid);
+            // If topic is deleted, update request entry
+            if (!$topicdata)
+            {
+                if ($reqdata['b_graveyard']!=1 || $reqdata['status']!=19)
+                {
+                    $this->update_request($tid, [
+                        'b_graveyard' => 1,
+                        'status' => 19,
+                    ]);
+                    $res[] = "$tid : (g1, s19)";
+                }
+                continue;
+            }
+            // If topic exists
+            // If topic is not in graveyard
+            $fid_real = $topicdata['forum_id'];
+            $data = [];
+            if ($fid_real != $graveyard_fid)
+            {
+                // && if b_graveyard is set
+                if ($reqdata['b_graveyard'])
+                {
+                    $data = ['b_graveyard' => 0];
+                    $res[] = "$tid : (g0)";
+                }
+            }
+            // If topic is in graveyard
+            else
+            {
+                // && b_graveyard is not set
+                if (!$reqdata['b_graveyard'])
+                {
+                    $data = ['b_graveyard' => 1];
+                    $res[] = "$tid : (g1)";
+                }
+            }
+            if ($data)
+            {
+                $this->update_request($tid, $data);
+            }
+        }
+        $this->db->sql_freeresult($result);
+        $res = implode('<br>', $res);
+        trigger_error($res);
+    }
+
     public function update_deleted_requests($uid)
     {
         // Get all request entry for user

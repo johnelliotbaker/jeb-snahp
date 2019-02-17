@@ -39,6 +39,10 @@ jeb_snahp_reqsmcp:
     requirements:
         mode: \d+
         uid: \d+
+jeb_snahp_acp_reqs_resynch:
+    path: /snahp/acp_reqs/resynch/
+    defaults: { _controller: jeb.snahp.acp_reqs:resynchronize_requests}
+    requirements:
 jeb_snahp_acp_reqs_manage_user:
     path: /snahp/acp_reqs_manage_user/
     defaults: { _controller: jeb.snahp.acp_reqs:handle_manage_user}
