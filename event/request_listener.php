@@ -161,6 +161,9 @@ class request_listener extends base implements EventSubscriberInterface
 
     public function modify_request_tags($event)
     {
+        $fid = $event['forum_id'];
+        $request_fid = explode(',', $this->config['snp_req_fid']);
+        if (!in_array($fid, $request_fid)) return false;
         $rowset = $event['rowset'];
         if (!$rowset) return false;
         foreach($rowset as $key => $row)
