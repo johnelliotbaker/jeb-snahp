@@ -9,6 +9,7 @@
 <div class="panel">
 	<div class="inner">
 	<h3>Statistics</h3>
+
 	<fieldset>
 	<dl>
     <dt><label for="usernames">Generate Statistics:</label><br>
@@ -48,6 +49,32 @@
   </div>
 	<hr />
 	</fieldset>
+
+	<fieldset>
+	<dl>
+    <dt><label for="usernames">Resynchronize Requests</label><br>
+    </dt>
+    <dd>
+      <input onClick="resynchRequests();" type="Button" value="Resynch" name="Resynch" class="button1">
+      <script>
+        function resynchRequests()
+        {
+          var url = '/app.php/snahp/acp_reqs/resynch/';
+          $.ajax(url).done((resp)=>{
+            $content = $('#acp_request_statistics_content');
+            $content.empty();
+            for (var varname in resp)
+            {
+              $entry = $('<tr><td style="text-align:left">' + varname + '</td><td style="text-align:left">' + resp[varname] + '</td></tr>');
+              $content.append($entry);
+            }
+          });
+        }
+      </script>
+    </dd>
+	</dl>
+  </fieldset>
+
 	</div>
 </div>
 

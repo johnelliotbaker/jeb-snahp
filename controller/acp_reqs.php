@@ -168,8 +168,11 @@ class acp_reqs extends base
         {
             return $res;
         }
-        $res = implode('<br>', $res);
-        trigger_error($res);
+        $json = new JsonResponse();
+        $json->setData(['Status' => 'Success']);
+        return $json;
+        // $res = implode('<br>', $res);
+        // trigger_error($res);
     }
 
     public function update_deleted_requests($uid)
