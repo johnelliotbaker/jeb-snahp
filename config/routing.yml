@@ -12,6 +12,11 @@ jeb_snahp_favorite:
     defaults: { _controller: jeb.snahp.favorite:handle}
     requirements:
         mode: \S+
+jeb_snahp_userscript:
+    path: /snahp/userscript/{mode}/
+    defaults: { _controller: jeb.snahp.userscript:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_reqs:
     path: /snahp/reqs/{fid}/{tid}/{pid}/{mode}/
     defaults: { _controller: jeb.snahp.reqs:handle}

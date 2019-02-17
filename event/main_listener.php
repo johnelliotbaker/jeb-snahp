@@ -95,6 +95,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
+                ['enable_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
             ],
@@ -108,6 +109,21 @@ class main_listener extends base implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function enable_bump_button($event)
+    {
+        $td = $event['topic_data'];
+        $fid = $td['forum_id'];
+        $fid_listings = $this->config['snp_fid_listings'];
+        $a_fid = $this->select_subforum($fid_listings);
+        if (!in_array($fid, $a_fid)) return false;
+        $poster_id = $event['poster_id'];
+        $user_id = $this->user->data['user_id'];
+        if ($this->is_mod() || ($poster_id==$user_id))
+        {
+            $this->template->assign_var('B_SHOW_BUMP', true);
+        }
     }
 
     public function process_curly_tags($event)

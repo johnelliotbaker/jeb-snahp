@@ -1,4 +1,11 @@
 {% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
+{% if B_SHOW_BUMP %}
+<li>
+  <a href="./app.php/snahp/userscript/bump_topic/?t={S_TOPIC_ID}" title="Bump Topic" class="button button-icon-only">
+    <i class="icon fa-arrow-up fa-fw" style="color:black" aria-hidden="true"></i><span class="sr-only">Bump Topic</span>
+  </a>
+</li>
+{% endif %}
 {% if B_SHOW_SOLVE_BTN %}
 <li>
   <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Solved" class="button button-icon-only">

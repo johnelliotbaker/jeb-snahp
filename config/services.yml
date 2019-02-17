@@ -49,6 +49,11 @@ services:
         parent: jeb.snahp.base
         tags:
             - { name: event.listener }
+    jeb.snahp.userscript:
+        class: jeb\snahp\controller\userscript
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.favorite:
         class: jeb\snahp\controller\favorite
         parent: jeb.snahp.base
