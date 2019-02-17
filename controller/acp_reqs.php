@@ -32,7 +32,55 @@ class acp_reqs extends base
         return $json;
     }
 
-    public function resynchronize_requests()
+    public function manage_requests()
+    {
+        if (!$this->is_admin())
+        {
+            trigger_error('Only available to site administrators.');
+        }
+        return $this->helper->render('@jeb_snahp/acp/resynch_requests.html');
+    }
+
+    public function generate_statistics()
+    {
+        if (!$this->is_admin())
+        {
+            trigger_error('Only available to site administrators.');
+        }
+        $time = (float)microtime();
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        // Total Requests
+        $sql = 'SELECT count(*) as total from ' . $tbl['req'];
+        $result = $this->db->sql_query($sql);
+        $reqdata = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data['Total_Requests'] = $reqdata['total'];
+        // Total Graveyard
+        $sql = 'SELECT count(*) as total from ' . $tbl['req'] . '
+            WHERE b_graveyard=1';
+        $result = $this->db->sql_query($sql);
+        $reqdata = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data['Total_Graveyard'] = $reqdata['total'];
+        // Total Deleted
+        $sql = 'SELECT count(*) as total from ' . $tbl['req'] . '
+            WHERE status=19';
+        $result = $this->db->sql_query($sql);
+        $reqdata = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data['Total_Deleted'] = $reqdata['total'];
+        $time_spent = (float)microtime() - $time;
+        $time_spent = sprintf('%f', $time_spent);
+        $res = $this->resynchronize_requests($b_simulate=true);
+        $data = array_merge($data, $res);
+        $data['Total_Query_Time'] = "$time_spent microseconds";
+        $json = new JsonResponse();
+        $json->setData($data);
+        return $json;
+    }
+
+    public function resynchronize_requests($b_simulate=false)
     {
         $this->reject_non_moderator();
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -41,6 +89,12 @@ class acp_reqs extends base
         $result = $this->db->sql_query($sql);
         $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
         $res = [];
+        if ($b_simulate)
+        {
+            $res['should_set_deleted'] = 0;
+            $res['should_set_graveyard'] = 0;
+            $res['should_unset_graveyard'] = 0;
+        }
         while ($reqdata = $this->db->sql_fetchrow($result))
         {
             $status = $reqdata['status'];
@@ -52,11 +106,18 @@ class acp_reqs extends base
             {
                 if ($reqdata['b_graveyard']!=1 || $reqdata['status']!=19)
                 {
-                    $this->update_request($tid, [
-                        'b_graveyard' => 1,
-                        'status' => 19,
-                    ]);
-                    $res[] = "$tid : (g1, s19)";
+                    if ($b_simulate)
+                    {
+                        $res['should_set_deleted'] += 1;
+                    }
+                    else
+                    {
+                        $this->update_request($tid, [
+                            'b_graveyard' => 1,
+                            'status' => 19,
+                        ]);
+                        $res[] = "$tid : (g1, s19)";
+                    }
                 }
                 continue;
             }
@@ -70,7 +131,14 @@ class acp_reqs extends base
                 if ($reqdata['b_graveyard'])
                 {
                     $data = ['b_graveyard' => 0];
-                    $res[] = "$tid : (g0)";
+                    if ($b_simulate)
+                    {
+                        $res['should_unset_graveyard'] += 1;
+                    }
+                    else
+                    {
+                        $res[] = "$tid : (g0)";
+                    }
                 }
             }
             // If topic is in graveyard
@@ -80,15 +148,26 @@ class acp_reqs extends base
                 if (!$reqdata['b_graveyard'])
                 {
                     $data = ['b_graveyard' => 1];
-                    $res[] = "$tid : (g1)";
+                    if ($b_simulate)
+                    {
+                        $res['should_set_graveyard'] += 1;
+                    }
+                    else
+                    {
+                        $res[] = "$tid : (g1)";
+                    }
                 }
             }
-            if ($data)
+            if ($data && !$b_simulate)
             {
                 $this->update_request($tid, $data);
             }
         }
         $this->db->sql_freeresult($result);
+        if ($b_simulate)
+        {
+            return $res;
+        }
         $res = implode('<br>', $res);
         trigger_error($res);
     }

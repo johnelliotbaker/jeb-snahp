@@ -531,6 +531,11 @@ abstract class base
             trigger_error('You must login before venturing forth.');
     }
 
+    public function is_admin()
+    {
+        return $this->auth->acl_gets('a_');
+    }
+
     public function is_mod()
     {
         return $this->auth->acl_gets('a_', 'm_');

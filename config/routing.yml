@@ -39,14 +39,18 @@ jeb_snahp_reqsmcp:
     requirements:
         mode: \d+
         uid: \d+
+jeb_snahp_acp_reqs_manage:
+    path: /snahp/acp_reqs/manage/
+    defaults: { _controller: jeb.snahp.acp_reqs:manage_requests}
+jeb_snahp_acp_reqs_generate_statistics:
+    path: /snahp/acp_reqs/generate_statistics/
+    defaults: { _controller: jeb.snahp.acp_reqs:generate_statistics}
 jeb_snahp_acp_reqs_resynch:
     path: /snahp/acp_reqs/resynch/
     defaults: { _controller: jeb.snahp.acp_reqs:resynchronize_requests}
-    requirements:
 jeb_snahp_acp_reqs_manage_user:
     path: /snahp/acp_reqs_manage_user/
     defaults: { _controller: jeb.snahp.acp_reqs:handle_manage_user}
-    requirements:
 jeb_snahp_acp_reqs_get_banned_dibbers:
     path: /snahp/acp_reqs_get_banned_dibbers/
     defaults: { _controller: jeb.snahp.acp_reqs:get_banned_dibbers}
