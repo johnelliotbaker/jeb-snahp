@@ -95,7 +95,8 @@ class main_listener extends base implements EventSubscriberInterface
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
-                ['enable_bump_button', 1],
+                ['easter_cluck', 1],
+                ['show_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
             ],
@@ -111,19 +112,47 @@ class main_listener extends base implements EventSubscriberInterface
         );
     }
 
-    public function enable_bump_button($event)
+    public function easter_cluck($event)
     {
-        $td = $event['topic_data'];
-        $fid = $td['forum_id'];
+        $snp_easter_b_chicken = $this->config['snp_easter_b_chicken'];
+        if (!$snp_easter_b_chicken) return false;
+        include_once('ext/jeb/snahp/core/chicken.php');
+        $username = $this->user->data['username'];
+        $motd_message = 'Hello ' . $username . ', thank you very much for being an important member of our community.<br>';
+        $chance = $this->config['snp_easter_chicken_chance'];
+        $MAX_STRN_LEN = 500;
+        $topic_data = $event['topic_data'];
+        $tt = $topic_data['topic_title'];
+        $post_row = $event['post_row'];
+        $strn = $post_row['MESSAGE'];
+        $rand = rand(0, $chance);
+        if ($rand < 1 && strlen($strn) < $MAX_STRN_LEN)
+        {
+            $strn = string2cluck($strn);
+            $post_row['MESSAGE'] = $motd_message . $strn;
+            $event['post_row'] = $post_row;
+        }
+    }
+
+    public function show_bump_button($event)
+    {
+        $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
+        if (!$snp_bump_b_topic) return false;
+        $topic_data = $event['topic_data'];
+        $tid = $topic_data['topic_id'];
+        $i_row = $event['current_row_number'];
+        if ($i_row > 0) return false;
+        $forum_id = $topic_data['forum_id'];
         $fid_listings = $this->config['snp_fid_listings'];
         $a_fid = $this->select_subforum($fid_listings);
-        if (!in_array($fid, $a_fid)) return false;
-        $poster_id = $event['poster_id'];
-        $user_id = $this->user->data['user_id'];
-        if ($this->is_mod() || ($poster_id==$user_id))
-        {
-            $this->template->assign_var('B_SHOW_BUMP', true);
-        }
+        if (!in_array($forum_id, $a_fid)) return false;
+        $user_bump_data = $this->get_bump_permission($tid);
+        $this->template->assign_vars([
+            'B_SHOW_BUMP_ENABLER' => $user_bump_data['b_enable'],
+            'B_SHOW_BUMP_DISABLER' => $user_bump_data['b_disable'],
+            'B_SHOW_BUMP' => $user_bump_data['b_bump'],
+        ]);
+        return false;
     }
 
     public function process_curly_tags($event)
@@ -186,14 +215,15 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function include_quick_link($event)
     {
+        $user_id = $this->config['snp_ql_your_topics'] ? $this->user->data['user_id'] : -1;
         $this->template->assign_vars([
-            'S_LOAD_UNREADS' => False,
             'B_SHOW_QL_REPLIES' => $this->config['snp_ql_fav_b_replies'],
             'B_SHOW_QL_VIEWS' => $this->config['snp_ql_fav_b_views'],
             'B_SHOW_QL_TIME' => $this->config['snp_ql_fav_b_time'],
             'B_SHOW_THANKS_GIVEN' => $this->config['snp_ql_thanks_given'],
             'B_SHOW_BOOKMARK' => $this->config['snp_ql_ucp_bookmark'],
             'B_SHOW_OPEN_REQUESTS' => $this->config['snp_ql_req_open_requests'],
+            'S_USER_ID' => $user_id,
         ]);
     }
 

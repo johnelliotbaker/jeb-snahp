@@ -1,7 +1,20 @@
 {% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
-{% if B_SHOW_BUMP and false %}
+{% if B_SHOW_BUMP_ENABLER %}
 <li>
-  <a href="./app.php/snahp/userscript/bump_topic/?t={S_TOPIC_ID}" title="Bump Topic" class="button button-icon-only">
+  <a href="./app.php/snahp/userscript/bump_topic/?action=enable&t={S_TOPIC_ID}" title="Enable Bump" class="button button-icon-only">
+    <i class="icon fa-arrow-circle-up fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Enable Bump</span>
+  </a>
+</li>
+{% elseif B_SHOW_BUMP_DISABLER %}
+<li>
+  <a href="./app.php/snahp/userscript/bump_topic/?action=disable&t={S_TOPIC_ID}" title="Disable Bump" class="button button-icon-only">
+    <i class="icon fa-arrow-circle-down fa-fw" style="color:#600" aria-hidden="true"></i><span class="sr-only">Disable Bump</span>
+  </a>
+</li>
+{% endif %}
+{% if B_SHOW_BUMP %}
+<li>
+  <a href="./app.php/snahp/userscript/bump_topic/?action=bump&t={S_TOPIC_ID}" title="Bump Topic" class="button button-icon-only">
     <i class="icon fa-arrow-up fa-fw" style="color:black" aria-hidden="true"></i><span class="sr-only">Bump Topic</span>
   </a>
 </li>

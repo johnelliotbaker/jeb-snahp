@@ -5,8 +5,9 @@
   <h2>Notification Settings</h2>
   <div class="panel">
     <div class="inner">
+
       <fieldset>
-        <legend>Quick Links</legend>
+        <legend>General Forum ID</legend>
         <dl>
           <dt>
             <label for="fid_listings">Listings Forum ID:</label>
@@ -14,6 +15,40 @@
               <input type="number" value="{FID_LISTINGS}" min="0" name="fid_listings" id="fid_listings" />
             </dd>
           </dt>
+        </dl>
+      </fieldset>
+
+      <fieldset>
+        <legend>Easter Eggs</legend>
+				<dl>
+          <dt>
+              <label>Easter Egg: Chicken Edition</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="1" {% if SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="0" {% if not SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="Probability">Chicken Post Probability:</label>
+            <dd>
+              1 in <input type="number" value="{SNP_EASTER_CHICKEN_CHANCE}" min="0" name="snp_easter_chicken_chance" id="snp_easter_chicken_chance" />
+            </dd>
+          </dt>
+        </dl>
+      </fieldset>
+
+      <fieldset>
+        <legend>Quick Links</legend>
+        <dl>
+          <dt>
+            <label for="snp_ql_your_topics">Show Your Topics:</label><br>
+          </dt>
+          <dd>
+            <label><input type="radio" name="snp_ql_your_topics" class="radio" value="1" {% if SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> Yes</label>
+            <label><input type="radio" name="snp_ql_your_topics" class="radio" value="0" {% if not SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> No</label>
+          </dd>
         </dl>
         <dl>
           <dt>

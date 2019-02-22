@@ -37,6 +37,13 @@ class favorite extends base
             $cfg['title'] = 'Popular Listings';
             return $this->handle_favorite($cfg);
             break;
+        case 'replies':
+            $cfg['tpl_name'] = '@jeb_snahp/favorite/favorite_oneday.html';
+            $cfg['sort_mode'] = 'replies';
+            $cfg['base_url'] = '/app.php/snahp/favorite/replies/';
+            $cfg['title'] = 'Most Discussed';
+            return $this->handle_favorite($cfg);
+            break;
         case 'thanks_given':
             $cfg['tpl_name'] = '@jeb_snahp/favorite/thanks_given.html';
             $cfg['base_url'] = '/app.php/snahp/favorite/thanks_given/';

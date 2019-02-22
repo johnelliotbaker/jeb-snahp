@@ -95,6 +95,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_request($cfg);
             break;
+        case 'bump_topic':
+            $cfg['tpl_name'] = 'acp_snp_bump_topic';
+            $cfg['b_feedback'] = false;
+            $this->handle_bump_topic($cfg);
+            break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
             $cfg['b_feedback'] = false;
@@ -151,6 +156,71 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
             ));
+        }
+    }
+
+    public function handle_bump_topic($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                // Enabler
+                $snp_bump_b_topic = $request->variable('snp_bump_b_topic', '1');
+                $config->set('snp_bump_b_topic', $snp_bump_b_topic);
+                // Group Permission and Configurations
+                $aCooldown = $aEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/enable-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("enable-$gid", '0');
+                        $aEnable[$gid] = $var ? 1 : 0;
+                    }
+                    preg_match('/cooldown-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("cooldown-$gid", '0');
+                        $aCooldown[$gid] = (int) $var;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_enable_bump', $aEnable);
+                $db->sql_query($sql);
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_bump_cooldown', $aCooldown);
+                $db->sql_query($sql);
+                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'U_ACTION'				=> $this->u_action,
+                'SNP_BUMP_B_TOPIC'      => $config['snp_bump_b_topic'],
+            ));
+            // Code to show signature configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'GID'=>$row['group_id'],
+                    'NAME'=>$row['group_name'],
+                    'ENABLE'=> $row['snp_enable_bump'],
+                    'COOLDOWN'=> $row['snp_bump_cooldown'],
+                );
+                $template->assign_block_vars('A_BUMP_TOPIC', $group);
+            };
+            $db->sql_freeresult($result);
         }
     }
 
@@ -334,10 +404,17 @@ class main_module
                 $config->set('snp_ql_ucp_bookmark', $snp_ql_ucp_bookmark);
                 $snp_ql_req_open_requests = $request->variable('snp_ql_req_open_requests', '1');
                 $config->set('snp_ql_req_open_requests', $snp_ql_req_open_requests);
+                $snp_ql_your_topics = $request->variable('snp_ql_your_topics', '1');
+                $config->set('snp_ql_your_topics', $snp_ql_your_topics);
+                $snp_easter_chicken_chance = $request->variable('snp_easter_chicken_chance', '10000');
+                $config->set('snp_easter_chicken_chance', $snp_easter_chicken_chance);
+                $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', '10000');
+                $config->set('snp_easter_b_chicken', $snp_easter_b_chicken);
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
 
+            prn($config['snp_bump_b_topic']);
             $template->assign_vars(array(
                 'SNP_QL_FAV_LIMIT'         => $config['snp_ql_fav_limit'],
                 'SNP_QL_FAV_DURATION'      => $config['snp_ql_fav_duration'],
@@ -347,12 +424,14 @@ class main_module
                 'SNP_QL_THANKS_GIVEN'      => $config['snp_ql_thanks_given'],
                 'SNP_QL_UCP_BOOKMARK'      => $config['snp_ql_ucp_bookmark'],
                 'SNP_QL_REQ_OPEN_REQUESTS' => $config['snp_ql_req_open_requests'],
+                'SNP_QL_YOUR_TOPICS'       => $config['snp_ql_your_topics'],
+                'SNP_EASTER_B_CHICKEN'     => $config['snp_easter_b_chicken'],
+                'SNP_EASTER_CHICKEN_CHANCE'=> $config['snp_easter_chicken_chance'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],
                 'U_ACTION'                 => $this->u_action,
             ));
         }
     }
-
 
     public function handle_signature($cfg)
     {

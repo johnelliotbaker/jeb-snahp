@@ -117,6 +117,97 @@ abstract class base
     }
 
     // DATABASE Functions
+    // BUMP TOPIC
+    public function get_bump_permission($tid)
+    {
+        // Init
+        $user_id = $this->user->data['user_id'];
+        $group_id = $this->user->data['group_id'];
+        $def = $this->container->getParameter('jeb.snahp.bump_topic')['def'];
+        // database
+        $topic_data = $this->select_topic($tid);
+        $bump_data = $this->select_bump_topic($tid);
+        $group_config = $this->select_bump_group_config($group_id);
+        // setup
+        $b_mod = $this->is_mod();
+        $status = $bump_data ? $bump_data['status'] : null;
+        $b_op = $topic_data && $topic_data['topic_poster']==$user_id;
+        $b_group_enabled = $group_config['snp_enable_bump'];
+        // Conditions
+        $b_disable = ($b_mod && $status==$def['enable']);
+        $b_enable = $b_mod && (!$bump_data || $status==$def['disable']);
+        $b_enable |= ($b_op && $b_group_enabled && !$bump_data);
+        $b_bump = ($b_mod || $b_op) && ($bump_data && $status==$def['enable']);
+        $data = [
+            'b_enable'  => (bool)$b_enable,
+            'b_disable' => (bool)$b_disable,
+            'b_bump'    => (bool)$b_bump,
+            'bump_data' => $bump_data,
+            'topic_data' => $topic_data,
+        ];
+        return $data;
+    }
+
+    public function select_bump_group_config($group_id)
+    {
+        $sql = 'SELECT group_id, snp_bump_cooldown, snp_enable_bump FROM ' . GROUPS_TABLE .'
+            WHERE group_id=' . $group_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
+    public function select_bump_topic($tid)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['bump_topic'] . '
+            WHERE tid=' . $tid;
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
+    public function update_bump_topic($tid, $data)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'UPDATE ' . $tbl['bump_topic'] . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+            WHERE tid=' . $tid;
+        $this->db->sql_query($sql);
+    }
+
+    public function delete_bump_topic($topic_data)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $tid = $topic_data['topic_id'];
+        $sql = 'DELETE FROM ' . $tbl['bump_topic'] .'
+            WHERE tid='. $tid;
+        $this->db->sql_query($sql);
+    }
+
+    public function create_bump_topic($topic_data)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $tid = $topic_data['topic_id'];
+        $tt = $topic_data['topic_time'];
+        $tlpt = $topic_data['topic_last_post_time'];
+        $topic_poster = $topic_data['topic_poster'];
+        $data = [
+            'tid'           => $tid,
+            'moderator_uid' => $this->user->data['user_id'],
+            'poster_uid'    => $topic_poster,
+            'topic_time'    => $tt,
+            'prev_topic_time'           => $tt,
+            'prev_topic_last_post_time' => $tlpt,
+
+        ];
+        $sql = 'INSERT INTO ' . $tbl['bump_topic'] .
+            $this->db->sql_build_array('INSERT', $data);
+        $this->db->sql_query($sql);
+    }
+
     // GET STYLE INFORMATION
     public function select_style_name()
     {
@@ -129,6 +220,7 @@ abstract class base
         $style_name = $row['style_name'];
         return $style_name;
     }
+
     // ALL SUBFORUM ID
     public function select_subforum($parent_id)
     {
@@ -231,7 +323,8 @@ abstract class base
             break;
         case 'id':
         default:
-            $order_by = 't.topic_id DESC';
+            // $order_by = 't.topic_id DESC';
+            $order_by = 't.topic_time DESC';
             $where = $this->db->sql_in_set('t.forum_id', $a_fid);
             $where .= ' AND t.topic_time>' . $lastdt;
             break;
@@ -541,6 +634,13 @@ abstract class base
         return $this->auth->acl_gets('a_', 'm_');
     }
 
+    public function is_op($topic_data)
+    {
+        $poster_id = $topic_data['topic_poster'];
+        $user_id = $this->user->data['user_id'];
+        return $poster_id == $user_id;
+    }
+
     public function reject_non_moderator()
     {
         if (!$this->is_mod())
@@ -732,4 +832,3 @@ abstract class base
     }
 
 }
-

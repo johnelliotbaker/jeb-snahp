@@ -1,0 +1,75 @@
+<!-- INCLUDE overall_header.html -->
+<h1>Bump Topic Settings</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+	<div class="panel">
+		<div class="inner">
+
+			<fieldset>
+				<dl>
+          <dt>
+              <label>Topic Bump Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_bump_b_topic" class="radio" value="1" {% if SNP_BUMP_B_TOPIC %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_bump_b_topic" class="radio" value="0" {% if not SNP_BUMP_B_TOPIC %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+			<fieldset>
+				<dl>
+            <span>
+              Cooldown: Cooldown between bumps<br>
+              Check Allowed to enable displaying signatures for users in that group.
+            </span>
+        </dl>
+        <div id="">
+          <table class="table.type3 responsive">
+            <thead>
+              <tr>
+                <th>GID</th>
+                <th>Group Name</th>
+                <th>Cooldown</th>
+                <th>Enable</th>
+              </tr>
+            </thead>
+            <tbody id="acp_request_statistics_content">
+              <!-- BEGIN A_BUMP_TOPIC -->
+              <tr>
+                <td>{A_BUMP_TOPIC.GID}</td>
+                <td>{A_BUMP_TOPIC.NAME}</td>
+                <td>
+                  <input type="number" min="0"
+                                       style="text-align:center;"
+                                       name="cooldown-{A_BUMP_TOPIC.GID}"
+                                       value="{A_BUMP_TOPIC.COOLDOWN}">
+                </td>
+                <td>
+                  <input type="hidden"
+                         name="enable-{A_BUMP_TOPIC.GID}"
+                         value="0">
+                  <input type="checkbox"
+                         name="enable-{A_BUMP_TOPIC.GID}"
+                         id="enable-{A_BUMP_TOPIC.NAME}"
+                         {% if A_BUMP_TOPIC.ENABLE %}value="1" checked{% endif %}>
+                </td>
+              </tr>
+              <!-- END A_BUMP_TOPIC -->
+            </tbody>
+          </table>
+        </div>
+
+      </fieldset>
+    </div>
+  </div>
+  <fieldset>
+    <dl>
+      <dt>&nbsp;</dt>
+      <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+    </dl>
+    {S_HIDDEN_FIELDS}
+    {S_FORM_TOKEN}
+  </fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

@@ -45,7 +45,7 @@ $(document).ready(()=>{
             {
                 if (username.toLowerCase().indexOf(targetname[0]) > -1)
                 {
-                    $self = $(event.target);
+                    $self = $(e.target);
                     var text = $self.val();
                     var before = text.substr(0, targetname[1]);
                     var after = text.substr(targetname[2]);
@@ -70,6 +70,10 @@ $(document).ready(()=>{
     $('input#username').focus();
     // remove quick reply's automatic signature attachment
     $("input:hidden[name='attach_sig']").remove();
+    // Insert Your Topics
+    var user_id = $('#snp_user_id').val();
+    var your_topics = `<li><a href="/search.php?author_id=${user_id}&sr=topics&sf=firstpost" role="menuitem"><i class="icon fa-file-o fa-fw icon-gray" aria-hidden="true"></i><span>Your topics</span></a></li>`;
+    if (user_id > 0) {$('span:contains("Your posts")').closest('li').after(your_topics);}
     // Curlies
     $searchbox_master = $('.search_master').keyup((e)=>{
         $rows = $('table.autofill').find('tr');

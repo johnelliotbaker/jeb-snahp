@@ -56,6 +56,11 @@ class main_info
 					'auth'	=> 'ext_jeb/snahp && acl_a_board',
 					'cat'	=> array('ACP_SNP_TITLE')
 				),
+				'bump_topic'=> array(
+					'title'	=> 'ACP_SNP_BUMP_TOPIC',
+					'auth'	=> 'ext_jeb/snahp && acl_a_board',
+					'cat'	=> array('ACP_SNP_TITLE')
+				),
 			),
 		);
 	}

@@ -4,7 +4,12 @@ parameters:
         req:    '%core.table_prefix%snahp_request'
         requsr: '%core.table_prefix%snahp_request_users'
         dibs:   '%core.table_prefix%snahp_dibs'
+        bump_topic: '%core.table_prefix%snahp_bump_topic'
         thanks: '%core.table_prefix%thanks'
+    jeb.snahp.bump_topic:
+        def:
+            enable: 1
+            disable: 9
     jeb.snahp.req:
         def:
             open: 1
