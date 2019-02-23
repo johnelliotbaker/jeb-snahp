@@ -115,12 +115,17 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_requests_solved_avatar($event)
     {
+        $snp_req_b_avatar = $this->config['snp_req_b_avatar'];
+        if (!$snp_req_b_avatar) return false;
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
         $user_data = $this->select_user($poster_id);
         $requests_solve = $user_data['snp_req_n_solve'];
         $post_row['REQUESTS_SOLVED'] = $requests_solve;
         $event['post_row'] = $post_row;
+        $this->template->assign_vars([
+            'B_SHOW_REQUESTS_SOLVED' => true,
+        ]);
     }
 
     public function easter_cluck($event)
@@ -495,13 +500,13 @@ class main_listener extends base implements EventSubscriberInterface
         $poster_id = $pr['POSTER_ID'];
         $sql = 'SELECT group_id from ' . USERS_TABLE .
             ' WHERE user_id=' . $poster_id;
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
         $gid = $row['group_id'];
         $this->db->sql_freeresult($result);
         $sql = 'SELECT snp_enable_signature from ' . GROUPS_TABLE .
             ' WHERE group_id =' . $gid;
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
         $bShowSignature = $row['snp_enable_signature'] ? true : false;
         $this->db->sql_freeresult($result);
@@ -537,7 +542,7 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $poster_id = $event['poster_id'];
         $sql = 'SELECT snp_disable_avatar_thanks_link FROM ' . USERS_TABLE . ' WHERE user_id=' . $poster_id;
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $b_disable_avatar_thanks_link = false;
