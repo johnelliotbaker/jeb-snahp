@@ -209,6 +209,7 @@ class reqs extends base
         if ($new_status == $def['solve'])
         {
             $repl = '[Solved]';
+            $this->increment_user_request_solved($req);
         }
         elseif ($new_status == $def['terminate'])
         {
@@ -229,6 +230,15 @@ class reqs extends base
         {
             trigger_error('This request was terminated.');
         }
+    }
+
+    public function increment_user_request_solved($reqdata)
+    {
+        $fulfiller_uid = $reqdata['fulfiller_uid'];
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET snp_req_n_solve=snp_req_n_solve+1
+            WHERE user_id=' . $fulfiller_uid;
+        $this->db->sql_query($sql);
     }
 
     public function reject_invalid_users($reqdata)

@@ -48,6 +48,11 @@ jeb_snahp_acp_reqs_generate_statistics:
 jeb_snahp_acp_reqs_resynch:
     path: /snahp/acp_reqs/resynch/
     defaults: { _controller: jeb.snahp.acp_reqs:resynchronize_requests}
+jeb_snahp_acp_reqs_handle:
+    path: /snahp/acp_reqs/handle/{mode}/
+    defaults: { _controller: jeb.snahp.acp_reqs:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_acp_reqs_manage_user:
     path: /snahp/acp_reqs_manage_user/
     defaults: { _controller: jeb.snahp.acp_reqs:handle_manage_user}

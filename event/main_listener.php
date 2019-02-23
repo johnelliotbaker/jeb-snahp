@@ -96,6 +96,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
                 ['easter_cluck', 1],
+                ['show_requests_solved_avatar', 1],
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
@@ -110,6 +111,16 @@ class main_listener extends base implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function show_requests_solved_avatar($event)
+    {
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        $user_data = $this->select_user($poster_id);
+        $requests_solve = $user_data['snp_req_n_solve'];
+        $post_row['REQUESTS_SOLVED'] = $requests_solve;
+        $event['post_row'] = $post_row;
     }
 
     public function easter_cluck($event)

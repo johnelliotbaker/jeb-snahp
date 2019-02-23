@@ -641,10 +641,16 @@ abstract class base
         return $poster_id == $user_id;
     }
 
+    public function reject_non_admin()
+    {
+        if (!$this->is_admin())
+            trigger_error('Only administrator may access this page.');
+    }
+
     public function reject_non_moderator()
     {
         if (!$this->is_mod())
-            trigger_error('Only moderators can access this page.');
+            trigger_error('Only moderators may access this page.');
     }
 
     public function get_dt($time)

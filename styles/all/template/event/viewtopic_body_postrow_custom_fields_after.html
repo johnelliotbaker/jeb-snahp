@@ -1,0 +1,5 @@
+{% if B_SHOW_REQUESTS_SOLVED and postrow.REQUESTS_SOLVED %}
+<dd class="profile-posts">
+  <strong>Has solved: {postrow.REQUESTS_SOLVED} {% if postrow.REQUESTS_SOLVED==1 %}request{% else %}requests{% endif %}</strong>
+</dd>
+{% endif %}

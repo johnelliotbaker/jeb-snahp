@@ -19,6 +19,204 @@ class acp_reqs extends base
         // $this->u_action = 'app.php/snahp/admin/';
     }
 
+    public function handle_manage_user()
+    {
+        $this->reject_non_moderator();
+        $data = $this->user->data;
+        $auth = $this->auth;
+        $request = $this->request;
+        // if (!$auth->acl_gets('a_'))
+        // {
+        //     trigger_error('Lasciate ogne speranza, voi ch’intrate.');
+        // }
+        // Add security for CSRF
+        add_form_key('jeb/snahp');
+        if ($request->is_set_post('submit'))
+        {
+            if (!check_form_key('jeb/snahp'))
+            {
+                trigger_error('Form Key Error');
+            }
+            $usernames        = $request->variable('usernames', '');
+            $user_id          = $request->variable('user_id', 0);
+            $n_use            = $request->variable('n_use', 0);
+            $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
+            $n_offset         = $request->variable('n_offset', 1);
+            $reset_time       = $request->variable('reset_time', 0);
+            $status           = $request->variable('status', 1);
+            $data = [
+                'n_use'            => $n_use,
+                'n_use_this_cycle' => $n_use_this_cycle,
+                'n_offset'         => $n_offset,
+                'reset_time'       => $reset_time,
+                'status'           => $status,
+            ];
+            $this->update_request_users($user_id, $data);
+            if (false)
+            {
+                meta_refresh(2, $this->u_action);
+                $message = 'Processed without an error.';
+                trigger_error($message);
+            }
+        }
+
+        $usernames        = $request->variable('usernames', '');
+        $user_id          = $request->variable('user_id', 0);
+        $n_use            = $request->variable('n_use', 0);
+        $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
+        $n_offset         = $request->variable('n_offset', 1);
+        $reset_time       = $request->variable('reset_time', 0);
+        $status           = $request->variable('status', 1);
+        $this->template->assign_vars([
+            'B_ENABLE'         => true,
+            'USERNAMES'        => $usernames,
+            'USER_ID'          => $user_id,
+            'N_USE'            => $n_use,
+            'N_USE_THIS_CYCLE' => $n_use_this_cycle,
+            'N_OFFSET'         => $n_offset,
+            'RESET_TIME'       => $reset_time,
+            'STATUS'           => $status,
+        ]);
+        return $this->helper->render('@jeb_snahp/mcp/mcp_snp_reset_stats.html');
+    }
+
+    public function handle($mode)
+    {
+        switch ($mode)
+        {
+        case 'test':
+            $cfg = [];
+            return $this->test($cfg);
+        case 'do_rurs':
+            $cfg = [];
+            return $this->resynch_user_requests_solved($cfg);
+        case 'rurs':
+            // resynchronize_user_requests_solved
+            $this->reject_non_admin();
+            $cfg = [];
+            return $this->handle_rurs($cfg);
+        default:
+            break;
+        }
+        trigger_error('You must specify valid mode.');
+    }
+
+    public function test($cfg)
+    {
+        $this->reject_non_admin();
+        return $this->helper->render('@jeb_snahp/acp/resynch_user_requests_solved.html');
+    }
+
+    public function send_message($data) {
+        echo "data: " . json_encode($data) . PHP_EOL;
+        echo PHP_EOL;
+        ob_flush();
+        flush();
+    }
+
+    public function resynch_user_requests_solved($cfg)
+    {
+        $this->reject_non_admin();
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+        $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_req_n_solve=0';
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        // Clearn all snp_req_n_solve
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET snp_req_n_solve=0';
+        $this->db->sql_query($sql);
+        // Get total to divide transactions
+        $sql = 'SELECT count(*) as total FROM ' . $tbl['req'] . '
+            WHERE status=' . $def['solve'];
+        $result = $this->db->sql_query_limit($sql, 1);
+        $total = $this->db->sql_fetchrow($result)['total'];
+        $this->db->sql_freeresult($result);
+        // Transaction
+        $start = 0;
+        $limit = 1;
+        while ($start < $total)
+        {
+            $this->db->sql_return_on_error(true);
+            try
+            {
+                $this->db->sql_transaction('begin');
+                $sql = 'SELECT fulfiller_uid, status FROM ' . $tbl['req'] . '
+                    WHERE status=' . $def['solve'];
+                $data = [
+                    'status' => 'PROGRESS', 'i' => $start, 'n' => $total,
+                    'message' => "$start of $total",
+                    'error_message' => 'No Errors',
+                    'sqlmsg' => $sql,
+                ];
+                $this->send_message($data);
+                $result = $this->db->sql_query_limit($sql, $limit, $start);
+                $data = [];
+                while ($row = $this->db->sql_fetchrow($result))
+                {
+                    $user_id = $row['fulfiller_uid'];
+                    if ($user_id)
+                    {
+                        if (!array_key_exists($user_id, $data))
+                        {
+                            $data[$user_id] = 0;
+                        }
+                        $data[$user_id] += 1;
+                    }
+                }
+                $this->db->sql_freeresult($result);
+                $start += $limit;
+                foreach($data as $user_id => $entry)
+                {
+                    $dbdata = [ 'snp_req_n_solve' => "snp_req_n_solve+$entry" ];
+                    $sql = 'UPDATE ' . USERS_TABLE . '
+                        SET snp_req_n_solve=snp_req_n_solve+' . $entry . '
+                        WHERE user_id=' . $user_id;
+                    $this->db->sql_query($sql);
+                }
+                if ($this->db->get_sql_error_triggered())
+                {
+                    throw new \Exception();
+                }
+                $this->db->sql_transaction('commit');
+            }
+            catch (\Exception $e)
+            {
+                $this->db->sql_transaction('rollback');
+                $this->db->sql_transaction('commit');
+                $err_strn = '';
+                $error_query = $this->db->get_sql_error_sql();
+                $error_msg = implode('\n', $this->db->get_sql_error_returned());
+                $err = $error_query . PHP_EOL;
+                $err .= $error_msg . PHP_EOL;
+                $err .= $e->getMessage() . PHP_EOL;
+                $data = [
+                    'status' => 'ERROR',
+                    'Exception' => $e->getMessage(),
+                    'error_message' => $err,
+                    'i' => $start, 'n' => $total, ];
+                $this->send_message($data);
+                trigger_error($err);
+            }
+            $this->db->sql_return_on_error(false);
+            // usleep(5*100000); // Simulate delay
+        }
+        $data = [
+            'status' => 'COMPLETE', 'i' => $start, 'n' => $total,
+            'error_message' => 'No Errors',
+            'message' => "$total of $total",
+        ];
+        $this->send_message($data);
+        $js = JsonResponse($data);
+        return $js;
+    }
+
+    public function handle_rurs($cfg)
+    {
+        $this->reject_non_admin();
+        return $this->helper->render('@jeb_snahp/acp/resynch_user_requests_solved.html');
+    }
+
     public function handle_reset_user($username)
     {
         $this->reject_non_moderator();
@@ -74,7 +272,7 @@ class acp_reqs extends base
         $time_spent = sprintf('%f', $time_spent);
         $res = $this->resynchronize_requests($b_simulate=true);
         $data = array_merge($data, $res);
-        $data['Total_Query_Time'] = "$time_spent microseconds";
+        $data['Total_Query_Time'] = "$time_spent seconds";
         $json = new JsonResponse();
         $json->setData($data);
         return $json;
@@ -295,67 +493,6 @@ class acp_reqs extends base
         $json = new JsonResponse();
         $json->setData($userdata);
         return $json;
-    }
-
-    public function handle_manage_user()
-    {
-        $this->reject_non_moderator();
-        $data = $this->user->data;
-        $auth = $this->auth;
-        $request = $this->request;
-        // if (!$auth->acl_gets('a_'))
-        // {
-        //     trigger_error('Lasciate ogne speranza, voi ch’intrate.');
-        // }
-        // Add security for CSRF
-        add_form_key('jeb/snahp');
-        if ($request->is_set_post('submit'))
-        {
-            if (!check_form_key('jeb/snahp'))
-            {
-                trigger_error('Form Key Error');
-            }
-            $usernames        = $request->variable('usernames', '');
-            $user_id          = $request->variable('user_id', 0);
-            $n_use            = $request->variable('n_use', 0);
-            $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
-            $n_offset         = $request->variable('n_offset', 1);
-            $reset_time       = $request->variable('reset_time', 0);
-            $status           = $request->variable('status', 1);
-            $data = [
-                'n_use'            => $n_use,
-                'n_use_this_cycle' => $n_use_this_cycle,
-                'n_offset'         => $n_offset,
-                'reset_time'       => $reset_time,
-                'status'           => $status,
-            ];
-            $this->update_request_users($user_id, $data);
-            if (false)
-            {
-                meta_refresh(2, $this->u_action);
-                $message = 'Processed without an error.';
-                trigger_error($message);
-            }
-        }
-
-        $usernames        = $request->variable('usernames', '');
-        $user_id          = $request->variable('user_id', 0);
-        $n_use            = $request->variable('n_use', 0);
-        $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
-        $n_offset         = $request->variable('n_offset', 1);
-        $reset_time       = $request->variable('reset_time', 0);
-        $status           = $request->variable('status', 1);
-        $this->template->assign_vars([
-            'B_ENABLE'         => true,
-            'USERNAMES'        => $usernames,
-            'USER_ID'          => $user_id,
-            'N_USE'            => $n_use,
-            'N_USE_THIS_CYCLE' => $n_use_this_cycle,
-            'N_OFFSET'         => $n_offset,
-            'RESET_TIME'       => $reset_time,
-            'STATUS'           => $status,
-        ]);
-        return $this->helper->render('@jeb_snahp/mcp/mcp_snp_reset_stats.html');
     }
 
 }
