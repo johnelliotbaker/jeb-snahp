@@ -261,6 +261,13 @@ class acp_reqs extends base
         $reqdata = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $data['Total_Graveyard'] = $reqdata['total'];
+        // Total Solved
+        $sql = 'SELECT count(*) as total from ' . $tbl['req'] . '
+            WHERE status=2';
+        $result = $this->db->sql_query($sql);
+        $reqdata = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data['Total_Solved'] = $reqdata['total'];
         // Total Deleted
         $sql = 'SELECT count(*) as total from ' . $tbl['req'] . '
             WHERE status=19';
@@ -271,7 +278,7 @@ class acp_reqs extends base
         $time_spent = (float)microtime() - $time;
         $time_spent = sprintf('%f', $time_spent);
         $res = $this->resynchronize_requests($b_simulate=true);
-        $data = array_merge($data, $res);
+        $data += $res;
         $data['Total_Query_Time'] = "$time_spent seconds";
         $json = new JsonResponse();
         $json->setData($data);

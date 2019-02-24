@@ -10,79 +10,11 @@
 	<div class="inner">
 	<h3>Statistics</h3>
 
-	<fieldset>
-	<dl>
-    <dt><label for="usernames">Generate Statistics:</label><br>
-    </dt>
-    <dd>
-      <input onClick="showStatistics();" type="Button" value="Generate" name="GenerateStat" class="button1">
-      <script>
-        function showStatistics()
-        {
-          var url = '/app.php/snahp/acp_reqs/generate_statistics/';
-          $.ajax(url).done((resp)=>{
-            $content = $('#acp_request_statistics_content');
-            $content.empty();
-            for (var varname in resp)
-            {
-              $entry = $('<tr><td style="text-align:left">' + varname + '</td><td style="text-align:left">' + resp[varname] + '</td></tr>');
-              $content.append($entry);
-            }
-          });
-        }
-      </script>
-    </dd>
-	</dl>
-	<hr />
-  <div id="user_request_details">
-    <!-- <table id="mcp_req_user_details" class="mcp_table"> -->
-    <table class="table.type3 responsive">
-      <thead>
-        <tr>
-          <th>Variable</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody id="acp_request_statistics_content">
-      </tbody>
-    </table>
-  </div>
-	<hr />
-	</fieldset>
+  {% include '@jeb_snahp/acp/component/generate.html' %}
 
-	<fieldset>
-	<dl>
-    <dt><label for="usernames">Resynchronize Requests</label><br>
-    </dt>
-    <dd>
-      <input onClick="resynchRequests();" type="Button" value="Resynch" name="Resynch" class="button1">
-      <script>
-        function resynchRequests()
-        {
-          var url = '/app.php/snahp/acp_reqs/resynch/';
-          $.ajax(url).done((resp)=>{
-            $content = $('#acp_request_statistics_content');
-            $content.empty();
-            for (var varname in resp)
-            {
-              $entry = $('<tr><td style="text-align:left">' + varname + '</td><td style="text-align:left">' + resp[varname] + '</td></tr>');
-              $content.append($entry);
-            }
-          });
-        }
-      </script>
-    </dd>
-	</dl>
-  </fieldset>
+  {% include '@jeb_snahp/acp/component/resynch_requests.html' %}
 
 	</div>
 </div>
-
-<!-- <fieldset class="submit-buttons"> -->
-<!--   {S_HIDDEN_FIELDS} -->
-<!--   <input type="reset" value="Reset" name="reset" class="button2" />&nbsp; -->
-<!--   <input type="submit" value="submit" name="submit" class="button1" /> -->
-<!--   {S_FORM_TOKEN} -->
-<!-- </fieldset> -->
 </form>
 <!-- INCLUDE mcp_footer.html -->

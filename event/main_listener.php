@@ -119,7 +119,12 @@ class main_listener extends base implements EventSubscriberInterface
         if (!$snp_req_b_avatar) return false;
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
-        $user_data = $this->select_user($poster_id);
+        $sql = 'SELECT snp_req_n_solve from '. USERS_TABLE . '
+            WHERE user_id='. $poster_id;
+        $result = $this->db->sql_query($sql, 1);
+        $user_data = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        // $user_data = $this->select_user($poster_id);
         $requests_solve = $user_data['snp_req_n_solve'];
         $post_row['REQUESTS_SOLVED'] = $requests_solve;
         $event['post_row'] = $post_row;
