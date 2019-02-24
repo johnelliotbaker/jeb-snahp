@@ -122,7 +122,7 @@ abstract class base
     {
         $sql = 'SELECT * FROM ' . 
             NOTIFICATION_TYPES_TABLE . '
-            WHERE notification_type_name LIKE "%thanks%"';
+            WHERE notification_type_name in ("gfksx.thanksforposts.notification.type.thanks", "gfksx.thanksforposts.notification.type.thanks_remove")';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
