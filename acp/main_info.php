@@ -61,6 +61,11 @@ class main_info
 					'auth'	=> 'ext_jeb/snahp && acl_a_board',
 					'cat'	=> array('ACP_SNP_TITLE')
 				),
+				'group_based_search'=> array(
+					'title'	=> 'ACP_SNP_GROUP_BASED_SEARCH',
+					'auth'	=> 'ext_jeb/snahp && acl_a_board',
+					'cat'	=> array('ACP_SNP_TITLE')
+				),
 			),
 		);
 	}

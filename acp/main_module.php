@@ -100,6 +100,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_bump_topic($cfg);
             break;
+        case 'group_based_search':
+            $cfg['tpl_name'] = 'acp_snp_group_based_search';
+            $cfg['b_feedback'] = false;
+            $this->handle_group_based_search($cfg);
+            break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
             $cfg['b_feedback'] = false;
@@ -156,6 +161,60 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
             ));
+        }
+    }
+
+    public function handle_group_based_search($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                // Enabler
+                $snp_search_b_enable = $request->variable('snp_search_b_enable', '1');
+                $config->set('snp_search_b_enable', $snp_search_b_enable);
+                // Group Permission and Configurations
+                $aInterval = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/interval-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("interval-$gid", '0');
+                        $aInterval[$gid] = (int) $var;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_search_interval', $aInterval);
+                $db->sql_query($sql);
+                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'U_ACTION'				=> $this->u_action,
+                'SNP_SEARCH_B_ENABLE'      => $config['snp_search_b_enable'],
+            ));
+            // Code to show signature configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'GID'=>$row['group_id'],
+                    'NAME'=>$row['group_name'],
+                    'INTERVAL'=> $row['snp_search_interval'],
+                );
+                $template->assign_block_vars('A_GROUP_BASED_SEARCH', $group);
+            };
+            $db->sql_freeresult($result);
         }
     }
 
