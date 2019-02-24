@@ -14,6 +14,12 @@ define('CHICKEN_URL', [
 define('MOTD', [
     ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
     ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
+    ['type' => 'youtube', 'url' => 'https://www.youtube.com/embed/kTcRRaXV-fg'],
     ['type' => 'image', 'url' => 'https://i.imgur.com/X4HOPPN.jpg'],
     ['type' => 'image', 'url' => 'https://i.imgur.com/6a7l2Ck.jpg'],
     ['type' => 'image', 'url' => 'https://i.imgur.com/bsJmjSE.jpg'],
@@ -78,6 +84,10 @@ function string2cluck($strn)
     {
         $media_elem = '<div align="center"><img style="max-width: 400px;" src="'.$media['url'].'"></img></div>';
     }
-    $strn = $media_elem . $strn;
+    $n_chicken = count(CHICKEN_URL);
+    $i_chicken = rand(0, $n_chicken-1);
+    $img = CHICKEN_URL[$i_chicken];
+    $chicken_img = ' <img style="width:24px;" src="' . $img['url'] . '"> ';
+    $strn = $media_elem . $chicken_img . $strn;
     return $strn;
 }

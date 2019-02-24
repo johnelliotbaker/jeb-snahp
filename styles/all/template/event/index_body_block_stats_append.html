@@ -1,0 +1,11 @@
+{% if SNP_THANKS_B_TOPLIST %}
+<div class="stat-block thanks-list">
+	<h3>Thanks Toplist</h3>
+	<p>
+  <!-- BEGIN A_TOP_LIST -->
+  <a href="./memberlist.php?mode=viewprofile&amp;u={A_TOP_LIST.USER_ID}" style="color: #{A_TOP_LIST.USER_COLOUR};" class="username-coloured">{A_TOP_LIST.USERNAME}</a> ({A_TOP_LIST.SNP_THANKS_N_RECEIVED}),
+  <!-- END A_TOP_LIST -->
+  </p>
+</div>
+{% endif %}
+

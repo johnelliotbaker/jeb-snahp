@@ -19,6 +19,11 @@ class v_0_17_0 extends \phpbb\db\migration\migration
                     'snp_thanks_n_received' => ['INT:10', 0],
                 ],
             ],
+            'add_index'	=> [
+                $this->table_prefix . 'users'  => [
+                    'snp_thanks_n_received'  => ['snp_thanks_n_received'],
+                ],
+            ],
             // 'add_tables' => [
             //     $this->table_prefix . 'snahp_bump_topic'	=> [
             //         'COLUMNS' => [

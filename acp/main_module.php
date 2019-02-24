@@ -475,6 +475,8 @@ class main_module
                 $config->set('snp_thanks_b_enable', $snp_thanks_b_enable);
                 $snp_thanks_b_avatar = $request->variable('snp_thanks_b_avatar', true);
                 $config->set('snp_thanks_b_avatar', $snp_thanks_b_avatar);
+                $snp_thanks_b_toplist = $request->variable('snp_thanks_b_toplist', true);
+                $config->set('snp_thanks_b_toplist', $snp_thanks_b_toplist);
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
@@ -494,6 +496,7 @@ class main_module
                 'SNP_REQ_B_AVATAR'         => $config['snp_req_b_avatar'],
                 'SNP_THANKS_B_ENABLE'      => $config['snp_thanks_b_enable'],
                 'SNP_THANKS_B_AVATAR'      => $config['snp_thanks_b_avatar'],
+                'SNP_THANKS_B_TOPLIST'      => $config['snp_thanks_b_toplist'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],
                 'U_ACTION'                 => $this->u_action,
             ));

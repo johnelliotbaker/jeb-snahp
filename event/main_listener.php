@@ -93,6 +93,8 @@ class main_listener extends base implements EventSubscriberInterface
                 ['setup_custom_css', 0],
             ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
+            'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
+            'core.display_forums_after'                   => 'show_thanks_top_list',
             'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
@@ -119,6 +121,41 @@ class main_listener extends base implements EventSubscriberInterface
     {
     }
 
+    public function show_thanks_top_list($event)
+    {
+        if (!$this->config['snp_thanks_b_enable']) return false;
+        if (!$this->config['snp_thanks_b_toplist']) return false;
+        $sql = 'SELECT user_id, username, user_colour, snp_thanks_n_received FROM ' . USERS_TABLE . '
+            ORDER BY snp_thanks_n_received DESC';
+        $result = $this->db->sql_query_limit($sql, 10, 0);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        foreach ($rowset as $row)
+        {
+            $data = [
+                'USERNAME'              => $row['username'],
+                'USER_COLOUR'           => $row['user_colour'],
+                'USER_ID'               => $row['user_id'],
+                'SNP_THANKS_N_RECEIVED' => $row['snp_thanks_n_received'],
+            ];
+            $this->template->assign_block_vars('A_TOP_LIST', $data);
+        }
+        $this->template->assign_vars([
+            'SNP_THANKS_B_TOPLIST' => true,
+        ]);
+    }
+
+    public function insert_thanks($event)
+    {
+        if (!$this->config['snp_thanks_b_enable']) return false;
+        $from_id = $event['from_id'];
+        $to_id = $event['to_id'];
+        $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_given=snp_thanks_n_given+1 WHERE user_id=' . $from_id;
+        $this->db->sql_query($sql);
+        $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id=' . $to_id;
+        $this->db->sql_query($sql);
+    }
+
     public function show_thanks_avatar($event)
     {
         if (!$this->config['snp_thanks_b_enable']) return false;
@@ -141,8 +178,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_requests_solved_avatar($event)
     {
-        $snp_req_b_avatar = $this->config['snp_req_b_avatar'];
-        if (!$snp_req_b_avatar) return false;
+        if (!$this->config['snp_req_b_avatar']) return false;
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
         $sql = 'SELECT snp_req_n_solve from '. USERS_TABLE . '

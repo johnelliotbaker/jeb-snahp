@@ -1,8 +1,7 @@
 <!-- INCLUDE overall_header.html -->
-<h1>{L_ACP_SNP_TITLE}</h1>
+<h1>General Settings</h1>
 
 <form id="acp_board" method="post" action="{U_ACTION}">
-  <h2>Notification Settings</h2>
   <div class="panel">
     <div class="inner">
 
@@ -36,6 +35,15 @@
 					<dd>
               <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="1" {% if SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
               <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="0" {% if not SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+				<dl>
+          <dt>
+              <label>Show Top 10 List:</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="1" {% if SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="0" {% if not SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
 				<dl>

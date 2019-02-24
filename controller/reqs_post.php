@@ -49,7 +49,7 @@ class reqs_post extends base
         case 'spam':
             $cfg['tpl_name'] = 'reqs_post_movies.html';
             $cfg['b_feedback'] = false;
-            $fid = 24;
+            $fid = 38;
             return $this->handle_spam($cfg, $fid);
             break;
         case 'thanks':
@@ -64,8 +64,18 @@ class reqs_post extends base
         }
 	}
 
+    public function send_message($data) {
+        echo "data: " . json_encode($data) . PHP_EOL;
+        echo PHP_EOL;
+        ob_flush();
+        flush();
+    }
+
     public function handle_thanks()
     {
+        $this->reject_non_admin();
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
         $sql = 'SELECT post_id, topic_id from phpbb_posts order by post_time desc';
         $result = $this->db->sql_query_limit($sql, 1);
         $row = $this->db->sql_fetchrow($result);
@@ -74,12 +84,25 @@ class reqs_post extends base
         $data['user_id']     = $this->user->data['user_id'];
         $data['poster_id']   = 48;
         $data['thanks_time'] = 1549238692;
-        $data['forum_id']    = 24;
+        $data['forum_id']    = 38;
         $i = 1;
         $topic_id_0 = $row['topic_id'];
         $post_id_0 = $row['post_id'];
-        while ($i < 100000)
+        $total = 200000;
+        while ($i < $total)
         {
+            if ($i % 1000 == 0)
+            {
+                $data0 = [
+                    'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
+                    'message' => "$i of $total",
+                    'error_message' => 'No Errors',
+                    'sqlmsg' => 'insert post',
+                ];
+                $this->send_message($data0);
+            }
+            $data['user_id']     = [rand(48, 55), 2][rand(0,1)];
+            $data['poster_id'] = rand(48, 55);
             $data['post_id']     = $post_id_0 - $i;
             $data['topic_id']    = $topic_id_0 - $i;
             $sql = 'INSERT INTO phpbb_thanks
@@ -88,13 +111,24 @@ class reqs_post extends base
             $this->db->sql_query($sql);
             $i += 1;
         }
-        trigger_error('thanked' . " $i times");
+        $data0 = [
+            'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
+            'message' => "$i of $total",
+            'error_message' => 'No Errors',
+            'sqlmsg' => 'insert post',
+        ];
+        $this->send_message($data0);
+        $js = new JsonResponse(['status' => "thanked $i times"]);
+        return $js;
         // $sql = 'INSERT INTO phpbb_thanks (`post_id`, `poster_id`, `user_id`, `topic_id`, `forum_id`, `thanks_time`) VALUES ' .
         //     ('4367', '2', '48', '3554', '24', '1549237197');
     }
 
     public function handle_spam($cfg, $fid)
     {
+        $this->reject_non_admin();
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
         $mode = 'post';
         $message = 'spam';
         $subject = 'spam';
@@ -125,10 +159,22 @@ class reqs_post extends base
         $data_ary['message'] = $message;
         $data_ary['message_md5'] = md5($data_ary['message']);
         $i = 0;
-        while($i < 50000)
+        set_time_limit(0);
+        $total = 200000;
+        while($i < $total)
         {
             submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
             $i += 1;
+            if ($i % 1000 == 0)
+            {
+                $data = [
+                    'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
+                    'message' => "$i of $total",
+                    'error_message' => 'No Errors',
+                    'sqlmsg' => 'insert post',
+                ];
+                $this->send_message($data);
+            }
         }
     }
 
