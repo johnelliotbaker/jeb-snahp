@@ -1,14 +1,23 @@
 <!-- INCLUDE overall_header.html -->
 <h1>{L_ACP_SNP_TITLE}</h1>
 <form id="acp_board" method="post" action="{U_ACTION}">
-  <h2>Settings</h2>
 
   <fieldset>
+    <legend>Advanced Management Console and Scripts</legend>
     <dl>
-      <dt><label>Request Database Management</label>
+      <dt><label>Request Database Management</label><br>
+        Perform resynchronization of phpbb_snahp_requests table
       </dt>
       <dd>
-        <a href="/app.php/snahp/acp_reqs/manage/">Go to Management Panel</a>
+        <a href="/app.php/snahp/acp_reqs/manage/">Go to Management Console</a>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Requests Solved Management</label><br>
+        Perform resynchronization of snp_thanks_n_solve in phpbb_users table
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/acp_reqs/handle/rurs/">Go to Management Console</a>
       </dd>
     </dl>
   </fieldset>
