@@ -3,9 +3,9 @@
 <form id="ucp" method="post" action="{S_UCP_ACTION}">
 <h2>Settings</h2>
 	<div class="panel">
+    <h3>Avatar Settings</h3>
 		<div class="inner">
 			<fieldset>
-        <label>Thanks Settings</label>
 				<dl>
 					<dt><label for="snp_disable_avatar_thanks_link0">Disable thanks link under avatar:</label><br />
             <span>Choosing yes will disable displaying links to your thanks given and received.<br />For items under avatar.</span></dt>
@@ -16,14 +16,37 @@
     </div>
   </div>
   <div class="panel">
+    <h3>Notification Settings</h3>
     <div class="inner">
+
 			<fieldset>
-        <label>Notification Settings</label>
 				<dl>
 					<dt><label for="snp_enable_at_notify0">Receive notification via @@username</label><br />
             <span>Choosing yes will allow you to receive notification when another user refers you in their post with @@your_username.</span></dt>
 					<dd><label for="snp_enable_at_notify1"><input type="radio" name="snp_enable_at_notify" id="snp_enable_at_notify1" value="1"<!-- IF S_SNP_ENABLE_AT_NOTIFY --> checked="checked"<!-- ENDIF --> /> Yes</label>
 						<label for="snp_enable_at_notify0"><input type="radio" name="snp_enable_at_notify" id="snp_enable_at_notify0" value="0"<!-- IF not S_SNP_ENABLE_AT_NOTIFY --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+      <br>
+
+			<fieldset>
+				<dl>
+					<dt><label>Delete All Thanks Notifications</label><br />
+            <span>WARNING! This action cannot be reversed!<br>
+              Click Delete only if you are sure you want to delete all previous thanks notifications.<br></span></dt>
+        <dd>
+          <input onClick="do_datn();" type="Button" name="delete_all_thanks" id="delete_all_thanks" class="button1" value="DELETE" />&nbsp;
+          <script>
+            function do_datn()
+            {
+              $.get('/app.php/snahp/thanks/handle/datn/')
+                .done((resp)=>{
+                  alert('All of your thanks notifications have been deleted.');
+                });
+
+            }
+          </script>
+        </dd>
 				</dl>
 			</fieldset>
 		</div>

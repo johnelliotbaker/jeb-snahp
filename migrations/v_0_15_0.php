@@ -16,6 +16,7 @@ class v_0_15_0 extends \phpbb\db\migration\migration
             'add_columns'	=> [
                 $this->table_prefix . 'users'  => [
                     'snp_req_n_solve' => ['INT:10', 0],
+                    'snp_thanks_b_notification' => ['BOOL', 1],
                 ],
             ],
             // 'add_tables' => [
@@ -49,6 +50,7 @@ class v_0_15_0 extends \phpbb\db\migration\migration
             'drop_columns'	=> [
                 $this->table_prefix . 'users'  => [
                     'snp_req_n_solve',
+                    'snp_thanks_b_notification',
                 ],
             ],
             // 'drop_tables' => [

@@ -117,6 +117,22 @@ abstract class base
     }
 
     // DATABASE Functions
+    // THANKS
+    public function delete_thanks_notifications()
+    {
+        $sql = 'SELECT * FROM ' . 
+            NOTIFICATION_TYPES_TABLE . '
+            WHERE notification_type_name LIKE "%thanks%"';
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $type_ids = array_map(function($arg){return $arg['notification_type_id'];}, $rowset);
+        $sql = 'DELETE FROM ' . NOTIFICATIONS_TABLE . '
+            WHERE user_id=' . $this->user->data['user_id'] . '
+        AND ' . $this->db->sql_in_set('notification_type_id', $type_ids);
+        $this->db->sql_query($sql);
+    }
+
     // BUMP TOPIC
     public function get_bump_permission($tid)
     {

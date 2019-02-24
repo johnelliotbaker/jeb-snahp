@@ -87,7 +87,8 @@ class main_listener extends base implements EventSubscriberInterface
     {
         return array(
             'core.user_setup' => [
-                ['include_donation_navlink', 0],
+                ['test', 0],
+                ['include_quick_link', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
             ],
@@ -111,6 +112,10 @@ class main_listener extends base implements EventSubscriberInterface
                 array('insert_new_topic_button',0),
             ),
         );
+    }
+
+    public function test($event)
+    {
     }
 
     public function show_requests_solved_avatar($event)
