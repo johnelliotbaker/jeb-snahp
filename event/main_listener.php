@@ -98,6 +98,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.viewtopic_modify_post_row'              => [
                 ['easter_cluck', 1],
                 ['show_requests_solved_avatar', 1],
+                ['show_thanks_avatar', 1],
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
@@ -116,6 +117,26 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function test($event)
     {
+    }
+
+    public function show_thanks_avatar($event)
+    {
+        if (!$this->config['snp_thanks_b_enable']) return false;
+        if (!$this->config['snp_thanks_b_avatar']) return false;
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        $sql = 'SELECT snp_thanks_n_given, snp_thanks_n_received from '. USERS_TABLE . '
+            WHERE user_id='. $poster_id;
+        $result = $this->db->sql_query($sql, 1);
+        $user_data = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        // $user_data = $this->select_user($poster_id);
+        $post_row['THANKS_GIVEN'] = $user_data['snp_thanks_n_given'];
+        $post_row['THANKS_RECEIVED'] = $user_data['snp_thanks_n_received'];
+        $event['post_row'] = $post_row;
+        $this->template->assign_vars([
+            'B_SHOW_THANKS_AVATAR' => true,
+        ]);
     }
 
     public function show_requests_solved_avatar($event)

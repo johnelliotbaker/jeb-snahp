@@ -7,6 +7,11 @@ jeb_snahp_mod_move_topic:
     requirements:
         tid: \d+
         fid: \d+
+jeb_snahp_acp_thanks:
+    path: /snahp/acp_thanks/handle/{mode}/
+    defaults: { _controller: jeb.snahp.acp_thanks:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_thanks:
     path: /snahp/thanks/handle/{mode}/
     defaults: { _controller: jeb.snahp.thanks:handle}

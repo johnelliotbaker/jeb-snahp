@@ -1,0 +1,73 @@
+<fieldset>
+  <dl>
+    <dt><label for="usernames">Rebuild Thanks given and received</label><br>
+      <span>WARNING! This may take a long time!<br>
+        Click Rebuild to gather thanks statistics from scratch.<br>
+        The thanks_given and thanks_received will be stored to each user's entry in phpbb_users table.
+      </span>
+    </dt>
+    <dd>
+      <input onClick="do_resync_all();" type="Button" value="Rebuild" name="Resync" class="button1">
+    </dd>
+  </dl>
+  <script>
+    var html = `
+<div id="dialog" title="DB Transactions">
+  <div>
+    <span id="sqlmsg"></span>
+  </div>
+  <br>
+  <div id="progressdiv">
+    <progress id='progressbar' value="0" max='100' style="width:100%"></progress>  
+  </div>
+  <br>
+  <div align="center">
+    <span id="progmsg" style="font-size:1.3em;"></span>
+  </div>
+  <div>
+    <span id="errmsg" style="font-size:1.3em;"></span>
+  </div>
+</div>
+    `;
+    var es;
+    function do_resync_all() {
+      if ($('#dialog').length < 1)
+      { $dialog = $(html).dialog(); }
+      else
+      { $dialog.dialog(); }
+      es = new EventSource('/app.php/snahp/acp_thanks/handle/do_resync_all/');
+      es.addEventListener('message', function(e) {
+        var result = JSON.parse( e.data );
+        var i = result.i;
+        var n = result.n;
+        var status = result.status;
+        var progress = Math.round(i/n*100);
+        var message = result.message;
+        var sqlmsg = result.sqlmsg;
+        var errmsg = result.error_message;
+        $('#progmsg').text(message);
+        $('#sqlmsg').text(sqlmsg);
+        $('#errmsg').text(errmsg);
+        if(status == 'COMPLETE') {
+          es.close();
+          $('#progressbar').val(100);
+        }
+        else if (status == 'ERROR')
+        {
+          es.close();
+        }
+        else
+        {
+          $('#progressbar').val(progress);
+        }
+      });
+      es.addEventListener('error', function(e) {
+        es.close();
+      });
+    }
+    function stopTask() {
+      es.close();
+      addLog('Interrupted');
+    }
+  </script>
+</fieldset>

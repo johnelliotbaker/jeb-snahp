@@ -19,6 +19,37 @@
       </fieldset>
 
       <fieldset>
+        <legend>Thanks</legend>
+				<dl>
+          <dt>
+              <label>Thanks Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="1" {% if SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="0" {% if not SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+				<dl>
+          <dt>
+              <label>Show under avatar:</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="1" {% if SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="0" {% if not SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+				<dl>
+          <dt>
+            <label>Rebuild thanks count</label><br>
+            When thanks count is corrupted, use the rebuilder console to auto correct.
+          </dt>
+					<dd>
+            <a href="/app.php/snahp/acp_thanks/handle/resync_all/"> Go to the Rebuilder Console</a>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
         <legend>Requests Solved Statistics</legend>
 				<dl>
           <dt>

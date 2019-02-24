@@ -471,6 +471,10 @@ class main_module
                 $config->set('snp_easter_b_chicken', $snp_easter_b_chicken);
                 $snp_req_b_avatar = $request->variable('snp_req_b_avatar', true);
                 $config->set('snp_req_b_avatar', $snp_req_b_avatar);
+                $snp_thanks_b_enable = $request->variable('snp_thanks_b_enable', true);
+                $config->set('snp_thanks_b_enable', $snp_thanks_b_enable);
+                $snp_thanks_b_avatar = $request->variable('snp_thanks_b_avatar', true);
+                $config->set('snp_thanks_b_avatar', $snp_thanks_b_avatar);
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
@@ -488,6 +492,8 @@ class main_module
                 'SNP_EASTER_B_CHICKEN'     => $config['snp_easter_b_chicken'],
                 'SNP_EASTER_CHICKEN_CHANCE'=> $config['snp_easter_chicken_chance'],
                 'SNP_REQ_B_AVATAR'         => $config['snp_req_b_avatar'],
+                'SNP_THANKS_B_ENABLE'      => $config['snp_thanks_b_enable'],
+                'SNP_THANKS_B_AVATAR'      => $config['snp_thanks_b_avatar'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],
                 'U_ACTION'                 => $this->u_action,
             ));

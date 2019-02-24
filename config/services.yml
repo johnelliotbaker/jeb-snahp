@@ -49,6 +49,11 @@ services:
         parent: jeb.snahp.base
         tags:
             - { name: event.listener }
+    jeb.snahp.acp_thanks:
+        class: jeb\snahp\controller\acp_thanks
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.thanks:
         class: jeb\snahp\controller\thanks
         parent: jeb.snahp.base
