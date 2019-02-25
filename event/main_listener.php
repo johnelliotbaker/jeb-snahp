@@ -88,7 +88,7 @@ class main_listener extends base implements EventSubscriberInterface
         return array(
             'core.user_setup' => [
                 ['test', 0],
-                ['include_quick_link', 0],
+                ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
             ],

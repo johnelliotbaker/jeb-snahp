@@ -134,7 +134,7 @@ class acp_reqs extends base
         $this->db->sql_freeresult($result);
         // Transaction
         $start = 0;
-        $limit = 1;
+        $limit = 100;
         while ($start < $total)
         {
             $this->db->sql_return_on_error(true);

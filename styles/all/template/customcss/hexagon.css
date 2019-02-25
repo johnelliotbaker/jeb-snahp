@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu|Galada');
+
 /* hidebox */
 div.content > dl.hidebox.hi
 {
@@ -47,4 +49,57 @@ input.autofill {
 input.search_master {
     background:black;
     border: 2px solid #de7300;
+}
+
+/* pagination */
+div.pagination > ul > li.active > span {
+    background: #de7300;
+    color: black;
+    margin: 1px;
+    border: solid 1px #d08030;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+a.topictitle,
+a.forumtitle,
+h2 {
+    font-family: 'Verdana', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+p.author, input,
+.message-box textarea,
+fieldset,
+input.button1,
+input.button2,
+input.button3,
+input.button4,
+input.button5,
+select,
+h1, h2, h3, h4, h5, h6,
+li,ul,dd,dt,label,
+li.header dt,
+li.header dd,
+.content,
+.postbody h3,
+.button {
+    font-family: 'Arial', sans-serif;
+}
+
+p.author {
+    font-size: 1em;
+}
+
+fieldset {
+    font-size: 1.2em;
+}
+
+.message-box textarea {
+    font-size: 1.5em;
 }

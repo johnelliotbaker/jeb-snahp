@@ -1,9 +1,68 @@
 <!-- INCLUDE overall_header.html -->
+
 <h1>General Scripts</h1>
 <br>
-<ul>
-  <li>
-    <a href="/app.php/snahp/acp_reqs_manage_user/">Manage Request Users</a>
-  </li>
-</ul>
-<!-- INCLUDE overall_footer.html -->
+  <fieldset>
+    <legend>Database: phpbb_snahp_request_users</legend>
+    <strong>Affects columns:</strong><br>
+    <strong>n_use, n_use_this_cycle, n_offset, reset_time</strong><br><br>
+    <dl>
+      <dt><label>Manage:</label><br>
+        Resets the statistics for request users.
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/acp_reqs_manage_user/">Go to Management Console</a>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <legend>Database: phpbb_snahp_request</legend>
+    <strong>Affects columns:</strong><br>
+    <strong>b_graveyard, status</strong><br><br>
+    <dl>
+      <dt><label>Manage:</label><br>
+        Perform resynchronization of phpbb_snahp_requests table.<br>
+        If graveyard cron is not working, using resynch may fix it.<br>
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/acp_reqs/manage/">Go to Management Console</a>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Graveyard Closed Requests</label><br>
+        Click the link to move closed requests to graveyard.<br>
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/graveyard_request/">Move Closed Requests</a>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <legend>Database: phpbb_users</legend>
+    <strong>Affects columns:</strong><br>
+    <strong>snp_req_n_solve</strong><br><br>
+    <dl>
+      <dt><label>Manage:</label><br>
+        Perform resynchronization of snp_thanks_n_solve in phpbb_users table
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/acp_reqs/handle/rurs/">Go to Management Console</a>
+      </dd>
+    </dl>
+    <br><hr><br>
+    <strong>Affects columns:</strong><br>
+    <strong>snp_thanks_n_given, snp_thanks_n_received</strong><br><br>
+    <dl>
+      <dt>
+        <label>Rebuild thanks count</label><br>
+        When thanks count is corrupted, use the rebuilder console to auto correct.
+      </dt>
+      <dd>
+        <a href="/app.php/snahp/acp_thanks/handle/resync_all/"> Go to Management Console</a>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <!-- INCLUDE overall_footer.html -->

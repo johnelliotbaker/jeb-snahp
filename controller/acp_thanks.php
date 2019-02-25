@@ -44,7 +44,7 @@ class acp_thanks extends base
     public function do_resync_all($cfg)
     {
         // Set sql limit
-        $limit = 1;
+        $limit = 100;
         $this->reject_non_admin();
         // Set header for json update
         header('Content-Type: text/event-stream');
@@ -68,13 +68,6 @@ class acp_thanks extends base
             {
                 $this->db->sql_transaction('begin');
                 $sql = 'SELECT DISTINCT user_id FROM ' . $tbl['thanks'] . ' ORDER BY user_id';
-                $data = [
-                    'status' => 'PROGRESS', 'i' => $start, 'n' => $total,
-                    'message' => "$start of $total",
-                    'error_message' => 'No Errors',
-                    'sqlmsg' => $sql,
-                ];
-                $this->send_message($data);
                 $result = $this->db->sql_query_limit($sql, $limit, $start);
                 $rowset = $this->db->sql_fetchrowset($result);
                 foreach($rowset as $row)
@@ -87,8 +80,6 @@ class acp_thanks extends base
                     $n_given = $row0['total'];
                     $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_given=' . $n_given . ' WHERE user_id=' . $user_id;
                     $this->db->sql_query($sql);
-                    $data = [ 'status' => 'PROGRESS', 'i' => $start, 'n' => $total, 'message' => "$start of $total", 'error_message' => 'No Errors', 'sqlmsg' => $sql, ];
-                    $this->send_message($data);
                 }
                 $this->db->sql_freeresult($result);
                 if ($this->db->get_sql_error_triggered())
@@ -106,8 +97,8 @@ class acp_thanks extends base
                 $err = $error_query . '<br>';
                 $err .= $error_msg;
                 $data = [
-                    'status' => 'ERROR', 'i' => $start, 'n' => $total,
-                    'message' => "$start of $total",
+                    'status' => 'ERROR', 'i' => $total, 'n' => $total,
+                    'message' => "$total of $total",
                     'error_message' => $err,
                     'sqlmsg' => $sql,
                 ];
@@ -116,11 +107,13 @@ class acp_thanks extends base
                 trigger_error($err);
             }
             $this->db->sql_return_on_error(false);
+            $data = [ 'status' => 'PROGRESS', 'i' => $start, 'n' => $total, 'message' => "$start of $total", 'error_message' => 'No Errors', 'sqlmsg' => $sql, ];
+            $this->send_message($data);
             $start += $limit;
         }
         $data = [
             'status' => 'PROGRESS', 'i' => $total, 'n' => $total,
-            'message' => "$start of $total",
+            'message' => "$total of $total",
             'error_message' => 'No Errors',
             'sqlmsg' => $sql,
         ];
@@ -140,13 +133,6 @@ class acp_thanks extends base
             {
                 $this->db->sql_transaction('begin');
                 $sql = 'SELECT DISTINCT poster_id FROM ' . $tbl['thanks'] . ' ORDER BY poster_id';
-                $data = [
-                    'status' => 'PROGRESS', 'i' => $start, 'n' => $total,
-                    'message' => "$start of $total",
-                    'error_message' => 'No Errors',
-                    'sqlmsg' => $sql,
-                ];
-                $this->send_message($data);
                 $result = $this->db->sql_query_limit($sql, $limit, $start);
                 $rowset = $this->db->sql_fetchrowset($result);
                 foreach($rowset as $row)
@@ -186,11 +172,13 @@ class acp_thanks extends base
                 trigger_error($err);
             }
             $this->db->sql_return_on_error(false);
+            $data = [ 'status' => 'PROGRESS', 'i' => $start, 'n' => $total, 'message' => "$start of $total", 'error_message' => 'No Errors', 'sqlmsg' => $sql, ];
+            $this->send_message($data);
             $start += $limit;
         }
         $data = [
             'status' => 'PROGRESS', 'i' => $total, 'n' => $total,
-            'message' => "$start of $total",
+            'message' => "$total of $total",
             'error_message' => 'No Errors',
             'sqlmsg' => $sql,
         ];
