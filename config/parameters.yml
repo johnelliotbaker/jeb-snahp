@@ -21,6 +21,9 @@ parameters:
             terminate: 9
             deleted: 19
             set:
+                graveyardable:
+                    - 2
+                    - 9
                 closed:
                     - 2
                     - 9

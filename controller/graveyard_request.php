@@ -25,7 +25,7 @@ class graveyard_request extends base
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
-        $def_closed = $def['set']['closed'];
+        $def_closed = $def['set']['graveyardable'];
         $sql = 'SELECT * FROM ' . $tbl['req'] .
             ' WHERE ' . $this->db->sql_in_set('status', $def_closed) .
             ' AND b_graveyard = 0';
