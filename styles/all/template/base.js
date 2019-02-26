@@ -2,7 +2,7 @@ function getAtUsername(event)
 {
     $self = $(event.target);
     var j = i = $self[0].selectionStart;
-    var text = $mbox.val();
+    var text = $mbox.val().toLowerCase();
     while (text.charCodeAt(j-1)!=10 && text[j-1]!=' ' && j>0)
     {
         j--;
