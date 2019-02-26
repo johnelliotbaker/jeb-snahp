@@ -65,11 +65,16 @@ body {
     font-size: 11px;
 }
 
-a.topictitle,
-a.forumtitle,
-h2 {
+a.topictitle, a.forumtitle,
+h2
+{
     font-family: 'Verdana', sans-serif;
     font-weight: 700;
+    font-size: 20px;
+}
+
+a.topictitle, a.forumtitle
+{
     font-size: 16px;
 }
 
@@ -101,5 +106,9 @@ fieldset {
 }
 
 .message-box textarea {
-    font-size: 1.5em;
+    font-size: 1em;
+}
+
+.postbody .content {
+    font-size: 1.2em;
 }
