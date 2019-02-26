@@ -21,12 +21,18 @@ function collectAvatarUsername()
 {
     $a = $('div.avatar-container').next();
     var res = [];
+    var count = 0;
+    var op = [];
     $a.each((e)=>{
-        res.push($($a[e]).text());
+        var username = $($a[e]).text();
+        if (count==0) { op.push(username); }
+        else { res.push(username); }
+        count++;
     })
     res.sort((a, b)=>{
         return a.length - b.length;
     })
+    res = op.concat(res);
     return res;
 }
 
@@ -41,9 +47,11 @@ $(document).ready(()=>{
             var res = [];
             var targetname = getAtUsername(e);
             if (!targetname) return false;
+            if (targetname[0] == 'op')
+            { targetname[0] = usernames[0].toLowerCase(); }
             for (var username of usernames)
             {
-                if (username.toLowerCase().indexOf(targetname[0]) > -1)
+                if (username.toLowerCase().indexOf(targetname[0]) == 0)
                 {
                     $self = $(e.target);
                     var text = $self.val();
