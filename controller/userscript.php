@@ -167,7 +167,7 @@ class userscript extends base
         }
         $n_bump = $bump_data['n_bump'];
         // cooldown rejection
-        if ($n_bump > 0 && $time < $bump_data['topic_time'] + $cooldown)
+        if (!$b_mod && $n_bump > 0 && $time < $bump_data['topic_time'] + $cooldown)
         {
             $return_url = '/viewtopic.php?t='.$tid;
             if (array_key_exists('forum_id', $topic_data))

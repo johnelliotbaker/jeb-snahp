@@ -123,6 +123,8 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_thanks_top_list($event)
     {
+        $uid = $this->user->data['user_id'];
+        if ($uid == ANONYMOUS) return false;
         if (!$this->config['snp_thanks_b_enable']) return false;
         if (!$this->config['snp_thanks_b_toplist']) return false;
         $sql = 'SELECT user_id, username, user_colour, snp_thanks_n_received FROM ' . USERS_TABLE . '
@@ -130,18 +132,22 @@ class main_listener extends base implements EventSubscriberInterface
         $result = $this->db->sql_query_limit($sql, 10, 0);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        foreach ($rowset as $row)
+        $n_row = count($rowset);
+        foreach ($rowset as $key => $row)
         {
+            $delim = ($n_row==$key+1) ? '' : ',';
             $data = [
                 'USERNAME'              => $row['username'],
                 'USER_COLOUR'           => $row['user_colour'],
                 'USER_ID'               => $row['user_id'],
                 'SNP_THANKS_N_RECEIVED' => $row['snp_thanks_n_received'],
+                'SNP_THANKS_DELIM'      => $delim,
             ];
             $this->template->assign_block_vars('A_TOP_LIST', $data);
         }
         $this->template->assign_vars([
             'SNP_THANKS_B_TOPLIST' => true,
+            'SNP_THANKS_N_TOTAL' => $n_row,
         ]);
     }
 
