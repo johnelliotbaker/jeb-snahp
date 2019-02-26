@@ -53,6 +53,10 @@ class main_module
         $this->tpl_name = $cfg['tpl_name'];
         $this->page_title = $user->lang('UCP_SNP_TITLE');
         add_form_key('jeb/snahp');
+        $data = [
+            'snp_disable_avatar_thanks_link' => $request->variable('snp_disable_avatar_thanks_link', $user->data['snp_disable_avatar_thanks_link']),
+            'snp_enable_at_notify'           => $request->variable('snp_enable_at_notify', $user->data['snp_enable_at_notify']),
+        ];
         if ($request->is_set_post('submit'))
         {
             if (!check_form_key('jeb/snahp'))
@@ -72,10 +76,6 @@ class main_module
             }
         }
         // Receive thanks notifications
-        $data = [
-            'snp_disable_avatar_thanks_link' => $request->variable('snp_disable_avatar_thanks_link', $user->data['snp_disable_avatar_thanks_link']),
-            'snp_enable_at_notify'           => $request->variable('snp_enable_at_notify', $user->data['snp_enable_at_notify']),
-        ];
         $template_vars = array(
             'S_SNP_DISABLE_AVATAR_THANKS_LINK' => $data['snp_disable_avatar_thanks_link'],
             'S_SNP_ENABLE_AT_NOTIFY'           => $data['snp_enable_at_notify'],
