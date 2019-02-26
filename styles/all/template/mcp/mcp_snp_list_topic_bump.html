@@ -1,0 +1,110 @@
+<!-- INCLUDE mcp_header.html -->
+{% if B_ENABLE %}
+<form id="mcp" method="post" action="{S_MCP_ACTION}">
+  <div class="panel">
+    <div class="inner">
+      <!-- IF .postrow -->
+      <div class="action-bar bar-top">
+        <div class="pagination">
+          <!-- IF .pagination -->
+          <!-- INCLUDE pagination.html -->
+          <!-- ELSE -->
+          &bull; {PAGE_NUMBER}
+          <!-- ENDIF -->
+        </div>
+      </div>
+
+      <style>
+        .username {
+          width: 20%;
+          text-align: left;
+        }
+        .time {
+          width: 15%;
+          text-align: left;
+        }
+        .count {
+          width: 5%;
+          text-align: center;
+        }
+        .status {
+          width: 5%;
+          text-align: center;
+        }
+        .title {
+          width: 40%;
+          text-align: left;
+        }
+
+      </style>
+
+      <table class="table1 responsive">
+        <thead>
+          <tr>
+            <th class="row-1 username">Username</th>
+            <th class="row-2 time">Bumped Time</th>
+            <th class="row-3 time">Topic Time</th>
+            <th class="row-4 count">Total</th>
+            <th class="row-5 status">Status</th>
+            <th class="row-6 title">Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- BEGIN postrow -->
+          <tr>            
+            <td class="username">
+              <a href="/memberlist.php?mode=viewprofile&u={postrow.USER_ID}"><span style="color:#{postrow.USER_COLOUR}"><strong>{postrow.USERNAME}</strong></span></a>
+            </td>
+            <td class="bumptime">
+              {postrow.BUMP_TIME}
+            </td>
+            <td class="topictime">
+              {postrow.TOPIC_TIME}
+            </td>
+            <td class="count">
+              {postrow.N_BUMP}
+            </td>
+            <td class="status">
+              {postrow.BUMP_STATUS}
+            </td>
+            <td class="title">
+              <a href="./viewtopic.php?f={postrow.FORUM_ID}&t={postrow.TOPIC_ID}"><strong>{postrow.TOPIC_TITLE}</strong></a>
+            </td>
+          </tr>
+          <!-- END postrow -->
+        </tbody>
+      </table>
+
+      <div class="action-bar bottom">
+        <select name="sortkey">
+          <option value="count" {% if SORTKEY=='count' %}selected{% endif %}>Total</option>
+          <option value="bumpdate" {% if SORTKEY=='bumpdate' %}selected{% endif %}>Bumped Time</option>
+        </select>
+        <input type="submit" value="sort"></input>
+        <!--- INCLUDE display_options.html -->
+        <div class="pagination">
+          {TOTAL_REQUEST}
+          <!-- IF .pagination -->
+          <!-- INCLUDE pagination.html -->
+          <!-- ELSE -->
+          &bull; {PAGE_NUMBER}
+          <!-- ENDIF -->
+        </div>
+      </div>
+
+      <!-- ELSE -->
+      <p><strong>No Request</strong></p>
+      <!-- ENDIF -->
+
+    </div>
+  </div>
+</form>
+{% else %}
+<div class="panel">
+  <div class="inner">
+    <h3>Requests disabled</h3>
+    <p>Request feature is currently disabled by the site admin.</p>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE mcp_footer.html -->

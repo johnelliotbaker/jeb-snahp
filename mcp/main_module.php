@@ -42,6 +42,11 @@ class main_module extends base
             $cfg['b_feedback'] = false;
             $this->handle_list_request($cfg);
             break;
+        case 'topic_bump':
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/mcp_snp_list_topic_bump';
+            $cfg['b_feedback'] = false;
+            $this->handle_list_topic_bump($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_default($cfg);
@@ -101,6 +106,39 @@ class main_module extends base
                 'U_ACTION'				=> $this->u_action,
             ));
         }
+    }
+
+    public function select_topic_bump_for_pagi($per_page, $start, $options)
+    {
+        global $db, $table_prefix;
+        $p = $table_prefix;
+        $sql = 'SELECT ' .
+                '1 as total ' .
+                'FROM ' .
+                    $p . 'snahp_bump_topic AS topic_bump ' .
+                    'LEFT JOIN ' .
+                        USERS_TABLE . ' AS users ON topic_bump.poster_uid=users.user_id ' .
+                    'LEFT JOIN ' .
+                    TOPICS_TABLE .' AS topics ON topic_bump.tid=topics.topic_id ' .'
+                    WHERE topic_id>0 ' . $options['sortkey'] . '
+                    LIMIT 1000
+                    ';
+        $result = $db->sql_query($sql, 600);
+        $total = count($db->sql_fetchrowset($result));
+        $db->sql_freeresult($result);
+        $sql = 'SELECT ' .
+                'users.username, topic_bump.*, topics.* ' .
+                'FROM ' .
+                    $p . 'snahp_bump_topic AS topic_bump ' .
+                    'LEFT JOIN ' .
+                        USERS_TABLE . ' AS users ON topic_bump.poster_uid=users.user_id ' .
+                    'LEFT JOIN ' .
+                    TOPICS_TABLE .' AS topics ON topic_bump.tid=topics.topic_id ' .'
+                    WHERE topic_id>0 ' . $options['sortkey'];
+        $result = $db->sql_query_limit($sql, $per_page, $start);
+        $data = $db->sql_fetchrowset($result);
+        $db->sql_freeresult($result);
+        return [$data, $total];
     }
 
     public function select_requests_for_pagi($per_page, $start)
@@ -237,7 +275,7 @@ class main_module extends base
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start, true
+                $base_url, 'pagination', 'start', $total, $per_page, $start
             );
             foreach($dibdata as $row)
             {
@@ -294,7 +332,7 @@ class main_module extends base
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start, true
+                $base_url, 'pagination', 'start', $total, $per_page, $start
             );
             foreach($reqdata as $row)
             {
@@ -312,6 +350,75 @@ class main_module extends base
             $template->assign_vars(array(
                 'B_ENABLE' => $config['snp_b_request'],
                 'U_ACTION'    => $this->u_action,
+            ));
+        }
+    }
+
+    public function handle_list_topic_bump($cfg)
+    {
+		global $config, $request, $template, $user, $db, $phpbb_container;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                meta_refresh(2, $this->u_action);
+                trigger_error($user->lang('MCP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $per_page = $config['posts_per_page'];
+            $start = $request->variable('start', 0);
+            $sortkey = $request->variable('sortkey', 'bumpdate');
+            switch ($sortkey)
+            {
+            case 'count':
+                $options['sortkey'] = 'ORDER BY topic_bump.n_bump DESC';
+                break;
+            case 'bumpdate':
+            default:
+                $options['sortkey'] = 'ORDER BY topic_bump.topic_time DESC';
+                break;
+            }
+            [$reqdata, $total] = $this->select_topic_bump_for_pagi($per_page, $start, $options);
+            // $total = $this->select_total($this->tbl['bump_topic'], 'true');
+            $pagination = $phpbb_container->get('pagination');
+            $base_url = $this->u_action . "&sortkey=$sortkey";
+            $pagination->generate_template_pagination(
+                $base_url, 'pagination', 'start', $total, $per_page, $start
+            );
+            foreach($reqdata as $row)
+            {
+                $tid = $row['tid'];
+                $bump_time = $user->format_date($row['topic_time']);
+                $topic_time = $user->format_date($row['prev_topic_time']);
+                $u_details = '/viewtopic.php?t=' . $tid;
+                $status = $row['status'];
+                $status = $status==1 ? 'ON' : 'OFF';
+                $group = array(
+                    'TOPIC_TITLE'    => $row['topic_title'],
+                    'USER_ID'        => $row['topic_poster'],
+                    'USERNAME'       => $row['topic_first_poster_name'],
+                    'USER_COLOUR'    => $row['topic_first_poster_colour'],
+                    'TOPIC_TIME'     => $topic_time,
+                    'BUMP_TIME'       => $bump_time,
+                    'TOPIC_ID'       => $row['topic_id'],
+                    'FORUM_ID'       => $row['forum_id'],
+                    'BUMP_STATUS'    => $status,
+                    'N_BUMP'         => $row['n_bump'],
+                    'U_VIEW_DETAILS' => $u_details,
+                );
+                $template->assign_block_vars('postrow', $group);
+            };
+            $template->assign_vars(array(
+                'B_ENABLE' => $config['snp_b_request'],
+                'SORTKEY'  => $sortkey,
+                'U_ACTION' => $this->u_action,
+                'BASE_URL' => $base_url,
             ));
         }
     }
@@ -336,11 +443,11 @@ class main_module extends base
             $per_page = $config['posts_per_page'];
             $start = $request->variable('start', 0);
             $reqdata = $this->select_requests_for_pagi($per_page, $start);
-            $total = $this->select_total($this->tbl['req'], 'TRUE');
+            $total = $this->select_total($this->tbl['req'], 'status<>'.$this->def['deleted']);
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start, true
+                $base_url, 'pagination', 'start', $total, $per_page, $start
             );
             foreach($reqdata as $row)
             {
