@@ -120,9 +120,8 @@ class main_module extends base
                         USERS_TABLE . ' AS users ON topic_bump.poster_uid=users.user_id ' .
                     'LEFT JOIN ' .
                     TOPICS_TABLE .' AS topics ON topic_bump.tid=topics.topic_id ' .'
-                    WHERE topic_id>0 ' . $options['sortkey'] . '
-                    LIMIT 1000
-                    ';
+                    WHERE topic_id>0 ' . $options['bump_username'] . ' ' . $options['sortkey'] . '
+                    LIMIT 1000';
         $result = $db->sql_query($sql, 600);
         $total = count($db->sql_fetchrowset($result));
         $db->sql_freeresult($result);
@@ -134,7 +133,7 @@ class main_module extends base
                         USERS_TABLE . ' AS users ON topic_bump.poster_uid=users.user_id ' .
                     'LEFT JOIN ' .
                     TOPICS_TABLE .' AS topics ON topic_bump.tid=topics.topic_id ' .'
-                    WHERE topic_id>0 ' . $options['sortkey'];
+                    WHERE topic_id>0 ' . $options['bump_username'] . ' ' . $options['sortkey'];
         $result = $db->sql_query_limit($sql, $per_page, $start);
         $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
@@ -373,6 +372,7 @@ class main_module extends base
             }
             $per_page = $config['posts_per_page'];
             $start = $request->variable('start', 0);
+            // Sorting
             $sortkey = $request->variable('sortkey', 'bumpdate');
             switch ($sortkey)
             {
@@ -384,10 +384,16 @@ class main_module extends base
                 $options['sortkey'] = 'ORDER BY topic_bump.topic_time DESC';
                 break;
             }
+            // Filtering by username
+            $bump_username = strtolower($request->variable('bump_username', ''));
+            $options['bump_username'] = '';
+            if ($bump_username)
+            {
+                $options['bump_username'] = ' AND users.username_clean="' . $bump_username . '"';
+            }
             [$reqdata, $total] = $this->select_topic_bump_for_pagi($per_page, $start, $options);
-            // $total = $this->select_total($this->tbl['bump_topic'], 'true');
             $pagination = $phpbb_container->get('pagination');
-            $base_url = $this->u_action . "&sortkey=$sortkey";
+            $base_url = $this->u_action . "&sortkey=$sortkey&bump_username=$bump_username";
             $pagination->generate_template_pagination(
                 $base_url, 'pagination', 'start', $total, $per_page, $start
             );
@@ -417,6 +423,7 @@ class main_module extends base
             $template->assign_vars(array(
                 'B_ENABLE' => $config['snp_b_request'],
                 'SORTKEY'  => $sortkey,
+                'BUMP_USERNAME' => $bump_username,
                 'U_ACTION' => $this->u_action,
                 'BASE_URL' => $base_url,
             ));

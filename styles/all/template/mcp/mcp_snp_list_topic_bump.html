@@ -81,7 +81,7 @@
           <option value="bumpdate" {% if SORTKEY=='bumpdate' %}selected{% endif %}>Bumped Time</option>
         </select>
         <input type="submit" value="sort"></input>
-        <!--- INCLUDE display_options.html -->
+        <input type="text" name="bump_username" value="{BUMP_USERNAME}" style="text-align:center; width:150px;"></input>
         <div class="pagination">
           {TOTAL_REQUEST}
           <!-- IF .pagination -->
