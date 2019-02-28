@@ -54,6 +54,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.analytics:
+        class: jeb\snahp\controller\analytics
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.thanks:
         class: jeb\snahp\controller\thanks
         parent: jeb.snahp.base

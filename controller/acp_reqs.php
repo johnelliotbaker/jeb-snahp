@@ -95,6 +95,11 @@ class acp_reqs extends base
             $this->reject_non_admin();
             $cfg = [];
             return $this->handle_rurs($cfg);
+        case 'rf':
+            // resynchronize request forums
+            $this->reject_non_admin();
+            $cfg = [];
+            return $this->handle_rf($cfg);
         default:
             break;
         }
@@ -209,6 +214,24 @@ class acp_reqs extends base
         $this->send_message($data);
         $js = JsonResponse($data);
         return $js;
+    }
+
+    public function handle_rf($cfg)
+    {
+        $this->reject_non_admin();
+        $sid = $this->request->variable($this->config['cookie_name'] . '_sid', '', true, \phpbb\request\request_interface::COOKIE);
+        $fid_requests = $this->config['snp_fid_requests'];
+        $a_fid = $this->select_subforum($fid_requests);
+        foreach($a_fid as $fid)
+        {
+            $forum = [
+                'fid' => $fid,
+                'url' => ('/adm/index.php?sid=' . $sid . '&i=acp_forums&f='. $fid . '&action=sync'),
+                'sid' => $sid,
+            ];
+            $this->template->assign_block_vars('FORUM', $forum);
+        }
+        return $this->helper->render('@jeb_snahp/acp/resynch_request_forums.html');
     }
 
     public function handle_rurs($cfg)

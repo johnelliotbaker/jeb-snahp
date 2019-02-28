@@ -105,6 +105,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_group_based_search($cfg);
             break;
+        case 'analytics':
+            $cfg['tpl_name'] = 'acp_snp_analytics';
+            $cfg['b_feedback'] = false;
+            $this->handle_analytics($cfg);
+            break;
         case 'scripts':
             $cfg['tpl_name'] = 'acp_snp_scripts';
             $cfg['b_feedback'] = false;
@@ -161,6 +166,60 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
             ));
+        }
+    }
+
+    public function handle_analytics($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                // Enabler
+                $snp_ana_b_master = $request->variable('snp_ana_b_master', '1');
+                $config->set('snp_ana_b_master', $snp_ana_b_master);
+                // Group Permission and Configurations
+                $a_enable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/enable-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("enable-$gid", '0');
+                        $a_enable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_ana_b_enable', $a_enable);
+                $db->sql_query($sql);
+                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'U_ACTION'				=> $this->u_action,
+                'SNP_ANA_B_MASTER'      => $config['snp_ana_b_master'],
+            ));
+            // Code to show signature configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'GID'=>$row['group_id'],
+                    'NAME'=>$row['group_name'],
+                    'ENABLE'=> $row['snp_ana_b_enable'],
+                );
+                $template->assign_block_vars('A_ANALYTICS', $group);
+            };
+            $db->sql_freeresult($result);
         }
     }
 
@@ -469,14 +528,18 @@ class main_module
                 $config->set('snp_easter_chicken_chance', $snp_easter_chicken_chance);
                 $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', '10000');
                 $config->set('snp_easter_b_chicken', $snp_easter_b_chicken);
-                $snp_req_b_avatar = $request->variable('snp_req_b_avatar', true);
+                $snp_req_b_avatar = $request->variable('snp_req_b_avatar', '1');
                 $config->set('snp_req_b_avatar', $snp_req_b_avatar);
-                $snp_thanks_b_enable = $request->variable('snp_thanks_b_enable', true);
+                $snp_thanks_b_enable = $request->variable('snp_thanks_b_enable', '1');
                 $config->set('snp_thanks_b_enable', $snp_thanks_b_enable);
-                $snp_thanks_b_avatar = $request->variable('snp_thanks_b_avatar', true);
+                $snp_thanks_b_avatar = $request->variable('snp_thanks_b_avatar', '1');
                 $config->set('snp_thanks_b_avatar', $snp_thanks_b_avatar);
-                $snp_thanks_b_toplist = $request->variable('snp_thanks_b_toplist', true);
+                $snp_thanks_b_toplist = $request->variable('snp_thanks_b_toplist', '1');
                 $config->set('snp_thanks_b_toplist', $snp_thanks_b_toplist);
+                $snp_zebra_b_master = $request->variable('snp_zebra_b_master', '1');
+                $config->set('snp_zebra_b_master', $snp_zebra_b_master);
+                $snp_fid_requests = $request->variable('snp_fid_requests', '1');
+                $config->set('snp_fid_requests', $snp_fid_requests);
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
@@ -496,7 +559,9 @@ class main_module
                 'SNP_REQ_B_AVATAR'         => $config['snp_req_b_avatar'],
                 'SNP_THANKS_B_ENABLE'      => $config['snp_thanks_b_enable'],
                 'SNP_THANKS_B_AVATAR'      => $config['snp_thanks_b_avatar'],
-                'SNP_THANKS_B_TOPLIST'      => $config['snp_thanks_b_toplist'],
+                'SNP_THANKS_B_TOPLIST'     => $config['snp_thanks_b_toplist'],
+                'SNP_ZEBRA_B_MASTER'       => $config['snp_zebra_b_master'],
+                'SNP_FID_REQUESTS'         => $config['snp_fid_requests'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],
                 'U_ACTION'                 => $this->u_action,
             ));

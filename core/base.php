@@ -464,6 +464,14 @@ abstract class base
         return $row;
     }
 
+    public function update_user($user_id, $data)
+    {
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+            WHERE user_id=' . $user_id;
+        $this->db->sql_query($sql);
+    }
+
     public function select_user($user_id)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
@@ -669,9 +677,27 @@ abstract class base
             trigger_error('Only moderators may access this page.');
     }
 
+    public function reject_non_group($group_id, $perm_name)
+    {
+        $sql = 'SELECT 1 FROM ' . GROUPS_TABLE . '
+            WHERE group_id=' . $group_id . ' AND 
+            ' . $perm_name . '=1';
+        $result = $this->db->sql_query($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+            trigger_error('Your don\'t have the permission to access this page.');
+    }
+
     public function get_dt($time)
     {
         return $this->user->format_date($time);
+    }
+
+    public function make_username($row)
+    {
+        $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
+        return $strn;
     }
 
     public function add_tag($strn)

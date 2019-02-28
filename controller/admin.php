@@ -38,6 +38,15 @@ class admin extends base
         return $json;
     }
 
+    public function sync_forum($fid)
+    {
+        $this->reject_non_admin();
+        $url = '/adm/index.php?i=acp_forums&f=46&action=sync_forum';
+        $url = append_sid($url);
+        prn($url);
+        // meta_refresh(2, $this->u_action);
+    }
+
     public function handle()
     {
         $data = $this->user->data;

@@ -13,6 +13,9 @@
             <dd>
               <input type="number" value="{FID_LISTINGS}" min="0" name="fid_listings" id="fid_listings" />
             </dd>
+            <dd>
+              <input type="number" value="{SNP_FID_REQUESTS}" min="0" name="snp_fid_requests" id="snp_fid_requests" />
+            </dd>
           </dt>
         </dl>
       </fieldset>
@@ -156,8 +159,22 @@
             <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="0" {% if not SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
-
       </fieldset>
+
+      <fieldset>
+        <legend>Zebra</legend>
+        <span>Options used to control how friends & foe are able to see a user's post.</span><br><br>
+				<dl>
+          <dt>
+              <label>Zebra Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_zebra_b_master" class="radio" value="1" {% if SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_zebra_b_master" class="radio" value="0" {% if not SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
     </div>
   </div>
   <fieldset>

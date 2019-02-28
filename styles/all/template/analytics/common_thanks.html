@@ -1,0 +1,73 @@
+<!-- INCLUDE overall_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+
+<style>
+  .userid, .count {
+    background-color: #F4F4F4;
+  }
+  .username, .topics {
+  }
+  .searchbox_wrapper {
+    margin: 15px 0 10px 0;
+  }
+  .btn.btn-outline-secondary:focus {
+    box-shadow: none;
+  }
+</style>
+
+
+<script>
+  function json_common_thanks()
+  {
+    var a_tid = $('#tid_searchbox').val();
+    a_tid = encodeURI(a_tid.replace(/ /g, ''));
+    var url = '/app.php/snahp/analytics/handle/json_common_thanks/?t=' + a_tid;
+    $.get(url)
+      .done((resp)=>{
+        $('#content').empty();
+        for (var entry of resp)
+        {
+          var html = `<tr>
+  <th class="id">${entry['id']}</th>
+  <th class="userid">${entry['user_id']}</th>
+  <td class="username"><b><span style="font-size: 1.1em">${entry['username_link']}</span></b></td>
+  <td class="count text-center">${entry['n_thanks']}</td>
+  <td class="topics">${entry['topic_links']}</td>
+</tr>`;
+          $elem = $(html).appendTo($('#content'));
+        }
+      });
+  }
+  window.onload = ()=>{
+    json_common_thanks();
+  };
+</script>
+
+<div class="twbs">
+  <div class="searchbox_wrapper">
+    <div class="input-group mb-3">
+      <input id="tid_searchbox" type="text" class="form-control" placeholder="Enter topic id's separated by commas">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" onClick="json_common_thanks();">Analyze</button>
+      </div>
+    </div>
+  </div>
+  <table class="table table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th class="text-center" scope="col">#</th>
+        <th class="text-center" scope="col">USER ID</th>
+        <th class="text-center" scope="col">USERNAME</th>
+        <th class="text-center" scope="col">THANKED</th>
+        <th class="text-center" scope="col">TOPICS</th>
+      </tr>
+    </thead>
+    <tbody id="content">
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- INCLUDE overall_footer.html -->

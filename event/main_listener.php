@@ -85,8 +85,8 @@ class main_listener extends base implements EventSubscriberInterface
 
     static public function getSubscribedEvents()
     {
-        return array(
-            'core.user_setup' => [
+        return [
+            'core.user_setup'                             => [
                 ['test', 0],
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
@@ -99,6 +99,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
                 ['easter_cluck', 1],
+                ['block_zebra_foe_topicview', 1],
                 ['show_requests_solved_avatar', 1],
                 ['show_thanks_avatar', 1],
                 ['show_bump_button', 1],
@@ -107,21 +108,48 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => 'modify_quickreply_signature',
-            'core.posting_modify_submit_post_after'       => array(
-                array('notify_on_poke', 0),
-            ),
+            'core.posting_modify_submit_post_after'       => [
+                ['notify_on_poke', 0],
+            ],
             'core.posting_modify_message_text'            => 'colorize_at',
-            'core.viewtopic_assign_template_vars_before'  => array(
-                array('insert_new_topic_button',0),
-            ),
-        );
+            'core.viewtopic_assign_template_vars_before'  => [
+                ['insert_new_topic_button',0],
+            ],
+        ];
     }
 
-    public function test($event)
+    public function block_zebra_foe_topicview($event)/*{{{*/
     {
-    }
 
-    public function show_thanks_top_list($event)
+        $i_row = $event['current_row_number'];
+        if ($i_row > 0) return false;
+        $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
+        if (!$snp_zebra_b_master) return false;
+        $topic_data = $event['topic_data'];
+        $user_id = $this->user->data['user_id'];
+        $topic_poster = $topic_data['topic_poster'];
+        $sql = 'SELECT 1 FROM ' . ZEBRA_TABLE . '
+            WHERE foe=1 AND user_id=' . $topic_poster . ' AND zebra_id=' . $user_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $topic_first_poster_name = $topic_data['topic_first_poster_name'];
+        $topic_first_poster_colour = $topic_data['topic_first_poster_colour'];
+        if ($row)
+        {
+            $this->template->assign_vars([ 'ZEBRA_BLOCK' => true, ]);
+            $post_row = $event['post_row'];/*{{{*/
+            $username = '<span style="color:#'. $topic_first_poster_colour .'">' . $topic_first_poster_name . '</span>';
+            $post_row['MESSAGE'] = '<b>' . $username . ' has blocked you from viewing this post.</b>';
+            $event['post_row'] = $post_row;
+        }
+    }/*}}}*/
+
+    public function test($event)/*{{{*/
+    {
+    }/*}}}*/
+
+    public function show_thanks_top_list($event)/*{{{*/
     {
         $uid = $this->user->data['user_id'];
         if ($uid == ANONYMOUS) return false;
@@ -149,9 +177,9 @@ class main_listener extends base implements EventSubscriberInterface
             'SNP_THANKS_B_TOPLIST' => true,
             'SNP_THANKS_N_TOTAL' => $n_row,
         ]);
-    }
+    }/*}}}*/
 
-    public function insert_thanks($event)
+    public function insert_thanks($event)/*{{{*/
     {
         if (!$this->config['snp_thanks_b_enable']) return false;
         $from_id = $event['from_id'];
@@ -160,9 +188,9 @@ class main_listener extends base implements EventSubscriberInterface
         $this->db->sql_query($sql);
         $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id=' . $to_id;
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    public function show_thanks_avatar($event)
+    public function show_thanks_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_thanks_b_enable']) return false;
         if (!$this->config['snp_thanks_b_avatar']) return false;
@@ -180,9 +208,9 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_THANKS_AVATAR' => true,
         ]);
-    }
+    }/*}}}*/
 
-    public function show_requests_solved_avatar($event)
+    public function show_requests_solved_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_req_b_avatar']) return false;
         $post_row = $event['post_row'];
@@ -199,9 +227,9 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_REQUESTS_SOLVED' => true,
         ]);
-    }
+    }/*}}}*/
 
-    public function easter_cluck($event)
+    public function easter_cluck($event)/*{{{*/
     {
         $snp_easter_b_chicken = $this->config['snp_easter_b_chicken'];
         if (!$snp_easter_b_chicken) return false;
@@ -221,9 +249,9 @@ class main_listener extends base implements EventSubscriberInterface
             $post_row['MESSAGE'] = $motd_message . $strn;
             $event['post_row'] = $post_row;
         }
-    }
+    }/*}}}*/
 
-    public function show_bump_button($event)
+    public function show_bump_button($event)/*{{{*/
     {
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
         if (!$snp_bump_b_topic) return false;
@@ -242,17 +270,17 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_BUMP' => $user_bump_data['b_bump'],
         ]);
         return false;
-    }
+    }/*}}}*/
 
-    public function process_curly_tags($event)
+    public function process_curly_tags($event)/*{{{*/
     {
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);
         $event['post_row'] = $post_row;
-    }
+    }/*}}}*/
 
-    public function setup_custom_css($event)
+    public function setup_custom_css($event)/*{{{*/
     {
         $user_style = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
@@ -277,9 +305,9 @@ class main_listener extends base implements EventSubscriberInterface
             $this->template->assign_var('STYLE_NAME', 'prosilver');
             break;
         }
-    }
+    }/*}}}*/
 
-    public function modify_quickreply_signature($event)
+    public function modify_quickreply_signature($event)/*{{{*/
     {
         // quickreply adds hidden checkbox with name=attach_sig to always
         // enable signatures. To make this a choice
@@ -300,9 +328,9 @@ class main_listener extends base implements EventSubscriberInterface
             $data['enable_sig'] = 0;
         }
         $event['data'] = $data;
-    }
+    }/*}}}*/
 
-    public function include_quick_link($event)
+    public function include_quick_link($event)/*{{{*/
     {
         $user_id = $this->config['snp_ql_your_topics'] ? $this->user->data['user_id'] : -1;
         $this->template->assign_vars([
@@ -314,17 +342,17 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_OPEN_REQUESTS' => $this->config['snp_ql_req_open_requests'],
             'S_USER_ID' => $user_id,
         ]);
-    }
+    }/*}}}*/
 
-    public function include_donation_navlink($event)
+    public function include_donation_navlink($event)/*{{{*/
     {
         $this->template->assign_vars([
             'B_SHOW_DONATION_NAVLINK' => $this->config['snp_don_b_show_navlink'],
             'DON_URL' => $this->config['snp_don_url'],
         ]);
-    }
+    }/*}}}*/
 
-    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
+    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)/*{{{*/
     {
         if (!$aUserdata)
             return [];
@@ -342,9 +370,9 @@ class main_listener extends base implements EventSubscriberInterface
             $a_user_string[$username_clean] = $username_string;
         }
         return $a_user_string;
-    }
+    }/*}}}*/
 
-    public function get_user_data($aUsername)
+    public function get_user_data($aUsername)/*{{{*/
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
             $this->db->sql_in_set('username_clean', $aUsername);
@@ -355,9 +383,9 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $this->db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function colorize_at($event)
+    public function colorize_at($event)/*{{{*/
     {
         if (!$this->config['snp_b_snahp_notify'])
             return false;
@@ -382,9 +410,9 @@ class main_listener extends base implements EventSubscriberInterface
             $a = '#(?<!])'. $at_prefix . $username_in_msg . '#is';
             $message = preg_replace($a, $b, $message);
         }
-    }
+    }/*}}}*/
 
-    public function notify_on_poke($event)
+    public function notify_on_poke($event)/*{{{*/
     {
         if (!$this->config['snp_b_snahp_notify'])
             return false;
@@ -440,9 +468,9 @@ class main_listener extends base implements EventSubscriberInterface
                 'jeb.snahp.notification.type.basic',
             ), $data);
         }
-    }
+    }/*}}}*/
 
-    public function notify_op_on_report($event)
+    public function notify_op_on_report($event)/*{{{*/
     {
         if (!$this->config['snp_b_snahp_notify'])
             return false;
@@ -508,9 +536,9 @@ class main_listener extends base implements EventSubscriberInterface
             }
             break;
         }
-    }
+    }/*}}}*/
 
-    public function include_assets_before_posting($event)
+    public function include_assets_before_posting($event)/*{{{*/
     {
         $forum_id = $this->request->variable('f', '');
         $topic_id = $this->request->variable('t', '');
@@ -544,9 +572,9 @@ class main_listener extends base implements EventSubscriberInterface
             if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
                 $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
         }
-    }
+    }/*}}}*/
 
-    public function insert_new_topic_button($event)
+    public function insert_new_topic_button($event)/*{{{*/
     {
         $forum_id = $this->request->variable('f', '');
         // Note that this means user must properly walk their way into
@@ -564,9 +592,9 @@ class main_listener extends base implements EventSubscriberInterface
         //   <span>New Topic</span> <i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
         // </a>
         // {% elseif T_THEME_NAME == 'basic' %}
-    }
+    }/*}}}*/
 
-    public function disable_signature($event)
+    public function disable_signature($event)/*{{{*/
     {
         $t = $this->template;
         $pr = $event['post_row'];
@@ -588,9 +616,9 @@ class main_listener extends base implements EventSubscriberInterface
             $pr['SIGNATURE'] = false;
             $event['post_row'] = $pr;
         }
-    }
+    }/*}}}*/
 
-    public function modify_signature($event)
+    public function modify_signature($event)/*{{{*/
     {
         $t = $this->template;
         $pr = $event['post_row'];
@@ -609,9 +637,9 @@ class main_listener extends base implements EventSubscriberInterface
         $user_sig = implode('\n', $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
-    }
+    }/*}}}*/
 
-    public function modify_avatar_thanks($event) 
+    public function modify_avatar_thanks($event) /*{{{*/
     {
         $poster_id = $event['poster_id'];
         $sql = 'SELECT snp_disable_avatar_thanks_link FROM ' . USERS_TABLE . ' WHERE user_id=' . $poster_id;
@@ -629,6 +657,6 @@ class main_listener extends base implements EventSubscriberInterface
             $event['u_receive_count_url'] = false;
             $event['u_give_count_url'] = false;
         }
-    }
+    }/*}}}*/
 
 }

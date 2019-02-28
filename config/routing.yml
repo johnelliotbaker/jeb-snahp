@@ -17,6 +17,11 @@ jeb_snahp_thanks:
     defaults: { _controller: jeb.snahp.thanks:handle}
     requirements:
         mode: \S+
+jeb_snahp_analytics:
+    path: /snahp/analytics/handle/{mode}/
+    defaults: { _controller: jeb.snahp.analytics:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_favorite:
     path: /snahp/favorite/{mode}/
     defaults: { _controller: jeb.snahp.favorite:handle}

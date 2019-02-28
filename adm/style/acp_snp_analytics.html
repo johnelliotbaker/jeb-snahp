@@ -1,0 +1,80 @@
+<!-- INCLUDE overall_header.html -->
+<h1>Snahp Analytics</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+	<div class="panel">
+		<div class="inner">
+
+			<fieldset>
+        <legend>Master Switch</legend>
+				<dl>
+          <dt>
+              <label>Analytics Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_ana_b_master" class="radio" value="1" {% if SNP_ANA_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_ana_b_master" class="radio" value="0" {% if not SNP_ANA_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+			<fieldset>
+        <legend>Scripts & Consoles</legend>
+				<dl>
+          <dt>
+            <label>Common Thanks</label><br>
+            Analyze which users have thanked a group of common topics.
+          </dt>
+					<dd>
+            <label><a href="/app.php/snahp/analytics/handle/common_thanks/">Go to Management Console</a></label>
+          </dd>
+        </dl>
+      </fieldset>
+
+			<fieldset>
+        <legend>Permissions</legend>
+				<dl>
+            <span>Enable: Give a group permission to analyze snahp.</span>
+        </dl>
+        <div id="">
+          <table class="table.type3 responsive">
+            <thead>
+              <tr>
+                <th>GID</th>
+                <th>Group Name</th>
+                <th>Enable</th>
+              </tr>
+            </thead>
+            <tbody id="acp_request_statistics_content">
+              <!-- BEGIN A_ANALYTICS -->
+              <tr>
+                <td>{A_ANALYTICS.GID}</td>
+                <td>{A_ANALYTICS.NAME}</td>
+                <td>
+                  <input type="hidden"
+                         name="enable-{A_ANALYTICS.GID}"
+                         value="0">
+                  <input type="checkbox"
+                         name="enable-{A_ANALYTICS.GID}"
+                         id="enable-{A_ANALYTICS.NAME}"
+                         {% if A_ANALYTICS.ENABLE %}value="1" checked{% endif %}>
+                </td>
+              </tr>
+              <!-- END A_ANALYTICS -->
+            </tbody>
+          </table>
+        </div>
+
+      </fieldset>
+    </div>
+  </div>
+  <fieldset>
+    <dl>
+      <dt>&nbsp;</dt>
+      <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+    </dl>
+    {S_HIDDEN_FIELDS}
+    {S_FORM_TOKEN}
+  </fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

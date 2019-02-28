@@ -302,8 +302,7 @@ class reqs extends base
                 'jeb.snahp.notification.type.basic',
             ), $data);
         }
-
-
+        $this->update_user($fuid, ['user_lastpost_time' => 0]);
         meta_refresh(2, $this->u_action);
         $message = 'Thank you for fulfilling this request!';
         trigger_error($message);

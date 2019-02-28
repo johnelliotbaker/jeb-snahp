@@ -29,5 +29,6 @@ $lang = array_merge($lang, array(
     'ACP_SNP_DONATION'      => 'Donation',
     'ACP_SNP_BUMP_TOPIC'    => 'Bump Topic',
     'ACP_SNP_GROUP_BASED_SEARCH'    => 'Group Based Search',
+    'ACP_SNP_ANALYTICS'     => 'Analytics',
 	'ACP_SNP_SETTING_SAVED' => 'Settings have been saved successfully!',
 ));
