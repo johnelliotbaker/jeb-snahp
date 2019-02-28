@@ -140,7 +140,7 @@ class main_listener extends base implements EventSubscriberInterface
             $this->template->assign_vars([ 'ZEBRA_BLOCK' => true, ]);
             $post_row = $event['post_row'];/*{{{*/
             $username = '<span style="color:#'. $topic_first_poster_colour .'">' . $topic_first_poster_name . '</span>';
-            $post_row['MESSAGE'] = '<b>' . $username . ' has blocked you from viewing this post.</b>';
+            $post_row['MESSAGE'] = 'Sorry, this post is currently unavailable for viewing.';
             $event['post_row'] = $post_row;
         }
     }/*}}}*/

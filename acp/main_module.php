@@ -111,8 +111,14 @@ class main_module
             $this->handle_analytics($cfg);
             break;
         case 'scripts':
+            $sid = $request->variable($config['cookie_name'] . '_sid', '', true, \phpbb\request\request_interface::COOKIE);
             $cfg['tpl_name'] = 'acp_snp_scripts';
             $cfg['b_feedback'] = false;
+            $requests_fid = $config['snp_fid_requests'];
+            $template->assign_vars([
+                'SID' => $sid,
+                'REQUESTS_FID' => $requests_fid,
+            ]);
             break;
         }
         if (!empty($cfg)){

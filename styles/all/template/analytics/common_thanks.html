@@ -21,7 +21,8 @@
   function json_common_thanks()
   {
     var a_tid = $('#tid_searchbox').val();
-    a_tid = encodeURI(a_tid.replace(/ /g, ''));
+    a_tid = a_tid.trim().replace(/\s+/g, ',');
+    a_tid = encodeURI(a_tid);
     var url = '/app.php/snahp/analytics/handle/json_common_thanks/?t=' + a_tid;
     $.get(url)
       .done((resp)=>{
