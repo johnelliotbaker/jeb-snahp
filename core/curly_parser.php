@@ -149,6 +149,17 @@ class curly_parser
         return $strn;
     }
 
+    public function interpolate_youtube($strn, $tag_name)
+    {
+        $allowed_attr = ['style', 'class', 'src', 'align'];
+        $uuid = uniqid();
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $strn = '<div align="center"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/' . $content . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+        return $strn;
+    }
+
     public function interpolate_gfycat($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
@@ -206,23 +217,26 @@ class curly_parser
             $tag_type = $tag_type[1];
             switch ($tag_type)
             {
-            case 'table_autofill_search':
-                $res = $this->interpolate_curly_table_autofill($content, $tag_type, true);
+            case 'table':
+                $res = $this->interpolate_curly_table($content);
                 break;
             case 'table_autofill':
                 $res = $this->interpolate_curly_table_autofill($content, $tag_type);
                 break;
+            case 'table_autofill_search':
+                $res = $this->interpolate_curly_table_autofill($content, $tag_type, true);
+                break;
             case 'table_search_master':
                 $res = $this->interpolate_table_search_master($content, $tag_type);
-                break;
-            case 'gfycat':
-                $res = $this->interpolate_gfycat($content, $tag_type);
                 break;
             case 'img':
                 $res = $this->interpolate_img($content, $tag_type);
                 break;
-            case 'table':
-                $res = $this->interpolate_curly_table($content);
+            case 'gfycat':
+                $res = $this->interpolate_gfycat($content, $tag_type);
+                break;
+            case 'youtube':
+                $res = $this->interpolate_youtube($content, $tag_type);
                 break;
             default:
                 $res = 'default';

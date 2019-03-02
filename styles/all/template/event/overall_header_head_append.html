@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- INCLUDEJS @jeb_snahp/dereferrer.js -->
 <!-- INCLUDEJS @jeb_snahp/utility.js -->
 <!-- INCLUDECSS @jeb_snahp/base.css -->
@@ -26,5 +27,8 @@
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
 <!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
 <!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->
+{% endif %}
+{% if B_REQS_FORUM_BASE_JS %}
+<!-- INCLUDEJS @jeb_snahp/reqs_forum/base.js -->
 {% endif %}
 <input type="hidden" id="snp_user_id" name="snp_user_id" value="{S_USER_ID}">

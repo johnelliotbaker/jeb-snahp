@@ -9,7 +9,7 @@ function getAtUsername(event)
     }
     var word = text.slice(j, i);
     var n = word.length;
-    if (n>2 && word.slice(0,2)=='@@')
+    if (n>1 && word.slice(0,2)=='@@')
     {
         var username = word.slice(2);
         return [username, j, i]
@@ -47,7 +47,7 @@ $(document).ready(()=>{
             var res = [];
             var targetname = getAtUsername(e);
             if (!targetname) return false;
-            if (targetname[0] == 'op')
+            if (targetname[0] == '')
             { targetname[0] = usernames[0].toLowerCase(); }
             for (var username of usernames)
             {

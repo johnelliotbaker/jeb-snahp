@@ -115,7 +115,20 @@ class main_listener extends base implements EventSubscriberInterface
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
             ],
+            'core.viewforum_get_topic_data' => [
+                ['include_reqs_forum_assets', 0],
+            ],
         ];
+    }
+
+    public function include_reqs_forum_assets($event)
+    {
+        $forum_id = $event['forum_id'];
+        $request_fid = explode(',', $this->config['snp_req_fid']);
+        if (!in_array($forum_id, $request_fid)) return false;
+        $this->template->assign_vars([
+            'B_REQS_FORUM_BASE_JS' => true,
+        ]);
     }
 
     public function block_zebra_foe_topicview($event)/*{{{*/
