@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.16.0",
+    "version": "0.18.0",
     "time": "2019-2-20",
     "license": "GPL-2.0-only",
     "authors": [
