@@ -44,6 +44,11 @@ services:
             - '%core.table_prefix%'
         tags:
             - { name: event.listener }
+    jeb.snahp.registration_listener:
+        class: jeb\snahp\event\registration_listener
+        parent: jeb.snahp.base
+        tags:
+            - { name: event.listener }
     jeb.snahp.mod_listener:
         class: jeb\snahp\event\mod_listener
         parent: jeb.snahp.base
