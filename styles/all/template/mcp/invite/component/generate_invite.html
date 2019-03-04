@@ -1,0 +1,38 @@
+<script>
+  {% include '@jeb_snahp/mcp/invite/component/generate_invite.js' %}
+</script>
+<div class="searchbox_wrapper">
+  {% if B_GENERATE %}
+  <button id="generate_btn" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#new_invite_modal">Generate Invite</button>
+  {% else %}
+  <button id="generate_btn_disabled" type="button" class="btn btn-secondary btn-lg btn-block">Generate Invite</button>
+  {% endif %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="new_invite_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">You've Generated a New Invite to Snahp!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Your Invitation Code is:</h5>
+            <p class="card-text" id="new_invitation_code"></p>
+          </div>
+          <div class="card-footer text-muted">
+            Expiration Date:
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

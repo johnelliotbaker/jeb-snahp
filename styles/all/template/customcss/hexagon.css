@@ -195,3 +195,39 @@ dl.details {
     font-size: 1.2em !important;
 }
 
+/* bootstrap modal */
+.twbs .modal-header,
+.twbs .modal-body,
+.twbs .modal-footer
+{
+    background-color: black !important;
+}
+.twbs .card {
+    background-color: black !important;
+    border: 1px solid #444 !important;
+}
+.twbs .card-footer {
+    background-color: #111 !important;
+    border-top: 1px solid #444 !important;
+}
+.twbs .close {
+    color: #FFF !important;
+}
+.twbs .modal-backdrop.in
+{
+    opacity:0.9 !important;
+}
+.twbs .modal-content {
+    background-color: black !important;
+}
+
+/* bootstrap table */
+.twbs .table
+{
+    color: #EEE !important;
+}
+.twbs .table td,
+.twbs .table th
+{
+    border-top: 1px solid #222 !important;
+}

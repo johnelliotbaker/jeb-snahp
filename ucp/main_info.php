@@ -15,14 +15,23 @@ namespace jeb\snahp\ucp;
  */
 class main_info
 {
-  function module()
-  {
-    return array(
-      'filename'  => '\jeb\snahp\ucp\main_module',
-      'title'   => 'UCP_SNP_TITLE',
-      'modes'   => array(
-        'visibility'  => array( 'title' => 'UCP_SNP_VIS', 'auth'  => 'ext_jeb/snahp', 'cat' => array('UCP_SNP_VIS_TITLE')),
-      ),
-    );
-  }
+    function module()
+    {
+        return [
+            'filename'  => '\jeb\snahp\ucp\main_module',
+            'title'   => 'UCP_SNP_TITLE',
+            'modes'   => [
+                'visibility'  => [
+                    'title' => 'UCP_SNP_VIS',
+                    'auth'  => 'ext_jeb/snahp',
+                    'cat' => ['UCP_SNP_VIS_TITLE']
+                ],
+                'invite'  => [
+                    'title' => 'UCP_SNP_INVITE',
+                    'auth'  => 'ext_jeb/snahp',
+                    'cat' => ['UCP_SNP_INVITE_TITLE']
+                ],
+            ],
+        ];
+    }
 }

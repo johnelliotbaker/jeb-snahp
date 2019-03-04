@@ -1,0 +1,32 @@
+<!-- INCLUDE ucp_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+{% if B_ENABLE %}
+<form id="ucp" method="post" action="{S_ucp_ACTION}">
+  <div class="panel">
+    <div class="inner">
+
+      <div class="twbs">
+    {% if not B_BAN %}
+        {% include '@jeb_snahp/ucp/invite/component/generate_invite.html' %}
+        <br>
+        {% include '@jeb_snahp/ucp/invite/component/list_invites.html' %}
+    {% else %}
+      <h6>You have been banned from making invites.</h6>
+      <p>Reason: {S_BAN_MSG_PUBLIC}</p>
+    {% endif %}
+      </div>
+
+    </div>
+  </div>
+</form>
+<div>
+</div>
+{% else %}
+<div class="panel">
+  <div class="inner">
+    <h3>Invite is currently disabled by the administrator.</h3>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE ucp_footer.html -->

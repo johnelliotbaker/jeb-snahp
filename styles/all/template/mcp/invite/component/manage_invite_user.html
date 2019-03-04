@@ -1,0 +1,70 @@
+<script>
+  {% include '@jeb_snahp/mcp/invite/component/manage_invite_user.js' %}
+</script>
+
+
+<div>
+  <table class="table table-sm table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" style="width:200px;">VARIABLE</th>
+        <th scope="col">VALUE</th>
+      </tr>
+    </thead>
+    <tbody id="invite_user_content">
+      <tr>
+        <th class="text-right" scope="row">IID</th>
+        <td id="invitation_id"></td>
+      </tr>
+      <tr>
+        <th class="text-right" scope="col">USER ID</th>
+        <td id="user_id_display"></td>
+        <input type="hidden" name="user_id" id="user_id"></input>
+      </tr>
+      <tr>
+        <th class="text-right" scope="col">REDEEMABLE INVITES</th>
+        <td><input type="number" min="0" max="9999" name="current_available" id="current_available"></input></td>
+      </tr>
+      <!-- <tr> -->
+      <!--   <th class="text-right" scope="col">TOTAL CREATED</th> -->
+      <!--   <td id="total_created"></td> -->
+      <!-- </tr> -->
+      <!-- <tr> -->
+      <!--   <th class="text-right" scope="col">CAN REDEEM</th> -->
+      <!--   <td><input type="number" max="1" min="0" name="can_redeem" id="can_redeem"></input></td> -->
+      <!-- </tr> -->
+      <tr>
+        <th class="text-right" scope="col">BANNED</th>
+        <td><input type="number" max="1" min="0" name="banned" id="banned"></input></td>
+      </tr>
+      <!-- <tr> -->
+      <!--   <th class="text-right" scope="col">TIMES BANNED</th> -->
+      <!--   <td id="times_banned"></td> -->
+      <!-- </tr> -->
+      <!-- <tr> -->
+      <!--   <th class="text-right" scope="col">LAST BANNED TIME</th> -->
+      <!--   <td id="last_banned_time"></td> -->
+      <!-- </tr> -->
+      <tr>
+        <th class="text-right" scope="col">PUBLIC BAN MESSAGE</th>
+        <td><textarea type="textarea" name="public_ban_message" id="public_ban_message"></textarea></td>
+      </tr>
+      <tr>
+        <th class="text-right" scope="col">INTERNAL BAN MESSAGE</th>
+        <td><textarea name="internal_ban_message" id="internal_ban_message"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+  <style>
+    .hidden {
+      display:none !important;
+    }
+  </style>
+  <div class="col text-center">
+      <button type="button" id="create_invite_user_btn" class="btn btn-primary" tabindex="2">Initialize User</button>
+      <button type="submit" id="modify_invite_user_btn" class="btn btn-primary" tabindex="2" name="submit">Modify</button>
+  </div>
+  {S_HIDDEN_FIELDS}
+  {S_FORM_TOKEN}
+</div>
+

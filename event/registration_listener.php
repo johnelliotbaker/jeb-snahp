@@ -16,7 +16,7 @@ class registration_listener extends base implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return [
-            'core.ucp_register_data_after' => [
+            'core.user_add_modify_data' => [
                 ['validate_invite', 0],
             ],
             'core.user_add_after' => [
@@ -27,12 +27,28 @@ class registration_listener extends base implements EventSubscriberInterface
 
     public function validate_invite($event)
     {
-        prn('validate');
+        $keyphrase = $this->request->variable('invitation_code', '');
+        if (!$keyphrase)
+        {
+            trigger_error('Invitation code is required.');
+        }
+        $invite_data = $this->select_invite($where="keyphrase='$keyphrase'");
+        if (!$invite_data)
+        {
+            trigger_error('Sorry, that invitation code is invalid.');
+        }
+        $invite_data = $invite_data[0];
+        if (!$invite_data['b_active'])
+        {
+            trigger_error('Sorry, that invitation code has been deactivated.');
+        }
     }
 
     public function update_invite_after_user_addition($event)
     {
-        prn('registered');
+        $user_id = $event['user_id'];
+        $keyphrase = $this->request->variable('invitation_code', '');
+        $this->redeem_invite($keyphrase, $user_id);
     }
 
 }

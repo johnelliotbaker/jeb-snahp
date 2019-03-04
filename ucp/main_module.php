@@ -1,30 +1,22 @@
 <?php
-/**
- *
- * snahp. An extension for the phpBB Forum Software package.
- *
- * @copyright (c) 2018
- * @license GNU General Public License, version 2 (GPL-2.0)
- *
- */
-
 namespace jeb\snahp\ucp;
-function prn($var) {
+
+function prn($var, $b_html=false) {
     if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
+    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
+    } else {
+        if ($b_html)
+        {
+            echo htmlspecialchars($var) . '<br>';
+        }
+        else
+        {
+            echo $var . '<br>';
+        }
+    }
 }
 
 
-// CONSTANTS are in
-// includes/constants.php
-// USERS_TABLE
-// TOPICS_TABLE
-
-
-/**
- * snahp UCP module.
- */
 class main_module
 {
 	var $u_action;
@@ -41,15 +33,62 @@ class main_module
             $cfg['b_feedback'] = true;
             $this->handle_visibility($cfg);
             break;
+        case 'invite':
+            global $config, $helper, $container, $auth;
+            $cfg['tpl_name'] = '@jeb_snahp/ucp/invite/invite';
+            $cfg['b_feedback'] = true;
+            $this->handle_invite($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_mode($cfg);
         }
 	}
 
+    function handle_invite($cfg)
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        $user_id = $user->data['user_id'];
+        // Using config invite master switch
+        $b_enable = true;
+        $template->assign_vars([ 'B_ENABLE' => $b_enable, ]);
+        $ih = new \jeb\snahp\core\invite_helper($phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
+        $invite_users_data = $ih->select_invite_users($where="i.user_id={$user_id}");
+        if ($invite_users_data)
+        {
+            $invite_users_data = $invite_users_data[0];
+            $template->assign_vars([
+                'B_INVITE_USER_EXISTS' => true,
+                'N_AVAILABLE' => $invite_users_data['n_available'],
+                'B_BAN' => $invite_users_data['b_ban'],
+                'S_BAN_MSG_PUBLIC' => $invite_users_data['ban_msg_public'],
+            ]);
+        }
+        else
+        {
+            $template->assign_vars([
+                'B_INVITE_USER_EXISTS' => false,
+                'N_AVAILABLE' => 0,
+            ]);
+        }
+
+        $invite_data = $ih->get_invite_list($user_id);
+        if ($invite_data)
+        {
+            $template->assign_vars([
+                'B_INVITE_EXISTS' => true,
+            ]);
+            foreach ($invite_data as $row)
+            {
+                $template->assign_block_vars('A_INVITE', $row);
+            }
+        }
+    }
+
     function handle_visibility($cfg)
     {
 		global $db, $request, $template, $user;
+        $user_id = $user->data['user_id'];
         $this->tpl_name = $cfg['tpl_name'];
         $this->page_title = $user->lang('UCP_SNP_TITLE');
         add_form_key('jeb/snahp');
@@ -75,7 +114,6 @@ class main_module
                 trigger_error($message);
             }
         }
-        // Receive thanks notifications
         $template_vars = array(
             'S_SNP_DISABLE_AVATAR_THANKS_LINK' => $data['snp_disable_avatar_thanks_link'],
             'S_SNP_ENABLE_AT_NOTIFY'           => $data['snp_enable_at_notify'],
@@ -105,4 +143,5 @@ class main_module
         }
         $template->assign_vars([]);
     }
+
 }

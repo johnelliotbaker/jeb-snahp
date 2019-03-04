@@ -32,7 +32,7 @@ class v_0_19_1 extends \phpbb\db\migration\migration
                     'PRIMARY_KEY' => 'id',
                     'KEYS' => [
                         'user_id'         => ['INDEX', 'user_id'],
-                        'n_available'     => ['INDEX', 'n_use'],
+                        'n_available'     => ['INDEX', 'n_available'],
                         'n_total_issued'  => ['INDEX', 'n_total_issued'],
                         'b_redeem_enable' => ['INDEX', 'b_redeem_enable'],
                         'b_ban'           => ['INDEX', 'b_ban'],
@@ -59,6 +59,7 @@ class v_0_19_1 extends \phpbb\db\migration\migration
                         'b_active'    => ['INDEX', 'b_active'],
                         'create_time' => ['INDEX', 'create_time'],
                         'redeem_time' => ['INDEX', 'redeem_time'],
+                        'keyphrase'   => ['INDEX', 'keyphrase'],
                     ]
                 ],
             ],

@@ -1,0 +1,32 @@
+<!-- INCLUDE mcp_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<script>
+  {% include '@jeb_snahp/mcp/invite/component/common.js' %}
+</script>
+{% if B_ENABLE %}
+<form id="mcp" method="post" action="{S_MCP_ACTION}">
+  <div class="panel">
+    <div class="inner">
+
+      <div class="twbs">
+        {% include '@jeb_snahp/mcp/invite/component/searchbox.html' %}
+        {% include '@jeb_snahp/mcp/invite/component/manage_invite_user.html' %}
+        <br>
+        <hr>
+        {% include '@jeb_snahp/mcp/invite/component/list_invites.html' %}
+      </div>
+    </div>
+  </div>
+  {S_HIDDEN_FIELDS}
+  {S_FORM_TOKEN}
+  <!-- INCLUDEJS @jeb_snahp/mcp/invite/component/ready.js -->
+</form>
+{% else %}
+<div class="panel">
+  <div class="inner">
+    <h3>Invite is currently disabled by the administrator.</h3>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE mcp_footer.html -->

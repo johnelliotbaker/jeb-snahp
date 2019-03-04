@@ -15,6 +15,9 @@
       </div>
 
       <style>
+        input {
+          color:black;
+        }
         .username {
           width: 20%;
           text-align: left;
@@ -80,7 +83,7 @@
           <option value="count" {% if SORTKEY=='count' %}selected{% endif %}>Total</option>
           <option value="bumpdate" {% if SORTKEY=='bumpdate' %}selected{% endif %}>Bumped Time</option>
         </select>
-        <input type="submit" value="sort"></input>
+        <input type="submit" value="Sort"></input>
         <input type="text" name="bump_username" value="{BUMP_USERNAME}" style="text-align:center; width:150px;"></input>
         <div class="pagination">
           {TOTAL_REQUEST}

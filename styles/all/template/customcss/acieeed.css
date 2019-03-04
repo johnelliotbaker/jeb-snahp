@@ -44,3 +44,47 @@ input.search_master {
     background:black;
     border: 2px solid #f8c301;
 }
+
+/* bootstrap modal */
+.twbs .modal-header,
+.twbs .modal-body,
+.twbs .modal-footer
+{
+    background-color: black !important;
+}
+.twbs .card {
+    background-color: black !important;
+    border: 1px solid #444 !important;
+}
+.twbs .card-footer {
+    background-color: #111 !important;
+    border-top: 1px solid #444 !important;
+}
+.twbs .close {
+    color: #FFF !important;
+}
+.twbs .modal-content {
+    background-color: black !important;
+}
+
+/* bootstrap table */
+.twbs .table
+{
+    color: #EEE !important;
+}
+.twbs .table td,
+.twbs .table th
+{
+    border-top: 1px solid #222 !important;
+}
+.twbs textarea,
+.twbs input
+{
+    background-color: black;
+    border: 1px solid #777 !important;
+}
+.twbs .form-control {
+    background-color: black !important;
+    border: 1px solid #777 !important;
+    color: #EEE !important;
+}

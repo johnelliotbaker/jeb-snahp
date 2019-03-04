@@ -47,11 +47,54 @@ class main_module extends base
             $cfg['b_feedback'] = false;
             $this->handle_list_topic_bump($cfg);
             break;
+        case 'invite':
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/invite/mcp_snp_invite';
+            $cfg['b_feedback'] = false;
+            $this->handle_invite($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_default($cfg);
         }
 	}
+
+    public function handle_invite($cfg)
+    {
+		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
+        $helper = new \jeb\snahp\core\invite_helper( $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $id = $request->variable('invitation_id', '0');
+                $inviter_id = $request->variable('user_id', '0');
+                if ($inviter_id)
+                {
+                    $data['n_available'] = $request->variable('current_available', '0');
+                    $data['b_redeem_enable'] = $request->variable('can_redeem', '0');
+                    $data['b_ban'] = $request->variable('banned', '0');
+                    $data['ban_msg_public'] = $request->variable('public_ban_message', '');
+                    $data['ban_msg_private'] = $request->variable('internal_ban_message', '');
+                    $a_user_id = [$inviter_id];
+                    $helper->update_invite_users($a_user_id, $data);
+                }
+                // meta_refresh(0, $this->u_action . "&user_id={$inviter_id}");
+                // // trigger_error('');
+            }
+            $template->assign_vars(array(
+                'B_ENABLE' => $config['snp_b_request'],
+                'B_GENERATE' => false,
+                'U_ACTION'    => $this->u_action,
+            ));
+        }
+    }
 
     public function select_topics()
     {

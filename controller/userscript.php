@@ -37,10 +37,33 @@ class userscript extends base
             $cfg['title'] = 'Bump Topic';
             return $this->handle_bump_topic($cfg);
             break;
+        case 'username':
+            return $this->handle_username();
         default:
             break;
         }
         trigger_error('Nothing to see here. Move along.');
+    }
+
+    public function handle_username()
+    {
+        $partial = $this->request->variable('partial', '');
+        $partial = utf8_clean_string($partial);
+        $data = [];
+        if ($partial and strlen($partial)>2)
+        {
+            $sql = 'SELECT username_clean FROM ' . USERS_TABLE . 
+                " WHERE username_clean LIKE '$partial%'";
+            $result = $this->db->sql_query_limit($sql, 10);
+            $rowset = $this->db->sql_fetchrowset($result);
+            $this->db->sql_freeresult($result);
+            foreach($rowset as $row)
+            {
+                $data[] = $row['username_clean'];
+            }
+        }
+        $js = new \phpbb\json_response();
+        $js->send($data);
     }
 
     public function get_or_reject_bump_data($tid)

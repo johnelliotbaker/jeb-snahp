@@ -28,6 +28,11 @@ class main_info
                     'auth'   => 'ext_jeb/snahp',
                     'cat'    => ['MCP_SNP_TITLE']
                 ],
+                'invite' => [
+                    'title'  => 'MCP_SNP_INVITE',
+                    'auth'   => 'ext_jeb/snahp',
+                    'cat'    => ['MCP_SNP_TITLE']
+                ],
             ],
         ];
     }
