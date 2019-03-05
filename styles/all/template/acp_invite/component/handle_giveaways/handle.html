@@ -5,30 +5,41 @@
 
 </style>
 <div class="twbs">
-  <table class="table table-sm table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th class="text-center" scope="col">GID</th>
-        <th scope="col">GROUP NAME</th>
-        <th class="text-center" scope="col">CREATE</th>
-        <th scope="col">HOW MANY</th>
-        <th class="text-center" scope="col">GIVE</th>
-        <th class="text-center" scope="col">DELETE</th>
-      </tr>
-    </thead>
-    <tbody id="content">
-      <!-- BEGIN A -->
-      <tr>
-        <td class="text-center">{A.group_id}</td>
-        <td id="group_name_{A.group_id}">{A.group_name}</td>
-        <td class="text-center"><button onclick="create_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button></td>
-        <td><input class="text-right" type="number" min="0" max="9" name="n_{A.group_id}" value="0" id="n_{A.group_id}"> Invites</td>
-        <td class="text-center"><button onclick="send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button></td>
-        <td class="text-center"><button onclick="delete_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button></td>
-      </tr>
-      <!-- END A -->
-    </tbody>
-  </table>
+
+
+  <div align="center">
+    <div class="card text-center" style="max-width:40rem;">
+      <div class="card-header" style="padding:18px 0 0 0; margin-bottom:0px;">
+        <h6 style="margin:0;">ACP Invitation Batch Manager</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th class="text-center" scope="col">GID</th>
+              <th scope="col">GROUP NAME</th>
+              <th class="text-center" scope="col">CREATE</th>
+              <th scope="col">HOW MANY</th>
+              <th class="text-center" scope="col">GIVE</th>
+              <th class="text-center" scope="col">DELETE</th>
+            </tr>
+          </thead>
+          <tbody id="content">
+            <!-- BEGIN A -->
+            <tr>
+              <td class="text-center">{A.group_id}</td>
+              <td id="group_name_{A.group_id}">{A.group_name}</td>
+              <td class="text-center"><button onclick="create_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button></td>
+              <td><input class="text-right" type="number" min="0" max="9" name="n_{A.group_id}" value="0" id="n_{A.group_id}"> Invites</td>
+              <td class="text-center"><button onclick="send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button></td>
+              <td class="text-center"><button onclick="delete_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button></td>
+            </tr>
+            <!-- END A -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal -->
   <div class="modal fade" id="confirm_modal" tabindex="-1" role="dialog" aria-labelledby="confirm_modalLabel" aria-hidden="true">
