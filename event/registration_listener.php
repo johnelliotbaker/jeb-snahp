@@ -32,7 +32,8 @@ class registration_listener extends base implements EventSubscriberInterface
         {
             trigger_error('Invitation code is required.');
         }
-        $invite_data = $this->select_invite($where="keyphrase='$keyphrase'");
+        $invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
+        $invite_data = $invite_helper->select_invite($where="keyphrase='$keyphrase'");
         if (!$invite_data)
         {
             trigger_error('Sorry, that invitation code is invalid.');
@@ -48,7 +49,8 @@ class registration_listener extends base implements EventSubscriberInterface
     {
         $user_id = $event['user_id'];
         $keyphrase = $this->request->variable('invitation_code', '');
-        $this->redeem_invite($keyphrase, $user_id);
+        $invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
+        $invite_helper->redeem_invite($keyphrase, $user_id);
     }
 
 }
