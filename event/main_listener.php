@@ -111,14 +111,39 @@ class main_listener extends base implements EventSubscriberInterface
             'core.posting_modify_submit_post_after'       => [
                 ['notify_on_poke', 0],
             ],
-            'core.posting_modify_message_text'            => 'colorize_at',
+            'core.posting_modify_message_text'            => [
+                ['colorize_at', 0],
+            ],
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
             ],
             'core.viewforum_get_topic_data' => [
                 ['include_reqs_forum_assets', 0],
             ],
+            'core.modify_posting_auth' => [
+                ['block_zebra_foe_quote', 0],
+            ],
         ];
+    }
+
+    public function block_zebra_foe_quote($event)
+    {
+        $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
+        if (!$snp_zebra_b_master) return false;
+        $mode = $event['mode'];
+        $user_id = $this->user->data['user_id'];
+        $topic_id = $event['topic_id'];
+        $topic_data = $this->select_topic($topic_id);
+        $topic_poster = $topic_data['topic_poster'];
+        $sql = 'SELECT 1 FROM ' . ZEBRA_TABLE . '
+            WHERE foe=1 AND user_id=' . $topic_poster . ' AND zebra_id=' . $user_id;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if ($row && $mode=='quote')
+        {
+            trigger_error('Sorry, quoting in this topic is currently disabled.');
+        }
     }
 
     public function include_reqs_forum_assets($event)
@@ -151,7 +176,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($row)
         {
             $this->template->assign_vars([ 'ZEBRA_BLOCK' => true, ]);
-            $post_row = $event['post_row'];/*{{{*/
+            $post_row = $event['post_row'];
             $username = '<span style="color:#'. $topic_first_poster_colour .'">' . $topic_first_poster_name . '</span>';
             $post_row['MESSAGE'] = 'Sorry, this post is currently unavailable for viewing.';
             $event['post_row'] = $post_row;
@@ -565,9 +590,9 @@ class main_listener extends base implements EventSubscriberInterface
             $user_id = $this->user->data['user_id'];
             $gid = $this->user->data['group_id'];
             $sql = 'SELECT snp_imdb_enable, snp_anilist_enable,
-                    snp_googlebooks_enable, snp_gamespot_enable 
-                    FROM ' . GROUPS_TABLE . '
-                    WHERE group_id = ' . $gid;
+                snp_googlebooks_enable, snp_gamespot_enable 
+                FROM ' . GROUPS_TABLE . '
+                WHERE group_id = ' . $gid;
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $bGroupEnable = $row['snp_imdb_enable'];
