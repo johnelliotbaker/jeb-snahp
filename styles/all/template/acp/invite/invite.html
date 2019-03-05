@@ -1,0 +1,19 @@
+<!-- INCLUDE mcp_header.html -->
+<!-- INCLUDECSS @jeb_snahp/mcp/admin_table.css -->
+<!-- INCLUDEJS @jeb_snahp/mcp/request_user_management.js -->
+<!-- INCLUDECSS @jeb_snahp/mcp/request_user_management.css -->
+
+<form id="acp" method="post" action="{U_ACTION}">
+<h2>Manage User Requests Solved Database</h2>
+<div class="panel">
+	<div class="inner">
+	<h3>Statistics</h3>
+
+  {% include '@jeb_snahp/acp/component/generate.html' %}
+
+  {% include '@jeb_snahp/acp/component/do_rurs.html' %}
+
+	</div>
+</div>
+</form>
+<!-- INCLUDE mcp_footer.html -->

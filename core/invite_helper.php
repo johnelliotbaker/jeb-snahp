@@ -113,7 +113,7 @@ class invite_helper
         }
     }
 
-    public function insert_invite_users($a_user_id)
+    public function insert_invite_users($a_user_id, $n_available=0)
     {
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables');
         foreach ($a_user_id as $user_id)
@@ -125,6 +125,7 @@ class invite_helper
             $data = [
                 'user_id'   => $user_id,
                 'ban_msg_private'  => '', // Unicode text needs manual init
+                'n_available' => $n_available,
             ];
             $sql = 'INSERT INTO ' . $tbl['invite_users'] . 
                 $this->db->sql_build_array('INSERT', $data);
@@ -183,6 +184,16 @@ class invite_helper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
+    }
+
+    function delete_valid_invite_from_user($user_id)
+    {
+        $user_data = $this->select_user($where="user_id={$user_id}");
+        if (!$user_data) return false;
+        $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite'];
+        $sql = 'DELETE FROM ' . $tbl . " WHERE inviter_id={$user_id} AND b_active=1";
+        $this->db->sql_query($sql);
+        return true;
     }
 
     function get_invite_user_list($user_id=null)

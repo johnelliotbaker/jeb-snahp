@@ -90,6 +90,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.acp_invite:
+        class: jeb\snahp\controller\acp_invite
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.acp_reqs:
         class: jeb\snahp\controller\acp_reqs
         parent: jeb.snahp.base

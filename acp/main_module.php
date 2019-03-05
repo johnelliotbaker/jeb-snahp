@@ -110,6 +110,11 @@ class main_module
             $cfg['b_feedback'] = false;
             $this->handle_analytics($cfg);
             break;
+        case 'invite':
+            $cfg['tpl_name'] = 'acp_snp_invite';
+            $cfg['b_feedback'] = false;
+            $this->handle_invite($cfg);
+            break;
         case 'scripts':
             $sid = $request->variable($config['cookie_name'] . '_sid', '', true, \phpbb\request\request_interface::COOKIE);
             $cfg['tpl_name'] = 'acp_snp_scripts';
@@ -172,6 +177,60 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
             ));
+        }
+    }
+
+    public function handle_invite($cfg)
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                // Enabler
+                $snp_inv_b_master = $request->variable('snp_inv_b_master', '1');
+                $config->set('snp_inv_b_master', $snp_inv_b_master);
+                // Group Permission and Configurations
+                $a_enable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/enable-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("enable-$gid", '0');
+                        $a_enable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_ana_b_enable', $a_enable);
+                $db->sql_query($sql);
+                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+            }
+            $template->assign_vars(array(
+                'U_ACTION'				=> $this->u_action,
+                'SNP_INV_B_MASTER'      => $config['snp_inv_b_master'],
+            ));
+            // Code to show signature configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'GID'=>$row['group_id'],
+                    'NAME'=>$row['group_name'],
+                    'ENABLE'=> $row['snp_ana_b_enable'],
+                );
+                $template->assign_block_vars('A_ANALYTICS', $group);
+            };
+            $db->sql_freeresult($result);
         }
     }
 

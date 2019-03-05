@@ -59,6 +59,11 @@ jeb_snahp_reqsmcp:
     requirements:
         mode: \d+
         uid: \d+
+jeb_snahp_acp_invite:
+    path: /snahp/acp_invite/{mode}/
+    defaults: { _controller: jeb.snahp.acp_invite:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_acp_reqs_manage:
     path: /snahp/acp_reqs/manage/
     defaults: { _controller: jeb.snahp.acp_reqs:manage_requests}
