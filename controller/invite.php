@@ -44,10 +44,12 @@ class invite extends base
                 $this->generate_invite_json($cfg);
                 break;
             case 'insert_invite_user':
+                $this->reject_non_moderator('Error Code: b15f0da518');
                 $cfg = [];
                 $this->handle_insert_invite_user($cfg);
                 break;
             case 'disable_invite':
+                $this->reject_non_moderator('Error Code: 98f5a21c7b');
                 $cfg = [];
                 $this->handle_disable_invite($cfg);
                 break;
@@ -80,13 +82,22 @@ class invite extends base
 
     public function get_list_json($cfg)
     {
-        $username = $this->request->variable('u', '');
-        if (!$username) $username = $this->user->data['username_clean'];
-        $username = utf8_clean_string($username);
-        $user_data = $this->invite_helper->select_user($where="username_clean='$username'");
-        $uid = $user_data['user_id'];
+        $uid = (int) $this->request->variable('uid', '0');
+        if (!$uid)
+        {
+            $username = $this->request->variable('u', '');
+            if (!$username) $username = $this->user->data['username_clean'];
+            $username = utf8_clean_string($username);
+            $user_data = $this->invite_helper->select_user($where="username_clean='$username'");
+            $uid = $user_data['user_id'];
+        }
         $js = new \phpbb\json_response();
         if (!$uid) $js->send([]);
+        // Reject non-mod and non-self
+        if (!$this->is_self($uid) && !$this->is_mod())
+        {
+            trigger_error('You cannot view this page. Code: 110be1da0f');
+        }
         $rowset = $this->invite_helper->get_invite_list($uid, false);
         $js = new \phpbb\json_response();
         $js->send($rowset);
@@ -101,14 +112,24 @@ class invite extends base
         $uid = $user_data['user_id'];
         $js = new \phpbb\json_response();
         if (!$uid) $js->send(['invitation_id' => -1]);
+        // Reject non-self and non-mod
+        if (!$this->is_self($uid) && !$this->is_mod())
+        {
+            trigger_error('You cannot view this page. Error Code: 76532699d2');
+        }
         $rowset = $this->invite_helper->get_invite_user_list($uid);
         $js->send($rowset);
     }
 
     public function generate_invite_json($cfg)
     {
-        $uid = $this->request->variable('uid', '');
+        $uid = (int) $this->request->variable('uid', '');
         if (!$uid) $uid = $this->user->data['user_id'];
+        // Reject request from non-self
+        if (!$this->is_self($uid))
+        {
+            trigger_error('You cannot create that invite. Error Code: 6e5e603f32');
+        }
         $uuid = $this->invite_helper->insert_invite($uid);
         $js = new \phpbb\json_response();
         $js->send(['keyphrase' => $uuid]);

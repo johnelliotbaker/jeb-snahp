@@ -482,6 +482,15 @@ abstract class base
     }
 
     // GROUP
+    public function select_groups()
+    {
+        $sql = 'SELECT * FROM ' . GROUPS_TABLE;
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }
+
     public function select_group($gid)
     {
         $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=$gid";
@@ -658,6 +667,11 @@ abstract class base
         return $this->auth->acl_gets('a_', 'm_');
     }
 
+    public function is_self($user_id)
+    {
+        return $user_id==$this->user->data['user_id'];
+    }
+
     public function is_op($topic_data)
     {
         $poster_id = $topic_data['topic_poster'];
@@ -665,16 +679,16 @@ abstract class base
         return $poster_id == $user_id;
     }
 
-    public function reject_non_admin()
+    public function reject_non_admin($append='')
     {
         if (!$this->is_admin())
-            trigger_error('Only administrator may access this page.');
+            trigger_error('Only administrator may access this page. ' . $append);
     }
 
-    public function reject_non_moderator()
+    public function reject_non_moderator($append='')
     {
         if (!$this->is_mod())
-            trigger_error('Only moderators may access this page.');
+            trigger_error('Only moderators may access this page. ' . $append);
     }
 
     public function reject_non_group($group_id, $perm_name)
