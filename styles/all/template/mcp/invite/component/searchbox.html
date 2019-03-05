@@ -1,13 +1,48 @@
+<style>
+.twbs input:focus,
+.twbs select:focus,
+.twbs textarea:focus,
+.twbs button:focus {
+    outline: none !important;
+}
+*:focus {
+  outline: none !important;
+}
+
+
+
+.twbs textarea:focus,
+.twbs input[type="text"]:focus,
+.twbs input[type="password"]:focus,
+.twbs input[type="datetime"]:focus,
+.twbs input[type="datetime-local"]:focus,
+.twbs input[type="date"]:focus,
+.twbs input[type="month"]:focus,
+.twbs input[type="time"]:focus,
+.twbs input[type="week"]:focus,
+.twbs input[type="number"]:focus,
+.twbs input[type="email"]:focus,
+.twbs input[type="url"]:focus,
+.twbs input[type="search"]:focus,
+.twbs input[type="tel"]:focus,
+.twbs input[type="color"]:focus,
+.twbs .btn:focus,
+.twbs .uneditable-input:focus {   
+  border-color: rgba(126, 239, 104, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+  outline: 0 none;
+}
+</style>
 <script>
   {% include '@jeb_snahp/mcp/invite/component/searchbox.js' %}
 </script>
 <div class="searchbox_wrapper" style="margin-top:5px;">
-  <div class="input-group mb-3" style="margin-bottom:6px !important;">
+  <div class="input-group mb-3" style="margin-bottom:4px !important;">
     <input id="username_searchbox" type="text" class="form-control" placeholder="Enter Inviter ID">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" id="list_btn">Search</button>
     </div>
   </div>
-  <div id="ajax_usernames" style="height:20px; margin-bottom:6px; font-size: 16px;">
+  <div id="ajax_usernames" style="height:26px; margin-bottom:6px; font-size: 16px;">
   </div>
 </div>
