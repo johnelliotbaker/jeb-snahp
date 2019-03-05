@@ -5,14 +5,14 @@
 
 </style>
 <div class="twbs">
-  <table class="table table-sm">
+  <table class="table table-sm table-striped">
     <thead class="thead-dark">
       <tr>
         <th class="text-center" scope="col">GID</th>
         <th scope="col">GROUP NAME</th>
         <th class="text-center" scope="col">CREATE</th>
         <th scope="col">HOW MANY</th>
-        <th class="text-center" scope="col">SEND</th>
+        <th class="text-center" scope="col">GIVE</th>
         <th class="text-center" scope="col">DELETE</th>
       </tr>
     </thead>
@@ -23,7 +23,7 @@
         <td id="group_name_{A.group_id}">{A.group_name}</td>
         <td class="text-center"><button onclick="create_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button></td>
         <td><input class="text-right" type="number" min="0" max="9" name="n_{A.group_id}" value="0" id="n_{A.group_id}"> Invites</td>
-        <td class="text-center"><button onclick="send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Send</button></td>
+        <td class="text-center"><button onclick="send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button></td>
         <td class="text-center"><button onclick="delete_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button></td>
       </tr>
       <!-- END A -->
@@ -50,4 +50,100 @@
     </div>
   </div>
 
+  <style>
+    .twbs .hidden {
+      display: none;
+    }
+
+    .twbs .btn:focus,
+    .twbs .btn
+    {
+      outline: none !important;
+      box-shadow:none !important;
+    }
+    #tab1, #tab2, #tab3
+    {
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function select(tab)
+    {
+      var tabs = [1,2,3];
+      for (var i of tabs)
+      {
+        if (i==tab)
+        {
+          $('#help' + i).removeClass('hidden');
+          $('#tab' + i).addClass('active');
+        }
+        else
+        {
+          $('#help' + i).addClass('hidden');
+          $('#tab' + i).removeClass('active');
+        }
+      }
+    }
+
+  </script>
+  <div align="center">
+    <div class="card text-center" style="max-width:40rem;">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a id="tab1" class="nav-link active" onclick="select(1);">Create</a>
+          </li>
+          <li class="nav-item">
+            <a id="tab2" class="nav-link" onclick="select(2);">Give</a>
+          </li>
+          <li class="nav-item">
+            <a id="tab3" class="nav-link" onclick="select(3);">Delete</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body" id="help1">
+        <h5 class="card-title">Help: Create</h5>
+        <p class="card-text">
+          Instead of having every user with a corresponding invite database entries (as in USERS_TABLE),
+          "invite users" data is stored as needed in phpbb_snahp_invite_users table.
+          For a user to start using invite system, an entry must first be created.
+          Clicking the 
+          <button style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button>
+          button will create the necessary database entries into
+          the phpbb_snahp_invite_users table for the corresponding group.
+        </p>
+      </div>
+      <div class="card-body hidden" id="help2">
+        <h5 class="card-title">Help: Give</h5>
+        <p class="card-text">
+          The give function is used to <b>increase</b> the amount of available invites for the users in a group.
+          In the phpbb_snahp_invite_users table is a column "n_available". This number is used to determine
+          how many invites the user can generate in her UCP -> Invite section.
+        </p>
+        <p class="card-text">
+          The typical work flow for giving invites to a user is:
+          <ol>
+            <li class="text-left">Admin: Create invite user database entry</li>
+            <li class="text-left">Admin: Increment her "n_available" column</li>
+            <li class="text-left">User: Go to UCP->Invite and click "Create an Invitation" button</li>
+            <li class="text-left">User: Copy the generated code</li>
+            <li class="text-left">User: Contact a new member candidate with a link to our forum and the invite code</li>
+          </ol>
+          On this page, the 
+          <button style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button>
+          command will issue a giveaway for each user in that group.
+          The n_available for each user in a group will be increased by the number in the "How Many" input box.
+        </p>
+      </div>
+      <div class="card-body hidden" id="help3">
+        <h5 class="card-title">Help: Delete</h5>
+        <p class="card-text">
+          The 
+          <button style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button>
+          command can be used to remove all outstanding valid invites and also set n_available to 0.
+          The effect is to make the entire group unable to send any invites and any currently unclaimed invites will be voided.
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
