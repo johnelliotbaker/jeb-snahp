@@ -21,30 +21,36 @@ class acp_invite extends base
 
     public function handle($mode)
     {
-        $this->reject_non_admin();
         $this->invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
         switch ($mode)
         {
         case 'test':
+            $this->reject_non_admin('Error Code: c279756d47');
             $cfg = [];
             return $this->test($cfg);
         case 'giveaway_invtes':
+            $this->reject_non_admin('Error Code: bb404d7c3b');
             $cfg = [];
             return $this->giveaway_invtes($cfg);
         case 'delete_valid':
+            $this->reject_non_admin('Error Code: 0d2a3872da');
             $cfg = [];
             return $this->delete_valid($cfg);
         case 'handle_giveaways':
+            $this->reject_non_admin('Error Code: b1540053d9');
             $cfg = [];
             $cfg['tpl_name'] = '@jeb_snahp/acp_invite/handle_giveaways.html';
             $cfg['title'] = 'Snahp Invitation Giveaways';
             return $this->handle_giveaways($cfg);
         case 'insert_invite_users_by_group':
+            $this->reject_non_admin('Error Code: 0cc3d15a42');
             $cfg = [];
             return $this->insert_invite_users_by_group($cfg);
         default:
+            $this->reject_non_admin('Error Code: e6ff7c2e73');
             break;
         }
+        $this->reject_non_admin('Error Code: e6ff7c2e73');
         trigger_error('You must specify valid mode.');
     }
 
