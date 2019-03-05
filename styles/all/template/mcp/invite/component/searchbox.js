@@ -1,4 +1,3 @@
-
 function make_clickable_username(resp, $parent)
 {
     $searchbox = $('#username_searchbox');
@@ -9,8 +8,10 @@ function make_clickable_username(resp, $parent)
             var username = $(e.target).text();
             $searchbox.val(username);
             $parent.empty();
+            $('#list_btn').click();
         });
         $elem.appendTo($parent);
+
     }
 }
 
