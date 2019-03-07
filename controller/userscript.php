@@ -66,20 +66,6 @@ class userscript extends base
         $js->send($data);
     }
 
-    public function get_or_reject_bump_data($tid)
-    {
-        if (!$tid)
-        {
-            trigger_error('No topic_id was provided.');
-        }
-        $bump_data = $this->select_bump_topic($tid);
-        if (!$bump_data)
-        {
-            trigger_error('Bump data does not exist.');
-        }
-        return $bump_data;
-    }
-
     public function get_or_reject_topic_data($tid)
     {
         if (!$tid)
@@ -167,6 +153,62 @@ class userscript extends base
         trigger_error($strn);
     }
 
+    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
+    {
+        // From includes/functions_posting.php
+        global $config, $db, $user, $phpEx, $phpbb_root_path, $phpbb_log;
+        if ($bump_time === false)
+        {
+            $bump_time = time();
+        }
+        // Begin bumping
+        $db->sql_transaction('begin');
+        $sql = 'UPDATE ' . TOPICS_TABLE . "
+            SET topic_last_post_time = $bump_time,
+            topic_time = $bump_time,
+            topic_bumped = 1,
+            topic_bumper = " . $user->data['user_id'] . "
+            WHERE topic_id = $topic_id";
+        $db->sql_query($sql);
+        $sql = 'UPDATE ' . FORUMS_TABLE . "
+            SET forum_last_post_id = " . $post_data['topic_last_post_id'] . ",
+            forum_last_poster_id = " . $post_data['topic_last_poster_id'] . ",
+            forum_last_post_subject = '" . $db->sql_escape($post_data['topic_last_post_subject']) . "',
+            forum_last_post_time = $bump_time,
+            forum_last_poster_name = '" . $db->sql_escape($post_data['topic_last_poster_name']) . "',
+            forum_last_poster_colour = '" . $db->sql_escape($post_data['topic_last_poster_colour']) . "'
+            WHERE forum_id = $forum_id";
+        $db->sql_query($sql);
+        $db->sql_transaction('commit');
+        markread('post', $forum_id, $topic_id, $bump_time);
+        markread('topic', $forum_id, $topic_id, $bump_time);
+        if ($config['load_db_lastread'] && $user->data['is_registered'])
+        {
+            $sql = 'SELECT mark_time
+                FROM ' . FORUMS_TRACK_TABLE . '
+                WHERE user_id = ' . $user->data['user_id'] . '
+                AND forum_id = ' . $forum_id;
+            $result = $db->sql_query($sql);
+            $f_mark_time = (int) $db->sql_fetchfield('mark_time');
+            $db->sql_freeresult($result);
+        }
+        else if ($config['load_anon_lastread'] || $user->data['is_registered'])
+        {
+            $f_mark_time = false;
+        }
+        if (($config['load_db_lastread'] && $user->data['is_registered']) || $config['load_anon_lastread'] || $user->data['is_registered'])
+        {
+            $sql = 'SELECT forum_last_post_time
+                FROM ' . FORUMS_TABLE . '
+                WHERE forum_id = ' . $forum_id;
+            $result = $db->sql_query($sql);
+            $forum_last_post_time = (int) $db->sql_fetchfield('forum_last_post_time');
+            $db->sql_freeresult($result);
+            update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time, false);
+        }
+    }
+
+
     public function bump_topic()
     {
         $tid = $this->request->variable('t', '');
@@ -205,11 +247,9 @@ class userscript extends base
             trigger_error(implode('<br>', $status));
         }
         $time = time();
-        $data = [
-            'topic_last_post_time' => $time,
-            'topic_time' => $time,
-        ];
-        $this->update_topic($tid, $data);
+        $forum_id = $topic_data['forum_id'];
+        $topic_id = $topic_data['topic_id'];
+        $this->phpbb_bump_topic($forum_id, $topic_id, $topic_data);
         $bump_data = $this->select_bump_topic($tid);
         $data = [ 
             'topic_time' => $time,

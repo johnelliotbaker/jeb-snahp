@@ -116,6 +116,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
+                ['mark_topic_read',0],
             ],
             'core.viewforum_get_topic_data' => [
                 ['include_reqs_forum_assets', 0],
@@ -126,7 +127,21 @@ class main_listener extends base implements EventSubscriberInterface
         ];
     }
 
-    public function block_zebra_foe_quote($event)
+    public function test($event)
+    {
+    }
+
+    public function mark_topic_read($event)/*{{{*/
+    {
+        // phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false);
+        $forum_id = $event['forum_id'];
+        $topic_id = $event['topic_id'];
+        $time = time();
+        markread('post', $forum_id, $topic_id, $time);
+        markread('topic', $forum_id, $topic_id, $time);
+    }/*}}}*/
+
+    public function block_zebra_foe_quote($event)/*{{{*/
     {
         $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
         if (!$snp_zebra_b_master) return false;
@@ -134,6 +149,7 @@ class main_listener extends base implements EventSubscriberInterface
         $user_id = $this->user->data['user_id'];
         $topic_id = $event['topic_id'];
         $topic_data = $this->select_topic($topic_id);
+        if (!$topic_data) return false;
         $topic_poster = $topic_data['topic_poster'];
         $sql = 'SELECT 1 FROM ' . ZEBRA_TABLE . '
             WHERE foe=1 AND user_id=' . $topic_poster . ' AND zebra_id=' . $user_id;
@@ -144,9 +160,10 @@ class main_listener extends base implements EventSubscriberInterface
         {
             trigger_error('Sorry, quoting in this topic is currently disabled.');
         }
-    }
+    }/*}}}*/
 
-    public function include_reqs_forum_assets($event)
+
+    public function include_reqs_forum_assets($event)/*{{{*/
     {
         $forum_id = $event['forum_id'];
         $request_fid = explode(',', $this->config['snp_req_fid']);
@@ -154,7 +171,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_REQS_FORUM_BASE_JS' => true,
         ]);
-    }
+    }/*}}}*/
 
     public function block_zebra_foe_topicview($event)/*{{{*/
     {
@@ -181,10 +198,6 @@ class main_listener extends base implements EventSubscriberInterface
             $post_row['MESSAGE'] = 'Sorry, this post is currently unavailable for viewing.';
             $event['post_row'] = $post_row;
         }
-    }/*}}}*/
-
-    public function test($event)/*{{{*/
-    {
     }/*}}}*/
 
     public function show_thanks_top_list($event)/*{{{*/
