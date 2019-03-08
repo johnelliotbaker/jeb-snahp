@@ -143,7 +143,7 @@ class topic_mover
 
 			$posts_moved += $topic_info['topic_posts_approved'];
 			$posts_moved_unapproved += $topic_info['topic_posts_unapproved'];
-			$posts_moved_softdeleted += $topic_info['topic_posts_softdeleted'];
+            $posts_moved_softdeleted += $topic_info['topic_posts_softdeleted'];
 		}
 
 		$this->db->sql_transaction('begin');
@@ -156,34 +156,59 @@ class topic_mover
 		// Move topics, but do not resync yet
 		move_topics(array_keys($topic_data), $to_forum_id, false);
 
-		foreach ($topic_data as $topic_id => $row)
-		{
-			// We add the $to_forum_id twice, because 'forum_id' is updated
-			// when the topic is moved again later.
-			$this->log->add('mod', $this->user->data['user_id'], $this->user->ip, 'LOG_MOVED_LOCKED_TOPIC', false, [
-				'forum_id'		=> (int) $to_forum_id,
-				'topic_id'		=> (int) $topic_id,
-				$row['topic_title'],
-				$row['forum_name'],
-				$to_forum_data[$to_forum_id]['forum_name'],
-			]);
-		}
+        ///////////// DOCMOD ////////////////
+        $b_mod = 1;
+        $posts_moved_subtract = $posts_moved;
+        $posts_moved_unapproved_subtract = $posts_moved_unapproved;
+        $posts_moved_softdeleted_subtract = $posts_moved_softdeleted;
+        $topics_moved_subtract = $topics_moved;
+        $topics_moved_unapproved_subtract = $topics_moved_unapproved;
+        $topics_moved_softdeleted_subtract = $topics_moved_softdeleted;
+        if ($b_mod)
+        {
+            $sql = 'SELECT * FROM ' . FORUMS_TABLE . " WHERE forum_id={$forum_id}";
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            $posts_moved_subtract = min($posts_moved, $row['forum_posts_approved']);
+            $posts_moved_unapproved_subtract = min($posts_moved_unapproved, $row['forum_posts_unapproved']);
+            $posts_moved_softdeleted_subtract = min($posts_moved_softdeleted, $row['forum_posts_softdeleted']);
+            $topics_moved_subtract = min($topics_moved, $row['forum_topics_approved']);
+            $topics_moved_unapproved_subtract = min($topics_moved_unapproved, $row['forum_topics_unapproved']);
+            $topics_moved_softdeleted_subtract = min($topics_moved_softdeleted, $row['forum_topics_softdeleted']);
+        }
+        /////////////////////////////////////
+        // 
+        /////////////////////////////////////
+
+		// foreach ($topic_data as $topic_id => $row)
+		// {
+		//     // We add the $to_forum_id twice, because 'forum_id' is updated
+		//     // when the topic is moved again later.
+		//     $this->log->add('mod', $this->user->data['user_id'], $this->user->ip, 'LOG_MOVED_LOCKED_TOPIC', false, [
+		//         'forum_id'		=> (int) $to_forum_id,
+		//         'topic_id'		=> (int) $topic_id,
+		//         $row['topic_title'],
+		//         $row['forum_name'],
+		//         $to_forum_data[$to_forum_id]['forum_name'],
+		//     ]);
+		// }
 
 		$sync_sql = [];
 		if ($posts_moved)
 		{
 			$sync_sql[$to_forum_id][] = 'forum_posts_approved = forum_posts_approved + ' . (int) $posts_moved;
-			$sync_sql[$forum_id][] = 'forum_posts_approved = forum_posts_approved - ' . (int) $posts_moved;
+			$sync_sql[$forum_id][] = 'forum_posts_approved = forum_posts_approved - ' . (int) $posts_moved_subtract;
 		}
 		if ($posts_moved_unapproved)
 		{
 			$sync_sql[$to_forum_id][] = 'forum_posts_unapproved = forum_posts_unapproved + ' . (int) $posts_moved_unapproved;
-			$sync_sql[$forum_id][] = 'forum_posts_unapproved = forum_posts_unapproved - ' . (int) $posts_moved_unapproved;
+			$sync_sql[$forum_id][] = 'forum_posts_unapproved = forum_posts_unapproved - ' . (int) $posts_moved_unapproved_subtract;
 		}
 		if ($posts_moved_softdeleted)
 		{
-			$sync_sql[$to_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted + ' . (int) $posts_moved_softdeleted;
-			$sync_sql[$forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted - ' . (int) $posts_moved_softdeleted;
+            $sync_sql[$to_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted + ' . (int) $posts_moved_softdeleted;
+            $sync_sql[$forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted - ' . (int) $posts_moved_softdeleted_subtract;
 		}
 
 		if ($topics_moved)
@@ -191,18 +216,18 @@ class topic_mover
 			$sync_sql[$to_forum_id][] = 'forum_topics_approved = forum_topics_approved + ' . (int) $topics_moved;
 			if ($topics_moved > 0)
 			{
-				$sync_sql[$forum_id][] = 'forum_topics_approved = forum_topics_approved - ' . (int) ($topics_moved);
+				$sync_sql[$forum_id][] = 'forum_topics_approved = forum_topics_approved - ' . (int) ($topics_moved_subtract);
 			}
 		}
 		if ($topics_moved_unapproved)
 		{
 			$sync_sql[$to_forum_id][] = 'forum_topics_unapproved = forum_topics_unapproved + ' . (int) $topics_moved_unapproved;
-			$sync_sql[$forum_id][] = 'forum_topics_unapproved = forum_topics_unapproved - ' . (int) $topics_moved_unapproved;
+			$sync_sql[$forum_id][] = 'forum_topics_unapproved = forum_topics_unapproved - ' . (int) $topics_moved_unapproved_subtract;
 		}
 		if ($topics_moved_softdeleted)
 		{
-			$sync_sql[$to_forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted + ' . (int) $topics_moved_softdeleted;
-			$sync_sql[$forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted - ' . (int) $topics_moved_softdeleted;
+            $sync_sql[$to_forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted + ' . (int) $topics_moved_softdeleted;
+            $sync_sql[$forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted - ' . (int) $topics_moved_softdeleted_subtract;
 		}
 
 		foreach ($sync_sql as $forum_id_key => $array)
