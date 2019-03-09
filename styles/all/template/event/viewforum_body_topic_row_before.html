@@ -1,0 +1,19 @@
+<style>
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+</style>
+<div>
+  <!-- For displaying statistics progress bar on requests forum -->
+  <div class="flex-container">
+    {% if B_REQS_FORUM_SHOW_STATBAR %}
+    {% include '@jeb_snahp/reqs_forum/component/statbar/base.html' %}
+    {% endif %}
+    <!-- For filtering requests section by request status -->
+    {% if B_REQS_FORUM_SHOW_FILTER %}
+    {% include '@jeb_snahp/reqs_forum/component/filter_reqs/base.html' %}
+    {% endif %}
+  </div>
+</div>

@@ -1,8 +1,14 @@
 {% if B_INVITE_EXISTS %}
+<script>
+</script>
+<div class="action-bar bar-top">
+  {PAGINATION}
+</div>
 <div>
   <table class="table table-sm table-striped">
     <thead class="thead-dark">
       <tr>
+        <th class="text-center" scope="col">#</th>
         <th class="text-center" scope="col">CODE</th>
         <th class="text-center" scope="col">REDEEMED BY</th>
         <th class="text-center" scope="col">REDEEMED ON</th>
@@ -12,6 +18,7 @@
     <tbody id="invite_content">
       <!-- BEGIN A_INVITE -->
       <tr>
+        <td class="text-center">{A_INVITE.id}</td>
         <td class="text-center">{A_INVITE.keyphrase}</td>
         <td class="text-center"><b>{A_INVITE.redeemer}</b></td>
         <td class="text-center">{A_INVITE.redeem_time}</td>

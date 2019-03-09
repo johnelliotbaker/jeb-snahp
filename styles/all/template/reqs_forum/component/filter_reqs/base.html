@@ -1,0 +1,18 @@
+<!-- viewforum_body_topic_row_before.html -->
+<script>
+  {% include '@jeb_snahp/cookie.js' %}
+  {% include '@jeb_snahp/reqs_forum/component/filter_reqs/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/reqs_forum/component/filter_reqs/base.css' %}
+</style>
+<div class="reqs_tags_wrapper">
+  <div id="reqs_tags_selector">
+    <span onClick="select_tags('all')" class="btn all selector"></span>
+    <span onClick="select_tags('open')" class="btn open selector"></span>
+    <span onClick="select_tags('dib')" class="btn dib selector"></span>
+    <span onClick="select_tags('fulfill')" class="btn fulfill selector"></span>
+    <span onClick="select_tags('solve')" class="btn solve selector"></span>
+    <span onClick="select_tags('terminate')" class="btn terminate selector"></span>
+  </div>
+</div>

@@ -64,8 +64,87 @@ class request_listener extends base implements EventSubscriberInterface
             'core.viewtopic_modify_post_row' => [
                 ['show_request_form_as_table', 0],
             ],
+            'core.viewforum_get_topic_data' => [
+                ['include_reqs_forum_assets', 0],
+            ],
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
+            'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
+    }
+
+    public function include_reqs_forum_assets($event)/*{{{*/
+    {
+        $forum_id = $event['forum_id'];
+        $request_fid = explode(',', $this->config['snp_req_fid']);
+        if (!in_array($forum_id, $request_fid)) return false;
+        $this->template->assign_vars([
+            'B_REQS_FORUM_SHOW_FILTER' => true,
+        ]);
+    }/*}}}*/
+
+    public function show_fulfillment_stats($event)
+    {
+        if (!$this->config['snp_b_request'])
+            return false;
+        if (!$this->config['snp_req_b_statbar'])
+            return false;
+        $cache_cooldown = 60;
+        $tbl = $this->container->getParameter('jeb.snahp.tables')['req'];
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $forum_data = $event['forum_data'];
+        $forum_id = $forum_data['forum_id'];
+        $afid = explode(',', $this->config['snp_req_fid']);
+        if (!in_array($forum_id, $afid)) return false;
+        //
+        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl . " WHERE fid={$forum_id} AND status={$def['open']}";
+        $result = $this->db->sql_query($sql, $cache_cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $n_open = $row['total'];
+        //
+        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl . " WHERE fid={$forum_id} AND status={$def['dib']}";
+        $result = $this->db->sql_query($sql, $cache_cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $n_dib = $row['total'];
+        //
+        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl . " WHERE fid={$forum_id} AND status={$def['fulfill']}";
+        $result = $this->db->sql_query($sql, $cache_cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $n_fulfill = $row['total'];
+        //
+        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl . " WHERE fid={$forum_id} AND status={$def['solve']}";
+        $result = $this->db->sql_query($sql, $cache_cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $n_solve = $row['total'];
+        //
+        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl . " WHERE fid={$forum_id} AND status={$def['terminate']}";
+        $result = $this->db->sql_query($sql, $cache_cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $n_terminate = $row['total'];
+        $total = ($n_open + $n_dib + $n_fulfill + $n_solve + $n_terminate) / 100;
+        if ($total == 0) return false;
+        $perc_open = ($n_open / $total);
+        $perc_dib = ($n_dib / $total);
+        $perc_fulfill = ($n_fulfill / $total);
+        $perc_solve = ($n_solve / $total);
+        $perc_terminate = ($n_terminate / $total);
+        $this->template->assign_vars([
+            'B_REQS_FORUM_SHOW_STATBAR' => true,
+            'N_OPEN'      => $n_open,
+            'N_DIB'       => $n_dib,
+            'N_FULFILL'   => $n_fulfill,
+            'N_SOLVE'     => $n_solve,
+            'N_TERMINATE' => $n_terminate,
+            'PERC_OPEN'      => $perc_open,
+            'PERC_DIB'       => $perc_dib,
+            'PERC_FULFILL'   => $perc_fulfill,
+            'PERC_SOLVE'     => $perc_solve,
+            'PERC_TERMINATE' => $perc_terminate,
+        ]);
     }
 
     public function update_request_user_after_topic_deletion($event)

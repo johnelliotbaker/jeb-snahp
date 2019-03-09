@@ -34,7 +34,6 @@ class main_module
             $this->handle_visibility($cfg);
             break;
         case 'invite':
-            global $config, $helper, $container, $auth;
             $cfg['tpl_name'] = '@jeb_snahp/ucp/invite/invite';
             $cfg['b_feedback'] = true;
             $this->handle_invite($cfg);
@@ -48,6 +47,10 @@ class main_module
     function handle_invite($cfg)
     {
 		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        if (!$config['snp_inv_b_master'])
+        {
+            return;
+        }
         $user_id = $user->data['user_id'];
         // Using config invite master switch
         $b_enable = true;
@@ -72,14 +75,27 @@ class main_module
             ]);
         }
 
-        $invite_data = $ih->get_invite_list($user_id);
+        // Pagination
+        $start = (int) $request->variable('start', '0');
+        $total = $ih->select_invite_total($where="inviter_id={$user_id}");
+        $per_page = 10;
+        $pg = new \jeb\snahp\core\pagination();
+        $base_url = '/ucp.php?i=-jeb-snahp-ucp-main_module&mode=invite';
+        $pagination = $pg->make($base_url, $total, $per_page, $start);
+        $template->assign_vars([
+            'PAGINATION' => $pagination,
+        ]);
+        // Data retrieval using pagination
+        $invite_data = $ih->get_invite_list($user_id, $b_digest=true , $start=$start, $limit=$per_page);
         if ($invite_data)
         {
             $template->assign_vars([
                 'B_INVITE_EXISTS' => true,
             ]);
+            $count = $start;
             foreach ($invite_data as $row)
             {
+                $row['id'] = $total - $count++;
                 $template->assign_block_vars('A_INVITE', $row);
             }
         }

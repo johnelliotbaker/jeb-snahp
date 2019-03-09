@@ -21,6 +21,10 @@ class acp_invite extends base
 
     public function handle($mode)
     {
+        if (!$this->config['snp_inv_b_master'])
+        {
+            trigger_error('Invite system is disabled by the administrator.');
+        }
         $this->invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
         switch ($mode)
         {
