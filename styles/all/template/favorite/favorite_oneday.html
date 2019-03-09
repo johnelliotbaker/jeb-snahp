@@ -4,67 +4,32 @@
 <div class="action-bar bar-top">
   <div class="pagination">
     <!-- IF .pagination -->
-      <!-- INCLUDE pagination.html -->
+    <!-- INCLUDE pagination.html -->
     <!-- ELSE -->
-       &bull; {PAGE_NUMBER}
+    &bull; {PAGE_NUMBER}
     <!-- ENDIF -->
   </div>
 </div>
-<div class="forumbg">
-	<div class="inner">
-		<ul class="topiclist">
-			<li class="header">
-        <dl class="row-item">
-          <dt><div class="list-inner">Topics</div></dt>
-          <dd class="posts">Replies</dd>
-          <dd class="views">Views</dd>
-          <dd class="lastpost">Last Post</dd>
-        </dl>
-			</li>
-		</ul>
-	<!-- IF .postrow -->
-		<ul class="topiclist">
-		<!-- BEGIN postrow -->
-			<li class="row<!-- IF postrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
-				<dl>
-					<dt>
-						<div class="list-inner">
-							<a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.TOPIC_TITLE}</a><br />
-              Posted in <b><a href="/viewforum.php?f={postrow.FORUM_ID}">{postrow.FORUM_NAME}</a></b><br>
-              <span>{L_POSTED} {L_POST_BY_AUTHOR} <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.POSTER_ID}" style="color: #{postrow.POSTER_COLOUR};" class="username-coloured">{postrow.POSTER_NAME}</a> &raquo; {postrow.TOPIC_TIME}</span>
-						</div>
-					</dt>
-          <dd class="posts">{postrow.REPLIES}</dd>
-          <dd class="views">{postrow.TOPIC_VIEWS}</dd>
-          <dd class="lastpost">
-            <span><dfn>Last post </dfn>by <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.LP_ID}" style="color: #{postrow.LP_COLOUR};" class="username-coloured">{postrow.LP_NAME}</a>
-              <a href="/viewtopic.php?f=24&amp;t={postrow.TOPIC_ID}&amp;p=136710#p136710" title="Go to last post">
-								<i class="icon fa-external-link-square fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span class="sr-only"></span>
-							</a>
-              <br>{postrow.LP_TIME}
-					</span>
-				</dd>
-				</dl>
-			</li>
-		<!-- END postrow -->
-		</ul>
-	<!-- ELSE -->
-	<!-- ENDIF -->
-	</div>
+<div class="forumbg forumbg-table">
+
+  <div class="inner">
+    {% include '@jeb_snahp/favorite/component/table.html' %}
+  </div>
+
 </div>
 <div class="action-bar bottom">
   <div class="pagination">
     {TOTAL_REQUEST}
     <!-- IF .pagination -->
-      <!-- INCLUDE pagination.html -->
+    <!-- INCLUDE pagination.html -->
     <!-- ELSE -->
-       &bull; {PAGE_NUMBER}
+    &bull; {PAGE_NUMBER}
     <!-- ENDIF -->
   </div>
 </div>
 {% else %}
 <div class="panel">
-	<div class="inner">
+  <div class="inner">
     <h3>Requests disabled</h3>
     <p>Request feature is currently disabled by the site admin.</p>
   </div>
