@@ -238,7 +238,7 @@ abstract class base
     }
 
     // ALL SUBFORUM ID
-    public function select_subforum($parent_id)
+    public function select_subforum($parent_id, $cooldown=0)
     {
         $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
         $result = $this->db->sql_query($sql);
@@ -247,7 +247,7 @@ abstract class base
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
         $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, $cooldown);
         $data = array_map(function($array){return $array['forum_id'];}, $this->db->sql_fetchrowset($result));
         $this->db->sql_freeresult($result);
         return $data;
