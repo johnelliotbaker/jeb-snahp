@@ -22,50 +22,15 @@
         <legend>Scripts & Consoles</legend>
 				<dl>
           <dt>
-            <label>Basic Console</label><br>
+            <label>General Scripts</label><br>
             Scripts for the most common invitation system tasks.
           </dt>
 					<dd>
-            <label><a href="/app.php/snahp/analytics/handle/common_thanks/">Go to Management Console</a></label>
+            <label><a href="/app.php/snahp/acp_invite/handle_giveaways/">Go to Group Management Console</a></label>
           </dd>
         </dl>
       </fieldset>
 
-			<fieldset>
-        <legend>Permissions</legend>
-				<dl>
-            <span>Enable: Give a group permission to analyze snahp.</span>
-        </dl>
-        <div id="">
-          <table class="table.type3 responsive">
-            <thead>
-              <tr>
-                <th>GID</th>
-                <th>Group Name</th>
-                <th>Enable</th>
-              </tr>
-            </thead>
-            <tbody id="acp_request_statistics_content">
-              <!-- BEGIN A_ANALYTICS -->
-              <tr>
-                <td>{A_ANALYTICS.GID}</td>
-                <td>{A_ANALYTICS.NAME}</td>
-                <td>
-                  <input type="hidden"
-                         name="enable-{A_ANALYTICS.GID}"
-                         value="0">
-                  <input type="checkbox"
-                         name="enable-{A_ANALYTICS.GID}"
-                         id="enable-{A_ANALYTICS.NAME}"
-                         {% if A_ANALYTICS.ENABLE %}value="1" checked{% endif %}>
-                </td>
-              </tr>
-              <!-- END A_ANALYTICS -->
-            </tbody>
-          </table>
-        </div>
-
-      </fieldset>
     </div>
   </div>
   <fieldset>

@@ -198,39 +198,11 @@ class main_module
                 $snp_inv_b_master = $request->variable('snp_inv_b_master', '1');
                 $config->set('snp_inv_b_master', $snp_inv_b_master);
                 // Group Permission and Configurations
-                $a_enable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
-                    preg_match('/enable-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
-                        $gid = $match[1];
-                        $var = $request->variable("enable-$gid", '0');
-                        $a_enable[$gid] = $var ? 1 : 0;
-                    }
-                }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
-                    buildSqlSetCase('group_id', 'snp_ana_b_enable', $a_enable);
-                $db->sql_query($sql);
-                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
                 'SNP_INV_B_MASTER'      => $config['snp_inv_b_master'],
             ));
-            // Code to show signature configuration in ACP
-            $sql = 'SELECT * from ' . GROUPS_TABLE;
-            $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
-                $group = array(
-                    'GID'=>$row['group_id'],
-                    'NAME'=>$row['group_name'],
-                    'ENABLE'=> $row['snp_ana_b_enable'],
-                );
-                $template->assign_block_vars('A_ANALYTICS', $group);
-            };
-            $db->sql_freeresult($result);
         }
     }
 
@@ -426,6 +398,7 @@ class main_module
                 $config->set('snp_req_fid', sanitize_fid($request->variable('request_fid', '0')));
                 $config->set('snp_req_cycle_time', $request->variable('cycle_time', '0'));
                 $config->set('snp_req_redib_cooldown_time', $request->variable('redib_cooldown_time', '0'));
+                $config->set('snp_req_b_statbar', $request->variable('snp_req_b_statbar', '0'));
                 $fields = [
                 // snp_req_XXXX => template name
                     'n_base'    => 'base',
@@ -513,6 +486,7 @@ class main_module
                 'CRON_GRAVEYARD_LAST0' => $cron_last_human,
                 'CRON_GRAVEYARD'       => $cron_interval,
                 'CRON_GRAVEYARD_NEXT'  => $cron_next_human,
+                'SNP_REQ_B_STATBAR'    => $config['snp_req_b_statbar'],
                 'U_ACTION'             => $this->u_action,
             ));
         }

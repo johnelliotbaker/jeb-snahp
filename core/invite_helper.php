@@ -163,9 +163,8 @@ class invite_helper
         return $uuid;
     }
 
-    public function select_invite($where, $order_by='')
+    public function select_invite($where, $order_by='', $start=0, $limit=50)
     {
-        $limit = 100;
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite'];
         $sql_array = [
             'SELECT'	=> 'i.*, u.username, u.user_id, u.user_colour ',
@@ -180,10 +179,29 @@ class invite_helper
             'ORDER_BY' => $order_by,
         ];
         $sql = $this->db->sql_build_query('SELECT', $sql_array);
-        $result = $this->db->sql_query_limit($sql, $limit);
+        $result = $this->db->sql_query_limit($sql, $limit, $start);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
+    }
+
+    public function select_invite_total($where)
+    {
+        $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite'];
+        $sql_array = [
+            'SELECT'	=> 'COUNT(*) as total',
+            'FROM'		=> [$tbl => 'i'],
+            'WHERE'		=> $where,
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if ($row)
+        {
+            return $row['total'];
+        }
+        return 0;
     }
 
     function delete_valid_invite_from_user($user_id)
@@ -226,10 +244,10 @@ class invite_helper
         return $row;
     }
 
-    function get_invite_list($user_id=null, $b_digest=true)
+    function get_invite_list($user_id=null, $b_digest=true, $start=0, $limit=50)
     {
         if (!$user_id) $user_id = $this->user->data['user_id'];
-        $rowset = $this->select_invite($where="inviter_id={$user_id}", $order_by='id DESC');
+        $rowset = $this->select_invite($where="inviter_id={$user_id}", $order_by='id DESC', $start=$start, $limit=$limit);
         foreach ($rowset as $k => $row)
         {
             if ($b_digest)
