@@ -21,12 +21,13 @@
     background-color: #6c757d !important;
 }
 .twbs .progress {
-    max-width: 800px;
+    max-width: 8000px;
     height: 22px;
     font-size: 14px;
+    margin-right: 20px;
+    min-width: 400px;
 }
 
 .reqs_statbar_wrapper {
-    width: 440px;
-    float: left;
+    flex-grow: 1000;
 }

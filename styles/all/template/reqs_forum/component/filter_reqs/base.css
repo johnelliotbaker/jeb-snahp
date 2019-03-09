@@ -13,5 +13,5 @@ li.row.bg2.hidden
 }
 .reqs_tags_wrapper {
     margin-top: 4px;
-    float: right;
+    flex-grow: 1;
 }
