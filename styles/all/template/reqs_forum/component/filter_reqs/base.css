@@ -11,3 +11,7 @@ li.row.bg2.hidden
 {
     display: none;
 }
+.reqs_tags_wrapper {
+    margin-top: 4px;
+    float: right;
+}

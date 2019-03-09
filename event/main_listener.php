@@ -118,9 +118,6 @@ class main_listener extends base implements EventSubscriberInterface
                 ['insert_new_topic_button',0],
                 ['mark_topic_read',0],
             ],
-            'core.viewforum_get_topic_data' => [
-                ['include_reqs_forum_assets', 0],
-            ],
             'core.modify_posting_auth' => [
                 ['block_zebra_foe_quote', 0],
             ],
@@ -160,17 +157,6 @@ class main_listener extends base implements EventSubscriberInterface
         {
             trigger_error('Sorry, quoting in this topic is currently disabled.');
         }
-    }/*}}}*/
-
-
-    public function include_reqs_forum_assets($event)/*{{{*/
-    {
-        $forum_id = $event['forum_id'];
-        $request_fid = explode(',', $this->config['snp_req_fid']);
-        if (!in_array($forum_id, $request_fid)) return false;
-        $this->template->assign_vars([
-            'B_REQS_FORUM_BASE_JS' => true,
-        ]);
     }/*}}}*/
 
     public function block_zebra_foe_topicview($event)/*{{{*/

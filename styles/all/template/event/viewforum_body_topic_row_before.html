@@ -1,4 +1,10 @@
-<!-- For filtering requests section by request status -->
-{% if B_REQS_FORUM_BASE_JS %}
-  {% include '@jeb_snahp/reqs_forum/component/filter_reqs/base.html' %}
-{% endif %}
+<div>
+  <!-- For displaying statistics progress bar on requests forum -->
+  {% if B_REQS_FORUM_SHOW_STATBAR %}
+    {% include '@jeb_snahp/reqs_forum/component/statbar/base.html' %}
+  {% endif %}
+  <!-- For filtering requests section by request status -->
+  {% if B_REQS_FORUM_SHOW_FILTER %}
+    {% include '@jeb_snahp/reqs_forum/component/filter_reqs/base.html' %}
+  {% endif %}
+</div>

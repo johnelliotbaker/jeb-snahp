@@ -1,0 +1,32 @@
+.twbs {
+    font-weight: 900;
+}
+.twbs .black {
+    color: black;
+}
+.progress {
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+.twbs .bg-success {
+    background-color: #128b09 !important;
+}
+.twbs .bg-danger {
+    background-color: #b22117 !important;
+}
+.twbs .bg-warning {
+    background-color: #f4bf42 !important;
+}
+.twbs .bg-secondary {
+    background-color: #6c757d !important;
+}
+.twbs .progress {
+    max-width: 800px;
+    height: 22px;
+    font-size: 14px;
+}
+
+.reqs_statbar_wrapper {
+    width: 440px;
+    float: left;
+}

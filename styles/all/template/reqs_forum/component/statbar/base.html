@@ -1,0 +1,16 @@
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<style>
+  {% include '@jeb_snahp/reqs_forum/component/statbar/base.css' %}
+</style>
+<div class="reqs_statbar_wrapper">
+  <div class="twbs" align="center">
+    <div class="progress">
+      <div class="progress-bar bg-danger" role="progressbar" style="width: {PERC_OPEN}%" aria-valuenow="{PERC_OPEN}" aria-valuemin="0" aria-valuemax="100">{N_OPEN}</div>
+      <div class="progress-bar bg-warning black" role="progressbar" style="width: {PERC_DIB}%" aria-valuenow="{PERC_DIB}" aria-valuemin="0" aria-valuemax="100">{N_DIB}</div>
+      <div class="progress-bar bg-primary" role="progressbar" style="width: {PERC_FULFILL}%" aria-valuenow="{PERC_FULFILL}" aria-valuemin="0" aria-valuemax="100">{N_FULFILL}</div>
+      <div class="progress-bar bg-success" role="progressbar" style="width: {PERC_SOLVE}%" aria-valuenow="{PERC_SOLVE}" aria-valuemin="0" aria-valuemax="100">{N_SOLVE}</div>
+      <div class="progress-bar bg-secondary" role="progressbar" style="width: {PERC_TERMINATE}%" aria-valuenow="{PERC_TERMINATE}" aria-valuemin="0" aria-valuemax="100">{N_TERMINATE}</div>
+    </div>
+  </div>
+</div>

@@ -64,10 +64,23 @@ class request_listener extends base implements EventSubscriberInterface
             'core.viewtopic_modify_post_row' => [
                 ['show_request_form_as_table', 0],
             ],
+            'core.viewforum_get_topic_data' => [
+                ['include_reqs_forum_assets', 0],
+            ],
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
             'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
     }
+
+    public function include_reqs_forum_assets($event)/*{{{*/
+    {
+        $forum_id = $event['forum_id'];
+        $request_fid = explode(',', $this->config['snp_req_fid']);
+        if (!in_array($forum_id, $request_fid)) return false;
+        $this->template->assign_vars([
+            'B_REQS_FORUM_SHOW_FILTER' => true,
+        ]);
+    }/*}}}*/
 
     public function show_fulfillment_stats($event)
     {
@@ -120,7 +133,7 @@ class request_listener extends base implements EventSubscriberInterface
         $perc_solve = ($n_solve / $total);
         $perc_terminate = ($n_terminate / $total);
         $this->template->assign_vars([
-            'B_SHOW_STAT' => true,
+            'B_REQS_FORUM_SHOW_STATBAR' => true,
             'N_OPEN'      => $n_open,
             'N_DIB'       => $n_dib,
             'N_FULFILL'   => $n_fulfill,
