@@ -1,7 +1,15 @@
+<style>
+  img.category_icon {
+    width: 88px;
+  }
+  td.category {
+    width: 88px;
+  }
+</style>
 <table class="table1 memberlist show-header responsive">
   <thead>
     <tr>
-      <th><a href="#" style="width:88px">Category</a></th>
+      <th><a href="#">Category</a></th>
       <th style="text-align:left;"><a href="#">Topic</a></th>
       <th><a href="#">Replies</a></th>
       <th><a href="#">Views</a></th>
@@ -10,8 +18,8 @@
   <tbody>
     <!-- BEGIN postrow -->
     <tr class="<!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
-      <td style="width:92px;">
-        <a href="/viewforum.php?f={postrow.FORUM_ID}"><img style="width:88px;" src="{postrow.U_IMG_URL}"></img></a>
+      <td class="category">
+        <a href="/viewforum.php?f={postrow.FORUM_ID}"><img class="category_icon" src="{postrow.U_IMG_URL}"></img></a>
       </td>
       <td>
         <div>
