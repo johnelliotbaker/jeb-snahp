@@ -181,6 +181,17 @@
   </fieldset>
 
   <fieldset>
+    <dl>
+      <dt><label>Show Statistics Bar on Requests Section</label><br>
+      </dt>
+      <dd>
+        <label><input type="radio" name="snp_req_b_statbar" class="radio" value="1" {% if SNP_REQ_B_STATBAR %}checked="checked"{% endif %}> Yes</label>
+        <label><input type="radio" name="snp_req_b_statbar" class="radio" value="0" {% if not SNP_REQ_B_STATBAR %}checked="checked"{% endif %}> No</label>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
     <h2>Moving Closed Requests to Graveyard</h2><br>
     <dl>
       <dt><label>Enable Cron</label><br>
