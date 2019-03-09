@@ -145,7 +145,7 @@ class favorite extends base
             // Temporarily hard code some forums
             // TODO: Find a better way to get these
             $a_img_url = [
-                'imported' => 'https://i.imgur.com/G16kKco.png',
+                'imported' => 'https://i.imgur.com/9RLP1KV.png',
                 'apps' => 'https://i.imgur.com/7hjHY25.png',
                 'games' => 'https://i.imgur.com/YBPkBaX.png',
                 'tv' => 'https://i.imgur.com/i9pIvNy.png',
@@ -157,13 +157,13 @@ class favorite extends base
             ];
             $a_category = [
                 // Test Server
-                'imported' => 50, 'apps' => 51, 'games' => 52,
-                'movies' => 82, 'tv' => 53, 'music' => 54,
-                'anime' => 55, 'misc' => 56, 'dev' => 57,
-                // Production Server
-                // 'imported' => 27, 'apps' => 9, 'games' => 10,
-                // 'movies' => 11, 'tv' => 12, 'music' => 14,
-                // 'anime' => 13, 'misc' => 15, 'dev' => 76,
+                // 'imported' => 50, 'apps' => 51, 'games' => 52,
+                // 'movies' => 82, 'tv' => 53, 'music' => 54,
+                // 'anime' => 55, 'misc' => 56, 'dev' => 57,
+                // PRODUCTION Server
+                'imported' => 27, 'apps' => 9, 'games' => 10,
+                'movies' => 11, 'tv' => 12, 'music' => 14,
+                'anime' => 13, 'misc' => 15, 'dev' => 76,
             ];
             $fid_lookup = [];
             foreach ($a_category as $name => $fid)
