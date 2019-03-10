@@ -27,8 +27,6 @@ function hide_tags(mode)
 
 $(function () {
     var cookie = readCookie('requests_selector_cookie');
-    $bar_top = $('.action-bar.bar-top');
-    $(reqs_tags_selector_template).insertAfter($bar_top);
     if (!cookie)
     {
         cookie = 'all';
