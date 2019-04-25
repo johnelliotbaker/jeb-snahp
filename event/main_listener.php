@@ -444,7 +444,8 @@ class main_listener extends base implements EventSubscriberInterface
         foreach($aUsername as $username_in_msg => $username_clean)
         {
             $b = $aUserString[$username_clean] . ' ';
-            $a = '#(?<!])'. $at_prefix . $username_in_msg . '#is';
+            // $a = '#(?<!])'. $at_prefix . $username_in_msg . '#is';
+            $a = '#(?<!])'. $at_prefix . $username_clean . '#is';
             $message = preg_replace($a, $b, $message);
         }
     }/*}}}*/
