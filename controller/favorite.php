@@ -21,6 +21,8 @@ class favorite extends base
     public function handle($mode)
     {
 
+        $this->reject_anon();
+        $this->reject_bots();
         switch ($mode)
         {
         case 'oneday':
@@ -64,7 +66,6 @@ class favorite extends base
 
     public function handle_open_requests($cfg)
     {
-        $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
@@ -96,7 +97,6 @@ class favorite extends base
 
     public function handle_thanks_given($cfg)
     {
-        $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
@@ -138,7 +138,6 @@ class favorite extends base
 
     public function handle_favorite($cfg)
     {
-        $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {

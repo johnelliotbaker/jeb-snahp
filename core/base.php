@@ -650,6 +650,15 @@ abstract class base
         return $row;
     }
 
+    public function reject_bots()
+    {
+        // $BOT_GID = 6
+        $BOTS_GID = 6;
+        $gid = $this->user->data['group_id'];
+        if (!$gid || $gid == $BOTS_GID)
+            trigger_error('Access to bots has been denied.');
+    }
+
     public function reject_anon()
     {
         $uid = $this->user->data['user_id'];
