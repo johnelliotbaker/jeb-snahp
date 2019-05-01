@@ -95,7 +95,7 @@ class main_listener extends base implements EventSubscriberInterface
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
             'core.display_forums_after'                   => 'show_thanks_top_list',
-            'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
+            'core.ucp_profile_modify_signature'           => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.viewtopic_modify_post_row'              => [
                 ['easter_cluck', 1],
@@ -658,6 +658,33 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function modify_signature($event)/*{{{*/
     {
+        $return_url = '/ucp.php?i=ucp_profile&mode=signature';
+        $gid = $this->user->data['group_id'];
+        $sql = 'SELECT snp_signature_rows from ' . GROUPS_TABLE .
+            ' WHERE group_id =' . $gid;
+        $result = $this->db->sql_query($sql, 30);
+        $row = $this->db->sql_fetchrow($result);
+        $nSignatureRow = $row['snp_signature_rows'] or 0;
+        $this->db->sql_freeresult($result);
+        $signature = $event['signature'];
+        preg_match('#\[[^]]*?hide[^]]*?\]#is', $signature, $match);
+        // Delete signature if [hide] tag is used
+        if ($match)
+        {
+            $event['signature'] = '';
+        }
+        else
+        {
+            $split = explode(PHP_EOL, $signature);
+            $split = array_slice($split, 0, $nSignatureRow);
+            $signature = implode(PHP_EOL, $split);
+            $event['signature'] = $signature;
+        }
+    }/*}}}*/
+
+    public function modify_signature_deprecated($event)/*{{{*/
+    {
+        // 'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
         $t = $this->template;
         $pr = $event['post_row'];
         $user_id = $this->user->data['user_id'];
