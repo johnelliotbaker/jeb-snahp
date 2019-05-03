@@ -92,8 +92,25 @@ class search_util extends base
         $search->word_length = ['min' => 2, 'max' => 30];
         $search->index_remove([$post_id], [$poster_id], [$forum_id]);
         $search->index($mode, $post_id, $message, $subject, $poster_id, $forum_id);
+        // Insert a record of the manual indexing
+        $user_id = $user->data['user_id'];
+        $username_clean = $user->data['username_clean'];
+        $this->insert_manual_search_post($post_id, $user_id, $username_clean);
         meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
         trigger_error('The selected topic was indexed successfully.');
     }
 
+    private function insert_manual_search_post($post_id, $user_id, $username_clean)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $data = [
+            'post_id' => $post_id,
+            'user_id' => $user_id,
+            'username_clean' => $username_clean,
+            'index_time' => time(),
+        ];
+        $sql = 'REPLACE INTO ' . $tbl['manual_search_posts'] .
+            $this->db->sql_build_array('INSERT', $data);
+        $this->db->sql_query($sql);
+    }
 }

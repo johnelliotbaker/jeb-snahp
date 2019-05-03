@@ -28,11 +28,13 @@ class v_0_20_0 extends \phpbb\db\migration\migration
                         'index_time' => ['INT:11', null],
                     ],
                     'PRIMARY_KEY' => 'id',
-                    'KEYS' => [
-                        'post_id' => ['INDEX', 'post_id'],
-                    ]
                 ],
-            ]
+            ],
+            'add_unique_index' => [
+                $this->table_prefix . 'snahp_manual_search_posts' => [
+                    'post_id'	=> ['post_id'],
+                ],
+            ],
         ];
     }
 
