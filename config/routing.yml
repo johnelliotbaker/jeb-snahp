@@ -22,6 +22,11 @@ jeb_snahp_analytics:
     defaults: { _controller: jeb.snahp.analytics:handle}
     requirements:
         mode: \S+
+jeb_snahp_search_util:
+    path: /snahp/search_util/{mode}/
+    defaults: { _controller: jeb.snahp.search_util:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_favorite:
     path: /snahp/favorite/{mode}/
     defaults: { _controller: jeb.snahp.favorite:handle}

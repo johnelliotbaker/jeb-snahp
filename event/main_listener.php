@@ -117,6 +117,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
                 ['mark_topic_read',0],
+                ['show_search_index_btn',0],
             ],
             'core.modify_posting_auth' => [
                 ['block_zebra_foe_quote', 0],
@@ -127,6 +128,19 @@ class main_listener extends base implements EventSubscriberInterface
     public function test($event)
     {
     }
+
+    public function show_search_index_btn($event)/*{{{*/
+    {
+        if (!$this->config['snp_search_b_enable'])
+            return false;
+        $gid = $this->user->data['group_id'];
+        $gd = $this->select_group($gid);
+
+        if ($gd['snp_search_index_b_enable'])
+        {
+            $this->template->assign_var('SNP_SEARCH_INDEX_B_ENABLE', true);
+        }
+    }/*}}}*/
 
     public function mark_topic_read($event)/*{{{*/
     {

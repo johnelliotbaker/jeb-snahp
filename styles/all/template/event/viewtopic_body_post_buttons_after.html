@@ -1,16 +1,23 @@
 {% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
-{% if B_SHOW_UNDIB_BTN %}
-<li>
-  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/5/" title="Undib" class="button button-icon-only">
-    <i class="icon fa-stop fa-fw" style="color:#660000" aria-hidden="true"></i><span class="sr-only">Undib</span>
-  </a>
-</li>
-{% endif %}
-{% if B_SHOW_CLOSE_BTN %}
-<li>
-  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/9/" title="Terminate Request" class="button button-icon-only">
-    <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i><span class="sr-only">Terminate Request</span>
-  </a>
-</li>
-{% endif %}
+  {% if B_SHOW_UNDIB_BTN %}
+  <li>
+    <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/5/" title="Undib" class="button button-icon-only">
+      <i class="icon fa-stop fa-fw" style="color:#660000" aria-hidden="true"></i><span class="sr-only">Undib</span>
+    </a>
+  </li>
+  {% endif %}
+  {% if B_SHOW_CLOSE_BTN %}
+  <li>
+    <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/9/" title="Terminate Request" class="button button-icon-only">
+      <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i><span class="sr-only">Terminate Request</span>
+    </a>
+  </li>
+  {% endif %}
+  {% if SNP_SEARCH_INDEX_B_ENABLE %}
+  <li>
+    <a href="/app.php/snahp/search_util/index_topic/?t={TOPIC_ID}" title="Force Index" class="button button-icon-only">
+      <i class="icon fa-list fa-fw" aria-hidden="true"></i><span class="sr-only">Force Index</span>
+    </a>
+  </li>
+  {% endif %}
 {% endif %}

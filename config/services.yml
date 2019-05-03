@@ -84,6 +84,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.search_util:
+        class: jeb\snahp\controller\search_util
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
 # Unimplemented
     jeb.snahp.reqs_post:
         class: jeb\snahp\controller\reqs_post

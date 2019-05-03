@@ -292,7 +292,22 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_search_interval', $aInterval);
                 $db->sql_query($sql);
-                // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
+                // Indexer
+                $a_indexer = [];
+                // prn($request->variable_names());
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/enable-indexer-(\d+)/', $varname, $match);
+                    if ($match)
+                    {
+                        $gid = $match[1];
+                        $var = $request->variable("enable-indexer-$gid", '0');
+                        $a_indexer[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE .
+                    buildSqlSetCase('group_id', 'snp_search_index_b_enable', $a_indexer);
+                $db->sql_query($sql);
             }
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
@@ -307,6 +322,7 @@ class main_module
                     'GID'=>$row['group_id'],
                     'NAME'=>$row['group_name'],
                     'INTERVAL'=> $row['snp_search_interval'],
+                    'ENABLE_INDEXER'=> $row['snp_search_index_b_enable'],
                 );
                 $template->assign_block_vars('A_GROUP_BASED_SEARCH', $group);
             };

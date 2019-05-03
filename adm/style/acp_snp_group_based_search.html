@@ -7,7 +7,7 @@
 			<fieldset>
 				<dl>
           <dt>
-              <label>Topic Bump Master Switch</label>
+              <label>Group Based Search Master Switch</label>
           </dt>
 					<dd>
               <label><input type="radio" name="snp_search_b_enable" class="radio" value="1" {% if SNP_SEARCH_B_ENABLE %}checked="checked"{% endif %}> Enable</label>
@@ -19,8 +19,10 @@
 			<fieldset>
 				<dl>
             <span>
-              Interval: Cooldown between bumps<br>
-              Check Allowed to enable displaying signatures for users in that group.
+              Interval: Cooldown between searches<br>
+              Indexer: Members of this group can manually index a post<br>
+              Manual indexing also decreases minimum word limit to 2<br>
+              *Note* If the post is edited, the native indexer will re-index with default settings<br>
             </span>
         </dl>
         <div id="">
@@ -30,6 +32,7 @@
                 <th>GID</th>
                 <th>Group Name</th>
                 <th>Interval</th>
+                <th>Indexer</th>
               </tr>
             </thead>
             <tbody id="acp_request_statistics_content">
@@ -42,6 +45,15 @@
                                        style="text-align:center;"
                                        name="interval-{A_GROUP_BASED_SEARCH.GID}"
                                        value="{A_GROUP_BASED_SEARCH.INTERVAL}">
+                </td>
+                <td>
+                  <input type="hidden"
+                         name="enable-indexer-{A_GROUP_BASED_SEARCH.GID}"
+                         value="0">
+                  <input type="checkbox"
+                         name="enable-indexer-{A_GROUP_BASED_SEARCH.GID}"
+                         id="enable-indexer-{A_GROUP_BASED_SEARCH.NAME}"
+                         {% if A_GROUP_BASED_SEARCH.ENABLE_INDEXER %}value="1" checked{% endif %}>
                 </td>
               </tr>
               <!-- END A_GROUP_BASED_SEARCH -->
