@@ -90,11 +90,12 @@
     <dl>
       <dt><label>Request Users Settings</label><br />
         <span><br>
-          Active: (bool) Can make requests<br>
-          nolim:  (bool) Unlimited slots<br>
-          base:   (int) Maximum open requests<br>
-          bonus: (int) Bonus slots<br>
+          Active: (bool) Can make requests<br><br>
+          nolim:  (bool) Unlimited slots<br><br>
+          base:   (int) Maximum open requests<br><br>
+          bonus:  (int) Bonus slots<br><br>
           cycle:  (int) Maximum requests per cycle<br><br>
+          solve:  (bool) Can solve fulfilled request<br><br>
         </span>
       </dt>
       <dd>
@@ -109,6 +110,7 @@
                 <td>Base</td>
                 <td>bonus</td>
                 <td>cycle</td>
+                <td>solve</td>
               </tr>
               <!-- BEGIN aSignature -->
               <tr>
@@ -141,6 +143,15 @@
                                        style="text-align:center; width:34px;"
                                        name="cycle-{aSignature.gid}"
                                        value="{aSignature.cycle}">
+                </td>
+                <td>
+                  <input type="hidden"
+                         name="solve-{aSignature.gid}"
+                         value="0">
+                  <input type="checkbox"
+                         name="solve-{aSignature.gid}"
+                         id="solve-{aSignature.gid}"
+                         {% if aSignature.solve %}value="1" checked{% endif %}>
                 </td>
               </tr>
               <!-- END aSignature -->

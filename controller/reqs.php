@@ -191,11 +191,16 @@ class reqs extends base
 			trigger_error('That request had already been terminated.');
 		}
         $user_id = $this->user_id;
-        if ($user_id != $req['requester_uid'] && !$this->auth->acl_gets('a_', 'm_'))
+        $b_op = $user_id == $req['requester_uid'];
+        $b_mod = $this->auth->acl_gets('a_', 'm_');
+        $gid = $this->user->data['group_id'];
+        $group_data = $this->select_group($gid);
+        $b_group = $group_data['snp_req_b_solve'];
+        if (!$b_op && !$b_mod && !$b_group)
         {
             //TODO: Send notification to user if closed by mod
             meta_refresh(2, $this->u_action);
-            trigger_error('Only the requester and the moderators are allowed to close this request.');
+            trigger_error('Only the requester and the moderators are allowed to close this request. Error Code: 585e9279e0');
         }
         $time = time();
         $data = [
@@ -245,10 +250,15 @@ class reqs extends base
     {
         $myuid = $this->user_id;
         $requester_uid = $reqdata['requester_uid'];
+        $gid = $this->user->data['group_id'];
+        $group_data = $this->select_group($gid);
+        $b_group = $group_data['snp_req_b_solve'];
         if ($myuid == $requester_uid)
             return 1;
         elseif ($this->auth->acl_gets('a_', 'm_'))
             return 2;
+        elseif ($b_group)
+            return 3;
         else
             trigger_error('Only the requester and the moderators have access to this page.');
     }

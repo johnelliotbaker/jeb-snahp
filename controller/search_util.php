@@ -97,7 +97,7 @@ class search_util extends base
         $username_clean = $user->data['username_clean'];
         $this->insert_manual_search_post($post_id, $user_id, $username_clean);
         meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
-        trigger_error('The selected topic was indexed successfully.');
+        trigger_error('The selected topic was indexed with enhanced options.');
     }
 
     private function insert_manual_search_post($post_id, $user_id, $username_clean)

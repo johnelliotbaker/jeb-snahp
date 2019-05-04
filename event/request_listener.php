@@ -472,8 +472,12 @@ class request_listener extends base implements EventSubscriberInterface
         $b_op = $this->user->data['user_id'] == $reqdata['requester_uid'];
         $b_fulfilled = $reqdata['status'] == 4; // fulfilled id = 4
         $b_mod = $this->auth->acl_gets('a_', 'm_');
+        // Check if group has permission to solve fulfilled requests
+        $gid = $this->user->data['group_id'];
+        $group_data = $this->select_group($gid);
+        $b_group = $group_data['snp_req_b_solve'];
         $ctx = [];
-        if (!$b_op && !$b_mod)
+        if (!$b_op && !$b_mod && !$b_group)
             return false;
         else
         {

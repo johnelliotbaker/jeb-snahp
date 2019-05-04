@@ -422,6 +422,7 @@ class main_module
                     'b_active'  => 'active',
                     'b_nolimit' => 'nolimit',
                     'n_cycle'   => 'cycle',
+                    'b_solve'   => 'solve', // group can solve fulfilled requests
                 ];
                 foreach ($fields as $name => $field)
                 {
@@ -472,6 +473,7 @@ class main_module
                     'active'  => $row['snp_req_b_active'],
                     'nolimit' => $row['snp_req_b_nolimit'],
                     'cycle'   => $row['snp_req_n_cycle'],
+                    'solve'   => $row['snp_req_b_solve'],
                 );
                 $template->assign_block_vars('aSignature', $group);
             };
