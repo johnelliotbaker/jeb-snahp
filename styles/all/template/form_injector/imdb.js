@@ -1,8 +1,11 @@
 // KEYS KEYS AND MORE KEYS
 aKey = [
-    "b0dea1ac",
+    // "b0dea1ac", // Deactivated
+    "bb25f904",
     "b10ca448",
-    "bb3702c0"
+    "bb3702c0",
+    "a22f1f7f",
+    "54e3324c"
 ]
 
 function getRating(aRating)
