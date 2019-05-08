@@ -1,5 +1,5 @@
 /* hidebox */
-div.content > dl.hidebox.unhide
+.hidebox.unhide
 {
     background-color: #F8F8FA;
 }

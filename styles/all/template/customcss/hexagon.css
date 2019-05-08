@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu|Galada');
 
 /* hidebox */
-div.content > dl.hidebox.hi
+.hidebox.hi
 {
     background-color: #de7300;
     border: 0;
 }
-div.content > dl.hidebox.hi dd
+.hidebox.hi dd
 {
     color: black;
 }
-div.content > dl.hidebox.unhide
+.hidebox.unhide
 {
     background-color: #111;
 }
-div.content > dl.hidebox.hi dd i
+.hidebox.hi dd i
 {
     color: black;
 }

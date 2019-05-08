@@ -1,18 +1,18 @@
 /* hidebox */
-div.content > dl.hidebox.hi
+.hidebox.hi
 {
     background-color: #f8c301;
     border: 0;
 }
-div.content > dl.hidebox.hi dd
+.hidebox.hi dd
 {
     color: black;
 }
-div.content > dl.hidebox.unhide
+.hidebox.unhide
 {
     background-color: black;
 }
-div.content > dl.hidebox.hi dd i
+.hidebox.hi dd i
 {
     color: black;
 }
