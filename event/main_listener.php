@@ -391,6 +391,7 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_THANKS_GIVEN' => $this->config['snp_ql_thanks_given'],
             'B_SHOW_BOOKMARK' => $this->config['snp_ql_ucp_bookmark'],
             'B_SHOW_OPEN_REQUESTS' => $this->config['snp_ql_req_open_requests'],
+            'B_SHOW_ACCEPTED_REQUESTS' => $this->config['snp_ql_req_accepted_requests'],
             'S_USER_ID' => $user_id,
         ]);
     }/*}}}*/

@@ -54,14 +54,51 @@ class favorite extends base
             break;
         case 'open_requests':
             $cfg['tpl_name'] = '@jeb_snahp/favorite/open_requests.html';
-            $cfg['base_url'] = '/app.php/snahp/favorite/thanks_given/';
+            $cfg['base_url'] = '/app.php/snahp/favorite/open_requests/';
             $cfg['title'] = 'Open Requests';
             return $this->handle_open_requests($cfg);
+            break;
+        case 'accepted_requests':
+            $cfg['tpl_name'] = '@jeb_snahp/favorite/accepted_requests.html';
+            $cfg['base_url'] = '/app.php/snahp/favorite/accepted_requests/';
+            $cfg['title'] = 'Accepted Requests';
+            return $this->handle_accepted_requests($cfg);
             break;
         default:
             break;
         }
         trigger_error('showing favorite.');
+    }
+
+    public function handle_accepted_requests($cfg)
+    {
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $base_url = $cfg['base_url'];
+            $pagination = $this->container->get('pagination');
+            $per_page = $this->config['posts_per_page'];
+            $start = $this->request->variable('start', 0);
+            [$data, $total] = $this->select_accepted_requests($per_page, $start);
+            $pagination->generate_template_pagination(
+                $base_url, 'pagination', 'start', $total, $per_page, $start
+            );
+            foreach ($data as $row)
+            {
+                $tid = $row['tid'];
+                $pid = $row['pid'];
+                $created_time = $this->user->format_date($row['created_time']);
+                $u_details = "/viewtopic.php?t=$tid&p=$pid#p$pid";
+                $group = array(
+                    'TOPIC_TITLE'    => $row['topic_title'],
+                    'CREATED_TIME'   => $created_time,
+                    'U_VIEW_DETAILS' => $u_details,
+                );
+                $this->template->assign_block_vars('postrow', $group);
+            }
+            $this->template->assign_var('TITLE', $cfg['title']);
+            return $this->helper->render($tpl_name, $cfg['title']);
+        }
     }
 
     public function handle_open_requests($cfg)

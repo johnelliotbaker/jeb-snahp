@@ -579,6 +579,8 @@ class main_module
                 $config->set('snp_ql_ucp_bookmark', $snp_ql_ucp_bookmark);
                 $snp_ql_req_open_requests = $request->variable('snp_ql_req_open_requests', '1');
                 $config->set('snp_ql_req_open_requests', $snp_ql_req_open_requests);
+                $snp_ql_req_accepted_requests = $request->variable('snp_ql_req_accepted_requests', '1');
+                $config->set('snp_ql_req_accepted_requests', $snp_ql_req_accepted_requests);
                 $snp_ql_your_topics = $request->variable('snp_ql_your_topics', '1');
                 $config->set('snp_ql_your_topics', $snp_ql_your_topics);
                 $snp_easter_chicken_chance = $request->variable('snp_easter_chicken_chance', '10000');
@@ -610,6 +612,7 @@ class main_module
                 'SNP_QL_THANKS_GIVEN'      => $config['snp_ql_thanks_given'],
                 'SNP_QL_UCP_BOOKMARK'      => $config['snp_ql_ucp_bookmark'],
                 'SNP_QL_REQ_OPEN_REQUESTS' => $config['snp_ql_req_open_requests'],
+                'SNP_QL_REQ_ACCEPTED_REQUESTS' => $config['snp_ql_req_accepted_requests'],
                 'SNP_QL_YOUR_TOPICS'       => $config['snp_ql_your_topics'],
                 'SNP_EASTER_B_CHICKEN'     => $config['snp_easter_b_chicken'],
                 'SNP_EASTER_CHICKEN_CHANCE'=> $config['snp_easter_chicken_chance'],
