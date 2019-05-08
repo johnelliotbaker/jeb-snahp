@@ -36,7 +36,50 @@ class mod_listener extends base implements EventSubscriberInterface
             'core.viewtopic_modify_post_row'  => array(
                 array('Show_report_details_in_post', 0),
             ),
+            'core.mcp_view_forum_modify_sql' => [
+                ['modify_move_topic_id', 0],
+            ],
         );
+    }
+
+    public function modify_move_topic_id($event)
+    {
+        // Check request table exists
+        $tbl = $this->container->getParameter('jeb.snahp.tables')['req'];
+        $sql = "SHOW TABLES LIKE '" . $tbl . "'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return false;
+        }
+        // Check mcp is moderating request forums
+        $forum_id = $this->request->variable('f', '');
+        $fid_requests = $this->config['snp_fid_requests'];
+        $a_fid = $this->select_subforum($fid_requests);
+        if (!in_array($forum_id, $a_fid))
+        {
+            return false;
+        }
+        $this->template->assign_vars([
+            'B_REQUEST_FORUM' => true,
+        ]);
+        // Check a valid request status filter paramter exists
+        $status = $this->request->variable('reqStatus', '');
+        $req = $this->container->getParameter('jeb.snahp.req')['def'];
+        if (key_exists($status, $req))
+        {
+            $status = $req[$status];
+        }
+        else
+        {
+            return false;
+        }
+        $sql = $event['sql'];
+        $sql = preg_replace('#WHERE#is', " , $tbl r WHERE " , $sql);
+        $sql = preg_replace('#1 = 1#is', " t.topic_id = r.tid AND r.status = $status " , $sql);
+        $event['sql'] = $sql;
     }
 
     public function is_mod()
