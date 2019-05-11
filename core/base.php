@@ -740,6 +740,87 @@ abstract class base
             trigger_error('Your don\'t have the permission to access this page.');
     }
 
+    public function is_search_enhancer_allowed($topic_data)/*{{{*/
+    {
+        // Search enhancer is allowed for:
+        // 1) members in the allowed group (in any forum)
+        // 2) OP of a topic only in the listings forums
+        if (!$this->config['snp_search_b_enable'])
+            return false;
+        $gid = $this->user->data['group_id'];
+        $gd = $this->select_group($gid);
+        $b_group = $gd['snp_search_index_b_enable'];
+        if ($b_group)
+        {
+            return true;
+        }
+        $b_op = $this->is_op($topic_data);
+        if (!$b_op)
+        {
+            return false;
+        }
+        $b_listing = $this->is_listing($topic_data, 'topic_data');
+        if ($b_listing)
+        {
+            return true;
+        }
+        return false;
+    }/*}}}*/
+
+    public function is_listing($var, $mode='topic_data')/*{{{*/
+    {
+        // To check if topic is in listings
+        $cache_time = 5;
+        $fid_listings = $this->config['snp_fid_listings'];
+        switch ($mode)
+        {
+        case 'topic_id':
+            $topic_data = $this->select_topic((int)$var);
+            break;
+        case 'topic_data':
+            $topic_data = $var;
+            break;
+        default:
+            return false;
+        }
+        if (!$topic_data)
+        {
+            return false;
+        }
+        $forum_id = $topic_data['forum_id'];
+        $sub = $this->select_subforum($fid_listings, $cache_time);
+        $topic_id = $topic_data['topic_id'];
+        $res = in_array($forum_id, $sub) ? true : false;
+        return $res;
+    }/*}}}*/
+
+    public function is_request($var, $mode='request_data')/*{{{*/
+    {
+        // To check if topic is in requests
+        $cache_time = 5;
+        $fid_requests = $this->config['snp_fid_requests'];
+        switch ($mode)
+        {
+        case 'request_id':
+            $topic_data = $this->select_topic((int)$var);
+            break;
+        case 'request_data':
+            $topic_data = $var;
+            break;
+        default:
+            return false;
+        }
+        if (!$topic_data)
+        {
+            return false;
+        }
+        $forum_id = $topic_data['forum_id'];
+        $sub = $this->select_subforum($fid_requests, $cache_time);
+        $topic_id = $topic_data['topic_id'];
+        $res = in_array($forum_id, $sub) ? true : false;
+        return $res;
+    }/*}}}*/
+
     public function get_dt($time)
     {
         return $this->user->format_date($time);

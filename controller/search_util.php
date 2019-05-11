@@ -16,7 +16,6 @@ class search_util extends base
 {
 
     protected $table_prefix;
-    protected $invite_helper;
 
     public function __construct($table_prefix)
     {
@@ -27,11 +26,9 @@ class search_util extends base
     {
         if (!$this->config['snp_inv_b_master'])
         {
-            trigger_error('Invite system is disabled by the administrator.');
+            trigger_error('Custom search system is disabled by the administrator. Error Code: ce6517a9ac');
         }
         $this->reject_anon();
-
-        // $this->search_helper = new \jeb\snahp\core\search_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
         switch ($mode)
         {
             case 'index_topic': // To solve request
@@ -44,12 +41,10 @@ class search_util extends base
         trigger_error('Error Code: 1fdd2c2b80');
     }
 
-
     public function index_topic($cfg)
     {
         // From includes/functions_posting.php
         global $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher;
-        $error = false;
         // Set indexing parameters
         $tid = $this->request->variable('t', 0);
         if (!$tid)
@@ -62,21 +57,17 @@ class search_util extends base
         {
             trigger_error('NO_SUCH_SEARCH_MODULE. Error Code: 7ad6fd4492');
         }
-        if ($error)
-        {
-            trigger_error($error . ' Error Code: 11afa9654f');
-        }
-        $gid = $this->user->data['group_id'];
-        $gd = $this->select_group($gid);
-        if (!$gd['snp_search_index_b_enable'])
-        {
-            meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
-            trigger_error('Your group does not have the permission to index a topic. Error Code: 8a856e72a8');
-        }
+        // Check topic exists
         $topic_data = $this->select_topic($tid);
         if (!$topic_data)
         {
             trigger_error('That topic does not exist. Error Code: 8d394ff0fd');
+        }
+        // Check if search enhancer is allowed
+        if (!$this->is_search_enhancer_allowed($topic_data))
+        {
+            meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
+            trigger_error('Your group does not have the permission to index a topic. Error Code: 8a856e72a8');
         }
         $post_id = $topic_data['topic_first_post_id'];
         $data_ary = $this->select_post($post_id);
@@ -113,4 +104,5 @@ class search_util extends base
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
     }
+
 }

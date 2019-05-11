@@ -131,12 +131,8 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_search_index_btn($event)/*{{{*/
     {
-        if (!$this->config['snp_search_b_enable'])
-            return false;
-        $gid = $this->user->data['group_id'];
-        $gd = $this->select_group($gid);
-
-        if ($gd['snp_search_index_b_enable'])
+        $topic_data = $event['topic_data'];
+        if ($this->is_search_enhancer_allowed($topic_data))
         {
             $this->template->assign_var('SNP_SEARCH_INDEX_B_ENABLE', true);
         }
