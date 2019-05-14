@@ -149,6 +149,17 @@ class curly_parser
         return $strn;
     }
 
+    public function interpolate_mega_video($strn, $tag_name)
+    {
+        $allowed_attr = ['style', 'class', 'src', 'align'];
+        $uuid = uniqid();
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $strn = '<div align="center"><iframe src="https://mega.nz/embed#' . $content . '" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>';
+        return $strn;
+    }
+
     public function interpolate_youtube($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
@@ -237,6 +248,9 @@ class curly_parser
                 break;
             case 'youtube':
                 $res = $this->interpolate_youtube($content, $tag_type);
+                break;
+            case 'mv':
+                $res = $this->interpolate_mega_video($content, $tag_type);
                 break;
             default:
                 $res = 'default';
