@@ -138,16 +138,15 @@ class basic extends \phpbb\notification\type\base
 	{
         // prn("get_email_template_variables");
         // trigger_error("error");
-		$username = $this->user_loader->get_username($this->get_data('poster_id'), 'username');
+		// $username = $this->user_loader->get_username($this->get_data('poster_id'), 'username');
 		return array(
-			'REPORT_SUBJECT_OP'    => htmlspecialchars_decode($this->user->lang['REPORT_SUBJECT_OP' . $this->get_data('lang_act')]),
-			'USERNAME'             => htmlspecialchars_decode($this->user->data['username']),
-			'POST_SUBJECT'         => htmlspecialchars_decode(censor_text($this->get_data('post_subject'))),
-			'POSTER_NAME'          => htmlspecialchars_decode($username),
-
-            'NOTIFICATION_SUBJECT' => htmlspecialchars_decode($this->get-title()),
-            'U_LINK'               => generate_board_url() . '/viewtopic.' . $this->php_ext . "?p={$this->item_id}#p{$this->item_id}",
-
+			// 'REPORT_SUBJECT_OP'    => htmlspecialchars_decode($this->user->lang['REPORT_SUBJECT_OP' . $this->get_data('lang_act')]),
+			// 'USERNAME'             => htmlspecialchars_decode($this->user->data['username']),
+			// 'POST_SUBJECT'         => htmlspecialchars_decode(censor_text($this->get_data('post_subject'))),
+			// 'POSTER_NAME'          => htmlspecialchars_decode($username),
+            //
+            // 'NOTIFICATION_SUBJECT' => htmlspecialchars_decode($this->get_title()),
+            // 'U_LINK'               => generate_board_url() . '/viewtopic.' . $this->php_ext . "?p={$this->item_id}#p{$this->item_id}",
 		);
 	}
 
