@@ -109,3 +109,8 @@ jeb_snahp_reqs_post:
     requirements:
         mode: \S+
         fid: \d+
+jeb_snahp_simulation:
+    path: /snahp/simulation/{mode}/
+    defaults: { _controller: jeb.snahp.simulation:handle}
+    requirements:
+        mode: \S+
