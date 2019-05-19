@@ -595,6 +595,8 @@ class main_module
                 $config->set('snp_thanks_b_avatar', $snp_thanks_b_avatar);
                 $snp_thanks_b_toplist = $request->variable('snp_thanks_b_toplist', '1');
                 $config->set('snp_thanks_b_toplist', $snp_thanks_b_toplist);
+                $snp_thanks_b_op = $request->variable('snp_thanks_b_op', '1');
+                $config->set('snp_thanks_b_op', $snp_thanks_b_op);
                 $snp_zebra_b_master = $request->variable('snp_zebra_b_master', '1');
                 $config->set('snp_zebra_b_master', $snp_zebra_b_master);
                 $snp_fid_requests = $request->variable('snp_fid_requests', '1');
@@ -620,6 +622,7 @@ class main_module
                 'SNP_THANKS_B_ENABLE'      => $config['snp_thanks_b_enable'],
                 'SNP_THANKS_B_AVATAR'      => $config['snp_thanks_b_avatar'],
                 'SNP_THANKS_B_TOPLIST'     => $config['snp_thanks_b_toplist'],
+                'SNP_THANKS_B_OP'          => $config['snp_thanks_b_op'],
                 'SNP_ZEBRA_B_MASTER'       => $config['snp_zebra_b_master'],
                 'SNP_FID_REQUESTS'         => $config['snp_fid_requests'],
                 'FID_LISTINGS'             => $config['snp_fid_listings'],

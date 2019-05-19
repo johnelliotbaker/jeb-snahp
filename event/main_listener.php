@@ -132,6 +132,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_thanks_for_op($event)/*{{{*/
     {
+        $b_master = $this->config['snp_thanks_b_enable'];
+        $b_op = $this->config['snp_thanks_b_op'];
+        if (!$b_master || !$b_op)
+        {
+            return false;
+        }
         $topic_id = $event['topic_data']['topic_id'];
         $cachetime = 30;
         $count = $this->select_thanks_for_op($topic_id, $cachetime);
