@@ -845,6 +845,17 @@ abstract class base
         return $strn;
     }
 
+    public function add_host_icon($strn)
+    {
+        $ptn = '#(\[(mega)\])#is';
+        $strn = preg_replace($ptn, '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">', $strn);
+        $ptn = '#(\[(gdrive)\])#is';
+        $strn = preg_replace($ptn, '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">', $strn);
+        $ptn = '#(\[(zippy)\])#is';
+        $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/uJXaUNG.png">', $strn);
+        return $strn;
+    }
+
     public function add_tag($strn)
     {
         $ptn = '#((\(|\[|\{)(request)(\)|\]|\}))#is';

@@ -123,12 +123,33 @@ class main_listener extends base implements EventSubscriberInterface
             'core.modify_posting_auth' => [
                 ['block_zebra_foe_quote', 0],
             ],
+            'core.viewforum_modify_topics_data' => [
+                ['replace_with_host_icons_in_listings', 0]
+            ],
         ];
     }
 
-    public function test($event)
+    public function test($event)/*{{{*/
     {
-    }
+    }/*}}}*/
+
+    public function replace_with_host_icons_in_listings($event)/*{{{*/
+    {
+        $cache_time = 30;
+        $fid = $event['forum_id'];
+        $fid_listings = $this->config['snp_fid_listings'];
+        $fid_listings = $this->select_subforum($fid_listings, $cache_time);
+        if (!in_array($fid, $fid_listings)) return false;
+        $rowset = $event['rowset'];
+        if (!$rowset) return false;
+        foreach($rowset as $key => $row)
+        {
+            $tt = $row['topic_title'];
+            $row['topic_title'] = $this->add_host_icon($tt, 'open');
+            $rowset[$key] = $row;
+        }
+        $event['rowset'] = $rowset;
+    }/*}}}*/
 
     public function show_thanks_for_op($event)/*{{{*/
     {
