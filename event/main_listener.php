@@ -105,6 +105,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
+                ['show_thanks_for_op', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => 'modify_quickreply_signature',
@@ -128,6 +129,19 @@ class main_listener extends base implements EventSubscriberInterface
     public function test($event)
     {
     }
+
+    public function show_thanks_for_op($event)/*{{{*/
+    {
+        $topic_id = $event['topic_data']['topic_id'];
+        $cachetime = 30;
+        $count = $this->select_thanks_for_op($topic_id, $cachetime);
+        if ($count)
+        {
+            $this->template->assign_vars([
+                'N_THANKS_COUNT_FOR_OP' => $count,
+            ]);
+        }
+    }/*}}}*/
 
     public function show_search_index_btn($event)/*{{{*/
     {

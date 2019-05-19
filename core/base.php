@@ -118,6 +118,19 @@ abstract class base
 
     // DATABASE Functions
     // THANKS
+    public function select_thanks_for_op($topic_id, $cachetime=0)
+    {
+        $sql = 'SELECT COUNT(*) as count FROM phpbb_thanks where topic_id=' . $topic_id;
+        $result = $this->db->sql_query($sql, $cachetime);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return 0;
+        }
+        return (int) $row['count'];
+    }
+
     public function delete_thanks_notifications()
     {
         $sql = 'SELECT * FROM ' . 
