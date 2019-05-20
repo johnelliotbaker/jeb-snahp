@@ -114,3 +114,8 @@ jeb_snahp_simulation:
     defaults: { _controller: jeb.snahp.simulation:handle}
     requirements:
         mode: \S+
+jeb_snahp_mcp:
+    path: /snahp/mcp/{mode}/
+    defaults: { _controller: jeb.snahp.mcp:handle}
+    requirements:
+        mode: \S+

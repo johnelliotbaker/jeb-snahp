@@ -89,12 +89,17 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
-# Unimplemented
+    jeb.snahp.mcp:
+        class: jeb\snahp\controller\mcp
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.simulation:
         class: jeb\snahp\controller\simulation
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+# Unimplemented
     jeb.snahp.reqs_post:
         class: jeb\snahp\controller\reqs_post
         parent: jeb.snahp.base

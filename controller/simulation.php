@@ -40,6 +40,11 @@ class simulation extends base
             $fid = 24;
             return $this->handle_spam($cfg);
             break;
+        case 'move':
+            $cfg['tpl_name'] = '';
+            $cfg['b_feedback'] = false;
+            return $this->move($cfg);
+            break;
         default:
             trigger_error('Invalid request category. Error Code: c9299cfd2d');
             break;
@@ -52,6 +57,40 @@ class simulation extends base
         echo PHP_EOL;
         ob_flush();
         flush();
+    }
+
+    public function move($cfg)
+    {
+        $this->reject_non_moderator();
+        include_once('includes/functions_admin.php');
+        // FORUM DEFINITIONS
+        // Find requests forums
+        $fid_requests = $this->config['snp_fid_requests'];
+        $fid_graveyard = $this->get_fid('graveyard');
+        $cache_time = 1;
+        $sub = $this->select_subforum($fid_requests, $cache_time);
+        $s_requests = join(',', $sub);
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = "SELECT 
+                    t.topic_id
+                FROM
+                    phpbb.phpbb_topics t
+                LEFT OUTER JOIN
+                    phpbb.phpbb_snahp_request r ON (t.topic_id = r.tid)
+                WHERE
+                    t.forum_id IN ($s_requests) AND r.tid IS NULL
+                ORDER BY topic_id DESC";
+        $result = $this->db->sql_query_limit($sql, 1000, 0);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $a_topic_id = array_map(function($arr) {
+            return $arr['topic_id'];
+        }, $rowset);
+        if (is_array($a_topic_id))
+        {
+            move_topics($a_topic_id, $fid_graveyard, $auto_sync=true);
+        }
+        return false;
     }
 
     public function handle_spam($cfg)
@@ -67,7 +106,7 @@ class simulation extends base
         header('Cache-Control: no-cache');
         $mode = 'post';
         $message = 'spam';
-        $subject = 'spam';
+        // $subject = 'spam';
         $username = '***Request Username***';
         $topic_type = 0;
         $data_ary = [];
@@ -99,6 +138,7 @@ class simulation extends base
         $total = $n_spam;
         while($i < $total)
         {
+            $subject = join(' :: ', [(string) $i, uniqid()]);
             submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
             $i += 1;
             if ($i % 1000 == 0)

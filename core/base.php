@@ -104,9 +104,38 @@ abstract class base
     // SESSION MANAGEMENT
     public function set_cookie($key, $data)
     {
-        $last_visit = $this->user->data['user_lastvisit'];
-        $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
-        $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
+        $this->user->set_cookie($key, tracking_serialize($data), 0, 0);
+        // set_cookie($key, $data, 365, false);
+        // $last_visit = $this->user->data['user_lastvisit'];
+        // $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
+        // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
+    }
+
+    public function get_or_set_cookie($key, $data=[], $b_return_first=false)
+    {
+        $cookie = $this->get_cookie($key);
+        // If cookie exists
+        if ($cookie)
+        {
+            if ($b_return_first)
+            {
+                return $cookie[0];
+            }
+            return $cookie;
+
+        }
+        // If cookie doesn't exist
+        $this->set_cookie($key, $data);
+        if ($b_return_first)
+        {
+            return $data[0];
+        }
+        return $data;
+        // $this->user->set_cookie($key, tracking_serialize($data), 0, 0);
+        // set_cookie($key, $data, 365, false);
+        // $last_visit = $this->user->data['user_lastvisit'];
+        // $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
+        // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
     }
 
     public function get_cookie($key)
@@ -837,6 +866,14 @@ abstract class base
     public function get_dt($time)
     {
         return $this->user->format_date($time);
+    }
+
+    public function get_fid($name)
+    {
+        $config_text = $this->container->get('config_text');
+        $snp_fid = unserialize($config_text->get('snp_fid'));
+        $fid =  array_key_exists($name, $snp_fid) ? $snp_fid[$name] : 0;
+        return (int) $fid;
     }
 
     public function make_username($row)

@@ -1,0 +1,176 @@
+<!-- INCLUDE overall_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<script>
+  {% include '@jeb_snahp/mcp/component/mcp_mass_move/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/mcp/component/mcp_mass_move/base.css' %}
+
+  .card-deck
+  {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+  .card
+  {
+    margin-right: 3px !important;
+    margin-left: 3px !important;
+  }
+
+  .card .card-header
+  {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .card .card-body
+  {
+    padding: 8px;
+  }
+
+  .form-check
+  {
+    font-size: 1.5em;
+    margin-left: 2px;
+    margin-bottom: 14px;
+  }
+
+</style>
+
+{% if true %}
+<form id="mcp_mass_move" method="POST" action="{U_ACTION}">
+  {S_FORM_TOKEN}
+  {S_HIDDEN_FIELDS}
+  <h2 class="forum-title">{TITLE}</h2>
+  <div>
+    <div class="twbs">
+      <div class="card-deck text-center">
+        <div class="card">
+          <div class="card-header">Source</div>
+          <div class="card-body">
+            <div class="form-group">
+              <select id="from_forum_id" name="from_forum_id" class="form-control form-control-sm">
+                {S_FORUM_SELECT}
+              </select>
+            </div>
+            <div class="form-group">
+              <select id="mcp_move_per_page_dropdown" name="per_page" class="form-control form-control-sm">
+                <option value="5" {% if B_SELECT_5 %}selected{% endif %}>5</option>
+                <option value="10" {% if B_SELECT_10 %}selected{% endif %}>10</option>
+                <option value="20" {% if B_SELECT_20 %}selected{% endif %}>20</option>
+                <option value="50" {% if B_SELECT_50 %}selected{% endif %}>50</option>
+                <option value="100" {% if B_SELECT_100 %}selected{% endif %}>100</option>
+                <option value="200" {% if B_SELECT_200 %}selected{% endif %}>200</option>
+                <option value="500" {% if B_SELECT_500 %}selected{% endif %}>500</option>
+              </select>
+            </div>
+            <div class="form-check text-left">
+              <input type="checkbox" class="form-check-input" id="is_request_checkbox" name="is_request_checkbox" {% if B_REQUEST %}checked{% endif %}>
+              <label class="form-check-label" for="is_request_checkbox">Is Request</label>
+            </div>
+            <div class="form-group">
+              <select id="mcp_move_request_type_dropdown" name="mcp_move_request_type_dropdown" class="form-control form-control-sm">
+                <option value="all" {% if B_SELECT_all %}selected{% endif %}>all</option>
+                <option value="open" {% if B_SELECT_open %}selected{% endif %}>open</option>
+                <option value="solve" {% if B_SELECT_solve %}selected{% endif %}>solve</option>
+                <option value="dib" {% if B_SELECT_dib %}selected{% endif %}>dib</option>
+                <option value="fulfill" {% if B_SELECT_fulfill %}selected{% endif %}>fulfill</option>
+                <option value="terminate" {% if B_SELECT_terminate %}selected{% endif %}>terminate</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Selection</div>
+          <div class="card-body">
+            <button onClick="check_all_topics(true);" type="button" class="btn btn-primary btn-sm">All</button>
+            <button onClick="check_all_topics(false);" type="button" class="btn btn-primary btn-sm">None</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Action</div>
+          <div class="card-body">
+            <input type="submit" name="graveyard" value="Graveyard" id="submit" class="btn btn-danger btn-sm"></input>
+            <label for="graveyard"><a href="/viewforum.php?f={FID_GRAVEYARD}">{FID_GRAVEYARD}</a></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="action-bar bar-top">
+    <div class="pagination">
+      <!-- IF .pagination -->
+      <!-- INCLUDE pagination.html -->
+      <!-- ELSE -->
+      &bull; {PAGE_NUMBER}
+      <!-- ENDIF -->
+    </div>
+  </div>
+  <div class="forumbg">
+    <div class="inner">
+      <ul class="topiclist">
+        <li class="header">
+          <dl class="row-item">
+            <dt>
+              <div class="list-inner with-mark">Topics</div>
+            </dt>
+            <dd class="mark">Mark</dd>
+          </dl>
+        </li>
+      </ul>
+      <!-- IF .postrow -->
+      <ul class="topiclist cplist">
+        <!-- BEGIN postrow -->
+        <li class="row<!-- IF postrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+          <dl>
+            <dt>
+              <div class="list-inner with-mark">
+                <a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.TOPIC_TITLE}</a><br />
+                <span>Created on {postrow.CREATED_TIME}</span>
+              </div>
+            </dt>
+            <dd class="mark">
+              <input type="checkbox" name="tid_{postrow.TOPIC_ID}" checked></input>
+            </dd>
+          </dl>
+        </li>
+        <!-- END postrow -->
+      </ul>
+      <!-- ELSE -->
+      <ul class="topiclist">
+        <li class="row bg1">
+          <dl>
+            <dt>
+              <div class="list-inner" style="width:100%;">
+                <h4>
+                  <span>There are not more topics to moderate.</span>
+                  </h1>
+              </div>
+            </dt>
+          </dl>
+        </li>
+      </ul>
+      <!-- ENDIF -->
+    </div>
+  </div>
+  <div class="action-bar bottom">
+    <div class="pagination">
+      {TOTAL_REQUEST}
+      <!-- IF .pagination -->
+      <!-- INCLUDE pagination.html -->
+      <!-- ELSE -->
+      &bull; {PAGE_NUMBER}
+      <!-- ENDIF -->
+    </div>
+  </div>
+</form>
+{% else %}
+<div class="panel">
+  <div class="inner">
+    <h3>Requests disabled</h3>
+    <p>Request feature is currently disabled by the site admin.</p>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE overall_footer.html -->
