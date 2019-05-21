@@ -1,7 +1,6 @@
 <?php
 namespace jeb\snahp\core;
 
-
 class curly_parser
 {
     protected $allowed_directive;
@@ -108,6 +107,27 @@ class curly_parser
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
+    }
+
+    public function interpolate_gallery($strn, $tag_name, $type)
+    {
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $content = preg_replace("#<br>#", PHP_EOL, $content);
+        $arr = explode(PHP_EOL, $content);
+        foreach($arr as $entry)
+        {
+            if ($entry)
+            {
+                $entry = preg_replace('#\s+#', ' ', $entry);
+                $entry = preg_replace('#`\s*#', '` ', $entry);
+                $data[] = explode('` ', $entry);
+            }
+        }
+        $gallery = new \jeb\snahp\core\template\gallery;
+        $html = $gallery->handle($type, $data);
+        return $html;
     }
 
     public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)
@@ -234,6 +254,15 @@ class curly_parser
                 break;
             case 'gfycat':
                 $res = $this->interpolate_gfycat($content, $tag_type);
+                break;
+            case 'gallery_cards':
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards');
+                break;
+            case 'gallery_grid':
+                $res = $this->interpolate_gallery($content, $tag_type, 'grid');
+                break;
+            case 'gallery_compact':
+                $res = $this->interpolate_gallery($content, $tag_type, 'compact');
                 break;
             case 'youtube':
                 $res = $this->interpolate_youtube($content, $tag_type);
