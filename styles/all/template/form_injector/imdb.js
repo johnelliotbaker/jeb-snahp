@@ -34,6 +34,7 @@ function getRating(aRating)
 
 function maketemplate(imdb)
 {
+    console.log(imdb);
     try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
     } catch(err) { var img      = ""; }
     try { var title             = `[center][size=150][color=#FF0000][b]${imdb['Title']} (${imdb['Year']})[/b][/color][/size][/center]\n`;
@@ -63,7 +64,7 @@ function maketemplate(imdb)
     } catch(err) { var summary  = ""; }
     try { var links             = `[color=#FF8000][b]Links[/b][/color]: `
     } catch(err) { var links    = ""; }
-    try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]IMDb[/url]\n`
+    try { var imdburl           = `[url=https://www.imdb.com/title/${imdb['imdbID']}]IMDb ${imdb['imdbID']}[/url]\n`
     } catch(err) { var imdburl  = ""; }
     try { var ddl               = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`
     } catch(err) { var ddl      = ""; }
