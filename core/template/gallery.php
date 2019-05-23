@@ -57,13 +57,13 @@ class gallery
         foreach($data as $d)
         {
             $body[] = '
-                <div class="col-md-6 col-lg-3 col-sm-4 item">
+                <div class="col-lg-3 col-sm-4 col-6 item">
 	                <div class="card border-0 transform-on-hover">
 	                	<a class="lightbox" href="' . $d[2] . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
 	                	</a>
 	                    <div class="card-body">
-	                        <h6><a href="#">'. $d[0] . '</a></h6>
+	                        <h6>'. $d[0] . '</h6>
 	                        <p class="text-muted card-text">' . $d[1] . '</p>
 	                    </div>
 	                </div>
@@ -96,7 +96,7 @@ class gallery
         foreach($data as $d)
         {
             $body[] = '
-                <div class="col-md-6 col-lg-3 col-sm-4 item">
+                <div class="col-lg-3 col-sm-4 col-6 item">
                     <a class="lightbox" href="' . $d[2] . '" target="_blank">
                         <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
                     </a>
@@ -129,7 +129,7 @@ class gallery
         foreach($data as $d)
         {
             $body[] = '
-              <div class="col-sm-6 col-lg-3 item zoom-on-hover">
+              <div class="col-lg-3 col-sm-4 col-6 item zoom-on-hover">
                 <a class="lightbox" href="' . $d[2] . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
                   <span class="description">

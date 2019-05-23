@@ -10,7 +10,7 @@
 }
 .hidebox.unhide
 {
-    background-color: black;
+    background-color: #111;
 }
 .hidebox.hi dd i
 {
@@ -87,4 +87,10 @@ input.search_master {
     background-color: black !important;
     border: 1px solid #777 !important;
     color: #EEE !important;
+}
+
+/* gallery */
+div.card-body > h6
+{
+    color: #CCC;
 }
