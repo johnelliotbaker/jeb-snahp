@@ -105,6 +105,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.acp_fiximdb:
+        class: jeb\snahp\controller\acp_fiximdb
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.acp_invite:
         class: jeb\snahp\controller\acp_invite
         parent: jeb.snahp.base

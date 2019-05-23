@@ -105,7 +105,7 @@ class simulation extends base
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
         $mode = 'post';
-        $message = 'spam';
+        $message = '<r><COLOR color="#FF8000"><s>[color=#FF8000]</s><B><s>[b]</s>Links<e>[/b]</e></B><e>[/color]</e></COLOR>: <B><s>[b]</s><URL url="https://www.imdb.com/title/tt8416494"><s>[url=https://www.imdb.com/title/tt8416494]</s>IMDb<e>[/url]</e></URL><e>[/b]</e></B></r>';
         // $subject = 'spam';
         $username = '***Request Username***';
         $topic_type = 0;
