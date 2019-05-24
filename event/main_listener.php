@@ -130,6 +130,9 @@ class main_listener extends base implements EventSubscriberInterface
             'core.ucp_pm_compose_modify_parse_before' => [
                 ['remove_hide_in_pm_on_submit', 0]
             ],
+            'core.memberlist_view_profile' => [
+                ['show_inviter_in_profile', 0]
+            ],
         ];
     }
 
@@ -137,6 +140,29 @@ class main_listener extends base implements EventSubscriberInterface
     {
         // $fid = $this->get_fid('listings');
         // prn($fid);
+    }/*}}}*/
+
+    public function show_inviter_in_profile($event)/*{{{*/
+    {
+        if ($this->is_mod())
+        {
+            $member = $event['member'];
+            $row = $this->select_invitee((int) $member['user_id']);
+            if (!$row)
+            {
+                $inviter_strn = 'The First of Her Kind';
+            }
+            else
+            {
+                $inviter_id = $row['inviter_id'];
+                $inviter = $this->select_user($inviter_id);
+                $inviter_strn = $this->make_username($inviter);
+            }
+            $this->template->assign_vars([
+                'IS_MOD' => true,
+                'INVITER_STRN' => $inviter_strn,
+            ]);
+        }
     }/*}}}*/
 
     public function remove_hide_in_pm_on_submit($event)/*{{{*/
