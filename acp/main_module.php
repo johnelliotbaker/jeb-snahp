@@ -412,6 +412,7 @@ class main_module
                 }
                 $config->set('snp_b_request', $request->variable('snp_b_request', '0'));
                 $config->set('snp_req_b_suspend_outstanding', $request->variable('snp_req_b_suspend_outstanding', '0'));
+                $config->set('snp_req_suspend_outstanding_grace_period', $request->variable('snp_req_suspend_outstanding_grace_period', '604800'));
                 $config->set('snp_req_fid', sanitize_fid($request->variable('request_fid', '0')));
                 $config->set('snp_req_cycle_time', $request->variable('cycle_time', '0'));
                 $config->set('snp_req_redib_cooldown_time', $request->variable('redib_cooldown_time', '0'));
@@ -497,6 +498,7 @@ class main_module
             $template->assign_vars(array(
                 'SNP_B_REQUEST'        => $config['snp_b_request'],
                 'SNP_REQ_B_SUSPEND_OUTSTANDING' => $config['snp_req_b_suspend_outstanding'],
+                'SNP_REQ_SUSPEND_OUTSTANDING_GRACE_PERIOD' => $config['snp_req_suspend_outstanding_grace_period'],
                 'request_fid'          => $config['snp_req_fid'],
                 'redib_cooldown_time'  => $config['snp_req_redib_cooldown_time'],
                 'cycle_time'           => $config['snp_req_cycle_time'],

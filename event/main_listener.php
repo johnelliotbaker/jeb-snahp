@@ -127,6 +127,9 @@ class main_listener extends base implements EventSubscriberInterface
             'core.viewforum_modify_topics_data' => [
                 ['replace_with_host_icons_in_listings', 0]
             ],
+            'core.ucp_pm_compose_modify_parse_before' => [
+                ['remove_hide_in_pm_on_submit', 0]
+            ],
         ];
     }
 
@@ -134,6 +137,13 @@ class main_listener extends base implements EventSubscriberInterface
     {
         // $fid = $this->get_fid('listings');
         // prn($fid);
+    }/*}}}*/
+
+    public function remove_hide_in_pm_on_submit($event)/*{{{*/
+    {
+        $mp = $event['message_parser'];
+        $msg = &$mp->message;
+        $msg = preg_replace('/(\[hide=?"?)([^\]"]*)("?\])([^\[]*)(\[\/hide\])/i', 'HIDDEN CONTENT WAS REMOVED', $msg);
     }/*}}}*/
 
     public function setup_core_vars($event)/*{{{*/

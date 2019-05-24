@@ -24,6 +24,7 @@
   </fieldset>
 
   <fieldset>
+    <legend>Requests System Master Switch</legend>
     <dl>
       <dt><label>Enable Request System</label>
         <span><br>
@@ -38,12 +39,26 @@
   </fieldset>
 
   <fieldset>
+    <legend>Fulfilled Requests Notifications and Suspension</legend>
     <dl>
       <dt><label>Suspend requests for users with outstanding fulfillment</label><br>
       </dt>
       <dd>
         <label><input type="radio" name="snp_req_b_suspend_outstanding" class="radio" value="1" {% if SNP_REQ_B_SUSPEND_OUTSTANDING %}checked="checked"{% endif %}> Yes</label>
         <label><input type="radio" name="snp_req_b_suspend_outstanding" class="radio" value="0" {% if not SNP_REQ_B_SUSPEND_OUTSTANDING %}checked="checked"{% endif %}> No</label>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label>Grace Period</label>
+        <span><br>
+          If any request has been fulfilled for longer than the grace period, suspend request privileges.<br>
+        </span>
+      </dt>
+      <dd>
+        <input type="number" min="0"
+                             style="text-align:center; width:80px;"
+                             name="snp_req_suspend_outstanding_grace_period"
+                             value="{SNP_REQ_SUSPEND_OUTSTANDING_GRACE_PERIOD}"> seconds
       </dd>
     </dl>
   </fieldset>

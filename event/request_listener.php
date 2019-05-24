@@ -411,12 +411,13 @@ class request_listener extends base implements EventSubscriberInterface
 
     public function reject_user_with_fulfilled($user_id)
     {
+        $key = 'snp_req_suspend_outstanding_grace_period';
+        $grace_period = $this->config[$key]==null ? 604800 : (int) $this->config[$key];
         $time = time();
-        $delta = 7*24*60*60;
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $sql = 'SELECT tid FROM ' . $this->req_tbl  . " 
             WHERE requester_uid={$user_id} AND status={$def['fulfill']}
-            AND fulfilled_time+{$delta} < {$time}
+            AND fulfilled_time+{$grace_period} < {$time}
 ";
             $result = $this->db->sql_query($sql);
             $rowset = $this->db->sql_fetchrowset($result);
