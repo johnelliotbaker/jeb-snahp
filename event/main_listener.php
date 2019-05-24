@@ -136,18 +136,18 @@ class main_listener extends base implements EventSubscriberInterface
         // prn($fid);
     }/*}}}*/
 
-     public function setup_core_vars($event)/*{{{*/
-     {
-         $hidden_fields = [
-             'snp_user_id' => $this->user->data['user_id'],
-             'snp_cookie_prefix' => $this->config['cookie_name'] . '_',
-         ];
-         $s_hidden_fields = build_hidden_fields($hidden_fields);
-         $this->template->assign_vars([
-             'S_HIDDEN_FIELDS' => $s_hidden_fields,
-         ]);
-     }/*}}}*/
- 
+    public function setup_core_vars($event)/*{{{*/
+    {
+        $hidden_fields = [
+            'snp_user_id' => $this->user->data['user_id'],
+            'snp_cookie_prefix' => $this->config['cookie_name'] . '_',
+        ];
+        $s_hidden_fields = build_hidden_fields($hidden_fields);
+        $this->template->assign_vars([
+            'S_HIDDEN_FIELDS' => $s_hidden_fields,
+        ]);
+    }/*}}}*/
+
     public function replace_with_host_icons_in_listings($event)/*{{{*/
     {
         $cache_time = 30;

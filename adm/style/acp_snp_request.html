@@ -39,6 +39,17 @@
 
   <fieldset>
     <dl>
+      <dt><label>Suspend requests for users with outstanding fulfillment</label><br>
+      </dt>
+      <dd>
+        <label><input type="radio" name="snp_req_b_suspend_outstanding" class="radio" value="1" {% if SNP_REQ_B_SUSPEND_OUTSTANDING %}checked="checked"{% endif %}> Yes</label>
+        <label><input type="radio" name="snp_req_b_suspend_outstanding" class="radio" value="0" {% if not SNP_REQ_B_SUSPEND_OUTSTANDING %}checked="checked"{% endif %}> No</label>
+      </dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <dl>
       <dt><label>Request Forum ID</label><br />
         <span><br>
           Add forum ID to the textarea to apply request statistics and rules.

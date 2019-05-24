@@ -106,11 +106,20 @@ class favorite extends base
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
+            $type = $this->request->variable('type', 'all');
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
             $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
-            [$data, $total] = $this->select_open_requests($per_page, $start);
+            if ($type=='fulfill')
+            {
+                $cfg['title'] = 'Unresolved requests';
+                [$data, $total] = $this->select_unresolved_requests($per_page, $start);
+            }
+            else
+            {
+                [$data, $total] = $this->select_open_requests($per_page, $start);
+            }
             $pagination->generate_template_pagination(
                 $base_url, 'pagination', 'start', $total, $per_page, $start
             );

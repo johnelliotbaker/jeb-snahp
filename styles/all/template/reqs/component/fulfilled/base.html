@@ -1,0 +1,27 @@
+{% if STYLE_NAME=='hexagon' %}
+<li class="rightside" data-skip-responsive="true">
+  <a href="/app.php/snahp/favorite/open_requests/?type=fulfill" role="menuitem">
+    <i class="icon fa-folder-open fa-fw request_warning" aria-hidden="true"></i>
+    <span>
+      <span class="responsive-hide request_warning">Fulfilled Requests</span>
+      <strong class="request_warning navbar_counter badge">{N_REQ_OUTSTANDING}</strong>
+    </span>
+  </a>
+</li>
+{% elseif STYLE_NAME=='basic' %}
+<li class="tab non-zero" data-skip-responsive="true" title="Fulfilled Requests ({N_REQ_OUTSTANDING})" data-responsive-index="-1">
+  <a id="basic_request_warning" href="/app.php/snahp/favorite/open_requests/?type=fulfill" class="nav-link"><i class="icon fa-folder-open fa-fw" aria-hidden="true"></i></a>
+  <strong>
+    <span class="counter">{N_REQ_OUTSTANDING}</span>
+    <span class="arrow"></span>
+  </strong>
+</li>
+{% else %}
+<li class="rightside" data-skip-responsive="true">
+  <a href="/app.php/snahp/favorite/open_requests/?type=fulfill" role="menuitem">
+    <i class="icon fa-folder-open fa-fw request_warning" aria-hidden="true"></i>
+    <span class="request_warning">Fulfilled Requests </span>
+    <strong class="badge">{N_REQ_OUTSTANDING}</strong>
+  </a>
+</li>
+{% endif %}

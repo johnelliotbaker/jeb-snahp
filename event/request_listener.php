@@ -50,6 +50,10 @@ class request_listener extends base implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
+            'core.user_setup' => [
+                ['setup_core_vars', 0],
+                ['setup_fulfilled_vars', 0],
+            ],
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('show_request_icons', 1),
                 array('show_dibs',0),
@@ -70,6 +74,42 @@ class request_listener extends base implements EventSubscriberInterface
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
             'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
+    }
+
+    public function setup_fulfilled_vars($event)/*{{{*/
+    {
+        $b_master_suspend = $this->config['snp_req_b_suspend_outstanding'];
+        if ($b_master_suspend)
+        {
+            $count = $this->get_outstanding_fulfilled_count();
+            if ($count > 0)
+            {
+                $this->template->assign_vars([
+                    'N_REQ_OUTSTANDING' => $count,
+                ]);
+                return false;
+            }
+        }
+    }/*}}}*/
+
+    public function setup_core_vars($event)/*{{{*/
+    {
+        $hidden_fields = [];
+        $s_hidden_fields = build_hidden_fields($hidden_fields);
+        $this->template->assign_vars([
+            'S_REQ_HIDDEN_FIELDS' => $s_hidden_fields,
+        ]);
+    }/*}}}*/
+
+    private function get_outstanding_fulfilled_count()
+    {
+        $user_id = $this->user->data['user_id'];
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $sql = 'SELECT COUNT(*) as count FROM ' . $this->req_tbl . " WHERE requester_uid={$user_id} AND status={$def['fulfill']}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row['count'];
     }
 
     public function include_reqs_forum_assets($event)/*{{{*/
@@ -327,6 +367,72 @@ class request_listener extends base implements EventSubscriberInterface
 
     }
 
+    private function generate_topic_list($a_topic_id)
+    {
+        $html['begin'][] = '
+            <style>
+            td a:link, td a:visited, td a:hover, td a:active {
+            text-decoration: none !important;
+            color: white !important;
+    }
+    </style>
+        <div class="twbs">
+        <div>
+        <p>
+        Some of your previous requests were marked as fulfilled.
+        You must first solve or close these requests before making a new one.
+        </p>
+        </div>
+        <div>
+        <table class="table table-dark table-striped table-sm">
+        <tbody>';
+        $html['end'][] = '
+            </tbody>
+            </table>
+            </div>
+            </div>';
+        $where = $this->db->sql_in_set('topic_id', $a_topic_id);
+        $sql = 'SELECT topic_id, topic_title FROM ' . TOPICS_TABLE . " WHERE $where";
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        foreach($rowset as $row)
+        {
+            $html['body'][] = '<tr><td><a target="_blank" href="/viewtopic.php?t=' . $row['topic_id'] . '">'. $row['topic_title'] . '</a>';
+        }
+        $sequence = ['begin', 'body', 'end'];
+        $strn = '';
+        foreach ($sequence as $key)
+        {
+            $strn .= join(PHP_EOL, $html[$key]);
+        }
+        return $strn;
+    }
+
+    public function reject_user_with_fulfilled($user_id)
+    {
+        $time = time();
+        $delta = 7*24*60*60;
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $sql = 'SELECT tid FROM ' . $this->req_tbl  . " 
+            WHERE requester_uid={$user_id} AND status={$def['fulfill']}
+            AND fulfilled_time+{$delta} < {$time}
+";
+            $result = $this->db->sql_query($sql);
+            $rowset = $this->db->sql_fetchrowset($result);
+            $this->db->sql_freeresult($result);
+            if (!$rowset)
+            {
+                return false;
+            }
+            foreach($rowset as $row)
+            {
+                $a_topic_id[] = $row['tid'];
+            }
+            $strn = $this->generate_topic_list($a_topic_id);
+            trigger_error($strn);
+    }
+
     public function reject_request_disabled($reqdata, $gdata)
     {
         if ($reqdata['b_active_override'])
@@ -346,7 +452,6 @@ class request_listener extends base implements EventSubscriberInterface
                 trigger_error("$groupname cannot make requests.");
             }
         }
-
     }
 
     public function create_request($event)
@@ -414,7 +519,13 @@ class request_listener extends base implements EventSubscriberInterface
         $gid = $this->user->data['group_id'];
         $gdata = $this->select_group($gid);
         if (!$reqdata = $this->select_request_users($user_id))
+        {
             $reqdata = $this->insert_request_users($user_id, true);
+        }
+        if ($this->config['snp_req_b_suspend_outstanding'])
+        {
+            $this->reject_user_with_fulfilled($user_id);
+        }
         $this->reject_request_disabled($reqdata, $gdata);
         $this->reject_cycle($reqdata, $gdata);
         $n_use = $reqdata['n_use'];

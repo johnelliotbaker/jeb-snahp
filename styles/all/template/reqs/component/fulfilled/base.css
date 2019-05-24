@@ -1,0 +1,21 @@
+.request_warning
+{
+    color: #D31141;
+}
+
+.request_warning.navbar_counter.badge
+{
+    color: white;
+    background-color: #D31141;
+}
+
+.nav-link.request_warning
+{
+    padding: 0;
+}
+
+/* For the basic theme */
+#basic_request_warning
+{
+    padding: 0px 5px 0px 8px;
+}

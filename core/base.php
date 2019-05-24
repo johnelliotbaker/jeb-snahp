@@ -324,6 +324,38 @@ abstract class base
         return [$rowset, $total];
     }
 
+    public function select_unresolved_requests($per_page, $start, $user_id=null)
+    {
+        $maxi_query = 300;
+        if ($user_id===null)
+        {
+            $user_id = $this->user->data['user_id'];
+        }
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $def = $this->container->getParameter('jeb.snahp.req')['def'];
+        $def_fulfill = $def['fulfill'];
+        $sql = 'SELECT 
+            r.tid, r.fid, r.pid, r.created_time,
+            r.requester_uid, r.status,
+            t.topic_title
+            FROM
+                ('. $tbl['req'] . ' r)
+            LEFT JOIN ('. TOPICS_TABLE .' t) 
+            ON (t.topic_id=r.tid)
+            WHERE
+                r.requester_uid=' . $user_id . '
+            AND ' . $this->db->sql_in_set('status', $def_fulfill) .'
+            ORDER BY r.created_time DESC';
+        $result = $this->db->sql_query_limit($sql, $maxi_query);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
+        $this->db->sql_freeresult($result);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }
+
     public function select_open_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
