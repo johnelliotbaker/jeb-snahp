@@ -83,12 +83,11 @@ class mcp extends base
                 }
             }
         }
-        $sql = "SELECT 
+        $sql = 'SELECT 
                     t.*
-                FROM
-                    phpbb.phpbb_topics t
-                LEFT OUTER JOIN
-                    phpbb.phpbb_snahp_request r ON (t.topic_id = r.tid)
+                FROM ' . TOPICS_TABLE . " t
+                LEFT OUTER JOIN  
+                    {$tbl['req']} r ON (t.topic_id = r.tid)
                 WHERE
                     t.forum_id=$forum_id AND $cond_request AND $cond_request_type
                 ORDER BY topic_id DESC";
