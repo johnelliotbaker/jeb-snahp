@@ -176,6 +176,7 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $hidden_fields = [
             'snp_user_id' => $this->user->data['user_id'],
+            'snp_servername' => $this->config['server_name'],
             'snp_cookie_prefix' => $this->config['cookie_name'] . '_',
         ];
         $s_hidden_fields = build_hidden_fields($hidden_fields);

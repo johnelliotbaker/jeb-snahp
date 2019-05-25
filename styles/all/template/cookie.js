@@ -7,7 +7,10 @@ function createCookie(name, value, days) {
     } else {
         expires = "";
     }
-    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+    var servername = document.domain;
+    servername = $.isNumeric(servername.substring(0,1)) ? servername : '.' + servername;
+    const domain = " domain=" + servername + ";";
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/;" + domain;
 }
 
 function readCookie(name) {
