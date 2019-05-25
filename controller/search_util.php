@@ -41,6 +41,13 @@ class search_util extends base
         trigger_error('Error Code: 1fdd2c2b80');
     }
 
+    private function normalize_topic($strn)
+    {
+        setlocale(LC_CTYPE, 'en_US.utf8');
+        $new = iconv('UTF-8', 'ASCII//TRANSLIT', $strn);
+        return $strn . ' ' . $new;
+    }
+
     public function index_topic($cfg)
     {
         // From includes/functions_posting.php
@@ -76,6 +83,7 @@ class search_util extends base
         $poster_id = $data_ary['poster_id'];
         $message = $data_ary['post_text'];
         $subject = $data_ary['post_subject'];
+        $subject = $this->normalize_topic($subject);
         $forum_id = $data_ary['forum_id'];
         $error = false;
         $search = new \jeb\snahp\core\fulltext_native_local($error, $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher);
