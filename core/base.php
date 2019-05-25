@@ -149,8 +149,8 @@ abstract class base
     // Invites
     public function select_invitee($invitee_id)
     {
-        $sql = 'SELECT * FROM phpbb.phpbb_snahp_invite ' .
-            'WHERE redeemer_id=' . (int)$invitee_id;
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['invite'] . ' WHERE redeemer_id=' . (int)$invitee_id;
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
