@@ -1,5 +1,7 @@
+{% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
 {% if N_THANKS_COUNT_FOR_OP %}
 <div class="notice">
   {N_THANKS_COUNT_FOR_OP} {% if N_THANKS_COUNT_FOR_OP == 1 %}user was{% else %}users were{% endif %} thankful for this topic
 </div>
+{% endif %}
 {% endif %}
