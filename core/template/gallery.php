@@ -59,7 +59,7 @@ class gallery
             $body[] = '
                 <div class="col-lg-3 col-sm-4 col-6 item">
 	                <div class="card border-0 transform-on-hover">
-	                	<a class="lightbox" href="' . $d[2] . '" target="_blank">
+	                	<a href="' . $d[2] . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
 	                	</a>
 	                    <div class="card-body">
@@ -97,7 +97,7 @@ class gallery
         {
             $body[] = '
                 <div class="col-lg-3 col-sm-4 col-6 item">
-                    <a class="lightbox" href="' . $d[2] . '" target="_blank">
+                    <a href="' . $d[2] . '" target="_blank">
                         <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
                     </a>
                 </div>';
@@ -130,7 +130,7 @@ class gallery
         {
             $body[] = '
               <div class="col-lg-3 col-sm-4 col-6 item zoom-on-hover">
-                <a class="lightbox" href="' . $d[2] . '" target="_blank">
+                <a href="' . $d[2] . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
                   <span class="description">
                     <span class="description-heading">' . $d[0] . '</span>
