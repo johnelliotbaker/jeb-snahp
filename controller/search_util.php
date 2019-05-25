@@ -43,7 +43,7 @@ class search_util extends base
 
     private function normalize_topic($strn)
     {
-        setlocale(LC_CTYPE, 'en_US.utf8');
+        setlocale(LC_CTYPE, 'en_AU.utf8');
         $new = iconv('UTF-8', 'ASCII//TRANSLIT', $strn);
         return $strn . ' ' . $new;
     }
