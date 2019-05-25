@@ -277,6 +277,8 @@ class main_module
                 // Enabler
                 $snp_search_b_enable = $request->variable('snp_search_b_enable', '1');
                 $config->set('snp_search_b_enable', $snp_search_b_enable);
+                $snp_search_b_enhancer = $request->variable('snp_search_b_enhancer', '1');
+                $config->set('snp_search_b_enhancer', $snp_search_b_enhancer);
                 // Group Permission and Configurations
                 $aInterval = [];
                 foreach ($request->variable_names() as $k => $varname)
@@ -312,6 +314,7 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
                 'SNP_SEARCH_B_ENABLE'      => $config['snp_search_b_enable'],
+                'SNP_SEARCH_B_ENHANCER'      => $config['snp_search_b_enhancer'],
             ));
             // Code to show signature configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;

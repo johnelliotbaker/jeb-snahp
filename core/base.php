@@ -832,6 +832,8 @@ abstract class base
         // 2) OP of a topic only in the listings forums
         if (!$this->config['snp_search_b_enable'])
             return false;
+        if (!$this->config['snp_search_b_enhancer'])
+            return false;
         $gid = $this->user->data['group_id'];
         $gd = $this->select_group($gid);
         $b_group = $gd['snp_search_index_b_enable'];
@@ -911,6 +913,13 @@ abstract class base
         return $this->user->format_date($time);
     }
 
+    public function get_config_array($key)
+    {
+        $config_text = $this->container->get('config_text');
+        $data = unserialize($config_text->get($key));
+        return $data;
+    }
+
     public function get_fid($name)
     {
         $config_text = $this->container->get('config_text');
@@ -932,7 +941,8 @@ abstract class base
         $ptn = '#(\[(gdrive|gd)\])#is';
         $strn = preg_replace($ptn, '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">', $strn);
         $ptn = '#(\[(zippy|zs|zippyshare)\])#is';
-        $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/uJXaUNG.png">', $strn);
+        // $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/uJXaUNG.png">', $strn);
+        $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">', $strn);
         return $strn;
     }
 

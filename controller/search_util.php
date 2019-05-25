@@ -35,10 +35,86 @@ class search_util extends base
                 $cfg = [];
                 $this->index_topic($cfg);
                 break;
+            case 'handle_common_words':
+                $this->reject_non_moderator();
+                $cfg['tpl_name'] = '@jeb_snahp/search_util/component/handle_common_words/base.html';
+                $cfg['base_url'] = '/app.php/snahp/search_util/handle_common_words/';
+                $cfg['title'] = 'Add or Remove Excluded Search Terms';
+                $cfg['b_feedback'] = false;
+                return $this->handle_common_words($cfg);
+                break;
             default:
                 break;
         }
         trigger_error('Error Code: 1fdd2c2b80');
+    }
+
+    private function remove_common_word($word)
+    {
+        $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
+            VALUES ' . "('{$word}', 0, 0) " . '
+            ON DUPLICATE KEY UPDATE
+                word_common=0';
+        $this->db->sql_query($sql);
+    }
+
+    private function add_common_word($word)
+    {
+        $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
+            VALUES ' . "('{$word}', 1, 0) " . '
+            ON DUPLICATE KEY UPDATE
+                word_common=1';
+        $this->db->sql_query($sql);
+    }
+
+    private function handle_common_words($cfg)
+    {
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            add_form_key('jeb_snp');
+            // IF SUBMITTED
+            if ($this->request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $word_to_add = $this->request->variable('word_to_add', '');
+                $word_to_remove = $this->request->variable('word_to_remove', '');
+                if ($word_to_remove)
+                {
+                    $this->remove_common_word($word_to_remove);
+                }
+                if ($word_to_add)
+                {
+                    $this->add_common_word($word_to_add);
+                }
+            }
+            $data = $this->select_common_words();
+            foreach ($data as $row)
+            {
+                $group = array(
+                    'WORD_ID'    => $row['word_id'],
+                    'WORD_TEXT'    => $row['word_text'],
+                    'WORD_COMMON'    => $row['word_common'],
+                    'WORD_COUNT'    => $row['word_count'],
+                );
+                $this->template->assign_block_vars('postrow', $group);
+            }
+            $this->template->assign_var('TITLE', $cfg['title']);
+            return $this->helper->render($tpl_name, $cfg['title']);
+        }
+
+    }
+
+    private function select_common_words()
+    {
+        $sql = 'SELECT * from ' . SEARCH_WORDLIST_TABLE . ' WHERE word_common=1';
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
     }
 
     private function normalize_topic($strn)

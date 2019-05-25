@@ -33,6 +33,11 @@ class main_info
                     'auth'   => 'ext_jeb/snahp',
                     'cat'    => ['MCP_SNP_TITLE']
                 ],
+                'scripts'    => [
+                    'title'  => 'MCP_SNP_SCRIPTS',
+                    'auth'   => 'ext_jeb/snahp',
+                    'cat'    => ['MCP_SNP_TITLE']
+                ],
             ],
         ];
     }

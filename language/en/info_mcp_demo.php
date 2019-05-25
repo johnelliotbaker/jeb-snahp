@@ -26,4 +26,5 @@ $lang = array_merge($lang, array(
 	'MCP_SNP_BAN'     => 'Manage Users',
 	'MCP_SNP_TOPIC_BUMP' => 'List Bumps',
 	'MCP_SNP_INVITE'  => 'Invite',
+	'MCP_SNP_SCRIPTS' => 'Scripts',
 ));

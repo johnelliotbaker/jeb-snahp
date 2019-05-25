@@ -52,11 +52,43 @@ class main_module extends base
             $cfg['b_feedback'] = false;
             $this->handle_invite($cfg);
             break;
+        case 'scripts':
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/scripts/base';
+            // $cfg['tpl_name'] = '@jeb_snahp/mcp/invite/mcp_snp_invite';
+            $cfg['b_feedback'] = false;
+            $this->handle_scripts($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_default($cfg);
         }
 	}
+
+    public function handle_scripts($cfg)
+    {
+		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $data[] = [
+                'ID' => 1,
+                'PURPOSE' => 'Search',
+                'NAME' => 'Search Exclusion',
+                'DESCRIPTION' => 'Exclude certain keywords from being searched.',
+                'LINK' => '<a href="/app.php/snahp/search_util/handle_common_words/"><i class="icon fa-external-link-square fa-fw request_warning" aria-hidden="true"></i></a>',
+            ];
+            foreach ($data as $entry)
+            {
+                $template->assign_block_vars('postrow', $entry);
+
+            }
+            $this->tpl_name = $tpl_name;
+            $template->assign_vars(array(
+                'B_ENABLE' => $config['snp_b_request'],
+                'U_ACTION'    => $this->u_action,
+            ));
+        }
+    }
 
     public function handle_invite($cfg)
     {

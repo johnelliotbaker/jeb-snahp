@@ -1,0 +1,62 @@
+<!-- INCLUDE overall_header.html -->
+<script>
+  {% include '@jeb_snahp/search_util/component/handle_common_words/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/search_util/component/handle_common_words/base.css' %}
+</style>
+
+<div class="twbs">
+  <div class="card">
+    <div class="card-body">
+      <form id="form_common_words" method="POST" action="{U_ACTION}">
+        {S_FORM_TOKEN}
+        <div class="form-group row">
+          <label for="word_to_add" class="col-sm-4 col-form-label">Add to Exclusion</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control form-control-sm" id="word_to_add" name="word_to_add">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="word_to_remove" class="col-sm-4 col-form-label">Remove from Exclusion</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control form-control-sm" id="word_to_remove" name="word_to_remove">
+          </div>
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <p>
+        If you want to REMOVE a keyword from being searched, type the keyword into the "Add to Exclusion" textbox then click submit.<br>
+        If a user complains that searching for "Dame of Prawns" does not correctly find the topic titled "[host] Dame of Prawns S01E05",
+        try adding "of" into the exclusion list and see if it solves the problem.
+      </p>
+    </div>
+    <div class="card-body">
+      <table class="table table-sm table-dark">
+        <thead>
+          <th>#</th>
+          <th>word_text</th>
+          <th>word_common</th>
+          <th>word_count</th>
+        </thead>
+        <tbody id="common_words_table_body">
+        <!-- BEGIN postrow -->
+        <tr>
+          <td>{postrow.WORD_ID}</td>
+          <td>{postrow.WORD_TEXT}</td>
+          <td>{postrow.WORD_COMMON}</td>
+          <td>{postrow.WORD_COUNT}</td>
+        </tr>
+        <!-- END postrow -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->
+
+
