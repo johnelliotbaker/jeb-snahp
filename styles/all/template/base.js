@@ -79,7 +79,7 @@ $(document).ready(()=>{
     // remove quick reply's automatic signature attachment
     $("input:hidden[name='attach_sig']").remove();
     // Insert Your Topics
-    var user_id = $('#snp_user_id').val();
+    var user_id = $('[name="snp_user_id"]').val();
     var your_topics = `<li><a href="/search.php?author_id=${user_id}&sr=topics&sf=firstpost" role="menuitem"><i class="icon fa-file-o fa-fw icon-gray" aria-hidden="true"></i><span>Your topics</span></a></li>`;
     if (user_id > 0) {$('span:contains("Your posts")').closest('li').after(your_topics);}
     // Curlies
