@@ -75,14 +75,14 @@ class main_module extends base
                 'PURPOSE' => 'Search',
                 'NAME' => 'Search Exclusion',
                 'DESCRIPTION' => 'Exclude certain keywords from being searched.',
-                'LINK' => '<a href="/app.php/snahp/search_util/handle_common_words/"><i class="icon fa-external-link-square fa-fw request_warning" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/search_util/handle_common_words/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 2,
                 'PURPOSE' => 'Move Topics',
                 'NAME' => 'Mass Topic Mover',
                 'DESCRIPTION' => 'Move multiple topics from one forum to another (especially to graveyard) with some filtering.',
-                'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move/"><i class="icon fa-external-link-square fa-fw request_warning" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             foreach ($data as $entry)
             {

@@ -936,6 +936,10 @@ abstract class base
 
     public function add_host_icon($strn)
     {
+        $ptn = '#(\[(android)\])#is';
+        $strn = preg_replace($ptn, '<img class="android_icon" src="https://i.imgur.com/uBsdomR.png">', $strn);
+        $ptn = '#(\[(ios)\])#is';
+        $strn = preg_replace($ptn, '<img class="ios_icon" src="https://i.imgur.com/mJ4Rmz1.png">', $strn);
         $ptn = '#(\[(mega)\])#is';
         $strn = preg_replace($ptn, '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">', $strn);
         $ptn = '#(\[(gdrive|gd)\])#is';
