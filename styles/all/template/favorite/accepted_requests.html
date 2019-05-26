@@ -1,6 +1,23 @@
 <!-- INCLUDE overall_header.html -->
 {% if true %}
-<h2 class="forum-title">{TITLE}</h2>
+<style>
+.col-6 a
+{
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: 900;
+}
+</style>
+<div class="twbs">
+  <div class="row">
+    <div class="col-6 pull-left">
+      <h5 class="forum-title">{TITLE}</h2>
+    </div>
+    <div class="col-6 pull-right text-right">
+      <a href="/app.php/snahp/favorite/open_requests/?type=fulfill">Only Show Fulfilled Requests</a>
+    </div>
+  </div>
+</div>
 <div class="action-bar bar-top">
   <div class="pagination">
     <!-- IF .pagination -->

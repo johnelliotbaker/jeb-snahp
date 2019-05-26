@@ -113,8 +113,9 @@ class favorite extends base
             $start = $this->request->variable('start', 0);
             if ($type=='fulfill')
             {
-                $cfg['title'] = 'Unresolved requests';
-                [$data, $total] = $this->select_unresolved_requests($per_page, $start);
+                $cfg['title'] = 'Fulfilled Requests';
+                [$data, $total] = $this->select_fulfilled_requests($per_page, $start);
+                $base_url .= "?type=fulfill";
             }
             else
             {

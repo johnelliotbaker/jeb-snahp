@@ -335,7 +335,7 @@ abstract class base
         return [$rowset, $total];
     }
 
-    public function select_unresolved_requests($per_page, $start, $user_id=null)
+    public function select_fulfilled_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
