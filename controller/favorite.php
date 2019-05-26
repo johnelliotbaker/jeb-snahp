@@ -75,11 +75,21 @@ class favorite extends base
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
+            $type = $this->request->variable('type', 'all');
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
             $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
-            [$data, $total] = $this->select_accepted_requests($per_page, $start);
+            if ($type=='dib')
+            {
+                $cfg['title'] = 'Accepted Requests (Dibs)';
+                [$data, $total] = $this->select_accepted_requests($per_page, $start, 'dib');
+                $base_url .= "?type=dib";
+            }
+            else
+            {
+                [$data, $total] = $this->select_accepted_requests($per_page, $start);
+            }
             $pagination->generate_template_pagination(
                 $base_url, 'pagination', 'start', $total, $per_page, $start
             );

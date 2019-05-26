@@ -307,12 +307,24 @@ abstract class base
     }
 
     // FAVORITE CONTENTS
-    public function select_accepted_requests($per_page, $start, $user_id=null)
+    public function select_accepted_requests($per_page, $start, $status_type='all', $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
         {
             $user_id = $this->user->data['user_id'];
+        }
+        switch($status_type)
+        {
+        case 'dib':
+            $def = $this->container->getParameter('jeb.snahp.req')['def'];
+            $def_dib = $def['dib'];
+            prn($def_dib);
+            $status_condition = " r.status={$def_dib} ";
+            break;
+        case 'all':
+        default:
+            $status_condition = ' 1= 1 ';
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT 
@@ -321,10 +333,10 @@ abstract class base
             t.topic_title
             FROM
                 ('. $tbl['req'] . ' r)
-            LEFT JOIN ('. TOPICS_TABLE .' t) 
+            LEFT JOIN ('. TOPICS_TABLE ." t) 
             ON (t.topic_id=r.tid)
             WHERE
-                r.fulfiller_uid=' . $user_id . ' ORDER BY r.created_time DESC';
+                r.fulfiller_uid={$user_id} AND {$status_condition} ORDER BY r.created_time DESC";
         $result = $this->db->sql_query_limit($sql, $maxi_query);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);
