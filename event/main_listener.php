@@ -98,6 +98,12 @@ class main_listener extends base implements EventSubscriberInterface
             'core.display_forums_after'                   => 'show_thanks_top_list',
             'core.ucp_profile_modify_signature'           => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
+            'core.modify_format_display_text_after'      => [
+                ['process_curly_tags_for_preview', 0],
+            ],
+            'core.search_modify_tpl_ary'              => [
+                ['process_curly_tags_for_search', 1],
+            ],
             'core.viewtopic_modify_post_row'              => [
                 ['easter_cluck', 1],
                 ['block_zebra_foe_topicview', 1],
@@ -410,6 +416,24 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_BUMP' => $user_bump_data['b_bump'],
         ]);
         return false;
+    }/*}}}*/
+
+    public function process_curly_tags_for_preview($event)/*{{{*/
+    {
+        // For properly rendering snahp tags in post previews
+        include_once('includes/functions_content.php');
+        $text = $event['text'];
+        $text = $this->interpolate_curly_tags($text);
+        $event['text'] = $text;
+    }/*}}}*/
+
+    public function process_curly_tags_for_search($event)/*{{{*/
+    {
+        // For properly rendering snahp tags for within topic search
+        $tpl_ary = $event['tpl_ary'];
+        $message = &$tpl_ary['MESSAGE'];
+        $message = $this->interpolate_curly_tags($message);
+        $event['tpl_ary'] = $tpl_ary;
     }/*}}}*/
 
     public function process_curly_tags($event)/*{{{*/
