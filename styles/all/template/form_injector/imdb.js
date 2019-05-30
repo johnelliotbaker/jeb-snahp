@@ -107,7 +107,7 @@ function fillPostMessage(term)
 
 function isImdbID(strn)
 {
-    var regex = /ev\d{7}\/\d{4}(-\d)?|(ch|co|ev|nm|tt)\d{7}/;
+    var regex = /ev\d{7,8}\/\d{4}(-\d)?|(ch|co|ev|nm|tt)\d{7,8}/;
     var match = strn.match(regex);
     return match
 }
@@ -147,7 +147,7 @@ function startHandlingImdbAjax()
 }
 
 var imdb_dialog_template = `
-    <div id="imdb_dialog" class="modal">
+    <div id="imdb_dialog" class="modal_imdb">
     <div class="modal-overlay modal-toggle"></div>
     <div class="modal-wrapper modal-transition">
     <div id="imdb_header" class="modal-header">
@@ -185,7 +185,7 @@ function handle_imdb(response)
     $imdb_content = $("#imdb_content");
     $close_btn = $("#close_btn")
         .click(function(){
-            $('.modal').remove();
+            $('#imdb_dialog').remove();
         })
 
     var responseType = getResponseType(response);
@@ -218,7 +218,7 @@ function handle_imdb(response)
                     target = e.target;
                     var imdbid = $(target).attr("imdbid");
                     fillPostMessage(imdbid);
-                    $('.modal').remove();
+                    $('#imdb_dialog').remove();
                 })
                 .appendTo($imgDiv)
             $type_txt = $("<div/>")
@@ -238,7 +238,7 @@ function handle_imdb(response)
         $notfound = $("<h>Not Found</h>").css({"font-size": "200%"});
         $imdb_content.append($notfound);
     }
-    $('.modal').toggleClass('is-visible');
+    $('#imdb_dialog').toggleClass('is-visible');
 }
 
 phpbb.addAjaxCallback('snahp.imdbCallback', startHandlingImdbAjax);

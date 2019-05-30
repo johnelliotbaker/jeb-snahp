@@ -1,14 +1,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
-<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
 <!-- INCLUDEJS @jeb_snahp/dereferrer.js -->
 <!-- INCLUDEJS @jeb_snahp/utility.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
 <!-- INCLUDECSS @jeb_snahp/base.css -->
 <!-- INCLUDECSS @jeb_snahp/request_tags.css -->
 <script>
   {% include '@jeb_snahp/cookie.js' %}
 </script>
 {S_HIDDEN_FIELDS}
+{S_HIDDEN_FIELDS_ALT}
 {S_REQ_HIDDEN_FIELDS}
 {% if STYLE_NAME %}
 <!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_NAME}.css -->

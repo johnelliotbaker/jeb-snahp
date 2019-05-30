@@ -188,6 +188,7 @@ class main_listener extends base implements EventSubscriberInterface
         $s_hidden_fields = build_hidden_fields($hidden_fields);
         $this->template->assign_vars([
             'S_HIDDEN_FIELDS' => $s_hidden_fields,
+            'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
         ]);
     }/*}}}*/
 
@@ -706,10 +707,10 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function include_assets_before_posting($event)/*{{{*/
     {
-        $forum_id = $this->request->variable('f', '');
+        $forum_id = (int) $this->request->variable('f', '');
         $topic_id = $this->request->variable('t', '');
         $pg_names = ['anime', 'listing', 'book', 'game'];
-        if ($forum_id && is_numeric($forum_id) && !($topic_id))
+        if ($forum_id && !($topic_id))
         {
             foreach ($pg_names as $pg_name)
             {
@@ -737,6 +738,10 @@ class main_listener extends base implements EventSubscriberInterface
 
             if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
                 $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
+
+            $this->template->assign_vars([
+                'B_SHOW_CUSTOM_TPL' => true,
+            ]);
         }
     }/*}}}*/
 

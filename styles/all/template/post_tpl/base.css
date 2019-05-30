@@ -1,0 +1,44 @@
+#custom_tpl_badges_body
+{
+    font-size: 1.5em;
+}
+
+#custom_tpl_textarea
+{
+    font-size: 1.15em;
+}
+
+.badge
+{
+    cursor: pointer;
+}
+
+div.input-group.input-group-sm
+{
+    margin-bottom: 6px !important;
+}
+
+div.input-group-prepend
+{
+    margin-bottom: 0px !important;
+}
+
+.form-control.custom_tpl_field
+{
+    resize: none;
+}
+
+.custom_tpl_add
+{
+    font-size:14px;
+    cursor: pointer;
+    margin-left:2px;
+}
+
+.badge .close
+{
+    margin: -.05rem -.2rem 0 .25rem;
+    color: inherit;
+    font-size: 100%;
+    text-shadow: 0 1px 0 rgba(#000, .5);
+}

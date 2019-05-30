@@ -37,6 +37,11 @@ jeb_snahp_userscript:
     defaults: { _controller: jeb.snahp.userscript:handle}
     requirements:
         mode: \S+
+jeb_snahp_template:
+    path: /snahp/template/{mode}/
+    defaults: { _controller: jeb.snahp.template:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_invite:
     path: /snahp/invite/{mode}/
     defaults: { _controller: jeb.snahp.invite:handle}

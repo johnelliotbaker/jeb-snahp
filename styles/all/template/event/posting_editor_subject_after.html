@@ -35,3 +35,6 @@
   <button type="button" data-ajax="snahp.gamespotCallback">Search</button>
 </dd>
 {% endif %}
+{% if B_SHOW_CUSTOM_TPL %}
+  {% include '@jeb_snahp/post_tpl/base.html' %}
+{% endif %}

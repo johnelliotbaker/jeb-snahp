@@ -74,6 +74,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.template:
+        class: jeb\snahp\controller\template
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.invite:
         class: jeb\snahp\controller\invite
         parent: jeb.snahp.base

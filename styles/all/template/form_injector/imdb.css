@@ -53,7 +53,7 @@
 
 
 
-.modal {
+.modal_imdb {
   position: absolute;
   z-index: 10000;
   top: 0;
@@ -63,7 +63,7 @@
   height: 100%;
 }
 
-.modal.is-visible {
+.modal_imdb.is-visible {
   visibility: visible;
 }
 
@@ -80,7 +80,7 @@
   transition: visibility 0s linear 0.3s, opacity 0.3s;
 }
 
-.modal.is-visible .modal-overlay {
+.modal_imdb.is-visible .modal-overlay {
   opacity: 1;
   visibility: visible;
   transition-delay: 0s;
@@ -106,7 +106,7 @@
   opacity: 0;
 }
 
-.modal.is-visible .modal-transition {
+.modal_imdb.is-visible .modal-transition {
   -webkit-transform: translateY(0);
           transform: translateY(0);
   opacity: 1;

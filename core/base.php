@@ -146,6 +146,71 @@ abstract class base
     }
 
     // DATABASE Functions
+
+    // Custom Templates
+    public function upsert_tpl($user_id, $name, $text)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $user_id = (int) $user_id;
+        if (!$user_id || !$name || !$text)
+        {
+            return false;
+        }
+        $data = [
+            'user_id' => $user_id,
+            'name' => $name,
+            'text' => $text,
+        ];
+        $sql = 'INSERT INTO ' . $tbl['tpl'] . $this->db->sql_build_array('INSERT', $data) . "
+            ON DUPLICATE KEY UPDATE text='{$text}'";
+        $this->db->sql_query($sql);
+        return $sql;
+    }
+
+    public function update_tpl($user_id, $name, $text)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $user_id = (int) $user_id;
+        if (!$user_id || !$name || !$text)
+        {
+            return false;
+        }
+        $data['text'] = $text;
+        $sql = 'UPDATE ' . $tbl['tpl'] . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+            WHERE user_id={$user_id} AND name='{$name}'";
+        $this->db->sql_query($sql);
+        return $sql;
+    }
+
+    public function delete_tpl($user_id, $name)
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        if (!$user_id || !$name)
+        {
+            return false;
+        }
+        $sql = 'DELETE FROM '  . $tbl['tpl'] . "
+            WHERE user_id={$user_id} AND name='{$name}'";
+        $this->db->sql_query($sql);
+        return true;
+    }
+
+    public function select_tpl($user_id, $b_full=true, $name='')
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $s_fields = $b_full ? '*' : 'id, name';
+        $sql = "SELECT {$s_fields} FROM " . $tbl['tpl'] . ' WHERE user_id=' . (int)$user_id;
+        if ($name)
+        {
+            $sql .= " AND name='{$name}'";
+        }
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }
+
     // Invites
     public function select_invitee($invitee_id)
     {

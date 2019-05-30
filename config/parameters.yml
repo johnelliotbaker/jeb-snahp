@@ -8,6 +8,7 @@ parameters:
         invite: '%core.table_prefix%snahp_invite'
         invite_users: '%core.table_prefix%snahp_invite_users'
         thanks: '%core.table_prefix%thanks'
+        tpl: '%core.table_prefix%snahp_tpl'
         manual_search_posts: '%core.table_prefix%snahp_manual_search_posts'
     jeb.snahp.bump_topic:
         def:
