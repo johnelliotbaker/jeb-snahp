@@ -1,5 +1,6 @@
 var Post_tpl = {};
 Post_tpl.text = '';
+Post_tpl.cursor = 0;
 
 Post_tpl.setup_badges = function()
 {
@@ -30,9 +31,30 @@ Post_tpl.setup_badges = function()
     });
 }
 
+
+Post_tpl.focus_form = function($tpl, delay)
+{
+    setTimeout(function() {
+        $input = $tpl.find('input[type="text"]');
+        if ($input.length)
+        {
+            $input.focus();
+        }
+        else
+        {
+            $textarea = $tpl.find('textarea');
+            if ($textarea.length)
+            {
+                $textarea = $textarea[0];
+                $textarea.focus();
+            }
+        }
+    }.bind(this), delay);
+}
+
 Post_tpl.open = function(name)
 {
-    console.log(this.target);
+    Post_tpl.cursor = $('#message').prop("selectionStart");
     if (!name)
     {
         return false;
@@ -41,6 +63,7 @@ Post_tpl.open = function(name)
     {
         $tpl = $('#custom_tpl_create_modal');
         $tpl.modal('show');
+        Post_tpl.focus_form($tpl, 100);
     }
     else
     {
@@ -51,6 +74,7 @@ Post_tpl.open = function(name)
         });
         $tpl = $('#custom_tpl_details_modal');
         $tpl.modal('show');
+        Post_tpl.focus_form($tpl, 250);
     }
 }
 
@@ -118,8 +142,10 @@ Post_tpl.create_fields = function(resp)
 
 Post_tpl.fill_message = function(message)
 {
-    var prev = $('#message').val();
-    $('#message').val(prev + message);
+    var orig = $('#message').val();
+    var prev = orig.slice(0, Post_tpl.cursor);
+    var nexx = orig.slice(Post_tpl.cursor);
+    $('#message').val(prev + message + nexx);
 }
 
 Post_tpl.delete = function(name)

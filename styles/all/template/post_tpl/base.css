@@ -28,6 +28,12 @@ div.input-group-prepend
     resize: none;
 }
 
+@-moz-document url-prefix() {
+    .form-control.custom_tpl_field {
+        height: 31px !important;
+    }
+}
+
 .custom_tpl_add
 {
     font-size:14px;
