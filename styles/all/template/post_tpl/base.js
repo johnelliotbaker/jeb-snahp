@@ -6,8 +6,9 @@ Post_tpl.setup_badges = function()
 {
     // delete badge css: https://github.com/twbs/bootstrap/issues/18759#issuecomment-322583020
     $wrapper = $('#custom_tpl_badges_body');
-    $wrapper.find('.badge').remove();
+    $wrapper.find('.badge.badge-primary').remove();
     $.get('/app.php/snahp/template/get/', (resp)=>{
+        console.log(resp);
         for (var entry of resp)
         {
             $badge = $(`<span class="badge badge-primary" data-name="${entry['name']}">${entry['name']}</span>`)
@@ -62,6 +63,8 @@ Post_tpl.open = function(name)
     if (name == 'new')
     {
         $tpl = $('#custom_tpl_create_modal');
+        $('.form-control.custom_tpl_new_name').val('');
+        $('.form-control.custom_tpl_new_text').val('');
         $tpl.modal('show');
         Post_tpl.focus_form($tpl, 100);
     }
@@ -113,6 +116,7 @@ Post_tpl.extract_fields = function(text)
 
 Post_tpl.create_fields = function(resp)
 {
+    console.log(resp);
     var text = resp['text'];
     var data = Post_tpl.extract_fields(text);
     $body = $('#custom_tpl_body').empty();

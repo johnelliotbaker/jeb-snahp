@@ -6,6 +6,49 @@
 	<div class="panel">
 		<div class="inner">
 			<fieldset>
+        <dl>
+					<dt><label>Custom Template</label><br />
+            <span><br>
+              Check Allowed to enable custom template form generator for that group.<br><br>
+              Custom template can be used in any forum.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Max</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aCustomTemplate -->
+                  <tr>
+                    <td>{aCustomTemplate.gid}</td>
+                    <td>{aCustomTemplate.gname}</td>
+                    <td>
+                      <input type="number" style="text-align:center; width:40px;"
+                                           name="customtemplate-max-{aCustomTemplate.gid}"
+                                           min="0"
+                                           value="{aCustomTemplate.max}">
+                    </td>
+                    <td>
+                      <input type="hidden"
+                               name="customtemplate-{aCustomTemplate.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="customtemplate-{aCustomTemplate.gid}"
+                               id="customtemplate-{aCustomTemplate.gname}"
+                             {% if aCustomTemplate.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aCustomTemplate -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+        </dl>
 				<dl>
 					<dt><label>IMDb</label><br />
             <span><br>

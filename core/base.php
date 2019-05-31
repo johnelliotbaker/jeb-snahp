@@ -186,12 +186,13 @@ abstract class base
     public function delete_tpl($user_id, $name)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $user_id = (int) $user_id;
         if (!$user_id || !$name)
         {
             return false;
         }
         $sql = 'DELETE FROM '  . $tbl['tpl'] . "
-            WHERE user_id={$user_id} AND name='{$name}'";
+            WHERE user_id={$user_id} AND " . $this->db->sql_in_set('name', $name);
         $this->db->sql_query($sql);
         return true;
     }
@@ -203,7 +204,7 @@ abstract class base
         $sql = "SELECT {$s_fields} FROM " . $tbl['tpl'] . ' WHERE user_id=' . (int)$user_id;
         if ($name)
         {
-            $sql .= " AND name='{$name}'";
+            $sql .= ' AND ' . $this->db->sql_in_set('name', $name);
         }
         $sql .= " ORDER BY id DESC";
         $result = $this->db->sql_query($sql);
@@ -839,6 +840,20 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
+    }
+
+    public function reject_group($column, $group_id)
+    {
+        $sql = 'SELECT COUNT(group_id) as count from ' . GROUPS_TABLE . " WHERE {$column}=1 AND group_id={$group_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $b = $row && $row['count'] ? true : false;
+        if (!$b)
+        {
+            trigger_error('Permission Error. Error Code: ca546fad27');
+        }
+        return true;
     }
 
     public function reject_bots()

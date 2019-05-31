@@ -13,6 +13,12 @@ class v_0_23_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
+            'add_columns' => [
+                GROUPS_TABLE  => [
+                    'snp_customtemplate_enable' => ['BOOL', 0],
+                    'snp_customtemplate_n_max'  => ['INT:10', 0],
+                ],
+            ],
             'add_tables' => [
                 $this->table_prefix . 'snahp_tpl' => [
                     'COLUMNS' => [
@@ -40,6 +46,12 @@ class v_0_23_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
+            'drop_columns' => [
+                GROUPS_TABLE => [
+                    'snp_customtemplate_enable',
+                    'snp_customtemplate_n_max',
+                ],
+            ],
             'drop_tables' => [
                 $this->table_prefix . 'snahp_tpl',
             ],

@@ -1,3 +1,4 @@
+{% if B_SHOW_CUSTOM_TPL %}
 <script>
   {% include '@jeb_snahp/post_tpl/base.js' %}
 </script>
@@ -13,11 +14,11 @@
     <div class="twbs">
       <div class="row" style="margin-left:-2px;" id="custom_tpl_badges_body">
         <div onClick="Post_tpl.open('new');">
-          <i style="" class="icon fa-plus fa-fw custom_tpl_add" aria-hidden="true"></i>
+          <i style="" class="icon fa-plus-circle fa-fw custom_tpl_add" aria-hidden="true"></i>
         </div>
       </div>
 
-      <!-- Modal -->
+      <!-- Modal creating a new custom template -->
       <div class="modal fade" id="custom_tpl_create_modal" tabindex="-1" role="dialog" aria-hidden="true">
         <input type="hidden" name="custom_tpl_name"></input>
         <div class="modal-dialog modal-lg" role="document">
@@ -34,7 +35,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">Name</span>
                   </div>
-                  <input type="text" class="form-control custom_tpl_new_name" placeholder="Template Name">
+                  <input type="text" maxlength="20" class="form-control custom_tpl_new_name" placeholder="Template Name">
                 </div>
                 <textarea class="form-control custom_tpl_new_text" rows="8"></textarea>
               </div>
@@ -46,7 +47,7 @@
         </div>
       </div>
 
-      <!-- Modal -->
+      <!-- Modal for showing details of custom template -->
       <div class="modal fade" id="custom_tpl_details_modal" tabindex="-1" role="dialog" aria-hidden="true">
         <input type="hidden" name="custom_tpl_name"></input>
         <div class="modal-dialog modal-lg" role="document">
@@ -60,8 +61,8 @@
             <div class="modal-body text-left" id="custom_tpl_body">
             </div>
             <div class="modal-footer">
-              <button onClick="Post_tpl.save();"id="custom_tpl_save_btn" type="button" class="btn btn-secondary float-center" data-dismiss="modal">Save</button>
-              <button onClick="Post_tpl.fill_form();"id="custom_tpl_submit_btn" type="button" class="btn btn-primary float-right" data-dismiss="modal">Submit</button>
+              <button onClick="Post_tpl.save();"id="custom_tpl_save_btn" type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Save</button>
+              <button onClick="Post_tpl.fill_form();"id="custom_tpl_submit_btn" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
             </div>
           </div>
         </div>
@@ -71,3 +72,4 @@
     </div>
   </dd>
 </dl>
+{% endif %}

@@ -779,6 +779,33 @@ class main_module
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_gamespot_enable', $aGamespotEnable);
                 $db->sql_query($sql);
+                // Code to limit CustomTemplate based on group membership
+                $aCustomTemplateEnable = $aCustomTemplateMax = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/customtemplate-(\d+)/', $varname, $match_CustomTemplate_toggle);
+                    if ($match_CustomTemplate_toggle)
+                    {
+                        $gid = $match_CustomTemplate_toggle[1];
+                        $var = "customtemplate-$gid";
+                        $var = $request->variable($var, '0');
+                        $aCustomTemplateEnable[$gid] = $var ? 1 : 0;
+                    }
+                    preg_match('/customtemplate-max-(\d+)/', $varname, $match_CustomTemplate_max);
+                    if ($match_CustomTemplate_max)
+                    {
+                        $gid = $match_CustomTemplate_max[1];
+                        $var = "customtemplate-max-$gid";
+                        $var = $request->variable($var, 0);
+                        $aCustomTemplateMax[$gid] = $var;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_customtemplate_enable', $aCustomTemplateEnable);
+                $db->sql_query($sql);
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_customtemplate_n_max', $aCustomTemplateMax);
+                $db->sql_query($sql);
                 // Store Forum IDs from template
                 foreach ($pg_names as $pg_name)
                 {
@@ -841,6 +868,20 @@ class main_module
                     'gcheck'=> $row['snp_gamespot_enable'],
                 );
                 $template->assign_block_vars('aGamespot', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show CustomTemplate configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_customtemplate_enable'],
+                    'max'=> $row['snp_customtemplate_n_max'],
+                );
+                $template->assign_block_vars('aCustomTemplate', $group);
             };
             $db->sql_freeresult($result);
 

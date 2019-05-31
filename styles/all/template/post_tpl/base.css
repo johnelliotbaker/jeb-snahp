@@ -3,6 +3,7 @@
     font-size: 1.5em;
 }
 
+.form-control.custom_tpl_new_text,
 #custom_tpl_textarea
 {
     font-size: 1.15em;
@@ -38,7 +39,9 @@ div.input-group-prepend
 {
     font-size:14px;
     cursor: pointer;
-    margin-left:2px;
+    margin-left:4px;
+    color: #006bde;
+    opacity: .8;
 }
 
 .badge .close
@@ -52,6 +55,14 @@ div.input-group-prepend
 
 
 {% if STYLE_NAME=='acieeed'  %}
+
+.custom_tpl_add
+{
+    margin-top: .55rem;
+    margin-left: 5px;
+    color: #f8c301;
+    opacity: 1;
+}
 
 .badge.badge-primary
 {
@@ -73,13 +84,15 @@ div.input-group-prepend
   opacity: 1;
 }
 
-i.custom_tpl_add
-{
-    margin-top: .55rem;
-    margin-left: 3px;
-}
-
 {% elseif STYLE_NAME=='hexagon' %}
+
+.custom_tpl_add
+{
+    margin-top: .35rem;
+    margin-left: 5px;
+    color: #de7300;
+    opacity: .85;
+}
 
 .badge.badge-primary
 {
@@ -102,6 +115,13 @@ i.custom_tpl_add
 }
 
 {% elseif STYLE_NAME=='basic' %}
+
+.custom_tpl_add
+{
+    margin-left: 5px;
+    color: #176093;
+    opacity: .9;
+}
 
 .badge.badge-primary
 {

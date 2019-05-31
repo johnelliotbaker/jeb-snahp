@@ -29,8 +29,8 @@ class template extends base
 
     public function handle($mode)
     {
-        $this->reject_anon();
-        $this->reject_bots();
+        $group_id = $this->user->data['group_id'];
+        $this->reject_group('snp_customtemplate_enable', $group_id);
         switch ($mode)
         {
         case 'serialize':
@@ -59,14 +59,37 @@ class template extends base
         trigger_error('Error Code: 62869cedad');
     }
 
+    private function reject_overdraw()
+    {
+        $user_id = $this->user->data['user_id'];
+        $gid = $this->user->data['group_id'];
+        $sql = 'SELECT snp_customtemplate_n_max FROM ' . GROUPS_TABLE . ' WHERE group_id = ' . $gid;
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            trigger_error('Error Code: d4b7daa1b9');
+        }
+        $n_max = $row['snp_customtemplate_n_max'];
+        $rowset = $this->select_tpl($user_id, false);
+        $count = count($rowset);
+        if ($count >= $n_max)
+        {
+            trigger_error('You have exceeded your quota. Error Code: 6ab9e5ab1d');
+        }
+    }
+
     public function create_tpl($cfg)
     {
         $js = new \phpbb\json_response();
         $user_id = $this->user->data['user_id'];
+        $this->reject_overdraw();
         if ($this->request->is_ajax())
         {
             // $vn = $this->request->variable_names();
             $name = htmlspecialchars_decode($this->request->variable('name', ''));
+            $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
             $text = htmlspecialchars_decode($this->request->variable('text', ''));
             if ($text)
             {

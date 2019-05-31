@@ -719,7 +719,8 @@ class main_listener extends base implements EventSubscriberInterface
             $user_id = $this->user->data['user_id'];
             $gid = $this->user->data['group_id'];
             $sql = 'SELECT snp_imdb_enable, snp_anilist_enable,
-                snp_googlebooks_enable, snp_gamespot_enable 
+                snp_googlebooks_enable, snp_gamespot_enable,
+                snp_customtemplate_enable
                 FROM ' . GROUPS_TABLE . '
                 WHERE group_id = ' . $gid;
             $result = $this->db->sql_query($sql);
@@ -739,9 +740,8 @@ class main_listener extends base implements EventSubscriberInterface
             if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
                 $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
 
-            $this->template->assign_vars([
-                'B_SHOW_CUSTOM_TPL' => true,
-            ]);
+            if ($row['snp_customtemplate_enable'])
+                $this->template->assign_vars(['B_SHOW_CUSTOM_TPL' => true,]);
         }
     }/*}}}*/
 
