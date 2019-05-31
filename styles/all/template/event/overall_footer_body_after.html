@@ -4,14 +4,3 @@
 <!-- DEFINE $INCLUDED_JQUERYUIJS = true -->
 <!-- ENDIF -->
 <!-- INCLUDEJS @jeb_snahp/base.js -->
-<script>
-$("body").keydown(function(event){
-    if(event.keyCode == 27) {
-        event.preventDefault();
-        $("#anilist_dialog").remove();
-        $("#googlebooks_dialog").remove();
-        $("#gamespot_dialog").remove();
-        $(".modal").remove();
-    }
-});
-</script>

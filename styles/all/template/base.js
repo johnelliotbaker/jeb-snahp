@@ -123,3 +123,14 @@ $(document).ready(()=>{
         }
     });
 });
+
+// Pressing escape esc will close post generator modal
+$("body").keydown(function(event){
+    if(event.keyCode == 27) {
+        event.preventDefault();
+        $("#anilist_dialog").remove();
+        $("#googlebooks_dialog").remove();
+        $("#gamespot_dialog").remove();
+        $(".modal_imdb").remove();
+    }
+});
