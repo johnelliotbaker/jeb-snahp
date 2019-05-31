@@ -18,29 +18,38 @@ function prn($var, $b_html=false) {
 
 class gallery
 {
+    protected $def;
 	public function __construct(
 	)
 	{
+        $column_sizes = [
+            'sm'      => 'col-lg-2 col-3 sm',
+            'default' => 'col-lg-3 col-sm-4 col-6 default',
+            'lg'      => 'col-lg-4 col-sm-6 col-12 lg',
+        ];
+        $def['column_sizes'] = $column_sizes;
+        $this->def = $def;
 	}
 
-    public function handle($mode, $data)
+    public function handle($mode, $data, $options=[])
     {
         switch ($mode)
         {
         case 'compact':
-            return $this->handle_compact($data);
+            return $this->handle_compact($data, $options);
         case 'grid':
-            return $this->handle_grid($data);
+            return $this->handle_grid($data, $options);
         case 'cards':
-            return $this->handle_cards($data);
+            return $this->handle_cards($data, $options);
         default:
             break;
         }
         return '';
     }
 
-    private function handle_cards($data)
+    private function handle_cards($data, $options=[])
     {
+        $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
 <link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/cards/base.css">
 <div class="twbs">
@@ -56,8 +65,7 @@ class gallery
 </div>';
         foreach($data as $d)
         {
-            $body[] = '
-                <div class="col-lg-3 col-sm-4 col-6 item">
+            $body[] = '<div class="' . $column_size . ' item"> 
 	                <div class="card border-0 transform-on-hover">
 	                	<a href="' . $d[2] . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
@@ -79,8 +87,9 @@ class gallery
         return $res;
     }
 
-    private function handle_grid($data)
+    private function handle_grid($data, $options=[])
     {
+        $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
 <link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/grid/base.css">
 <div class="twbs">
@@ -95,9 +104,8 @@ class gallery
 </div>';
         foreach($data as $d)
         {
-            $body[] = '
-                <div class="col-lg-3 col-sm-4 col-6 item">
-                    <a href="' . $d[2] . '" target="_blank">
+            $body[] = '<div class="' . $column_size . ' item"> 
+                        <a href="' . $d[2] . '" target="_blank">
                         <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
                     </a>
                 </div>';
@@ -112,8 +120,9 @@ class gallery
         return $res;
     }
 
-    private function handle_compact($data)
+    private function handle_compact($data, $options=[])
     {
+        $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
 <link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/compact/base.css">
 <div class="twbs">
@@ -128,8 +137,7 @@ class gallery
 </div>';
         foreach($data as $d)
         {
-            $body[] = '
-              <div class="col-lg-3 col-sm-4 col-6 item zoom-on-hover">
+            $body[] = '<div class="' . $column_size . ' item zoom-on-hover"> 
                 <a href="' . $d[2] . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
                   <span class="description">

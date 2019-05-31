@@ -109,7 +109,7 @@ class curly_parser
         return $strn;
     }
 
-    public function interpolate_gallery($strn, $tag_name, $type)
+    public function interpolate_gallery($strn, $tag_name, $type, $options=[])
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -126,7 +126,7 @@ class curly_parser
             }
         }
         $gallery = new \jeb\snahp\core\template\gallery;
-        $html = $gallery->handle($type, $data);
+        $html = $gallery->handle($type, $data, $options);
         return $html;
     }
 
@@ -267,13 +267,31 @@ class curly_parser
                 $res = $this->interpolate_gfycat($content, $tag_type);
                 break;
             case 'gallery_cards':
-                $res = $this->interpolate_gallery($content, $tag_type, 'cards');
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'default']);
+                break;
+            case 'gallery_cards_sm':
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'sm']);
+                break;
+            case 'gallery_cards_lg':
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'lg']);
                 break;
             case 'gallery_grid':
-                $res = $this->interpolate_gallery($content, $tag_type, 'grid');
+                $res = $this->interpolate_gallery($content, $tag_type, 'grid', ['size' => 'default']);
+                break;
+            case 'gallery_grid_sm':
+                $res = $this->interpolate_gallery($content, $tag_type, 'grid', ['size' => 'sm']);
+                break;
+            case 'gallery_grid_lg':
+                $res = $this->interpolate_gallery($content, $tag_type, 'grid', ['size' => 'lg']);
                 break;
             case 'gallery_compact':
-                $res = $this->interpolate_gallery($content, $tag_type, 'compact');
+                $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'default']);
+                break;
+            case 'gallery_compact_sm':
+                $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'sm']);
+                break;
+            case 'gallery_compact_lg':
+                $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'lg']);
                 break;
             case 'youtube':
                 $res = $this->interpolate_youtube($content, $tag_type);
