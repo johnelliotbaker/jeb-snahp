@@ -205,6 +205,7 @@ abstract class base
         {
             $sql .= " AND name='{$name}'";
         }
+        $sql .= " ORDER BY id DESC";
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);

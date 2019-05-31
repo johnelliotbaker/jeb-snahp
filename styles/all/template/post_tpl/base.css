@@ -48,3 +48,66 @@ div.input-group-prepend
     font-size: 100%;
     text-shadow: 0 1px 0 rgba(#000, .5);
 }
+
+
+
+{% if STYLE_NAME=='acieeed'  %}
+
+.badge.badge-primary
+{
+    background-color: #f8c301;
+    opacity: 1;
+    color: #000;
+}
+
+.badge.badge-primary .close
+{
+  float: right;
+  font-size: 110%;
+  font-weight: 900;
+  line-height: .95;
+  margin-top: 0px;
+  color: #000 !important;
+  text-shadow: 0 0px 0 #fff;
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+i.custom_tpl_add
+{
+    margin-top: .55rem;
+    margin-left: 3px;
+}
+
+{% elseif STYLE_NAME=='hexagon' %}
+
+.badge.badge-primary
+{
+    background-color: #de7300;
+    opacity: .85;
+    color: black;
+}
+
+.badge.badge-primary .close
+{
+  float: right;
+  font-size: 110%;
+  font-weight: 900;
+  line-height: .95;
+  margin-top: 0px;
+  color: #000 !important;
+  text-shadow: 0 0px 0 #fff;
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+{% elseif STYLE_NAME=='basic' %}
+
+.badge.badge-primary
+{
+    background-color: #2770a3;
+    opacity: 1;
+    font-weight: 400;
+}
+
+{% endif %}

@@ -71,6 +71,7 @@ Post_tpl.open = function(name)
         $('[name="custom_tpl_name"]').val(name);
         $.get(`/app.php/snahp/template/get/?name=${p['n']}&full=${p['f']}`, (resp)=>{
             Post_tpl.create_fields(resp[0]);
+            $('#custom_tpl_modal_title').text(name);
         });
         $tpl = $('#custom_tpl_details_modal');
         $tpl.modal('show');
