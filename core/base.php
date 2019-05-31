@@ -33,7 +33,6 @@ function prn($var, $b_html=false) {
     }
 }
 
-
 abstract class base
 {
     protected $template_context;

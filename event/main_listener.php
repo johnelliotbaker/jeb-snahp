@@ -1,4 +1,6 @@
 <?php
+
+/*{{{*/
 /**
  *
  * snahp. An extension for the phpBB Forum Software package.
@@ -21,9 +23,9 @@ use phpbb\db\driver\driver_interface;
 use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+/*}}}*/
 
-
-function closetags($html) {
+function closetags($html) {/*{{{*/
     preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
     $openedtags = $result[1];
     preg_match_all('#</([a-z]+)>#iU', $html, $result);
@@ -41,17 +43,30 @@ function closetags($html) {
         }
     }
     return $html;
-}
+}/*}}}*/
 
-
-function prn($var) {
+function prn($var, $b_html=false, $depth=0) {/*{{{*/
+    $indent = [];
+    for ($i=0; $i<$depth; $i++)
+    {
+        $indent[] = '...';
+    }
+    $indent = join('', $indent);
     if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
+    { foreach ($var as $k => $v) { echo '<br>'; echo "$indent$k => "; prn($v, $b_html, $depth+1); }
+    } else {
+        if ($b_html)
+        {
+            echo htmlspecialchars($var);
+        }
+        else
+        {
+            echo $var . '<br>';
+        }
+    }
+}/*}}}*/
 
-
-function fwrite($filepath, $var, $bNew=true)
+function fwrite($filepath, $var, $bNew=true) /*{{{*/
 {
     if ($bNew) file_put_contents($filepath, '');
     if (is_array($var))
@@ -66,7 +81,7 @@ function fwrite($filepath, $var, $bNew=true)
     {
         file_put_contents($filepath, "$var\n", FILE_APPEND);
     }
-}
+}/*}}}*/
 
 
 /**
@@ -139,13 +154,21 @@ class main_listener extends base implements EventSubscriberInterface
             'core.memberlist_view_profile' => [
                 ['show_inviter_in_profile', 0]
             ],
+            'core.search_modify_param_before' => [
+                ['search_modify_param_before', 0]
+            ],
         ];
     }
 
     public function test($event)/*{{{*/
     {
-        // $fid = $this->get_fid('listings');
-        // prn($fid);
+    }/*}}}*/
+
+    public function search_modify_param_before($event)/*{{{*/
+    {
+        $sort_by_sql = $event['sort_by_sql'];
+        $sort_by_sql += ['x' => 't.topic_time'];
+        $event['sort_by_sql'] = $sort_by_sql;
     }/*}}}*/
 
     public function show_inviter_in_profile($event)/*{{{*/
