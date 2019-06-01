@@ -1,6 +1,8 @@
-var advanced_height = null;
+var Reqs_post =  {};
 
-function toggle_advanced()
+Reqs_post.advanced_height = null;
+
+Reqs_post.toggle_advanced = function()
 {
     $btn = $("#show_advanced");
     $('#request_advanced').animate({ opacity: "toggle", height: "toggle", });
@@ -16,7 +18,7 @@ function toggle_advanced()
     }
 }
 
-function eventFire(el, etype, b_ctrl=false){
+Reqs_post.eventFire = function(el, etype, b_ctrl=false){
     // https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript
     if (el.fireEvent) {
         el.fireEvent('on' + etype);
@@ -30,7 +32,6 @@ function eventFire(el, etype, b_ctrl=false){
         el.dispatchEvent(evObj);
     }
 }
-
 
 $(document).ready(function(){
     var type = $("#request_type").val();
@@ -48,7 +49,7 @@ $(document).ready(function(){
         {
             b_ctrl = true;
         }
-        eventFire(document.getElementById(id), 'click', b_ctrl);
+        Reqs_post.eventFire(document.getElementById(id), 'click', b_ctrl);
     });
     $('.req_cb').click((e) => {
         $target = $(e.target);

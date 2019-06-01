@@ -1,4 +1,6 @@
-function makeGooglebooksTemplate(data)
+var Googlebooks = {};
+
+Googlebooks.makeTemplate = function(data)
 {
     data = data.volumeInfo;
     try { var thumbnail     = data.imageLinks.thumbnail;} catch { var thumbnail = "";};
@@ -21,7 +23,6 @@ function makeGooglebooksTemplate(data)
     try { var publishedDate = data['publishedDate'];} catch { var publishedDate = "";};
     try { var publisher     = data['publisher'];} catch { var publisher = "";};
     try { var ratingsCount  = data['ratingsCount'];} catch { var ratingsCount = "";};
-
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
     var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
     var subtitle      = getEntryOrEmpty(`[center][size=120][b]{text}[/b][/size][/center]\n`, subtitle);
@@ -29,16 +30,13 @@ function makeGooglebooksTemplate(data)
     var averageRating = getEntryOrEmpty(`[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`, averageRating);
     var categories    = getEntryOrEmpty(`[center][b][size=140]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(categories, ', '));
     var description   = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, description);
-
     var publishedDate = getEntryOrEmpty(`[color=#FF8000][b]Published Date[/b][/color]: {text}\n`, publishedDate);
     var printType     = getEntryOrEmpty(`[color=#FF8000][b]Print Type[/b][/color]: {text}\n`, printType);
     var language      = getEntryOrEmpty(`[color=#FF8000][b]Language[/b][/color]: {text}\n`, language);
-
     var publisher     = getEntryOrEmpty(`[color=#FF8000][b]Publisher[/b][/color]: {text}\n`, publisher);
     var pageCount     = getEntryOrEmpty(`[color=#FF8000][b]Page Count[/b][/color]: {text}\n`, pageCount);
     var previewLink   = getEntryOrEmpty(`[color=#FF8000][b]Preview[/b][/color]: [url={url}]{text}[/url]\n`, "Google Books", previewLink);
     var ratingsCount  = getEntryOrEmpty(`[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`, ratingsCount);
-
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
     var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
@@ -58,14 +56,14 @@ function makeGooglebooksTemplate(data)
     return text;
 }
 
-function fillGooglebooksPostMessage(entry)
+Googlebooks.fillMessage = function(entry)
 {
-    var summary = makeGooglebooksTemplate(entry);
+    var summary = Googlebooks.makeTemplate(entry);
     var text = summary;
     $('#message').val(text);
 }
 
-function updateGooglebooksPosters(media)
+Googlebooks.updatePosters = function(media)
 {
     $googlebooks_dialog = $("#googlebooks_dialog");
     $googlebooks_header = $("#googlebooks_header");
@@ -79,7 +77,6 @@ function updateGooglebooksPosters(media)
         author =  vinfo.authors;
         pubDate =  vinfo.publishedDate;
         try {img = vinfo.imageLinks.thumbnail;} catch {img = ''};
-
         $li = $("<li/>")
             .addClass("img_li")
             .appendTo($googlebooks_content);
@@ -99,7 +96,7 @@ function updateGooglebooksPosters(media)
                 var match = tid.match(/img-(\d+)/);
                 tid = parseInt(match[1], 10);
                 var googlebooksid = $(target).attr("googlebooksid");
-                fillGooglebooksPostMessage(media[tid]);
+                Googlebooks.fillMessage(media[tid]);
                 $("#googlebooks_dialog").remove();
             })
             .appendTo($imgDiv)
@@ -130,8 +127,7 @@ function updateGooglebooksPosters(media)
     }, 100);
 }
 
-
-var googlebooks_dialog_template = `
+Imdb.googlebooks_dialog_template = `
 <div id="googlebooks_dialog" class="twbs modalDialog googlebooks">
   <div class="twbs card document rounded">
     <div class="twbs card-body dialog rounded">
@@ -166,7 +162,7 @@ var googlebooks_dialog_template = `
 </div>
 `;
 
-function filterGooglebooksMedia(media)
+Googlebooks.filterGooglebooksMedia = function(media)
 {
     var aType = [];
     aType.push("BOOK");
@@ -182,7 +178,6 @@ function filterGooglebooksMedia(media)
         {
             selectedMedia.push(media[i]);
         }
-
     }
     if ($("#cb_show_googlebooks_enable_sort").prop("checked"))
     {
@@ -191,14 +186,13 @@ function filterGooglebooksMedia(media)
                 return -a.date+b.date;
             return a.date-b.date;
         });
-
     }
     return selectedMedia;
 }
 
-function handle_googlebooks(response, searchTerm)
+Googlebooks.handle_googlebooks = function(response, searchTerm)
 {
-    $googlebooks_dialog = $(googlebooks_dialog_template).appendTo($("body"));
+    $googlebooks_dialog = $(Imdb.googlebooks_dialog_template).appendTo($("body"));
     $googlebooks_dialog = $("#googlebooks_dialog");
     $googlebooks_header = $("#googlebooks_header");
     $googlebooks_title  = $("#googlebooks_title").text(`Results for "${searchTerm}"`);
@@ -208,16 +202,15 @@ function handle_googlebooks(response, searchTerm)
             $('#googlebooks_dialog').remove();
         })
     $("[id^=cb_show_googlebooks]").change(function(event){
-            var selectedMedia = filterGooglebooksMedia(media);
-            updateGooglebooksPosters(selectedMedia);
+            var selectedMedia = Googlebooks.filterGooglebooksMedia(media);
+            Googlebooks.updatePosters(selectedMedia);
         });
-
     var media = response.items;
-    var selectedMedia = filterGooglebooksMedia(media);
-    updateGooglebooksPosters(selectedMedia);
+    var selectedMedia = Googlebooks.filterGooglebooksMedia(media);
+    Googlebooks.updatePosters(selectedMedia);
 }
 
-function addSearchQualifier(url, dict)
+Googlebooks.addSearchQualifier = function(url, dict)
 {
     for (var key in dict)
     {
@@ -244,9 +237,7 @@ function addSearchQualifier(url, dict)
     return url;
 }
 
-
-
-function startHandlingGooglebooksAjax()
+Googlebooks.startHandlingGooglebooksAjax = function()
 {
     dict ={};
     $googlebooks_input = $("#googlebooks_input");
@@ -271,23 +262,22 @@ function startHandlingGooglebooksAjax()
         }
     );
     $ajax.done(function(response){
-        handle_googlebooks(response, searchTerm);
+        Googlebooks.handle_googlebooks(response, searchTerm);
     });
 }
 
-
-phpbb.addAjaxCallback('snahp.googlebooksCallback', startHandlingGooglebooksAjax);
+phpbb.addAjaxCallback('snahp.googlebooksCallback', Googlebooks.startHandlingGooglebooksAjax);
 $(document).ready(function() {
     $("#googlebooks_input_author").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            startHandlingGooglebooksAjax();
+            Googlebooks.startHandlingGooglebooksAjax();
         }
     });
     $("#googlebooks_input").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            startHandlingGooglebooksAjax();
+            Googlebooks.startHandlingGooglebooksAjax();
         }
     });
 });

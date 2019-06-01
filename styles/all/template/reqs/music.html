@@ -1,17 +1,17 @@
 <input id="request_type" name="request_type" type="hidden" value="music">
 <input id="enable_request_form" name="enable_request_form" type="hidden" value="1">
 <div id="request_form" class="request_form">
-  {% include '@jeb_snahp/reqs/ctrl_click.html' %}
+  {% include '@jeb_snahp/reqs/component/ctrl_click.html' %}
   {% include '@jeb_snahp/reqs/component/host.html' %}
-  {% include '@jeb_snahp/reqs/component/audio_compression.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_compression.html' %}
 </div>
-  {% include '@jeb_snahp/reqs/component/audio_tip.html' %}
-  {% include '@jeb_snahp/reqs/component/audio_reference_link.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_tip.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_reference_link.html' %}
 <div class="request_form">
-  {% include '@jeb_snahp/reqs/component/audio_bitrate.html' %}
-  {% include '@jeb_snahp/reqs/component/audio_samplerate.html' %}
-  {% include '@jeb_snahp/reqs/component/audio_channels.html' %}
-  {% include '@jeb_snahp/reqs/component/audio_bitdepth.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_bitrate.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_samplerate.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_channels.html' %}
+  {% include '@jeb_snahp/reqs/component/audio/audio_bitdepth.html' %}
   <div id="request_advanced" class="request advanced">
     {% include '@jeb_snahp/reqs/component/size.html' %}
     {% include '@jeb_snahp/reqs/component/quality_balance.html' %}

@@ -1,12 +1,14 @@
-var prog_tpl = `<div class="progress">
+var Invite_giveaways = {};
+
+Invite_giveaways.prog_tpl = `<div class="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 </div>`;
-var btn_tpl = '<button id="confirm_btn" type="button" class="btn btn-primary">Submit</button>';
+Invite_giveaways.btn_tpl = '<button id="confirm_btn" type="button" class="btn btn-primary">Submit</button>';
 
-function create_confirm(gid)
+Invite_giveaways.create_confirm = function(gid)
 {
     var val = [];
-    prepare_confirmation_modal();
+    Invite_giveaways.prepare_confirmation_modal();
     $confirm_body = $('#confirm_body');
     $group_name = $('#group_name_' + gid);
     val['group_name'] = $group_name.text();
@@ -15,14 +17,14 @@ function create_confirm(gid)
     $confirm_body.html(strn);
     $elem_n = $('#n_' + gid);
     var n_invite = $elem_n.val();
-    $('#confirm_btn').attr({'onclick': 'create(' + gid + ');'});
+    $('#confirm_btn').attr({'onclick': 'Invite_giveaways.create(' + gid + ');'});
     $('#confirm_modal').modal();
 }
 
-function create(gid)
+Invite_giveaways.create = function(gid)
 {
     $confirm_body = $('#confirm_body').empty();
-    $prog = $(prog_tpl);
+    $prog = $(Invite_giveaways.prog_tpl);
     var url = '/app.php/snahp/acp_invite/insert_invite_users_by_group/?gid=' + gid;
     es = new EventSource(url);
     es.addEventListener('message', (resp)=>{
@@ -58,28 +60,27 @@ function create(gid)
                 break;
             default:
         }
-
     });
     es.addEventListener('error', (resp)=>{
         es.close();
     });
 }
 
-function prepare_confirmation_modal()
+Invite_giveaways.prepare_confirmation_modal = function()
 {
     $('#confirm_btn').remove();
     $('#confirm_title').text('Please confirm:');
     $('#confirm_cancel_btn').removeClass('hidden');
     $('#confirm_close_btn').addClass('hidden');
-    $btn = $(btn_tpl);
+    $btn = $(Invite_giveaways.btn_tpl);
     $confirm_footer = $('#confirm_footer');
     $confirm_footer.prepend($btn);
 }
 
-function send_confirm(gid)
+Invite_giveaways.send_confirm = function(gid)
 {
     var val = [];
-    prepare_confirmation_modal();
+    Invite_giveaways.prepare_confirmation_modal();
     $confirm_body = $('#confirm_body');
     $group_name = $('#group_name_' + gid);
     val['group_name'] = $group_name.text();
@@ -88,15 +89,15 @@ function send_confirm(gid)
     var strn = `<h6>Are you sure you want to send ${val['n_invite']} invites to all members in <span style="color:#CC0000; font-weight:900;">${val['group_name']}</span>?<br><br>
         This may take a long time.</h6>`;
     $confirm_body.html(strn);
-    $('#confirm_btn').attr({'onclick': 'send(' + gid + ');'});
+    $('#confirm_btn').attr({'onclick': 'Invite_giveaways.send(' + gid + ');'});
     $('#confirm_modal').modal();
 }
 
-function send(gid)
+Invite_giveaways.send = function(gid)
 {
     var val = [];
     $confirm_body = $('#confirm_body').empty();
-    $prog = $(prog_tpl);
+    $prog = $(Invite_giveaways.prog_tpl);
     $group_name = $('#group_name_' + gid);
     val['group_name'] = $group_name.text();
     $n_invite = $('#n_' + gid);
@@ -144,10 +145,10 @@ function send(gid)
     });
 }
 
-function delete_confirm(gid)
+Invite_giveaways.delete_confirm = function(gid)
 {
     var val = [];
-    prepare_confirmation_modal();
+    Invite_giveaways.prepare_confirmation_modal();
     $confirm_body = $('#confirm_body');
     $group_name = $('#group_name_' + gid);
     val['group_name'] = $group_name.text();
@@ -156,15 +157,15 @@ function delete_confirm(gid)
     var strn = `<h6>Are you sure you want to delete valid invites from all members in <span style="color:#CC0000; font-weight:900;">${val['group_name']}</span>?<br><br>
         This may take a long time.</h6>`;
     $confirm_body.html(strn);
-    $('#confirm_btn').attr({'onclick': 'delete_valid(' + gid + ');'});
+    $('#confirm_btn').attr({'onclick': 'Invite_giveaways.delete_valid(' + gid + ');'});
     $('#confirm_modal').modal();
 }
 
-function delete_valid(gid)
+Invite_giveaways.delete_valid = function(gid)
 {
     var val = [];
     $confirm_body = $('#confirm_body').empty();
-    $prog = $(prog_tpl);
+    $prog = $(Invite_giveaways.prog_tpl);
     $group_name = $('#group_name_' + gid);
     val['group_name'] = $group_name.text();
     $n_invite = $('#n_' + gid);
@@ -211,6 +212,23 @@ function delete_valid(gid)
     });
 }
 
+Invite_giveaways.select = function(tab)
+{
+    var tabs = [1,2,3];
+    for (var i of tabs)
+    {
+        if (i==tab)
+        {
+            $('#help' + i).removeClass('hidden');
+            $('#tab' + i).addClass('active');
+        }
+        else
+        {
+            $('#help' + i).addClass('hidden');
+            $('#tab' + i).removeClass('active');
+        }
+    }
+}
 
 $(document).ready(()=>{
 });
