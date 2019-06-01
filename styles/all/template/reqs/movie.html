@@ -1,16 +1,16 @@
 <input id="request_type" name="request_type" type="hidden" value="movie">
 <input id="enable_request_form" name="enable_request_form" type="hidden" value="1">
 <div id="request_form" class="request_form">
-  {% include '@jeb_snahp/reqs/ctrl_click.html' %}
+  {% include '@jeb_snahp/reqs/component/ctrl_click.html' %}
   {% include '@jeb_snahp/reqs/component/host.html' %}
-  {% include '@jeb_snahp/reqs/component/video_resolution.html' %}
-  {% include '@jeb_snahp/reqs/component/video_codec.html' %}
+  {% include '@jeb_snahp/reqs/component/video/video_resolution.html' %}
+  {% include '@jeb_snahp/reqs/component/video/video_codec.html' %}
   {% include '@jeb_snahp/reqs/component/size.html' %}
   {% include '@jeb_snahp/reqs/component/reference_link.html' %}
   <div id="request_advanced">
     {% include '@jeb_snahp/reqs/component/quality_balance.html' %}
-    {% include '@jeb_snahp/reqs/component/video_source.html' %}
-    {% include '@jeb_snahp/reqs/component/video_format.html' %}
+    {% include '@jeb_snahp/reqs/component/video/video_source.html' %}
+    {% include '@jeb_snahp/reqs/component/video/video_format.html' %}
   </div>
   {% include '@jeb_snahp/reqs/show_advanced.html' %}
 </div>
