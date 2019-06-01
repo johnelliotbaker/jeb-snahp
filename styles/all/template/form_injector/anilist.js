@@ -1,13 +1,14 @@
-function getEntryOrEmpty(template, text, url=0)
+var Anilist = {};
+
+Anilist.getEntryOrEmpty = function(template, text, url=0)
 {
     if (text) { template = template.replace('{text}', text);}
     else      { template = "";}
     if (url)  { template = template.replace('{url}', url);}
     return template;
-
 }
 
-function getEndDateOrEmpty(template, endDate, url=0)
+Anilist.getEndDateOrEmpty = function(template, endDate, url=0)
 {
     var year  = endDate['year'];
     var month = endDate['month'];
@@ -16,19 +17,19 @@ function getEndDateOrEmpty(template, endDate, url=0)
     if (year)  { strn += year;}
     if (month) { strn += '/' + month;}
     if (day)   { strn += '/' + day;}
-    return getEntryOrEmpty(template, strn, url);
+    return Anilist.getEntryOrEmpty(template, strn, url);
 }
 
-function getRatingOrEmpty(template, rating, url=0)
+Anilist.getRatingOrEmpty = function(template, rating, url=0)
 {
     if (rating > 0)
     {
-        return getEntryOrEmpty(template, (rating/10).toFixed(1), url);
+        return Anilist.getEntryOrEmpty(template, (rating/10).toFixed(1), url);
     }
     return "";
 }
 
-function toTitleCase(str) {
+Anilist.toTitleCase = function(str) {
     // https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
     if (str)
     {
@@ -39,31 +40,29 @@ function toTitleCase(str) {
     return "";
 }
 
-function makeAnilistTemplate(data)
+Anilist.makeAnilistTemplate = function(data)
 {
     var type          = data['type'];
     var id            = data['id'];
     var url           = data['siteUrl'];
-
-    var img           = getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['coverImage']['large']);
-    var bannerImage   = data['bannerImage'] ? getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['bannerImage']) : "";
+    var img           = Anilist.getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['coverImage']['large']);
+    var bannerImage   = data['bannerImage'] ? Anilist.getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['bannerImage']) : "";
     var year          = data['startDate']['year'] ? ' (' + data['startDate']['year'] + ')' : "";
-    var titleNative   = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}${year}[/url][/b][/size][/center]\n`, data['title']['native'], url);
-    var titleRomaji   = getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['romaji']);
-    var titleEnglish  = getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['english']);
-    var rating        = getRatingOrEmpty(`[center][size=150][b]{text} / 10[/b][/size][/center]\n`, data['averageScore']);
-    var genre         = getEntryOrEmpty(`[center][b][size=120]{text}[/size][/b][/center]\n`, data['genres'].join(', '));
-    var summary       = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, data['description']);
-
-    var volumes       = getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
-    var format        = getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, toTitleCase(data['format']));
+    var titleNative   = Anilist.getEntryOrEmpty(`[center][size=200][b][url={url}]{text}${year}[/url][/b][/size][/center]\n`, data['title']['native'], url);
+    var titleRomaji   = Anilist.getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['romaji']);
+    var titleEnglish  = Anilist.getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['english']);
+    var rating        = Anilist.getRatingOrEmpty(`[center][size=150][b]{text} / 10[/b][/size][/center]\n`, data['averageScore']);
+    var genre         = Anilist.getEntryOrEmpty(`[center][b][size=120]{text}[/size][/b][/center]\n`, data['genres'].join(', '));
+    var summary       = Anilist.getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, data['description']);
+    var volumes       = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
+    var format        = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, Anilist.toTitleCase(data['format']));
     var trailer       = "";
-    try { var trailer = getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id']) } catch {};
-    var episodes      = getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
-    var endDate       = getEndDateOrEmpty(`[color=#FF8000][b]End Date[/b][/color]: {text}\n`, data['endDate']);
-    var chapters      = getEntryOrEmpty(`[color=#FF8000][b]Chapters[/b][/color]: {text}\n`, data['chapters']);
-    var runtime       = getEntryOrEmpty(`[color=#FF8000][b]Runtime[/b][/color]: {text} minutes\n`, data['duration']);
-    var votes         = getEntryOrEmpty(`[color=#FF8000][b]Votes[/b][/color]: {text}\n`, numberWithCommas(data['popularity']));
+    try { var trailer = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id']) } catch {};
+    var episodes      = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
+    var endDate       = Anilist.getEndDateOrEmpty(`[color=#FF8000][b]End Date[/b][/color]: {text}\n`, data['endDate']);
+    var chapters      = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Chapters[/b][/color]: {text}\n`, data['chapters']);
+    var runtime       = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Runtime[/b][/color]: {text} minutes\n`, data['duration']);
+    var votes         = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Votes[/b][/color]: {text}\n`, numberWithCommas(data['popularity']));
     var links         = `[color=#FF8000][b]Links[/b][/color]: [b]`;
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
     var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
@@ -86,15 +85,14 @@ function makeAnilistTemplate(data)
     return text;
 }
 
-
-function fillAnilistPostMessage(entry)
+Anilist.fillAnilistPostMessage = function(entry)
 {
-    var summary = makeAnilistTemplate(entry);
+    var summary = Anilist.makeAnilistTemplate(entry);
     var text = summary;
     $('#message').val(text);
 }
 
-function updatePosters(media)
+Anilist.updatePosters = function(media)
 {
     $anilist_dialog = $("#anilist_dialog");
     $anilist_header = $("#anilist_header");
@@ -122,7 +120,7 @@ function updatePosters(media)
                 var match = tid.match(/img-(\d+)/);
                 tid = parseInt(match[1], 10);
                 var anilistid = $(target).attr("anilistid");
-                fillAnilistPostMessage(media[tid]);
+                Anilist.fillAnilistPostMessage(media[tid]);
                 $("#anilist_dialog").remove();
                 // $('#anilist_dialog').modal("hide");
                 // $('.modal').remove();
@@ -156,14 +154,13 @@ function updatePosters(media)
     // $("#anilist_dialog").css({ "opacity": "1", "pointer-events": "auto" });
 }
 
-function filterAnilistMedia(media)
+Anilist.filterAnilistMedia = function(media)
 {
     var aType = [];
     if ($("#cb_show_anime").prop("checked"))
     { aType.push("ANIME") }
     if ($("#cb_show_manga").prop("checked"))
     { aType.push("MANGA") }
-
     var selectedMedia = [];
     for (var i in media)
     {
@@ -177,8 +174,7 @@ function filterAnilistMedia(media)
     return selectedMedia;
 }
 
-
-var anilist_dialog_template = `
+Anilist.anilist_dialog_template = `
 <div id="anilist_dialog" class="twbs modalDialog anilist">
   <div class="twbs card document rounded">
     <div class="twbs card-body dialog rounded">
@@ -210,10 +206,9 @@ var anilist_dialog_template = `
 </div>
 `;
 
-
-function handle_anilist(response, searchTerm)
+Anilist.handle_anilist = function(response, searchTerm)
 {
-    $anilist_dialog = $(anilist_dialog_template).appendTo($("body"));
+    $anilist_dialog = $(Anilist.anilist_dialog_template).appendTo($("body"));
     $anilist_dialog = $("#anilist_dialog");
     $anilist_header = $("#anilist_header");
     $anilist_title  = $("#anilist_title").text(`Results for "${searchTerm}"`);
@@ -224,20 +219,19 @@ function handle_anilist(response, searchTerm)
             // $('#anilist_dialog').modal("hide");
         })
     $("#cb_show_manga").change(function(event){
-            var selectedMedia = filterAnilistMedia(media);
-            updatePosters(selectedMedia);
+            var selectedMedia = Anilist.filterAnilistMedia(media);
+            Anilist.updatePosters(selectedMedia);
         });
     $("#cb_show_anime").change(function(event){
-            var selectedMedia = filterAnilistMedia(media);
-            updatePosters(selectedMedia);
+            var selectedMedia = Anilist.filterAnilistMedia(media);
+            Anilist.updatePosters(selectedMedia);
         });
-
     var media = response['data']['Page']['media'];
-    var selectedMedia = filterAnilistMedia(media);
-    updatePosters(selectedMedia);
+    var selectedMedia = Anilist.filterAnilistMedia(media);
+    Anilist.updatePosters(selectedMedia);
 }
 
-function startHandlingAnilistAjax()
+Anilist.startHandlingAnilistAjax = function()
 {
     $anilist_input = $("#anilist_input");
     var searchTerm = $anilist_input.val();
@@ -299,16 +293,16 @@ function startHandlingAnilistAjax()
         }
     );
     $ajax.done(function(response){
-        handle_anilist(response, searchTerm);
+        Anilist.handle_anilist(response, searchTerm);
     });
 }
 
-phpbb.addAjaxCallback('snahp.anilistCallback', startHandlingAnilistAjax);
+phpbb.addAjaxCallback('snahp.anilistCallback', Anilist.startHandlingAnilistAjax);
 $(document).ready(function() {
     $("#anilist_input").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            startHandlingAnilistAjax();
+            Anilist.startHandlingAnilistAjax();
         }
     });
 });
