@@ -63,13 +63,28 @@ class gallery
   </div>
 </section>
 </div>';
+        $ptn = '<dl class="hidebox (\w+)">';
+        $class = ['', ' hi'];
+        $elem = ['a', 'span'];
         foreach($data as $d)
         {
-            $body[] = '<div class="' . $column_size . ' item"> 
+            $link = strip_tags($d[2]);
+            $choice = 0;
+            preg_match($ptn, $d[2], $match);
+            if (count($match)>0)
+            {
+                if($match[1]=='hi')
+                {
+                    $choice = 1;
+                }
+            }
+            $cls = $class[$choice];
+            $el = $elem[$choice];
+            $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
 	                <div class="card border-0 transform-on-hover">
-	                	<a href="' . $d[2] . '" target="_blank">
+	                	<' . $el . ' href="' . $link . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
-	                	</a>
+	                	</' . $el . '>
 	                    <div class="card-body">
 	                        <h6>'. $d[0] . '</h6>
 	                        <p class="text-muted card-text">' . $d[1] . '</p>
@@ -102,12 +117,27 @@ class gallery
   </div>
 </section>
 </div>';
+        $ptn = '<dl class="hidebox (\w+)">';
+        $class = ['', ' hi'];
+        $elem = ['a', 'span'];
         foreach($data as $d)
         {
-            $body[] = '<div class="' . $column_size . ' item"> 
-                        <a href="' . $d[2] . '" target="_blank">
+            $link = strip_tags($d[2]);
+            $choice = 0;
+            preg_match($ptn, $d[2], $match);
+            if (count($match)>0)
+            {
+                if($match[1]=='hi')
+                {
+                    $choice = 1;
+                }
+            }
+            $cls = $class[$choice];
+            $el = $elem[$choice];
+            $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
+                        <' . $el . ' href="' . $link . '" target="_blank">
                         <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
-                    </a>
+                    </' . $el . '>
                 </div>';
         }
         $html['body'] = $body;
@@ -135,16 +165,31 @@ class gallery
   </div>
 </section>
 </div>';
+        $ptn = '<dl class="hidebox (\w+)">';
+        $class = ['', ' hi'];
+        $elem = ['a', 'span'];
         foreach($data as $d)
         {
-            $body[] = '<div class="' . $column_size . ' item zoom-on-hover"> 
-                <a href="' . $d[2] . '" target="_blank">
+            $link = strip_tags($d[2]);
+            $choice = 0;
+            preg_match($ptn, $d[2], $match);
+            if (count($match)>0)
+            {
+                if($match[1]=='hi')
+                {
+                    $choice = 1;
+                }
+            }
+            $cls = $class[$choice];
+            $el = $elem[$choice];
+            $body[] = '<div class="' . $column_size . ' item zoom-on-hover' . $cls . '"> 
+                <' . $el . ' href="' . $link . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
                   <span class="description">
                     <span class="description-heading">' . $d[0] . '</span>
                     <span class="description-body">' . $d[1] . '</span>
                   </span>
-                </a>
+                </' . $el . '>
               </div>';
         }
         $html['body'] = $body;

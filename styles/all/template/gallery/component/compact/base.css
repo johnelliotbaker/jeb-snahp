@@ -21,6 +21,11 @@
   opacity: 1;
 }
 
+.gallery-block.compact-gallery .item.hi
+{
+    opacity: .5;
+}
+
 .gallery-block.compact-gallery .item .image{
   transition: 0.8s ease;
 }

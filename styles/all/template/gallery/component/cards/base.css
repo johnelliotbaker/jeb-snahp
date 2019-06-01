@@ -8,6 +8,16 @@
     padding: 0px 11px 0px 11px;
 }
 
+.gallery-block.cards-gallery .item.hi
+{
+    opacity: .8;
+}
+
+.gallery-block.cards-gallery .item.hi .card span
+{
+    opacity: .7;
+}
+
 .gallery-block.cards-gallery .item .card-body
 {
     padding: 12px 12px 12px 12px;

@@ -125,6 +125,10 @@ class curly_parser
                 $data[] = explode('` ', $entry);
             }
         }
+        if (!$data)
+        {
+            return '';
+        }
         $gallery = new \jeb\snahp\core\template\gallery;
         $html = $gallery->handle($type, $data, $options);
         return $html;

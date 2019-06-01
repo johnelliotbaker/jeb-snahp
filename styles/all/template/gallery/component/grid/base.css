@@ -9,6 +9,11 @@
     margin-bottom: 16px;
 }
 
+.gallery-block.grid-gallery .item.hi span img
+{
+    opacity: .7;
+}
+
 .grid-gallery .default.item .card-body
 {
     padding: 12px 12px 12px 12px;
