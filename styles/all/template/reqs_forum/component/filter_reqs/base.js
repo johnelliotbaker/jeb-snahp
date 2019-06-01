@@ -1,10 +1,12 @@
-function select_tags(mode)
+var Filter_reqs = {};
+
+Filter_reqs.select_tags = function(mode)
 {
     createCookie('requests_selector_cookie', mode, 365);
-    hide_tags(mode);
+    Filter_reqs.hide_tags(mode);
 }
 
-function hide_tags(mode)
+Filter_reqs.hide_tags = function(mode)
 {
     $a_btn = $('.btn');
     $.each($a_btn, (index)=>{
@@ -25,12 +27,12 @@ function hide_tags(mode)
     });
 }
 
-$(function () {
+$(function() {
     var cookie = readCookie('requests_selector_cookie');
     if (!cookie)
     {
         cookie = 'all';
         createCookie('requests_selector_cookie', cookie, 365);
     }
-    hide_tags(cookie);
+    Filter_reqs.hide_tags(cookie);
 });
