@@ -28,10 +28,10 @@
             <tr>
               <td class="text-center">{A.group_id}</td>
               <td id="group_name_{A.group_id}">{A.group_name}</td>
-              <td class="text-center"><button onclick="create_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button></td>
+              <td class="text-center"><button onclick="Invite_giveaways.create_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-warning">Create</button></td>
               <td><input class="text-right" type="number" min="0" max="9" name="n_{A.group_id}" value="0" id="n_{A.group_id}"> Invites</td>
-              <td class="text-center"><button onclick="send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button></td>
-              <td class="text-center"><button onclick="delete_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button></td>
+              <td class="text-center"><button onclick="Invite_giveaways.send_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-success">Give</button></td>
+              <td class="text-center"><button onclick="Invite_giveaways.delete_confirm({A.group_id});"style="font-size:10px; padding:1px 5px 1px 5px;" type="button" class="btn btn-danger">Delete</button></td>
             </tr>
             <!-- END A -->
           </tbody>
@@ -77,23 +77,6 @@
     }
   </style>
   <script>
-    function select(tab)
-    {
-      var tabs = [1,2,3];
-      for (var i of tabs)
-      {
-        if (i==tab)
-        {
-          $('#help' + i).removeClass('hidden');
-          $('#tab' + i).addClass('active');
-        }
-        else
-        {
-          $('#help' + i).addClass('hidden');
-          $('#tab' + i).removeClass('active');
-        }
-      }
-    }
 
   </script>
   <div align="center">
@@ -101,13 +84,13 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
-            <a id="tab1" class="nav-link active" onclick="select(1);">Create</a>
+            <a id="tab1" class="nav-link active" onclick="Invite_giveaways.select(1);">Create</a>
           </li>
           <li class="nav-item">
-            <a id="tab2" class="nav-link" onclick="select(2);">Give</a>
+            <a id="tab2" class="nav-link" onclick="Invite_giveaways.select(2);">Give</a>
           </li>
           <li class="nav-item">
-            <a id="tab3" class="nav-link" onclick="select(3);">Delete</a>
+            <a id="tab3" class="nav-link" onclick="Invite_giveaways.select(3);">Delete</a>
           </li>
         </ul>
       </div>
