@@ -9,9 +9,12 @@
     font-size: 1.15em;
 }
 
-.badge
+.badge.tpl
 {
+    background-color: #007bff;
     cursor: pointer;
+    margin-right: 2px;
+    opacity: .85;
 }
 
 div.input-group.input-group-sm
@@ -64,14 +67,14 @@ div.input-group-prepend
     opacity: 1;
 }
 
-.badge.badge-primary
+.badge.tpl
 {
     background-color: #f8c301;
     opacity: 1;
     color: #000;
 }
 
-.badge.badge-primary .close
+.badge.tpl .close
 {
   float: right;
   font-size: 110%;
@@ -94,14 +97,14 @@ div.input-group-prepend
     opacity: .85;
 }
 
-.badge.badge-primary
+.badge.tpl
 {
     background-color: #de7300;
     opacity: .85;
     color: black;
 }
 
-.badge.badge-primary .close
+.badge.tpl .close
 {
   float: right;
   font-size: 110%;
@@ -123,8 +126,9 @@ div.input-group-prepend
     opacity: .9;
 }
 
-.badge.badge-primary
+.badge.tpl
 {
+    color: white;
     background-color: #2770a3;
     opacity: 1;
     font-weight: 400;

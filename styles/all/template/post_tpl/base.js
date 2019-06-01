@@ -6,12 +6,12 @@ Post_tpl.setup_badges = function()
 {
     // delete badge css: https://github.com/twbs/bootstrap/issues/18759#issuecomment-322583020
     $wrapper = $('#custom_tpl_badges_body');
-    $wrapper.find('.badge.badge-primary').remove();
+    $wrapper.find('.badge.tpl').remove();
     $.get('/app.php/snahp/template/get/', (resp)=>{
         console.log(resp);
         for (var entry of resp)
         {
-            $badge = $(`<span class="badge badge-primary" data-name="${entry['name']}">${entry['name']}</span>`)
+            $badge = $(`<span class="badge tpl" data-name="${entry['name']}">${entry['name']}</span>`)
                 .click((e)=>{
                     $target = $(e.target);
                     var name = $target.prop('dataset')['name'];
