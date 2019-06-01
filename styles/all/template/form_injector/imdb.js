@@ -1,4 +1,7 @@
 // KEYS KEYS AND MORE KEYS
+
+var Imdb = {};
+
 aKey = [
     // "b0dea1ac", // Deactivated
     "bb25f904",
@@ -8,7 +11,7 @@ aKey = [
     "54e3324c"
 ]
 
-function getRating(aRating)
+Imdb.getRating = function(aRating)
 {
     strn = "";
     for (var i in aRating)
@@ -32,7 +35,7 @@ function getRating(aRating)
     return strn;
 }
 
-function maketemplate(imdb)
+Imdb.maketemplate = function(imdb)
 {
     console.log(imdb);
     try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
@@ -51,7 +54,7 @@ function maketemplate(imdb)
     } catch(err) { var genre    = ""; }
     try { 
         var rr = /(.*)\/(.*)/.exec(imdb['Ratings'][0]['Value']);
-        // rr = getRating(imdb['Ratings']);
+        // rr = Imdb.getRating(imdb['Ratings']);
         var rating            = `[color=#FF8000][b]Rating[/b][/color]: ${rr[0]}* (may differ)\n`
     } catch(err) { var rating   = ""; }
     try { var votes             = `[color=#FF8000][b]Votes[/b][/color]: ${imdb['imdbVotes']} (may differ)\n`
@@ -85,7 +88,7 @@ function maketemplate(imdb)
 }
 
 
-function getKey()
+Imdb.getKey = function()
 {
     var max = aKey.length;
     var min = 0;
@@ -93,19 +96,19 @@ function getKey()
     return aKey[index];
 }
 
-function fillPostMessage(term)
+Imdb.fillPostMessage = function(term)
 {
-    var url = `https://www.omdbapi.com/?apikey=${getKey()}&i=${term}`
+    var url = `https://www.omdbapi.com/?apikey=${Imdb.getKey()}&i=${term}`
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
-        var summary = maketemplate(response);
+        var summary = Imdb.maketemplate(response);
         var text = summary;
         $('#message').val(text);
     });
 }
 
 
-function isImdbID(strn)
+Imdb.isImdbID = function(strn)
 {
     var regex = /ev\d{7,8}\/\d{4}(-\d)?|(ch|co|ev|nm|tt)\d{7,8}/;
     var match = strn.match(regex);
@@ -113,7 +116,7 @@ function isImdbID(strn)
 }
 
 
-function getResponseType(response)
+Imdb.getResponseType = function(response)
 {
     if ('Search' in response)
     {
@@ -127,22 +130,22 @@ function getResponseType(response)
 }
 
 
-function startHandlingImdbAjax()
+Imdb.startHandlingImdbAjax = function()
 {
     $imdb_input = $("#imdb_input");
     var term = $imdb_input.val();
-    var match = isImdbID(term)
+    var match = Imdb.isImdbID(term)
     if (match && match[0])
     {
-        var url = `https://www.omdbapi.com/?apikey=${getKey()}&i=${match[0]}`
+        var url = `https://www.omdbapi.com/?apikey=${Imdb.getKey()}&i=${match[0]}`
     }
     else
     {
-        var url = `https://www.omdbapi.com/?apikey=${getKey()}&s=` + space2dash(term);
+        var url = `https://www.omdbapi.com/?apikey=${Imdb.getKey()}&s=` + space2dash(term);
     }
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
-        handle_imdb(response);
+        Imdb.handle_imdb(response);
     });
 }
 
@@ -164,7 +167,7 @@ var imdb_dialog_template = `
     </div>
 `
 
-function getImdbChunkiness(entry)
+Imdb.getImdbChunkiness = function(entry)
 {
     var aCat = ['Poster', 'Title', 'Year', 'imdbID', 'Type',];
     var chunkiness = 0;
@@ -178,7 +181,7 @@ function getImdbChunkiness(entry)
     return chunkiness;
 }
 
-function handle_imdb(response)
+Imdb.handle_imdb = function(response)
 {
     $imdb_dialog = $(imdb_dialog_template).appendTo($("body"));
     $imdb_header = $("#imdb_header");
@@ -188,7 +191,7 @@ function handle_imdb(response)
             $('#imdb_dialog').remove();
         })
 
-    var responseType = getResponseType(response);
+    var responseType = Imdb.getResponseType(response);
     var aEntry = response['Search'] || [response];
     var count = 0;
     var aExclusion = ["N/A"];
@@ -196,7 +199,7 @@ function handle_imdb(response)
     {
         var minChunkiness = 3;
         var posterUrl = entry['Poster'];
-        if (getImdbChunkiness(entry) > minChunkiness ||
+        if (Imdb.getImdbChunkiness(entry) > minChunkiness ||
             posterUrl && !aExclusion.includes(posterUrl)
             )
         {
@@ -217,7 +220,7 @@ function handle_imdb(response)
                 .click( function(e) {
                     target = e.target;
                     var imdbid = $(target).attr("imdbid");
-                    fillPostMessage(imdbid);
+                    Imdb.fillPostMessage(imdbid);
                     $('#imdb_dialog').remove();
                 })
                 .appendTo($imgDiv)
@@ -241,12 +244,12 @@ function handle_imdb(response)
     $('#imdb_dialog').toggleClass('is-visible');
 }
 
-phpbb.addAjaxCallback('snahp.imdbCallback', startHandlingImdbAjax);
+phpbb.addAjaxCallback('snahp.imdbCallback', Imdb.startHandlingImdbAjax);
 $(document).ready(function() {
     $("#imdb_input").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            startHandlingImdbAjax();
+            Imdb.startHandlingImdbAjax();
         }
     });
 });
