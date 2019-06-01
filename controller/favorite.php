@@ -211,16 +211,22 @@ class favorite extends base
                 'misc' => 'https://i.imgur.com/X4OIR7c.png',
                 'dev' => 'https://i.imgur.com/OU5XZDq.png',
             ];
-            $a_category = [
-                // Test Server
-                // 'imported' => 50, 'apps' => 51, 'games' => 52,
-                // 'movies' => 82, 'tv' => 53, 'music' => 54,
-                // 'anime' => 55, 'misc' => 56, 'dev' => 57,
-                // PRODUCTION Server
-                'imported' => 27, 'apps' => 9, 'games' => 10,
-                'movies' => 11, 'tv' => 12, 'music' => 14,
-                'anime' => 13, 'misc' => 15, 'dev' => 76,
-            ];
+            if ($this->is_dev_server())
+            {
+                $a_category = [
+                    'imported' => 50, 'apps' => 51, 'games' => 52,
+                    'movies' => 82, 'tv' => 53, 'music' => 54,
+                    'anime' => 55, 'misc' => 56, 'dev' => 57,
+                ];
+            }
+            else
+            {
+                $a_category = [
+                    'imported' => 27, 'apps' => 9, 'games' => 10,
+                    'movies' => 11, 'tv' => 12, 'music' => 14,
+                    'anime' => 13, 'misc' => 15, 'dev' => 76,
+                ];
+            }
             $fid_lookup = [];
             foreach ($a_category as $name => $fid)
             {

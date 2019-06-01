@@ -841,6 +841,12 @@ abstract class base
         return $row;
     }
 
+    public function is_dev_server()
+    {
+        $servername = $this->config['server_name'];
+        return isset($servername) && $servername=='192.168.2.12';
+    }
+
     public function reject_group($column, $group_id)
     {
         $sql = 'SELECT COUNT(group_id) as count from ' . GROUPS_TABLE . " WHERE {$column}=1 AND group_id={$group_id}";
