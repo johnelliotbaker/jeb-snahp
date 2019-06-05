@@ -1,28 +1,5 @@
 <?php
 
-function fw($filepath, $var, $bNew=true)
-{
-    if ($bNew) file_put_contents($filepath, '');
-    if (is_array($var))
-    {
-        foreach ($var as $k => $v)
-        {
-            file_put_contents($filepath, "$k => ", FILE_APPEND);
-            fw($filepath, $v, false);
-        }
-    }
-    else
-    {
-        file_put_contents($filepath, "$var\n", FILE_APPEND);
-    }
-}
-
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 define('DEFINITION', [
     'music' => [
         'padding' => [20],

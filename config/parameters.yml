@@ -14,6 +14,41 @@ parameters:
         def:
             enable: 1
             disable: 9
+    jeb.snahp.tags:
+        encode:
+            request: 1
+            accepted: 2
+            fulfilled: 3
+            solved: 4
+            closed: 5
+            mega: 6
+            zippy: 7
+            gdrive: 8
+            android: 9
+            ios: 10 
+        decode:
+            default:
+                request:   '<span class="btn open">R</span>'
+                accepted:  '<span class="btn dib">A</span>'
+                fulfilled: '<span class="btn fulfill">F</span>'
+                solved:    '<span class="btn solve">S</span>'
+                closed:    '<span class="btn terminate">C</span>'
+                mega:      '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">'
+                zippy:     '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">'
+                gdrive:    '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">'
+                android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png">'
+                ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png">'
+            small:
+                request:   '<span class="small"><span class="btn open">R</span></span>'
+                solved:    '<span class="small"><span class="btn solve">S</span></span>'
+                accepted:  '<span class="small"><span class="btn dib">A</span></span>'
+                fulfilled: '<span class="small"><span class="btn fulfill">F</span></span>'
+                closed:    '<span class="small"><span class="btn terminate">C</span></span>'
+                mega:      '<span class="small"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png"></span>'
+                zippy:     '<span class="small"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png"></span>'
+                gdrive:    '<span class="small"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
+                android:   '<span class="small"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
+                ios:       '<span class="small"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
     jeb.snahp.req:
         def:
             open: 1

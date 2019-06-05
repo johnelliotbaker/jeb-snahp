@@ -174,19 +174,7 @@ input.search_master {
     text-align: center;
 }
 
-/* host icons */
-img.mega_icon,
-img.gdrive_icon,
-img.zippy_icon
+.twbs a
 {
-    height: 24px;
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
-img.android_icon, img.ios_icon
-{
-    height: 28px;
-    margin-left: 0px;
-    margin-right: 0px;
+    color: inherit !important;
 }

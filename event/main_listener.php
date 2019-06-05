@@ -45,60 +45,18 @@ function closetags($html) {/*{{{*/
     return $html;
 }/*}}}*/
 
-function prn($var, $b_html=false, $depth=0) {/*{{{*/
-    $indent = [];
-    for ($i=0; $i<$depth; $i++)
-    {
-        $indent[] = '...';
-    }
-    $indent = join('', $indent);
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo '<br>'; echo "$indent$k => "; prn($v, $b_html, $depth+1); }
-    } else {
-        if ($b_html)
-        {
-            echo htmlspecialchars($var);
-        }
-        else
-        {
-            echo $var . '<br>';
-        }
-    }
-}/*}}}*/
-
-function fwrite($filepath, $var, $bNew=true) /*{{{*/
-{
-    if ($bNew) file_put_contents($filepath, '');
-    if (is_array($var))
-    {
-        foreach ($var as $k => $v)
-        {
-            file_put_contents($filepath, "$k => ", FILE_APPEND);
-            fwrite($filepath, $v, false);
-        }
-    }
-    else
-    {
-        file_put_contents($filepath, "$var\n", FILE_APPEND);
-    }
-}/*}}}*/
-
-
-/**
- * snahp Event listener.
- */
 class main_listener extends base implements EventSubscriberInterface
 {
     protected $table_prefix;
-    public function __construct($table_prefix)
+    public function __construct($table_prefix)/*{{{*/
     {
         $this->table_prefix = $table_prefix;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->at_prefix          = '@@';
-    }
+    }/*}}}*/
 
-    static public function getSubscribedEvents()
+    static public function getSubscribedEvents()/*{{{*/
     {
         return [
             'core.user_setup'                             => [
@@ -157,8 +115,44 @@ class main_listener extends base implements EventSubscriberInterface
             'core.search_modify_param_before' => [
                 ['search_modify_param_before', 0]
             ],
+            'core.display_forums_before' => [
+                ['encode_tags_on_display_forums', 0]
+            ],
+            'core.display_forums_modify_template_vars' => [
+                ['decode_tags_on_display_forums', 0],
+                ['test', 0]
+            ],
         ];
-    }
+    }/*}}}*/
+
+    public function encode_tags_on_display_forums($event)/*{{{*/
+    {
+        // For showing the minified tags on forum listings
+        $forum_rows = $event['forum_rows'];
+        if (is_array($forum_rows))
+        {
+            foreach($forum_rows as $k=>$row)
+            {
+                $tmp = $row['forum_last_post_subject'];
+                $tmp = $this->encode_tags($tmp);
+                $row['forum_last_post_subject'] = $tmp;
+                $forum_rows[$k] = $row;
+            }
+            $event['forum_rows'] = $forum_rows;
+        }
+    }/*}}}*/
+
+    public function decode_tags_on_display_forums($event)/*{{{*/
+    {
+        $forum_row = $event['forum_row'];
+        if (is_array($forum_row))
+        {
+            $tmp = $forum_row['LAST_POST_SUBJECT_TRUNCATED'];
+            $tmp = $this->decode_tags($tmp);
+            $forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $tmp;
+            $event['forum_row'] = $forum_row;
+        }
+    }/*}}}*/
 
     public function test($event)/*{{{*/
     {
@@ -490,8 +484,8 @@ class main_listener extends base implements EventSubscriberInterface
             break;
         case 'prosilver':
         default:
-            $this->template->assign_var('STYLE_NAME', 'prosilver');
-            break;
+        $this->template->assign_var('STYLE_NAME', 'prosilver');
+        break;
         }
     }/*}}}*/
 

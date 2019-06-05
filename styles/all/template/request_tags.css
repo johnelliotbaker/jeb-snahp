@@ -12,6 +12,7 @@ span.btn {
   -o-text-overflow: clip;
   text-overflow: clip;
   font-size: 1em;
+  margin-right: 4px;
 }
 span.btn.open {
   background: #b22117;
