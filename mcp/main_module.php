@@ -1,12 +1,6 @@
 <?php
 namespace jeb\snahp\mcp;
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 use jeb\snahp\core\base;
 
 class main_module extends base
@@ -83,6 +77,13 @@ class main_module extends base
                 'NAME' => 'Mass Topic Mover',
                 'DESCRIPTION' => 'Move multiple topics from one forum to another (especially to graveyard) with some filtering.',
                 'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
+            $data[] = [
+                'ID' => 3,
+                'PURPOSE' => 'Search',
+                'NAME' => 'Power Search',
+                'DESCRIPTION' => 'Use mysql to search topic titles.',
+                'LINK' => '<a href="/app.php/snahp/search_util/handle_mysql_search/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             foreach ($data as $entry)
             {

@@ -1,0 +1,45 @@
+<!-- INCLUDE overall_header.html -->
+<script>
+  {% include '@jeb_snahp/search_util/component/handle_mysql_search/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/search_util/component/handle_mysql_search/base.css' %}
+</style>
+
+<div class="twbs">
+  <div class="card">
+    <div class="card-body">
+      <form id="form_mysql_search" method="GET" action="{U_ACTION}">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Search</span>
+					</div>
+          <input value="{PHRASE}" type="text" class="form-control" id="word_to_search" name="word_to_search">
+				</div>
+      </form>
+      <p>The search took {DURATION} seconds.</p>
+      <div class="action-bar bar-top">
+        {PAGINATION}
+      </div>
+      <table class="table table-sm table-dark table-striped">
+        <thead>
+          <th>#</th>
+          <th class="text-center">Topic</th>
+          <th>Index</th>
+        </thead>
+        <tbody id="mysql_search_table_body">
+        <!-- BEGIN postrow -->
+        <tr>
+          <td>{postrow.ID}</td>
+          <td><a href="/viewtopic.php?t={postrow.TOPIC_ID}" target="_blank">{postrow.TOPIC_TITLE}</a></td>
+          <td><a href="/app.php/snahp/search_util/index_topic/?t={postrow.TOPIC_ID}" target="_blank"><i class="icon fa-list fa-fw" aria-hidden="true"></i></a></td>
+        </tr>
+        <!-- END postrow -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->
+
+

@@ -46,4 +46,23 @@ class pagination
         return $html;
     }
 
+    public function make_fixed($base_url='/', $total=0, $per_page=0, $start=0)
+    {
+        if ($total < $per_page)
+        {
+            return '';
+        }
+        $html = '<nav aria-label="Page navigation"><ul class="pagination">';
+        $n = ceil($total / $per_page);
+        $i = ceil($start / $per_page)+1;
+        $prev = ($i <= 1) ? 0 : $start - $per_page;
+        $next = ($i > $n-1) ? ($n-1)*$per_page : $i*$per_page;
+        $prev = $base_url . "?per_page={$per_page}&start={$prev}";
+        $next = $base_url . "?per_page={$per_page}&start={$next}";
+        $html .= "<li class='page-item'><a class='page-link' href='{$prev}'>Previous</a></li>";
+        $html .= "<li class='page-item'><a class='page-link' href='{$next}'>Next</a></li>";
+        $html .= '</ul></nav>';
+        return $html;
+    }
+
 }

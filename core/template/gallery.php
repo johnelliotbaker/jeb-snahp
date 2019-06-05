@@ -1,21 +1,6 @@
 <?php
 namespace jeb\snahp\core\template;
 
-function prn($var, $b_html=false) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
-    } else {
-        if ($b_html)
-        {
-            echo htmlspecialchars($var) . '<br>';
-        }
-        else
-        {
-            echo $var . '<br>';
-        }
-    }
-}
-
 class gallery
 {
     protected $def;

@@ -1,29 +1,26 @@
-<?php
-
+<?php 
 namespace jeb\snahp\controller;
 
 use jeb\snahp\core\base;
 use Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
-
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
+use \Symfony\Component\HttpFoundation\JsonResponse; 
 
 class search_util extends base
 {
 
     protected $table_prefix;
 
-    public function __construct($table_prefix)
+    public function __construct($table_prefix)/*{{{*/
     {
         $this->table_prefix = $table_prefix;
-    }
+        // If a text in the message is inside [{$this->STBB}] mark it as title
+        $this->STBB = 'st';
+    }/*}}}*/
 
-	public function handle($mode)
+	public function handle($mode)/*{{{*/
     {
+        include_once('ext/jeb/snahp/core/functions_utility.php');
+        include_once('includes/functions_content.php');
         if (!$this->config['snp_inv_b_master'])
         {
             trigger_error('Custom search system is disabled by the administrator. Error Code: ce6517a9ac');
@@ -36,38 +33,46 @@ class search_util extends base
                 $this->index_topic($cfg);
                 break;
             case 'handle_common_words':
-                $this->reject_non_moderator();
+                $this->reject_non_dev();
                 $cfg['tpl_name'] = '@jeb_snahp/search_util/component/handle_common_words/base.html';
                 $cfg['base_url'] = '/app.php/snahp/search_util/handle_common_words/';
                 $cfg['title'] = 'Add or Remove Excluded Search Terms';
                 $cfg['b_feedback'] = false;
                 return $this->handle_common_words($cfg);
                 break;
+            case 'handle_mysql_search':
+                $this->reject_non_dev();
+                $cfg['tpl_name'] = '@jeb_snahp/search_util/component/handle_mysql_search/base.html';
+                $cfg['base_url'] = '/app.php/snahp/search_util/handle_mysql_search/';
+                $cfg['title'] = 'Power Search';
+                $cfg['b_feedback'] = false;
+                return $this->handle_mysql_search($cfg);
+                break;
             default:
                 break;
         }
         trigger_error('Error Code: 1fdd2c2b80');
-    }
+    }/*}}}*/
 
-    private function remove_common_word($word)
+    private function remove_common_word($word)/*{{{*/
     {
         $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
             VALUES ' . "('{$word}', 0, 0) " . '
             ON DUPLICATE KEY UPDATE
                 word_common=0';
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    private function add_common_word($word)
+    private function add_common_word($word)/*{{{*/
     {
         $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
             VALUES ' . "('{$word}', 1, 0) " . '
             ON DUPLICATE KEY UPDATE
                 word_common=1';
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    private function handle_common_words($cfg)
+    private function handle_common_words($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
@@ -80,15 +85,15 @@ class search_util extends base
                 {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
-                $word_to_add = $this->request->variable('word_to_add', '');
+                $word_to_search = $this->request->variable('word_to_search', '');
                 $word_to_remove = $this->request->variable('word_to_remove', '');
                 if ($word_to_remove)
                 {
                     $this->remove_common_word($word_to_remove);
                 }
-                if ($word_to_add)
+                if ($word_to_search)
                 {
-                    $this->add_common_word($word_to_add);
+                    $this->add_common_word($word_to_search);
                 }
             }
             $data = $this->select_common_words();
@@ -105,26 +110,83 @@ class search_util extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
+    }/*}}}*/
 
-    }
+    private function handle_mysql_search($cfg)/*{{{*/
+    {
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $time = microtime(true);
+            add_form_key('jeb_snp');
+            // IF SUBMITTED
+            $data = [];
+            $total = 0;
+            $pg = new \jeb\snahp\core\pagination();
+            $base_url = '/app.php/snahp/search_util/handle_mysql_search/';
+            $word_to_search = $this->request->variable('word_to_search', '');
+            $per_page = $this->request->variable('per_page', 20);
+            $per_page = $per_page < 200 ? $per_page : 200;
+            $start = $this->request->variable('start', 0);
+            $base_url .= '?word_to_search=' . $word_to_search;
+            [$data, $total] = $this->mysql_search($word_to_search, $per_page, $start);
+            $pagination = $pg->make($base_url, $total, $per_page, $start);
+            $this->template->assign_vars([
+                'PAGINATION' => $pagination,
+            ]);
+            $count = $start+1;
+            foreach ($data as $row)
+            {
+                $group = array(
+                    'TOPIC_TITLE' => $row['topic_title'],
+                    'TOPIC_ID'    => $row['topic_id'],
+                    'ID'          => $count,
+                );
+                $count += 1;
+                $this->template->assign_block_vars('postrow', $group);
+            }
+            $duration = (string) (microtime(true) - $time);
+            $this->template->assign_vars([
+                'PHRASE' => $word_to_search,
+                'DURATION' => $duration,
+                'TITLE' => $cfg['title']
+            ]);
+            return $this->helper->render($tpl_name, $cfg['title']);
+        }
+    }/*}}}*/
 
-    private function select_common_words()
+    private function mysql_search($strn, $per_page=10, $start=0)/*{{{*/
+    {
+        $strn = $this->db->sql_escape($strn);
+        $sql = 'SELECT COUNT(*) as count from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $total = $row['count'];
+        $sql = 'SELECT * from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
+        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }/*}}}*/
+
+    private function select_common_words()/*{{{*/
     {
         $sql = 'SELECT * from ' . SEARCH_WORDLIST_TABLE . ' WHERE word_common=1';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }
+    }/*}}}*/
 
-    private function normalize_topic($strn)
+    private function normalize_topic($strn)/*{{{*/
     {
         setlocale(LC_ALL, 'C.UTF-8');
         $new = iconv('UTF-8', 'ASCII//TRANSLIT', $strn);
         return $strn . ' ' . $new;
-    }
+    }/*}}}*/
 
-    public function index_topic($cfg)
+    public function index_topic($cfg)/*{{{*/
     {
         // From includes/functions_posting.php
         global $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher;
@@ -158,7 +220,10 @@ class search_util extends base
         $mode = 'edit_first_post';
         $poster_id = $data_ary['poster_id'];
         $message = $data_ary['post_text'];
-        $subject = $data_ary['post_subject'];
+        // Get contain within [STBB] tags and mark it as title
+        // [{$this->STBB}]{TEXT}[/{$this->STBB}]
+        $as_title = $this->collect_STBB_content($message);
+        $subject = $data_ary['post_subject'] . ' ' . $as_title;
         $subject = $this->normalize_topic($subject);
         $forum_id = $data_ary['forum_id'];
         $error = false;
@@ -173,9 +238,9 @@ class search_util extends base
         $this->insert_manual_search_post($post_id, $user_id, $username_clean);
         meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
         trigger_error('The selected topic was indexed with enhanced options.');
-    }
+    }/*}}}*/
 
-    private function insert_manual_search_post($post_id, $user_id, $username_clean)
+    private function insert_manual_search_post($post_id, $user_id, $username_clean)/*{{{*/
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $data = [
@@ -187,6 +252,28 @@ class search_util extends base
         $sql = 'REPLACE INTO ' . $tbl['manual_search_posts'] .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
+
+    private function snp_strip_bbcode($text)/*{{{*/
+    {
+        $uid = $bitfield = '';
+        $flags = 0;
+        generate_text_for_storage($text, $uid, $bitfield, $flags, true, true, true);
+        strip_bbcode($text);
+        return $text;
+    }/*}}}*/
+
+    private function collect_STBB_content($text)/*{{{*/
+    {
+        $uid = ''; $flags = 0;
+        $text = generate_text_for_edit($text, $uid, $flags)['text'];
+        $ptn = "#\[{$this->STBB}](.*?)\[/{$this->STBB}]#ism";
+        $b_match = preg_match_all($ptn, $text, $match_all);
+        if (!$b_match) return '';
+        $match_all = $match_all[1];
+        $text = join(' ', $match_all);
+        $text = $this->snp_strip_bbcode($text);
+        return $text;
+    }/*}}}*/
 
 }
