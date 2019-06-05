@@ -3,12 +3,6 @@ namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 class favorite extends base
 {
     protected $prefix;

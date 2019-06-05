@@ -14,12 +14,6 @@ include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 // include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 class mcp extends base
 {
 

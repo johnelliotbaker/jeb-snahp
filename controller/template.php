@@ -3,21 +3,6 @@ namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 
-function prn($var, $b_html=false) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
-    } else {
-        if ($b_html)
-        {
-            echo htmlspecialchars($var) . '<br>';
-        }
-        else
-        {
-            echo $var . '<br>';
-        }
-    }
-}
-
 class template extends base
 {
     protected $prefix;

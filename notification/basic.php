@@ -1,14 +1,6 @@
 <?php
 namespace jeb\snahp\notification;
 
-
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
-
 class basic extends \phpbb\notification\type\base
 {
 

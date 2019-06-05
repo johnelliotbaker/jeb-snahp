@@ -4,12 +4,6 @@ use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 use jeb\snahp\core\topic_mover;
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 class graveyard_request extends base
 {
     protected $prefix;

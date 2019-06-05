@@ -5,12 +5,6 @@ use jeb\snahp\core\base;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
-function prn($var) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v); }
-    } else { echo "$var<br>"; }
-}
-
 class acp_invite extends base
 {
     protected $table_prefix;

@@ -4,21 +4,6 @@ use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
-function prn($var, $b_html=false) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
-    } else {
-        if ($b_html)
-        {
-            echo htmlspecialchars($var) . '<br>';
-        }
-        else
-        {
-            echo $var . '<br>';
-        }
-    }
-}
-
 class analytics extends base
 {
     protected $prefix;
