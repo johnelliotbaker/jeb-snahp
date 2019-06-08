@@ -1,0 +1,11 @@
+#favfilter_minimizer
+{
+    cursor:pointer
+}
+#favfilter_minimizer i
+{
+    font-size: 21px;
+    {% if STYLE_NAME=='acieeed' %}
+    color:#f8c301;
+    {% endif %}
+}

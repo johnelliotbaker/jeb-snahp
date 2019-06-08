@@ -1,6 +1,14 @@
 <!-- INCLUDE overall_header.html -->
 {% if true %}
-<h2 class="forum-title">{TITLE}</h2>
+<h2 class="forum-title">
+  <div class="twbs">
+    <div class="row ml-1 form-inline">
+      {TITLE}
+      {% include '@jeb_snahp/favorite/component/filter/component/widget/base.html' %}
+    </div>
+  </div>
+</h2>
+{% include '@jeb_snahp/favorite/component/filter/base.html' %}
 <div class="action-bar bar-top">
   <div class="pagination">
     <!-- IF .pagination -->

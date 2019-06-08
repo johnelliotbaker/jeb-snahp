@@ -342,15 +342,40 @@ abstract class base
     }/*}}}*/
 
     // ALL SUBFORUM ID
-    public function select_subforum($parent_id, $cooldown=0)/*{{{*/
+    public function select_subforum_with_name($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
     {
         $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, $cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $parent_left_id = $row['left_id'];
+        $parent_right_id = $row['right_id'];
+        $sql = 'SELECT forum_id, forum_name FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
+        if ($b_immediate==true)
+        {
+            $sql .= ' AND parent_id=' . $parent_id;
+        }
+        $result = $this->db->sql_query($sql, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }/*}}}*/
+
+    public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    {
+        // include_once('includes/functions_admin.php');
+        // $fid = get_forum_branch($fid_listings, 'children');
+        $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
+        $result = $this->db->sql_query($sql, $cooldown);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
         $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
+        if ($b_immediate==true)
+        {
+            $sql .= ' AND parent_id=' . $parent_id;
+        }
         $result = $this->db->sql_query($sql, $cooldown);
         $data = array_map(function($array){return $array['forum_id'];}, $this->db->sql_fetchrowset($result));
         $this->db->sql_freeresult($result);
@@ -494,13 +519,20 @@ abstract class base
         return [$rowset, $total];
     }/*}}}*/
 
-    public function select_one_day($parent_id, $per_page, $start, $sort_mode)/*{{{*/
+    public function select_one_day($parent_id, $per_page, $start, $sort_mode, $a_exclude=[], $cooldown=30)/*{{{*/
     {
+        // Note that cooldown isn't precise as it depends on $lastdt
         $a_fid = $this->select_subforum($parent_id);
+        if (is_array($a_exclude))
+        {
+            $a_fid = array_diff($a_fid, $a_exclude);
+        }
         $maxi_query = $this->config['snp_ql_fav_limit'];
         $timedelta = $this->config['snp_ql_fav_duration'];
         $time = time();
         $lastdt = $time - $timedelta;
+        // $lastdt is changing so cache timing is off.
+        $lastdt = (int)($lastdt/$cooldown)*$cooldown;
         switch ($sort_mode)
         {
         case 'views':
@@ -540,11 +572,11 @@ abstract class base
             'ORDER_BY' => $order_by,
         ];
         $sql = $this->db->sql_build_query('SELECT', $sql_array);
-        $result = $this->db->sql_query_limit($sql, $maxi_query);
+        $result = $this->db->sql_query_limit($sql, $maxi_query, 0, $cooldown);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);
         $this->db->sql_freeresult($result);
-        $result = $this->db->sql_query_limit($sql, $per_page, $start);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start, $cooldown);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];

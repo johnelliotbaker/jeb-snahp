@@ -1,0 +1,14 @@
+.card .card-title
+{
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    {% if STYLE_NAME=='acieeed' %}
+        background-color: #1c1c1c;
+    {% elseif STYLE_NAME==='basic' %}
+        background-color: #fafafa;
+    {% elseif STYLE_NAME==='hexagon' %}
+        background-color: #1c1c1c;
+    {% elseif STYLE_NAME==='prosilver' %}
+        background-color: #e1ebf2;
+    {% endif %}
+}

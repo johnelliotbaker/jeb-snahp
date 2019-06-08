@@ -76,4 +76,27 @@ parameters:
         def:
             disable: 9
             enable: 1
+    jeb.snahp.fav:
+        dev:
+            img:
+                50: 'https://i.imgur.com/9RLP1KV.png' # Imported
+                51: 'https://i.imgur.com/7hjHY25.png' # Apps
+                52: 'https://i.imgur.com/YBPkBaX.png' # Games
+                53: 'https://i.imgur.com/i9pIvNy.png' # TV Shows
+                54: 'https://i.imgur.com/g5r9eAI.png' # Music
+                55: 'https://i.imgur.com/BpFV059.png' # Anime
+                56: 'https://i.imgur.com/X4OIR7c.png' # Miscellaneous
+                57: 'https://i.imgur.com/OU5XZDq.png' # Developmental Resources
+                82: 'https://i.imgur.com/pK0D79T.png' # Movies
+        production:
+            img:
+                27: 'https://i.imgur.com/9RLP1KV.png' # Imported
+                9:  'https://i.imgur.com/7hjHY25.png' # Apps
+                10: 'https://i.imgur.com/YBPkBaX.png' # Games
+                11: 'https://i.imgur.com/pK0D79T.png' # Movies
+                12: 'https://i.imgur.com/i9pIvNy.png' # TV Shows
+                14: 'https://i.imgur.com/g5r9eAI.png' # Music
+                13: 'https://i.imgur.com/BpFV059.png' # Anime
+                15: 'https://i.imgur.com/X4OIR7c.png' # Miscellaneous
+                76: 'https://i.imgur.com/OU5XZDq.png' # Developmental Resources
 

@@ -1,20 +1,21 @@
 <?php
+/*{{{*/
 namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
+/*}}}*/
 
 class favorite extends base
 {
     protected $prefix;
 
-    public function __construct($prefix)
+    public function __construct($prefix)/*{{{*/
     {
         $this->prefix = $prefix;
-    }
+    }/*}}}*/
 
-    public function handle($mode)
+    public function handle($mode)/*{{{*/
     {
-
         $this->reject_anon();
         $this->reject_bots();
         switch ($mode)
@@ -62,9 +63,9 @@ class favorite extends base
             break;
         }
         trigger_error('showing favorite.');
-    }
+    }/*}}}*/
 
-    public function handle_accepted_requests($cfg)
+    public function handle_accepted_requests($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
@@ -103,9 +104,9 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
-    public function handle_open_requests($cfg)
+    public function handle_open_requests($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
@@ -144,9 +145,9 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
-    public function handle_thanks_given($cfg)
+    public function handle_thanks_given($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
@@ -186,73 +187,109 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
-    public function handle_favorite($cfg)
+    public function handle_favorite($cfg)/*{{{*/
     {
+        $cooldown = 20; // Sql query cache cooldown
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
-            // Temporarily hard code some forums
-            // TODO: Find a better way to get these
-            $a_img_url = [
-                'imported' => 'https://i.imgur.com/9RLP1KV.png',
-                'apps' => 'https://i.imgur.com/7hjHY25.png',
-                'games' => 'https://i.imgur.com/YBPkBaX.png',
-                'tv' => 'https://i.imgur.com/i9pIvNy.png',
-                'movies' => 'https://i.imgur.com/pK0D79T.png',
-                'music' => 'https://i.imgur.com/g5r9eAI.png',
-                'anime' => 'https://i.imgur.com/BpFV059.png',
-                'misc' => 'https://i.imgur.com/X4OIR7c.png',
-                'dev' => 'https://i.imgur.com/OU5XZDq.png',
-            ];
-            if ($this->is_dev_server())
+            // FAVORITE FILTER START //
+            $b_dev = $this->is_dev_server();
+            if ($b_dev)
             {
-                $a_category = [
-                    'imported' => 50, 'apps' => 51, 'games' => 52,
-                    'movies' => 82, 'tv' => 53, 'music' => 54,
-                    'anime' => 55, 'misc' => 56, 'dev' => 57,
-                ];
+                $a_img_url = $this->container->getParameter('jeb.snahp.fav')['dev']['img'];
             }
             else
             {
-                $a_category = [
-                    'imported' => 27, 'apps' => 9, 'games' => 10,
-                    'movies' => 11, 'tv' => 12, 'music' => 14,
-                    'anime' => 13, 'misc' => 15, 'dev' => 76,
-                ];
+                $a_img_url = $this->container->getParameter('jeb.snahp.fav')['production']['img'];
             }
-            $fid_lookup = [];
-            foreach ($a_category as $name => $fid)
+            $fid_listings = $this->config['snp_fid_listings'];
+            // Process submitted form /*{{{*/
+            if ($this->request->is_set_post('submit'))
             {
-                $a_fid = $this->select_subforum($fid, 3600);
-                foreach ($a_fid as $f)
+                if (!check_form_key('jeb_snp'))
                 {
-                    $fid_lookup[$f] = $a_img_url[$name];
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $a_target_forum_full_depth = $this->select_subforum($fid_listings, $cooldown);
+                $exclude = [];
+                foreach($a_target_forum_full_depth as $fid)
+                {
+                    $b_exclude = !$this->request->variable('fav_filter_fid_' . $fid, false);
+                    if ($b_exclude)
+                    {
+                        $exclude[] = $fid;
+                    }
+                }
+                $exclude = serialize($exclude);
+                $data = [ 'snp_fav_fid_exclude' => $exclude, ];
+                $this->update_user($this->user->data['user_id'] , $data);
+                meta_refresh(2.5, $cfg['base_url']);
+                trigger_error('Setting your filter preferences ...');
+            }/*}}}*/
+            $a_forum = [];
+            $a_listings_forum_parent = $this->select_subforum_with_name($fid_listings, $cooldown, true);
+            $exclude = unserialize($this->user->data['snp_fav_fid_exclude']);
+            $exclude = is_array($exclude) ? $exclude : [];
+            $image_lookup = []; // Piggy back this loop to fil image urls
+            foreach ($a_listings_forum_parent as $forum)
+            {
+                // Iterate through parents and get the children
+                $parent_id = $forum['forum_id'];
+                $rowset = $this->select_subforum_with_name($parent_id, $cooldown);
+                if ($rowset)
+                {
+                    $a_forum[$parent_id]['children'] = [];
+                    foreach ($rowset as $row)
+                    {
+                        $forum_id = $row['forum_id'];
+                        if (array_key_exists($forum_id, $a_img_url))
+                        {
+                            $image_lookup[$forum_id] = $a_img_url[$forum_id];
+                        }
+                        elseif(array_key_exists($parent_id, $a_img_url))
+                        {
+                            $image_lookup[$forum_id] = $a_img_url[$parent_id];
+                        }
+                        else
+                        {
+                            $image_lookup[$forum_id] = '';
+                        }
+                        $a_forum[$parent_id]['children'][] = [
+                            'ID' => $forum_id,
+                            'NAME' => $row['forum_name'],
+                            'IMG' => $image_lookup[$forum_id],
+                            'CHECK' => in_array($forum_id, $exclude),
+                        ];
+                    }
                 }
             }
-
+            foreach ($a_forum as $key=>$forum)
+            {
+                $this->template->assign_block_vars('forum', []);
+                foreach ($a_forum[$key]['children'] as $child)
+                {
+                    $this->template->assign_block_vars('forum.subforum', $child);
+                }
+            }
+            // FAVORITE FILTER END //
+            // FAVORITE CONTENT START //
             $base_url = $cfg['base_url'];
             $fid_listings = $this->config['snp_fid_listings'];
             $pagination = $this->container->get('pagination');
             $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
             $sort_mode = $cfg['sort_mode'];
-            [$data, $total] = $this->select_one_day($fid_listings, $per_page, $start, $sort_mode);
+            [$data, $total] = $this->select_one_day($fid_listings, $per_page, $start, $sort_mode, $exclude, $cooldown);
             $pagination->generate_template_pagination(
                 $base_url, 'pagination', 'start', $total, $per_page, $start
             );
             foreach ($data as $row)
             {
                 $forum_id = $row['forum_id'];
-                if (isset($fid_lookup[$forum_id]))
-                {
-                    $img_url = $fid_lookup[$forum_id];
-                }
-                else
-                {
-                    $img_url = '';
-                }
+                $img_url = $image_lookup[$forum_id];
                 $tid = $row['topic_id'];
                 $topic_time = $this->user->format_date($row['topic_time']);
                 $topic_title = $this->add_host_icon($row['topic_title']);
@@ -289,8 +326,9 @@ class favorite extends base
             $this->template->assign_vars([
                 'TITLE' => $cfg['title'],
             ]);
+            add_form_key('jeb_snp');
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
 }

@@ -1,0 +1,51 @@
+<script>
+  {% include '@jeb_snahp/favorite/component/filter/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/favorite/component/filter/base.css' %}
+</style>
+<div class="twbs">
+  <form id="acp_board" method="post">
+    {S_FORM_TOKEN}
+    <div id="favfilter_wrapper" class="col-12 m-0 p-0 mb-4 collapse">
+    <!-- <div id="favfilter_wrapper" class="col-12 m-0 p-0 mb-4"> -->
+      <div class="row pl-3 pr-3 pt-1 pb-2">
+        <!-- BEGIN forum -->
+        <div class="col-sm-12 p-0 mb-1">
+          <div class="card">
+            <div class="card-title">
+              <span class="form-inline">
+                <!-- BEGIN subforum(0,0) -->
+                <div class="form-check m-2 p-0">
+                  <input class="favfilter parent mr-1" type="checkbox" name="fav_filter_fid_{subforum.ID}" id="fav_filter_fid_{subforum.ID}" {% if not subforum.CHECK %}checked{% endif %}></input>
+                  <label class="form-check-label" for="fav_filter_fid_{subforum.ID}">
+                    {subforum.NAME}
+                  </label>
+                </div>
+                <!-- END subforum -->
+              </span>
+            </div>
+            <div class="card-body m-0 p-0 pl-2">
+              <span class="form-inline">
+                <!-- BEGIN subforum(1) -->
+                <div class="form-check mb-2 p-0">
+                  <input class="mr-1" type="checkbox" name="fav_filter_fid_{subforum.ID}" id="fav_filter_fid_{subforum.ID}" {% if not subforum.CHECK %}checked{% endif %}></input>
+                  <label class="form-check-label mr-1" for="fav_filter_fid_{subforum.ID}">
+                    {subforum.NAME}
+                  </label>
+                </div>
+                <!-- END subforum -->
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- END forum -->
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" name="submit" value="submit" class="btn btn-primary float-right">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
