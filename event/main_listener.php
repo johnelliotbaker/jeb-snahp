@@ -133,6 +133,11 @@ class main_listener extends base implements EventSubscriberInterface
         {
             foreach($forum_rows as $k=>$row)
             {
+                $type = $row['forum_type'];
+                if ($type==0)
+                {
+                    continue;
+                }
                 $tmp = $row['forum_last_post_subject'];
                 $tmp = $this->encode_tags($tmp);
                 $row['forum_last_post_subject'] = $tmp;
