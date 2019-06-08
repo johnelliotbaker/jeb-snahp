@@ -140,6 +140,7 @@ class search_util extends base
                 $group = array(
                     'TOPIC_TITLE' => $row['topic_title'],
                     'TOPIC_ID'    => $row['topic_id'],
+                    'POST_ID'     => isset($row['post_id']) ? "#p{$row['post_id']}" : '',
                     'ID'          => $count,
                 );
                 $count += 1;
@@ -155,15 +156,37 @@ class search_util extends base
         }
     }/*}}}*/
 
-    private function mysql_search($strn, $per_page=10, $start=0)/*{{{*/
+    private function mysql_search($strn, $per_page=10, $start=0, $b_op=true)/*{{{*/
     {
         $strn = $this->db->sql_escape($strn);
-        $sql = 'SELECT COUNT(*) as count from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
-        $result = $this->db->sql_query($sql);
+        if ($b_op)
+        {
+            $sql_ary = [
+                'SELECT'   => 'COUNT(*) as count',
+                // 'SELECT'   => 'COUNT(*) as count t.topic_title, t.topic_id',
+                'FROM'     => [TOPICS_TABLE => 't'],
+                'LEFT_JOIN'	=> [
+                    [
+                        'FROM'	=> [POSTS_TABLE => 'p'],
+                        'ON'	=> 't.topic_id=p.topic_id',
+                    ],
+                ],
+                'WHERE'    => "t.topic_title LIKE '%{$strn}%' OR p.post_text LIKE '%{$strn}%'",
+                'ORDER_BY' => 't.topic_id DESC',
+            ];
+            $sql_count = $this->db->sql_build_query('SELECT', $sql_ary);
+            $sql_ary['SELECT'] =  't.topic_title, t.topic_id, p.post_id';
+            $sql = $this->db->sql_build_query('SELECT', $sql_ary);
+        }
+        else
+        {
+            $sql_count = 'SELECT COUNT(*) as count from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
+            $sql = 'SELECT * from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%' ORDER BY topic_id DESC";
+        }
+        $result = $this->db->sql_query($sql_count);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $total = $row['count'];
-        $sql = 'SELECT * from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
         $result = $this->db->sql_query_limit($sql, $per_page, $start);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
@@ -267,7 +290,7 @@ class search_util extends base
     {
         $uid = ''; $flags = 0;
         $text = generate_text_for_edit($text, $uid, $flags)['text'];
-        $ptn = "#\[{$this->STBB}](.*?)\[/{$this->STBB}]#ism";
+        $ptn = "#\[{$this->STBB}](.{1,50})\[/{$this->STBB}]#ism";
         $b_match = preg_match_all($ptn, $text, $match_all);
         if (!$b_match) return '';
         $match_all = $match_all[1];
