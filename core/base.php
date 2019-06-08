@@ -680,10 +680,10 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function select_user($user_id)/*{{{*/
+    public function select_user($user_id, $cooldown=0)/*{{{*/
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, $cooldown);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;

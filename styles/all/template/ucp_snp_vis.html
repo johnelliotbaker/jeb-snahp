@@ -5,6 +5,16 @@
 	<div class="panel">
     <h3>Avatar Settings</h3>
 		<div class="inner">
+
+			<fieldset>
+				<dl>
+					<dt><label for="snp_thanks_b_topic">Show thanks received per topic:</label><br />
+            <span>Choose yes to show thanks count to everyone. Choose no to show it to yourself only.<br />For items under your topic's opening post.</span></dt>
+					<dd><label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="1"<!-- IF SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="0"<!-- IF not SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+
 			<fieldset>
 				<dl>
 					<dt><label for="snp_disable_avatar_thanks_link0">Disable thanks link under avatar:</label><br />
@@ -13,6 +23,7 @@
 						<label for="snp_disable_avatar_thanks_link0"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link0" value="0"<!-- IF not S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> No</label></dd>
 				</dl>
 			</fieldset>
+
     </div>
   </div>
   <div class="panel">
@@ -43,12 +54,12 @@
                 .done((resp)=>{
                   alert('All of your thanks notifications have been deleted.');
                 });
-
             }
           </script>
         </dd>
 				</dl>
 			</fieldset>
+
 		</div>
 	</div>
 	<fieldset>

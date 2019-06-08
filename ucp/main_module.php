@@ -110,6 +110,7 @@ class main_module
         add_form_key('jeb/snahp');
         $data = [
             'snp_disable_avatar_thanks_link' => $request->variable('snp_disable_avatar_thanks_link', $user->data['snp_disable_avatar_thanks_link']),
+            'snp_thanks_b_topic'             => $request->variable('snp_thanks_b_topic', $user->data['snp_thanks_b_topic']),
             'snp_enable_at_notify'           => $request->variable('snp_enable_at_notify', $user->data['snp_enable_at_notify']),
         ];
         if ($request->is_set_post('submit'))
@@ -132,6 +133,7 @@ class main_module
         }
         $template_vars = array(
             'S_SNP_DISABLE_AVATAR_THANKS_LINK' => $data['snp_disable_avatar_thanks_link'],
+            'SNP_THANKS_B_TOPIC'               => $data['snp_thanks_b_topic'],
             'S_SNP_ENABLE_AT_NOTIFY'           => $data['snp_enable_at_notify'],
             'S_UCP_ACTION'	=> $this->u_action,
         );
