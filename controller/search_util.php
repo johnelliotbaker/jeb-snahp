@@ -129,7 +129,8 @@ class search_util extends base
             $per_page = $per_page < 200 ? $per_page : 200;
             $start = $this->request->variable('start', 0);
             $base_url .= '?word_to_search=' . $word_to_search;
-            [$data, $total] = $this->mysql_search($word_to_search, $per_page, $start);
+            $b_posts = $this->request->variable('posts', '0');
+            [$data, $total] = $this->mysql_search($word_to_search, $per_page, $start, $b_posts);
             $pagination = $pg->make($base_url, $total, $per_page, $start);
             $this->template->assign_vars([
                 'PAGINATION' => $pagination,
@@ -150,16 +151,17 @@ class search_util extends base
             $this->template->assign_vars([
                 'PHRASE' => $word_to_search,
                 'DURATION' => $duration,
-                'TITLE' => $cfg['title']
+                'TITLE' => $cfg['title'],
+                'B_POSTS' => $b_posts,
             ]);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
     }/*}}}*/
 
-    private function mysql_search($strn, $per_page=10, $start=0, $b_op=true)/*{{{*/
+    private function mysql_search($strn, $per_page=10, $start=0, $b_posts=true)/*{{{*/
     {
         $strn = $this->db->sql_escape($strn);
-        if ($b_op)
+        if ($b_posts)
         {
             $sql_ary = [
                 'SELECT'   => 'COUNT(*) as count',

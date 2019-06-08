@@ -16,6 +16,10 @@
 					</div>
           <input value="{PHRASE}" type="text" class="form-control" id="word_to_search" name="word_to_search">
 				</div>
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="posts" name="posts" {% if B_POSTS %}checked{% endif %}>
+          <label class="form-check-label" for="posts">Include all posts</label>
+        </div>
       </form>
       <p>The search took {DURATION} seconds.</p>
       <div class="action-bar bar-top">
