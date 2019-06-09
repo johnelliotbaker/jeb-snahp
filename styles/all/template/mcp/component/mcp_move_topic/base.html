@@ -1,0 +1,13 @@
+<!-- From viewtopic_dropdown_top_custom.html -->
+{% if B_MOD_MOVE_TOPIC %}
+<script>
+  {% include '@jeb_snahp/mcp/component/mcp_move_topic/base.js' %}
+</script>
+<button id="mod_move_topic" class="button" title="Post a new topic"
+  style="float:none">
+  <span>Move Topic</span> <i class="icon fa-arrows fa-fw" aria-hidden="true"></i>
+</button>
+<label>
+  <select id="to_forum_id" name="to_forum_id">{S_FORUM_SELECT}</select>
+</label>
+{% endif %}

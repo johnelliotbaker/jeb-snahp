@@ -60,7 +60,6 @@ class main_listener extends base implements EventSubscriberInterface
     {
         return [
             'core.user_setup'                             => [
-                ['test', 0],
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
@@ -120,9 +119,12 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.display_forums_modify_template_vars' => [
                 ['decode_tags_on_display_forums', 0],
-                ['test', 0]
             ],
         ];
+    }/*}}}*/
+
+    public function test($event)/*{{{*/
+    {
     }/*}}}*/
 
     public function encode_tags_on_display_forums($event)/*{{{*/
@@ -157,10 +159,6 @@ class main_listener extends base implements EventSubscriberInterface
             $forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $tmp;
             $event['forum_row'] = $forum_row;
         }
-    }/*}}}*/
-
-    public function test($event)/*{{{*/
-    {
     }/*}}}*/
 
     public function search_modify_param_before($event)/*{{{*/

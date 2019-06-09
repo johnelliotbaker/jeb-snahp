@@ -88,20 +88,69 @@ abstract class base
     
     // SESSION MANAGEMENT
 
-    public function set_cookie_new($key, $data)
+    public function set_cookie_new($key, $path, $data)/*{{{*/
     {
-        // Data should always be associative array
-        $data = json_encode($data);
-        $this->user->set_cookie($key, $data, 0, 0);
-    }
+        if (!$data && $data!=0)
+        {
+            return false;
+        }
+        $cookie = $this->get_cookie_new($key);
+        if (!$cookie && !is_array($cookie))
+        {
+            $cookie = [];
+        }
+        $shadow = &$cookie;
+        $a_name = explode('.', $path);
+        foreach($a_name as $name)
+        {
+            $shadow = &$shadow[$name];
+        }
+        $shadow = $data;
+        $cookie = json_encode($cookie);
+        $this->user->set_cookie($key, $cookie, 0, 0);
+    }/*}}}*/
 
-    public function get_cookie_new($key)
+    public function get_cookie_new($key, $path='')/*{{{*/
     {
         $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = htmlspecialchars_decode($cookie);
         $cookie = json_decode($cookie, true);
+        if (!$cookie || !is_array($cookie))
+        {
+            return false;
+        }
+        if ($path=='')
+        {
+            return $cookie;
+        }
+        $a_name = explode('.', $path);
+        foreach($a_name as $name)
+        {
+            if (isset($cookie[$name]))
+            {
+                $cookie = $cookie[$name];
+            }
+            else
+            {
+                return false;
+            }
+        }
         return $cookie;
-    }
+    }/*}}}*/
+
+    public function get_or_set_cookie_new($key)/*{{{*/
+    {
+        // NOT WORKING
+        $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
+        $cookie = htmlspecialchars_decode($cookie);
+        $cookie = json_decode($cookie, true);
+        if (!$cookie)
+        {
+            $cookie = [];
+            $this->set_cookie($key, $cookie);
+        }
+        return $cookie;
+    }/*}}}*/
 
     public function set_cookie($key, $data)/*{{{*/
     {

@@ -29,7 +29,6 @@ class admin extends base
     public function handle_move_single_topic($tid, $fid)
     {
         $this->reject_non_moderator();
-        $this->set_cookie('mcp_move_topic_to_fid', [$fid]);
         $a_tid = [$tid];
         $td = $this->get_topic_data($a_tid);
         $this->topic_mover->move_topics($td, $fid);

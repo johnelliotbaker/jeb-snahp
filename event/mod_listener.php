@@ -182,7 +182,8 @@ class mod_listener extends base implements EventSubscriberInterface
         // For use with: viewtopic_dropdown_top_custom.html
         if (!$this->is_mod()) return false;
         include_once('includes/functions_admin.php');
-        $select_id = $this->get_cookie('mcp_move_topic_to_fid');
+        // Set by mcp_move_topic/base.js
+        $select_id = $this->get_cookie_new('mcp', 'move_topic.dest');
         $select_id = $select_id ? $select_id : false;
         $forum_select = make_forum_select($select_id = $select_id, $ignore_id = false, $ignore_acl = false, $ignore_nonpost = false, $ignore_emptycat = true, $only_acl_post = false, $return_array = false);
         $this->template->assign_vars([
