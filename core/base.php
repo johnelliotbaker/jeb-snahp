@@ -88,6 +88,21 @@ abstract class base
     
     // SESSION MANAGEMENT
 
+    public function set_cookie_new($key, $data)
+    {
+        // Data should always be associative array
+        $data = json_encode($data);
+        $this->user->set_cookie($key, $data, 0, 0);
+    }
+
+    public function get_cookie_new($key)
+    {
+        $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
+        $cookie = htmlspecialchars_decode($cookie);
+        $cookie = json_decode($cookie, true);
+        return $cookie;
+    }
+
     public function set_cookie($key, $data)/*{{{*/
     {
         $this->user->set_cookie($key, tracking_serialize($data), 0, 0);
