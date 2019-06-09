@@ -2,7 +2,8 @@ var Filter_reqs = {};
 
 Filter_reqs.select_tags = function(mode)
 {
-    createCookie('requests_selector_cookie', mode, 365);
+    Cookie.set('requests', 'filter.selection', mode);
+    // createCookie('requests_selector_cookie', mode, 365);
     Filter_reqs.hide_tags(mode);
 }
 
@@ -27,12 +28,10 @@ Filter_reqs.hide_tags = function(mode)
     });
 }
 
-$(function() {
-    var cookie = readCookie('requests_selector_cookie');
-    if (!cookie)
-    {
-        cookie = 'all';
-        createCookie('requests_selector_cookie', cookie, 365);
-    }
-    Filter_reqs.hide_tags(cookie);
-});
+var cookie = Cookie.get('requests', 'filter.selection');
+if (!cookie)
+{
+    var selection = 'all';
+    Cookie.set('requests', 'filter.selection', selection);
+}
+Filter_reqs.hide_tags(cookie);
