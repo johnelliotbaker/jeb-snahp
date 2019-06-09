@@ -7,7 +7,7 @@ $content = $(content_template).prependTo($header);
 $banner = $($('#page-header > div > div')[0]);
 $resizer = $(resizer_template);
 var height0 = $banner.height();
-if (readCookie('acieeed_minimized')==1)
+if (Cookie.get('style', 'acieeed.b_minimized'))
 {
     $resizer.attr('class', 'icon fa-caret-down fa-fw');
     $banner.css({height: '0px', overflow:'hidden'});
@@ -19,16 +19,16 @@ else
 }
 $resizer.appendTo($content)
     .click((e)=>{
-        if (readCookie('acieeed_minimized')==1)
+        if (Cookie.get('style', 'acieeed.b_minimized'))
         {
-            createCookie('acieeed_minimized', 0, 365);
             $banner.animate({ opacity: 1, height: height0+'px', overflow: 'hidden', }, 700);
             $resizer.attr('class', 'icon fa-caret-up fa-fw');
+            Cookie.set('style', 'acieeed.b_minimized', 0);
         }
         else
         {
             $resizer.attr('class', 'icon fa-caret-down fa-fw');
             $banner.animate({ opacity: 0, height: '0px', overflow: 'hidden', }, 700);
-            createCookie('acieeed_minimized', 1, 365);
+            Cookie.set('style', 'acieeed.b_minimized', 1);
         }
     })
