@@ -87,12 +87,15 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_thanks_for_op', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
-            'core.modify_submit_post_data'                => 'modify_quickreply_signature',
+            'core.modify_submit_post_data'                => [
+                ['modify_quickreply_signature', 0],
+            ],
             'core.posting_modify_submit_post_after'       => [
                 ['notify_on_poke', 0],
             ],
             'core.posting_modify_message_text'            => [
                 ['colorize_at', 0],
+                ['disable_magic_url_on_gallery', 1],
             ],
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
@@ -123,8 +126,18 @@ class main_listener extends base implements EventSubscriberInterface
         ];
     }/*}}}*/
 
-    public function test($event)/*{{{*/
+    public function disable_magic_url_on_gallery($event)/*{{{*/
     {
+        $mp = $event['message_parser'];
+        $message = $mp->message;
+        $b_match = preg_match('#{gallery_.*?}#s', htmlspecialchars_decode($message), $match);
+        if ($b_match)
+        {
+            $post_data = $event['post_data'];
+            $post_data['enable_magic_url'] = 0;
+            $post_data['enable_urls'] = 0;
+            $event['post_data'] = $post_data;
+        }
     }/*}}}*/
 
     public function encode_tags_on_display_forums($event)/*{{{*/
