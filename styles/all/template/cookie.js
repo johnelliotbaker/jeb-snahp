@@ -21,7 +21,37 @@ function readCookie(name) {
         while (c.charAt(0) === ' ')
             c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) === 0)
+        {
             return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
     }
     return null;
+}
+
+
+var Cookie = {};
+Cookie.get_prefix = function()
+{
+    return $('input[name="snp_cookie_prefix"]').val();
+}
+
+Cookie.set = function(name, path, val)
+{
+    var data = Cookie.get(name);
+    // If the cookie has never been set, initialize to {}
+    if (data===undefined) { data = {}; }
+    Dict.set(data, path, val);
+    data = JSON.stringify(data);
+    name = this.get_prefix() + name;
+    createCookie(name, data, 365);
+}
+
+Cookie.get = function(name, path='')
+{
+    name = this.get_prefix() + name;
+    var data = readCookie(name);
+    if (data===undefined) { return; }
+    data = JSON.parse(data);
+    var val = Dict.get(data, path)
+    return val;
 }
