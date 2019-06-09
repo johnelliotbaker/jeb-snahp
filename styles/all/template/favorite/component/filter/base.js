@@ -16,7 +16,6 @@ Favfilter.link_checkboxes = function()
     });
 }
 $(function () {
-    Favfilter.cookie_prefix = $('input[name="snp_cookie_prefix"]').val();
     Favfilter.wrapper = $('#favfilter_wrapper');
     Favfilter.height = Favfilter.wrapper.height();
     Favfilter.link_checkboxes();

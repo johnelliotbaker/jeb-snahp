@@ -128,24 +128,28 @@ class mcp extends base
             ]);
             // Use cookie to setup navigation settings
             // per page
-            $per_page = $this->get_or_set_cookie('mcp_move_per_page', [5], true);
+            $per_page = $this->get_cookie_new('mcp', 'mass_move.per_page');
+            $per_page = $per_page ? $per_page : 10;
             $this->template->assign_vars([
                 'B_SELECT_' . $per_page => true,
             ]);
             // filter topics that has request entry
-            $b_request = $this->get_or_set_cookie('mcp_move_b_request', [0], true);
+            $b_request = $this->get_cookie_new('mcp', 'mass_move.b_request');
+            $b_request = $b_request ? $b_request : 0;
             $options['b_request'] = $b_request;
             $this->template->assign_vars([
                 'B_REQUEST' => $b_request,
             ]);
             // Filter request types
-            $request_type = $this->get_or_set_cookie('mcp_move_request_type', ['all'], true);
+            $request_type = $this->get_cookie_new('mcp', 'mass_move.request_type');
+            $request_type = $request_type ? $request_type : 'all';
             $options['request_type'] = $request_type;
             $this->template->assign_vars([
                 'B_SELECT_' . $request_type => true,
             ]);
             // Source forum id
-            $from_fid = $this->get_or_set_cookie('mcp_move_from_fid', [0], true);
+            $from_fid = $this->get_cookie_new('mcp', 'mass_move.from_fid');
+            $from_fid = $from_fid ? $from_fid : 0;
             // Make forum selector
             include_once('includes/functions_admin.php');
             $base_url = $cfg['base_url'];

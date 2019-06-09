@@ -25,7 +25,7 @@ function readCookie(name) {
             return decodeURIComponent(c.substring(nameEQ.length, c.length));
         }
     }
-    return null;
+    return;
 }
 
 
@@ -44,6 +44,7 @@ Cookie.set = function(name, path, val)
     data = JSON.stringify(data);
     name = this.get_prefix() + name;
     createCookie(name, data, 365);
+    var data = Cookie.get(name);
 }
 
 Cookie.get = function(name, path='')
@@ -52,6 +53,10 @@ Cookie.get = function(name, path='')
     var data = readCookie(name);
     if (data===undefined) { return; }
     data = JSON.parse(data);
+    if (path=='')
+    {
+        return data;
+    }
     var val = Dict.get(data, path)
     return val;
 }

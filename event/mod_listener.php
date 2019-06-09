@@ -87,21 +87,6 @@ class mod_listener extends base implements EventSubscriberInterface
         return $this->auth->acl_gets('a_', 'm_');
     }
 
-    public function modify_session()
-    {
-        $fid['mcp_move_to'] = 1;
-        $last_visit = $this->user->data['user_lastvisit'];
-        $this->user->set_cookie('fid', tracking_serialize($fid), $last_visit + 31536000);
-        $this->request->overwrite($this->config['cookie_name'] . '_fid', tracking_serialize($fid), \phpbb\request\request_interface::COOKIE);
-    }
-
-    public function check_session()
-    {
-        $tracking = $this->request->variable($this->config['cookie_name'] . '_fid', '', true, \phpbb\request\request_interface::COOKIE);
-        $tracking = ($tracking) ? tracking_unserialize($tracking) : array();
-        prn($tracking);
-    }
-
     public function setup_moderator($event)
     {
         if (!$this->is_mod()) return false;

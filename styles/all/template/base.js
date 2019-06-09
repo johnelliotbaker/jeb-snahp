@@ -41,7 +41,7 @@ Dict.get = function(object, path) {
         }
         else 
         {
-            return {};
+            return;
         }
     }
     return o;
