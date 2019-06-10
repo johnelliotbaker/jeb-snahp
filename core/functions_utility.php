@@ -22,7 +22,26 @@ function prn($var, $b_html=false, $depth=0)
     }
 }/*}}}*/
 
-function fw($content, $filename='/home/ubm/a.txt')
+function fw($var, $filename='/home/ubm/a.txt', $depth=0)
 {
-    file_put_contents($filename, $content);
+    if ($depth>10) return false;
+    $indent = [];
+    for ($i=0; $i<$depth; $i++)
+    {
+        $indent[] = '.....';
+    }
+    $indent = join('', $indent);
+    if (is_array($var))
+    { 
+        foreach ($var as $k => $v)
+        {
+            $t = PHP_EOL . "$indent$k => ";
+            file_put_contents($filename, $t, FILE_APPEND);
+            fw($v, $filename, $depth+1);
+        }
+    }
+    else
+    {
+        file_put_contents($filename, $var, FILE_APPEND);
+    }
 }

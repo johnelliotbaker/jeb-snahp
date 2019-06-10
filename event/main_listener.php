@@ -85,6 +85,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
+                ['test', 10]
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -125,6 +126,10 @@ class main_listener extends base implements EventSubscriberInterface
             ],
         ];
     }/*}}}*/
+
+    public function test($event)
+    {
+    }
 
     public function disable_magic_url_on_gallery($event)/*{{{*/
     {
