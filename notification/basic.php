@@ -87,6 +87,10 @@ class basic extends \phpbb\notification\type\base
 		$options = array_merge(array('ignore_users' => array()), $options);
 		$users = array((int) $data['poster_id']);
 		$options =  $this->check_user_notification_options($users, $options);
+        foreach ($options as $key => $entry)
+        {
+            $options[$key] = ['notification.method.board'];
+        }
         return $options;
 	}
 
