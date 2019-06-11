@@ -48,7 +48,8 @@ class basic extends \phpbb\notification\type\base
 	{
         // prn("get_url");
         // trigger_error("error");
-		return append_sid($this->phpbb_root_path . 'viewtopic.' . $this->php_ext, "p={$this->item_id}#p{$this->item_id}");
+        $topic_id = $this->get_data('topic_id');
+		return append_sid($this->phpbb_root_path . 'viewtopic.' . $this->php_ext, "t={$topic_id}&p={$this->item_id}#p{$this->item_id}");
 	}
 
 	public function get_avatar()
@@ -150,6 +151,7 @@ class basic extends \phpbb\notification\type\base
 	{
         // prn("create_insert_array");
         // trigger_error("error");
+        $this->set_data('topic_id',     $data['topic_id']);
         $this->set_data('user_id',      $data['user_id']);
         $this->set_data('post_id',      $data['post_id']);
         $this->set_data('post_subject', $data['post_subject']);

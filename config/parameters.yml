@@ -10,6 +10,8 @@ parameters:
         thanks: '%core.table_prefix%thanks'
         tpl: '%core.table_prefix%snahp_tpl'
         manual_search_posts: '%core.table_prefix%snahp_manual_search_posts'
+        digg_slave: '%core.table_prefix%snahp_digg_slave'
+        digg_master: '%core.table_prefix%snahp_digg_master'
     jeb.snahp.bump_topic:
         def:
             enable: 1

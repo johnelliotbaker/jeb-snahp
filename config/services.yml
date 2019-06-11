@@ -84,6 +84,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.digg:
+        class: jeb\snahp\controller\digg
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.favorite:
         class: jeb\snahp\controller\favorite
         parent: jeb.snahp.base
@@ -135,6 +140,22 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '@jeb.snahp.topic_mover'
+    jeb.snahp.notification.type.digg:
+        class: jeb\snahp\notification\digg
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+            - '@service_container'
+        tags:
+            - { name: notification.type }
     jeb.snahp.notification.type.basic:
         class: jeb\snahp\notification\basic
         scope: prototype # scope MUST be prototype for this to work!

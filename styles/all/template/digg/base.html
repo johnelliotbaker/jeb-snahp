@@ -1,0 +1,30 @@
+{% if TOPIC_ID and TOPIC_FIRST_POST_ID==postrow.POST_ID %}
+<script>
+  {% include '@jeb_snahp/digg/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/digg/base.css' %}
+</style>
+{% if B_OP or (!B_OP and B_DIGG_MASTER) %}
+<span style="display: block; text-align: right;">
+  <div class="twbs">
+    {% if B_OP and B_DIGG_CAN_UNREGISTER %}
+    <a href="/app.php/snahp/digg/unregister/?t={TOPIC_ID}">
+      <button type="button" class="btn btn-dark btn-{S_DIGG_NAME}">
+        X
+      </button>
+    </a>
+    {% endif %}
+    <a href="/app.php/snahp/digg/{S_DIGG_URL_MODE}/?t={TOPIC_ID}">
+      <button type="button" class="btn btn-dark btn-{S_DIGG_NAME}">
+        {S_DIGG_NAME}
+        <span class="badge badge-light badge-{S_DIGG_NAME}">
+          {N_DIGG_COUNT}
+        </span>
+      </button>
+    </a>
+  </div>
+</span>
+{% endif %}
+
+{% endif %}

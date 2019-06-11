@@ -85,7 +85,6 @@ class main_listener extends base implements EventSubscriberInterface
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
-                ['test', 10]
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -124,12 +123,88 @@ class main_listener extends base implements EventSubscriberInterface
             'core.display_forums_modify_template_vars' => [
                 ['decode_tags_on_display_forums', 0],
             ],
+            'core.viewtopic_modify_post_data' => [
+                ['embed_digg_controls_in_topic', 0],
+            ],
         ];
     }/*}}}*/
 
-    public function test($event)
+    public function test($event)/*{{{*/
     {
-    }
+    }/*}}}*/
+
+    public function embed_digg_controls_in_topic($event)/*{{{*/
+    {
+        $user_id = $this->user->data['user_id'];
+        $topic_data = $event['topic_data'];
+        $b_listing = $this->is_listing($topic_data, 'topic_data');
+        if (!$b_listing)
+        {
+            return false;
+        }
+        $topic_id = $topic_data['topic_id'];
+        $event['topic_data'] = $topic_data;
+        $b_op = $this->is_op($topic_data);
+        $master_data = $this->select_digg_master($topic_id);
+        $b_digg_master = false;
+        $b_can_unregister = false;
+        $count = 0;
+        $state = 0;
+        if ($master_data)
+        {
+            $b_digg_master = true;
+            $slave_data = $this->select_digg_slave_count($topic_id, $cooldown=30);
+            $count = $slave_data['count'];
+            $state = 1;
+            if ($b_op)
+            {
+                $b_can_unregister = true;
+            }
+        }
+        if (!$b_op)
+        {
+            if ($b_digg_master)
+            {
+                $state = 2;
+                $slave_data = $this->select_digg_slave($topic_id, $where="user_id={$user_id}");
+                if ($slave_data)
+                {
+                    $state = 3;
+                }
+            }
+        }
+        switch ($state)
+        {
+        case 2:
+            $s_digg_name = 'digg';
+            $s_digg_url_mode = 'subscribe';
+            break;
+        case 0:
+            $s_digg_name = 'register';
+            $s_digg_url_mode = 'register';
+            break;
+        case 3:
+            $s_digg_name = 'undigg';
+            $s_digg_url_mode = 'unsubscribe';
+            break;
+        case 1:
+            $s_digg_name = 'broadcast';
+            $s_digg_url_mode = 'broadcast';
+            break;
+        default:
+            $s_digg_name = 'default';
+            $s_digg_url_mode = 'default';
+        }
+        $this->template->assign_vars([
+            'TOPIC_FIRST_POST_ID' => $topic_data['topic_first_post_id'],
+            'B_OP' => $b_op,
+            'B_DIGG_MASTER' => $b_digg_master,
+            'S_DIGG_NAME' => $s_digg_name,
+            'N_DIGG_COUNT' => $count,
+            'S_DIGG_URL_MODE' => $s_digg_url_mode,
+            'B_DIGG_CAN_UNREGISTER' => $b_can_unregister,
+        ]);
+    }/*}}}*/
 
     public function disable_magic_url_on_gallery($event)/*{{{*/
     {
@@ -682,9 +757,9 @@ class main_listener extends base implements EventSubscriberInterface
                 'post_subject' => $text,
                 'type'         => $type,
             );
-            $this->notification->add_notifications(array(
-                'jeb.snahp.notification.type.basic',
-            ), $data);
+            $this->notification->add_notifications (
+                'jeb.snahp.notification.type.basic', $data
+            );
         }
     }/*}}}*/
 
@@ -696,14 +771,14 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         // data, notification_type_name, notify_users, options
         $data         = $event['data'];
-        $tid          = $data['topic_id'];
-        $fid          = $data['forum_id'];
-        $pid          = $data['post_id'];
-        $topic_poster = $data['poster_id'];
         $notification_type_name = $event['notification_type_name'];
         switch($notification_type_name)
         {
         case 'notification.type.report_post':
+            $tid          = $data['topic_id'];
+            $fid          = $data['forum_id'];
+            $pid          = $data['post_id'];
+            $topic_poster = $data['poster_id'];
             // When post is reported, send notification to OP
             $reason = $data['reason_description'];
             $aPattern = [
@@ -733,6 +808,10 @@ class main_listener extends base implements EventSubscriberInterface
             }
             break;
         case 'notification.type.report_post_closed':
+            $tid          = $data['topic_id'];
+            $fid          = $data['forum_id'];
+            $pid          = $data['post_id'];
+            $topic_poster = $data['poster_id'];
             // When report is closed by mod, remove the notification
             $pre = $this->table_prefix;
             $sql = 'SELECT * FROM ' . $pre . 'notifications as n 

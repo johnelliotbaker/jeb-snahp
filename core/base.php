@@ -196,6 +196,53 @@ abstract class base
 
     // DATABASE Functions
 
+    // digg
+    public function select_digg_slave_count($topic_id, $cooldown=30)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql_ary = [
+            'SELECT'   => 'COUNT(*) as count',
+            'FROM'     => [$tbl['digg_slave'] => 'd'],
+            'WHERE'    => "topic_id={$topic_id}",
+        ];
+        $sql    = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql, $cooldown);
+        $row    = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function select_digg_slave($topic_id, $where='1=1')/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $where = $this->db->sql_escape($where);
+        $sql_ary = [
+            'SELECT'   => '*',
+            'FROM'     => [$tbl['digg_slave'] => 'd'],
+            'WHERE'    => "topic_id={$topic_id} AND $where",
+        ];
+        $sql    = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql);
+        $row    = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function select_digg_master($topic_id)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql_ary = [
+            'SELECT'   => '*',
+            'FROM'     => [$tbl['digg_master'] => 'd'],
+            'WHERE'    => 'topic_id=' . $topic_id,
+        ];
+        $sql    = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql);
+        $row    = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
     // Custom Templates
     public function upsert_tpl($user_id, $name, $text)/*{{{*/
     {
