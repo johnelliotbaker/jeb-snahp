@@ -18,6 +18,7 @@
 			</fieldset>
 		</div>
 	</div>
+
 	<div class="panel">
 		<div class="inner">
 			<fieldset>
@@ -43,6 +44,35 @@
 			</fieldset>
 		</div>
 	</div>
+
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+        <legend>digg Settings</legend>
+        <dl>
+          <dt>
+              <label>digg Master Switch</label>
+              This shuts down all aspects of digg including internal processing methods.
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_digg_b_master" class="radio" value="1" {% if SNP_DIGG_B_MASTER %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="snp_digg_b_master" class="radio" value="0" {% if not SNP_DIGG_B_MASTER %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+              <label>digg Notification Switch</label>
+              This shuts down only the digg notification.
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_digg_b_notify" class="radio" value="1" {% if SNP_DIGG_B_NOTIFY %}checked="checked"{% endif %}> Yes</label>
+              <label><input type="radio" name="snp_digg_b_notify" class="radio" value="0" {% if not SNP_DIGG_B_NOTIFY %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+			</fieldset>
+		</div>
+	</div>
+
 	<fieldset>
 		<dl>
 			<dt>&nbsp;</dt>
@@ -52,5 +82,6 @@
 		{S_HIDDEN_FIELDS}
 		{S_FORM_TOKEN}
 	</fieldset>
+
 </form>
 <!-- INCLUDE overall_footer.html -->

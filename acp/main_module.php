@@ -535,12 +535,21 @@ class main_module
                 $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', '0'));
                 $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', '0'));
                 $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', '0'));
+                $config->set('snp_digg_b_master',         $request->variable('snp_digg_b_master', '0'));
+                $config->set('snp_digg_b_notify',         $request->variable('snp_digg_b_notify', '0'));
                 if ($config['snp_b_snahp_notify'])
                 {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
                 } else {
                     $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
                     // $phpbb_notifications->purge_notifications('jeb.snahp.notification.type.basic');
+                }
+                if ($config['snp_digg_b_notify'])
+                {
+                    $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.digg');
+                } else {
+                    $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.digg');
+                    // $phpbb_notifications->purge_notifications('jeb.snahp.notification.type.digg');
                 }
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
@@ -549,6 +558,8 @@ class main_module
                 'b_snahp_notify_checked'        => $config['snp_b_snahp_notify'],
                 'b_notify_on_poke_checked'      => $config['snp_b_notify_on_poke'],
                 'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
+                'SNP_DIGG_B_MASTER'             => $config['snp_digg_b_master'],
+                'SNP_DIGG_B_NOTIFY'             => $config['snp_digg_b_notify'],
                 'U_ACTION'                      => $this->u_action,
             ));
         }

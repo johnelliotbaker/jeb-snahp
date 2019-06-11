@@ -21,9 +21,17 @@ class digg extends base
 	{
         $this->reject_anon();
         if (!$this->config['snp_b_snahp_notify'])
-            return false;
-        if (!$this->config['snp_digg_b_master'] || !$this->config['snp_digg_b_notify'])
-            return false;
+        {
+            trigger_error('You cannot use digg when notification system is disabled. Error Code: 64be46f11b');
+        }
+        if (!$this->config['snp_digg_b_master'])
+        {
+            trigger_error('digg system is currently disabled. Error Code: 2e2b753c43');
+        }
+        if (!$this->config['snp_digg_b_notify'])
+        {
+            trigger_error('digg notification system is currently disabled. Error Code: dcfb0260c2');
+        }
         $topic_id = $this->request->variable('t', 0);
         if (!$topic_id)
         {
