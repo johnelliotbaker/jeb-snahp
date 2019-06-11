@@ -1,6 +1,5 @@
 <?php
 
-
 namespace jeb\snahp\controller;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
@@ -9,12 +8,12 @@ use jeb\snahp\core\base;
 class reqs extends base
 {
 
-    public function __construct()
+    public function __construct()/*{{{*/
     {
         $this->ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
-    }
+    }/*}}}*/
 
-	public function handle_mcp($mode, $uid)
+	public function handle_mcp($mode, $uid)/*{{{*/
     {
         $this->user_id = $this->user->data['user_id'];
         $this->reject_non_moderator();
@@ -35,9 +34,9 @@ class reqs extends base
                 trigger_error('User is now banned from dibbing.');
                 break;
         }
-    }
+    }/*}}}*/
 
-    public function enable_dibber($uid, $b_enable=true)
+    public function enable_dibber($uid, $b_enable=true)/*{{{*/
     {
         $enable = $b_enable ? 1 : 0;
         $sql_arr = [
@@ -47,10 +46,9 @@ class reqs extends base
             ' . $this->db->sql_build_array('UPDATE', $sql_arr) .'
             WHERE user_id=' . $uid;
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-
-	public function handle($fid, $tid, $pid, $mode)
+	public function handle($fid, $tid, $pid, $mode)/*{{{*/
     {
         $this->user_id = $this->user->data['user_id'];
         $this->b_mod = $this->is_mod();
@@ -73,6 +71,13 @@ class reqs extends base
                 break;
             case $def['terminate']: // To terminate request
                 $this->reject_invalid_users($reqdata);
+                if ($reqdata['status']==$def['fulfill'])
+                {
+                    $cfg['tpl_name'] = '@jeb_snahp/requests/component/terminate_confirm/base.html';
+                    $cfg['base_url'] = "/viewtopic.php?f={$fid}&t={$tid}#p{$pid}";
+                    $cfg['title'] = 'Confirm Request Termination';
+                    return $this->handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg);
+                }
                 $this->solve_request($fid, $tid, $pid, $def['terminate'], $reqdata);
                 break;
             case $def['dib']:
@@ -85,27 +90,52 @@ class reqs extends base
                 $this->fulfill_request($fid, $tid, $pid);
                 break;
         }
-    }
+    }/*}}}*/
 
-    public function select_request_users($uid)
+    public function handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg)/*{{{*/
+    {
+        $confirm = (int) $this->request->variable('confirm', 0);
+        if ($confirm)
+        {
+            $this->solve_request($fid, $tid, $pid, $this->def['terminate'], $reqdata);
+        }
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $topic_data = $this->select_topic($tid);
+            $username = '<span style="color: #' . $reqdata['fulfiller_colour'] . '; font-weight: 900;">' . $reqdata['fulfiller_username'] . '</span>';
+            $this->template->assign_vars([
+                'FORUM_ID' => $fid,
+                'TOPIC_ID' => $tid,
+                'POST_ID' => $pid,
+                'DEF_TERMINATE' => $this->def['terminate'],
+                'DEF_SOLVE' => $this->def['solve'],
+                'FULFILLER_USERNAME' => $username,
+                'S_TOPIC_TITLE' => $topic_data['topic_title'],
+            ]);
+            return $this->helper->render($tpl_name, $cfg['title']);
+        }
+    }/*}}}*/
+
+    public function select_request_users($uid)/*{{{*/
     {
         $sql = 'SELECT * FROM ' . $this->tbl['requsr'] ." WHERE user_id=$uid";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }
+    }/*}}}*/
 
-    public function update_request_users($uid, $data)
+    public function update_request_users($uid, $data)/*{{{*/
     {
         $sql = 'UPDATE ' . $this->tbl['requsr'] . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE user_id=' . $uid;
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
-    }
+    }/*}}}*/
 
-    public function recalculate_request_users($uid)
+    public function recalculate_request_users($uid)/*{{{*/
     {
         $cdef = $this->def['set']['closed'];
         $gid = $this->user->data['group_id'];
@@ -134,9 +164,9 @@ class reqs extends base
         ];
         $this->update_request_users($uid, $data);
         return;
-    }
+    }/*}}}*/
 
-    public function increment_request_users_slot($uid, $slot=1)
+    public function increment_request_users_slot($uid, $slot=1)/*{{{*/
     {
         $ru   = $this->select_request_users($uid);
         $udata = $this->select_user($ru['user_id']);
@@ -159,17 +189,17 @@ class reqs extends base
             SET n_use=$nu, n_offset=$no " . '
             WHERE user_id=' . $uid;
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    public function remove_request($tid)
+    public function remove_request($tid)/*{{{*/
     {
         $data = ['tid' => $tid];
         $sql = 'DELETE FROM ' . $this->tbl['req'] . $this->db->sql_build_array('DELETE', $data); 
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
-    }
+    }/*}}}*/
 
-    public function solve_request($fid, $tid, $pid, $new_status, $req)
+    public function solve_request($fid, $tid, $pid, $new_status, $req)/*{{{*/
     {
         // Set confirmed_time
         $def = $this->def;
@@ -229,18 +259,18 @@ class reqs extends base
         {
             trigger_error('This request was terminated.');
         }
-    }
+    }/*}}}*/
 
-    public function increment_user_request_solved($reqdata)
+    public function increment_user_request_solved($reqdata)/*{{{*/
     {
         $fulfiller_uid = $reqdata['fulfiller_uid'];
         $sql = 'UPDATE ' . USERS_TABLE . '
             SET snp_req_n_solve=snp_req_n_solve+1
             WHERE user_id=' . $fulfiller_uid;
         $this->db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    public function reject_invalid_users($reqdata)
+    public function reject_invalid_users($reqdata)/*{{{*/
     {
         $myuid = $this->user_id;
         $requester_uid = $reqdata['requester_uid'];
@@ -255,9 +285,9 @@ class reqs extends base
             return 3;
         else
             trigger_error('Only the requester and the moderators have access to this page.');
-    }
+    }/*}}}*/
 
-	public function fulfill_request($fid, $tid, $pid)
+	public function fulfill_request($fid, $tid, $pid)/*{{{*/
     {
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
@@ -310,9 +340,9 @@ class reqs extends base
         meta_refresh(2, $this->u_action);
         $message = 'Thank you for fulfilling this request!';
         trigger_error($message);
-    }
+    }/*}}}*/
 
-	public function undib_request($fid, $tid, $pid)
+	public function undib_request($fid, $tid, $pid)/*{{{*/
     {
         $dibdata = $this->select_dibs($tid);
         $def = $this->def;
@@ -349,9 +379,9 @@ class reqs extends base
         meta_refresh(2, $this->u_action);
         $message = 'You have undibbed this request.';
         trigger_error($message);
-    }
+    }/*}}}*/
 
-	public function dib_request($fid, $tid, $pid)
+	public function dib_request($fid, $tid, $pid)/*{{{*/
     {
         if (!$this->user->data['snp_req_dib_enable'])
         {
@@ -410,20 +440,19 @@ class reqs extends base
         meta_refresh(2, $this->u_action);
         $message = 'You called dibs on a request! Thanks a lot for your help.';
         trigger_error($message);
-    }
+    }/*}}}*/
 
-    public function is_dibber($dibdata)
+    public function is_dibber($dibdata)/*{{{*/
     {
         return $this->user_id == $dibdata['dibber_uid'];
+    }/*}}}*/
 
-    }
-
-    public function is_requester($reqdata)
+    public function is_requester($reqdata)/*{{{*/
     {
         return $this->user_id = $reqdata['requester_uid'];
-    }
+    }/*}}}*/
 
-    public function get_requests_as_json($username='')
+    public function get_requests_as_json($username='')/*{{{*/
     {
         $this->reject_anon();
         if (!$username)
@@ -474,6 +503,6 @@ class reqs extends base
         }
         $json = new JsonResponse($data);
         return $json;
-    }
+    }/*}}}*/
 
 }

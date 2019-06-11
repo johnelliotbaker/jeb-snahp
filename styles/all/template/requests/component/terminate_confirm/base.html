@@ -1,0 +1,62 @@
+<!-- INCLUDE overall_header.html -->
+<script>
+  {% include '@jeb_snahp/requests/component/terminate_confirm/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/requests/component/terminate_confirm/base.css' %}
+</style>
+
+<div class="twbs">
+  <div class="card">
+
+    <div class="card-title pt-3 pb-0 text-center">
+      <h5>
+        YOU CHOSE TO TERMINATE A <span class="btn fulfill p-1">[FULLFILLED]</span> REQUEST!
+      </h5>
+      <h5>
+        Are you sure you want to terminate this request?
+      </h5>
+    </div>
+    <div class="card-body pt-1 request_termination_warning">
+      <p>
+        There are two ways to resolve any request that you have created.
+      </p>
+      <p>
+        <b>1)</b>
+        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_SOLVE}/" title="Mark Solved" class="button-icon-only">
+          <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="">Mark Solved</span>
+        </a>
+        <br>
+        By marking your request as solved, you are confirming that {FULFILLER_USERNAME} has fulfilled your request to your satisfaction. Our uploaders have an exemplary record of fulfilling requests and most requests should be resolved using this option.
+      </p>
+      <p>
+        <b>2)</b>
+        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/" title="Terminate Request" class="button-icon-only">
+          <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i><span class="">Terminate Request</span>
+        </a>
+        <br>
+        The termination of a fulfilled request means that you were dissatisfied with {FULFILLER_USERNAME}'s fulfillment of your request.
+        For example, your request may have specified 1080p version of a video but were given 480p version instead.
+        Terminating a fulfilled request may reflect poorly on {FULFILLER_USERNAME}'s reputation,
+        and you should only do so after careful consideration. It is considered a good practice to first communicate with {FULFILLER_USERNAME} to resolve any complaints before issuing a request termination.
+      </p>
+      <p>
+        Please click one of the following to resolve your request:<br>
+        <div align="center">
+          {S_TOPIC_TITLE}
+        </div>
+      </p>
+      <div align="center">
+        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_SOLVE}/" title="Mark Solved" class="button-icon-only">
+          <i class="icon fa-check-square fa-fw big" style="color:#383;" aria-hidden="true"></i><span class="">Mark Solved</span>
+        </a>
+        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/?confirm=1" title="Terminate Request" class="button-icon-only">
+          <i class="icon fa-trash fa-fw big" style="color:#660000;" aria-hidden="true"></i><span class="">Terminate Request</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->
+
+
