@@ -164,6 +164,10 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function embed_digg_controls_in_topic($event)/*{{{*/
     {
+        if (!$this->config['snp_b_snahp_notify'] || !$this->config['snp_digg_b_master'] || !$this->config['snp_digg_b_notify'])
+        {
+            return false;
+        }
         $cooldown = 2;
         $user_id = $this->user->data['user_id'];
         $topic_data = $event['topic_data'];

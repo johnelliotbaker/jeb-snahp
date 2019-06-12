@@ -176,7 +176,6 @@ class digg extends base
     public function broadcast_digg($topic_id)/*{{{*/
     {
         $broadcast_delay = (int) $this->config['snp_digg_broadcast_cooldown'];
-        $broadcast_delay = $broadcast_delay ? $broadcast_delay : 86400;
         $b_op = $this->is_op($this->topic_data);
         if (!$b_op)
         {
