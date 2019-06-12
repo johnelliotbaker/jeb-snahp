@@ -197,12 +197,22 @@ class digg extends base
             trigger_error('You need to wait until ' . $this->user->format_date($allowed_time) . ' to broadcast the update.');
         }
         $this->upsert_digg_master($topic_id);
-        $this->notification->delete_notifications(
-            'jeb.snahp.notification.type.digg', $topic_id, false, false
-        );
+        // $this->notification->delete_notifications( 'jeb.snahp.notification.type.digg', $topic_id, false, false);
         $this->notification->add_notifications (
             'jeb.snahp.notification.type.digg', $this->topic_data
         );
+        $this->update_notifications('jeb.snahp.notification.type.digg', $topic_id);
+    }/*}}}*/
+
+    private function update_notifications($notification_type_name, $topic_id)/*{{{*/
+    {
+        // Previous code used delete + insert. Use proper update instead.
+        $notification_type_id = (int) $this->notification->get_notification_type_id($notification_type_name);
+        $time = time();
+        $sql = 'UPDATE ' . NOTIFICATIONS_TABLE . "
+            SET notification_read=0, notification_time={$time}
+            WHERE item_id={$topic_id} AND notification_type_id={$notification_type_id}";
+        $this->db->sql_query($sql);
     }/*}}}*/
 
     private function delete_digg_slave($topic_id, $where='1=1')/*{{{*/

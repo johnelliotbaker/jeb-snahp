@@ -22,6 +22,11 @@ function prn($var, $b_html=false, $depth=0)
     }
 }/*}}}*/
 
+function fclear($filename='/home/ubm/a.txt', $depth=0, $b_new=true)
+{
+    file_put_contents($filename, '');
+}
+
 function fw($var, $filename='/home/ubm/a.txt', $depth=0)
 {
     if ($depth>10) return false;

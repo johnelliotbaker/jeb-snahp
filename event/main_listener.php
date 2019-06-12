@@ -64,6 +64,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
                 ['setup_core_vars', 0],
+                ['test', 0],
             ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
@@ -126,15 +127,44 @@ class main_listener extends base implements EventSubscriberInterface
             'core.viewtopic_modify_post_data' => [
                 ['embed_digg_controls_in_topic', 0],
             ],
+            'core.notification_manager_add_notifications' => [
+                ['disable_email_notification', 0],
+            ],
         ];
     }/*}}}*/
 
     public function test($event)/*{{{*/
     {
+        // $data = [];
+        // $topic_id = 54394;
+        // $data['topic_id'] = $topic_id;
+        // $start = 10400;
+        // for ($i = $start; $i < $start+3000; $i++) {
+        //     $data['user_id'] = $i;
+        //     $sql = 'INSERT INTO phpbb_snahp_digg_slave ' . $this->db->sql_build_array('INSERT', $data) . "
+        //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
+        //     $this->db->sql_query($sql);
+        // }
+    }/*}}}*/
+
+    public function disable_email_notification($event)/*{{{*/
+    {
+        $type = $event['notification_type_name'];
+        if (substr($type, 0, 3) == 'jeb')
+        {
+            return false;
+        }
+        $notify_users = $event['notify_users'];
+        foreach($notify_users as $key=>$user)
+        {
+            $notify_users[$key] = ['notification.method.board'];
+        }
+        $event['notify_users'] = $notify_users;
     }/*}}}*/
 
     public function embed_digg_controls_in_topic($event)/*{{{*/
     {
+        $cooldown = 2;
         $user_id = $this->user->data['user_id'];
         $topic_data = $event['topic_data'];
         $b_listing = $this->is_listing($topic_data, 'topic_data');
@@ -153,7 +183,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($master_data)
         {
             $b_digg_master = true;
-            $slave_data = $this->select_digg_slave_count($topic_id, $cooldown=30);
+            $slave_data = $this->select_digg_slave_count($topic_id, $cooldown=$cooldown);
             $count = $slave_data['count'];
             $state = 1;
             if ($b_op)
