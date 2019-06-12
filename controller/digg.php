@@ -8,8 +8,6 @@ class digg extends base
 {
 
     protected $topic_id = 0;
-    // protected $broadcast_delay = 86400; // 24*60*60
-    protected $broadcast_delay = 0; // 24*60*60
     protected $base_url = '';
     protected $topic_data = [];
 
@@ -177,6 +175,8 @@ class digg extends base
 
     public function broadcast_digg($topic_id)/*{{{*/
     {
+        $broadcast_delay = (int) $this->config['snp_digg_broadcast_cooldown'];
+        $broadcast_delay = $broadcast_delay ? $broadcast_delay : 86400;
         $b_op = $this->is_op($this->topic_data);
         if (!$b_op)
         {
@@ -190,11 +190,11 @@ class digg extends base
             trigger_error('You must first register a topic. Error Code: 67b4b00ad1');
         }
         $broadcast_time = $master_data['broadcast_time'];
-        $allowed_time = $broadcast_time + $this->broadcast_delay;
+        $allowed_time = $broadcast_time + $broadcast_delay;
         if (time() < $allowed_time)
         {
             meta_refresh(4, $this->base_url);
-            trigger_error('You need to wait until ' . $this->user->format_date($allowed_time) . ' to broadcast the update.');
+            trigger_error('You need to wait until ' . $this->user->format_date($allowed_time) . ' to broadcast this update.');
         }
         $this->upsert_digg_master($topic_id);
         // $this->notification->delete_notifications( 'jeb.snahp.notification.type.digg', $topic_id, false, false);

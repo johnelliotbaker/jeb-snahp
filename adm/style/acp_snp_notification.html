@@ -52,6 +52,7 @@
         <dl>
           <dt>
               <label>digg Master Switch</label>
+              <br>
               This shuts down all aspects of digg including internal processing methods.
           </dt>
 					<dd>
@@ -62,11 +63,25 @@
         <dl>
           <dt>
               <label>digg Notification Switch</label>
+              <br>
               This shuts down only the digg notification.
           </dt>
 					<dd>
               <label><input type="radio" name="snp_digg_b_notify" class="radio" value="1" {% if SNP_DIGG_B_NOTIFY %}checked="checked"{% endif %}> Yes</label>
               <label><input type="radio" name="snp_digg_b_notify" class="radio" value="0" {% if not SNP_DIGG_B_NOTIFY %}checked="checked"{% endif %}> No</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+              <label>Broadcast cooldown</label>
+              <br>
+              User must wait some time before making another broadcast.
+          </dt>
+					<dd>
+              <input type="number" min="0"
+                                   style="text-align:center;"
+                                   name="snp_digg_broadcast_cooldown"
+                                   value="{SNP_DIGG_BROADCAST_COOLDOWN}">
           </dd>
         </dl>
 			</fieldset>

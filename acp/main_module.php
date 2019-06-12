@@ -537,6 +537,7 @@ class main_module
                 $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', '0'));
                 $config->set('snp_digg_b_master',         $request->variable('snp_digg_b_master', '0'));
                 $config->set('snp_digg_b_notify',         $request->variable('snp_digg_b_notify', '0'));
+                $config->set('snp_digg_broadcast_cooldown',         $request->variable('snp_digg_broadcast_cooldown', 86400));
                 if ($config['snp_b_snahp_notify'])
                 {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
@@ -560,6 +561,7 @@ class main_module
                 'b_notify_op_on_report_checked' => $config['snp_b_notify_op_on_report'],
                 'SNP_DIGG_B_MASTER'             => $config['snp_digg_b_master'],
                 'SNP_DIGG_B_NOTIFY'             => $config['snp_digg_b_notify'],
+                'SNP_DIGG_BROADCAST_COOLDOWN'   => $config['snp_digg_broadcast_cooldown'],
                 'U_ACTION'                      => $this->u_action,
             ));
         }
