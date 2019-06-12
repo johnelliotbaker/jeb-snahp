@@ -254,7 +254,8 @@ class search_util extends base
         $error = false;
         $search = new \jeb\snahp\core\fulltext_native_local($error, $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher);
         // Manually set min length to 2
-        $search->word_length = ['min' => 2, 'max' => 30];
+        $search->word_length = ['min' => 3, 'max' => 30];
+        // For subject word_length is hardcode to be 2
         $search->index_remove([$post_id], [$poster_id], [$forum_id]);
         $search->index($mode, $post_id, $message, $subject, $poster_id, $forum_id);
         // Insert a record of the manual indexing

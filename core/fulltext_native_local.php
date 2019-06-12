@@ -1314,7 +1314,7 @@ class fulltext_native_local extends \phpbb\search\base
 	* @param	string	$text	Text to split, encoded in UTF-8
 	* @return	array			Array of UTF-8 words
 	*/
-	public function split_message($text)
+	public function split_message($text, $b_subject=false)
 	{
 		$match = $words = array();
 
@@ -1327,6 +1327,16 @@ class fulltext_native_local extends \phpbb\search\base
 		$match[] = '#\[\/?[a-z0-9\*\+\-]+(?:=.*?)?(?::[a-z])?(\:?[0-9a-z]{5,})\]#';
 
 		$min = $this->word_length['min'];
+
+        // DOCMOD HARDCODE MINIMUM WORD LENGTH TO 2 FOR SUBJECTS, 3 FOR MESSAGE
+        if ($b_subject)
+        {
+            $min = 2;
+        }
+        else
+        {
+            $min = 3;
+        }
 
 		$isset_min = $min - 1;
 
@@ -1399,8 +1409,9 @@ class fulltext_native_local extends \phpbb\search\base
 		}
 
 		// Split old and new post/subject to obtain array of 'words'
+        // DOCMOD HARDCODE
 		$split_text = $this->split_message($message);
-		$split_title = $this->split_message($subject);
+		$split_title = $this->split_message($subject, true);
 
 		$cur_words = array('post' => array(), 'title' => array());
 
