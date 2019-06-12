@@ -31,17 +31,89 @@ class pagination
         return $html;
     }
 
+    private function get_start($total, $per_page, $i_block, $base_url)
+    {
+        $i_start = 0;
+        $block_start = 1;
+        $url = $base_url . "&per_page={$per_page}&start={$i_start}";
+        $data = [
+            'block' => 1,
+            'index' => $i_start,
+        ];
+        if ($i_block <= $block_start)
+        {
+            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
+        }
+        else
+        {
+            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">' . $block_start . '</a></li>';
+        }
+        return $html;
+    }
+
+    private function get_end($total, $per_page, $i_block, $base_url)
+    {
+        $block_end = ceil($total / $per_page);
+        $i_end = (int) ($block_end - 1) * $per_page;
+        $url = $base_url . "&per_page={$per_page}&start={$i_end}";
+        $data = [
+            'block' => $block_end,
+            'index' => $i_end,
+        ];
+        if ($i_block >= $block_end)
+        {
+            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
+        }
+        else
+        {
+            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">' . $block_end . '</a></li>';
+        }
+        return $html;
+    }
+
+    private function get_prev($total, $per_page, $i_block, $n_block, $base_url, $start)
+    {
+        $block_start = 1;
+        $prev = ($i_block <= 1) ? 0 : $start - $per_page;
+        $url = $base_url . "&per_page={$per_page}&start={$prev}";
+        if ($i_block <= $block_start)
+        {
+            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">Prev</span></li>';
+        }
+        else
+        {
+            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">Prev</a></li>';
+        }
+        return $html;
+    }
+
+    private function get_next($total, $per_page, $i_block, $n_block, $base_url)
+    {
+        $block_end = ceil($total / $per_page);
+        $next = ($i_block > $n_block-1) ? ($n_block-1)*$per_page : $i_block*$per_page;
+        $next = $base_url . "&per_page={$per_page}&start={$next}";
+        $url = $base_url . "&per_page={$per_page}&start={$next}";
+        if ($i_block >= $block_end)
+        {
+            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">Next</span></li>';
+        }
+        else
+        {
+            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">Next</a></li>';
+        }
+        return $html;
+    }
+
     public function make($base_url='/', $total=0, $per_page=0, $start=0)
     {
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
-        $n = ceil($total / $per_page);
-        $i = ceil($start / $per_page)+1;
-        $prev = ($i <= 1) ? 0 : $start - $per_page;
-        $next = ($i > $n-1) ? ($n-1)*$per_page : $i*$per_page;
-        $prev = $base_url . "&per_page={$per_page}&start={$prev}";
-        $next = $base_url . "&per_page={$per_page}&start={$next}";
-        $html .= "<li class='page-item'><a class='page-link' href='{$prev}'>Previous</a></li>";
-        $html .= "<li class='page-item'><a class='page-link' href='{$next}'>Next</a></li>";
+        $n_block = ceil($total / $per_page);
+        $i_block = ceil($start / $per_page)+1;
+        $html .= $this->get_prev($total, $per_page, $i_block, $n_block, $base_url, $start);
+        $html .= $this->get_start($total, $per_page, $i_block, $base_url);
+        $html .= "<li class='page-item'><span class='page-link' style='background-color: #007bff; color:white;'>{$i_block}</span></li>";
+        $html .= $this->get_end($total, $per_page, $i_block, $base_url);
+        $html .= $this->get_next($total, $per_page, $i_block, $n_block, $base_url);
         $html .= '</ul></nav>';
         return $html;
     }
