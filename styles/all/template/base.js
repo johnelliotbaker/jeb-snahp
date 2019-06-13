@@ -189,3 +189,20 @@ $("body").keydown(function(event){
         $(".modal_imdb").remove();
     }
 });
+
+// Utility functions that work with forms
+Form_util = {}
+Form_util.setup_ctrlenter_quickreply = function()
+{
+    $msgbox = $('#message-box textarea.inputbox');
+    $msgbox.keydown((e)=>{
+        if (e.ctrlKey && e.keyCode == 13)
+        {
+            $('input[name="post"]').click(); console.log('sup');
+        }
+    });
+}
+
+$(function () {
+    Form_util.setup_ctrlenter_quickreply();
+});
