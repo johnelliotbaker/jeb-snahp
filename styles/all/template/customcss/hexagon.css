@@ -1,5 +1,29 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu|Galada');
 
+/* Favorites */
+table.table1 tbody td.body
+{
+    padding-top: 3px !important;
+}
+
+tbody td.body .title a
+{
+    padding: 0px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.title .topictitle
+{
+    font-size: 16px;
+}
+
+tbody td.body .details
+{
+    padding: 0px;
+    font-size: 11px;
+}
+
 /* hidebox */
 .hidebox.hi
 {

@@ -1,3 +1,15 @@
+/* Favorites */
+tr.favorite:hover
+{
+    background-color: #333 !important;
+}
+
+.title .topictitle
+{
+    font-size: 16px;
+}
+
+
 /* hidebox */
 .hidebox.hi
 {

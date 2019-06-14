@@ -1,3 +1,33 @@
+/* Favorites */
+tr.favorite:hover
+{
+    background-color: #f0f0f0 !important;
+}
+
+table.table1 tbody td.body
+{
+    padding-top: 0px !important;
+    vertical-align: top !important;
+}
+
+tbody td.body .title,
+tbody td.body .title a
+{
+    padding: 0px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.title .topictitle
+{
+    font-size: 17px;
+}
+
+td.content .details
+{
+    font-size: 11px;
+}
+
 /* hidebox */
 .hidebox.unhide
 {

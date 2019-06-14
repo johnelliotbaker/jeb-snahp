@@ -41,16 +41,16 @@ parameters:
                 android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png">'
                 ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png">'
             small:
-                request:   '<span class="small"><span class="btn open">R</span></span>'
-                solved:    '<span class="small"><span class="btn solve">S</span></span>'
-                accepted:  '<span class="small"><span class="btn dib">A</span></span>'
-                fulfilled: '<span class="small"><span class="btn fulfill">F</span></span>'
-                closed:    '<span class="small"><span class="btn terminate">C</span></span>'
-                mega:      '<span class="small"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png"></span>'
-                zippy:     '<span class="small"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png"></span>'
-                gdrive:    '<span class="small"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
-                android:   '<span class="small"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
-                ios:       '<span class="small"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
+                request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
+                solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
+                accepted:  '<span class="small_host_icon"><span class="btn dib">A</span></span>'
+                fulfilled: '<span class="small_host_icon"><span class="btn fulfill">F</span></span>'
+                closed:    '<span class="small_host_icon"><span class="btn terminate">C</span></span>'
+                mega:      '<span class="small_host_icon"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png"></span>'
+                zippy:     '<span class="small_host_icon"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png"></span>'
+                gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
+                android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
+                ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
     jeb.snahp.req:
         def:
             open: 1
@@ -81,24 +81,35 @@ parameters:
     jeb.snahp.fav:
         dev:
             img:
-                50: 'https://i.imgur.com/9RLP1KV.png' # Imported
-                51: 'https://i.imgur.com/7hjHY25.png' # Apps
-                52: 'https://i.imgur.com/YBPkBaX.png' # Games
-                53: 'https://i.imgur.com/i9pIvNy.png' # TV Shows
-                54: 'https://i.imgur.com/g5r9eAI.png' # Music
-                55: 'https://i.imgur.com/BpFV059.png' # Anime
-                56: 'https://i.imgur.com/X4OIR7c.png' # Miscellaneous
-                57: 'https://i.imgur.com/OU5XZDq.png' # Developmental Resources
-                82: 'https://i.imgur.com/pK0D79T.png' # Movies
+                50: 'https://i.imgur.com/m6XofFz.png'  # Imported
+                51: 'https://i.imgur.com/7hjHY25.png'  # Apps
+                52: 'https://i.imgur.com/YBPkBaX.png'  # Games
+                53: 'https://i.imgur.com/i9pIvNy.png'  # TV Shows
+                54: 'https://i.imgur.com/g5r9eAI.png'  # Music
+                55: 'https://i.imgur.com/w8Tmnyk.png'  # Anime
+                56: 'https://i.imgur.com/X4OIR7c.png'  # Miscellaneous
+                57: 'https://i.imgur.com/OU5XZDq.png'  # Developmental Resources
+                82: 'https://i.imgur.com/pK0D79T.png'  # Movies
+                74: 'https://i.imgur.com/Z1NwGH5.png'  # Manga
+                75: 'https://i.imgur.com/YtWaxUg.png'  # ebooks
+                105: 'https://i.imgur.com/IHNXV9h.png' # sports
+                59: 'https://i.imgur.com/FszcDV4.png'  # Apps PC
+                106: 'https://i.imgur.com/FPEhkvf.png' # Misc Comics
+                65: 'https://i.imgur.com/YBPkBaX.png'  # Games Console
         production:
             img:
-                27: 'https://i.imgur.com/9RLP1KV.png' # Imported
+                27: 'https://i.imgur.com/m6XofFz.png' # Imported
                 9:  'https://i.imgur.com/7hjHY25.png' # Apps
                 10: 'https://i.imgur.com/YBPkBaX.png' # Games
-                11: 'https://i.imgur.com/pK0D79T.png' # Movies
                 12: 'https://i.imgur.com/i9pIvNy.png' # TV Shows
                 14: 'https://i.imgur.com/g5r9eAI.png' # Music
-                13: 'https://i.imgur.com/BpFV059.png' # Anime
+                13: 'https://i.imgur.com/w8Tmnyk.png' # Anime
                 15: 'https://i.imgur.com/X4OIR7c.png' # Miscellaneous
                 76: 'https://i.imgur.com/OU5XZDq.png' # Developmental Resources
-
+                11: 'https://i.imgur.com/pK0D79T.png' # Movies
+                60: 'https://i.imgur.com/Z1NwGH5.png' # Manga
+                37: 'https://i.imgur.com/YtWaxUg.png' # ebooks
+                61: 'https://i.imgur.com/IHNXV9h.png' # sports
+                40: 'https://i.imgur.com/FszcDV4.png' # Apps PC
+                43: 'https://i.imgur.com/FPEhkvf.png' # Misc Comics
+                25: 'https://i.imgur.com/YBPkBaX.png' # Games Console

@@ -9,11 +9,11 @@ img.ios_icon
     margin-right: 3px;
 }
 
-.small img.mega_icon,
-.small img.gdrive_icon,
-.small img.zippy_icon,
-.small img.android_icon,
-.small img.ios_icon
+.small_host_icon img.mega_icon,
+.small_host_icon img.gdrive_icon,
+.small_host_icon img.zippy_icon,
+.small_host_icon img.android_icon,
+.small_host_icon img.ios_icon
 {
     height: 20px;
     margin-left: 0px;
@@ -22,11 +22,11 @@ img.ios_icon
 }
 
 {% if STYLE_NAME=='basic' %}
-.small img.mega_icon,
-.small img.gdrive_icon,
-.small img.zippy_icon,
-.small img.android_icon,
-.small img.ios_icon
+.small_host_icon img.mega_icon,
+.small_host_icon img.gdrive_icon,
+.small_host_icon img.zippy_icon,
+.small_host_icon img.android_icon,
+.small_host_icon img.ios_icon
 {
     margin-bottom: -6px;
 }

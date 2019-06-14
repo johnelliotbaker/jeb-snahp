@@ -17,17 +17,18 @@
   </thead>
   <tbody>
     <!-- BEGIN postrow -->
-    <tr class="<!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+    <tr class="<!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --> favorite">
       <td class="category">
         <a href="/viewforum.php?f={postrow.FORUM_ID}"><img class="category_icon" src="{postrow.U_IMG_URL}"></img></a>
       </td>
-      <td>
-        <div>
-          <a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.TOPIC_TITLE}</a><br />
-          Posted in <b><a href="/viewforum.php?f={postrow.FORUM_ID}">{postrow.FORUM_NAME}</a></b><br>
-          <span>{L_POSTED} {L_POST_BY_AUTHOR} <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.POSTER_ID}" style="color: #{postrow.POSTER_COLOUR};" class="username-coloured">{postrow.POSTER_NAME}</a> &raquo; {postrow.TOPIC_TIME}</span>
-        </div>
-        </div>
+      <td class="content">
+          <div class="title small_host_icon">
+            <a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.TOPIC_TITLE}</a><br />
+          </div>
+          <div class="details">
+            Posted in <b><a href="/viewforum.php?f={postrow.FORUM_ID}">{postrow.FORUM_NAME}</a></b><br>
+            <span>{L_POSTED} {L_POST_BY_AUTHOR} <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.POSTER_ID}" style="color: #{postrow.POSTER_COLOUR};" class="username-coloured">{postrow.POSTER_NAME}</a> &raquo; {postrow.TOPIC_TIME}</span>
+          </div>
       </td>
       <td class="posts" style="min-width:60px;">
         {postrow.REPLIES}
