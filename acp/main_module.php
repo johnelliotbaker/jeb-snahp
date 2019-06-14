@@ -585,7 +585,7 @@ class main_module
                 $config->set('snp_fid_listings', $fid_listings);
                 $snp_ql_fav_limit = $request->variable('snp_ql_fav_limit', '300');
                 $config->set('snp_ql_fav_limit', $snp_ql_fav_limit);
-                $snp_ql_fav_duration = $request->variable('snp_ql_fav_duration', '86400');
+                $snp_ql_fav_duration = $request->variable('snp_ql_fav_duration', '604800');
                 $config->set('snp_ql_fav_duration', $snp_ql_fav_duration);
                 $snp_ql_fav_b_replies = $request->variable('snp_ql_fav_b_replies', '0');
                 $config->set('snp_ql_fav_b_replies', $snp_ql_fav_b_replies);
