@@ -157,7 +157,13 @@ class main_listener extends base implements EventSubscriberInterface
         $notify_users = $event['notify_users'];
         foreach($notify_users as $key=>$user)
         {
-            $notify_users[$key] = ['notification.method.board'];
+            foreach($user as $i=>$method)
+            {
+                if($method==='notification.method.email')
+                {
+                    unset($notify_users[$key][$i]);
+                }
+            }
         }
         $event['notify_users'] = $notify_users;
     }/*}}}*/

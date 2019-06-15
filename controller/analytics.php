@@ -53,6 +53,7 @@ class analytics extends base
         }
         $this->template->assign_block_vars('postrow', $blockvar);
         $elapsed_time = (float) microtime() - $time;
+        $elapsed_time = sprintf('%f', $elapsed_time);
         $this->template->assign_vars([
             'ELAPSED_TIME' => $elapsed_time,
         ]);
