@@ -85,6 +85,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Use mysql to search topic titles.',
                 'LINK' => '<a href="/app.php/snahp/search_util/handle_mysql_search/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 4,
+                'PURPOSE' => 'Analytics',
+                'NAME' => 'Statistics',
+                'DESCRIPTION' => 'Forum statistics',
+                'LINK' => '<a href="/app.php/snahp/analytics/handle/stats/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);

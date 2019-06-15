@@ -17,6 +17,12 @@ class analytics extends base
     {
         switch ($mode)
         {
+        case 'stats':
+            $cfg['tpl_name'] = '@jeb_snahp/analytics/component/stats/base.html';
+            $cfg['base_url'] = '/app.php/snahp/analytics/stats/';
+            $cfg['title'] = 'Site Statistics';
+            return $this->handle_stats($cfg);
+            break;
         case 'common_thanks':
             $cfg['tpl_name'] = '@jeb_snahp/analytics/common_thanks.html';
             $cfg['base_url'] = '/app.php/snahp/analytics/common_thanks/';
@@ -35,7 +41,23 @@ class analytics extends base
         trigger_error('Nothing to see here. Move along.');
     }
 
-    public function get_or_reject_bump_data($tid)
+    public function handle_stats($cfg)/*{{{*/
+    {
+        $this->reject_non_dev();
+        $data = $this->select_monthly_stats();
+        $blockvar = [];
+        foreach ($data as $fieldname => $value)
+        {
+            $blockvar[$fieldname] = $value;
+        }
+        $this->template->assign_block_vars('postrow', $blockvar);
+        $this->template->assign_vars(
+            $data
+        );
+        return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Statistics');
+    }/*}}}*/
+
+    public function get_or_reject_bump_data($tid)/*{{{*/
     {
         if (!$tid)
         {
@@ -47,9 +69,9 @@ class analytics extends base
             trigger_error('Bump data does not exist.');
         }
         return $bump_data;
-    }
+    }/*}}}*/
 
-    public function get_or_reject_topic_data($tid)
+    public function get_or_reject_topic_data($tid)/*{{{*/
     {
         if (!$tid)
         {
@@ -61,9 +83,9 @@ class analytics extends base
             trigger_error('That topic does not exist.');
         }
         return $topicdata;
-    }
+    }/*}}}*/
 
-    public function deserialize_tid($strn)
+    public function deserialize_tid($strn)/*{{{*/
     {
         preg_match_all('#(\d+)#', $strn, $matches);
         $data = [];
@@ -72,9 +94,9 @@ class analytics extends base
             return array_unique($matches[1]);
         }
         return $data;
-    }
+    }/*}}}*/
 
-    public function json_common_thanks($cfg)
+    public function json_common_thanks($cfg)/*{{{*/
     {
         $this->reject_anon();
         $group_id = $this->user->data['group_id'];
@@ -136,14 +158,50 @@ class analytics extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }
+    }/*}}}*/
 
-    public function handle_common_thanks($cfg)
+    public function handle_common_thanks($cfg)/*{{{*/
     {
         $this->reject_anon();
         $group_id = $this->user->data['group_id'];
         $this->reject_non_group($group_id, 'snp_ana_b_enable');
         return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Common Thanks');
-    }
+    }/*}}}*/
+
+
+    private function select_monthly_stats()/*{{{*/
+    {
+        $n_unique_visitor = $this->get_monthly_unique_users();
+        $data = [
+            'NAME' => 'N_UNIQUE_VISITOR',
+            'DESCRIPTION' => 'Number of unique users visited in the last 30 days.',
+            'VALUE' => $n_unique_visitor,
+        ];
+        return $data;
+    }/*}}}*/
+
+    private function get_monthly_unique_users()/*{{{*/
+    {
+        $time = time();
+        $since = (int) ($time - 2592000);
+        $where = "u.user_id > 1 AND (u.user_lastvisit > {$since} OR s.session_time > {$since})";
+        $sql_ary = [
+            'SELECT' => 'u.user_id',
+            'FROM' => [USERS_TABLE => 'u'],
+            'LEFT_JOIN' => [
+                [
+                    'FROM' => [SESSIONS_TABLE => 's'],
+                    'ON' => 'u.user_id=s.session_user_id',
+                ],
+            ],
+            'WHERE' => $where,
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_ary);
+        $sql = "SELECT COUNT(*) as count FROM ({$sql}) as t";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row['count'];
+    }/*}}}*/
 
 }

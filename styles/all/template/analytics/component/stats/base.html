@@ -1,0 +1,29 @@
+<!-- INCLUDE overall_header.html -->
+
+<style>
+{% include '@jeb_snahp/analytics/component/base.css' %}
+</style>
+<script>
+{% include '@jeb_snahp/analytics/component/base.js' %}
+</script>
+
+<div class="twbs">
+  <table class="table table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th class="text-left" scope="col">NAME</th>
+        <th class="text-left" scope="col">Description</th>
+        <th class="text-left" scope="col">VALUE</th>
+      </tr>
+    </thead>
+    <tbody id="content">
+      <!-- BEGIN postrow -->
+      <td>{postrow.NAME}</td>
+      <td>{postrow.DESCRIPTION}</td>
+      <td>{postrow.VALUE}</td>
+      <!-- END postrow -->
+    </tbody>
+  </table>
+</div>
+
+<!-- INCLUDE overall_footer.html -->
