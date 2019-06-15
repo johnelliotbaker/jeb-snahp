@@ -44,6 +44,7 @@ class analytics extends base
     public function handle_stats($cfg)/*{{{*/
     {
         $this->reject_non_dev();
+        $time = (float) microtime();
         $data = $this->select_monthly_stats();
         $blockvar = [];
         foreach ($data as $fieldname => $value)
@@ -51,9 +52,10 @@ class analytics extends base
             $blockvar[$fieldname] = $value;
         }
         $this->template->assign_block_vars('postrow', $blockvar);
-        $this->template->assign_vars(
-            $data
-        );
+        $elapsed_time = (float) microtime() - $time;
+        $this->template->assign_vars([
+            'ELAPSED_TIME' => $elapsed_time,
+        ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Statistics');
     }/*}}}*/
 
