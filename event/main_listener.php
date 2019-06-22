@@ -96,6 +96,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.posting_modify_message_text'            => [
                 ['colorize_at', 0],
+                ['modify_dice_roll', 0],
                 ['disable_magic_url_on_gallery', 1],
             ],
             'core.viewtopic_assign_template_vars_before'  => [
@@ -715,6 +716,18 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $this->db->sql_freeresult($result);
         return $data;
+    }/*}}}*/
+
+    public function modify_dice_roll($event)/*{{{*/
+    {
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $message = strip_tags($message);
+        preg_match_all('#:roll:#', $message, $matchall);
+        $num = sprintf('%04d', rand(0,100));
+        $a = '#:roll:#';
+        $b = '[center][fimg=250,250]' . 'https://raw.githubusercontent.com/codexologist/img/master/img/roll/ishihara_' . $num . '.png' . '[/fimg][/center]';
+        $message = preg_replace($a, $b, $message);
     }/*}}}*/
 
     public function colorize_at($event)/*{{{*/
