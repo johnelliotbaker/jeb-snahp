@@ -272,3 +272,11 @@ div.card-body > h6
 {
     color: #CCC;
 }
+
+/* codebox resizing and scrollbar */
+
+div.codebox pre
+{
+    scrollbar-color: #de7300 #2E3645 !important;
+    scrollbar-width: thin !important;
+}

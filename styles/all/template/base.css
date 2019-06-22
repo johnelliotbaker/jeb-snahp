@@ -178,3 +178,18 @@ input.search_master {
 {
     color: inherit !important;
 }
+
+/* codebox resizing */
+
+div.codebox pre
+{
+    height: 200px;
+    resize: vertical;
+    overflow-y: scroll;
+    /* scrollbar-color: #0079D3 #2E3645 !important; */
+}
+
+code
+{
+    max-height: unset !important;
+}
