@@ -10,6 +10,17 @@
 {% endif %}
 {% if B_SHOW_REQUESTS_SOLVED and postrow.REQUESTS_SOLVED %}
 <dd class="profile-posts">
-  <strong>Has solved: {postrow.REQUESTS_SOLVED} {% if postrow.REQUESTS_SOLVED==1 %}request{% else %}requests{% endif %}</strong>
+  <strong>Has solved: 
+    {% if postrow.REQUESTS_SOLVED==69 %}
+      <span style="color: #A00;">Censored</span>
+    {% else %}
+      {postrow.REQUESTS_SOLVED} 
+      {% if postrow.REQUESTS_SOLVED==1 %}
+        request
+      {% else %}
+        requests
+      {% endif %}
+    {% endif %}
+  </strong>
 </dd>
 {% endif %}
