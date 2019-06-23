@@ -186,6 +186,11 @@ input.search_master {
     cursor: pointer;
 }
 
+.codebox code
+{
+    max-height: 100px;
+}
+
 div.codebox pre.expand
 {
     resize: vertical;
