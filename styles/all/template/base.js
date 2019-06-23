@@ -1,3 +1,36 @@
+// Code box
+var Codebox = {};
+Codebox.append_resize_controls = function()
+{
+    $controlbox = $('div.codebox > p');
+    $controlbox.append('<span style="float: right;" onClick="Codebox.expand(event);" class="pointer">Expand</span>');
+}
+
+Codebox.expand = function(e)
+{
+    $target = $(e.target);
+    var text  = $target.text();
+    $pre = $target.parent().next();
+    $code = $pre.find('code');
+    if (text === 'Expand')
+    {
+        $target.text('Restore');
+        var height0 = $pre.height();
+        $pre.data('height0', height0);
+        $pre.addClass('expand');
+        $pre.css({'height': '500px'});
+        $code.addClass('expand');
+    }
+    else
+    {
+        $target.text('Expand');
+        $pre.height($pre.data('height0'));
+        $pre.removeClass('expand');
+        $code.removeClass('expand');
+    }
+}
+
+
 // Dictionary updater from: https://stackoverflow.com/questions/6842795/dynamic-deep-setting-for-a-javascript-object
 var Dict = {}
 Dict.set = function(object, path, value)
@@ -92,6 +125,8 @@ function collectAvatarUsername()
 }
 
 $(document).ready(()=>{
+    // Allow codebox to resize
+    Codebox.append_resize_controls();
     // @@username completion
     var usernames = collectAvatarUsername();
     $mbox = $('textarea[name="message"]');

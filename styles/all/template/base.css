@@ -181,14 +181,18 @@ input.search_master {
 
 /* codebox resizing */
 
-div.codebox pre
+.pointer
 {
-    height: 200px;
+    cursor: pointer;
+}
+
+div.codebox pre.expand
+{
     resize: vertical;
     overflow-y: auto;
 }
 
-code
+code.expand
 {
     overflow: unset !important;
     max-height: unset !important;
