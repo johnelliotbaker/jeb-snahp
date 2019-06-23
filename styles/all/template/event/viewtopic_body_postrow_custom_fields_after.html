@@ -11,15 +11,14 @@
 {% if B_SHOW_REQUESTS_SOLVED and postrow.REQUESTS_SOLVED %}
 <dd class="profile-posts">
   <strong>Has solved: 
-    {% if postrow.REQUESTS_SOLVED==69 %}
-      <span style="color: #A00;">Censored</span>
+    {postrow.REQUESTS_SOLVED} 
+    {% if postrow.REQUESTS_SOLVED==1 %}
+      request
     {% else %}
-      {postrow.REQUESTS_SOLVED} 
-      {% if postrow.REQUESTS_SOLVED==1 %}
-        request
-      {% else %}
-        requests
-      {% endif %}
+      requests
+    {% endif %}
+    {% if postrow.REQUESTS_SOLVED==69 %}
+    {% include '@jeb_snahp/avatar/component/request_solved_image/base.html' %}
     {% endif %}
   </strong>
 </dd>
