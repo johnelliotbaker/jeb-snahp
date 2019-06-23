@@ -60,6 +60,7 @@ class main_listener extends base implements EventSubscriberInterface
     {
         return [
             'core.user_setup'                             => [
+                ['print_version_on_footer', 0],
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
@@ -146,6 +147,16 @@ class main_listener extends base implements EventSubscriberInterface
         //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
         //     $this->db->sql_query($sql);
         // }
+    }/*}}}*/
+
+    public function print_version_on_footer($event)/*{{{*/
+    {
+        $ext = $this->container->get('ext.manager');
+        $md_manager = $ext->create_extension_metadata_manager('jeb/snahp');
+        $version = $md_manager->get_metadata('version');
+        $this->template->assign_vars([
+            'S_SNAHP_VERSION' => 'V' . $version,
+        ]);
     }/*}}}*/
 
     public function disable_email_notification($event)/*{{{*/
