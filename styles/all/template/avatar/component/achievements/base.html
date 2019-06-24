@@ -1,0 +1,10 @@
+<style>
+  {% include '@jeb_snahp/avatar/component/achievements/base.css' %}
+</style>
+{% if postrow.U_AVATAR_ACHIEVEMENTS_IMG %}
+<dd>
+  <span title="{postrow.S_AVATAR_ACHIEVEMENTS_TITLE}" class="avatar_achievement {STYLE_NAME}">
+    <img src="{postrow.U_AVATAR_ACHIEVEMENTS_IMG}" class="avatar_achievement {STYLE_NAME}">
+  </span>
+</dd>
+{% endif %}

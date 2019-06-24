@@ -445,7 +445,7 @@ abstract class base
         $user_style = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
             WHERE style_id=' . $user_style;
-        $result = $this->db->sql_query_limit($sql, 1);
+        $result = $this->db->sql_query($sql, 5);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $style_name = $row['style_name'];

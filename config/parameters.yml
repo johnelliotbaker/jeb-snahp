@@ -1,5 +1,6 @@
 parameters:
     jeb.snahp.tables.snp_table: '%core.table_prefix%snp_table'
+
     jeb.snahp.tables: 
         req:    '%core.table_prefix%snahp_request'
         requsr: '%core.table_prefix%snahp_request_users'
@@ -12,10 +13,13 @@ parameters:
         manual_search_posts: '%core.table_prefix%snahp_manual_search_posts'
         digg_slave: '%core.table_prefix%snahp_digg_slave'
         digg_master: '%core.table_prefix%snahp_digg_master'
+        achievements: '%core.table_prefix%snahp_achievements'
+
     jeb.snahp.bump_topic:
         def:
             enable: 1
             disable: 9
+
     jeb.snahp.tags:
         encode:
             request: 1
@@ -51,6 +55,7 @@ parameters:
                 gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
                 android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
                 ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
+
     jeb.snahp.req:
         def:
             open: 1
@@ -74,10 +79,12 @@ parameters:
                     - 3
                     - 4
                     - 5
+
     jeb.snahp.reqsmcp:
         def:
             disable: 9
             enable: 1
+
     jeb.snahp.fav:
         dev:
             img:
@@ -113,3 +120,46 @@ parameters:
                 40: 'https://i.imgur.com/FszcDV4.png' # Apps PC
                 43: 'https://i.imgur.com/FPEhkvf.png' # Misc Comics
                 25: 'https://i.imgur.com/YBPkBaX.png' # Games Console
+
+    jeb.snahp.avatar.achievements:
+        thumb_raiser:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/ZVdzzz5.png'
+                    Basic: 'https://i.imgur.com/ZVdzzz5.png'
+                    Hexagon: 'https://i.imgur.com/6VUg3pD.png'
+                    Acieeed!: 'https://i.imgur.com/EyM1JFn.png'
+            title: "Thumb Raiser. Whenever you meet people, they raise their thumbs in your honor. No questions asked."
+        life_giver:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/Cpj3H7J.png'
+                    Basic: 'https://i.imgur.com/Cpj3H7J.png'
+                    Hexagon: 'https://i.imgur.com/VDYMGKY.png'
+                    Acieeed!: 'https://i.imgur.com/b8671CB.png'
+            title: "Life Giver. You breath new life into every stranger you meet - one request at a time."
+        grave_digger:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/c2AlUKM.png'
+                    Basic: 'https://i.imgur.com/c2AlUKM.png'
+                    Hexagon: 'https://i.imgur.com/qGrUH0v.png'
+                    Acieeed!: 'https://i.imgur.com/gnccFDf.png'
+            title: "Grave Digger. Your peculiar habit of secretly digging through someone else's belongings has earned you this unceremonious title."
+        computer_whiz:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/BIts5ks.png'
+                    Basic: 'https://i.imgur.com/BIts5ks.png'
+                    Hexagon: 'https://i.imgur.com/dbTWs5M.png'
+                    Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
+            title: "Computer Whiz. You have published more scholarly articles in the field of computer science than anyone else."
+        magnetic_personality:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/NtvZyy4.png'
+                    Basic: 'https://i.imgur.com/NtvZyy4.png'
+                    Hexagon: 'https://i.imgur.com/SSOngus.png'
+                    Acieeed!: 'https://i.imgur.com/VNCDFan.png'
+            title: 'Magnetic Personality. Everyone diggs you!!! You are the most digged person on the planet.'
+

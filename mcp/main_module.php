@@ -92,6 +92,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Forum statistics',
                 'LINK' => '<a href="/app.php/snahp/analytics/handle/stats/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 5,
+                'PURPOSE' => 'Achievements',
+                'NAME' => 'Achievements',
+                'DESCRIPTION' => 'Update Achievements',
+                'LINK' => '<a href="/app.php/snahp/achievements/update/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);

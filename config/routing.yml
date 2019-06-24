@@ -27,6 +27,11 @@ jeb_snahp_search_util:
     defaults: { _controller: jeb.snahp.search_util:handle}
     requirements:
         mode: \S+
+jeb_snahp_achievements:
+    path: /snahp/achievements/{mode}/
+    defaults: { _controller: jeb.snahp.achievements:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_digg:
     path: /snahp/digg/{mode}/
     defaults: { _controller: jeb.snahp.digg:handle}

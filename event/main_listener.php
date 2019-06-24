@@ -87,6 +87,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
+                ['add_avatar_achievements', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -147,6 +148,37 @@ class main_listener extends base implements EventSubscriberInterface
         //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
         //     $this->db->sql_query($sql);
         // }
+    }/*}}}*/
+
+    public function add_avatar_achievements($event)/*{{{*/
+    {
+        if (rand(1,10) < 6)
+        {
+            return false;
+        }
+        $user_id = $this->user->data['user_id'];
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        $sql = "SELECT * FROM phpbb_snahp_achievements WHERE user_id={$poster_id}";
+        $result = $this->db->sql_query($sql, 5);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        if (!$rowset)
+        {
+            return false;
+        }
+        $i_achi = rand(0, count($rowset)-1);
+        $row = $rowset[$i_achi];
+        $type = $row['type'];
+        $style_name = $this->select_style_name();
+        $params = $this->container->getParameter('jeb.snahp.avatar.achievements');
+        if (!array_key_exists($type, $params))
+        {
+            return false;
+        }
+        $post_row['U_AVATAR_ACHIEVEMENTS_IMG'] = $params[$type]['img']['url'][$style_name];
+        $post_row['S_AVATAR_ACHIEVEMENTS_TITLE'] = $params[$type]['title'];
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function print_version_on_footer($event)/*{{{*/

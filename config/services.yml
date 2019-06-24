@@ -84,6 +84,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.achievements:
+        class: jeb\snahp\controller\achievements
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.digg:
         class: jeb\snahp\controller\digg
         parent: jeb.snahp.base
