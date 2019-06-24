@@ -66,6 +66,23 @@
   font-weight: 300;
 }
 
+.gallery_compact.clipboard
+{
+    z-index: 1000;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    color: white;
+    font-size: 0px;
+    padding: 3px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
 @media (min-width: 576px) {
 
   .gallery-block.compact-gallery .item .description {

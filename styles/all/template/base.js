@@ -1,3 +1,23 @@
+// Clipboard
+var Clipboard = {};
+
+Clipboard.copy = function(strn)
+{
+    $tmp = $('<input>').appendTo('body');
+    $tmp.val(strn).select();
+    document.execCommand('copy');
+    $tmp.remove();
+}
+
+Clipboard.copy_gallery_link = function(ev)
+{
+    $target = $(ev.target);
+    $link = $target.parent().next();
+    var href = $link.attr('href');
+    this.copy(href);
+}
+
+
 // Code box
 var Codebox = {};
 Codebox.append_resize_controls = function()

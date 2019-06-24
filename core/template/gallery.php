@@ -67,6 +67,9 @@ class gallery
             $el = $elem[$choice];
             $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
 	                <div class="card border-0 transform-on-hover">
+                        <div class="gallery_cards clipboard" onClick="Clipboard.copy_gallery_link(event);">
+                            <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
+                        </div>
 	                	<' . $el . ' href="' . $link . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
 	                	</' . $el . '>
@@ -120,10 +123,10 @@ class gallery
             $cls = $class[$choice];
             $el = $elem[$choice];
             $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
-                        <' . $el . ' href="' . $link . '" target="_blank">
-                        <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
-                    </' . $el . '>
-                </div>';
+                           <' . $el . ' href="' . $link . '" target="_blank">
+                               <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
+                           </' . $el . '>
+                       </div>';
         }
         $html['body'] = $body;
         $sequence = ['begin', 'body', 'end'];
@@ -168,6 +171,9 @@ class gallery
             $cls = $class[$choice];
             $el = $elem[$choice];
             $body[] = '<div class="' . $column_size . ' item zoom-on-hover' . $cls . '"> 
+                <div class="gallery_compact clipboard" onClick="Clipboard.copy_gallery_link(event);">
+                    <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
+                </div>
                 <' . $el . ' href="' . $link . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
                   <span class="description">
