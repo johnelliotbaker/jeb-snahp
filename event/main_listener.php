@@ -152,6 +152,10 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function add_avatar_achievements($event)/*{{{*/
     {
+        if (!$this->config['snp_achi_b_master'])
+        {
+            return false;
+        }
         if (rand(1,10) < 6)
         {
             return false;

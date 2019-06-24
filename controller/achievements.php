@@ -16,6 +16,10 @@ class achievements extends base
 	public function handle($mode)/*{{{*/
 	{
         $this->reject_non_dev();
+        if (!$this->config['snp_achi_b_master'])
+        {
+            trigger_error('This achievement system has been disabled by the administrator. Error Code: a089bce09c');
+        }
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         if (!$this->config['snp_achi_b_master'])
         {

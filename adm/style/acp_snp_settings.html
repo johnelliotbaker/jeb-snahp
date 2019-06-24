@@ -88,6 +88,19 @@
       </fieldset>
 
       <fieldset>
+        <legend>Achievements</legend>
+				<dl>
+          <dt>
+              <label>Achievements Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_achi_b_master" class="radio" value="1" {% if SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_achi_b_master" class="radio" value="0" {% if not SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
         <legend>Easter Eggs</legend>
 				<dl>
           <dt>
