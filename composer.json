@@ -3,12 +3,12 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.25.4",
-    "time": "2019-6-22",
+    "version": "0.26.0",
+    "time": "2019-6-23",
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "e09322686d858f439be62c3c0532561c11bcf81b digg",
+            "name": " bc4e29e02463c0049500ec6ea5cfb445ef75b785i achievements",
             "email": "",
             "homepage": "",
             "role": ""
