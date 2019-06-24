@@ -84,6 +84,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.acp_prune_users:
+        class: jeb\snahp\controller\acp_prune_users
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.achievements:
         class: jeb\snahp\controller\achievements
         parent: jeb.snahp.base
