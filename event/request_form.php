@@ -13,7 +13,7 @@ define('DEFINITION', [
             'req_v_comp_mp3'  => ['MP3', ''],
             'req_v_comp_wav'  => ['WAV', ''],
         ],
-        'Miminum Bitrate' => [ 'req_a_min_bitrate'   => [
+        'Mininum Bitrate' => [ 'req_a_min_bitrate'   => [
                             '96 kbps', '128 kbps', '160 kbps',
                             '192 kbps', '256 kbps', '320 kbps',
                         ],
