@@ -770,9 +770,9 @@ class main_listener extends base implements EventSubscriberInterface
         $mp = $event['message_parser'];
         $message = &$mp->message;
         $message = strip_tags($message);
-        preg_match_all('#:roll:#', $message, $matchall);
+        preg_match_all('/#roll#/', $message, $matchall);
         $num = sprintf('%04d', rand(0,100));
-        $a = '#:roll:#';
+        $a = '/#roll#/';
         $b = '[center][fimg=250,250]' . 'https://raw.githubusercontent.com/codexologist/img/master/img/roll/ishihara_' . $num . '.png' . '[/fimg][/center]';
         $message = preg_replace($a, $b, $message);
     }/*}}}*/
