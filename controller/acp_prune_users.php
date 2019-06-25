@@ -41,6 +41,7 @@ class acp_prune_users extends base
         $process_doa = $this->request->variable('doa', 0);
         $b_verbose = $this->request->variable('verbose', 0);
         $n_loop = $this->request->variable('n_loop', 0);
+        $b_count = $this->request->variable('count_only', 0);
         if (!$time_strn)
         {
             trigger_error('You must specify cut off date e.g. ?time=2018-10-30');
@@ -55,7 +56,16 @@ class acp_prune_users extends base
             $cfg['process_doa'] = true;
             $cfg['b_verbose'] = $b_verbose;
             $cfg['n_loop'] = $n_loop;
-            $this->prune_users($cfg);
+            $cfg['b_count'] = $b_count;
+            if ($b_count)
+            {
+                $count = $this->get_users_inactive_after_count($cfg);
+                $this->send_message(['Total'=>"{$count}"]);
+            }
+            else
+            {
+                $this->prune_users($cfg);
+            }
         }
         // Prune users that are inactive
         else
@@ -66,7 +76,16 @@ class acp_prune_users extends base
             $cfg['process_doa'] = false;
             $cfg['b_verbose'] = $b_verbose;
             $cfg['n_loop'] = $n_loop;
-            $this->prune_users($cfg);
+            $cfg['b_count'] = $b_count;
+            if ($b_count)
+            {
+                $count = $this->get_users_inactive_after_count($cfg);
+                $this->send_message(['Total'=>"{$count}"]);
+            }
+            else
+            {
+                $this->prune_users($cfg);
+            }
         }
         // Kill the stream
         $js = new \phpbb\json_response();
@@ -121,6 +140,36 @@ class acp_prune_users extends base
         }
         $this->send_message(['status'=>'SUCCESS']);
     }/*}}}*/
+
+    private function get_users_inactive_after_count($cfg)/*{{{*/
+    {
+        $time = $cfg['time'];
+        $limit = $cfg['limit'];
+        $process_doa = array_key_exists('process_doa', $cfg) && $cfg['process_doa'];
+        $enum_user_normal = USER_NORMAL;
+        if ($process_doa)
+        {
+            $where = "u.user_type={$enum_user_normal} AND u.user_lastvisit = 0";
+        }
+        else
+        {
+            $where = "u.user_type={$enum_user_normal} AND u.user_lastvisit > 0 AND u.user_lastvisit < {$time}";
+        }
+        $sql_ary = [
+            'SELECT' => 'COUNT(*) as count',
+            'FROM' => [USERS_TABLE => 'u'],
+            'WHERE' => $where,
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if ($row)
+        {
+            return $row['count'];
+        }
+        return 0;
+    }
 
     private function get_users_inactive_after($cfg)/*{{{*/
     {
