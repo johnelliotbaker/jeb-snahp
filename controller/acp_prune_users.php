@@ -39,6 +39,8 @@ class acp_prune_users extends base
         $time_strn = $this->request->variable('time', '0');
         $limit = $this->request->variable('limit', 500);
         $process_doa = $this->request->variable('doa', 0);
+        $b_verbose = $this->request->variable('verbose', 0);
+        $n_loop = $this->request->variable('n_loop', 0);
         if (!$time_strn)
         {
             trigger_error('You must specify cut off date e.g. ?time=2018-10-30');
@@ -51,6 +53,8 @@ class acp_prune_users extends base
             $cfg['time'] = $time;
             $cfg['detail'] = 'Prune users that never signed in after user creation';
             $cfg['process_doa'] = true;
+            $cfg['b_verbose'] = $b_verbose;
+            $cfg['n_loop'] = $n_loop;
             $this->prune_users($cfg);
         }
         // Prune users that are inactive
@@ -60,6 +64,8 @@ class acp_prune_users extends base
             $cfg['time'] = $time;
             $cfg['detail'] = "Prune users that did not login after {$time_strn}";
             $cfg['process_doa'] = false;
+            $cfg['b_verbose'] = $b_verbose;
+            $cfg['n_loop'] = $n_loop;
             $this->prune_users($cfg);
         }
         // Kill the stream
@@ -71,11 +77,18 @@ class acp_prune_users extends base
 
     public function prune_users($cfg)/*{{{*/
     {
+        $b_verbose = $cfg['b_verbose'];
+        $n_loop = $cfg['n_loop'];
         $action = 'deactivate';
         $this->send_message(['status'=>'START',  'detail' => $cfg['detail'], 'i' => 0]);
         $i_loop = 0;
         while($user_ids = $this->get_users_inactive_after($cfg))
         {
+            if ($n_loop > 0 && $i_loop >= $n_loop)
+            {
+                $this->send_message(['status'=>'BREKAING due to n_loop', 'i' => $cfg['limit']*($i_loop+1)]);
+                break;
+            }
             if (count($user_ids))
             {
                 if ($action == 'deactivate')
@@ -100,6 +113,10 @@ class acp_prune_users extends base
                 // $msg = $user->lang['USER_' . strtoupper($action) . '_SUCCESS'];
             }
             $this->send_message(['status'=>'PROGRESS', 'i' => $cfg['limit']*($i_loop+1)]);
+            if ($b_verbose)
+            {
+                $this->send_message(['user_ids' => $user_ids]);
+            }
             $i_loop += 1;
         }
         $this->send_message(['status'=>'SUCCESS']);
