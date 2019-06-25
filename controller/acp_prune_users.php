@@ -19,6 +19,18 @@ class acp_prune_users extends base
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         switch ($mode)
         {
+        case 'activate':
+            $cfg['tpl_name'] = '';
+            $cfg['b_feedback'] = false;
+            $cfg['state'] = 'activate';
+            return $this->deactivate($cfg);
+            break;
+        case 'deactivate':
+            $cfg['tpl_name'] = '';
+            $cfg['b_feedback'] = false;
+            $cfg['state'] = 'deactivate';
+            return $this->deactivate($cfg);
+            break;
         case 'prune':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -29,6 +41,114 @@ class acp_prune_users extends base
             break;
         }
 	}/*}}}*/
+
+    public function deactivate($cfg)/*{{{*/
+    {
+        include_once('includes/acp/acp_prune.php');
+        include_once('includes/functions_user.php');
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+        if ($cfg['state'] == 'activate')
+        {
+            $set_user_to = USER_NORMAL;
+        }
+        else
+        {
+            $set_user_to = USER_INACTIVE;
+        }
+        // Get options
+        $time_strn = $this->request->variable('time', '');
+        $required_posts = $this->request->variable('required_posts', 0);
+        $group = $this->request->variable('group', 0);
+        $doa = $this->request->variable('doa', 1);
+        $verbose = $this->request->variable('verbose', 0);
+        $n_users = $this->request->variable('n_users', 0);
+        if ($time_strn)
+        {
+            $time_before = strtotime($time_strn);
+        }
+        else
+        {
+            $time_before = 0;
+        }
+        $sql = 'SELECT user_id, username, user_type, user_posts, group_id, user_lastvisit FROM ' . USERS_TABLE;
+        $result = $this->db->sql_query($sql);
+        $time_start = microtime(true);
+        $time_loop = microtime(true);
+        $i = 0;
+        $n_process = 0;
+        while($row = $this->db->sql_fetchrow($result))
+        {
+            // prn($row['post_id'], true);
+            // prn(PHP_EOL, true);
+            // Get user statistics
+            $i += 1;
+            $user_id = $row['user_id'];
+            $user_type = $row['user_type'];
+            $n_posts = $row['user_posts'];
+            $group_id = $row['group_id'];
+            $user_lastvisit = $row['user_lastvisit'];
+            // If time before is specified
+            if ($time_before && $user_lastvisit > $time_before)
+            {
+                continue;
+            }
+            // Rejections
+            if (!in_array($user_type, [USER_NORMAL, USER_INACTIVE]))
+            {
+                // If special user (admin or bots) continue
+                continue;
+            }
+            // doa means signed up but never logged in. $user_lastvisit=0
+            if ($doa && $user_lastvisit > 0)
+            {
+                continue;
+            }
+            // If minimum posts are specified
+            if ($required_posts && $n_posts > $required_posts)
+            {
+                continue;
+            }
+            if ($group && $group_id != $group)
+            {
+                continue;
+            }
+            $this->user->reset_login_keys($user_id);
+            $data = [
+                'user_type' => $set_user_to,
+                'user_inactive_time' => time(),
+                'user_inactive_reason' => INACTIVE_MANUAL,
+            ];
+            $sqlw = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id={$user_id}";
+            $this->db->sql_query($sqlw);
+            if ($verbose)
+            {
+                $this->send_message($row);
+            }
+            if ($i > 100000)
+            {
+                break;
+            }
+            if ($i % 100 == 0)
+            {
+                $time_loop = microtime(true) - $time_loop;
+                $this->send_message(['i'=>"{$i}", 'time' => "{$time_loop}"]);
+                $time_loop = microtime(true);
+            }
+            $n_process += 1;
+            if ($n_users && $n_process > $n_users)
+            {
+                $i -= 1;
+                $n_process -= 1;
+                break;
+            }
+        }
+        $this->db->sql_freeresult($result);
+        $time_end = microtime(true) - $time_start;
+        $this->send_message(['Processed' => "{$i}", 'Modified'=>"{$n_process}", 'Total Time' => "{$time_end}"]);
+        $js = new \phpbb\json_response();
+        $js->send();
+    }/*}}}*/
 
     public function prune($cfg)/*{{{*/
     {
