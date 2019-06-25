@@ -96,6 +96,15 @@
     text-decoration: none; 
 }
 
+.gallery-block.cards-gallery sm
+{
+    margin-top: 4px;
+    text-align: left;
+    display: block;
+    line-height: 1.2em !important;
+    font-size: .8em !important;
+}
+
 .gallery_cards.clipboard
 {
     z-index: 1000;

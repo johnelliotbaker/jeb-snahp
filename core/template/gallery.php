@@ -4,6 +4,7 @@ namespace jeb\snahp\core\template;
 class gallery
 {
     protected $def;
+    protected $allowed_interpreted_tags;
 	public function __construct(
 	)
 	{
@@ -14,9 +15,10 @@ class gallery
         ];
         $def['column_sizes'] = $column_sizes;
         $this->def = $def;
+        $this->allowed_interpreted_tags = join('|', ['b', 'sm', 'br']);
 	}
 
-    public function handle($mode, $data, $options=[])
+    public function handle($mode, $data, $options=[])/*{{{*/
     {
         switch ($mode)
         {
@@ -30,9 +32,9 @@ class gallery
             break;
         }
         return '';
-    }
+    }/*}}}*/
 
-    private function handle_cards($data, $options=[])
+    private function handle_cards($data, $options=[])/*{{{*/
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
@@ -41,7 +43,6 @@ class gallery
 <section class="gallery-block cards-gallery">
     <div class="container">
         <div class="row">
-
 ';
         $html['end'][] = '
     </div>
@@ -65,6 +66,7 @@ class gallery
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
+            $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
             $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
 	                <div class="card border-0 transform-on-hover">
                         <div class="gallery_cards clipboard" onClick="Clipboard.copy_gallery_link(event);">
@@ -88,9 +90,9 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }
+    }/*}}}*/
 
-    private function handle_grid($data, $options=[])
+    private function handle_grid($data, $options=[])/*{{{*/
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
@@ -136,9 +138,9 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }
+    }/*}}}*/
 
-    private function handle_compact($data, $options=[])
+    private function handle_compact($data, $options=[])/*{{{*/
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
@@ -170,6 +172,7 @@ class gallery
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
+            $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
             $body[] = '<div class="' . $column_size . ' item zoom-on-hover' . $cls . '"> 
                 <div class="gallery_compact clipboard" onClick="Clipboard.copy_gallery_link(event);">
                     <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
@@ -191,6 +194,6 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }
+    }/*}}}*/
 
 }

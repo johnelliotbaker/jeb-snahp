@@ -66,6 +66,15 @@
   font-weight: 300;
 }
 
+.gallery-block.compact-gallery sm
+{
+    margin-top: 4px;
+    text-align: left;
+    display: block;
+    line-height: 1.2em !important;
+    font-size: .8em !important;
+}
+
 .gallery_compact.clipboard
 {
     z-index: 1000;
