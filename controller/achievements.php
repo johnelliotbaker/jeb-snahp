@@ -21,10 +21,6 @@ class achievements extends base
             trigger_error('This achievement system has been disabled by the administrator. Error Code: a089bce09c');
         }
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
-        if (!$this->config['snp_achi_b_master'])
-        {
-            trigger_error('Achievement system is currently disabled. Error Code: d39db2d756');
-        }
         switch ($mode)
         {
         case 'update':

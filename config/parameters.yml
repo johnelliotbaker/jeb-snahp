@@ -134,10 +134,10 @@ parameters:
         thumb_raiser:
             img:
                 url:
-                    prosilver: 'https://i.imgur.com/ZVdzzz5.png'
-                    Basic: 'https://i.imgur.com/ZVdzzz5.png'
-                    Hexagon: 'https://i.imgur.com/6VUg3pD.png'
-                    Acieeed!: 'https://i.imgur.com/EyM1JFn.png'
+                    prosilver: 'https://i.imgur.com/6ZKQIWN.png'
+                    Basic: 'https://i.imgur.com/6ZKQIWN.png'
+                    Hexagon: 'https://i.imgur.com/g0GgdaL.png'
+                    Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
             title: "Thumb Raiser. People everywhere raise their thumbs in your honor. No questions asked."
             probability: 20
         life_giver:
