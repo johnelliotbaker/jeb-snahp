@@ -156,10 +156,6 @@ class main_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
-        if (rand(1,10) < 6)
-        {
-            return false;
-        }
         $user_id = $this->user->data['user_id'];
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
@@ -177,6 +173,10 @@ class main_listener extends base implements EventSubscriberInterface
         $style_name = $this->select_style_name();
         $params = $this->container->getParameter('jeb.snahp.avatar.achievements');
         if (!array_key_exists($type, $params))
+        {
+            return false;
+        }
+        if (rand(0,100) > (int) $params[$type]['probability'])
         {
             return false;
         }

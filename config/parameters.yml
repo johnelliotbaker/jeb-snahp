@@ -122,6 +122,15 @@ parameters:
                 25: 'https://i.imgur.com/YBPkBaX.png' # Games Console
 
     jeb.snahp.avatar.achievements:
+        gambler:
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/bwNL1cp.png'
+                    Basic: 'https://i.imgur.com/bwNL1cp.png'
+                    Hexagon: 'https://i.imgur.com/esHx4Jt.png'
+                    Acieeed!: 'https://i.imgur.com/LhiBN7O.png'
+            title: "Gambler. You went into a casino, casually rolled a 100, then left with bags o'cash."
+            probability: 3
         thumb_raiser:
             img:
                 url:
@@ -129,7 +138,8 @@ parameters:
                     Basic: 'https://i.imgur.com/ZVdzzz5.png'
                     Hexagon: 'https://i.imgur.com/6VUg3pD.png'
                     Acieeed!: 'https://i.imgur.com/EyM1JFn.png'
-            title: "Thumb Raiser. Whenever you meet people, they raise their thumbs in your honor. No questions asked."
+            title: "Thumb Raiser. People everywhere raise their thumbs in your honor. No questions asked."
+            probability: 20
         life_giver:
             img:
                 url:
@@ -138,6 +148,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/VDYMGKY.png'
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. You breath new life into every stranger you meet - one request at a time."
+            probability: 25
         grave_digger:
             img:
                 url:
@@ -146,6 +157,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/qGrUH0v.png'
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
             title: "Grave Digger. Your peculiar habit of secretly digging through someone else's belongings has earned you this unceremonious title."
+            probability: 10
         computer_whiz:
             img:
                 url:
@@ -153,7 +165,8 @@ parameters:
                     Basic: 'https://i.imgur.com/BIts5ks.png'
                     Hexagon: 'https://i.imgur.com/dbTWs5M.png'
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
-            title: "Computer Whiz. You have published more scholarly articles in the field of computer science than anyone else."
+            title: "Computer Whiz. You've published more scholarly articles in the field of computer science than anyone else."
+            probability: 20
         magnetic_personality:
             img:
                 url:
@@ -162,4 +175,5 @@ parameters:
                     Hexagon: 'https://i.imgur.com/SSOngus.png'
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs you!!! You are the most digged person on the planet.'
+            probability: 20
 

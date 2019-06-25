@@ -59,6 +59,7 @@ class achievements extends base
         $data[] = $this->update_grave_digger();
         $data[] = $this->update_life_giver();
         $data[] = $this->update_thumb_raiser();
+        $data[] = $this->update_gambler();
         foreach ($data as $entry)
         {
             if (!$entry)
@@ -177,6 +178,23 @@ class achievements extends base
             'type' => 'life_giver',
             'user_id' => $row['fulfiller_uid'],
             'value' => $row['count'],
+            'modified_time' => time(),
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function update_gambler()/*{{{*/
+    {
+        $user_id = 49485;
+        if ($this->is_dev_server())
+        {
+            $user_id = 2;
+        }
+        $data = [
+            'unique' => true,
+            'type' => 'gambler',
+            'user_id' => $user_id,
+            'value' => 100,
             'modified_time' => time(),
         ];
         return $data;
