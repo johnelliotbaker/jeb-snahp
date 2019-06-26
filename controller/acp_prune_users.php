@@ -77,7 +77,8 @@ class acp_prune_users extends base
         $time_loop = microtime(true);
         $i = 0;
         $n_process = 0;
-        while($row = $this->db->sql_fetchrow($result))
+        $row = $this->db->sql_fetchrow($result);
+        while($row)
         {
             // prn($row['post_id'], true);
             // prn(PHP_EOL, true);
@@ -122,8 +123,15 @@ class acp_prune_users extends base
             $tt = microtime(true);
             $sqlw = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id={$user_id}";
             $this->db->sql_query($sqlw);
-            $tt = $tt - microtime(true);
+            $tt = microtime(true) - $tt;
             $this->send_message(['tt' => $tt]);
+
+
+            $tt = microtime(true);
+            $row = $this->db->sql_fetchrow($result);
+            $tt = microtime(true) - $tt;
+            $this->send_message(['sql_fetchrow' => $tt]);
+
             if ($verbose)
             {
                 $this->send_message($row);
