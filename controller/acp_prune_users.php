@@ -77,16 +77,14 @@ class acp_prune_users extends base
         $time_loop = microtime(true);
         $i = 0;
         $n_process = 0;
-        $row = $this->db->sql_fetchrow($result);
+        $row = 1;
         while($row)
         {
-            $tt = microtime(true);
             $row = $this->db->sql_fetchrow($result);
-            $tt = microtime(true) - $tt;
-            $this->send_message(['sql_fetch' => $tt]);
             // prn($row['post_id'], true);
             // prn(PHP_EOL, true);
             // Get user statistics
+            $tt = microtime(true);
             $i += 1;
             $user_id = $row['user_id'];
             $user_type = $row['user_type'];
@@ -124,6 +122,9 @@ class acp_prune_users extends base
                 'user_inactive_time' => time(),
                 'user_inactive_reason' => INACTIVE_MANUAL,
             ];
+            $tt = microtime(true) - $tt;
+            $this->send_message(['sql_fetch' => $tt]);
+
             $tt = microtime(true);
             $sqlw = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id={$user_id}";
             $this->db->sql_query($sqlw);
