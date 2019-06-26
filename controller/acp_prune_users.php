@@ -15,6 +15,7 @@ class acp_prune_users extends base
 
 	public function handle($mode)/*{{{*/
 	{
+        trigger_error('Pruning has been disabled. Error Code: 8b90a23b22');
         $this->reject_non_admin('Error Code: 10d3683c22');
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         switch ($mode)
@@ -102,6 +103,10 @@ class acp_prune_users extends base
             }
             // doa means signed up but never logged in. $user_lastvisit=0
             if ($doa && $user_lastvisit > 0)
+            {
+                continue;
+            }
+            if (!$doa && $user_lastvisit == 0)
             {
                 continue;
             }
