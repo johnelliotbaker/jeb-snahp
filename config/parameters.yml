@@ -182,4 +182,14 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
             probability: 20
+        the_gourmet:
+            name: 'The Gourmet'
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/SNKqybw.png'
+                    Basic: 'https://i.imgur.com/SNKqybw.png'
+                    Hexagon: 'https://i.imgur.com/WQIbPu4.png'
+                    Acieeed!: 'https://i.imgur.com/hbfkjIp.png'
+            title: 'The Gourmet. The Master Chef. The Delacroix of French Cuisine.'
+            probability: 10
 
