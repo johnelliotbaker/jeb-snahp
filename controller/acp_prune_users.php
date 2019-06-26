@@ -78,9 +78,8 @@ class acp_prune_users extends base
         $i = 0;
         $n_process = 0;
         $row = 1;
-        while($row)
+        while($row = $this->db->sql_fetchrow($result))
         {
-            $row = $this->db->sql_fetchrow($result);
             // prn($row['post_id'], true);
             // prn(PHP_EOL, true);
             // Get user statistics
@@ -115,10 +114,10 @@ class acp_prune_users extends base
             {
                 continue;
             }
-            $tt = microtime(true);
-            $this->user->reset_login_keys($user_id);
-            $tt = microtime(true) - $tt;
-            $this->send_message(['sql_fetch' => $tt]);
+            // $tt = microtime(true);
+            // $this->user->reset_login_keys($user_id);
+            // $tt = microtime(true) - $tt;
+            // $this->send_message(['sql_fetch' => $tt]);
             $data = [
                 'user_type' => $set_user_to,
                 'user_inactive_time' => time(),
