@@ -80,6 +80,10 @@ class acp_prune_users extends base
         $row = $this->db->sql_fetchrow($result);
         while($row)
         {
+            $tt = microtime(true);
+            $row = $this->db->sql_fetchrow($result);
+            $tt = microtime(true) - $tt;
+            $this->send_message(['sql_fetch' => $tt]);
             // prn($row['post_id'], true);
             // prn(PHP_EOL, true);
             // Get user statistics
@@ -125,13 +129,6 @@ class acp_prune_users extends base
             $this->db->sql_query($sqlw);
             $tt = microtime(true) - $tt;
             $this->send_message(['tt' => $tt]);
-
-
-            $tt = microtime(true);
-            $row = $this->db->sql_fetchrow($result);
-            $tt = microtime(true) - $tt;
-            $this->send_message(['sql_fetchrow' => $tt]);
-
             if ($verbose)
             {
                 $this->send_message($row);
