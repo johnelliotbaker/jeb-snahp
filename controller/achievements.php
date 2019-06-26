@@ -57,6 +57,7 @@ class achievements extends base
         $data[] = $this->update_thumb_raiser();
         $data[] = $this->update_gambler();
         $data[] = $this->update_the_gourmet();
+        $data[] = $this->update_intense_training();
         foreach ($data as $entry)
         {
             if (!$entry)
@@ -207,6 +208,23 @@ class achievements extends base
         $data = [
             'unique' => true,
             'type' => 'the_gourmet',
+            'user_id' => $user_id,
+            'value' => 0,
+            'modified_time' => time(),
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function update_intense_training()/*{{{*/
+    {
+        $user_id = 58626;
+        if ($this->is_dev_server())
+        {
+            $user_id = 2;
+        }
+        $data = [
+            'unique' => true,
+            'type' => 'intense_training',
             'user_id' => $user_id,
             'value' => 0,
             'modified_time' => time(),

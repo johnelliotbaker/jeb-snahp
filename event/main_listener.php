@@ -214,6 +214,7 @@ class main_listener extends base implements EventSubscriberInterface
         $title = preg_replace('#s\'s#', 's\'', $title);
         $post_row['U_AVATAR_ACHIEVEMENTS_IMG'] = $params[$type]['img']['url'][$style_name];
         $post_row['S_AVATAR_ACHIEVEMENTS_TITLE'] = $title;
+        $post_row['U_AVATAR_ACHIEVEMENTS'] =  $params[$type]['url'];
         $event['post_row'] = $post_row;
     }/*}}}*/
 

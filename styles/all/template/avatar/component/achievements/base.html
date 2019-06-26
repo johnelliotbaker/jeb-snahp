@@ -4,7 +4,13 @@
 {% if postrow.U_AVATAR_ACHIEVEMENTS_IMG %}
 <dd>
   <span title="{postrow.S_AVATAR_ACHIEVEMENTS_TITLE}" class="avatar_achievement {STYLE_NAME}">
-    <img src="{postrow.U_AVATAR_ACHIEVEMENTS_IMG}" class="avatar_achievement {STYLE_NAME}">
+    {% if postrow.U_AVATAR_ACHIEVEMENTS %}
+      <a href="{postrow.U_AVATAR_ACHIEVEMENTS}" target="_blank">
+        <img src="{postrow.U_AVATAR_ACHIEVEMENTS_IMG}" class="avatar_achievement {STYLE_NAME}">
+      </a>
+    {% else %}
+      <img src="{postrow.U_AVATAR_ACHIEVEMENTS_IMG}" class="avatar_achievement {STYLE_NAME}">
+    {% endif %}
   </span>
 </dd>
 {% endif %}

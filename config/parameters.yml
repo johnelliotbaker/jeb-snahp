@@ -131,6 +131,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/esHx4Jt.png'
                     Acieeed!: 'https://i.imgur.com/LhiBN7O.png'
             title: "Gambler. {USERNAME} once went into a casino, casually rolled a 100, then left with bags o'cash."
+            url: 'https://forum.snahp.it/viewtopic.php?f=52&t=112472#p364169'
             probability: 3
         thumb_raiser:
             name: 'Thumb Raiser'
@@ -141,6 +142,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/g0GgdaL.png'
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
             title: "Thumb Raiser. People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
+            url: ''
             probability: 20
         life_giver:
             name: 'Life Giver'
@@ -151,6 +153,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/VDYMGKY.png'
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
+            url: ''
             probability: 25
         grave_digger:
             name: 'Grave Digger'
@@ -161,6 +164,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/qGrUH0v.png'
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
             title: "Grave Digger. {USERNAME}'s peculiar habit of secretly digging through someone else's belongings has earned him this unceremonious title."
+            url: ''
             probability: 5
         computer_whiz:
             name: 'Computer Whiz'
@@ -171,6 +175,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/dbTWs5M.png'
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
+            url: ''
             probability: 20
         magnetic_personality:
             name: 'Magnetic Personality'
@@ -181,6 +186,7 @@ parameters:
                     Hexagon: 'https://i.imgur.com/SSOngus.png'
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
+            url: ''
             probability: 20
         the_gourmet:
             name: 'The Gourmet'
@@ -191,5 +197,17 @@ parameters:
                     Hexagon: 'https://i.imgur.com/WQIbPu4.png'
                     Acieeed!: 'https://i.imgur.com/hbfkjIp.png'
             title: 'The Gourmet. The Master Chef. The Delacroix of French Cuisine.'
+            url: ''
             probability: 10
+        intense_training:
+            name: 'Intense Training'
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/LTMmCYT.png'
+                    Basic: 'https://i.imgur.com/LTMmCYT.png'
+                    Hexagon: 'https://i.imgur.com/VLeJqpL.png'
+                    Acieeed!: 'https://i.imgur.com/6FSqzyd.png'
+            title: 'Intense Training. No pain, no gain! {USERNAME} is the best-selling personal trainer known for his fitness, nutrition, and body awareness programs.'
+            url: 'https://forum.snahp.it/viewtopic.php?f=61&t=104439'
+            probability: 8
 
