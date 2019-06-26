@@ -119,13 +119,16 @@ class acp_prune_users extends base
                 'user_inactive_time' => time(),
                 'user_inactive_reason' => INACTIVE_MANUAL,
             ];
+            $tt = microtime(true);
             $sqlw = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id={$user_id}";
             $this->db->sql_query($sqlw);
+            $tt = $tt - microtime(true);
+            $this->send_message(['tt' => $tt]);
             if ($verbose)
             {
                 $this->send_message($row);
             }
-            if ($i > 100000)
+            if ($i > 200000)
             {
                 break;
             }
