@@ -1,0 +1,34 @@
+{% if achievements %}
+<!-- INCLUDECSS @jeb_snahp/gallery/component/cards/base.css -->
+<div class="panel bg2">
+  <div class="inner">
+    <h3>Achievements</h3>
+
+    <div class="twbs">
+      <section class="gallery-block cards-gallery">
+        <div class="container">
+          <div class="row">
+    
+            <!-- BEGIN achievements -->
+            <div class="col-lg-2 col-3 sm item"> 
+              <div class="card border-0 transform-on-hover">
+                <a href="#">
+                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top">
+                </a>
+                <div class="card-body">
+                  <b>
+                    {achievements.NAME}
+                  </b>
+                </div>
+              </div>
+            </div>
+            <!-- END achievements -->
+    
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+{% endif %}

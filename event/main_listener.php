@@ -65,7 +65,9 @@ class main_listener extends base implements EventSubscriberInterface
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
                 ['setup_core_vars', 0],
-                ['test', 0],
+            ],
+            'core.memberlist_prepare_profile_data'                => [
+                ['show_achievements_in_profile', 0],
             ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
@@ -148,6 +150,33 @@ class main_listener extends base implements EventSubscriberInterface
         //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
         //     $this->db->sql_query($sql);
         // }
+    }/*}}}*/
+
+    public function show_achievements_in_profile($event)/*{{{*/
+    {
+        if (!$this->config['snp_achi_b_master'])
+        {
+            return false;
+        }
+        $data = $event['data'];
+        $profile_id = $data['user_id'];
+        $rowset = $this->select_user_achievements($profile_id, 10);
+        if (!$rowset)
+        {
+            return false;
+        }
+        $params = $this->container->getParameter('jeb.snahp.avatar.achievements');
+        $style_name = $this->select_style_name();
+        $postrow = [];
+        foreach($rowset as $row)
+        {
+            $data = [];
+            $type = $row['type'];
+            if (!array_key_exists($type, $params)) { continue; }
+            $data['IMG_URL'] = $params[$type]['img']['url'][$style_name];
+            $data['NAME'] = $params[$type]['name'];
+            $this->template->assign_block_vars('achievements', $data);
+        }
     }/*}}}*/
 
     public function add_avatar_achievements($event)/*{{{*/

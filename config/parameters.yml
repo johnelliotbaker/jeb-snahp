@@ -123,6 +123,7 @@ parameters:
 
     jeb.snahp.avatar.achievements:
         gambler:
+            name: 'Gambler'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/bwNL1cp.png'
@@ -130,8 +131,9 @@ parameters:
                     Hexagon: 'https://i.imgur.com/esHx4Jt.png'
                     Acieeed!: 'https://i.imgur.com/LhiBN7O.png'
             title: "Gambler. {USERNAME} once went into a casino, casually rolled a 100, then left with bags o'cash."
-            probability: 300
+            probability: 3
         thumb_raiser:
+            name: 'Thumb Raiser'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/6ZKQIWN.png'
@@ -139,8 +141,9 @@ parameters:
                     Hexagon: 'https://i.imgur.com/g0GgdaL.png'
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
             title: "Thumb Raiser. People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
-            probability: 200
+            probability: 20
         life_giver:
+            name: 'Life Giver'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/Cpj3H7J.png'
@@ -148,8 +151,9 @@ parameters:
                     Hexagon: 'https://i.imgur.com/VDYMGKY.png'
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
-            probability: 250
+            probability: 25
         grave_digger:
+            name: 'Grave Digger'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/c2AlUKM.png'
@@ -157,8 +161,9 @@ parameters:
                     Hexagon: 'https://i.imgur.com/qGrUH0v.png'
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
             title: "Grave Digger. {USERNAME}'s peculiar habit of secretly digging through someone else's belongings has earned him this unceremonious title."
-            probability: 100
+            probability: 5
         computer_whiz:
+            name: 'Computer Whiz'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/BIts5ks.png'
@@ -168,6 +173,7 @@ parameters:
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             probability: 20
         magnetic_personality:
+            name: 'Magnetic Personality'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/NtvZyy4.png'
@@ -175,5 +181,5 @@ parameters:
                     Hexagon: 'https://i.imgur.com/SSOngus.png'
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
-            probability: 200
+            probability: 20
 

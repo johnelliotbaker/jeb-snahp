@@ -196,6 +196,22 @@ abstract class base
 
     // DATABASE Functions
 
+    // Achievements
+    public function select_user_achievements($user_id, $cooldown=10)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql_ary = [
+            'SELECT'   => '*',
+            'FROM'     => [$tbl['achievements'] => 'a'],
+            'WHERE'    => "user_id={$user_id}",
+        ];
+        $sql    = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }/*}}}*/
+
     // digg
     public function select_digg_slave_count($topic_id, $cooldown=30)/*{{{*/
     {
