@@ -159,6 +159,7 @@ class main_listener extends base implements EventSubscriberInterface
         $user_id = $this->user->data['user_id'];
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
+        $post_author = $post_row['POST_AUTHOR'];
         $sql = "SELECT * FROM phpbb_snahp_achievements WHERE user_id={$poster_id}";
         $result = $this->db->sql_query($sql, 5);
         $rowset = $this->db->sql_fetchrowset($result);
@@ -180,8 +181,10 @@ class main_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
+        $title = preg_replace('#{USERNAME}#', $post_author, $params[$type]['title']);
+        $title = preg_replace('#s\'s#', 's\'', $title);
         $post_row['U_AVATAR_ACHIEVEMENTS_IMG'] = $params[$type]['img']['url'][$style_name];
-        $post_row['S_AVATAR_ACHIEVEMENTS_TITLE'] = $params[$type]['title'];
+        $post_row['S_AVATAR_ACHIEVEMENTS_TITLE'] = $title;
         $event['post_row'] = $post_row;
     }/*}}}*/
 

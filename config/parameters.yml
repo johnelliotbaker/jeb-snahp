@@ -129,8 +129,8 @@ parameters:
                     Basic: 'https://i.imgur.com/bwNL1cp.png'
                     Hexagon: 'https://i.imgur.com/esHx4Jt.png'
                     Acieeed!: 'https://i.imgur.com/LhiBN7O.png'
-            title: "Gambler. You went into a casino, casually rolled a 100, then left with bags o'cash."
-            probability: 3
+            title: "Gambler. {USERNAME} once went into a casino, casually rolled a 100, then left with bags o'cash."
+            probability: 300
         thumb_raiser:
             img:
                 url:
@@ -138,8 +138,8 @@ parameters:
                     Basic: 'https://i.imgur.com/6ZKQIWN.png'
                     Hexagon: 'https://i.imgur.com/g0GgdaL.png'
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
-            title: "Thumb Raiser. People everywhere raise their thumbs in your honor. No questions asked."
-            probability: 20
+            title: "Thumb Raiser. People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
+            probability: 200
         life_giver:
             img:
                 url:
@@ -147,8 +147,8 @@ parameters:
                     Basic: 'https://i.imgur.com/Cpj3H7J.png'
                     Hexagon: 'https://i.imgur.com/VDYMGKY.png'
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
-            title: "Life Giver. You breath new life into every stranger you meet - one request at a time."
-            probability: 25
+            title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
+            probability: 250
         grave_digger:
             img:
                 url:
@@ -156,8 +156,8 @@ parameters:
                     Basic: 'https://i.imgur.com/c2AlUKM.png'
                     Hexagon: 'https://i.imgur.com/qGrUH0v.png'
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
-            title: "Grave Digger. Your peculiar habit of secretly digging through someone else's belongings has earned you this unceremonious title."
-            probability: 10
+            title: "Grave Digger. {USERNAME}'s peculiar habit of secretly digging through someone else's belongings has earned him this unceremonious title."
+            probability: 100
         computer_whiz:
             img:
                 url:
@@ -165,7 +165,7 @@ parameters:
                     Basic: 'https://i.imgur.com/BIts5ks.png'
                     Hexagon: 'https://i.imgur.com/dbTWs5M.png'
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
-            title: "Computer Whiz. You've published more scholarly articles in the field of computer science than anyone else."
+            title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             probability: 20
         magnetic_personality:
             img:
@@ -174,6 +174,6 @@ parameters:
                     Basic: 'https://i.imgur.com/NtvZyy4.png'
                     Hexagon: 'https://i.imgur.com/SSOngus.png'
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
-            title: 'Magnetic Personality. Everyone diggs you!!! You are the most digged person on the planet.'
-            probability: 20
+            title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
+            probability: 200
 
