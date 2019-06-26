@@ -2,17 +2,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
 <!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- When javascript contains curly braces, including with twig will have erratic behavior. -->
+<!-- So include using INCLUDEJS directive. -->
+<!-- However, INCLUDEJS directive will add javascript at the end. -->
+<!-- So if javascript is needed in flow dependent location, use twig to embed the code. -->
+{% include '@jeb_snahp/critical.html' %}
 <style>
   {% include '@jeb_snahp/base.css' %}
   {% include '@jeb_snahp/host_icons.css' %}
   {% include '@jeb_snahp/request_tags.css' %}
 </style>
-<script>
-  {% include '@jeb_snahp/base.js' %}
-  {% include '@jeb_snahp/cookie.js' %}
-  {% include '@jeb_snahp/utility.js' %}
-  {% include '@jeb_snahp/dereferrer.js' %}
-</script>
+<!-- INCLUDEJS @jeb_snahp/utility.js -->
+<!-- INCLUDEJS @jeb_snahp/base.js -->
 {S_HIDDEN_FIELDS}
 {S_HIDDEN_FIELDS_ALT}
 {S_REQ_HIDDEN_FIELDS}
