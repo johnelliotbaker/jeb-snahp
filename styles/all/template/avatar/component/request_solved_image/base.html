@@ -1,6 +1,15 @@
-<style>
-  {% include '@jeb_snahp/avatar/component/request_solved_image/base.css' %}
-</style>
-<span>
+<!-- IF $REQUEST_SOLVED_IMAGE_CSS != true -->
+  <!-- INCLUDECSS @jeb_snahp/avatar/component/request_solved_image/base.css -->
+  <!-- DEFINE $REQUEST_SOLVED_IMAGE_CSS = true -->
+<!-- ENDIF -->
+{% if postrow.REQUESTS_SOLVED %}
+<div style="width: 100%; text-align: center;">
+  {% if postrow.REQUESTS_SOLVED==69 %}
   <img src="https://i.imgur.com/1Mkla0j.png" class="request_solved_img">
-</span>
+  {% elseif postrow.REQUESTS_SOLVED==100 %}
+  <img src="https://i.imgur.com/fb54o97.png" class="request_solved_img">
+  {% endif %}
+</div>
+{% endif %}
+
+

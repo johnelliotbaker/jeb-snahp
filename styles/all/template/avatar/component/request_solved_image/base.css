@@ -1,6 +1,7 @@
-span img.request_solved_img
+dd div img.request_solved_img
 {
     max-height: 36px;
     margin-top: 3px;
     margin-bottom: 3px;
+    margin-left: -15px;
 }

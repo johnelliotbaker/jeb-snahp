@@ -159,6 +159,7 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         }
         $data = $event['data'];
+        $username = $data['username'];
         $profile_id = $data['user_id'];
         $rowset = $this->select_user_achievements($profile_id, 10);
         if (!$rowset)
@@ -173,8 +174,14 @@ class main_listener extends base implements EventSubscriberInterface
             $data = [];
             $type = $row['type'];
             if (!array_key_exists($type, $params)) { continue; }
-            $data['IMG_URL'] = $params[$type]['img']['url'][$style_name];
-            $data['NAME'] = $params[$type]['name'];
+            $param = $params[$type];
+            $title = $param['title'];
+            $title = preg_replace('#{USERNAME}#', $username, $title);
+            $title = preg_replace('#s\'s#', 's\'', $title);
+            $data['IMG_URL'] = $param['img']['url'][$style_name];
+            $data['NAME']    = $param['name'];
+            $data['TITLE']   = $title;
+            $data['URL']     = $param['url'];
             $this->template->assign_block_vars('achievements', $data);
         }
     }/*}}}*/

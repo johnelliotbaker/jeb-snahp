@@ -12,9 +12,15 @@
             <!-- BEGIN achievements -->
             <div class="col-lg-2 col-3 sm item"> 
               <div class="card border-0 transform-on-hover">
-                <a href="#">
-                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top">
+                {% if achievements.URL %}
+                <a href="{achievements.URL}" target="_blank">
+                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
                 </a>
+                {% else %}
+                <span>
+                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
+                </span>
+                {% endif %}
                 <div class="card-body">
                   <b>
                     {achievements.NAME}
