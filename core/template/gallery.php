@@ -74,6 +74,9 @@ class gallery
                         </div>
 	                	<' . $el . ' href="' . $link . '" target="_blank">
 	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
+                            <div class="hiddencorner ' . $cls . '">
+                                <img src="https://i.imgur.com/Q07cXb4.png">
+                            </div>
 	                	</' . $el . '>
 	                    <div class="card-body">
 	                        <h6>'. $d[0] . '</h6>
@@ -179,6 +182,9 @@ class gallery
                 </div>
                 <' . $el . ' href="' . $link . '" target="_blank">
                   <img class="img-fluid image" src="' . $d[3] . '">
+                  <div class="hiddencorner ' . $cls . '">
+                      <img src="https://i.imgur.com/Q07cXb4.png">
+                  </div>
                   <span class="description">
                     <span class="description-heading">' . $d[0] . '</span>
                     <span class="description-body">' . $d[1] . '</span>
