@@ -122,6 +122,28 @@ parameters:
                 25: 'https://i.imgur.com/YBPkBaX.png' # Games Console
 
     jeb.snahp.avatar.achievements:
+        size_matters:
+            name: 'Size Matters'
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/Q7UDOq4.png'
+                    Basic: 'https://i.imgur.com/Q7UDOq4.png'
+                    Hexagon: 'https://i.imgur.com/LIFCCnv.png'
+                    Acieeed!: 'https://i.imgur.com/LIFCCnv.png'
+            title: "Size Matters. {USERNAME} maintains the largest collection of ... something"
+            url: 'https://forum.snahp.it/viewtopic.php?f=13&t=34584'
+            probability: 100
+        bone_head:
+            name: 'Bone Head'
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/7yggpfZ.png'
+                    Basic: 'https://i.imgur.com/7yggpfZ.png'
+                    Hexagon: 'https://i.imgur.com/hL0XlcV.png'
+                    Acieeed!: 'https://i.imgur.com/8AqmlNU.png'
+            title: "Bone Head. A lesson in 'Be careful what you wish for, lest it come true.'\r{USERNAME} wished for something bigger, but the only thing he got from the doctor was the extra cranial calcification."
+            url: 'https://forum.snahp.it/viewtopic.php?f=52&t=90345&start=425#p368629'
+            probability: 10
         gambler:
             name: 'Gambler'
             img:
@@ -134,14 +156,14 @@ parameters:
             url: 'https://forum.snahp.it/viewtopic.php?f=52&t=112472#p364169'
             probability: 3
         thumb_raiser:
-            name: 'Thumb Raiser'
+            name: 'Thumbs Up!'
             img:
                 url:
                     prosilver: 'https://i.imgur.com/6ZKQIWN.png'
                     Basic: 'https://i.imgur.com/6ZKQIWN.png'
                     Hexagon: 'https://i.imgur.com/g0GgdaL.png'
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
-            title: "Thumb Raiser. People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
+            title: "Thumbs Up! People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
             url: ''
             probability: 20
         life_giver:

@@ -58,6 +58,8 @@ class achievements extends base
         $data[] = $this->update_gambler();
         $data[] = $this->update_the_gourmet();
         $data[] = $this->update_intense_training();
+        $data[] = $this->update_bone_head();
+        $data[] = $this->update_size_matters();
         foreach ($data as $entry)
         {
             if (!$entry)
@@ -225,6 +227,40 @@ class achievements extends base
         $data = [
             'unique' => true,
             'type' => 'intense_training',
+            'user_id' => $user_id,
+            'value' => 0,
+            'modified_time' => time(),
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function update_bone_head()/*{{{*/
+    {
+        $user_id = 150397;
+        if ($this->is_dev_server())
+        {
+            $user_id = 2;
+        }
+        $data = [
+            'unique' => true,
+            'type' => 'bone_head',
+            'user_id' => $user_id,
+            'value' => 0,
+            'modified_time' => time(),
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function update_size_matters()/*{{{*/
+    {
+        $user_id = 49485;
+        if ($this->is_dev_server())
+        {
+            $user_id = 2;
+        }
+        $data = [
+            'unique' => true,
+            'type' => 'size_matters',
             'user_id' => $user_id,
             'value' => 0,
             'modified_time' => time(),
