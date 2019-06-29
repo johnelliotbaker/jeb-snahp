@@ -64,12 +64,17 @@ class gallery
                     $choice = 1;
                 }
             }
+            $pastebin = '';
+            if (isset($d[4]))
+            {
+                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>'; 
+            }
             $cls = $class[$choice];
             $el = $elem[$choice];
             $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
             $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
-	                <div class="card border-0 transform-on-hover">
-                        <div class="gallery_cards clipboard" onClick="Clipboard.copy_gallery_link(event);">
+	                <div class="card border-0 transform-on-hover"> ' . $pastebin . '
+                        <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
                             <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
                         </div>
 	                	<' . $el . ' href="' . $link . '" target="_blank">
@@ -173,11 +178,16 @@ class gallery
                     $choice = 1;
                 }
             }
+            $pastebin = '';
+            if (isset($d[4]))
+            {
+                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>'; 
+            }
             $cls = $class[$choice];
             $el = $elem[$choice];
             $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
-            $body[] = '<div class="' . $column_size . ' item zoom-on-hover' . $cls . '"> 
-                <div class="gallery_compact clipboard" onClick="Clipboard.copy_gallery_link(event);">
+            $body[] = '<div class="' . $column_size . ' item zoom-on-hover' . $cls . '"> ' . $pastebin . '
+                <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
                     <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
                 </div>
                 <' . $el . ' href="' . $link . '" target="_blank">

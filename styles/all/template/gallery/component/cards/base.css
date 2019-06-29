@@ -127,7 +127,29 @@
     opacity: .6;
 }
 
-.gallery_cards.clipboard
+.gallery-block.cards-gallery .pastebin img
+{
+    width: 36px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important; 
+}
+
+.gallery-block.cards-gallery .pastebin
+{
+    z-index: 5;
+    position: absolute;
+    top: 26px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    /* transform: translate(0%, 0%); */
+    /* -ms-transform: translate(-50%, -50%); */
+    color: white;
+    font-size: 0px;
+    border: none;
+    cursor: pointer;
+}
+
+.gallery-block.cards-gallery .clipboard
 {
     z-index: 1000;
     position: absolute;

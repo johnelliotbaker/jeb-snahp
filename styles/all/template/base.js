@@ -20,10 +20,25 @@ Clipboard.copy_gallery_link = function(ev)
 
 // Code box
 var Codebox = {};
+Codebox.append_copy_controls = function()
+{
+    $controlbox = $('div.codebox > p');
+    $controlbox.append('<a style="float: right;" onClick="Codebox.copy(event);" class="pointer">Copy</a>');
+}
+
+Codebox.copy = function(e)
+{
+    $target = $(e.target);
+    var text  = $target.text();
+    $pre = $target.parent().next();
+    var text = $pre.find('code').text();
+    Clipboard.copy(text);
+}
+
 Codebox.append_resize_controls = function()
 {
     $controlbox = $('div.codebox > p');
-    $controlbox.append('<span style="float: right;" onClick="Codebox.expand(event);" class="pointer">Expand</span>');
+    $controlbox.append('<a style="float: right; margin-left: 8px;" onClick="Codebox.expand(event);" class="pointer">Expand</a>');
 }
 
 Codebox.expand = function(e)
@@ -120,6 +135,7 @@ $("body").keydown(function(event){
 $(document).ready(()=>{
     // Allow codebox to resize
     Codebox.append_resize_controls();
+    Codebox.append_copy_controls();
     // @@username completion
     var usernames = collectAvatarUsername();
     $mbox = $('textarea[name="message"]');
