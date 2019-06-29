@@ -230,7 +230,7 @@ class main_listener extends base implements EventSubscriberInterface
         $ext = $this->container->get('ext.manager');
         $md_manager = $ext->create_extension_metadata_manager('jeb/snahp');
         $data = $md_manager->get_metadata('all');
-        $hash = substr($data['authors'][0]['name'], 0, 5);
+        $hash = substr($data['extra']['version'], 0, 5);
         $version = $data['version'];
         $this->template->assign_vars([
             'S_SNAHP_VERSION' => "v{$version} [{$hash}]",

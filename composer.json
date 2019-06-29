@@ -4,11 +4,11 @@
     "description": "Snahp Extension",
     "homepage": "",
     "version": "0.26.0",
-    "time": "2019-6-24",
+    "time": "2019-06-29",
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "48681f163bdbe032c892a440f81e017b753d4b9c",
+            "name": "jeb",
             "email": "",
             "homepage": "",
             "role": ""
@@ -19,6 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
+        "version": "fa7c0b3bc05742b0aad4e7dcee96caa058e91adc",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"
