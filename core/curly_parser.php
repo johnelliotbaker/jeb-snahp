@@ -173,6 +173,56 @@ class curly_parser
         return $strn;
     }
 
+    public function interpolate_fulfill($strn, $tag_name)
+    {
+        global $db, $request, $user, $phpbb_container;
+        $def = $phpbb_container->getParameter('jeb.snahp.req')['def'];
+        $allowed_attr = ['style', 'class', 'src', 'align'];
+        $uuid = uniqid();
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $topic_id = $request->variable('t', '0');
+        $request_data = $this->select_request($topic_id);
+        if (!$request_data)
+        {
+            return '';
+        }
+        $topic_id = $request_data['tid'];
+        $forum_id = $request_data['fid'];
+        $post_id = $request_data['pid'];
+        $user_id = $user->data['user_id'];
+        $requester_id = $request_data['requester_uid'];
+        $fulfiller_id = $request_data['fulfiller_uid'];
+        if (!in_array($user_id, [$requester_id, $fulfiller_id]))
+        {
+            return '';
+        }
+        if (!$this->is_request($forum_id))
+        {
+            return '';
+        }
+        if (in_array($request_data['status'], $def['set']['closed']))
+        {
+            return '';
+        }
+        $u_solve = "/app.php/snahp/reqs/{$forum_id}/{$topic_id}/{$post_id}/2/";
+        $u_terminate = "/app.php/snahp/reqs/{$forum_id}/{$topic_id}/{$post_id}/9/";
+        $strn = '
+<div class=twbs>
+<a href="'. $u_solve . '" title="Mark Solved" class="button-icon-only">
+    <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i>
+    <span class="">Click if you are satisfied with the fulfillment</span>
+</a><br>
+<a href="'. $u_terminate .'" title="Mark Solved" class="button-icon-only">
+    <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i>
+    <span class="">Click if the fulfillment did not meet your request specifications</span>
+</a>
+            
+</div>';
+        return $strn;
+    }
+
     public function interpolate_mega_video($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
@@ -303,6 +353,9 @@ class curly_parser
             case 'mv':
                 $res = $this->interpolate_mega_video($content, $tag_type);
                 break;
+            case 'fulfill':
+                $res = $this->interpolate_fulfill($content, $tag_type);
+                break;
             default:
                 $res = 'default';
                 break;
@@ -318,4 +371,46 @@ class curly_parser
         $strn = preg_replace_callback($ptn, 'self::callback', $strn);
         return $strn;
     }
+
+    public function is_request($forum_id)/*{{{*/
+    {
+        global $config;
+        $cache_time = 5;
+        $fid_requests = $config['snp_fid_requests'];
+        $sub = $this->select_subforum($fid_requests, $cache_time);
+        $res = in_array($forum_id, $sub) ? true : false;
+        return $res;
+    }/*}}}*/
+
+    private function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    {
+        global $db;
+        $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
+        $result = $db->sql_query($sql, $cooldown);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        $parent_left_id = $row['left_id'];
+        $parent_right_id = $row['right_id'];
+        $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
+        if ($b_immediate==true)
+        {
+            $sql .= ' AND parent_id=' . $parent_id;
+        }
+        $result = $db->sql_query($sql, $cooldown);
+        $data = array_map(function($array){return $array['forum_id'];}, $db->sql_fetchrowset($result));
+        $db->sql_freeresult($result);
+        return $data;
+    }/*}}}*/
+
+    private function select_request($tid)/*{{{*/
+    {
+        global $phpbb_container, $db;
+        $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['req'] . " WHERE tid=$tid";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
 }

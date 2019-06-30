@@ -207,12 +207,17 @@ class reqs extends base
         if (!$req)
         {
 			meta_refresh(2, $this->u_action);
-			trigger_error('That request does not exist.');
+			trigger_error('That request does not exist. Error Code: d57e5d63b7');
 		}
         if (in_array($req['status'], $resolvedStatus))
 		{
 			meta_refresh(2, $this->u_action);
 			trigger_error('That request had already been terminated.');
+		}
+        if ($new_status == $def['solve'] && $req['status'] != $def['fulfill'])
+		{
+			meta_refresh(2, $this->u_action);
+			trigger_error('You can only solve request that has been fulfilled. Error Code: e4917d39fd');
 		}
         $user_id = $this->user_id;
         $b_op = $user_id == $req['requester_uid'];

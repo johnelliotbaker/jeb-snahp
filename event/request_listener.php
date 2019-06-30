@@ -63,7 +63,10 @@ class request_listener extends base implements EventSubscriberInterface
             ),
             'core.posting_modify_submit_post_after' => 'create_request',
             'core.viewforum_modify_topics_data' => 'modify_request_tags',
-            'core.posting_modify_message_text' => 'compose_request_form',
+            'core.posting_modify_message_text' => [
+                ['compose_request_form', 0],
+                ['add_fulfillment_widget', 0],
+            ],
             'core.modify_posting_parameters' => 'show_request_post_form',
             'core.viewtopic_modify_post_row' => [
                 ['show_request_form_as_table', 0],
@@ -74,6 +77,17 @@ class request_listener extends base implements EventSubscriberInterface
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
             'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
+    }/*}}}*/
+
+    public function add_fulfillment_widget($event)/*{{{*/
+    {
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $message = strip_tags($message);
+        preg_match_all('/#fulfill#/', $message, $matchall);
+        $a = '/#fulfill#/';
+        $b = '{snahp}{fulfill}{/fulfill}{/snahp}';
+        $message = preg_replace($a, $b, $message);
     }/*}}}*/
 
     public function setup_fulfilled_vars($event)/*{{{*/
