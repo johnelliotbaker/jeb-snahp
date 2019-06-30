@@ -186,7 +186,7 @@ class curly_parser
         $request_data = $this->select_request($topic_id);
         if (!$request_data)
         {
-            return '';
+            return '#fulfill#';
         }
         $topic_id = $request_data['tid'];
         $forum_id = $request_data['fid'];
@@ -195,10 +195,6 @@ class curly_parser
         $requester_id = $request_data['requester_uid'];
         $fulfiller_id = $request_data['fulfiller_uid'];
         if (!in_array($user_id, [$requester_id, $fulfiller_id]))
-        {
-            return '';
-        }
-        if (!$this->is_request($forum_id))
         {
             return '';
         }
