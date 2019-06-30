@@ -36,7 +36,7 @@ class request_listener extends base implements EventSubscriberInterface
     protected $dibs_tbl;
 
 
-    public function __construct($table_prefix)
+    public function __construct($table_prefix)/*{{{*/
     {
         $this->table_prefix       = $table_prefix;
         $this->sql_limit          = 10;
@@ -45,9 +45,9 @@ class request_listener extends base implements EventSubscriberInterface
         $this->req_users_tbl      = $table_prefix . 'snahp_request_users';
         $this->dibs_tbl           = $table_prefix . 'snahp_dibs';
         $this->dt_ptn             = 'D M d, Y  g:i a';
-    }
+    }/*}}}*/
 
-    static public function getSubscribedEvents()
+    static public function getSubscribedEvents()/*{{{*/
     {
         return array(
             'core.user_setup' => [
@@ -74,7 +74,7 @@ class request_listener extends base implements EventSubscriberInterface
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
             'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
-    }
+    }/*}}}*/
 
     public function setup_fulfilled_vars($event)/*{{{*/
     {
@@ -101,7 +101,7 @@ class request_listener extends base implements EventSubscriberInterface
         ]);
     }/*}}}*/
 
-    private function get_outstanding_fulfilled_count()
+    private function get_outstanding_fulfilled_count()/*{{{*/
     {
         $user_id = $this->user->data['user_id'];
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
@@ -110,7 +110,7 @@ class request_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row['count'];
-    }
+    }/*}}}*/
 
     public function include_reqs_forum_assets($event)/*{{{*/
     {
@@ -122,7 +122,7 @@ class request_listener extends base implements EventSubscriberInterface
         ]);
     }/*}}}*/
 
-    public function show_fulfillment_stats($event)
+    public function show_fulfillment_stats($event)/*{{{*/
     {
         if (!$this->config['snp_b_request'])
             return false;
@@ -185,9 +185,9 @@ class request_listener extends base implements EventSubscriberInterface
             'PERC_SOLVE'     => $perc_solve,
             'PERC_TERMINATE' => $perc_terminate,
         ]);
-    }
+    }/*}}}*/
 
-    public function update_request_user_after_topic_deletion($event)
+    public function update_request_user_after_topic_deletion($event)/*{{{*/
     {
         $a_tid = $event['topic_ids'];
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -220,9 +220,9 @@ class request_listener extends base implements EventSubscriberInterface
             }
             $this->update_request_users($requester_uid, $data);
         }
-    }
+    }/*}}}*/
 
-    public function show_request_form_as_table($event)
+    public function show_request_form_as_table($event)/*{{{*/
     {
         $fid = $event['row']['forum_id'];
         $afid = unserialize($this->config['snp_req_postform_fid']);
@@ -231,9 +231,9 @@ class request_listener extends base implements EventSubscriberInterface
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags_deprecated($message);
         $event['post_row'] = $post_row;
-    }
+    }/*}}}*/
 
-    public function show_request_post_form($event)
+    public function show_request_post_form($event)/*{{{*/
     {
         $preview = $this->request->variable('preview', '');
         $post = $this->request->variable('p', '');
@@ -251,9 +251,9 @@ class request_listener extends base implements EventSubscriberInterface
             }
         }
         $this->template->assign_vars($data);
-    }
+    }/*}}}*/
 
-    public function compose_request_form($event)
+    public function compose_request_form($event)/*{{{*/
     {
         $postform_fid = unserialize($this->config['snp_req_postform_fid']);
         if ($event['mode'] != 'post' ||
@@ -276,9 +276,9 @@ class request_listener extends base implements EventSubscriberInterface
         $post_data['enable_magic_url'] = 0;
         $post_data['enable_urls'] = 0;
         $event['post_data'] = $post_data;
-    }
+    }/*}}}*/
 
-    public function modify_request_tags($event)
+    public function modify_request_tags($event)/*{{{*/
     {
         $fid = $event['forum_id'];
         $request_fid = explode(',', $this->config['snp_req_fid']);
@@ -292,9 +292,9 @@ class request_listener extends base implements EventSubscriberInterface
             $rowset[$key] = $row;
         }
         $event['rowset'] = $rowset;
-    }
+    }/*}}}*/
 
-    public function select_open_request($uid)
+    public function select_open_request($uid)/*{{{*/
     {
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $sql = 'SELECT * FROM ' . $this->req_tbl . 
@@ -308,9 +308,9 @@ class request_listener extends base implements EventSubscriberInterface
         }
         $this->db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function insert_request_users($user_id, $b_return=false)
+    public function insert_request_users($user_id, $b_return=false)/*{{{*/
     {
         $gid = $this->user->data['group_id'];
         $gd = $this->select_group($gid);
@@ -331,9 +331,9 @@ class request_listener extends base implements EventSubscriberInterface
             return $this->select_request_users($user_id);
         }
         return [];
-    }
+    }/*}}}*/
 
-    public function reject_cycle($reqdata, $gdata)
+    public function reject_cycle($reqdata, $gdata)/*{{{*/
     {
         if ($this->auth->acl_gets('a_', 'm_')) return false;
         if ($reqdata['b_nolimit']) return false;
@@ -364,10 +364,9 @@ class request_listener extends base implements EventSubscriberInterface
             ];
             $this->update_request_users($user_id, $data);
         }
+    }/*}}}*/
 
-    }
-
-    private function generate_topic_list($a_topic_id)
+    private function generate_topic_list($a_topic_id)/*{{{*/
     {
         $html['begin'][] = '
             <style>
@@ -407,9 +406,9 @@ class request_listener extends base implements EventSubscriberInterface
             $strn .= join(PHP_EOL, $html[$key]);
         }
         return $strn;
-    }
+    }/*}}}*/
 
-    public function reject_user_with_fulfilled($user_id)
+    public function reject_user_with_fulfilled($user_id)/*{{{*/
     {
         $key = 'snp_req_suspend_outstanding_grace_period';
         $grace_period = $this->config[$key]==null ? 604800 : (int) $this->config[$key];
@@ -432,9 +431,9 @@ class request_listener extends base implements EventSubscriberInterface
             }
             $strn = $this->generate_topic_list($a_topic_id);
             trigger_error($strn);
-    }
+    }/*}}}*/
 
-    public function reject_request_disabled($reqdata, $gdata)
+    public function reject_request_disabled($reqdata, $gdata)/*{{{*/
     {
         if ($reqdata['b_active_override'])
         {
@@ -453,9 +452,9 @@ class request_listener extends base implements EventSubscriberInterface
                 trigger_error("$groupname cannot make requests.");
             }
         }
-    }
+    }/*}}}*/
 
-    public function create_request($event)
+    public function create_request($event)/*{{{*/
     {
         if (!$this->config['snp_b_request'])
             return false;
@@ -506,9 +505,9 @@ class request_listener extends base implements EventSubscriberInterface
         $repl = '[Request]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
         return true;
-    }
+    }/*}}}*/
 
-    public function disable_user_posting($event)
+    public function disable_user_posting($event)/*{{{*/
     {
         if (!$this->config['snp_b_request'])
             return false;
@@ -568,9 +567,9 @@ class request_listener extends base implements EventSubscriberInterface
             }
         }
         $this->template->assign_var('S_REQUEST_USER_INFO', $strn);
-    }
+    }/*}}}*/
 
-    public function show_request_icons($event)
+    public function show_request_icons($event)/*{{{*/
     {
         if (!$this->config['snp_b_request'])
             return false;
@@ -599,9 +598,9 @@ class request_listener extends base implements EventSubscriberInterface
                 $ctx['B_SHOW_SOLVE_BTN'] = true;
         }
         $this->template->assign_vars($ctx);
-    }
+    }/*}}}*/
 
-    public function show_dibs($event)
+    public function show_dibs($event)/*{{{*/
     {
         if (!$this->config['snp_b_request'])
             return false;
@@ -659,6 +658,6 @@ class request_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
-    }
+    }/*}}}*/
 
 }
