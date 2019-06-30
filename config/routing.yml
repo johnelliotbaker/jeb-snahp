@@ -32,6 +32,11 @@ jeb_snahp_acp_prune_users:
     defaults: { _controller: jeb.snahp.acp_prune_users:handle}
     requirements:
         mode: \S+
+jeb_snahp_reputation:
+    path: /snahp/reputation/{mode}/
+    defaults: { _controller: jeb.snahp.reputation:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_achievements:
     path: /snahp/achievements/{mode}/
     defaults: { _controller: jeb.snahp.achievements:handle}

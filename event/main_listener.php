@@ -90,6 +90,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
                 ['add_avatar_achievements', 2],
+                ['add_avatar_reputation', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -152,6 +153,28 @@ class main_listener extends base implements EventSubscriberInterface
         // }
     }/*}}}*/
 
+    public function add_avatar_reputation($event)/*{{{*/
+    {
+        if (!$this->config['snp_rep_b_master'])
+        {
+            return false;
+        }
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        $sql = 'SELECT snp_rep_n_received FROM ' . USERS_TABLE . " WHERE user_id={$poster_id}";
+        $result = $this->db->sql_query($sql, 5);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return false;
+        }
+        $post_row['REPUTATION'] = $row['snp_rep_n_received'];
+        $post_row['SHOW_REPUTATION_BTN'] = $this->user->data['user_id'] == $poster_id ? false : true;
+        $event['post_row'] = $post_row;
+    }/*}}}*/
+
     public function show_achievements_in_profile($event)/*{{{*/
     {
         if (!$this->config['snp_achi_b_master'])
@@ -192,11 +215,12 @@ class main_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = $this->user->data['user_id'];
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
         $post_author = $post_row['POST_AUTHOR'];
-        $sql = "SELECT * FROM phpbb_snahp_achievements WHERE user_id={$poster_id}";
+        $sql = 'SELECT * FROM ' . $tbl['achievements'] . " WHERE user_id={$poster_id}";
         $result = $this->db->sql_query($sql, 5);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);

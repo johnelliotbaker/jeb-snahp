@@ -89,6 +89,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.reputation:
+        class: jeb\snahp\controller\reputation
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.achievements:
         class: jeb\snahp\controller\achievements
         parent: jeb.snahp.base

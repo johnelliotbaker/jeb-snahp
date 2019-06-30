@@ -88,6 +88,19 @@
       </fieldset>
 
       <fieldset>
+        <legend>Reputation Sytem</legend>
+				<dl>
+          <dt>
+              <label>Reputation Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_rep_b_master" class="radio" value="1" {% if SNP_REP_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_rep_b_master" class="radio" value="0" {% if not SNP_REP_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
         <legend>Achievements</legend>
 				<dl>
           <dt>

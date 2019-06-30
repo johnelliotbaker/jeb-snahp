@@ -32,6 +32,11 @@ class v_0_27_0 extends \phpbb\db\migration\migration
                     'giver_id' => ['giver_id'],
                 ],
             ],
+            'add_unique_index'    => [
+                $this->table_prefix . 'snahp_reputation'  => [
+                    'pair' => ['post_id', 'giver_id'],
+                ],
+            ],
             'add_columns' => [
                 USERS_TABLE => [
                     'snp_rep_n_received'  => ['INT:11', 0],
