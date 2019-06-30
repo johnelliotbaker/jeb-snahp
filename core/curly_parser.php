@@ -280,7 +280,11 @@ class curly_parser
     public function parse_snahp($strn)
     {
         $ptn = $this->get_wrapper_pattern();
-        // $strn = preg_replace_callback($ptn, 'self::parse', $strn);
+        // $p = '#<code>(.*?)<\/code>#s';
+        // preg_match_all($p, $strn, $codebox_matches);
+        // $uuid = uniqid('codebox_');
+        // $ptn_uuid = '#' . $uuid . '#s';
+        // $strn = preg_replace($p, $uuid, $strn);
         $strn = preg_replace_callback($ptn, function($match){
             $content = $match[1];
             // If {snahp}{/snahp}
@@ -296,7 +300,7 @@ class curly_parser
                 return $this->return_malformed($match[0]);
             }
             $tag_type = $tag_type[1];
-            switch ($tag_type)
+            switch ($tag_type)/*{{{*/
             {
             case 'table':
                 $res = $this->interpolate_curly_table($content);
@@ -355,9 +359,28 @@ class curly_parser
             default:
                 $res = 'default';
                 break;
-            }
+            }/*}}}*/
             return $res;
         }, $strn);
+        // $start = 0;
+        // $res = [];
+        // $n = strlen($strn);
+        // $i = 0;
+        // $new_strn = '';
+        // while (preg_match($ptn_uuid, $strn, $matches, PREG_OFFSET_CAPTURE, $start))
+        // {
+        //     $width = strlen($matches[0][0]);
+        //     $cursor = (int) $matches[0][1];
+        //     $new_strn .= substr($strn, $start, $cursor-$start);
+        //     $new_strn .= $codebox_matches[0][$i];
+        //     $i += 1;
+        //     $start = $cursor + $width;
+        // };
+        // if ($start < $n)
+        // {
+        //     $new_strn .= substr($strn, $start);
+        // }
+        // return $new_strn;
         return $strn;
     }
 
