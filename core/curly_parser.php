@@ -279,12 +279,14 @@ class curly_parser
 
     public function parse_snahp($strn)
     {
+        // Exclude codebox
+        $p = '#<code>(.*?)<\/code>#s';
+        preg_match_all($p, $strn, $codebox_matches);
+        $uuid = uniqid('codebox_');
+        $ptn_uuid = '#' . $uuid . '#s';
+        $strn = preg_replace($p, $uuid, $strn);
+        // Start parsing
         $ptn = $this->get_wrapper_pattern();
-        // $p = '#<code>(.*?)<\/code>#s';
-        // preg_match_all($p, $strn, $codebox_matches);
-        // $uuid = uniqid('codebox_');
-        // $ptn_uuid = '#' . $uuid . '#s';
-        // $strn = preg_replace($p, $uuid, $strn);
         $strn = preg_replace_callback($ptn, function($match){
             $content = $match[1];
             // If {snahp}{/snahp}
@@ -362,26 +364,25 @@ class curly_parser
             }/*}}}*/
             return $res;
         }, $strn);
-        // $start = 0;
-        // $res = [];
-        // $n = strlen($strn);
-        // $i = 0;
-        // $new_strn = '';
-        // while (preg_match($ptn_uuid, $strn, $matches, PREG_OFFSET_CAPTURE, $start))
-        // {
-        //     $width = strlen($matches[0][0]);
-        //     $cursor = (int) $matches[0][1];
-        //     $new_strn .= substr($strn, $start, $cursor-$start);
-        //     $new_strn .= $codebox_matches[0][$i];
-        //     $i += 1;
-        //     $start = $cursor + $width;
-        // };
-        // if ($start < $n)
-        // {
-        //     $new_strn .= substr($strn, $start);
-        // }
-        // return $new_strn;
-        return $strn;
+        // Stitch back the codebox
+        $start = 0;
+        $n = strlen($strn);
+        $i = 0;
+        $new_strn = '';
+        while (preg_match($ptn_uuid, $strn, $matches, PREG_OFFSET_CAPTURE, $start))
+        {
+            $width = strlen($matches[0][0]);
+            $cursor = (int) $matches[0][1];
+            $new_strn .= substr($strn, $start, $cursor-$start);
+            $new_strn .= $codebox_matches[0][$i];
+            $i += 1;
+            $start = $cursor + $width;
+        };
+        if ($start < $n)
+        {
+            $new_strn .= substr($strn, $start);
+        }
+        return $new_strn;
     }
 
     public function parse($strn)
