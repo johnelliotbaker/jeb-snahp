@@ -1,0 +1,23 @@
+#reputation_table
+{
+    font-size: 1.2em;
+}
+
+
+#reputation_table td,
+#reputation_table th
+{
+    padding-top: .5em;
+    padding-bottom: .6em;
+}
+
+#reputation_table th,
+th
+{
+    min-width: 8em;
+}
+
+td
+{
+    width:100%;
+}

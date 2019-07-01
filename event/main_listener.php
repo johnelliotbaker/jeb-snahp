@@ -68,6 +68,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.memberlist_prepare_profile_data'                => [
                 ['show_achievements_in_profile', 0],
+                ['show_reputation_in_profile', 0],
             ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
@@ -151,6 +152,60 @@ class main_listener extends base implements EventSubscriberInterface
         //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
         //     $this->db->sql_query($sql);
         // }
+    }/*}}}*/
+
+    public function show_reputation_in_profile($event)/*{{{*/
+    {
+        if (!$this->config['snp_rep_b_master'])
+        {
+            return false;
+        }
+        $data = $event['data'];
+        $username = $data['username'];
+        $profile_id = (string) $data['user_id'];
+        $sql = 'SELECT snp_rep_n_received FROM ' . USERS_TABLE . " WHERE user_id={$profile_id}";
+        $result = $this->db->sql_query($sql, 30);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row || $row['snp_rep_n_received'] < 1)
+        {
+            return false;
+        }
+        $this->template->assign_vars([
+            'N_REPUTATION' => $row['snp_rep_n_received'],
+        ]);
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $order_by = 'count DESC';
+        $sql_array = [
+            'SELECT'    => 'r.post_id, p.post_subject, p.topic_id, p.forum_id, COUNT(*) as count',
+            'FROM'      => [ $tbl['reputation'] => 'r', ],
+            'LEFT_JOIN' => [
+                [
+                    'FROM' => [POSTS_TABLE => 'p'],
+                    'ON' => 'p.post_id=r.post_id'
+                ]
+            ],
+            'WHERE'     => "r.poster_id={$profile_id}",
+            'GROUP_BY'  => 'r.post_id',
+            'ORDER_BY'  => 'count DESC',
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query_limit($sql, 10, 0, 30);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $i = 1;
+        foreach($rowset as $row)
+        {
+            $data = [];
+            $data['INDEX'] = $i;
+            $data['COUNT'] = $row['count'];
+            $data['FORUM_ID'] = $row['forum_id'];
+            $data['TOPIC_ID'] = $row['topic_id'];
+            $data['POST_ID'] = $row['post_id'];
+            $data['POST_SUBJECT'] = $row['post_subject'];
+            $this->template->assign_block_vars('reputation', $data);
+            $i += 1;
+        }
     }/*}}}*/
 
     public function add_avatar_reputation($event)/*{{{*/

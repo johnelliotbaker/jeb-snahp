@@ -1,0 +1,28 @@
+{% if N_REPUTATION %}
+<!-- INCLUDECSS @jeb_snahp/profile/component/reputation/base.css -->
+<div class="panel bg2">
+  <div class="inner">
+    <h3>Total Reputation Points: {N_REPUTATION}</h3>
+
+    <div class="twbs">
+      <table id="reputation_table" class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col" class="text-right"># of Reps Received</th>
+            <th scope="col">From This Post</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- BEGIN reputation -->
+          <tr>
+            <th scope="row" class="text-right">{reputation.COUNT}</th>
+            <td><a href="/viewtopic.php?f={reputation.FORUM_ID}&t={reputation.TOPIC_ID}&p={reputation.POST_ID}#p{reputation.POST_ID}" target="_blank">{reputation.POST_SUBJECT}</a></td>
+          </tr>
+          <!-- END reputation -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+{% endif %}
