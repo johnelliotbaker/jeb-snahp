@@ -196,6 +196,21 @@ abstract class base
 
     // DATABASE Functions
 
+    // Reputation
+    public function select_rep_total_for_post($post_id, $cachetime=1)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";
+        $result = $this->db->sql_query($sql, $cachetime);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return 0;
+        }
+        return (int) $row['count'];
+    }/*}}}*/
+
     // Achievements
     public function select_user_achievements($user_id, $cooldown=10)/*{{{*/
     {
@@ -458,8 +473,9 @@ abstract class base
     // GET STYLE INFORMATION
     public function select_style_name()/*{{{*/
     {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_style = $this->user->data['user_style'];
-        $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
+        $sql = 'SELECT style_name FROM ' . $tbl['styles'] . '
             WHERE style_id=' . $user_style;
         $result = $this->db->sql_query($sql, 5);
         $row = $this->db->sql_fetchrow($result);
