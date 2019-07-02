@@ -1,7 +1,11 @@
-{% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
-{% if N_THANKS_COUNT_FOR_OP %}
+{% if postrow.N_THANKS or postrow.N_REP %}
 <div class="notice">
-  {N_THANKS_COUNT_FOR_OP} {% if N_THANKS_COUNT_FOR_OP == 1 %}user was{% else %}users were{% endif %} thankful for this topic
+  {% if postrow.N_REP %}
+  {postrow.N_REP} <i style="color: inherit;" class="icon fa-trophy fa-fw" aria-hidden="true"></i>
+  {% if postrow.N_THANKS %} & {% endif %}
+  {% endif %}
+  {% if postrow.N_THANKS %}
+  {postrow.N_THANKS} <i style="color: inherit;" aria-hidden="true" class="icon fa-fw fa-thumbs-o-up"></i>
+  {% endif %}
 </div>
-{% endif %}
 {% endif %}
