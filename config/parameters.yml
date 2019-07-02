@@ -15,6 +15,7 @@ parameters:
         digg_master: '%core.table_prefix%snahp_digg_master'
         achievements: '%core.table_prefix%snahp_achievements'
         reputation: '%core.table_prefix%snahp_reputation'
+        styles: '%core.table_prefix%styles'
 
     jeb.snahp.bump_topic:
         def:
