@@ -2,7 +2,7 @@
 <!-- INCLUDECSS @jeb_snahp/profile/component/reputation/base.css -->
 <div class="panel bg2">
   <div class="inner">
-    <h3>Total Reputation Points: {N_REPUTATION}</h3>
+    <h3>Top Posts {% if not B_REPUTATION_PROFILE_PUBLIC %} (Private){% endif %}</h3>
 
     <div class="twbs">
       <table id="reputation_table" class="table table-dark">

@@ -1,35 +1,46 @@
-{% if achievements %}
+{% if B_ACHIEVEMENTS %}
 <!-- INCLUDECSS @jeb_snahp/gallery/component/cards/base.css -->
+<!-- INCLUDECSS @jeb_snahp/profile/component/achievements/base.css -->
 <div class="panel bg2">
   <div class="inner">
-    <h3>Achievements</h3>
+    <h3>Statistics and Achievements {% if not B_ACHIEVEMENTS_PROFILE_PUBLIC %} (Private){% endif %}</h3>
 
     <div class="twbs">
       <section class="gallery-block cards-gallery">
-        <div class="container">
+        <div class="achievements_container">
           <div class="row">
-    
-            <!-- BEGIN achievements -->
-            <div class="col-lg-2 col-3 sm item"> 
-              <div class="card border-0 transform-on-hover">
-                {% if achievements.URL %}
-                <a href="{achievements.URL}" target="_blank">
-                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
-                </a>
-                {% else %}
-                <span>
-                  <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
-                </span>
-                {% endif %}
-                <div class="card-body">
-                  <b>
-                    {achievements.NAME}
-                  </b>
+
+            <div class="col-sm-5 col-12">
+              <canvas id="radar-chart" width="280" height="200"></canvas>
+            </div>
+
+            {% if achievements %}
+            <div class="col-sm-7 col-12">
+              <div class="row">
+                <!-- BEGIN achievements -->
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6 sm item"> 
+                  <div class="card border-0 transform-on-hover">
+                    {% if achievements.URL %}
+                    <a href="{achievements.URL}" target="_blank">
+                      <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
+                    </a>
+                    {% else %}
+                    <span>
+                      <img src="{achievements.IMG_URL}" alt="Card Image" class="card-img-top" title="{achievements.TITLE}">
+                    </span>
+                    {% endif %}
+                    <div class="card-body">
+                      <b>
+                        {achievements.NAME}
+                      </b>
+                    </div>
+                  </div>
                 </div>
+                <!-- END achievements -->
               </div>
             </div>
-            <!-- END achievements -->
-    
+            {% endif %}
+
           </div>
         </div>
       </section>
