@@ -15,7 +15,7 @@ class achievements extends base
 
 	public function handle($mode)/*{{{*/
 	{
-        $this->reject_non_dev();
+        $this->reject_anon();
         if (!$this->config['snp_achi_b_master'])
         {
             trigger_error('This achievement system has been disabled by the administrator. Error Code: a089bce09c');
@@ -24,10 +24,14 @@ class achievements extends base
         switch ($mode)
         {
         case 'update':
+            $this->reject_non_dev();
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
             return $this->update($cfg);
             break;
+        case 'powerchart':
+            $cfg = [];
+            return $this->get_powerchart_json($cfg);
         default:
             trigger_error('Invalid update mode. Error Code: d3761802f0');
             break;
@@ -284,6 +288,69 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
+    }/*}}}*/
+
+    public function get_powerchart_json($cfg)/*{{{*/
+    {
+        $js = new \phpbb\json_response();
+        $profile_id = $this->request->variable('u', 0);
+        if ($profile_id < 2)
+        {
+            $js->send([]);
+        }
+        $stylename = $this->select_style_name();
+        $max_solve  = 500;
+        $max_rep    = 500;
+        $max_thanks = 100000;
+        $ref_data = array_map('log', [$max_solve, $max_rep, $max_thanks]);
+        $row = $this->select_achievements($profile_id);
+        $user_data = array_map('log', [$row['snp_req_n_solve'], $row['snp_rep_n_received'], $row['snp_thanks_n_received']]);
+        $user_data = $this->normalize_achievements($user_data, $ref_data);
+        $average_data = $this->config['snp_rep_average_data'];
+        if (!$average_data)
+        {
+            $average_data = array_map('log', [0, 0, 4]);
+        }
+        $average_data = $this->normalize_achievements($average_data, $ref_data);
+        $username = $row['username'];
+        $maxi = max(max(array_merge($user_data, $average_data)), log(100));
+        $data = [
+            'stylename' => $stylename,
+            'labels' => ['Requests Solved', 'Reputation', 'Thanks'],
+            'maximum' => $maxi,
+            'user' => [
+                'data' => $user_data,
+                'name' => $username,
+            ],
+            'average' => [
+                'data' => $average_data,
+                'name' => 'Forum Average',
+            ]
+        ];
+        $js->send($data);
+        return $data;
+    }/*}}}*/
+
+    private function normalize_achievements($data, $reference)/*{{{*/
+    {
+        $max = log(100);
+        $min = log(3.5);
+        foreach ($data as $key => $val)
+        {
+            $data[$key] = min(max(($max * $data[$key] / $reference[$key]), $min), $max);
+        }
+        return $data;
+    }/*}}}*/
+
+    private function select_achievements($user_id)/*{{{*/
+    {
+        $user_id = (int) $user_id;
+        $sql = 'SELECT username, snp_req_n_solve, snp_thanks_n_received, snp_rep_n_received FROM ' . USERS_TABLE .
+            " WHERE user_id={$user_id}";
+        $result = $this->db->sql_query($sql, 0);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
     }/*}}}*/
 
 }
