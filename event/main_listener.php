@@ -67,6 +67,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['setup_core_vars', 0],
             ],
             'core.memberlist_prepare_profile_data'                => [
+                ['setup_profile_variables', 0],
                 ['show_achievements_in_profile', 0],
                 ['show_reputation_in_profile', 0],
             ],
@@ -82,6 +83,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['process_curly_tags_for_search', 1],
             ],
             'core.viewtopic_modify_post_row'              => [
+                ['setup_viewtopic_modify_post_row_data', 1000],
                 ['easter_cluck', 1],
                 ['block_zebra_foe_topicview', 1],
                 ['show_requests_solved_avatar', 1],
@@ -90,8 +92,8 @@ class main_listener extends base implements EventSubscriberInterface
                 ['disable_signature', 1],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
-                ['add_avatar_achievements', 2],
-                ['add_avatar_reputation', 2],
+                ['show_achievements_in_avatar', 2],
+                ['show_reputation_in_avatar', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -142,16 +144,51 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function test($event)/*{{{*/
     {
-        // $data = [];
-        // $topic_id = 54394;
-        // $data['topic_id'] = $topic_id;
-        // $start = 10400;
-        // for ($i = $start; $i < $start+3000; $i++) {
-        //     $data['user_id'] = $i;
-        //     $sql = 'INSERT INTO phpbb_snahp_digg_slave ' . $this->db->sql_build_array('INSERT', $data) . "
-        //         ON DUPLICATE KEY UPDATE topic_id={$topic_id}";
-        //     $this->db->sql_query($sql);
-        // }
+    }/*}}}*/
+
+    public function setup_viewtopic_modify_post_row_data($event)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $post_row = $event['post_row'];
+        $poster_id = (int) $post_row['POSTER_ID'];
+        $post_id = (int) $post_row['POST_ID'];
+        // Save poster user_data
+        $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE user_id={$poster_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result, 1);
+        $this->db->sql_freeresult($result);
+        $this->poster_data = $row;
+        // Get reputation counts
+        $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $this->n_post_rep = $row['count'];
+        // Check if reputaiton was given for this post
+        $user_id = $this->user->data['user_id'];
+        $sql = 'SELECT * FROM ' . $tbl['reputation'] . " WHERE giver_id={$user_id} AND post_id={$post_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $this->b_rep_given = !!$row;
+    }/*}}}*/
+
+    public function setup_profile_variables($event)/*{{{*/
+    {
+        $visitor_id = (int) $this->user->data['user_id'];
+        $data = $event['data'];
+        $username = $data['username'];
+        $profile_id = (int) $data['user_id'];
+        $profile_username = $data['username'];
+        $hidden_fields = [
+            'snp_profile_id' => $profile_id,
+            'snp_profile_username' => $profile_username,
+        ];
+        $s_hidden_fields = build_hidden_fields($hidden_fields);
+        $this->template->assign_vars([
+            'S_PROFILE_HIDDEN_FIELDS' => $s_hidden_fields,
+            'S_PROFILE_USERNAME' => $profile_username,
+        ]);
     }/*}}}*/
 
     public function show_reputation_in_profile($event)/*{{{*/
@@ -160,9 +197,17 @@ class main_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
+        $visitor_id = (int) $this->user->data['user_id'];
         $data = $event['data'];
         $username = $data['username'];
-        $profile_id = (string) $data['user_id'];
+        $b_public = $data['snp_rep_b_profile'];
+        $profile_id = (int) $data['user_id'];
+        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public)
+        {
+            // Block public if unless mod or profile owner
+            return false;
+        }
+        $profile_username = $data['username'];
         $sql = 'SELECT snp_rep_n_received FROM ' . USERS_TABLE . " WHERE user_id={$profile_id}";
         $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
@@ -173,6 +218,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $this->template->assign_vars([
             'N_REPUTATION' => $row['snp_rep_n_received'],
+            'B_REPUTATION_PROFILE_PUBLIC' => $b_public,
         ]);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $order_by = 'count DESC';
@@ -208,25 +254,39 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }/*}}}*/
 
-    public function add_avatar_reputation($event)/*{{{*/
+    public function show_reputation_in_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_rep_b_master'])
+        {
+            return false;
+        }
+        $poster_data = $this->poster_data;
+        if (!$poster_data)
         {
             return false;
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
-        $sql = 'SELECT snp_rep_n_received FROM ' . USERS_TABLE . " WHERE user_id={$poster_id}";
-        $result = $this->db->sql_query($sql, 5);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        if (!$row)
+        $b_public = $poster_data['snp_rep_b_avatar'];
+        $user_id = $this->user->data['user_id'];
+        // Hiding public view
+        if ($b_public || $poster_id==$user_id || $this->is_mod())
         {
-            return false;
+            $n_rep = $poster_data['snp_rep_n_received'];
+            if ($n_rep > 0)
+            {
+                $res = [
+                    $poster_data['snp_rep_n_received'],
+                    !$b_public && ($this->is_mod() || $poster_id==$user_id) ? 'p' : ''];
+                $strn = implode(' ', $res);
+                $post_row['REPUTATION'] = $strn;
+            }
         }
-        $post_row['REPUTATION'] = $row['snp_rep_n_received'];
-        $post_row['SHOW_REPUTATION_BTN'] = $this->user->data['user_id'] == $poster_id ? false : true;
+        if (!$this->b_rep_given)
+        {
+            $post_row['SHOW_REPUTATION_BTN'] = $this->user->data['user_id'] == $poster_id ? false : true;
+        }
         $event['post_row'] = $post_row;
     }/*}}}*/
 
@@ -237,8 +297,17 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         }
         $data = $event['data'];
-        $username = $data['username'];
+        $profile_username = $data['username'];
+        $visitor_id = (int) $this->user->data['user_id'];
         $profile_id = $data['user_id'];
+        $b_public = $data['snp_achi_b_profile'];
+        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public)
+        {
+            // Block public if unless mod or profile owner
+            return false;
+        }
+        $this->template->assign_var('B_ACHIEVEMENTS_PROFILE_PUBLIC', $b_public);
+        $this->template->assign_var('B_ACHIEVEMENTS', true);
         $rowset = $this->select_user_achievements($profile_id, 10);
         if (!$rowset)
         {
@@ -254,7 +323,7 @@ class main_listener extends base implements EventSubscriberInterface
             if (!array_key_exists($type, $params)) { continue; }
             $param = $params[$type];
             $title = $param['title'];
-            $title = preg_replace('#{USERNAME}#', $username, $title);
+            $title = preg_replace('#{USERNAME}#', $profile_username, $title);
             $title = preg_replace('#s\'s#', 's\'', $title);
             $data['IMG_URL'] = $param['img']['url'][$style_name];
             $data['NAME']    = $param['name'];
@@ -264,17 +333,28 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }/*}}}*/
 
-    public function add_avatar_achievements($event)/*{{{*/
+    public function show_achievements_in_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_achi_b_master'])
+        {
+            return false;
+        }
+        $poster_data = $this->poster_data;
+        if (!$poster_data)
         {
             return false;
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = $this->user->data['user_id'];
         $post_row = $event['post_row'];
-        $poster_id = $post_row['POSTER_ID'];
         $post_author = $post_row['POST_AUTHOR'];
+        $poster_id = $poster_data['user_id'];
+        $b_public = $poster_data['snp_achi_b_avatar'];
+        if (!$b_public)
+        {
+            // Block public
+            return false;
+        }
         $sql = 'SELECT * FROM ' . $tbl['achievements'] . " WHERE user_id={$poster_id}";
         $result = $this->db->sql_query($sql, 5);
         $rowset = $this->db->sql_fetchrowset($result);
@@ -502,6 +582,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_core_vars($event)/*{{{*/
     {
+        $n_rep = $this->user->data['snp_rep_n_available'];
         $hidden_fields = [
             'snp_user_id' => $this->user->data['user_id'],
             'snp_servername' => $this->config['server_name'],
@@ -511,6 +592,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'S_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
+            'N_REP_AVAILABLE' => $n_rep,
         ]);
     }/*}}}*/
 
@@ -541,27 +623,24 @@ class main_listener extends base implements EventSubscriberInterface
         {
             return false;
         }
+        $post_row = $event['post_row'];
+        $post_id = $post_row['POST_ID'];
         $topic_data = $event['topic_data'];
         $topic_id = $topic_data['topic_id'];
         $topic_poster = $topic_data['topic_poster'];
-        if ($this->is_op($topic_data) || $this->is_mod())
-        { }
-        else
+        $thanks_total = 0;
+        if ($this->poster_data['snp_thanks_b_topic'] || $this->is_op($topic_data) || $this->is_mod())
         {
-            $poster_data = $this->select_user($topic_poster, $cachetime);
-            $b_show = $poster_data['snp_thanks_b_topic'];
-            if (!$b_show)
-            {
-                return false;
-            }
+            $thanks_total = $this->select_thanks_for_op($topic_id, $cachetime);
         }
-        $count = $this->select_thanks_for_op($topic_id, $cachetime);
-        if ($count)
+        if ($post_id != $topic_data['topic_first_post_id'])
         {
-            $this->template->assign_vars([
-                'N_THANKS_COUNT_FOR_OP' => $count,
-            ]);
+            $thanks_total = 0;
         }
+        $rep_total = $this->select_rep_total_for_post($post_id);
+        $post_row['N_REP'] = $rep_total;
+        $post_row['N_THANKS'] = $thanks_total;
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function show_search_index_btn($event)/*{{{*/
@@ -677,13 +756,7 @@ class main_listener extends base implements EventSubscriberInterface
         if (!$this->config['snp_thanks_b_enable']) return false;
         if (!$this->config['snp_thanks_b_avatar']) return false;
         $post_row = $event['post_row'];
-        $poster_id = $post_row['POSTER_ID'];
-        $sql = 'SELECT snp_thanks_n_given, snp_thanks_n_received from '. USERS_TABLE . '
-            WHERE user_id='. $poster_id;
-        $result = $this->db->sql_query($sql, 1);
-        $user_data = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        // $user_data = $this->select_user($poster_id);
+        $user_data = $this->poster_data;
         $post_row['THANKS_GIVEN'] = $user_data['snp_thanks_n_given'];
         $post_row['THANKS_RECEIVED'] = $user_data['snp_thanks_n_received'];
         $event['post_row'] = $post_row;
@@ -696,15 +769,8 @@ class main_listener extends base implements EventSubscriberInterface
     {
         if (!$this->config['snp_req_b_avatar']) return false;
         $post_row = $event['post_row'];
-        $poster_id = $post_row['POSTER_ID'];
-        $sql = 'SELECT snp_req_n_solve from '. USERS_TABLE . '
-            WHERE user_id='. $poster_id;
-        $result = $this->db->sql_query($sql, 1);
-        $user_data = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        // $user_data = $this->select_user($poster_id);
-        $requests_solve = $user_data['snp_req_n_solve'];
-        $post_row['REQUESTS_SOLVED'] = $requests_solve;
+        $poster_data = $this->poster_data;
+        $post_row['REQUESTS_SOLVED'] = $poster_data['snp_req_n_solve'];
         $event['post_row'] = $post_row;
         $this->template->assign_vars([
             'B_SHOW_REQUESTS_SOLVED' => true,
@@ -1120,13 +1186,7 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $t = $this->template;
         $pr = $event['post_row'];
-        $poster_id = $pr['POSTER_ID'];
-        $sql = 'SELECT group_id from ' . USERS_TABLE .
-            ' WHERE user_id=' . $poster_id;
-        $result = $this->db->sql_query($sql, 30);
-        $row = $this->db->sql_fetchrow($result);
-        $gid = $row['group_id'];
-        $this->db->sql_freeresult($result);
+        $gid = $this->poster_data['group_id'];
         $sql = 'SELECT snp_enable_signature from ' . GROUPS_TABLE .
             ' WHERE group_id =' . $gid;
         $result = $this->db->sql_query($sql, 30);
