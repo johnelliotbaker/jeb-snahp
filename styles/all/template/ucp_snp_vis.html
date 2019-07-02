@@ -2,30 +2,90 @@
 
 <form id="ucp" method="post" action="{S_UCP_ACTION}">
 <h2>Settings</h2>
+
 	<div class="panel">
-    <h3>Avatar Settings</h3>
+    <h3>Profile Settings</h3>
 		<div class="inner">
 
 			<fieldset>
 				<dl>
-					<dt><label for="snp_thanks_b_topic">Show thanks received per topic:</label><br />
-            <span>Choose yes to show thanks count to everyone. Choose no to show it to yourself only.<br />For items under your topic's opening post.</span></dt>
-					<dd><label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="1"<!-- IF SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> Yes</label>
-						<label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="0"<!-- IF not SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+					<dt><label for="snp_rep_b_profile">Show Reputation Panel</label><br />
+            <span>Choose yes to make your reputation panel visible to the public.</span></dt>
+					<dd><label for="snp_rep_b_profile"><input type="radio" name="snp_rep_b_profile" id="snp_rep_b_profile" value="1"<!-- IF SNP_REP_B_PROFILE --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_rep_b_profile"><input type="radio" name="snp_rep_b_profile" id="snp_rep_b_profile" value="0"<!-- IF not SNP_REP_B_PROFILE --> checked="checked"<!-- ENDIF --> /> No</label></dd>
 				</dl>
 			</fieldset>
 
 			<fieldset>
 				<dl>
-					<dt><label for="snp_disable_avatar_thanks_link0">Disable thanks link under avatar:</label><br />
-            <span>Choosing yes will disable displaying links to your thanks given and received.<br />For items under avatar.</span></dt>
-					<dd><label for="snp_disable_avatar_thanks_link1"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link1" value="1"<!-- IF S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> Yes</label>
-						<label for="snp_disable_avatar_thanks_link0"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link0" value="0"<!-- IF not S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+					<dt><label for="snp_achi_b_profile">Show Statistics and Achievements</label><br />
+            <span>Choose yes to make your statistics and achievements panel visible to the public.</span></dt>
+					<dd><label for="snp_achi_b_profile"><input type="radio" name="snp_achi_b_profile" id="snp_achi_b_profile" value="1"<!-- IF SNP_ACHI_B_PROFILE --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_achi_b_profile"><input type="radio" name="snp_achi_b_profile" id="snp_achi_b_profile" value="0"<!-- IF not SNP_ACHI_B_PROFILE --> checked="checked"<!-- ENDIF --> /> No</label></dd>
 				</dl>
 			</fieldset>
 
     </div>
   </div>
+
+	<div class="panel">
+    <h3>Avatar Settings</h3>
+		<div class="inner">
+
+      <!--
+			<fieldset>
+				<dl>
+					<dt><label for="snp_thanks_b_topic">Show thanks received per topic</label><br />
+            <span>Choose yes to show thanks count to everyone. Choose no to show it to yourself only.<br />For items under your topic's opening post.</span></dt>
+					<dd><label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="1"<!-- IF SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="0"<!-- IF not SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+			<fieldset>
+				<dl>
+					<dt><label for="snp_disable_avatar_thanks_link0">Disable thanks link under avatar</label><br />
+            <span>Choosing yes will disable displaying links to your thanks given and received.<br />For items under avatar.</span></dt>
+					<dd><label for="snp_disable_avatar_thanks_link1"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link1" value="1"<!-- IF S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_disable_avatar_thanks_link0"><input type="radio" name="snp_disable_avatar_thanks_link" id="snp_disable_avatar_thanks_link0" value="0"<!-- IF not S_SNP_DISABLE_AVATAR_THANKS_LINK --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+      -->
+
+			<fieldset>
+				<dl>
+					<dt><label for="snp_rep_b_avatar">Show Reputation Points</label><br />
+            <span>Choose yes to make your reputation points visible to the public.</span></dt>
+					<dd><label for="snp_rep_b_avatar"><input type="radio" name="snp_rep_b_avatar" id="snp_rep_b_avatar" value="1"<!-- IF SNP_REP_B_AVATAR --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_rep_b_avatar"><input type="radio" name="snp_rep_b_avatar" id="snp_rep_b_avatar" value="0"<!-- IF not SNP_REP_B_AVATAR --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+
+			<fieldset>
+				<dl>
+					<dt><label for="snp_achi_b_avatar">Show Achievement Sprites</label><br />
+            <span>Choose yes to make your achievement sprites visible to the public.</span></dt>
+					<dd><label for="snp_achi_b_avatar"><input type="radio" name="snp_achi_b_avatar" id="snp_achi_b_avatar" value="1"<!-- IF SNP_ACHI_B_AVATAR --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_achi_b_avatar"><input type="radio" name="snp_achi_b_avatar" id="snp_achi_b_avatar" value="0"<!-- IF not SNP_ACHI_B_AVATAR --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+
+    </div>
+  </div>
+
+	<div class="panel">
+    <h3>Post Settings</h3>
+			<fieldset>
+				<dl>
+					<dt><label for="snp_thanks_b_topic">Show Topic Thanks Total</label><br />
+            <span>Choose yes to make your opening post show total amount of thanks received.</span></dt>
+					<dd><label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="1"<!-- IF SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> Yes</label>
+						<label for="snp_thanks_b_topic"><input type="radio" name="snp_thanks_b_topic" id="snp_thanks_b_topic" value="0"<!-- IF not SNP_THANKS_B_TOPIC --> checked="checked"<!-- ENDIF --> /> No</label></dd>
+				</dl>
+			</fieldset>
+		<div class="inner">
+    </div>
+  </div>
+
   <div class="panel">
     <h3>Notification Settings</h3>
     <div class="inner">
