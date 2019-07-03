@@ -295,3 +295,8 @@ div.codebox pre
     background: #000;
     -webkit-border-radius: 1ex;
 }
+
+.profile-posts .text_secondary
+{
+    color: white;
+}

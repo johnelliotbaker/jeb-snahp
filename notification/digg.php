@@ -38,7 +38,7 @@ class digg extends \phpbb\notification\type\base
 	}
 
     public static $notification_option = array(
-        'lang' => 'Receive digglist Notifications',
+        'lang' => 'Receive digg Notifications',
         'group' => 'Notification From Snahp',
     );
 
