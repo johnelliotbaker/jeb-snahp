@@ -32,7 +32,7 @@ class basic extends \phpbb\notification\type\base
 	}
 
     public static $notification_option = array(
-        'lang' => 'Receive notifications from Snahp',
+        'lang' => 'Receive @@poke notifications',
         'group' => 'Notification From Snahp',
     );
 

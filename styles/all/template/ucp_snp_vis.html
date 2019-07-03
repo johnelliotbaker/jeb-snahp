@@ -92,6 +92,44 @@
 
 			<fieldset>
 				<dl>
+					<dt><label>Delete All Thanks Notifications</label><br />
+            <span>WARNING! This action cannot be reversed!<br>
+              Click Delete only if you are sure you want to delete all previous thanks notifications.<br></span></dt>
+        <dd>
+          <input onClick="Notifications.delete_thanks();" type="Button" name="delete_all_thanks" id="delete_all_thanks" class="button1" value="DELETE THANKS NOTIFICATIONS" />&nbsp;
+        </dd>
+				</dl>
+			</fieldset>
+			<fieldset>
+				<dl>
+					<dt>
+            <label>Delete All Reputation Notifications</label><br />
+          </dt>
+          <dd>
+            <input onClick="Notifications.delete_reps();" type="Button" name="delete_all_thanks" id="delete_all_thanks" class="button1" value="DELETE REPUTATION NOTIFICATIONS" />&nbsp;
+          </dd>
+				</dl>
+			</fieldset>
+        <script>
+          var Notifications = {};
+          Notifications.delete_thanks = function()
+          {
+            $.get('/app.php/snahp/thanks/handle/datn/')
+              .done((resp)=>{
+                alert('All of your thanks notifications have been deleted.');
+              });
+          }
+          Notifications.delete_reps = function()
+          {
+            $.get('/app.php/snahp/reputation/drn/')
+              .done((resp)=>{
+                alert('All of your reputation notifications have been deleted.');
+              });
+          }
+        </script>
+
+			<fieldset>
+				<dl>
 					<dt><label for="snp_enable_at_notify0">Receive notification via @@username</label><br />
             <span>Choosing yes will allow you to receive notification when another user refers you in their post with @@your_username.</span></dt>
 					<dd><label for="snp_enable_at_notify1"><input type="radio" name="snp_enable_at_notify" id="snp_enable_at_notify1" value="1"<!-- IF S_SNP_ENABLE_AT_NOTIFY --> checked="checked"<!-- ENDIF --> /> Yes</label>
@@ -99,26 +137,6 @@
 				</dl>
 			</fieldset>
       <br>
-
-			<fieldset>
-				<dl>
-					<dt><label>Delete All Thanks Notifications</label><br />
-            <span>WARNING! This action cannot be reversed!<br>
-              Click Delete only if you are sure you want to delete all previous thanks notifications.<br></span></dt>
-        <dd>
-          <input onClick="do_datn();" type="Button" name="delete_all_thanks" id="delete_all_thanks" class="button1" value="DELETE" />&nbsp;
-          <script>
-            function do_datn()
-            {
-              $.get('/app.php/snahp/thanks/handle/datn/')
-                .done((resp)=>{
-                  alert('All of your thanks notifications have been deleted.');
-                });
-            }
-          </script>
-        </dd>
-				</dl>
-			</fieldset>
 
 		</div>
 	</div>

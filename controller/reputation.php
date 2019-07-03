@@ -29,6 +29,11 @@ class reputation extends base
             $cfg['b_feedback'] = false;
             return $this->add($cfg);
             break;
+        case 'drn':
+            $cfg['tpl_name'] = '';
+            $cfg['b_feedback'] = false;
+            return $this->delete_reps_notifications($cfg);
+            break;
         default:
             trigger_error('Invalid update mode. Error Code: bf31942114');
             break;
@@ -87,6 +92,19 @@ class reputation extends base
         {
             $this->update_giver_on_add($giver_id);
             $this->update_poster_on_add($poster_id);
+            $rep_total = $this->select_rep_total_for_post($post_id, 0);
+            $data['forum_id'] = $post_data['forum_id'];
+            $data['topic_id'] = $post_data['topic_id'];
+            $data['post_subject'] = $post_data['post_subject'];
+            $data['rep_total'] = $rep_total;
+            $b_notify = $this->is_notify($poster_id);
+            if ($b_notify)
+            {
+                $this->notification->add_notifications(
+                    'jeb.snahp.notification.type.reputation', $data
+                );
+                $this->update_notifications('jeb.snahp.notification.type.reputation', $post_id, $rep_total);
+            }
         }
         $n_avail -= 1;
         meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
@@ -160,6 +178,62 @@ class reputation extends base
             $this->db->sql_escape($upd_strn) .
             " WHERE user_id={$poster_id}";
         $this->db->sql_query($sql);
+    }/*}}}*/
+
+    private function update_notifications($notification_type_name, $post_id, $rep_total)/*{{{*/
+    {
+        // Previous code used delete + insert. Use proper update instead.
+        $notification_type_id = (int) $this->notification->get_notification_type_id($notification_type_name);
+        $time = time();
+        $sql = 'SELECT notification_data FROM ' . NOTIFICATIONS_TABLE . " WHERE item_id={$post_id} AND notification_type_id={$notification_type_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $data = unserialize($row['notification_data']);
+        $data['rep_total'] = $rep_total;
+        $data = serialize($data);
+        $sql = 'UPDATE ' . NOTIFICATIONS_TABLE . "
+            SET notification_read=0, notification_time={$time}, notification_data='{$data}'
+            WHERE item_id={$post_id} AND notification_type_id={$notification_type_id}";
+        $this->db->sql_query($sql);
+    }/*}}}*/
+
+    private function delete_reps_notifications()/*{{{*/
+    {
+        $this->delete_reputation_notifications();
+        $js = new \phpbb\json_response();
+        $js->send(['status' => 'success']);
+    }/*}}}*/
+
+    public function delete_reputation_notifications()/*{{{*/
+    {
+        $sql = 'SELECT * FROM ' . 
+            NOTIFICATION_TYPES_TABLE . '
+            WHERE notification_type_name="jeb.snahp.notification.type.reputation"';
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        $type_id = $row['notification_type_id'];
+        $sql = 'DELETE FROM ' . NOTIFICATIONS_TABLE . '
+            WHERE user_id=' . $this->user->data['user_id'] . '
+        AND ' . $this->db->sql_in_set('notification_type_id', $type_id);
+        $this->db->sql_query($sql);
+    }/*}}}*/
+
+    private function is_notify($poster_id)/*{{{*/
+    {
+        $type_name = 'jeb.snahp.notification.type.reputation';
+        $method = 'notification.method.board';
+        $sql = 'SELECT * FROM ' . $this->tbl['user_notifications'] .
+            " WHERE item_type='{$type_name}' AND user_id={$poster_id} AND method='{$method}'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if ($row && $row['notify']==0)
+        {
+            return false;
+        }
+        return true;
     }/*}}}*/
 
 }

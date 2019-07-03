@@ -16,6 +16,7 @@ parameters:
         achievements: '%core.table_prefix%snahp_achievements'
         reputation: '%core.table_prefix%snahp_reputation'
         styles: '%core.table_prefix%styles'
+        user_notifications: '%core.table_prefix%user_notifications'
 
     jeb.snahp.bump_topic:
         def:
