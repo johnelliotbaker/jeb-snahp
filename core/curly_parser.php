@@ -182,7 +182,13 @@ class curly_parser
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
         $content = $match[1];
-        $topic_id = $request->variable('t', '0');
+        $topic_id = $request->variable('t', 0);
+        if (!$topic_id)
+        {
+            $post_id = $request->variable('p', 0);
+            $post_data = $this->select_post($post_id, 'topic_id');
+            $topic_id = $post_data['topic_id'];
+        }
         $request_data = $this->select_request($topic_id);
         if (!$request_data)
         {
@@ -427,6 +433,16 @@ class curly_parser
         global $phpbb_container, $db;
         $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['req'] . " WHERE tid=$tid";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function select_post($pid, $field='*')/*{{{*/
+    {
+        global $db;
+        $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
