@@ -723,7 +723,7 @@ class main_module
     {
 		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
-        $pg_names = ['anime', 'listing', 'book', 'game'];
+        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist'];
         if ($tpl_name)
         {
             $this->tpl_name = $tpl_name;
@@ -749,6 +749,38 @@ class main_module
                 }
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_imdb_enable', $aImdbEnable);
+                $db->sql_query($sql);
+                // Code to limit mydramalist based on group membership
+                $aMydramalistEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/mydramalist-(\d+)/', $varname, $match_mydramalist_toggle);
+                    if ($match_mydramalist_toggle)
+                    {
+                        $gid = $match_mydramalist_toggle[1];
+                        $var = "mydramalist-$gid";
+                        $var = $request->variable($var, '0');
+                        $aMydramalistEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_mydramalist_enable', $aMydramalistEnable);
+                $db->sql_query($sql);
+                // Code to limit googlebooks based on group membership
+                $aGooglebooksEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/googlebooks-(\d+)/', $varname, $match_googlebooks_toggle);
+                    if ($match_googlebooks_toggle)
+                    {
+                        $gid = $match_googlebooks_toggle[1];
+                        $var = "googlebooks-$gid";
+                        $var = $request->variable($var, '0');
+                        $aGooglebooksEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
                 // Code to limit anilist based on group membership
                 $aAnilistEnable = [];
@@ -874,6 +906,19 @@ class main_module
                     'gcheck'=> $row['snp_googlebooks_enable'],
                 );
                 $template->assign_block_vars('aGooglebooks', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show mydramalist configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_mydramalist_enable'],
+                );
+                $template->assign_block_vars('aMydramalist', $group);
             };
             $db->sql_freeresult($result);
             // Code to show gamespot configuration in ACP

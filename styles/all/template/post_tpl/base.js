@@ -8,7 +8,6 @@ Post_tpl.setup_badges = function()
     $wrapper = $('#custom_tpl_badges_body');
     $wrapper.find('.badge.tpl').remove();
     $.get('/app.php/snahp/template/get/', (resp)=>{
-        console.log(resp);
         for (var entry of resp)
         {
             $badge = $(`<span class="badge tpl" data-name="${entry['name']}">${entry['name']}</span>`)
@@ -116,7 +115,6 @@ Post_tpl.extract_fields = function(text)
 
 Post_tpl.create_fields = function(resp)
 {
-    console.log(resp);
     var text = resp['text'];
     var data = Post_tpl.extract_fields(text);
     $body = $('#custom_tpl_body').empty();

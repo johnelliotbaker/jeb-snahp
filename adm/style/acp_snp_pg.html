@@ -88,6 +88,45 @@
           </dd>
         </dl>
         <br>
+				<dl>
+					<dt><label>MyDramaList</label><br />
+            <span><br>
+              Check Allowed to enable MyDramaList form generator for that group.<br><br>
+              Add forum ID to the textarea to show the form generator on that forum.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <label for="mydramalist_fid">MyDramaList Forum ID: </label>
+              <textarea name="mydramalist_fid" rows="3" style="width:98%">{mydramalist_fid}</textarea>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aMydramalist -->
+                  <tr>
+                    <td>{aMydramalist.gid}</td>
+                    <td>{aMydramalist.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="mydramalist-{aMydramalist.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="mydramalist-{aMydramalist.gid}"
+                               id="mydramalist-{aMydramalist.gname}"
+                             {% if aMydramalist.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aMydramalist -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+        </dl>
+        <br>
         <dl>
 					<dt><label>Anime</label><br />
             <span><br>
