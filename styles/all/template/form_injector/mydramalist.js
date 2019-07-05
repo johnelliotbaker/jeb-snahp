@@ -26,6 +26,7 @@ Mydramalist.makeMydramalistTemplate = function(data)
     try { var votes          = data.votes;} catch { var votes = "";};
     try { var year           = ' (' + data.year + ')';} catch { var year = "";};
     var genres_text    = getEntryOrEmpty(`[color=#FF8000][b]Genres[/b][/color]: {text}\n`, joinArrayOrEmpty(genres, ', '));
+    var title_text     = getEntryOrEmpty(`[color=#FF8000][b]Title[/b][/color]: {text}\n`, title);
     var image          = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, image, permalink);
     var title          = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}${year}[/url] [/b][/size][/center]\n`, title, permalink);
     var rating         = getEntryOrEmpty(`[center][b][size=110]{text} / 10[/size][/b] (based on ${votes} reviews)[/center]\n`, rating);
@@ -49,9 +50,9 @@ Mydramalist.makeMydramalistTemplate = function(data)
         rating + '\n\n\n' +
         genres + '\n\n\n' +
         synopsis + '\n\n' +
-        original_title + alt_titles +
-        type + runtime + episodes + status +
-        aired_start + aired_end + country + language + genres_text
+        title_text + original_title + alt_titles + '\n' +
+        type + language + runtime + episodes + '\n' +
+        status + aired_start + aired_end + country + genres_text
     ;
     return text;
 }

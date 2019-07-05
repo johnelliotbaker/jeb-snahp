@@ -76,6 +76,7 @@ class mdl extends base
         {
             $js->send(['status' => 'Error Code: d64c7f38fc']);
         }
+        $url = "https://api.mydramalist.com/v1/search/titles?q={$title}";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
