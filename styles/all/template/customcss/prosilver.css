@@ -20,3 +20,9 @@ table.autofill tr{
 table.autofill tr:nth-child(odd) {
     background:#F4F4F4;
 }
+
+/* defaults */
+.default_text_color
+{
+    color: black !important;
+}

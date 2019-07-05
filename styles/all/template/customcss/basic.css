@@ -49,3 +49,9 @@ table.autofill tr:nth-child(odd) {
 thead, tbody, tfoot { vertical-align: middle }
 td.category, tr { vertical-align: inherit }
 
+
+/* defaults */
+.default_text_color
+{
+    color: #141414 !important;
+}

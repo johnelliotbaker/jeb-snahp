@@ -116,9 +116,32 @@ class digg extends base
 
     public function unregister($cfg)/*{{{*/
     {
-        $this->unregister_digg($this->topic_id);
+        // $this->unregister_digg($this->topic_id);
+        return $this->confirm_unregister_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was unregistered successfully.');
+    }/*}}}*/
+
+    public function confirm_unregister_digg($topic_id)/*{{{*/
+    {
+        add_form_key('jeb_snp');
+        if ($this->request->is_set_post('cancel'))
+        {
+            meta_refresh(0, "/viewtopic.php?f={$forum_id}&t={$topic_id}");
+            trigger_error('Error Code: bd72a5e3ad');
+        }
+        $topic_data = $this->select_topic($topic_id);
+        $forum_id = $topic_data['forum_id'];
+        if ($this->request->is_set_post('confirm'))
+        {
+            $this->unregister_digg($topic_id);
+            meta_refresh(2.5, "/viewtopic.php?f={$forum_id}&t={$topic_id}");
+            trigger_error('Your digg was unregistered successfully.');
+        }
+        $this->template->assign_vars([
+            'TOPIC_TITLE' => $topic_data['topic_title'],
+        ]);
+        return $this->helper->render('@jeb_snahp/digg/component/confirm_unregister/base.html');
     }/*}}}*/
 
     public function unregister_digg($topic_id)/*{{{*/

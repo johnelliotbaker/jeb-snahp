@@ -1,0 +1,61 @@
+.digg_btn
+{
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    font-size: 0px;
+}
+
+.digg_btn .container
+{
+    background-color: #333;
+    border-radius: 2px;
+    height: 1rem;
+    line-height: 1rem;
+}
+
+.inline_block
+{
+    display: inline-block;
+    font-size: .9rem !important;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-right: 1px solid #aaa;
+}
+
+.digg_btn .digg
+{
+    color: #4a4;
+}
+
+.digg_btn .undigg
+{
+    color: #888;
+}
+
+.digg_btn .close
+{
+    color: #b22;
+}
+
+.digg_btn .count
+{
+    color: #aaa;
+    font-weight: 700;
+}
+
+.digg_btn .register
+{
+    color: #f8c301;
+}
+
+.digg_btn .broadcast
+{
+    color: #4a4;
+}
+
+.digg_btn .help
+{
+    color: #888;
+    border-right: none;
+}

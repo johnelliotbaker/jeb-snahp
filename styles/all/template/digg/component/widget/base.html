@@ -1,0 +1,57 @@
+<!-- INCLUDECSS @jeb_snahp/digg/component/widget/base.css -->
+<div class="digg_btn">
+  <div class="container">
+
+    {% if B_OP %}
+    {% if B_DIGG_CAN_UNREGISTER %}
+    <div class="inline_block close">
+      <a href="/app.php/snahp/digg/unregister/?t={TOPIC_ID}">
+        <i class="fa fa-close close"></i>
+      </a>
+    </div>
+    {% endif %}
+    {% if S_DIGG_NAME=='register' %}
+    <div class="inline_block digg">
+      <a href="/app.php/snahp/digg/{S_DIGG_URL_MODE}/?t={TOPIC_ID}">
+        <i class="fa fa-digg register"></i>
+      </a>
+    </div>
+    {% elseif S_DIGG_NAME=='broadcast' %}
+    <div class="inline_block broadcast">
+      <a href="/app.php/snahp/digg/{S_DIGG_URL_MODE}/?t={TOPIC_ID}">
+        <i class="fa fa-wifi broadcast"></i>
+      </a>
+    </div>
+    {% endif %}
+    {% else %}
+    {% if S_DIGG_NAME=='digg' %}
+    <div class="inline_block digg">
+      <a href="/app.php/snahp/digg/{S_DIGG_URL_MODE}/?t={TOPIC_ID}">
+        <i class="fa fa-digg digg"></i>
+      </a>
+    </div>
+    {% elseif S_DIGG_NAME=='undigg' %}
+    <div class="inline_block undigg">
+      <a href="/app.php/snahp/digg/{S_DIGG_URL_MODE}/?t={TOPIC_ID}">
+        <span class="undigg_center">
+          <i class="fa fa-close undigg"></i>
+          <i class="fa fa-digg undigg"></i>
+        </span>
+      </a>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if N_DIGG_COUNT %}
+    <div class="inline_block count">{N_DIGG_COUNT}</div>
+    {% endif %}
+
+    {% if !B_OP and B_DIGG_MASTER or B_OP %}
+    <div class="inline_block help">
+      <a href="/app.php/snahp/help/docs/?name=digg_digg" target="_blank">
+        <i class="fa fa-question help"></i>
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>

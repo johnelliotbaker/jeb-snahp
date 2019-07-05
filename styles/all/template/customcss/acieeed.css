@@ -131,3 +131,9 @@ div.codebox pre
     background: #000;
     -webkit-border-radius: 1ex;
 }
+
+/* defaults */
+.default_text_color
+{
+    color: #eee !important;
+}

@@ -300,3 +300,9 @@ div.codebox pre
 {
     color: white;
 }
+
+/* defaults */
+.default_text_color
+{
+    color: #e9ebee !important;
+}

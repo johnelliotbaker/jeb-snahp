@@ -1,9 +1,25 @@
 <!-- INCLUDE overall_header.html -->
 <!-- INCLUDECSS @jeb_snahp/help/component/markdown/css/base.css -->
+<style>
+i.fa.fa-digg
+{
+  background-color: #333;
+  padding: 0px 6px 1px 6px;
+  border-radius: 2px;
+}
+
+i.fa.fa-digg.register
+{
+  color: #f8c301;
+}
+
+i.fa.fa-digg
+{
+  color: #4a4;
+}
+
+</style>
 <div>
-  
-
-
 
   <article class="markdown-body">
     <h1>
@@ -21,35 +37,35 @@
     <h2>What kind of topics should I register for digg?</h2>
     <p>
       Any kind of topics with ongoing updates will qualify.
-      For example, large collections such as anime megapacks, movie collections and ebooks library,
-      or television series with weekly or daily updates are all good topics to register for digg.
+      Large collections such as anime megapacks, movie collections and ebooks library,
+      or periodically televised contents are all good topics to register for digg.
     </p>
 
     <h2>I made a new topic. How do I register my thread for digg?</h2>
     <p>
-      On the top right side of your topic, you should see a <i class="fa fa-digg" aria-hidden="true"></i> symbol.
+      On the top right side of your topic, you should see a <span class="digg_backdrop"><i class="fa fa-digg register" aria-hidden="true"></i></span> symbol.
       Click on it to register your topic for digg.
     </p>
 
     <h2>I just made my topic diggable and now I am ready to update my users. How do I send out update notifications?</h2>
     <p>
-      Once you register your topic for digg, the <i class="fa fa-digg" aria-hidden="true"></i> symbol should automatically change to <i class="fa fa-wifi" aria-hidden="true"></i> symbol.
+      Once you register your topic for digg, the <i class="fa fa-digg register" aria-hidden="true"></i> symbol should automatically change to <i class="fa fa-wifi" aria-hidden="true"></i> symbol.
       Click on <i class="fa fa-wifi" aria-hidden="true"></i> to broadcast your topic to your subscribers.
     </p>
 
     <h2>How often can I broadcast my updates?</h2>
     <p>
       Currently, we allow topic posters to update their post once every 12 hours.
-      The cooldown is per topic.
+      The cooldown is enforced on per topic basis.
     </p>
 
     <h2>How do I digg a topic?</h2>
     <p>
       You can only subscribe to a digg if the topic poster has registered it for subscription.
       Once registered 
-      <span class="digg_subscribe"><i class="fa fa-digg" aria-hidden="true"></i></span>
+      <i class="fa fa-digg" aria-hidden="true"></i> symbol
       should appear on the top right corner of that topic.
-      Click on it to digg it!
+      Click on it to start diggin' it!
     </p>
 
     <h2>
@@ -60,10 +76,9 @@
       If we registered all topics for digg, we could add significant burden to our server.
       Since not every topic is expected to have an ongoing updates,
       the topic poster is given the discretion
-      to register her topic for digg subscription based on her needs.
+      to register her topics for based on needs.
     </p>
   </article>
-
 
 </div>
 <!-- INCLUDE overall_footer.html -->
