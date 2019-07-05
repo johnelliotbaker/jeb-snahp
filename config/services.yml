@@ -89,6 +89,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.help:
+        class: jeb\snahp\controller\help
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.mdl:
         class: jeb\snahp\controller\mdl
         parent: jeb.snahp.base
