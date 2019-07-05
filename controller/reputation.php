@@ -42,15 +42,13 @@ class reputation extends base
 
     public function add($cfg)/*{{{*/
     {
-        $this->add_reputation($cfg);
+        return $this->confirm_add_reputation($cfg);
     }/*}}}*/
 
-    public function add_reputation($cfg)/*{{{*/
+    public function confirm_add_reputation($cfg)/*{{{*/
     {
         $refresh = 2.5;
-        // $this->delete_reputation_table();
         $post_id = $this->request->variable('p', 0);
-        $giver_id = $this->user_id;
         if (!$post_id)
         {
             trigger_error('You must provide a valid post id. Error Code: 5797460b62');
@@ -61,9 +59,51 @@ class reputation extends base
             meta_refresh($refresh, "/viewtopic.php?p={$post_id}#{$post_id}");
             trigger_error('That post does not exist. Error Code: 889ed1c48b');
         }
+        $u_action = '/app.php/snahp/reputation/add/?p=' . $post_id;
+        $giver_id = $this->user_id;
         $poster_id = $post_data['poster_id'];
         $forum_id = $post_data['forum_id'];
         $topic_id = $post_data['topic_id'];
+        add_form_key('jeb_snp');
+        if ($this->request->is_set_post('cancel'))
+        {
+            meta_refresh(0, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
+            trigger_error('Error Code: b466a0bb05');
+        }
+        if ($this->request->is_set_post('confirm'))
+        {
+            $cfg = [
+                'post_id' => $post_id,
+                'topic_id' => $topic_id,
+                'forum_id' => $forum_id,
+                'giver_id' => $giver_id,
+                'poster_id' => $poster_id,
+                'post_data' => $post_data,
+            ];
+            $this->add_reputation($cfg);
+        }
+        $poster_data = $this->select_user($poster_id);
+        $poster_username = $this->make_username($poster_data);
+        $n_rep = $this->user->data['snp_rep_n_available'];
+        $this->template->assign_vars([
+            'POST_SUBJECT' => $post_data['post_subject'],
+            'POSTER_USERNAME' => $poster_username,
+            'N_REP_LEFT' => $n_rep,
+        ]);
+        return $this->helper->render('@jeb_snahp/reputation/component/confirm_add/base.html');
+    }/*}}}*/
+
+
+    public function add_reputation($cfg)/*{{{*/
+    {
+        $refresh = 2.5;
+        // $this->delete_reputation_table();
+        $post_id = $cfg['post_id'];
+        $topic_id = $cfg['topic_id'];
+        $forum_id = $cfg['forum_id'];
+        $giver_id = $cfg['giver_id'];
+        $poster_id = $cfg['poster_id'];
+        $post_data = $cfg['post_data'];
         if ($poster_id == $giver_id)
         {
             meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
