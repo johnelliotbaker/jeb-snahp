@@ -33,7 +33,7 @@ Mydramalist.makeMydramalistTemplate = function(data)
     var genres         = getEntryOrEmpty(`[center][b][size=120]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(genres, ', '));
     var synopsis       = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, synopsis);
     var original_title = getEntryOrEmpty(`[color=#FF8000][b]Original Title[/b][/color]: {text}\n`, original_title);
-    var alt_titles     = getEntryOrEmpty(`[color=#FF8000][b]Alternate Titles[/b][/color]: {text}\n`, alt_titles);
+    var alt_titles     = getEntryOrEmpty(`[color=#FF8000][b]Alternate Titles[/b][/color]: {text}\n`, joinArrayOrEmpty(alt_titles, ', '));
     var type           = getEntryOrEmpty(`[color=#FF8000][b]Type[/b][/color]: {text}\n`, type);
     var runtime        = getEntryOrEmpty(`[color=#FF8000][b]Runtime[/b][/color]: {text} minutes\n`, runtime);
     var episodes       = getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, episodes);
