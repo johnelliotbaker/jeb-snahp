@@ -4,7 +4,7 @@
     "description": "Snahp Extension",
     "homepage": "",
     "version": "0.27.0",
-    "time": "2019-06-30",
+    "time": "2019-07-06",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,8 +19,8 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "bcc16fe35863bf88dea51cda2ee1f4910070861d",
-        "features": "Reputation system",
+        "version": "91aef7297cd39f4666adecbccb39b4e2697572e6",
+        "features": "Achievement and Reputation Panels",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"
