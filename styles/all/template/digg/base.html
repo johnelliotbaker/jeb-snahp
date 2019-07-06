@@ -1,1 +1,3 @@
-{% include '@jeb_snahp/digg/component/widget/base.html' %}
+{% if TOPIC_ID and TOPIC_FIRST_POST_ID==postrow.POST_ID %}
+  {% include '@jeb_snahp/digg/component/widget/base.html' %}
+{% endif %}
