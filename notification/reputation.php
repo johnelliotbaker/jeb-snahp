@@ -66,7 +66,7 @@ class reputation extends \phpbb\notification\type\base
     {
         // This is what's shown on the notification title
         $rep_total = $this->get_data('rep_total');
-        $strn = "The following post's reputation is now at {$rep_total}";
+        $strn = "Your post's reputation has risen to {$rep_total}!";
         return $strn;
     }
 

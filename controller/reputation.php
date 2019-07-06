@@ -73,7 +73,7 @@ class reputation extends base
         return $this->helper->render($cfg['tpl_name']);
     }/*}}}*/
 
-    private function mcp_set($cfg)/*{{{*/
+    public function mcp_set($cfg)/*{{{*/
     {
         $target = $cfg['target'];
         if (!$target)
@@ -90,7 +90,7 @@ class reputation extends base
         trigger_error("All users' available reputation points were set to {$target}. {$time}");
     }/*}}}*/
 
-    private function mcp_set_min($cfg)/*{{{*/
+    public function mcp_set_min($cfg)/*{{{*/
     {
         $target = $cfg['target'];
         if (!$target)

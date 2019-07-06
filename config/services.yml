@@ -89,6 +89,12 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.cron:
+        class: jeb\snahp\controller\cron
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
+            - '@jeb.snahp.reputation'
     jeb.snahp.help:
         class: jeb\snahp\controller\help
         parent: jeb.snahp.base

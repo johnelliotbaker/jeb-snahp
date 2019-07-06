@@ -98,6 +98,40 @@
               <label><input type="radio" name="snp_rep_b_master" class="radio" value="0" {% if not SNP_REP_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
+				<dl>
+          <dt>
+              <label>Reputation Cron Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="1" {% if SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="0" {% if not SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_rep_giveaway_minimum">Set Minimum to</label>
+            <dd>
+              <input type="number" value="{SNP_REP_GIVEAWAY_MINIMUM}" min="0" name="snp_rep_giveaway_minimum" id="snp_rep_giveaway_minimum" /> reputation points per
+            </dd>
+          </dt>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_rep_giveaway_duration">Giveaway Cycle</label>
+            <dd>
+              <input type="number" value="{SNP_REP_GIVEAWAY_DURATION}" min="0" name="snp_rep_giveaway_duration" id="snp_rep_giveaway_duration" /> seconds
+            </dd>
+          </dt>
+        </dl>
+        <dl>
+          <dt>
+            <label for="snp_rep_giveaway_last_time">Last Giveaway Time</label>
+            <dd>
+              <input type="number" value="{SNP_REP_GIVEAWAY_LAST_TIME}" style="width: 94px;" min="0" name="snp_rep_giveaway_last_time" id="snp_rep_giveaway_last_time" />
+            </dd>
+          </dt>
+        </dl>
+        Note: If a user's available points are greater than "Set Minimum to", it will be unchanged.
       </fieldset>
 
       <fieldset>

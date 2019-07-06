@@ -11,14 +11,13 @@
 namespace jeb\snahp\acp;
 
 
-function prn($var) {
+function prn($var) {/*{{{*/
     if (is_array($var))
     { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
     } else { echo "$var<br>"; }
-}
+}/*}}}*/
 
-
-function buildSqlSetCase($casename, $varname, $arr)
+function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
 {
     $strn = " SET $varname = CASE $casename ";
     foreach($arr as $k => $v)
@@ -27,9 +26,9 @@ function buildSqlSetCase($casename, $varname, $arr)
     }
     $strn .= "ELSE $varname END ";
     return $strn;
-}
+}/*}}}*/
 
-function sanitize_fid($fid)
+function sanitize_fid($fid)/*{{{*/
 {
     $fid1 = explode(',', $fid);
     $fid_sane = [];
@@ -44,7 +43,7 @@ function sanitize_fid($fid)
     sort($fid_sane);
     $fid_sane = implode(',', $fid_sane);
     return $fid_sane;
-}
+}/*}}}*/
 
 /**
  * snahp ACP module.
@@ -55,13 +54,11 @@ class main_module
 	public $tpl_name;
 	public $u_action;
 
-	public function main($id, $mode)
+	public function main($id, $mode)/*{{{*/
 	{
 		global $config, $request, $template, $user;
-
 		$user->add_lang_ext('jeb/snahp', 'common');
 		$this->page_title = $user->lang('ACP_SNP_TITLE');
-
         $cfg = array();
         switch ($mode)
         {
@@ -129,9 +126,9 @@ class main_module
         if (!empty($cfg)){
             $this->handle_default($cfg);
         }
-	}
+	}/*}}}*/
 
-    public function select_groups()
+    public function select_groups()/*{{{*/
     {
         global $db;
         $sql = 'SELECT * from ' . GROUPS_TABLE;
@@ -141,9 +138,9 @@ class main_module
             $data[] = $row;
         $db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function update_groups($casename, $varname, $arr)
+    public function update_groups($casename, $varname, $arr)/*{{{*/
     {
         global $db;
         $strn = " SET $varname = CASE $casename ";
@@ -152,12 +149,11 @@ class main_module
             $strn .= "WHEN '$k' THEN '$v' ";
         }
         $strn .= "ELSE $varname END ";
-
         $sql = 'UPDATE ' . GROUPS_TABLE . $strn;
         $db->sql_query($sql);
-    }
+    }/*}}}*/
 
-    public function handle_default($cfg)
+    public function handle_default($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         // prn(array_keys($GLOBALS)); // Lists all available globals
@@ -178,9 +174,9 @@ class main_module
                 'U_ACTION'				=> $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_invite($cfg)
+    public function handle_invite($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -204,9 +200,9 @@ class main_module
                 'SNP_INV_B_MASTER'      => $config['snp_inv_b_master'],
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_analytics($cfg)
+    public function handle_analytics($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -258,9 +254,9 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }
+    }/*}}}*/
 
-    public function handle_group_based_search($cfg)
+    public function handle_group_based_search($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -331,9 +327,9 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }
+    }/*}}}*/
 
-    public function handle_bump_topic($cfg)
+    public function handle_bump_topic($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -396,9 +392,9 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }
+    }/*}}}*/
 
-    public function handle_request($cfg)
+    public function handle_request($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -497,7 +493,6 @@ class main_module
             $cron_interval = $config['snp_cron_graveyard_gc'];
             $cron_next = $cron_last + $cron_interval;
             $cron_next_human = $user->format_date($cron_next);
-
             $template->assign_vars(array(
                 'SNP_B_REQUEST'        => $config['snp_b_request'],
                 'SNP_REQ_B_SUSPEND_OUTSTANDING' => $config['snp_req_b_suspend_outstanding'],
@@ -515,9 +510,9 @@ class main_module
                 'U_ACTION'             => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_notification($cfg)
+    public function handle_notification($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -554,7 +549,6 @@ class main_module
                 }
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
-
             $template->assign_vars(array(
                 'b_snahp_notify_checked'        => $config['snp_b_snahp_notify'],
                 'b_notify_on_poke_checked'      => $config['snp_b_notify_on_poke'],
@@ -565,9 +559,9 @@ class main_module
                 'U_ACTION'                      => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_settings($cfg)
+    public function handle_settings($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -605,6 +599,14 @@ class main_module
                 $config->set('snp_ql_your_topics', $snp_ql_your_topics);
                 $snp_rep_b_master = $request->variable('snp_rep_b_master', '0');
                 $config->set('snp_rep_b_master', $snp_rep_b_master);
+                $snp_rep_b_master = $request->variable('snp_rep_b_cron_giveaway', '0');
+                $config->set('snp_rep_b_cron_giveaway', $snp_rep_b_master);
+                $snp_rep_giveaway_duration = $request->variable('snp_rep_giveaway_duration', '0');
+                $config->set('snp_rep_giveaway_duration', $snp_rep_giveaway_duration);
+                $snp_rep_giveaway_last_time = $request->variable('snp_rep_giveaway_last_time', '0');
+                $config->set('snp_rep_giveaway_last_time', $snp_rep_giveaway_last_time);
+                $snp_rep_giveaway_minimum = $request->variable('snp_rep_giveaway_minimum', '0');
+                $config->set('snp_rep_giveaway_minimum', $snp_rep_giveaway_minimum);
                 $snp_achi_b_master = $request->variable('snp_achi_b_master', '1');
                 $config->set('snp_achi_b_master', $snp_achi_b_master);
                 $snp_easter_chicken_chance = $request->variable('snp_easter_chicken_chance', '10000');
@@ -628,36 +630,39 @@ class main_module
                 meta_refresh(2, $this->u_action);
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
-
             $template->assign_vars(array(
-                'SNP_QL_FAV_LIMIT'         => $config['snp_ql_fav_limit'],
-                'SNP_QL_FAV_DURATION'      => $config['snp_ql_fav_duration'],
-                'SNP_QL_FAV_B_REPLIES'     => $config['snp_ql_fav_b_replies'],
-                'SNP_QL_FAV_B_VIEWS'       => $config['snp_ql_fav_b_views'],
-                'SNP_QL_FAV_B_TIME'        => $config['snp_ql_fav_b_time'],
-                'SNP_QL_THANKS_GIVEN'      => $config['snp_ql_thanks_given'],
-                'SNP_QL_UCP_BOOKMARK'      => $config['snp_ql_ucp_bookmark'],
-                'SNP_QL_REQ_OPEN_REQUESTS' => $config['snp_ql_req_open_requests'],
+                'SNP_QL_FAV_LIMIT'             => $config['snp_ql_fav_limit'],
+                'SNP_QL_FAV_DURATION'          => $config['snp_ql_fav_duration'],
+                'SNP_QL_FAV_B_REPLIES'         => $config['snp_ql_fav_b_replies'],
+                'SNP_QL_FAV_B_VIEWS'           => $config['snp_ql_fav_b_views'],
+                'SNP_QL_FAV_B_TIME'            => $config['snp_ql_fav_b_time'],
+                'SNP_QL_THANKS_GIVEN'          => $config['snp_ql_thanks_given'],
+                'SNP_QL_UCP_BOOKMARK'          => $config['snp_ql_ucp_bookmark'],
+                'SNP_QL_REQ_OPEN_REQUESTS'     => $config['snp_ql_req_open_requests'],
                 'SNP_QL_REQ_ACCEPTED_REQUESTS' => $config['snp_ql_req_accepted_requests'],
-                'SNP_QL_YOUR_TOPICS'       => $config['snp_ql_your_topics'],
-                'SNP_REP_B_MASTER'         => $config['snp_rep_b_master'],
-                'SNP_ACHI_B_MASTER'        => $config['snp_achi_b_master'],
-                'SNP_EASTER_B_CHICKEN'     => $config['snp_easter_b_chicken'],
-                'SNP_EASTER_CHICKEN_CHANCE'=> $config['snp_easter_chicken_chance'],
-                'SNP_REQ_B_AVATAR'         => $config['snp_req_b_avatar'],
-                'SNP_THANKS_B_ENABLE'      => $config['snp_thanks_b_enable'],
-                'SNP_THANKS_B_AVATAR'      => $config['snp_thanks_b_avatar'],
-                'SNP_THANKS_B_TOPLIST'     => $config['snp_thanks_b_toplist'],
-                'SNP_THANKS_B_OP'          => $config['snp_thanks_b_op'],
-                'SNP_ZEBRA_B_MASTER'       => $config['snp_zebra_b_master'],
-                'SNP_FID_REQUESTS'         => $config['snp_fid_requests'],
-                'FID_LISTINGS'             => $config['snp_fid_listings'],
-                'U_ACTION'                 => $this->u_action,
+                'SNP_QL_YOUR_TOPICS'           => $config['snp_ql_your_topics'],
+                'SNP_REP_B_MASTER'             => $config['snp_rep_b_master'],
+                'SNP_REP_B_CRON_GIVEAWAY'      => $config['snp_rep_b_cron_giveaway'],
+                'SNP_REP_GIVEAWAY_MINIMUM'     => $config['snp_rep_giveaway_minimum'],
+                'SNP_REP_GIVEAWAY_LAST_TIME'   => $config['snp_rep_giveaway_last_time'],
+                'SNP_REP_GIVEAWAY_DURATION'    => $config['snp_rep_giveaway_duration'],
+                'SNP_ACHI_B_MASTER'            => $config['snp_achi_b_master'],
+                'SNP_EASTER_B_CHICKEN'         => $config['snp_easter_b_chicken'],
+                'SNP_EASTER_CHICKEN_CHANCE'    => $config['snp_easter_chicken_chance'],
+                'SNP_REQ_B_AVATAR'             => $config['snp_req_b_avatar'],
+                'SNP_THANKS_B_ENABLE'          => $config['snp_thanks_b_enable'],
+                'SNP_THANKS_B_AVATAR'          => $config['snp_thanks_b_avatar'],
+                'SNP_THANKS_B_TOPLIST'         => $config['snp_thanks_b_toplist'],
+                'SNP_THANKS_B_OP'              => $config['snp_thanks_b_op'],
+                'SNP_ZEBRA_B_MASTER'           => $config['snp_zebra_b_master'],
+                'SNP_FID_REQUESTS'             => $config['snp_fid_requests'],
+                'FID_LISTINGS'                 => $config['snp_fid_listings'],
+                'U_ACTION'                     => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_signature($cfg)
+    public function handle_signature($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -717,9 +722,9 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }
+    }/*}}}*/
 
-    public function handle_pg($cfg)
+    public function handle_pg($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
@@ -948,7 +953,6 @@ class main_module
                 $template->assign_block_vars('aCustomTemplate', $group);
             };
             $db->sql_freeresult($result);
-
             // To fill the forum id for the textarea
             foreach ($pg_names as $pg_name)
             {
@@ -956,9 +960,9 @@ class main_module
                 $template->assign_var($pg_name . '_fid', $fid);
             }
         }
-    }
+    }/*}}}*/
 
-    public function handle_donation($cfg)
+    public function handle_donation($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -986,6 +990,6 @@ class main_module
                 'U_ACTION'                      => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
 }
