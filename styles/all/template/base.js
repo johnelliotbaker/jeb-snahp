@@ -17,6 +17,18 @@ Clipboard.copy_gallery_link = function(ev)
     this.copy(href);
 }
 
+// Avatar
+var Avatar = {};
+Avatar.append_copy_controls = function()
+{
+	$v = $('.avatar-container').next();
+    $v.each((i)=>{
+        $elem = $($v[i]);
+        var text = $elem.text();
+        $elem.after(`<span onClick="Clipboard.copy('${text}')" style="margin-left: 4px; cursor: pointer;"><i class="fa fa-clipboard" aria-hidden="true"></i></span>`);
+    })
+}
+
 
 // Code box
 var Codebox = {};
@@ -133,6 +145,8 @@ $("body").keydown(function(event){
 });
 
 $(document).ready(()=>{
+    // Add clipboarding to avatar usernames
+    Avatar.append_copy_controls();
     // Allow codebox to resize
     Codebox.append_resize_controls();
     Codebox.append_copy_controls();
