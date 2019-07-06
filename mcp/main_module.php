@@ -99,6 +99,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Update Achievements',
                 'LINK' => '<a href="/app.php/snahp/achievements/update/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 6,
+                'PURPOSE' => 'Reputations',
+                'NAME' => 'Reputations Giveaways',
+                'DESCRIPTION' => 'Mass set available reputations points',
+                'LINK' => '<a href="/app.php/snahp/reputation/mcp_rep_giveaways/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);
