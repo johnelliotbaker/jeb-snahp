@@ -29,16 +29,84 @@ class reputation extends base
             $cfg['b_feedback'] = false;
             return $this->add($cfg);
             break;
+        case 'mcp_rep_giveaways':
+            $this->reject_non_dev();
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/component/mcp_rep_giveaways/base.html';
+            $cfg['b_feedback'] = false;
+            return $this->mcp_rep_giveaways($cfg);
         case 'drn':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
             return $this->delete_reps_notifications($cfg);
             break;
         default:
-            trigger_error('Invalid update mode. Error Code: bf31942114');
+            trigger_error('Error Code: 22b8e0e0a5');
             break;
         }
 	}/*}}}*/
+
+    public function mcp_rep_giveaways($cfg)/*{{{*/
+    {
+        add_form_key('jeb_snp');
+        if ($this->request->is_set_post('set_target'))
+        {
+            if (!check_form_key('jeb_snp'))
+            {
+                trigger_error('Error Code: f75bc84034');
+            }
+            $cfg['target'] = $this->request->variable('n_target', 0);
+            $cfg['u_action'] = '/app.php/snahp/reputation/mcp_rep_giveaways/';
+            $this->mcp_set($cfg);
+            trigger_error('Error Code: 69eecfe7ac');
+        }
+        if ($this->request->is_set_post('set_minimum_target'))
+        {
+            if (!check_form_key('jeb_snp'))
+            {
+                trigger_error('Error Code: f75bc84034');
+            }
+            $cfg['target'] = $this->request->variable('n_minimum_target', 0);
+            $cfg['u_action'] = '/app.php/snahp/reputation/mcp_rep_giveaways/';
+            $this->mcp_set_min($cfg);
+            trigger_error('Error Code: f26eb5f90b');
+        }
+        return $this->helper->render($cfg['tpl_name']);
+    }/*}}}*/
+
+    private function mcp_set($cfg)/*{{{*/
+    {
+        $target = $cfg['target'];
+        if (!$target)
+        {
+            meta_refresh(3, $cfg['u_action']);
+            trigger_error('Cannot set target to 0.');
+        }
+        $time = microtime(true);
+        $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}";
+        $this->db->sql_query($sql);
+        $time = microtime(true) - $time;
+        $time = sprintf('The procedure took %0.6f seconds.', $time);
+        meta_refresh(3, $cfg['u_action']);
+        trigger_error("All users' available reputation points were set to {$target}. {$time}");
+    }/*}}}*/
+
+    private function mcp_set_min($cfg)/*{{{*/
+    {
+        $target = $cfg['target'];
+        if (!$target)
+        {
+            meta_refresh(3, $cfg['u_action']);
+            trigger_error('Cannot set minimum target to 0.');
+        }
+        $time = microtime(true);
+        $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}" . 
+            " WHERE snp_rep_n_available < {$target}";
+        $this->db->sql_query($sql);
+        $time = microtime(true) - $time;
+        $time = sprintf('The procedure took %0.6f seconds.', $time);
+        meta_refresh(3, $cfg['u_action']);
+        trigger_error("Users with available reputation points less than {$target} was set to {$target}. {$time}");
+    }/*}}}*/
 
     public function add($cfg)/*{{{*/
     {
@@ -92,7 +160,6 @@ class reputation extends base
         ]);
         return $this->helper->render('@jeb_snahp/reputation/component/confirm_add/base.html');
     }/*}}}*/
-
 
     public function add_reputation($cfg)/*{{{*/
     {

@@ -1,0 +1,74 @@
+<!-- INCLUDE overall_header.html -->
+<script> 
+  {% include '@jeb_snahp/mcp/component/mcp_mass_move/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/mcp/component/mcp_mass_move/base.css' %}
+  .card-deck
+  {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+  .card
+  {
+    margin-right: 3px !important;
+    margin-left: 3px !important;
+  }
+  .card .card-header
+  {
+      font-size: 1rem;
+  }
+  .card .card-body
+  {
+    padding: 8px;
+  }
+  .form-check
+  {
+    font-size: 1.5em;
+    margin-left: 2px;
+    margin-bottom: 14px;
+  }
+</style>
+
+{% if true %}
+<form id="mcp_rep_giveaways" method="POST" action="{U_ACTION}">
+  {S_FORM_TOKEN}
+  {S_HIDDEN_FIELDS}
+  <h2 class="forum-title">{TITLE}</h2>
+  <div>
+    <div class="twbs">
+
+      <div class="card">
+        <div class="card-header">Set all users' reputation points to a target if less than target. For example, all user will have at least [5] reputation points.</div>
+        <div class="card-body">
+          <div class="form-group">
+            <input name="n_minimum_target" type="number" min="0" max="50" value="0" style="font-size: 1.2rem;">
+          </div>
+        </div>
+        <button type="submit" name="set_minimum_target" class="btn btn-success btn-sm">Set Minimum</button>
+      </div>
+      <br>
+
+      <div class="card">
+        <div class="card-header">Set all users' reputation points to one number. Use with caution. Users with saved up reputation points will lose them.</div>
+        <div class="card-body">
+          <div class="form-group">
+            <input name="n_target" type="number" min="0" max="50" value="0" style="font-size: 1.2rem;">
+          </div>
+        </div>
+        <button type="submit" name="set_target" class="btn btn-danger btn-sm">Set Target</button>
+      </div>
+      <br>
+
+    </div>
+  </div>
+</form>
+{% else %}
+<div class="panel">
+  <div class="inner">
+    <h3>Requests disabled</h3>
+    <p>Request feature is currently disabled by the site admin.</p>
+  </div>
+</div>
+{% endif %}
+<!-- INCLUDE overall_footer.html -->
