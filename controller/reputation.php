@@ -298,7 +298,7 @@ class reputation extends base
         $this->db->sql_freeresult($result);
         $data = unserialize($row['notification_data']);
         $data['rep_total'] = $rep_total;
-        $data = serialize($data);
+        $data = $this->db->sql_escape(serialize($data));
         $sql = 'UPDATE ' . NOTIFICATIONS_TABLE . "
             SET notification_read=0, notification_time={$time}, notification_data='{$data}'
             WHERE item_id={$post_id} AND notification_type_id={$notification_type_id}";
