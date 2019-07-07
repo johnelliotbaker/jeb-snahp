@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "91aef7297cd39f4666adecbccb39b4e2697572e6",
+        "version": "d60373df06785110de631333021eae9d10f4bf96",
         "features": "Achievement and Reputation Panels",
         "display-name": "Snahp",
         "soft-require": {
