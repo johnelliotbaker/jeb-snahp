@@ -262,6 +262,9 @@ class reqs extends base
         }
         elseif ($new_status == $def['terminate'])
         {
+            $sql = 'UPDATE ' . $this->tbl['requsr'] . ' SET n_use_this_cycle=n_use_this_cycle+1 ' .
+                " WHERE user_id={$user_id}";
+            $this->db->sql_query($sql);
             trigger_error('This request was terminated.');
         }
     }/*}}}*/
