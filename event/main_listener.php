@@ -64,6 +64,9 @@ class main_listener extends base implements EventSubscriberInterface
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
+                // ['setup_core_vars', 0],
+            ],
+            'core.user_setup_after'                            => [
                 ['setup_core_vars', 0],
             ],
             'core.memberlist_prepare_profile_data'                => [
@@ -584,6 +587,10 @@ class main_listener extends base implements EventSubscriberInterface
     public function setup_core_vars($event)/*{{{*/
     {
         $n_rep = $this->user->data['snp_rep_n_available'];
+        $rep_giveaway_last_time = (int) $this->config['snp_rep_giveaway_last_time'];
+        $rep_giveaway_duration  = (int) $this->config['snp_rep_giveaway_duration'];
+        $t_rep_next = $this->user->format_date($rep_giveaway_last_time + $rep_giveaway_duration);
+        $this->user->format_date(0);
         $hidden_fields = [
             'snp_user_id' => $this->user->data['user_id'],
             'snp_servername' => $this->config['server_name'],
@@ -594,6 +601,7 @@ class main_listener extends base implements EventSubscriberInterface
             'S_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
             'N_REP_AVAILABLE' => $n_rep,
+            'T_REP_NEXT' => $t_rep_next,
         ]);
     }/*}}}*/
 
