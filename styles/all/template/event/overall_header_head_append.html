@@ -1,6 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
 <!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- INCLUDEJS @jeb_snahp/emote_selector.js -->
 <!-- When javascript contains curly braces, including with twig will have erratic behavior. -->
 <!-- So include using INCLUDEJS directive. -->
 <!-- However, INCLUDEJS directive will add javascript at the end. -->
@@ -40,6 +41,4 @@
 <!-- INCLUDEJS @jeb_snahp/form_injector/mydramalist.js -->
 <!-- INCLUDECSS @jeb_snahp/form_injector/mydramalist.css -->
 {% endif %}
-{% if B_SHOW_ANILIST || B_SHOW_BOOKS || B_SHOW_GAMES || B_SHOW_MYDRAMALIST%}
 <!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->
-{% endif %}

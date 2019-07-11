@@ -1,0 +1,64 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- INCLUDE overall_header.html -->
+<h1>Emotes Settings</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+  <div class="panel">
+    <div class="inner">
+
+      <fieldset>
+        <legend>Master Switch</legend>
+				<dl>
+          <dt>
+              <label>Emotes Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_emo_b_master" class="radio" value="1" {% if SNP_EMO_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_emo_b_master" class="radio" value="0" {% if not SNP_EMO_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
+        <legend>Groups</legend>
+				<dl>
+          <div class="twbs">
+            <table class="table table-sm table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col" class="text-center">Allowed Types</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- BEGIN group -->
+                <tr>
+                  <td>{group.GROUP_ID}</td>
+                  <td>{group.GROUP_NAME}</td>
+                  <td class="text-center">
+                    <input name="snp_emo_allowed_types_{group.GROUP_ID}" value="{group.SNP_EMO_ALLOWED_TYPES}" type="text">
+                    </input>
+                  </td>
+                </tr>
+                <!-- END group -->
+              </tbody>
+            </table>
+          </div>
+        </dl>
+      </fieldset>
+
+    </div>
+  </div>
+  <fieldset>
+    <dl>
+      <dt>&nbsp;</dt>
+      <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+    </dl>
+    {S_HIDDEN_FIELDS}
+    {S_FORM_TOKEN}
+  </fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

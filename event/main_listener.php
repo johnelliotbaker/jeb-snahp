@@ -90,6 +90,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_thanks_avatar', 1],
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
+                ['process_emotes', 2],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
                 ['show_achievements_in_avatar', 2],
@@ -844,6 +845,29 @@ class main_listener extends base implements EventSubscriberInterface
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);
         $event['post_row'] = $post_row;
+    }/*}}}*/
+
+    public function process_emotes($event)/*{{{*/
+    {
+        $emotes = $this->container->getParameter('jeb.snahp.emotes');
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $ptn = '/#(e_\w+)#/';
+        $b_match = preg_match_all($ptn, $message, $a_match);
+        if (!$b_match)
+        {
+            return false;
+        }
+        foreach($a_match[1] as $keyword)
+        {
+            if (array_key_exists($keyword, $emotes))
+            {
+                $repl = "<img class='emotes_default' src='{$emotes[$keyword]['url']}'></img>";
+                $curr_ptn = "/#($keyword)#/";
+                $message = preg_replace($curr_ptn, $repl, $message);
+                $event['post_row'] = $post_row;
+            }
+        }
     }/*}}}*/
 
     public function setup_custom_css($event)/*{{{*/

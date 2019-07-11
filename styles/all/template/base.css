@@ -202,3 +202,15 @@ code.expand
     overflow: unset !important;
     max-height: unset !important;
 }
+
+
+/* emotes */
+img.emotes_default
+{
+    max-height: 80px;
+}
+
+img.emotes_small
+{
+    max-height: 55px;
+}

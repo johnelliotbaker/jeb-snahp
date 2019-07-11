@@ -62,6 +62,11 @@ class main_module
         $cfg = array();
         switch ($mode)
         {
+        case 'emotes':
+            $cfg['tpl_name'] = 'acp_snp_emotes';
+            $cfg['b_feedback'] = false;
+            $this->handle_emotes($cfg);
+            break;
         case 'donation':
             $cfg['tpl_name'] = 'acp_snp_donation';
             $cfg['b_feedback'] = false;
@@ -153,6 +158,15 @@ class main_module
         $db->sql_query($sql);
     }/*}}}*/
 
+    public function update_one_group($group_id, $data)/*{{{*/
+    {
+        global $db;
+        $group_id = (int) $group_id;
+        $strn = $db->sql_build_array('UPDATE', $data);
+        $sql = 'UPDATE ' . GROUPS_TABLE . ' SET ' . $strn . " WHERE group_id={$group_id}";
+        $db->sql_query($sql);
+    }/*}}}*/
+
     public function handle_default($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
@@ -173,6 +187,128 @@ class main_module
             $template->assign_vars(array(
                 'U_ACTION'				=> $this->u_action,
             ));
+        }
+    }/*}}}*/
+
+    private function process_form_fields($a_field)/*{{{*/
+    {
+		global $config, $request;
+        foreach($a_field as $entry)
+        {
+            foreach($entry as $key=>$default)
+            {
+                $val = $request->variable($key, $default);
+                $config->set($key, $val);
+            }
+        }
+    }/*}}}*/
+
+    private function set_form_fields($a_field)/*{{{*/
+    {
+		global $template, $config;
+        foreach($a_field as $entry)
+        {
+            foreach($entry as $key=>$default)
+            {
+                $val = $default;
+                if (isset($config[$key]))
+                {
+                    $val = $config[$key];
+                }
+                $upper = strtoupper($key);
+                $template->assign_var($upper, $val);
+            }
+        }
+    }/*}}}*/
+
+    private function set_group_form_fields($a_field)/*{{{*/
+    {
+		global $config, $request, $template;
+        $gd = $this->select_groups();
+        foreach($gd as $group)
+        {
+            $data = [];
+            foreach($a_field as $entry)
+            {
+                foreach($entry as $key=>$default)
+                {
+                    if (isset($group[$key]))
+                    {
+                        $val = $group[$key];
+                        if ($default==='array_int')
+                        {
+                            $val = unserialize($val);
+                            $val = implode(', ', $val);
+                        }
+                        $upper = strtoupper($key);
+                        $data[$upper] = $val;
+                    }
+                }
+            }
+            $template->assign_block_vars('group', $data);
+        }
+    }/*}}}*/
+
+    private function process_group_form_fields($a_field)/*{{{*/
+    {
+		global $config, $request, $template;
+        $gd = $this->select_groups();
+        foreach($gd as $group)
+        {
+            $group_id = $group['group_id'];
+            $data = [];
+            foreach($a_field as $entry)
+            {
+                foreach($entry as $key=>$default)
+                {
+                    $varname = implode('_', [$key, $group_id]);
+                    $val = $request->variable($varname, $default);
+                    if ($default==='array_int')
+                    {
+                        $val = array_map('intval', explode(',', $val));
+                        sort($val);
+                        $val = array_unique($val);
+                        $val = serialize($val);
+                    }
+                    $data[$key] = $val;
+                }
+            }
+            $this->update_one_group($group_id, $data);
+        }    
+    }/*}}}*/
+
+    public function handle_emotes($cfg)/*{{{*/
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            // Non-block vars
+            $a_field = [
+                ['snp_emo_b_master' => 1],
+            ];
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $this->process_form_fields($a_field);
+                // Block vars (Mostly for group based permissions)
+                $a_group_field_from_form = [
+                    ['snp_emo_allowed_types' => 'array_int'],
+                ];
+                $this->process_group_form_fields($a_group_field_from_form);
+            }
+            $this->set_form_fields($a_field);
+            $a_group_field_to_form = [
+                ['group_id' => 0],
+                ['group_name' => ''],
+                ['snp_emo_allowed_types' => 'array_int'],
+            ];
+            $this->set_group_form_fields($a_group_field_to_form);
         }
     }/*}}}*/
 
