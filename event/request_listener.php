@@ -357,6 +357,11 @@ class request_listener extends base implements EventSubscriberInterface
         if ($time < $reset_time)
         {
             $n_use_per_cycle = $gdata['snp_req_n_cycle'];
+            $n_use_per_cycle_override = $reqdata['n_use_per_cycle_override'];
+            if ($n_use_per_cycle_override != -1)
+            {
+                $n_use_per_cycle = $n_use_per_cycle_override;
+            }
             $n_use_this_cycle = $reqdata['n_use_this_cycle'];
             if ($n_use_this_cycle >= $n_use_per_cycle)
             {
