@@ -81,6 +81,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.modify_format_display_text_after'      => [
                 ['process_curly_tags_for_preview', 0],
+                ['process_emotes_for_preview', 2],
             ],
             'core.search_modify_tpl_ary'              => [
                 ['process_curly_tags_for_search', 1],
@@ -855,11 +856,9 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }/*}}}*/
 
-    public function process_emotes($event)/*{{{*/
+    private function preg_replace_emotes($message)/*{{{*/
     {
         $emotes = $this->container->getParameter('jeb.snahp.emotes');
-        $post_row = $event['post_row'];
-        $message = &$post_row['MESSAGE'];
         $ptn = '/#(e_\w+)#/';
         $b_match = preg_match_all($ptn, $message, $a_match);
         if (!$b_match)
@@ -873,9 +872,25 @@ class main_listener extends base implements EventSubscriberInterface
                 $repl = "<img class='emotes_default' src='{$emotes[$keyword]['url']}'></img>";
                 $curr_ptn = "/#($keyword)#/";
                 $message = preg_replace($curr_ptn, $repl, $message);
-                $event['post_row'] = $post_row;
             }
         }
+        return $message;
+    }/*}}}*/
+
+    public function process_emotes_for_preview($event)/*{{{*/
+    {
+        $text = $event['text'];
+        $text = $this->preg_replace_emotes($text);
+        $event['text'] = $text;
+    }/*}}}*/
+
+    public function process_emotes($event)/*{{{*/
+    {
+        $emotes = $this->container->getParameter('jeb.snahp.emotes');
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $message = $this->preg_replace_emotes($message);
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function setup_custom_css($event)/*{{{*/
