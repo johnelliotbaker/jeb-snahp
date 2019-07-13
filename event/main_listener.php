@@ -863,7 +863,7 @@ class main_listener extends base implements EventSubscriberInterface
         $b_match = preg_match_all($ptn, $message, $a_match);
         if (!$b_match)
         {
-            return false;
+            return $message;
         }
         foreach($a_match[1] as $keyword)
         {
@@ -880,7 +880,7 @@ class main_listener extends base implements EventSubscriberInterface
     public function process_emotes_for_preview($event)/*{{{*/
     {
         $text = $event['text'];
-        $text = $this->preg_replace_emotes($text);
+        $this->preg_replace_emotes($text);
         $event['text'] = $text;
     }/*}}}*/
 
