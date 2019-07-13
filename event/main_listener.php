@@ -880,7 +880,7 @@ class main_listener extends base implements EventSubscriberInterface
     public function process_emotes_for_preview($event)/*{{{*/
     {
         $text = $event['text'];
-        $this->preg_replace_emotes($text);
+        $text = $this->preg_replace_emotes($text);
         $event['text'] = $text;
     }/*}}}*/
 
