@@ -25,25 +25,27 @@ class acp_reqs extends base
         // }
         // Add security for CSRF
         add_form_key('jeb/snahp');
+        $usernames        = $request->variable('usernames', '');
+        $user_id          = $request->variable('user_id', 0);
+        $n_use            = $request->variable('n_use', 0);
+        $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
+        $n_offset         = $request->variable('n_offset', 1);
+        $reset_time       = $request->variable('reset_time', 0);
+        $status           = $request->variable('status', 1);
+        $n_use_per_cycle_override = $request->variable('n_use_per_cycle_override', -1);
         if ($request->is_set_post('submit'))
         {
             if (!check_form_key('jeb/snahp'))
             {
                 trigger_error('Form Key Error');
             }
-            $usernames        = $request->variable('usernames', '');
-            $user_id          = $request->variable('user_id', 0);
-            $n_use            = $request->variable('n_use', 0);
-            $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
-            $n_offset         = $request->variable('n_offset', 1);
-            $reset_time       = $request->variable('reset_time', 0);
-            $status           = $request->variable('status', 1);
             $data = [
                 'n_use'            => $n_use,
                 'n_use_this_cycle' => $n_use_this_cycle,
                 'n_offset'         => $n_offset,
                 'reset_time'       => $reset_time,
                 'status'           => $status,
+                'n_use_per_cycle_override' => $n_use_per_cycle_override,
             ];
             $this->update_request_users($user_id, $data);
             if (false)
@@ -53,14 +55,6 @@ class acp_reqs extends base
                 trigger_error($message);
             }
         }
-
-        $usernames        = $request->variable('usernames', '');
-        $user_id          = $request->variable('user_id', 0);
-        $n_use            = $request->variable('n_use', 0);
-        $n_use_this_cycle = $request->variable('n_use_this_cycle', 0);
-        $n_offset         = $request->variable('n_offset', 1);
-        $reset_time       = $request->variable('reset_time', 0);
-        $status           = $request->variable('status', 1);
         $this->template->assign_vars([
             'B_ENABLE'         => true,
             'USERNAMES'        => $usernames,

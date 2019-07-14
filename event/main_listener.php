@@ -64,6 +64,9 @@ class main_listener extends base implements EventSubscriberInterface
                 ['include_donation_navlink', 0],
                 ['include_quick_link', 0],
                 ['setup_custom_css', 0],
+                // ['setup_core_vars', 0],
+            ],
+            'core.user_setup_after'                            => [
                 ['setup_core_vars', 0],
             ],
             'core.memberlist_prepare_profile_data'                => [
@@ -78,6 +81,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
             'core.modify_format_display_text_after'      => [
                 ['process_curly_tags_for_preview', 0],
+                ['process_emotes_for_preview', 2],
             ],
             'core.search_modify_tpl_ary'              => [
                 ['process_curly_tags_for_search', 1],
@@ -584,6 +588,10 @@ class main_listener extends base implements EventSubscriberInterface
     public function setup_core_vars($event)/*{{{*/
     {
         $n_rep = $this->user->data['snp_rep_n_available'];
+        $rep_giveaway_last_time = (int) $this->config['snp_rep_giveaway_last_time'];
+        $rep_giveaway_duration  = (int) $this->config['snp_rep_giveaway_duration'];
+        $t_rep_next = $this->user->format_date($rep_giveaway_last_time + $rep_giveaway_duration);
+        $this->user->format_date(0);
         $hidden_fields = [
             'snp_user_id' => $this->user->data['user_id'],
             'snp_servername' => $this->config['server_name'],
@@ -594,6 +602,7 @@ class main_listener extends base implements EventSubscriberInterface
             'S_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
             'N_REP_AVAILABLE' => $n_rep,
+            'T_REP_NEXT' => $t_rep_next,
         ]);
     }/*}}}*/
 
@@ -847,16 +856,14 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }/*}}}*/
 
-    public function process_emotes($event)/*{{{*/
+    private function preg_replace_emotes($message)/*{{{*/
     {
         $emotes = $this->container->getParameter('jeb.snahp.emotes');
-        $post_row = $event['post_row'];
-        $message = &$post_row['MESSAGE'];
         $ptn = '/#(e_\w+)#/';
         $b_match = preg_match_all($ptn, $message, $a_match);
         if (!$b_match)
         {
-            return false;
+            return $message;
         }
         foreach($a_match[1] as $keyword)
         {
@@ -865,9 +872,25 @@ class main_listener extends base implements EventSubscriberInterface
                 $repl = "<img class='emotes_default' src='{$emotes[$keyword]['url']}'></img>";
                 $curr_ptn = "/#($keyword)#/";
                 $message = preg_replace($curr_ptn, $repl, $message);
-                $event['post_row'] = $post_row;
             }
         }
+        return $message;
+    }/*}}}*/
+
+    public function process_emotes_for_preview($event)/*{{{*/
+    {
+        $text = $event['text'];
+        $text = $this->preg_replace_emotes($text);
+        $event['text'] = $text;
+    }/*}}}*/
+
+    public function process_emotes($event)/*{{{*/
+    {
+        $emotes = $this->container->getParameter('jeb.snahp.emotes');
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $message = $this->preg_replace_emotes($message);
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function setup_custom_css($event)/*{{{*/

@@ -8,6 +8,7 @@ var req_user_row_template = `
       <th>Bonus (1)</th>
       <th>Next Reset Time</th>
       <th>Status</th>
+      <th>Cycle Override (-1)</th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,7 @@ var req_user_row_template = `
       <td><input style="width:98%;" type="text" name="n_offset" id="n_offset" value="{N_OFFSET}"></td>
       <td><input style="width:98%;" type="text" name="reset_time" id="reset_time" value="{RESET_TIME}"></td>
       <td><input style="width:98%;" type="text" name="status" id="status" value="{STATUS}"></td>
+      <td><input style="width:98%;" type="text" name="n_use_per_cycle_override" id="n_use_per_cycle_override" value="{STATUS}"></td>
     </tr>
   </tbody>
 </table>`
@@ -114,6 +116,7 @@ function populate_request_user()
       var n_offset = resp.n_offset;
       var reset_time = resp.reset_time;
       var status = resp.status;
+      var n_use_per_cycle_override = resp.n_use_per_cycle_override;
       for (var field in resp)
       {
         $('#'+field).val(resp[field]);
@@ -124,6 +127,12 @@ function populate_request_user()
         $('#info').text('Enter Valid Username.');
         $('#request_stat_content').empty();
       });
+}
+
+function refresh() 
+{
+    populate_request_user();
+    show_user_requests();
 }
 
 $(document).ready(function()

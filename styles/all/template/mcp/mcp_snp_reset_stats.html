@@ -11,25 +11,35 @@
 	<fieldset>
 	<dl>
     <dt><label for="usernames">Username</label><br>
-      Enter username (case insensitive) then press enter.<br>
+      Enter username (<b>all lowercase</b>) then press enter.<br>
       If Request User Data is not populated with data, then either that username doesn't exist, or that user has never made a request.
+      <br><b>Note: Try not to use browser refresh (F5). Instead, always use the UPDATE button.</b>
     </dt>
-    <dd><label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}" class="inputbox autowidth"></label></dd>
+    <dd>
+      <label for="usernames"><input placeholder="Enter Username" type="text" name="usernames" id="usernames" value="{USERNAMES}" class="inputbox autowidth"></label>
+      <button onClick="refresh();" type="button">UPDATE</button>
+    </dd>
 		<dd><strong><a href="/memberlist.php?mode=searchuser&form=acp&field=usernames" onclick="find_username(this.href); return false;">Find a member</a></strong></dd>
 	</dl>
 	<hr />
   <div id="reset">
     <button type="button" onClick="reset_user();">Reset this user</button>
   </div>
-  <div id="show_requests">
-    <button type="button" onClick="show_user_requests();">Show User's Requests</button>
-  </div>
+  <!-- <div id="show_requests"> -->
+  <!--   <button type="button" onClick="show_user_requests();">Show User's Requests</button> -->
+  <!-- </div> -->
 	<hr />
   <h2 id="info"></h2>
 	<hr />
 	<dl>
 		<dt><label>Request User Data</label></dt>
 	</dl>
+  <p style="font-size:10px;">
+    Note: You can use <b>cycle override</b> to limit how many requests a user can make per cycle.
+    When this number is set to the default (-1), the per cycle limit is determined by the group policy (typically 10 per week).
+    However, when this number is set to a number other than -1, the cycle override will take precedence over group policy.
+    e.g. If this number is set to 5, the user can only make up to 5 requests per week instead of 10.
+  </p>
   <div id="request_stat_content">
   </div>
 	<hr />

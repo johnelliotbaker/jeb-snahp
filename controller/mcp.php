@@ -83,8 +83,10 @@ class mcp extends base
                 LEFT OUTER JOIN  
                     {$tbl['req']} r ON (t.topic_id = r.tid)
                 WHERE
-                    t.forum_id=$forum_id AND $cond_request AND $cond_request_type
+                    t.forum_id=$forum_id AND $cond_request AND $cond_request_type AND
+                    t.topic_type=0
                 ORDER BY topic_id DESC";
+                // topic_type=0 means regular topics. i.e. not sticky, etc.
         $result = $this->db->sql_query_limit($sql, $maxi_query);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);

@@ -84,6 +84,7 @@ class reputation extends base
         $time = microtime(true);
         $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}";
         $this->db->sql_query($sql);
+        $this->config->set('snp_rep_giveaway_last_time', time());
         $time = microtime(true) - $time;
         $time = sprintf('The procedure took %0.6f seconds.', $time);
         meta_refresh(3, $cfg['u_action']);
@@ -102,6 +103,7 @@ class reputation extends base
         $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}" . 
             " WHERE snp_rep_n_available < {$target}";
         $this->db->sql_query($sql);
+        $this->config->set('snp_rep_giveaway_last_time', time());
         $time = microtime(true) - $time;
         $time = sprintf('The procedure took %0.6f seconds.', $time);
         meta_refresh(3, $cfg['u_action']);
