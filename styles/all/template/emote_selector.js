@@ -15,6 +15,12 @@ qwer.detect_multi_click = function($textarea, count)
     });
 }
 
+qwer.open_modal = function()
+{
+    qwer.selection_start = $textarea[0].selectionStart;
+    qwer.show();
+}
+
 qwer.template = `
 <div class="twbs">
 	<div class="modal" id="emotes_selector" tabindex="-1" role="dialog">
@@ -105,5 +111,5 @@ $(function () {
         }
     });
     // Double clicking on the textarea will open the modal
-    qwer.detect_multi_click($textarea, click_count=2);
+    // qwer.detect_multi_click($textarea, click_count=2);
 });
