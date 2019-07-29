@@ -283,6 +283,24 @@ class curly_parser
         return $strn;
     }
 
+    public function interpolate_mediainfo($strn, $tag_name)
+    {
+        $allowed_attr = ['style', 'class', 'src', 'align'];
+        $uuid = uniqid();
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $mi = new \jeb\snahp\core\mediainfo();
+        $content = $mi->make_mediainfo($content);
+        # $content = preg_replace("#<br>#", PHP_EOL, $content);
+        $strn = $content;
+        return $strn;
+    }
+
+    private function parse_general($arr)
+    {
+    }
+
     public function parse_snahp($strn)
     {
         // Exclude codebox
@@ -310,6 +328,9 @@ class curly_parser
             $tag_type = $tag_type[1];
             switch ($tag_type)/*{{{*/
             {
+            case 'mi':
+                $res = $this->interpolate_mediainfo($content, $tag_type);
+                break;
             case 'table':
                 $res = $this->interpolate_curly_table($content);
                 break;
