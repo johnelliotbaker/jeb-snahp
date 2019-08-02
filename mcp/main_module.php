@@ -69,42 +69,49 @@ class main_module extends base
                 'PURPOSE' => 'Search',
                 'NAME' => 'Search Exclusion',
                 'DESCRIPTION' => 'Exclude certain keywords from being searched.',
-                'LINK' => '<a href="/app.php/snahp/search_util/handle_common_words/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/search_util/handle_common_words/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 2,
                 'PURPOSE' => 'Move Topics',
                 'NAME' => 'Mass Topic Mover',
                 'DESCRIPTION' => 'Move multiple topics from one forum to another (especially to graveyard) with some filtering.',
-                'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 3,
                 'PURPOSE' => 'Search',
                 'NAME' => 'Power Search',
                 'DESCRIPTION' => 'Use mysql to search topic titles.',
-                'LINK' => '<a href="/app.php/snahp/search_util/handle_mysql_search/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/search_util/handle_mysql_search/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 4,
                 'PURPOSE' => 'Analytics',
                 'NAME' => 'Statistics',
                 'DESCRIPTION' => 'Forum statistics',
-                'LINK' => '<a href="/app.php/snahp/analytics/handle/stats/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/analytics/handle/stats/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 5,
                 'PURPOSE' => 'Achievements',
                 'NAME' => 'Achievements',
                 'DESCRIPTION' => 'Update Achievements',
-                'LINK' => '<a href="/app.php/snahp/achievements/update/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/achievements/update/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             $data[] = [
                 'ID' => 6,
                 'PURPOSE' => 'Reputations',
                 'NAME' => 'Reputations Giveaways',
                 'DESCRIPTION' => 'Mass set available reputations points',
-                'LINK' => '<a href="/app.php/snahp/reputation/mcp_rep_giveaways/"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/reputation/mcp_rep_giveaways/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
+            $data[] = [
+                'ID' => 7,
+                'PURPOSE' => 'Analytics',
+                'NAME' => 'Common Thanks',
+                'DESCRIPTION' => 'List users who thanked a list of topics',
+                'LINK' => '<a href="/app.php/snahp/analytics/handle/common_thanks/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             foreach ($data as $entry)
             {
