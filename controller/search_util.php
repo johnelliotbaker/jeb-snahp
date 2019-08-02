@@ -14,7 +14,7 @@ class search_util extends base
     {
         $this->table_prefix = $table_prefix;
         // If a text in the message is inside [{$this->STBB}] mark it as title
-        $this->STBB = 'st';
+        $this->STBB = 'st'; // [st]
     }/*}}}*/
 
 	public function handle($mode)/*{{{*/
@@ -293,7 +293,7 @@ class search_util extends base
     {
         $uid = ''; $flags = 0;
         $text = generate_text_for_edit($text, $uid, $flags)['text'];
-        $ptn = "#\[{$this->STBB}](.{1,50})\[/{$this->STBB}]#ism";
+        $ptn = "#\[{$this->STBB}](.{1,120})\[/{$this->STBB}]#ism";
         $b_match = preg_match_all($ptn, $text, $match_all);
         if (!$b_match) return '';
         $match_all = $match_all[1];
