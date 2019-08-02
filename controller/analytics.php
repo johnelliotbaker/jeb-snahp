@@ -22,19 +22,21 @@ class analytics extends base
             $cfg['base_url'] = '/app.php/snahp/analytics/stats/';
             $cfg['title'] = 'Site Statistics';
             return $this->handle_stats($cfg);
-            break;
         case 'common_thanks':
             $cfg['tpl_name'] = '@jeb_snahp/analytics/common_thanks.html';
             $cfg['base_url'] = '/app.php/snahp/analytics/common_thanks/';
             $cfg['title'] = 'Common Thanks';
             return $this->handle_common_thanks($cfg);
-            break;
         case 'json_common_thanks':
             $cfg['tpl_name'] = '';
             $cfg['base_url'] = '';
             $cfg['title'] = 'Common Thanks';
             return $this->json_common_thanks($cfg);
-            break;
+        case 'json_user_thanks':
+            $cfg['tpl_name'] = '';
+            $cfg['base_url'] = '';
+            $cfg['title'] = 'User Thanks';
+            return $this->json_user_thanks($cfg);
         default:
             break;
         }
@@ -99,6 +101,37 @@ class analytics extends base
         return $data;
     }/*}}}*/
 
+    public function json_user_thanks($cfg)/*{{{*/
+    {
+        $this->reject_anon();
+        $group_id = $this->user->data['group_id'];
+        $this->reject_non_group($group_id, 'snp_ana_b_enable');
+        // Get data
+        $user_id = $this->request->variable('u', 0);
+        $a_tid = $this->request->variable('t', '');
+        $a_tid = $this->deserialize_tid($a_tid);
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $where = $this->db->sql_in_set('topic_id', $a_tid);
+        $sql = 'SELECT * FROM ' . $tbl['thanks'] .
+            " WHERE user_id={$user_id} AND $where ORDER BY topic_id";
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        foreach ($rowset as &$row)
+        {
+            $row['thanks_time'] = $this->user->format_date($row['thanks_time']);
+            $topic_id = (int) $row['topic_id'];
+            $sql = 'SELECT topic_title FROM ' . TOPICS_TABLE .
+                " WHERE topic_id=${topic_id}";
+            $result = $this->db->sql_query($sql);
+            $r = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            $row['topic_title'] = $r['topic_title'];
+        }
+        $js = new \phpbb\json_response();
+        $js->send($rowset);
+    }/*}}}*/
+
     public function json_common_thanks($cfg)/*{{{*/
     {
         $this->reject_anon();
@@ -136,7 +169,7 @@ class analytics extends base
         $data = [];
         foreach ($aggro as $user_id => $a_tid)
         {
-            if ($count > 50) break;
+            if ($count > 200) break;
             $sql = 'SELECT * FROM ' . USERS_TABLE .
                 " WHERE user_id={$user_id}";
             $result = $this->db->sql_query($sql);
