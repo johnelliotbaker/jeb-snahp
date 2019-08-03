@@ -215,6 +215,11 @@ img.emotes_small
     max-height: 50px;
 }
 
+img.emotes_default.twitch_50
+{
+    max-height: 50px;
+}
+
 
 /* mediainfo */
 .mediainfo

@@ -1,5 +1,6 @@
 parameters:
     jeb.snahp.emotes:
+        # yuta1
         e_aa000:
             url: 'https://i.imgur.com/SWuKC6Z.gif'
             type: 0
@@ -28,31 +29,106 @@ parameters:
             url: 'https://i.imgur.com/FfnfqFL.gif'
             type: 0
 
-        e_ab000:
-            url: 'https://i.imgur.com/tGdABP9.gif'
+        # yuta2
+        e_aa100:
+            url: 'https://i.imgur.com/85va7sR.gif'
+            type: 0
+        e_aa101:
+            url: 'https://i.imgur.com/TIf8IJF.gif'
+            type: 0
+        e_aa102:
+            url: 'https://i.imgur.com/tYfczLA.gif'
+            type: 0
+        e_aa103:
+            url: 'https://i.imgur.com/H0v81pR.gif'
+            type: 0
+        e_aa104:
+            url: 'https://i.imgur.com/nuTSN3E.gif'
+            type: 0
+        e_aa105:
+            url: 'https://i.imgur.com/vsDN0EB.gif'
+            type: 0
+        e_aa106:
+            url: 'https://i.imgur.com/JnbUH2a.gif'
             type: 1
-        e_ab001:
-            url: 'https://i.imgur.com/GjM7IKA.gif'
+        e_aa107:
+            url: 'https://i.imgur.com/mEhJWhi.gif'
             type: 1
-        e_ab002:
-            url: 'https://i.imgur.com/UEGW8LB.gif'
+        e_aa108:
+            url: 'https://i.imgur.com/rdwYBjo.gif'
             type: 1
-        e_ab003:
-            url: 'https://i.imgur.com/IQZJcjp.gif'
+        e_aa109:
+            url: 'https://i.imgur.com/KxSjcUi.gif'
             type: 1
-        e_ab004:
-            url: 'https://i.imgur.com/DPJiOka.gif'
-            type: 1
-        e_ab005:
-            url: 'https://i.imgur.com/hTf3WvO.gif'
-            type: 1
-        e_ab006:
-            url: 'https://i.imgur.com/SSPg3uP.gif'
-            type: 1
-        e_ab007:
-            url: 'https://i.imgur.com/Mf6rHVR.gif'
-            type: 1
-        e_ab008:
-            url: 'https://i.imgur.com/oPkXrde.gif'
+        e_aa110:
+            url: 'https://i.imgur.com/8uPlzce.gif'
             type: 1
 
+        # tobi1
+        e_ab000:
+            url: 'https://i.imgur.com/tGdABP9.gif'
+            type: 0
+        e_ab001:
+            url: 'https://i.imgur.com/GjM7IKA.gif'
+            type: 0
+        e_ab002:
+            url: 'https://i.imgur.com/UEGW8LB.gif'
+            type: 0
+        e_ab003:
+            url: 'https://i.imgur.com/IQZJcjp.gif'
+            type: 0
+        e_ab004:
+            url: 'https://i.imgur.com/DPJiOka.gif'
+            type: 0
+        e_ab005:
+            url: 'https://i.imgur.com/hTf3WvO.gif'
+            type: 0
+        e_ab006:
+            url: 'https://i.imgur.com/SSPg3uP.gif'
+            type: 0
+        e_ab007:
+            url: 'https://i.imgur.com/Mf6rHVR.gif'
+            type: 0
+        e_ab008:
+            url: 'https://i.imgur.com/oPkXrde.gif'
+            type: 0
+
+        # tobi2
+        e_ab100:
+            url: 'https://i.imgur.com/ja3dMi7.gif'
+            type: 0
+        e_ab101:
+            url: 'https://i.imgur.com/eitYFXF.gif'
+            type: 0
+        e_ab102:
+            url: 'https://i.imgur.com/3NMuuJu.gif'
+            type: 0
+        e_ab103:
+            url: 'https://i.imgur.com/CMLlN5O.gif'
+            type: 1
+        e_ab104:
+            url: 'https://i.imgur.com/Nmv839o.gif'
+            type: 1
+        e_ab105:
+            url: 'https://i.imgur.com/6WxPJJB.gif'
+            type: 1
+        e_ab106:
+            url: 'https://i.imgur.com/OWD0Inh.gif'
+            type: 1
+        e_ab107:
+            url: 'https://i.imgur.com/wJpv1yL.gif'
+            type: 1
+
+        # twitch1
+        e_tw000:
+            url: 'https://i.imgur.com/IHmm9Qs.png'
+            type: 0
+            css: 'twitch_50'
+        e_tw001:
+            url: 'https://i.imgur.com/nAqPDjL.png'
+            type: 0
+            css: 'twitch_50'
+        e_tw002:
+            url: 'https://i.imgur.com/ClWGLwV.png'
+            type: 0
+            css: 'twitch_50'
