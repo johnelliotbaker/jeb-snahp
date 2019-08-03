@@ -151,6 +151,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.acp_fixmediainfo:
+        class: jeb\snahp\controller\acp_fixmediainfo
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.acp_fiximdb:
         class: jeb\snahp\controller\acp_fiximdb
         parent: jeb.snahp.base

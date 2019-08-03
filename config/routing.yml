@@ -109,6 +109,11 @@ jeb_snahp_reqsmcp:
     requirements:
         mode: \d+
         uid: \d+
+jeb_snahp_acp_fixmediainfo:
+    path: /snahp/acp_fixmediainfo/{mode}/
+    defaults: { _controller: jeb.snahp.acp_fixmediainfo:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_acp_fiximdb:
     path: /snahp/acp_fiximdb/{mode}/
     defaults: { _controller: jeb.snahp.acp_fiximdb:handle}

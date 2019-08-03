@@ -28,7 +28,7 @@ class mediainfo
 
     private function normalize_newline($strn)/*{{{*/
     {
-        $strn = preg_replace('#<br>#s', "\n", $strn);
+        $strn = preg_replace('#<br>#s', '', $strn);
         return $strn;
     }/*}}}*/
 
@@ -80,52 +80,53 @@ class mediainfo
         return $aggro;
     }/*}}}*/
 
-    private function collect_audio_info()/*{{{*/
+    private function collect_key_info($type, $key='Language')/*{{{*/
     {
         $collection = $this->data;
-        $a_audio = [];
-        foreach ($this->audio_category as $major)
+        switch ($type)
+        {
+        case 'audio':
+            $a_category = $this->audio_category;
+            break;
+        case 'subtitle':
+            $a_category = $this->subtitle_category;
+            break;
+        default:
+            return [];
+        }
+        $a_aggro = [];
+        foreach ($a_category as $major)
         {
             if (isset($collection[$major]))
             {
                 $data = $collection[$major];
-                $a_audio[] = isset($data['Language']) ? $data['Language'] : '';
+                $a_aggro[] = isset($data[$key]) ? $data[$key] : '';
             }
         }
-        $a_audio = array_unique($a_audio);
-        if (!$a_audio) return [];
+        $a_aggro = array_unique($a_aggro);
+        if (!$a_aggro) return [];
         $res = [];
         $i = 1;
-        foreach ($a_audio as $audio)
+        $key_capital = ucfirst($key);
+        foreach ($a_aggro as $val)
         {
-            $res["Language ${i}"] = $audio;
-            $i += 1;
+            if ($val)
+            {
+                $res["${key_capital} ${i}"] = $val;
+                $i += 1;
+            }
         }
         return $res;
     }/*}}}*/
 
-    private function collect_subtitle_info()/*{{{*/
+    private function collect_audio_info_extra()/*{{{*/
     {
-        $collection = $this->data;
-        $a_language = [];
-        foreach ($this->subtitle_category as $major)
-        {
-            if (isset($collection[$major]))
-            {
-                $data = $collection[$major];
-                $a_language[] = isset($data['Language']) ? $data['Language'] : '';
-            }
-        }
-        $a_language = array_unique($a_language);
-        if (!$a_language) return [];
-        $res = [];
-        $i = 1;
-        foreach ($a_language as $language)
-        {
-            $res["Subtitle ${i}"] = $language;
-            $i += 1;
-        }
-        return $res;
+        return $this->collect_key_info('audio', 'Language');
+    }/*}}}*/
+
+    private function collect_subtitle_info_extra()/*{{{*/
+    {
+        return $this->collect_key_info('subtitle', 'Language');
     }/*}}}*/
 
     private function make_bucket($type, $extra=[])/*{{{*/
@@ -200,8 +201,8 @@ class mediainfo
         $b_success = $this->data = $this->string2dict($strn);
         if ($b_success === false) { return ''; }
         // To be used when making general bucket
-        $subtitle_data = $this->collect_subtitle_info();
-        $audio_data = $this->collect_audio_info();
+        $subtitle_data = $this->collect_subtitle_info_extra();
+        $audio_data = $this->collect_audio_info_extra();
         $res[] = '';
         $res[] = '<div class="twbs mediainfo"><div class="container-fluid"><div class="row">';
         $res[] = '<div class="col-12 col-md-4 general">';
@@ -225,12 +226,6 @@ class mediainfo
         $res[] = '</div>';
         $res[] = "</div></div></div>";
         $res = join('', $res);
-        // $original = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $original);
-        // TODO: Find a way to do this without magic number
-		$original = preg_replace("/(^[\r\n]{3,10}|[\r\n]{3,10})[\s\t]*[\r\n]+/", "c610fz545e", $original);
-        $original = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $original);
-        $original = preg_replace("/c610fz545e/", "\n\n", $original);
-        // $original = preg_replace("/(^[\r\n]|[\r\n]+)/", "\n", $original);
         $res .= '<div class="codebox" style="margin-top:0px; box-shadow: none; margin-left: 0px; margin-right: 0px;"><p style="border-bottom: none;">Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p><pre style="height:0px;"><code>' . $original . '</code></pre></div>';
         return $res;
     }/*}}}*/
