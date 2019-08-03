@@ -24,8 +24,8 @@ class achievements extends base
         switch ($mode)
         {
         case 'update':
-            $this->reject_non_dev();
-            $cfg['tpl_name'] = '';
+            $this->reject_non_dev(', d4c39e1065');
+            $cfg['tpl_name'] = '@jeb_snahp/mcp/component/mcp_achievements_update/base.html';
             $cfg['b_feedback'] = false;
             return $this->update($cfg);
             break;
@@ -44,8 +44,18 @@ class achievements extends base
         $type = $this->request->variable('type', '');
         $data = $this->update_achievements($type);
         $time = microtime(true) - $time;
-        prn("The update was completed in {$time} seconds.");
-        prn($data);
+        foreach ($data as $entry)
+        {
+            $user_data = $this->select_user($entry['user_id']);
+            $username = $this->make_username($user_data);
+            $entry['username'] = $username;
+            $this->template->assign_block_vars('DATA', $entry);
+        }
+        $this->template->assign_vars([
+            'ELAPSED_TIME' => (string) $time,
+            'TITLE' => 'MCP Achievements Updater',
+        ]);
+        return $this->helper->render($cfg['tpl_name'], 'Snahp Achievements Updater');
         trigger_error('The achievements were updated successfully.');
         // meta_refresh(2, $this->base_url);
         // trigger_error('You are now subscribed to this topic.');

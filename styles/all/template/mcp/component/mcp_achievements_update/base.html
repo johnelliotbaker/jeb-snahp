@@ -1,0 +1,33 @@
+<!-- INCLUDE overall_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<h2 class="forum-title">{TITLE}</h2>
+<div class="twbs">
+  <div class="container col-12 m-0 p-0">
+    <p>The update as completed in {ELAPSED_TIME} seconds.</p>
+    <table class="table table-sm table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Unique</th>
+          <th scope="col">Type</th>
+          <th scope="col">User Id</th>
+          <th scope="col">Username</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- BEGIN DATA -->
+        <tr>
+          <td>{DATA.unique}</th>
+          <td>{DATA.type}</th>
+          <td>{DATA.user_id}</th>
+          <td>{DATA.username}</th>
+          <td>{DATA.value}</th>
+        </tr>
+        <!-- END DATA -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INCLUDE overall_footer.html -->
