@@ -186,6 +186,10 @@ class curly_parser
         if (!$topic_id)
         {
             $post_id = $request->variable('p', 0);
+            if (!$post_id)
+            {
+                return '#fulfill#';
+            }
             $post_data = $this->select_post($post_id, 'topic_id');
             $topic_id = $post_data['topic_id'];
         }
