@@ -52,6 +52,8 @@ class achievements extends base
             $this->template->assign_block_vars('DATA', $entry);
         }
         $this->template->assign_vars([
+            'MEMORY_USAGE' => (string) number_format(memory_get_usage()),
+            'MEMORY_PEAK_USAGE' => (string) number_format(memory_get_peak_usage()),
             'ELAPSED_TIME' => (string) $time,
             'TITLE' => 'MCP Achievements Updater',
         ]);

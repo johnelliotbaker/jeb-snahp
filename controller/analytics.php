@@ -46,7 +46,7 @@ class analytics extends base
     public function handle_stats($cfg)/*{{{*/
     {
         $this->reject_non_dev();
-        $time = (float) microtime();
+        $time = microtime(true);
         $data = $this->select_monthly_stats();
         $blockvar = [];
         foreach ($data as $fieldname => $value)
@@ -54,8 +54,7 @@ class analytics extends base
             $blockvar[$fieldname] = $value;
         }
         $this->template->assign_block_vars('postrow', $blockvar);
-        $elapsed_time = (float) microtime() - $time;
-        $elapsed_time = sprintf('%f', $elapsed_time);
+        $elapsed_time = microtime(true) - $time;
         $this->template->assign_vars([
             'ELAPSED_TIME' => $elapsed_time,
         ]);
