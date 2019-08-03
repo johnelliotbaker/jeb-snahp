@@ -230,27 +230,25 @@ img.emotes_default.twitch_50
     overflow-x: hidden;
     background-color: #333 !important;
     margin-top: 2px;
-    font-family: 'Comic Sans MS', Arial;
+    /* font-family: 'Comic Sans MS', Arial; */
 }
 
 .mediainfo .key
 {
     padding: 0px !important;
     padding-left: 3px !important;
-    /* font-weight: 700; */
 }
 
 .mediainfo .value
 {
     padding: 0px !important;
-    background-color: #333;
 }
 
 .mediainfo .title
 {
     font-size: 14px;
     border-bottom: 0px solid #CCC;
-    background-color: #585858;
+    background-color: #484848;
     margin: 0px !important;
     margin-bottom: 4px !important;
     padding-top: 2px !important;
@@ -270,6 +268,6 @@ img.emotes_default.twitch_50
 .mediainfo .audio
 {
     padding: 4px !important;
-    border-right: 2px solid #CCC;
-    border-left: 2px solid #CCC;
+    border-right: 2px solid #888;
+    border-left: 2px solid #888;
 }
