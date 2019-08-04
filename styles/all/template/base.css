@@ -226,11 +226,11 @@ img.emotes_default.twitch_50
 {
     max-width: 100%;
     font-size: 13px;
-    color: white !important;
     overflow-x: hidden;
-    background-color: #333 !important;
+    background-color: #f4f6f8 !important;
+    background-color: #fff !important;
     margin-top: 2px;
-    /* font-family: 'Comic Sans MS', Arial; */
+    font-size: 11px;
 }
 
 .mediainfo .key
@@ -242,13 +242,14 @@ img.emotes_default.twitch_50
 .mediainfo .value
 {
     padding: 0px !important;
+    padding-left: 3px !important;
 }
 
 .mediainfo .title
 {
     font-size: 14px;
-    border-bottom: 0px solid #CCC;
-    background-color: #484848;
+    border-bottom: 0px solid #ddd;
+    background-color: #eee;
     margin: 0px !important;
     margin-bottom: 4px !important;
     padding-top: 2px !important;
@@ -256,7 +257,6 @@ img.emotes_default.twitch_50
     text-align: center;
     font-weight: 900;
 }
-
 
 .mediainfo .left
 {
@@ -268,6 +268,7 @@ img.emotes_default.twitch_50
 .mediainfo .audio
 {
     padding: 4px !important;
-    border-right: 2px solid #888;
-    border-left: 2px solid #888;
+    border-right: 2px solid #ddd;
+    border-left: 2px solid #ddd;
 }
+

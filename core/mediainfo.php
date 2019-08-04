@@ -119,110 +119,256 @@ class mediainfo
         return $res;
     }/*}}}*/
 
-    private function collect_audio_info_extra()/*{{{*/
+    private function make_bucket($data, $column=2)/*{{{*/
     {
-        return $this->collect_key_info('audio', 'Language');
-    }/*}}}*/
-
-    private function collect_subtitle_info_extra()/*{{{*/
-    {
-        return $this->collect_key_info('subtitle', 'Language');
-    }/*}}}*/
-
-    private function make_bucket($type, $extra=[])/*{{{*/
-    {
-        $data = $this->data;
-        if (!array_key_exists($type, $data))
+        foreach($data as $k=>$v)
         {
-            return '';
-        }
-        $data = $data[$type];
-        switch ($type)
-        {
-        case 'General':
-            $a_terms = ['File size', 'Duration', 'Overall bit rate', 'Format'];
-            break;
-        case 'Video':
-            $a_terms = ['Format', 'Width', 'Height', 'Display aspect ratio', 'Frame rate'];
-            break;
-        case 'Audio':
-        case 'Audio #1':
-            $a_terms = ['Format', 'Channel(s)']; # Language is collected using collection_audio_info
-            break;
-        default:
-            return '';
-        }
-        $res = [];
-        foreach ($extra as $k => $v)
-        {
-            $a_terms[] = $k;
-            $data[$k] = $v;
-        }
-        foreach($a_terms as $term)
-        {
-            if (array_key_exists($term, $data))
+            if ($column==2)
             {
-                $v = substr($data[$term], 0, 15);
-                switch ($term)
-                {
-                case 'Overall bit rate':
-                    $term = 'Bit rate';
-                    break;
-                case 'Display aspect ratio':
-                    $term = 'Aspect ratio';
-                    break;
-                case 'Channel(s)':
-                    $term = 'Channels';
-                    break;
-                case 'Frame rate':
-                case 'Width':
-                case 'Height':
-                    $v = preg_replace('#(\d+\.?\d+)(.*)#s', '\1', $v);
-                    break;
-                case 'Writing library':
-                    $term = 'Library';
-                    break;
-                }
-                $v = preg_replace('#(\d+)\s*(\d+)#', '\1\2', $v);
+                $k = "<div class='col-6 float-left key'>${k}:</div>";
                 $v = "<div class='col-6 float-right value'>${v}</div>";
                 $res[] = "<div class='row'><div class='col-12'>";
-                $k = "<div class='col-6 float-left key'>${term}:</div>";
                 $res[] = $k . $v;
+                $res[] = "</div></div>";
+            }
+            else
+            {
+                $v = "<div class='col-12 float-right value'>${v}</div>";
+                $res[] = "<div class='row'><div class='col-12'>";
+                $res[] = $v;
                 $res[] = "</div></div>";
             }
         }
         return join("\n", $res);
     }/*}}}*/
 
+    private function get_val_or_null($keyword, $data)/*{{{*/
+    {
+        return array_key_exists($keyword, $data) ? $data[$keyword] : null;
+    }/*}}}*/
+
+    private function get_general_filesize($data)/*{{{*/
+    {
+        return $this->get_val_or_null('File size', $data);
+    }/*}}}*/
+
+    private function get_general_duration($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Duration', $data);
+    }/*}}}*/
+
+    private function get_general_bitrate($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Overall bit rate', $data);
+    }/*}}}*/
+
+    private function get_general_format($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
+    private function generate_general_content($data, $extra = [])/*{{{*/
+    {
+        $res = [];
+        $function_prefix = 'get_general_';
+        $data = $data['General'];
+        $a_element = [
+            ['f' => 'filesize' , 'alias' => 'File size'],
+            ['f' => 'duration' , 'alias' => 'Duration'],
+            ['f' => 'bitrate'  , 'alias' => 'Bit rate'],
+            ['f' => 'format'   , 'alias' => 'Format'],
+        ];
+        foreach ($a_element as $element)
+        {
+            $res[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
+        }
+        return array_merge($res, $extra);
+    }/*}}}*/
+
+    private function get_video_format($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
+    private function format_bitrate($strn)/*{{{*/
+    {
+        return preg_replace('#(\d+\.?)[\s]?(\d+)(.*)#s', '\1\2\3', $strn);
+    }/*}}}*/
+
+    private function get_video_vres($data)/*{{{*/
+    {
+        $width = $this->get_val_or_null('Width', $data);
+        $width = preg_replace('#(\d+)[\.\s]?(\d+)(.*)#s', '\1\2', $width);
+        $height = $this->get_val_or_null('Height', $data);
+        $height = preg_replace('#(\d+)[\.\s]?(\d+)(.*)#s', '\1\2', $height);
+        $ar = $this->get_val_or_null('Display aspect ratio', $data);
+        return "${width} x ${height} @ ${ar}";
+    }/*}}}*/
+
+    private function get_video_framerate($data)/*{{{*/
+    {
+        $v = $this->get_val_or_null('Frame rate', $data);
+        return preg_replace('#(\d+\.?\d+)(.*)#s', '\1', $v);
+    }/*}}}*/
+
+    private function get_video_bitrate($data)/*{{{*/
+    {
+        $strn = $this->get_val_or_null('Bit rate', $data);
+        return $this->format_bitrate($strn);
+    }/*}}}*/
+
+    private function generate_video_content($data, $extra = [])/*{{{*/
+    {
+        $res = [];
+        $function_prefix = 'get_video_';
+        $data = $data['Video'];
+        $a_element = [
+            ['f' => 'format' , 'alias' => 'Format'],
+            ['f' => 'vres' , 'alias' => 'Dimensions'],
+            ['f' => 'framerate' , 'alias' => 'Frame rate'],
+            ['f' => 'bitrate' , 'alias' => 'Bit rate'],
+        ];
+        foreach ($a_element as $element)
+        {
+            $res[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
+        }
+        return array_merge($res, $extra);
+    }/*}}}*/
+
+    private function aggregate_text_data($a_data)/*{{{*/
+    {
+        $res = [];
+        $allowed = ['Text', 'Text #1', 'Text #2', 'Text #3', 'Text #4'];
+        foreach($allowed as $major)
+        {
+            if (array_key_exists($major, $a_data))
+            {
+                $res[] = $a_data[$major];
+            }
+        }
+        return $res;
+    }/*}}}*/
+
+    private function get_text_subtitle($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Language', $data);
+    }/*}}}*/
+
+    private function generate_subtitle_content($data, $extra = [])/*{{{*/
+    {
+        $res = [];
+        $function_prefix = 'get_text_';
+        $a_data = $this->aggregate_text_data($data);
+        $a_element = [
+            ['f' => 'subtitle' , 'alias' => 'Language'],
+        ];
+        $i = 1;
+        foreach ($a_data as $data)
+        {
+            $tmp = ['id' => $i];
+            foreach ($a_element as $element)
+            {
+                $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
+            }
+            $res["Subtitle ${tmp['id']}"] = "${tmp['Language']}";
+            $i += 1;
+        }
+        return array_merge($res, $extra);
+    }/*}}}*/
+
+    private function aggregate_audio_data($a_data)/*{{{*/
+    {
+        $res = [];
+        $allowed = ['Audio', 'Audio #1', 'Audio #2', 'Audio #3', 'Audio #4'];
+        foreach($allowed as $major)
+        {
+            if (array_key_exists($major, $a_data))
+            {
+                $res[] = $a_data[$major];
+            }
+        }
+        return $res;
+    }/*}}}*/
+
+    private function get_audio_format($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
+    private function get_audio_language($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Language', $data);
+    }/*}}}*/
+
+    private function get_audio_bitrate($data)/*{{{*/
+    {
+        $strn = $this->get_val_or_null('Bit rate', $data);
+        return $this->format_bitrate($strn);
+    }/*}}}*/
+
+    private function get_audio_channels($data)/*{{{*/
+    {
+        $b = preg_match('#(\d+).*#is', $this->get_val_or_null('Channel(s)', $data), $match);
+        if (!$b) { return ''; }
+        $ch = (string) $match[1];
+        switch ($ch)
+        {
+        case '2':
+            return '2.0ch';
+        case '6':
+            return '5.1ch';
+        case '8':
+            return '7.1ch';
+        default:
+        }
+        return '';
+    }/*}}}*/
+
+    private function generate_audio_content($data, $extra = [])/*{{{*/
+    {
+        $res = [];
+        $function_prefix = 'get_audio_';
+        $a_data = $this->aggregate_audio_data($data);
+        $a_element = [
+            ['f' => 'language' , 'alias' => 'Language'],
+            ['f' => 'format' , 'alias' => 'Format'],
+            ['f' => 'channels' , 'alias' => 'Channels'],
+            ['f' => 'bitrate' , 'alias' => 'Bit rate'],
+        ];
+        $i = 1;
+        foreach ($a_data as $data)
+        {
+            $tmp = ['id' => $i];
+            foreach ($a_element as $element)
+            {
+                $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
+            }
+            $res[] = "#${tmp['id']}:&nbsp; ${tmp['Language']} | ${tmp['Channels']} | ${tmp['Format']} @ ${tmp['Bit rate']}";
+            $i += 1;
+        }
+        return array_merge($res, $extra);
+    }/*}}}*/
+
     public function make_mediainfo($strn)/*{{{*/
     {
         $strn = $this->normalize_newline($strn);
         $original = trim($strn);
-        $b_success = $this->data = $this->string2dict($strn);
-        if ($b_success === false) { return ''; }
-        // To be used when making general bucket
-        $subtitle_data = $this->collect_subtitle_info_extra();
-        $audio_data = $this->collect_audio_info_extra();
+        $this->data = $this->string2dict($strn);
+        if ($this->data === false) { return ''; }
+        $subtitle = $this->generate_subtitle_content($this->data);
         $res[] = '';
         $res[] = '<div class="twbs mediainfo"><div class="container-fluid"><div class="row">';
         $res[] = '<div class="col-12 col-md-4 general">';
         $res[] = '<div class="col-12 col-md-12 title">General</div>';
-        $general = $this->make_bucket('General', $subtitle_data);
-        $res[] = $general;
+        $res[] = $this->make_bucket($this->generate_general_content($this->data, $subtitle));
         $res[] = '</div>';
         $res[] = '<div class="col-12 col-md-4 video">';
         $res[] = '<div class="col-12 col-md-12 title">Video</div>';
-        $video = $this->make_bucket('Video');
-        $res[] = $video;
+        $res[] = $this->make_bucket($this->generate_video_content($this->data));
         $res[] = '</div>';
         $res[] = '<div class="col-12 col-md-4 audio">';
         $res[] = '<div class="col-12 col-md-12 title">Audio</div>';
-        $audio = $this->make_bucket('Audio', $audio_data);
-        if (!$audio)
-        {
-            $audio = $this->make_bucket('Audio #1', $audio_data);
-        }
-        $res[] = $audio;
+        $res[] = $this->make_bucket($this->generate_audio_content($this->data), $column=1);
         $res[] = '</div>';
         $res[] = "</div></div></div>";
         $res = join('', $res);
