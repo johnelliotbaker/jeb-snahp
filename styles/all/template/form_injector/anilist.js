@@ -57,8 +57,7 @@ Anilist.makeAnilistTemplate = function(data)
     var volumes       = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Volumes[/b][/color]: {text}\n`, data['volumes']);
     var format        = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Format[/b][/color]: {text}\n`, Anilist.toTitleCase(data['format']));
     var trailer       = "";
-    // try { var trailer = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Trailer[/b][/color]: [url=https://www.youtube.com/watch?v={url}]{text}[/url]\n`, 'Youtube', data['trailer']['id']) } catch {};
-    try { var trailer = '{snahp}{youtube}' + data['trailer']['id'] + '{/youtube}{/snahp}' } catch {};
+    try { var trailer = '{snahp}{youtube}' + data['trailer']['id'] + '{/youtube}{/snahp}' } catch(e) {};
     var episodes      = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Episodes[/b][/color]: {text}\n`, data['episodes']);
     var endDate       = Anilist.getEndDateOrEmpty(`[color=#FF8000][b]End Date[/b][/color]: {text}\n`, data['endDate']);
     var chapters      = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Chapters[/b][/color]: {text}\n`, data['chapters']);

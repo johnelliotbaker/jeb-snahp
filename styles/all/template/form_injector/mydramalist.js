@@ -2,29 +2,29 @@ var Mydramalist = {};
 
 Mydramalist.makeMydramalistTemplate = function(data)
 {
-    try { var aired_end      = data.aired_end;} catch { var aired_end = "";};
-    try { var aired_start    = data.aired_start;} catch { var aired_start = "";};
-    try { var alt_titles     = data.alt_titles.length > 0 ? data.alt_titles : '';} catch { var alt_titles = '';};
-    try { var certification  = data.certification;} catch { var certification = "";};
-    try { var country        = data.country;} catch { var country = "";};
-    try { var episodes       = data.episodes;} catch { var episodes = "";};
-    try { var genres         = data.genres;} catch { var genres = [];};
-    try { var id             = data.id;} catch { var id = "";};
-    try { var image          = data.images.poster;} catch { var image = "";};
-    try { var language       = data.language;} catch { var language = "";};
-    try { var original_title = data.original_title;} catch { var original_title = "";};
-    try { var permalink      = data.permalink;} catch { var permalink = "";};
-    try { var rating         = data.rating;} catch { var rating = "";};
-    try { var released       = data.released;} catch { var released = "";};
-    try { var runtime        = data.runtime;} catch { var runtime = "";};
-    try { var status         = data.status;} catch { var status = "";};
-    try { var synopsis       = data.synopsis;} catch { var synopsis = "";};
-    try { var tags           = data.tags;} catch { var tags = [];};
-    try { var title          = data.title;} catch { var title = "";};
-    try { var trailer        = data.trailer;} catch { var trailer = "";};
-    try { var type           = data.type;} catch { var type = "";};
-    try { var votes          = data.votes;} catch { var votes = "";};
-    try { var year           = ' (' + data.year + ')';} catch { var year = "";};
+    try { var aired_end      = data.aired_end;} catch(e) { var aired_end = "";};
+    try { var aired_start    = data.aired_start;} catch(e) { var aired_start = "";};
+    try { var alt_titles     = data.alt_titles.length > 0 ? data.alt_titles : '';} catch(e) { var alt_titles = '';};
+    try { var certification  = data.certification;} catch(e) { var certification = "";};
+    try { var country        = data.country;} catch(e) { var country = "";};
+    try { var episodes       = data.episodes;} catch(e) { var episodes = "";};
+    try { var genres         = data.genres;} catch(e) { var genres = [];};
+    try { var id             = data.id;} catch(e) { var id = "";};
+    try { var image          = data.images.poster;} catch(e) { var image = "";};
+    try { var language       = data.language;} catch(e) { var language = "";};
+    try { var original_title = data.original_title;} catch(e) { var original_title = "";};
+    try { var permalink      = data.permalink;} catch(e) { var permalink = "";};
+    try { var rating         = data.rating;} catch(e) { var rating = "";};
+    try { var released       = data.released;} catch(e) { var released = "";};
+    try { var runtime        = data.runtime;} catch(e) { var runtime = "";};
+    try { var status         = data.status;} catch(e) { var status = "";};
+    try { var synopsis       = data.synopsis;} catch(e) { var synopsis = "";};
+    try { var tags           = data.tags;} catch(e) { var tags = [];};
+    try { var title          = data.title;} catch(e) { var title = "";};
+    try { var trailer        = data.trailer;} catch(e) { var trailer = "";};
+    try { var type           = data.type;} catch(e) { var type = "";};
+    try { var votes          = data.votes;} catch(e) { var votes = "";};
+    try { var year           = ' (' + data.year + ')';} catch(e) { var year = "";};
     var genres_text    = getEntryOrEmpty(`[color=#FF8000][b]Genres[/b][/color]: {text}\n`, joinArrayOrEmpty(genres, ', '));
     var title_text     = getEntryOrEmpty(`[color=#FF8000][b]Title[/b][/color]: {text}\n`, title);
     var image          = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, image, permalink);
@@ -84,7 +84,7 @@ Mydramalist.updateMydramalistPosters = function(media)
         img_url = entry.images.poster;
         type = entry.type;
         language = entry.language;
-        try {img = img_url;} catch {img = ''};
+        try {img = img_url;} catch(e) {img = ''};
         $li = $("<li/>")
             .addClass("img_li")
             .appendTo($mydramalist_content);

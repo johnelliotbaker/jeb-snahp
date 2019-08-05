@@ -14,23 +14,23 @@ Gamespot.select_key = function(aKey)
 Gamespot.makeGamespotTemplate = function(data)
 {
     // console.log(data.image);
-    try { var thumbnail     = data.image.original;} catch { var thumbnail = "";};
-    try { var title         = data.name;} catch { var title = "";};
-    try { var subtitle      = data['subtitle'];} catch { var subtitle = "";};
-    try { var averageRating = data['averageRating'];} catch { var averageRating = "";};
-    try { var url           = data.site_detail_url;} catch { var url = "";};
+    try { var thumbnail     = data.image.original;} catch(e) { var thumbnail = "";};
+    try { var title         = data.name;} catch(e) { var title = "";};
+    try { var subtitle      = data['subtitle'];} catch(e) { var subtitle = "";};
+    try { var averageRating = data['averageRating'];} catch(e) { var averageRating = "";};
+    try { var url           = data.site_detail_url;} catch(e) { var url = "";};
     try { var categories = []; for (var genre of data.genres) { categories.push(genre['name']); }
-    } catch { var categories = "";};
-    try { var description   = data.description;} catch { var description = "";};
+    } catch(e) { var categories = "";};
+    try { var description   = data.description;} catch(e) { var description = "";};
     try {
         var previewLink   = data.videos_api_url;
         match = /(.*)(&dq.*)/.exec(previewLink)
         if (match && Array.isArray(match) && match.length > 2)
             previewLink = match[1];
-    } catch { var previewLink = "";};
-    try { var publishedDate = data.date;} catch { var publishedDate = "";};
-    try { var publisher     = data['publisher'];} catch { var publisher = "";};
-    try { var ratingsCount  = data['ratingsCount'];} catch { var ratingsCount = "";};
+    } catch(e) { var previewLink = "";};
+    try { var publishedDate = data.date;} catch(e) { var publishedDate = "";};
+    try { var publisher     = data['publisher'];} catch(e) { var publisher = "";};
+    try { var ratingsCount  = data['ratingsCount'];} catch(e) { var ratingsCount = "";};
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
     var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text} (${publishedDate})[/url] [/b][/size][/center]\n`, title, url);
     var subtitle      = getEntryOrEmpty(`[center][size=120][b]{text}[/b][/size][/center]\n`, subtitle);
@@ -84,7 +84,7 @@ Gamespot.updateGamespotPosters = function(media)
         description = entry.description;
         releaseDate =  entry.releaseDate;
         date = entry.date;
-        try {img = entry.image.original;} catch {img = ''};
+        try {img = entry.image.original;} catch(e) {img = ''};
         $li = $("<li/>")
             .addClass("img_li")
             .appendTo($gamespot_content);

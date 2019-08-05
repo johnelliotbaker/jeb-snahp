@@ -3,26 +3,26 @@ var Googlebooks = {};
 Googlebooks.makeTemplate = function(data)
 {
     data = data.volumeInfo;
-    try { var thumbnail     = data.imageLinks.thumbnail;} catch { var thumbnail = "";};
-    try { var title         = data['title'];} catch { var title = "";};
-    try { var subtitle      = data['subtitle'];} catch { var subtitle = "";};
-    try { var authors       = data['authors'];} catch { var authors = "";};
-    try { var averageRating = data['averageRating'];} catch { var averageRating = "";};
-    try { var url           = data['canonicalVolumeLink'];} catch { var url = "";};
-    try { var categories    = data['categories'];} catch { var categories = "";};
-    try { var description   = data['description'];} catch { var description = "";};
-    try { var language      = toTitleCase(data['language']);} catch { var language = "";};
-    try { var pageCount     = data['pageCount'];} catch { var pageCount = "";};
+    try { var thumbnail     = data.imageLinks.thumbnail;} catch(e) { var thumbnail = "";};
+    try { var title         = data['title'];} catch(e) { var title = "";};
+    try { var subtitle      = data['subtitle'];} catch(e) { var subtitle = "";};
+    try { var authors       = data['authors'];} catch(e) { var authors = "";};
+    try { var averageRating = data['averageRating'];} catch(e) { var averageRating = "";};
+    try { var url           = data['canonicalVolumeLink'];} catch(e) { var url = "";};
+    try { var categories    = data['categories'];} catch(e) { var categories = "";};
+    try { var description   = data['description'];} catch(e) { var description = "";};
+    try { var language      = toTitleCase(data['language']);} catch(e) { var language = "";};
+    try { var pageCount     = data['pageCount'];} catch(e) { var pageCount = "";};
     try {
         var previewLink   = data['previewLink'];
         match = /(.*)(&dq.*)/.exec(previewLink)
         if (match && Array.isArray(match) && match.length > 2)
             previewLink = match[1];
-    } catch { var previewLink = "";};
-    try { var printType     = toTitleCase(data['printType']);} catch { var printType = "";};
-    try { var publishedDate = data['publishedDate'];} catch { var publishedDate = "";};
-    try { var publisher     = data['publisher'];} catch { var publisher = "";};
-    try { var ratingsCount  = data['ratingsCount'];} catch { var ratingsCount = "";};
+    } catch(e) { var previewLink = "";};
+    try { var printType     = toTitleCase(data['printType']);} catch(e) { var printType = "";};
+    try { var publishedDate = data['publishedDate'];} catch(e) { var publishedDate = "";};
+    try { var publisher     = data['publisher'];} catch(e) { var publisher = "";};
+    try { var ratingsCount  = data['ratingsCount'];} catch(e) { var ratingsCount = "";};
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
     var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
     var subtitle      = getEntryOrEmpty(`[center][size=120][b]{text}[/b][/size][/center]\n`, subtitle);
@@ -76,7 +76,7 @@ Googlebooks.updatePosters = function(media)
         title = vinfo.title;
         author =  vinfo.authors;
         pubDate =  vinfo.publishedDate;
-        try {img = vinfo.imageLinks.thumbnail;} catch {img = ''};
+        try {img = vinfo.imageLinks.thumbnail;} catch(e) {img = ''};
         $li = $("<li/>")
             .addClass("img_li")
             .appendTo($googlebooks_content);
