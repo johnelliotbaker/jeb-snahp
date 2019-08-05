@@ -244,16 +244,31 @@ img.emotes_default.twitch_50
     font-size: 11px;
 }
 
-.mediainfo .key
+.mediainfo .collapse_handle
 {
-    padding: 0px !important;
-    padding-left: 3px !important;
+    margin-left: 3px !important;
 }
 
-.mediainfo .value
+.mediainfo .card-body
 {
-    padding: 0px !important;
-    padding-left: 3px !important;
+    padding: 4px !important;
+}
+
+.mediainfo .general_key,
+.mediainfo .video_key,
+.mediainfo .subtitle_key,
+.mediainfo .audio_key
+{
+    padding-right: 0px !important;
+    margin-right: 8px !important;
+    margin-left: 4px !important;
+}
+
+.mediainfo .video_value,
+.mediainfo .subtitle_value,
+.mediainfo .audio_value
+{
+    padding-left: 0px !important;
 }
 
 .mediainfo .title
@@ -269,11 +284,6 @@ img.emotes_default.twitch_50
     font-weight: 900;
 }
 
-.mediainfo .left
-{
-    width:10px;
-}
-
 .mediainfo .general,
 .mediainfo .video,
 .mediainfo .audio
@@ -286,4 +296,12 @@ img.emotes_default.twitch_50
 .mediainfo .flag
 {
     height: 12px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+}
+
+.mediainfo .collapse_plus
+{
+    margin: 0px;
+    line-height: 19px;
 }

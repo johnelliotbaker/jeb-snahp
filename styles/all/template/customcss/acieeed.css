@@ -154,7 +154,9 @@ div.codebox pre
 .mediainfo .video,
 .mediainfo .audio
 {
-    padding: 4px !important;
-    border-right: 2px solid #444;
-    border-left: 2px solid #444;
+	background: #000000 url(/ext/jeb/snahp/styles/all/template/bg_fora.png) repeat-x !important;
+    border: 1px solid #f8c301;
+    border-radius: 6px !important;
+    padding-top: 13px !important;
+    margin-bottom: 2px;
 }

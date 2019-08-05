@@ -55,3 +55,10 @@ td.category, tr { vertical-align: inherit }
 {
     color: #141414 !important;
 }
+
+/* mediainfo */
+.mediainfo .collapse_plus
+{
+    margin: 0px;
+    line-height: 16px;
+}

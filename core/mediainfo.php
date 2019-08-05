@@ -185,7 +185,7 @@ class mediainfo
 
     private function format_bitrate($strn)/*{{{*/
     {
-        return preg_replace('#(\d+\.?)[\s]?(\d+)(.*)#s', '\1\2\3', $strn);
+        return preg_replace('#(\d+)\s?(\d+)#', '\1\2', $strn);
     }/*}}}*/
 
     private function get_video_vres($data)/*{{{*/
@@ -212,6 +212,7 @@ class mediainfo
 
     private function generate_video_content($data, $extra = [])/*{{{*/
     {
+        $cfg['css_prefix'] = 'video_';
         $res = [];
         $function_prefix = 'get_video_';
         $a_data = $this->aggregate_video_data($data);
@@ -236,20 +237,20 @@ class mediainfo
         if ($n_video < 1) { return $res; }
         if ($n_video == 1)
         {
-            $html = $this->auto_convert_to_html($res[0]);
+            $html = $this->auto_convert_to_html($res[0], $cfg);
             $res = [];
             $res['Video']['type'] = 'fullwidth';
             $res['Video']['content'] = $html;
             return array_merge($res, $extra);
         }
         $tmp = [];
-        $html = $this->auto_convert_to_html($res[0]);
+        $html = $this->auto_convert_to_html($res[0], $cfg);
         $tmp['Video']['type'] = 'fullwidth';
         $tmp['Video']['content'] = $html;
 
         for ($i=1; $i < $n_video; $i++)
         {
-            $a = $this->auto_convert_to_html($res[$i]);
+            $a = $this->auto_convert_to_html($res[$i], $cfg);
             $video_name = 'Video ' . (string) ($i+1);
             $b = [];
             $b[$video_name]['type'] = 'fullwidth';
@@ -308,8 +309,10 @@ class mediainfo
             {
                 $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
             }
-            $entry['type'] = 'kv';
-            $entry['content'] =  $this->get_language_image_or_strn($tmp['Language']);
+            $entry['type'] = 'fullwidth';
+            $language =  $this->get_language_image_or_strn($tmp['Language'])['value'];
+            $html = '<div class="row"><div class="col-auto subtitle_key">#' . $i .  ':</div><div class="float-right subtitle_value col">' . $language . '</div></div>';
+            $entry['content'] =  $html;
             $res["Subtitle ${tmp['id']}"] = $entry;
             $i += 1;
         }
@@ -390,9 +393,9 @@ class mediainfo
         $country_code = $this->get_country_code_from_language($strn);
         if (!$country_code)
         {
-            return $strn;
+            return ['type' => 'string', 'value' => $strn];
         }
-        return '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>';
+        return ['type' => 'html', 'value' => '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>'];
     }/*}}}*/
 
     private function generate_audio_content($data, $extra = [])/*{{{*/
@@ -413,22 +416,34 @@ class mediainfo
         foreach ($a_data as $data)
         {
             $tmp = [];
+            $separator = '|';
             foreach ($a_element as $element)
             {
                 $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
             }
-            $t = [];
+            $language = '';
             if ($tmp['Language'])
             {
-                $t[] = $this->get_language_image_or_strn($tmp['Language']);
+                $lang = $this->get_language_image_or_strn($tmp['Language']);
+                if ($lang['type'] == 'html')
+                {
+                    $language = $lang['value'];
+                }
+                else
+                {
+                    $language = "${lang['value']} ${separator}";
+                }
             }
             if ($tmp['Channels']) $t[] = $tmp['Channels'];
             $format = $tmp['Format'];
             $bitrate = $tmp['Bit rate'];
-            $t[] = "${tmp['Format']} @ ${tmp['Bit rate']}";
-            $t = join(' | ', $t);
-            $entry['content'] = "#${i}:&nbsp; $t";
+            $specs = [];
+            $specs[] = "${tmp['Format']} @ ${tmp['Bit rate']}";
+            $specs = join(" ${separator} ", $specs);
             $entry['type'] = 'fullwidth';
+            $value = "$language $specs";
+            $html = '<div class="row"><div class="col-auto audio_key">#' . $i .  ':</div><div class="float-right audio_value col">' . $value . '</div></div>';
+            $entry['content'] = $html;
             $res[] = $entry;
             $i += 1;
         }
@@ -451,16 +466,16 @@ class mediainfo
         $res[] = '';
         $res[] = '<div class="twbs mediainfo"><div class="container-fluid"><div class="row">';
         $res[] = '<div class="col-12 col-md-4 general">';
-        $res[] = '<div class="col-12 col-md-12 title">General</div>';
-        $res[] = $this->make_bucket($this->generate_general_content($this->data, $subtitle));
+        $res[] = '<div class="col-12 title">General</div>';
+        $res[] = $this->make_bucket($this->generate_general_content($this->data, $subtitle), ['css_prefix' => 'general_']);
         $res[] = '</div>';
         $res[] = '<div class="col-12 col-md-4 video">';
-        $res[] = '<div class="col-12 col-md-12 title">Video</div>';
+        $res[] = '<div class="col-12 title">Video</div>';
         $res[] = $this->make_bucket($this->generate_video_content($this->data));
         $res[] = '</div>';
         $res[] = '<div class="col-12 col-md-4 audio">';
-        $res[] = '<div class="col-12 col-md-12 title">Audio</div>';
-        $res[] = $this->make_bucket($this->generate_audio_content($this->data), $column=1);
+        $res[] = '<div class="col-12 title">Audio</div>';
+        $res[] = $this->make_bucket($this->generate_audio_content($this->data));
         $res[] = '</div>';
         $res[] = "</div></div></div>";
         $res = join('', $res);
@@ -477,16 +492,16 @@ class mediainfo
     {
         $uuid = $this->get_uuid_strn();
         $html = $this->auto_convert_to_html($a_data);
-        $html = '<div class="row m-0 p-0 pointer noselect" data-toggle="collapse" href="#' . $uuid . '" role="button" aria-expanded="false" aria-controls="' . $uuid . '"><i style="line-height: 20px;" class="icon fa-plus-square-o" aria-hidden="true"></i><div class="ml-1">' . $title . '</div></div>
+        $html = '<div class="row collapse_handle pointer noselect" data-toggle="collapse" href="#' . $uuid . '" role="button" aria-expanded="false" aria-controls="' . $uuid . '"><i class="icon fa-plus-square-o collapse_plus" aria-hidden="true"></i><div class="ml-1">' . $title . '</div></div>
       <div class="row"> <div class="col"> <div class="collapse" id="' . $uuid . '">
-      <div class="card card-body pl-2 pr-2 pb-1 pt-1">' . $html . '</div>
+      <div class="card card-body collapsable">' . $html . '</div>
       </div></div></div>';
         $entry['type'] = 'fullwidth';
         $entry['content'] = $html;
         return $entry;
     }/*}}}*/
 
-    private function auto_convert_to_html($a_data)/*{{{*/
+    private function auto_convert_to_html($a_data, $cfg=[])/*{{{*/
     {
         $res = [];
         foreach ($a_data as $k=>$v)
@@ -495,35 +510,36 @@ class mediainfo
             switch ($type)
             {
             case 'fullwidth':
-                $res[] = $this->convert_to_fullwidth_html($v['content']);
+                $res[] = $this->convert_to_fullwidth_html($v['content'], $cfg);
                 break;
             case 'kv':
-                $res[$k] = $this->convert_to_kv_html($k, $v['content']);
+                $res[$k] = $this->convert_to_kv_html($k, $v['content'], $cfg);
                 break;
             }
         }
         return join("\n", $res);
     }/*}}}*/
 
-    private function convert_to_fullwidth_html($v)/*{{{*/
+    private function convert_to_fullwidth_html($v, $cfg=[])/*{{{*/
     {
-        $res[] = "<div class='row m-0 p-0'>";
-        $res[] = "<div class='col-12 key'>${v}</div>";
+        $res[] = "<div class='row'>";
+        $res[] = "<div class='col fullwidth'>${v}</div>";
         $res[] = "</div>";
         return join("\n", $res);
     }/*}}}*/
 
-    private function convert_to_kv_html($k, $v)/*{{{*/
+    private function convert_to_kv_html($k, $v, $cfg=[])/*{{{*/
     {
-        $k = "<div class='row m-0 p-0'><div class='col-6 key'>${k}:</div>";
-        $v = "<div class='col-6 value'>${v}</div>";
-        $res[] = "<div class='row'><div class='col-12'>";
+        $css_prefix = array_key_exists('css_prefix', $cfg) ? $cfg['css_prefix'] : '';
+        $k = "<div class='row m-0 p-0'><div class='${css_prefix}key col'>${k}:</div>";
+        $v = "<div class='${css_prefix}value col'>${v}</div>";
+        $res[] = "<div class='row'><div class='col-12 p-0 m-0'>";
         $res[] = $k . $v;
         $res[] = "</div></div></div>";
         return join("\n", $res);
     }/*}}}*/
 
-    private function make_bucket($data, $column=2)/*{{{*/
+    private function make_bucket($data, $cfg=[])/*{{{*/
     {
         $temp = '<p class="m-0 p-0"><i class="icon fa-plus-square-o pointer noselect" aria-hidden="true" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Subtitles</i> </p>
       <div class="row"> <div class="col"> <div class="collapse" id="multiCollapseExample1">
@@ -536,10 +552,10 @@ class mediainfo
             switch($v['type'])
             {
             case 'kv':
-                $res[] = $this->convert_to_kv_html($k, $v['content']);
+                $res[] = $this->convert_to_kv_html($k, $v['content'], $cfg);
                 break;
             case 'fullwidth':
-                $res[] = $this->convert_to_fullwidth_html($v['content']);
+                $res[] = $this->convert_to_fullwidth_html($v['content'], $cfg);
                 break;
             }
         }
