@@ -1,3 +1,19 @@
+/* Generic class */
+.pointer
+{
+    cursor: pointer;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+    supported by Chrome and Opera */
+}
+
 .pg_input {
     color: black;
 }
@@ -181,11 +197,6 @@ input.search_master {
 
 /* codebox resizing */
 
-.pointer
-{
-    cursor: pointer;
-}
-
 .codebox code
 {
     max-height: 100px;
@@ -272,3 +283,7 @@ img.emotes_default.twitch_50
     border-left: 2px solid #ddd;
 }
 
+.mediainfo .flag
+{
+    height: 12px;
+}
