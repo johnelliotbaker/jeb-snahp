@@ -456,12 +456,22 @@ class mediainfo
         return array_merge($res, $extra);
     }/*}}}*/
 
+
+    private function validate_data($data)
+    {
+        if (!array_key_exists('General', $this->data)) return false;
+        if (!(array_key_exists('Video', $this->data) || array_key_exists('Video #1', $this->data))) return false;
+        if (!(array_key_exists('Audio', $this->data) || array_key_exists('Audio #1', $this->data))) return false;
+        return true;
+    }
+
     public function make_mediainfo($strn)/*{{{*/
     {
         $strn = $this->normalize_newline($strn);
         $original = trim($strn);
         $this->data = $this->string2dict($strn);
         if ($this->data === false) { return ''; }
+        if (!$this->validate_data($this->data)) return '';
         $subtitle = $this->generate_subtitle_content($this->data);
         $res[] = '';
         $res[] = '<div class="twbs mediainfo"><div class="container-fluid"><div class="row">';
