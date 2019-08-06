@@ -661,7 +661,7 @@ class request_listener extends base implements EventSubscriberInterface
             $datetime = $this->user->format_date($commit_time);
             $strn     = "$username_string has offered to fulfill this request on $datetime";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
-            if ($this->user->data['username'] == $username)
+            if ($this->user->data['user_id'] == $uid)
                 $this->template->assign_vars([ 'B_SHOW_FULFILL_BTN' => true, ]);
         }
         elseif($req['status'] == 2)
