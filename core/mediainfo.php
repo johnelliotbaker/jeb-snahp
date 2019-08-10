@@ -37,6 +37,11 @@ class mediainfo
             'italian'   => 'it',
             'thai'      => 'th',
             'malaysian' => 'my',
+            'danish'    => 'dk',
+            'czech'     => 'cz',
+            'dutch'     => 'nl',
+            'finnish'   => 'fi',
+            'portuguese' => 'pt',
         ];
 	}/*}}}*/
 
