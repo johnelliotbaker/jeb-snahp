@@ -20,6 +20,13 @@ parameters:
         reputation: '%core.table_prefix%snahp_reputation'
         styles: '%core.table_prefix%styles'
         user_notifications: '%core.table_prefix%user_notifications'
+        bank_transactions: '%core.table_prefix%snahp_bank_transactions'
+        bank_transaction_items: '%core.table_prefix%snahp_bank_transaction_items'
+        bank_exchange_rates: '%core.table_prefix%snahp_bank_exchange_rates'
+        mrkt_invoice_items: '%core.table_prefix%snahp_mrkt_invoice_items'
+        mrkt_invoices: '%core.table_prefix%snahp_mrkt_invoices'
+        mrkt_product_classes: '%core.table_prefix%snahp_mrkt_product_classes'
+        user_inventory: '%core.table_prefix%snahp_user_inventory'
 
     jeb.snahp.bump_topic:
         def:

@@ -1469,4 +1469,13 @@ abstract class base
         return $strn;
     }/*}}}*/
 
+    public function user_belongs_to_group($user_id, $group_id)/*{{{*/
+    {
+        include_once('includes/functions_user.php');
+        $user_id_ary = [$user_id];
+        $group_id_ary = [$group_id];
+        $res = group_memberships($group_id_ary, $user_id_ary);
+        return !!$res;
+    }/*}}}*/
+
 }

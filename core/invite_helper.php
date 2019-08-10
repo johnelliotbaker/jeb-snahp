@@ -70,6 +70,53 @@ class invite_helper
         return $rowset;
     }
 
+    public function select_invite_user($user_id)
+    {
+        $user_id = (int) $user_id;
+        $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite_users'];
+        $sql = 'SELECT * FROM ' . $tbl . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }
+
+    public function increase_invite_points($user_id, $amount)
+    {
+        $user_data = $this->select_invite_user($user_id);
+        if (!$user_data) return false;
+        $n_available = $user_data['n_available'];
+        $amount = (int) $amount;
+        $user_id = (int) $user_id;
+        $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite_users'];
+        $data = [
+            'n_available' => $n_available + $amount,
+        ];
+        $sql = 'Update ' . $tbl . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+        return $true;
+    }
+
+    public function decrease_invite_points($user_id, $amount)
+    {
+        $user_data = $this->select_invite_user($user_id);
+        if (!$user_data) return false;
+        $n_available = $user_data['n_available'];
+        $amount = (int) $amount;
+        $user_id = (int) $user_id;
+        if ($amount > $n_available)
+        {
+            return false;
+        }
+        $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite_users'];
+        $data = [
+            'n_available' => $n_available - $amount,
+        ];
+        $sql = 'Update ' . $tbl . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+        return true;
+    }
+
     // INVITE
     public function update_invite($id, $data)
     {

@@ -23,6 +23,8 @@ use phpbb\db\driver\driver_interface;
 use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use jeb\snahp\core\user_inventory_helper;
+use jeb\snahp\core\market_helper;
 /*}}}*/
 
 function closetags($html) {/*{{{*/
@@ -48,9 +50,12 @@ function closetags($html) {/*{{{*/
 class main_listener extends base implements EventSubscriberInterface
 {
     protected $table_prefix;
-    public function __construct($table_prefix)/*{{{*/
+    public function __construct($table_prefix0, $table_prefix,
+        $user_inventory_helper, $market_helper)/*{{{*/
     {
         $this->table_prefix = $table_prefix;
+        $this->user_inventory_helper = $user_inventory_helper;
+        $this->market_helper = $market_helper;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->at_prefix          = '@@';
@@ -144,11 +149,56 @@ class main_listener extends base implements EventSubscriberInterface
             'core.notification_manager_add_notifications' => [
                 ['disable_email_notification', 0],
             ],
+            'core.search_modify_interval' => [
+                ['test', 0],
+            ],
         ];
     }/*}}}*/
 
     public function test($event)/*{{{*/
     {
+        for($i=0; $i<15; $i++)
+        {
+            // $res = $this->user_belongs_to_group($user_id, $i);
+            $user_id = 10418;
+            $res = $this->user_belongs_to_group($user_id, $i);
+            if ($res)
+            {
+                prn($i);
+            }
+        }
+        $interval = $event['interval'];
+        if ($this->config['snp_search_b_enable'])
+        {
+            $snp_group_id = $this->user->data['group_id'];
+            $sql = 'SELECT * FROM ' . GROUPS_TABLE . ' WHERE group_id=' . $snp_group_id;
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            if ($row && array_key_exists('snp_search_interval', $row))
+            {
+                $group_search_interval = $row['snp_search_interval'];
+                $interval = ($this->user->data['user_id'] == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
+            }
+        }
+        $mk = $this->market_helper;
+        $uinv = $this->user_inventory_helper;
+        $product_class_name = 'search_cooldown_reducer';
+        $product_class_data = $mk->get_product_class_by_name((string)$product_class_name);
+        if ($product_class_data)
+        {
+            $pcid = (int)$product_class_data['id'];
+            $inv_data = $uinv->get_single_inventory("product_class_id=${pcid}");
+            if ($inv_data)
+            {
+                $multiplier = (int) $inv_data['quantity'];
+                $value = $product_class_data['value']; 
+                $interval_reduction = abs($value * $multiplier);
+                $new_interval = $interval - $interval_reduction;
+                $interval = $new_interval < 5 ? 5 : $new_interval;
+            }
+        }
+        $event['interval'] = $interval;
     }/*}}}*/
 
     public function setup_viewtopic_modify_post_row_data($event)/*{{{*/
@@ -1254,6 +1304,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function modify_signature($event)/*{{{*/
     {
+        $disabled_bbcode = join('|', ['list', 'img', 'fimg']);
         $return_url = '/ucp.php?i=ucp_profile&mode=signature';
         $gid = $this->user->data['group_id'];
         $sql = 'SELECT snp_signature_rows from ' . GROUPS_TABLE .
@@ -1263,9 +1314,10 @@ class main_listener extends base implements EventSubscriberInterface
         $nSignatureRow = $row['snp_signature_rows'] or 0;
         $this->db->sql_freeresult($result);
         $signature = $event['signature'];
-        preg_match('#\[[^]]*?hide[^]]*?\]#is', $signature, $match);
-        // Delete signature if [hide] tag is used
-        if ($match)
+        $b_match = false;
+        $b_match |= preg_match('#\[[^]]*?(' . $disabled_bbcode . ')[^]]*?\]#is', $signature, $match);
+        // Delete signature if certain bbcodes are used
+        if ($b_match)
         {
             $event['signature'] = '';
         }

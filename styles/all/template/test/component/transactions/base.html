@@ -1,0 +1,28 @@
+<div class="row">
+
+
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th clope="col">TID</th>
+        <th clope="col">ID</th>
+        <th clope="col">Time</th>
+        <th clope="col">Type</th>
+        <th clope="col">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- BEGIN HISTORY -->
+      <tr>
+        <td>{HISTORY.id}</td>
+        <td>{HISTORY.transaction_id}</td>
+        <td>{HISTORY.created_time_strn}</td>
+        <td>{HISTORY.type}</td>
+        <td>{HISTORY.amount}</td>
+        {% if false %}
+        <td>{HISTORY.extra}</td>
+        {% endif %}
+      </tr>
+      <!-- END HISTORY -->
+    </tbody>
+  </table>

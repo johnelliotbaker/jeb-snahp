@@ -42,6 +42,8 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+            - '@jeb.snahp.user_inventory_helper'
+            - '@jeb.snahp.market_helper'
         tags:
             - { name: event.listener }
     jeb.snahp.registration_listener:
@@ -59,6 +61,13 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.test:
+        class: jeb\snahp\controller\test
+        parent: jeb.snahp.base
+        arguments:
+            - '@jeb.snahp.bank_helper'
+            - '@jeb.snahp.market_helper'
+            - '@jeb.snahp.user_inventory_helper'
     jeb.snahp.analytics:
         class: jeb\snahp\controller\analytics
         parent: jeb.snahp.base
@@ -242,3 +251,42 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '@jeb.snahp.topic_mover'
+    # BANK TRANSACTIONS
+    jeb.snahp.bank:
+        class: jeb\snahp\controller\bank
+        parent: jeb.snahp.base
+        arguments:
+            - '@jeb.snahp.bank_helper'
+    jeb.snahp.market_helper:
+        class: jeb\snahp\core\market_helper
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@auth'
+            - '@template'
+            - '@user'
+            - '@cache.driver'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+    jeb.snahp.user_inventory_helper:
+        class: jeb\snahp\core\user_inventory_helper
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@auth'
+            - '@template'
+            - '@user'
+            - '@cache.driver'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+    jeb.snahp.bank_helper:
+        class: jeb\snahp\core\bank_helper
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@auth'
+            - '@template'
+            - '@user'
+            - '@cache.driver'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
