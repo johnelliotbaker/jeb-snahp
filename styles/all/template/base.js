@@ -25,7 +25,7 @@ Avatar.append_copy_controls = function()
     $v.each((i)=>{
         $elem = $($v[i]);
         var text = $elem.text();
-        $elem.after(`<span onClick="Clipboard.copy('${text}')" style="margin-left: 4px; cursor: pointer;"><i class="fa fa-clipboard" aria-hidden="true"></i></span>`);
+        $elem.after(`<span onClick="Clipboard.copy('${text}')" class="pointer noselect" style="margin-left: 4px;"><i class="fa fa-clipboard" aria-hidden="true"></i></span>`);
     })
 }
 
@@ -35,7 +35,7 @@ var Codebox = {};
 Codebox.append_copy_controls = function()
 {
     $controlbox = $('div.codebox > p');
-    $controlbox.append('<a style="float: right;" onClick="Codebox.copy(event);" class="pointer">Copy</a>');
+    $controlbox.append('<a style="float: right;" onClick="Codebox.copy(event);" class="pointer noselect">Copy</a>');
 }
 
 Codebox.copy = function(e)
@@ -50,7 +50,7 @@ Codebox.copy = function(e)
 Codebox.append_resize_controls = function()
 {
     $controlbox = $('div.codebox > p');
-    $controlbox.append('<a style="float: right; margin-left: 8px;" onClick="Codebox.expand(event);" class="pointer">Expand</a>');
+    $controlbox.append('<a style="float: right; margin-left: 8px;" onClick="Codebox.expand(event);" class="pointer noselect">Expand</a>');
 }
 
 Codebox.expand = function(e)
