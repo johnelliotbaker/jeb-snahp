@@ -31,6 +31,11 @@ class main_info
                     'auth'  => 'ext_jeb/snahp',
                     'cat' => ['UCP_SNP_INVITE_TITLE']
                 ],
+                'custom'  => [
+                    'title' => 'UCP_SNP_CUSTOM',
+                    'auth'  => 'ext_jeb/snahp',
+                    'cat' => ['UCP_SNP_CUSTOM_TITLE']
+                ],
             ],
         ];
     }

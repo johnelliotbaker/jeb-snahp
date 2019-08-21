@@ -57,8 +57,15 @@ ShopTransaction.confirm_buy = function(event)
 
 </script>
 
-
-
+<style>
+.inline_block
+{
+    display: inline-block;
+    font-size: .9rem !important;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+</style>
 
 <div class="row mt-2">
   <div class="col">
@@ -80,23 +87,38 @@ ShopTransaction.confirm_buy = function(event)
           <tbody>
             <!-- BEGIN PRODUCT_CLASSES -->
             <tr style="font-size: 1.1em;">
-              <td class="pt-2">{PRODUCT_CLASSES.display_name}</td>
+              <td class="pt-2">{PRODUCT_CLASSES.display_name}
+                <div class="inline_block help">
+                  <a href="/app.php/snahp/help/docs/?name=ucp_custom_rank" target="_blank">
+                    <i class="fa fa-question help"></i>
+                  </a>
+                </div>
+              
+              
+              
+              </td>
               <td class="pt-2">{PRODUCT_CLASSES.description}</td>
               <td class="pt-2">{PRODUCT_CLASSES.n_bought} / {PRODUCT_CLASSES.max_per_user}</td>
               <td class="pt-2">{PRODUCT_CLASSES.value} {PRODUCT_CLASSES.unit}</td>
               <td class="pt-2">{PRODUCT_CLASSES.price}</td>
+              {% if PRODUCT_CLASSES.n_bought < PRODUCT_CLASSES.max_per_user %}
               <td class="pt-1">
                 <input id="shop_buy_quantity_{PRODUCT_CLASSES.id}" 
                 style="font-size: 1.1em; height:20px; width:60px; text-align:right;" 
                 class="form-control form-control-sm w-10" type="number" min="0" max="{PRODUCT_CLASSES.max_purchasable}" value="0"/>
               </td>
-              <td class="pt-1 text-center"><button 
+              <td class="pt-1 text-center">
+                <button 
                   data-id="{PRODUCT_CLASSES.id}"
                   data-json='{PRODUCT_CLASSES.json}'
                   onclick="ShopTransaction.initiate_buy(event);"
                   style="font-size:10px; padding:1px 5px 1px 5px;"
                   type="button" class="btn btn-success">Buy</button>
               </td>
+              {% else %}
+              <td class="pt-1"></td>
+              <td class="pt-1"></td>
+              {% endif %} 
             </tr>
             <!-- END PRODUCT_CLASSES -->
           </tbody>

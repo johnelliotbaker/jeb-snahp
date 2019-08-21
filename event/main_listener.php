@@ -100,6 +100,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
                 ['process_emotes', 2],
+                ['modify_user_rank', 2],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
                 ['show_achievements_in_avatar', 2],
@@ -155,18 +156,39 @@ class main_listener extends base implements EventSubscriberInterface
         ];
     }/*}}}*/
 
-    public function test($event)/*{{{*/
+    public function modify_user_rank($event)/*{{{*/
     {
-        for($i=0; $i<15; $i++)
+        $timeit0 = microtime(true);
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        $mk = $this->market_helper;
+        $uinv = $this->user_inventory_helper;
+        $product_class_name = 'custom_rank';
+        $product_class_data = $mk->get_product_class_by_name((string)$product_class_name);
+        if ($product_class_data)
         {
-            // $res = $this->user_belongs_to_group($user_id, $i);
-            $user_id = 10418;
-            $res = $this->user_belongs_to_group($user_id, $i);
-            if ($res)
+            $pcid = (int)$product_class_data['id'];
+            $inv_data = $uinv->get_single_inventory("product_class_id=${pcid}", $poster_id);
+            if ($inv_data)
             {
-                prn($i);
+                [$rank_title, $rank_img] = $this->get_custom_rank($poster_id);
+                if ($rank_img)
+                {
+                    $post_row['RANK_IMG'] = '<img style="margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
+                }
+                if ($rank_title)
+                {
+                    $post_row['RANK_TITLE'] = $rank_title;
+                }
             }
         }
+        $event['post_row'] = $post_row;
+        prn(microtime(true) - $timeit0);
+    }/*}}}*/
+
+    public function test($event)/*{{{*/
+    {
+        $user_id = $this->user->data['user_id'];
         $interval = $event['interval'];
         if ($this->config['snp_search_b_enable'])
         {
@@ -178,7 +200,7 @@ class main_listener extends base implements EventSubscriberInterface
             if ($row && array_key_exists('snp_search_interval', $row))
             {
                 $group_search_interval = $row['snp_search_interval'];
-                $interval = ($this->user->data['user_id'] == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
+                $interval = ($user_id == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
             }
         }
         $mk = $this->market_helper;
@@ -189,7 +211,7 @@ class main_listener extends base implements EventSubscriberInterface
         {
             $pcid = (int)$product_class_data['id'];
             $inv_data = $uinv->get_single_inventory("product_class_id=${pcid}");
-            if ($inv_data)
+            if ($inv_data && $this->user_belongs_to_group($user_id, 18))
             {
                 $multiplier = (int) $inv_data['quantity'];
                 $value = $product_class_data['value']; 

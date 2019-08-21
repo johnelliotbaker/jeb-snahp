@@ -1,0 +1,94 @@
+parameters:
+    jeb.snahp.groups:
+        dev:
+            'set':
+                'Red Team':
+                    - 4
+                    - 5
+                    - 13
+                    - 18
+                'Blue Team':
+                    - 4
+                    - 5
+                    - 13
+                    - 19
+            'GUESTS':
+                id: 1
+            'REGISTERED':
+                id: 2
+            'REGISTERED_COPPA':
+                id: 3
+            'GLOBAL_MODERATORS':
+                id: 4
+            'ADMINISTRATORS':
+                id: 5
+            'BOTS':
+                id: 6
+            'NEWLY_REGISTERED':
+                id: 7
+            'Trusted Uploader':
+                id: 8
+            'VIPs':
+                id: 9
+            'Elite Users':
+                id: 10
+            'Developers':
+                id: 13
+            'Best Testers Alpha Team':
+                id: 14
+            'Padding':
+                id: 15
+            'Junior Uploaders':
+                id: 16
+            'Donors':
+                id: 17
+            'Red Team':
+                id: 18
+            'Blue Team':
+                id: 19
+        production:
+            'set':
+                'Red Team':
+                    - 4
+                    - 5
+                    - 13
+                    - 18
+                'Blue Team':
+                    - 4
+                    - 5
+                    - 13
+                    - 19
+            'GUESTS':
+                id: 1
+            'REGISTERED':
+                id: 2
+            'REGISTERED_COPPA':
+                id: 3
+            'GLOBAL_MODERATORS':
+                id: 4
+            'ADMINISTRATORS':
+                id: 5
+            'BOTS':
+                id: 6
+            'NEWLY_REGISTERED':
+                id: 7
+            'Uploaders':
+                id: 9
+            'VIPs':
+                id: 11
+            'Elite Users':
+                id: 12
+            'Developers':
+                id: 13
+            'Best Testers Alpha Team':
+                id: 14
+            'Padding':
+                id: 15
+            'Junior Uploaders':
+                id: 16
+            'Donors':
+                id: 17
+            'Red Team':
+                id: 18
+            'Blue Team':
+                id: 19

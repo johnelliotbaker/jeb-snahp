@@ -1469,6 +1469,31 @@ abstract class base
         return $strn;
     }/*}}}*/
 
+    public function reject_user_not_in_groupset($user_id, $groupset_name)/*{{{*/
+    {
+        if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
+        {
+            trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
+        }
+    }/*}}}*/
+
+    public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
+    {
+        if ($this->is_dev_server())
+        {
+            $groupset = $this->container->getParameter('jeb.snahp.groups')['dev']['set'];
+        }
+        else
+        {
+            $groupset = $this->container->getParameter('jeb.snahp.groups')['production']['set'];
+        }
+        include_once('includes/functions_user.php');
+        $user_id_ary = [$user_id];
+        $group_id_ary = $groupset[$groupset_name];
+        $res = group_memberships($group_id_ary, $user_id_ary);
+        return !!$res;
+    }/*}}}*/
+
     public function user_belongs_to_group($user_id, $group_id)/*{{{*/
     {
         include_once('includes/functions_user.php');
@@ -1476,6 +1501,35 @@ abstract class base
         $group_id_ary = [$group_id];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;
+    }/*}}}*/
+
+    public function get_custom_rank($user_id)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT rank_title, rank_img FROM '. $tbl['custom_ranks'] . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if ($row)
+        {
+            return [stripslashes($row['rank_title']), stripslashes($row['rank_img'])];
+        }
+        return false;
+    }/*}}}*/
+
+    public function set_custom_rank($user_id, $rank_title='', $rank_img='')/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $data = [
+            'user_id' => $user_id,
+            'rank_title' => $rank_title,
+            'rank_img' => $rank_img,
+            'created_time' => time(),
+        ];
+        $sql = 'INSERT INTO ' . $tbl['custom_ranks'] . $this->db->sql_build_array('INSERT', $data) . '
+            ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $data);
+        $this->db->sql_query($sql);
+        return true;
     }/*}}}*/
 
 }

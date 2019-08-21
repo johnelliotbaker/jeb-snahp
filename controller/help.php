@@ -46,6 +46,8 @@ class help extends base
         $name = $this->request->variable('name', '');
         switch($name)
         {
+        case 'ucp_custom_rank':
+            return $this->helper->render('@jeb_snahp/help/component/ucp/component/custom_rank/base.html');
         case 'digg_digg':
             return $this->helper->render('@jeb_snahp/help/component/digg/component/digg/base.html');
         case 'digg_register':

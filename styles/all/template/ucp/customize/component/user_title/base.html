@@ -1,0 +1,51 @@
+<script>
+
+var CustomRank = {};
+
+CustomRank.save = function()
+{
+  var data = {};
+  data['rt'] = encodeURIComponent($('#custom_rank_title').val());
+  data['ri'] = encodeURIComponent($('#custom_rank_img').val());
+  var url = `/app.php/snahp/custom_rank/save/?rt=${data['rt']}&ri=${data['ri']}`;
+  console.log(url);
+  $.get(url).done((resp)=>{
+      console.log(resp);
+    })
+}
+
+</script>
+
+
+<div class="row container mt-3 mb-3 m-0 p-0">
+  <div class="card custom_title_card">
+    <div class="card-body">
+      <div class="card-title">Change your rank title
+        <span class="help_block">
+          <a href="/app.php/snahp/help/docs/?name=ucp_custom_rank" target="_blank">
+            <i class="fa fa-question help"></i>
+          </a>
+        </span>
+      </div>
+      <div class="card-text">
+        <div class="form-group row">
+          <label for="custom_rank_title" class="col col-form-label">New Title</label>
+          <div class="col-auto">
+            <input type="text" class="form-control form-control-sm"" id="custom_rank_title" maxlength="22" placeholder="">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="custom_rank_img" class="col col-form-label">Image Url</label>
+          <div class="col-auto">
+            <input type="text" class="form-control form-control-sm" id="custom_rank_img" maxlength="255" placeholder="https://i.imgur.com/60OquO6.png">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="ml-auto mr-3">
+            <button onClick="CustomRank.save();"class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

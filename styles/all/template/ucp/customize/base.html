@@ -1,0 +1,34 @@
+<!-- INCLUDE ucp_header.html -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<style>
+  {% include '@jeb_snahp/ucp/customize/base.css' %}
+</style>
+{% if B_ENABLE %}
+  {% if B_PERMISSION %}
+  <div class="panel">
+    <div class="inner">
+      <div class="twbs">
+        <div>
+          {% include '@jeb_snahp/ucp/customize/component/user_title/base.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+    <div>
+    </div>
+  {% else %}
+    <div class="panel">
+      <div class="inner">
+        <h3>This feature is currently unavailable.</h3>
+      </div>
+    </div>
+  {% endif %}
+{% else %}
+  <div class="panel">
+    <div class="inner">
+      <h3>This feature is currently disabled by the administrator.</h3>
+    </div>
+  </div>
+{% endif %}
+<!-- INCLUDE ucp_footer.html -->

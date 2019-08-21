@@ -8,6 +8,7 @@ use jeb\snahp\core\invite_helper;
 class test extends base
 {
     protected $prefix;
+    protected $allowed_groupset;
 
     public function __construct($prefix, $bank_helper, $market_helper, $user_inventory_helper)/*{{{*/
     {
@@ -15,11 +16,14 @@ class test extends base
         $this->bank_helper = $bank_helper;
         $this->market_helper = $market_helper;
         $this->user_inventory_helper = $user_inventory_helper;
+        $this->allowed_groupset = 'Red Team';
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
     {
+        $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
+        $this->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
         switch ($mode)
         {
         case 'transactions':
@@ -127,7 +131,6 @@ class test extends base
         {
             $this->template->assign_block_vars('HISTORY', $entry);
         }
-
         $elapsed_time = microtime(true) - $time;
         $this->template->assign_vars([
             'ELAPSED_TIME' => $elapsed_time,
@@ -138,8 +141,9 @@ class test extends base
 
     public function handle_test($cfg)/*{{{*/
     {
-        // $this->reject_non_dev();
         $this->reject_anon();
+        $this->user_belongs_to_group($this->user_id, 18);
+        $this->reject_non_group(18, '1');
         $time = microtime(true);
 
         $user_id = $this->user->data['user_id'];
@@ -173,10 +177,10 @@ class test extends base
         {
             $id = $entry['id'];
             $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
-            if ($entry['n_bought'] >= $entry['max_per_user'])
-            {
-                continue;
-            }
+            // if ($entry['n_bought'] >= $entry['max_per_user'])
+            // {
+            //     continue;
+            // }
             $entry['max_purchasable'] = $entry['max_per_user'] - $entry['n_bought'];
             $entry['json'] = json_encode($entry);
             $this->template->assign_block_vars('PRODUCT_CLASSES', $entry);

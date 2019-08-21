@@ -1,5 +1,6 @@
 imports:
     - { resource: 'emotes.yml' }
+    - { resource: 'groups.yml' }
 
 parameters:
     jeb.snahp.tables.snp_table: '%core.table_prefix%snp_table'
@@ -27,6 +28,7 @@ parameters:
         mrkt_invoices: '%core.table_prefix%snahp_mrkt_invoices'
         mrkt_product_classes: '%core.table_prefix%snahp_mrkt_product_classes'
         user_inventory: '%core.table_prefix%snahp_user_inventory'
+        custom_ranks: '%core.table_prefix%snahp_custom_ranks'
 
     jeb.snahp.bump_topic:
         def:

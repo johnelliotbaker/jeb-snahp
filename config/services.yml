@@ -129,6 +129,11 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
+    jeb.snahp.custom_rank:
+        class: jeb\snahp\controller\custom_rank
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
     jeb.snahp.digg:
         class: jeb\snahp\controller\digg
         parent: jeb.snahp.base

@@ -38,13 +38,34 @@ class main_module
             $cfg['b_feedback'] = true;
             $this->handle_invite($cfg);
             break;
+        case 'custom':
+            $cfg['tpl_name'] = '@jeb_snahp/ucp/customize/base';
+            $cfg['b_feedback'] = true;
+            $this->handle_custom($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_mode($cfg);
         }
 	}
 
-    function handle_invite($cfg)
+    function handle_custom($cfg)/*{{{*/
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        if (!$config['snp_ucp_custom_b_master'])
+        {
+            return;
+        }
+        $user_id = $user->data['user_id'];
+        $b_enable = true;
+        $template->assign_vars([
+            'B_ENABLE' => $b_enable,
+            'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team')
+        ]);
+        // Using config custom master switch
+    }/*}}}*/
+
+    function handle_invite($cfg)/*{{{*/
     {
 		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if (!$config['snp_inv_b_master'])
@@ -74,7 +95,6 @@ class main_module
                 'N_AVAILABLE' => 0,
             ]);
         }
-
         // Pagination
         $start = (int) $request->variable('start', '0');
         $total = $ih->select_invite_total($where="inviter_id={$user_id}");
@@ -99,9 +119,9 @@ class main_module
                 $template->assign_block_vars('A_INVITE', $row);
             }
         }
-    }
+    }/*}}}*/
 
-    function handle_visibility($cfg)
+    function handle_visibility($cfg)/*{{{*/
     {
 		global $db, $request, $template, $user;
         $user_id = $user->data['user_id'];
@@ -146,9 +166,9 @@ class main_module
             'S_UCP_ACTION'	=> $this->u_action,
         );
         $template->assign_vars($template_vars);
-    }
+    }/*}}}*/
 
-    function handle_mode($cfg)
+    function handle_mode($cfg)/*{{{*/
     {
 		global $db, $request, $template, $user;
         $this->tpl_name = $cfg['tpl_name'];
@@ -168,6 +188,39 @@ class main_module
             }
         }
         $template->assign_vars([]);
-    }
+    }/*}}}*/
+
+    public function reject_user_not_in_groupset($user_id, $groupset_name)/*{{{*/
+    {
+        if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
+        {
+            trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
+        }
+    }/*}}}*/
+
+    public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        if ($this->is_dev_server())
+        {
+            $groupset = $phpbb_container->getParameter('jeb.snahp.groups')['dev']['set'];
+        }
+        else
+        {
+            $groupset = $phpbb_container->getParameter('jeb.snahp.groups')['production']['set'];
+        }
+        include_once('includes/functions_user.php');
+        $user_id_ary = [$user_id];
+        $group_id_ary = $groupset[$groupset_name];
+        $res = group_memberships($group_id_ary, $user_id_ary);
+        return !!$res;
+    }/*}}}*/
+
+    public function is_dev_server()/*{{{*/
+    {
+		global $config;
+        $servername = $config['server_name'];
+        return isset($servername) && $servername=='192.168.2.12';
+    }/*}}}*/
 
 }

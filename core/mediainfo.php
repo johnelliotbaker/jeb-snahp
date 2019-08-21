@@ -37,7 +37,7 @@ class mediainfo
             'italian'   => 'it',
             'thai'      => 'th',
             'malaysian' => 'my',
-            'danish'    => 'dk',
+            // 'danish'    => 'dk',
             'czech'     => 'cz',
             'dutch'     => 'nl',
             'finnish'   => 'fi',
