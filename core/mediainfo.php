@@ -143,6 +143,11 @@ class mediainfo
         return array_key_exists($keyword, $data) ? $data[$keyword] : null;
     }/*}}}*/
 
+    private function get_val_or_unknown($keyword, $data)/*{{{*/
+    {
+        return array_key_exists($keyword, $data) ? $data[$keyword] : '?';
+    }/*}}}*/
+
     private function get_general_filesize($data)/*{{{*/
     {
         return $this->get_val_or_null('File size', $data);
@@ -155,7 +160,8 @@ class mediainfo
 
     private function get_general_bitrate($data)/*{{{*/
     {
-        return $this->get_val_or_null('Overall bit rate', $data);
+        $strn = $this->get_val_or_null('Overall bit rate', $data);
+        return $this->format_bitrate($strn);
     }/*}}}*/
 
     private function get_general_format($data)/*{{{*/
@@ -206,13 +212,25 @@ class mediainfo
     private function get_video_framerate($data)/*{{{*/
     {
         $v = $this->get_val_or_null('Frame rate', $data);
-        return preg_replace('#(\d+\.?\d+)(.*)#s', '\1', $v);
+        return preg_replace('#(\d+\.?\d+)(.*)#s', '\1 fps', $v);
     }/*}}}*/
 
     private function get_video_bitrate($data)/*{{{*/
     {
-        $strn = $this->get_val_or_null('Bit rate', $data);
+        $strn = $this->get_val_or_unknown('Bit rate', $data);
         return $this->format_bitrate($strn);
+    }/*}}}*/
+
+    private function get_video_bitdepth($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Bit depth', $data);
+    }/*}}}*/
+
+    private function get_video_format_with_bitdepth($data)/*{{{*/
+    {
+        $format = $this->get_video_format($data);
+        $bitdepth = $this->get_video_bitdepth($data);
+        return $this->join_or_first($format, $bitdepth);
     }/*}}}*/
 
     private function generate_video_content($data, $extra = [])/*{{{*/
@@ -222,7 +240,7 @@ class mediainfo
         $function_prefix = 'get_video_';
         $a_data = $this->aggregate_video_data($data);
         $a_element = [
-            ['f' => 'format',    'alias' => 'Format',],
+            ['f' => 'format_with_bitdepth',    'alias' => 'Format',],
             ['f' => 'vres',      'alias' => 'Dimensions',],
             ['f' => 'framerate', 'alias' => 'Frame rate',],
             ['f' => 'bitrate',   'alias' => 'Bit rate',],
@@ -252,7 +270,6 @@ class mediainfo
         $html = $this->auto_convert_to_html($res[0], $cfg);
         $tmp['Video']['type'] = 'fullwidth';
         $tmp['Video']['content'] = $html;
-
         for ($i=1; $i < $n_video; $i++)
         {
             $a = $this->auto_convert_to_html($res[$i], $cfg);
@@ -403,6 +420,15 @@ class mediainfo
         return ['type' => 'html', 'value' => '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>'];
     }/*}}}*/
 
+    private function join_or_first($first, $second, $delimiter=' @ ')/*{{{*/
+    {
+        if ($second)
+        {
+            return join($delimiter, [$first, $second]);
+        }
+        return $first;
+    }/*}}}*/
+    
     private function generate_audio_content($data, $extra = [])/*{{{*/
     {
         $max_audio_entry = 4;
@@ -442,9 +468,7 @@ class mediainfo
             if ($tmp['Channels']) $t[] = $tmp['Channels'];
             $format = $tmp['Format'];
             $bitrate = $tmp['Bit rate'];
-            $specs = [];
-            $specs[] = "${tmp['Format']} @ ${tmp['Bit rate']}";
-            $specs = join(" ${separator} ", $specs);
+            $specs = $this->join_or_first($format, $bitrate);
             $entry['type'] = 'fullwidth';
             $value = "$language $specs";
             $html = '<div class="row"><div class="col-auto audio_key">#' . $i .  ':</div><div class="float-right audio_value col">' . $value . '</div></div>';
@@ -461,14 +485,13 @@ class mediainfo
         return array_merge($res, $extra);
     }/*}}}*/
 
-
-    private function validate_data($data)
+    private function validate_data($data)/*{{{*/
     {
         if (!array_key_exists('General', $this->data)) return false;
         if (!(array_key_exists('Video', $this->data) || array_key_exists('Video #1', $this->data))) return false;
         if (!(array_key_exists('Audio', $this->data) || array_key_exists('Audio #1', $this->data))) return false;
         return true;
-    }
+    }/*}}}*/
 
     public function make_mediainfo($strn)/*{{{*/
     {
@@ -494,7 +517,7 @@ class mediainfo
         $res[] = '</div>';
         $res[] = "</div></div></div>";
         $res = join('', $res);
-        $res .= '<div class="codebox" style="margin-top:0px; box-shadow: none; margin-left: 0px; margin-right: 0px;"><p style="border-bottom: none;">Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p><pre style="height:0px;"><code>' . $original . '</code></pre></div>';
+        $res .= '<div class="codebox" style="margin-top:0px; box-shadow: none; margin-left: 0px; margin-right: 0px;"><p style="border-bottom: none;">Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p><pre><code>' . $original . '</code></pre></div>';
         return $res;
     }/*}}}*/
 
