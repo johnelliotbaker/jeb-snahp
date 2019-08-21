@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\core;
+namespace jeb\snahp\core\bank;
 use jeb\snahp\core\invite_helper;
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\core;
+namespace jeb\snahp\core\market;
 use jeb\snahp\core\invite_helper;
 
 

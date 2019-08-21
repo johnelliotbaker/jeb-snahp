@@ -263,7 +263,7 @@ services:
         arguments:
             - '@jeb.snahp.bank_helper'
     jeb.snahp.market_helper:
-        class: jeb\snahp\core\market_helper
+        class: jeb\snahp\core\market\market_helper
         arguments:
             - '@config'
             - '@dbal.conn'
@@ -274,7 +274,7 @@ services:
             - '@service_container'
             - '%jeb.snahp.tables%'
     jeb.snahp.user_inventory_helper:
-        class: jeb\snahp\core\user_inventory_helper
+        class: jeb\snahp\core\user_inventory\user_inventory_helper
         arguments:
             - '@config'
             - '@dbal.conn'
@@ -285,7 +285,7 @@ services:
             - '@service_container'
             - '%jeb.snahp.tables%'
     jeb.snahp.bank_helper:
-        class: jeb\snahp\core\bank_helper
+        class: jeb\snahp\core\bank\bank_helper
         arguments:
             - '@config'
             - '@dbal.conn'

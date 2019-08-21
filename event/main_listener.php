@@ -23,8 +23,6 @@ use phpbb\db\driver\driver_interface;
 use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use jeb\snahp\core\user_inventory_helper;
-use jeb\snahp\core\market_helper;
 /*}}}*/
 
 function closetags($html) {/*{{{*/

@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\core;
+namespace jeb\snahp\core\user_inventory;
 
 class user_inventory_helper
 {
