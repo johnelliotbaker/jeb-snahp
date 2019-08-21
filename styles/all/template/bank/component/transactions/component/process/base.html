@@ -28,9 +28,9 @@
               <input type=hidden id="bank_exchange_row_data_{EXCHANGE_RATE.id}"
                                  data-json='{EXCHANGE_RATE.json}'/>
               <td class="pt-2">Sell</td>
-              <td class="pt-2">{EXCHANGE_RATE.display_name}</td>
+              <td class="pt-2">{EXCHANGE_RATE.display_name} ({EXCHANGE_RATE.sell_unit})</td>
               <td class="pt-2">@</td>
-              <td class="pt-2">{EXCHANGE_RATE.buy_unit}{EXCHANGE_RATE.sell_rate} / {EXCHANGE_RATE.sell_unit}</td>
+              <td class="pt-2">{EXCHANGE_RATE.buy_unit}{EXCHANGE_RATE.sell_rate_formatted} / {EXCHANGE_RATE.sell_unit}</td>
               <td class="pt-2">&times;</td>
               <td class="pt-1">
                 <input 

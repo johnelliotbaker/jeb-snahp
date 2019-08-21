@@ -142,11 +142,10 @@ class test extends base
     public function handle_test($cfg)/*{{{*/
     {
         $this->reject_anon();
-        $this->user_belongs_to_group($this->user_id, 18);
-        $this->reject_non_group(18, '1');
+        $user_id = $this->user->data['user_id'];
+        $this->reject_user_not_in_groupset($user_id, 'Red Team');
         $time = microtime(true);
 
-        $user_id = $this->user->data['user_id'];
         $n_token = $this->get_token($user_id);
 
         $n_avail_inv_pts = $this->get_available_invite_points($user_id);
@@ -154,6 +153,7 @@ class test extends base
         $exchange_rates = $this->bank_helper->get_exchange_rates();
         foreach($exchange_rates as $entry)
         {
+            $entry['sell_rate_formatted'] = number_format($entry['sell_rate']);
             $entry['json'] = json_encode($entry);
             $this->template->assign_block_vars('EXCHANGE_RATE', $entry);
         }
@@ -177,11 +177,9 @@ class test extends base
         {
             $id = $entry['id'];
             $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
-            // if ($entry['n_bought'] >= $entry['max_per_user'])
-            // {
-            //     continue;
-            // }
+            $entry['b_buy'] = $entry['n_bought'] < $entry['max_per_user'];
             $entry['max_purchasable'] = $entry['max_per_user'] - $entry['n_bought'];
+            $entry['price_formatted'] = number_format($entry['price']);
             $entry['json'] = json_encode($entry);
             $this->template->assign_block_vars('PRODUCT_CLASSES', $entry);
         }
