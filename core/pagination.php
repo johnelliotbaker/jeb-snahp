@@ -91,7 +91,6 @@ class pagination
     {
         $block_end = ceil($total / $per_page);
         $next = ($i_block > $n_block-1) ? ($n_block-1)*$per_page : $i_block*$per_page;
-        $next = $base_url . "&per_page={$per_page}&start={$next}";
         $url = $base_url . "&per_page={$per_page}&start={$next}";
         if ($i_block >= $block_end)
         {
