@@ -24,10 +24,36 @@ class userscript extends base
             break;
         case 'username':
             return $this->handle_username();
+        case 'userid':
+            return $this->handle_userid();
         default:
             break;
         }
         trigger_error('Nothing to see here. Move along.');
+    }
+
+    public function handle_userid()
+    {
+        $partial = $this->request->variable('partial', '');
+        $partial = utf8_clean_string($partial);
+        $data = [];
+        if ($partial and strlen($partial)>2)
+        {
+            $sql = 'SELECT user_id, username_clean FROM ' . USERS_TABLE . 
+                " WHERE username_clean LIKE '%$partial%'";
+            $result = $this->db->sql_query_limit($sql, 10);
+            $rowset = $this->db->sql_fetchrowset($result);
+            $this->db->sql_freeresult($result);
+            foreach($rowset as $row)
+            {
+                $tmp = [];
+                $tmp['username'] = $row['username_clean'];
+                $tmp['user_id'] = $row['user_id'];
+                $data[] = $tmp;
+            }
+        }
+        $js = new \phpbb\json_response();
+        $js->send($data);
     }
 
     public function handle_username()
