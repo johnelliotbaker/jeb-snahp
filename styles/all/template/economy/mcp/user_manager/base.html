@@ -38,18 +38,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-group my-0 mx-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="balance">Balance</span>
-                </div>
-                <input id="user_balance" type="number" value="{BALANCE}" min="0" class="form-control" placeholder="" aria-label="" aria-describedby="balance">
-                <button 
-                   data-id="{EXCHANGE_RATE.id}"
-                   data-json='{EXCHANGE_RATE.json}'
-                   onclick="UserAssets.save_user_balance(event);"
-                   style="font-size:1.6em; padding:1px 5px 1px 5px;"
-                   type="button" class="btn btn-success">Save</button>
-              </div>
+              {% include '@jeb_snahp/economy/mcp/user_manager/component/bank/base.html' %}
             </div>
           </div>
         </div>

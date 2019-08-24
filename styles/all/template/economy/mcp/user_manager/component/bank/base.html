@@ -1,0 +1,19 @@
+<div class="input-group my-0 mx-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="balance">Balance</span>
+  </div>
+  <input id="user_balance" type="number" value="{BALANCE}" min="0" class="form-control" placeholder="" aria-label="" aria-describedby="balance">
+  <button class="btn btn-success"
+          type="button"
+          data-id="{EXCHANGE_RATE.id}"
+          data-json='{EXCHANGE_RATE.json}'
+          onclick="UserAssets.save_user_balance(event);"
+          style="font-size:1.6em; padding:1px 5px 1px 5px;
+          border-top-left-radius: 0px;
+          border-bottom-left-radius: 0px;"
+          id="user_balance_button"
+          >
+          <span style="display: none;" id="user_balance_spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span id="user_balance_text">Save</span>
+  </button>
+</div>
