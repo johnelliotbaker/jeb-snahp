@@ -44,7 +44,7 @@ class v_0_30_0 extends \phpbb\db\migration\migration
                         'transaction_id' => ['INT:11', 0],
                         'type'           => ['VCHAR:255', ''],
                         'amount'         => ['BINT', 0],
-                        'data'           => ['TEXT', null],
+                        'data'           => ['VCHAR:2000', null],
                     ],
                     'PRIMARY_KEY' => 'id',
                 ],
@@ -79,6 +79,7 @@ class v_0_30_0 extends \phpbb\db\migration\migration
                         'product_class_id' => ['INT:11', 0],
                         'price'            => ['BINT', 0],
                         'quantity'         => ['INT:11', 1],
+                        'data'             => ['VCHAR:2000', null],
                     ],
                     'PRIMARY_KEY' => 'id',
                 ],
@@ -96,7 +97,7 @@ class v_0_30_0 extends \phpbb\db\migration\migration
                         'help_url'     => ['VCHAR:500', ''],
                         'max_per_user' => ['INT:11', 0],
                         'enable'       => ['BOOL', 1],
-                        'data'         => ['TEXT', null],
+                        'data'         => ['VCHAR:2000', null],
                     ],
                     'PRIMARY_KEY' => 'id',
                 ],
@@ -112,6 +113,20 @@ class v_0_30_0 extends \phpbb\db\migration\migration
                     'PRIMARY_KEY' => 'id',
                 ],
             ],
+            'add_unique_index'    => [
+                $this->table_prefix . 'snahp_mrkt_product_classes'  => [
+                    'name' => ['name'],
+                ],
+                $this->table_prefix . 'snahp_bank_exchange_rates'  => [
+                    'type' => ['type'],
+                ],
+                $this->table_prefix . 'snahp_user_inventory'  => [
+                    'user_id_pcid' => ['user_id', 'product_class_id'],
+                ],
+                $this->table_prefix . 'snahp_custom_ranks'  => [
+                    'user_id' => ['user_id'],
+                ],
+            ],
             'add_index'    => [
                 $this->table_prefix . 'snahp_bank_transactions' => [
                     'user_id' => ['user_id'],
@@ -119,17 +134,11 @@ class v_0_30_0 extends \phpbb\db\migration\migration
                 $this->table_prefix . 'snahp_bank_transaction_items' => [
                     'transaction_id' => ['transaction_id'],
                 ],
-                $this->table_prefix . 'snahp_bank_exchange_rates' => [
-                    'type' => ['type'],
-                ],
                 $this->table_prefix . 'snahp_mrkt_invoices' => [
                     'user_id' => ['user_id'],
                 ],
                 $this->table_prefix . 'snahp_mrkt_invoice_items' => [
                     'invoice_id' => ['invoice_id'],
-                ],
-                $this->table_prefix . 'snahp_mrkt_product_classes' => [
-                    'name' => ['name'],
                 ],
                 $this->table_prefix . 'snahp_user_inventory' => [
                     'user_id' => ['user_id'],
@@ -138,12 +147,7 @@ class v_0_30_0 extends \phpbb\db\migration\migration
             ],
             'add_columns' => [
                 USERS_TABLE => [
-                    'snp_bank_n_token'  => ['BINT', 0],
-                ],
-            ],
-            'add_unique_index'    => [
-                $this->table_prefix . 'snahp_custom_ranks'  => [
-                    'user_id' => ['user_id'],
+                    'snp_bank_n_balance'  => ['BINT', 0],
                 ],
             ],
         ];
@@ -166,6 +170,13 @@ class v_0_30_0 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
+        // global $db;
+        // $sql = "INSERT INTO `phpbb`.`phpbb_snahp_bank_exchange_rates` (`type`, `display_name`, `sell_unit`, `buy_unit`, `buy_rate`, `sell_rate`, `enable`) VALUES ('invitation_points', 'Invitation Points', 'IP', '$', '5000', '50000', '1')";
+        // $db->sql_query($sql);
+        // $sql = "INSERT INTO `phpbb`.`phpbb_snahp_mrkt_product_classes` (`name`, `display_name`, `description`, `price`, `value`, `unit`, `lifespan`, `img_url`, `help_url`, `max_per_user`, `enable`) VALUES ('custom_rank', 'Custom Rank I', 'Create custom rank', '50000', '1', '', '0', '', '', '1', '1')";
+        // $db->sql_query($sql);
+        // $sql = "INSERT INTO `phpbb`.`phpbb_snahp_mrkt_product_classes` (`name`, `display_name`, `description`, `price`, `value`, `unit`, `lifespan`, `img_url`, `help_url`, `max_per_user`, `enable`) VALUES ('search_cooldown_reducer', 'Search Interval Reducer I', 'Reduce the time between consecutive searches', '10000', '3', 'sec', '0', '', '', '10', '1')";
+        // $db->sql_query($sql);
         return [
             ['config.add', ['snp_econ_b_master', 1]],
             ['config.add', ['snp_bank_b_master', 1]],
