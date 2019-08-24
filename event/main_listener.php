@@ -48,15 +48,18 @@ function closetags($html) {/*{{{*/
 class main_listener extends base implements EventSubscriberInterface
 {
     protected $table_prefix;
+    protected $user_inventory;
+    protected $product_class;
     public function __construct($table_prefix0, $table_prefix,
-        $user_inventory_helper, $market_helper)/*{{{*/
+        $user_inventory, $product_class
+    )/*{{{*/
     {
         $this->table_prefix = $table_prefix;
-        $this->user_inventory_helper = $user_inventory_helper;
-        $this->market_helper = $market_helper;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->at_prefix          = '@@';
+        $this->user_inventory = $user_inventory;
+        $this->product_class = $product_class;
     }/*}}}*/
 
     static public function getSubscribedEvents()/*{{{*/
@@ -149,24 +152,21 @@ class main_listener extends base implements EventSubscriberInterface
                 ['disable_email_notification', 0],
             ],
             'core.search_modify_interval' => [
-                ['test', 0],
+                ['modify_search_interval', 0],
             ],
         ];
     }/*}}}*/
 
     public function modify_user_rank($event)/*{{{*/
     {
-        $timeit0 = microtime(true);
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
-        $mk = $this->market_helper;
-        $uinv = $this->user_inventory_helper;
         $product_class_name = 'custom_rank';
-        $product_class_data = $mk->get_product_class_by_name((string)$product_class_name);
+        $product_class_data = $this->product_class->get_product_class_by_name((string)$product_class_name);
         if ($product_class_data)
         {
             $pcid = (int)$product_class_data['id'];
-            $inv_data = $uinv->get_single_inventory("product_class_id=${pcid}", $poster_id);
+            $inv_data = $this->user_inventory->get_single_inventory("product_class_id=${pcid}", $poster_id);
             if ($inv_data)
             {
                 [$rank_title, $rank_img] = $this->get_custom_rank($poster_id);
@@ -181,11 +181,11 @@ class main_listener extends base implements EventSubscriberInterface
             }
         }
         $event['post_row'] = $post_row;
-        prn(microtime(true) - $timeit0);
     }/*}}}*/
 
-    public function test($event)/*{{{*/
+    public function modify_search_interval($event)/*{{{*/
     {
+        // Group Based Search
         $user_id = $this->user->data['user_id'];
         $interval = $event['interval'];
         if ($this->config['snp_search_b_enable'])
@@ -201,15 +201,14 @@ class main_listener extends base implements EventSubscriberInterface
                 $interval = ($user_id == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
             }
         }
-        $mk = $this->market_helper;
-        $uinv = $this->user_inventory_helper;
+        // User Inventory Upgrade
         $product_class_name = 'search_cooldown_reducer';
-        $product_class_data = $mk->get_product_class_by_name((string)$product_class_name);
+        $product_class_data = $this->product_class->get_product_class_by_name((string)$product_class_name);
         if ($product_class_data)
         {
             $pcid = (int)$product_class_data['id'];
-            $inv_data = $uinv->get_single_inventory("product_class_id=${pcid}");
-            if ($inv_data && $this->user_belongs_to_group($user_id, 18))
+            $inv_data = $this->user_inventory->get_single_inventory("product_class_id=${pcid}");
+            if ($inv_data && $this->user_belongs_to_groupset($user_id, 'Red Team'))
             {
                 $multiplier = (int) $inv_data['quantity'];
                 $value = $product_class_data['value']; 
