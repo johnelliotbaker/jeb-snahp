@@ -1,0 +1,61 @@
+imports:
+    - { resource: economy/economy_ctrl.yml }
+services:
+# BANK
+    jeb.snahp.bank.exchange_rates:
+        class: jeb\snahp\core\bank\exchange_rates
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.bank.user_account:
+        class: jeb\snahp\core\bank\user_account
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@service_container'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.bank.bank_transaction_logger'
+            - '@jeb.snahp.bank.exchange_rates'
+    jeb.snahp.bank.bank_transaction_logger:
+        class: jeb\snahp\core\bank\bank_transaction_logger
+        arguments:
+            - '@dbal.conn'
+            - '%jeb.snahp.tables%'
+            # - '@jeb.snahp.market.market'
+# INVENTORY
+    jeb.snahp.user.user_inventory:
+        class: jeb\snahp\core\user\user_inventory
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.market.market_transaction_logger'
+            - '@jeb.snahp.market.product_class'
+# PRODUCT CLASSES & PRODUCTS
+    jeb.snahp.market.market:
+        class: jeb\snahp\core\market\market
+        arguments:
+            - '@dbal.conn'
+            - '%jeb.snahp.tables%'
+            # - '@jeb.snahp.auth.user_auth'
+            # - '@jeb.snahp.bank.user_account'
+            # - '@jeb.snahp.user.user_inventory'
+            # - '@jeb.snahp.market.product_class'
+            # - '@jeb.snahp.bank_helper'
+            # - '@jeb.snahp.market_helper'
+            # - '@jeb.snahp.user_inventory_helper'
+    jeb.snahp.market.product_class:
+        class: jeb\snahp\core\market\product_class
+        arguments:
+            - '@dbal.conn'
+            - '%jeb.snahp.tables%'
+    jeb.snahp.market.market_transaction_logger:
+        class: jeb\snahp\core\market\market_transaction_logger
+        arguments:
+            - '@dbal.conn'
+            - '%jeb.snahp.tables%'
+            # - '@jeb.snahp.market.market'

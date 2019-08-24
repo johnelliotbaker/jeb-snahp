@@ -1,0 +1,68 @@
+services:
+    jeb.snahp.economy_init:
+        class: jeb\snahp\controller\economy\economy_init
+        arguments:
+            - '@dbal.conn'
+            - '%jeb.snahp.tables%'
+    jeb.snahp.economy_user_dashboard:
+        class: jeb\snahp\controller\economy\economy_user_dashboard
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.bank.user_account'
+            - '@jeb.snahp.market.market'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
+            - '@jeb.snahp.bank.exchange_rates'
+            - '@jeb.snahp.bank.bank_transaction_logger'
+            - '@jeb.snahp.market.market_transaction_logger'
+    jeb.snahp.economy_dashboard:
+        class: jeb\snahp\controller\economy\economy_dashboard
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.bank.user_account'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
+    jeb.snahp.user_account_manager:
+        class: jeb\snahp\controller\economy\user_account_manager
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.bank.user_account'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
+            # - '@jeb.snahp.bank_helper'
+            # - '@jeb.snahp.market_helper'
+            # - '@jeb.snahp.user_inventory_helper'
+    jeb.snahp.test:
+        class: jeb\snahp\controller\test
+        parent: jeb.snahp.base
+        arguments:
+            - '@jeb.snahp.bank_helper'
+            - '@jeb.snahp.market_helper'
+            - '@jeb.snahp.user_inventory_helper'
+            - '@jeb.snahp.bank.user_account'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
