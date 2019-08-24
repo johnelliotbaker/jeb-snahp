@@ -538,7 +538,6 @@ abstract class base
         case 'dib':
             $def = $this->container->getParameter('jeb.snahp.req')['def'];
             $def_dib = $def['dib'];
-            prn($def_dib);
             $status_condition = " r.status={$def_dib} ";
             break;
         case 'all':
@@ -1233,7 +1232,6 @@ abstract class base
         // So we encode the necessary tags before the string truncate,
         // then post-process it after string truncation.
         $this->tmp = [];
-        prn($this->tmp);
         $encoder_table = $this->container->getParameter('jeb.snahp.tags')['encode'];
         foreach($encoder_table as $key => $entry)
         {
@@ -1489,6 +1487,10 @@ abstract class base
         }
         include_once('includes/functions_user.php');
         $user_id_ary = [$user_id];
+        if (!array_key_exists($groupset_name, $groupset))
+        {
+            return false;
+        }
         $group_id_ary = $groupset[$groupset_name];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;
