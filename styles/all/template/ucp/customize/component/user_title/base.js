@@ -15,11 +15,11 @@ CustomRank.save = function()
 
 CustomRank.update = function()
 {
-    $container = $('#loading');
+    $container = $('#custom_rank_save_button');
     $container.html(`
-        <div class="spinner-border text-secondary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>`);
+        <div id="spinner" class="spinner-border" role="status">
+        </div>
+        `);
     var url = `/app.php/snahp/custom_rank/get_info/`;
     console.log(url);
     $.get(url).done((resp)=>{
@@ -28,7 +28,7 @@ CustomRank.update = function()
         $('#custom_rank_title').val(title);
         $('#custom_rank_img').val(img_url);
         setTimeout(function() {
-            $container.empty();
+            $container.html(`<div id="spinner" role="status"><b>Save</b></div>`);
         }.bind(this), 300);
     })
 }
