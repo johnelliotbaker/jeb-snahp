@@ -1,0 +1,25 @@
+.twbs textarea:focus,
+.twbs input[type="text"]:focus,
+.twbs input[type="password"]:focus,
+.twbs input[type="datetime"]:focus,
+.twbs input[type="datetime-local"]:focus,
+.twbs input[type="date"]:focus,
+.twbs input[type="month"]:focus,
+.twbs input[type="time"]:focus,
+.twbs input[type="week"]:focus,
+.twbs input[type="number"]:focus,
+.twbs input[type="email"]:focus,
+.twbs input[type="url"]:focus,
+.twbs input[type="search"]:focus,
+.twbs input[type="tel"]:focus,
+.twbs input[type="color"]:focus,
+.twbs .uneditable-input:focus {   
+  border-color: rgba(126, 239, 104, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+  outline: 0 none;
+}
+.twbs .btn:focus {
+  border-color: auto;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.00) inset, 0 0 8px rgba(126, 239, 104, 0.0);
+  outline: 0 none;
+} 

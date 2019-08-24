@@ -1,0 +1,40 @@
+<table class="table table-sm table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col">TID</th>
+      <th scope="col">User</th>
+      <th scope="col">Broker</th>
+      <th scope="col">Time</th>
+      <th scope="col">Type</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN T -->
+    <tr>
+      <td>
+        {T.transaction_id}
+      </td>
+      <td>
+        {T.user_id}
+      </td>
+      <td>
+        {T.broker_id}
+      </td>
+      <td>
+        {T.created_time}
+      </td>
+      <td>
+        {T.type}
+      </td>
+      <td>
+        {T.amount}
+      </td>
+      <td>
+        {T.comment}
+      </td>
+    </tr>
+    <!-- END T -->
+  </tbody>
+</table>

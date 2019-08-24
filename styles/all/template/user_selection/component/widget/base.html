@@ -1,0 +1,16 @@
+<script>
+  {% include '@jeb_snahp/user_selection/component/widget/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/user_selection/component/widget/base.css' %}
+</style>
+<div class="searchbox_wrapper" style="margin-top:5px;">
+  <div class="input-group mb-3" style="margin-bottom:4px !important;">
+    <input id="username_searchbox" type="text" class="form-control" placeholder="Enter Username">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" id="list_btn">Search</button>
+    </div>
+  </div>
+  <div id="ajax_usernames" style="height:26px; margin-bottom:6px; font-size: 16px;"></div>
+  <input type="hidden" id="username_data" data-json="">
+</div>

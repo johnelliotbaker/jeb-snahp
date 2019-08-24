@@ -1,134 +1,66 @@
 <script>
-var Formatter = {};
-Formatter.number_with_commas = function(x)
-{
-  return x.toLocaleString();
-}
-
-var ShopTransaction = {};
-
-ShopTransaction.initiate_buy = function(event)
-{
-  $('#mod_confirm_shop_btn').removeClass('d-none');
-  $target = $(event.target);
-  var j = JSON.parse($target[0].dataset.json);
-  var id = j.id;
-  var quantity = $('#shop_buy_quantity_' + id).val();
-  if (quantity <= 0) { return false; }
-  j['quantity'] = quantity;
-  j['total'] = quantity * j.price;
-  $('#mod_confirm_shop').modal('show');
-  total = Formatter.number_with_commas(quantity);
-  $container = $('#mod_confirm_shop_body');
-  $container.html(`<p style="font-size:1.5em;">
-    You are about to purchase <b>${j['quantity']} ${j['display_name']}</b>.
-    This will cost you ${j['total']} tokens.
-    Please confirm the transaction.
-    </p>`);
-}
-
-ShopTransaction.confirm_buy = function(event)
-{
-  $container = $('#mod_confirm_shop_body');
-  $container.html(`<div class="mx-auto" style="width: 30px;">
-      <div class="spinner-border text-secondary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      </div>`);
-  var j = JSON.parse($target[0].dataset.json);
-  j.quantity = $('#shop_buy_quantity_' + j.id).val();
-  var url = `/app.php/snahp/test/handle/buy_product/?pcid=${j['id']}&quantity=${j['quantity']}`
-  $.get(url).done((resp)=>{
-    var status = resp.status;
-    if (status==1)
-    {
-      location.reload();
-    }
-    else
-    {
-      $('#mod_confirm_shop_btn').addClass('d-none');
-      $container.html(`<p style="font-size:1.6em;">
-                Unfortunately, we were unable process your request.<br><br>
-                <b>Reason: ${resp['reason']}</b>
-                </p>`);
-    }
-  });
-}
-
+  {% include '@jeb_snahp/shop/component/transactions/component/process/base.js' %}
 </script>
-
 <style>
-.inline_block
-{
-    display: inline-block;
-    font-size: .9rem !important;
-    padding-left: 4px;
-    padding-right: 4px;
-}
+  {% include '@jeb_snahp/shop/component/transactions/component/process/base.css' %}
 </style>
 
-<div class="row mt-2">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Shop</h5>
-        <table class="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Buy</th>
-              <th scope="col">Description</th>
-              <th scope="col">Inventory</th>
-              <th scope="col">Value</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- BEGIN PRODUCT_CLASSES -->
-            <tr style="font-size: 1.1em;">
-              <td class="pt-2">{PRODUCT_CLASSES.display_name}
-                <div class="inline_block help">
-                  <a href="/app.php/snahp/help/docs/?name=ucp_custom_rank" target="_blank">
-                    <i class="fa fa-question help"></i>
-                  </a>
-                </div>
-              
-              
-              
-              </td>
-              <td class="pt-2">{PRODUCT_CLASSES.description}</td>
-              <td class="pt-2">{PRODUCT_CLASSES.n_bought} / {PRODUCT_CLASSES.max_per_user}</td>
-              <td class="pt-2">{PRODUCT_CLASSES.value} {PRODUCT_CLASSES.unit}</td>
-              <td class="pt-2">${PRODUCT_CLASSES.price_formatted}</td>
-              {% if PRODUCT_CLASSES.b_buy %}
-              <td class="pt-1">
-                <input id="shop_buy_quantity_{PRODUCT_CLASSES.id}" 
-                style="font-size: 1.1em; height:20px; width:60px; text-align:right;" 
-                class="form-control form-control-sm w-10" type="number" min="0" max="{PRODUCT_CLASSES.max_purchasable}" value="0"/>
-              </td>
-              <td class="pt-1 text-center">
-                <button 
-                  data-id="{PRODUCT_CLASSES.id}"
-                  data-json='{PRODUCT_CLASSES.json}'
-                  onclick="ShopTransaction.initiate_buy(event);"
-                  style="font-size:10px; padding:1px 5px 1px 5px;"
-                  type="button" class="btn btn-success">Buy</button>
-              </td>
-              {% else %}
-              <td class="pt-1"></td>
-              <td class="pt-1"></td>
-              {% endif %} 
-            </tr>
-            <!-- END PRODUCT_CLASSES -->
-          </tbody>
-        </table>
+<table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Buy</th>
+      <th scope="col">Description</th>
+      <th scope="col">Inventory</th>
+      <th scope="col">Value</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN PRODUCT_CLASSES -->
+    <tr style="font-size: 1.1em;">
+      <td class="pt-2">{PRODUCT_CLASSES.display_name}
+        {% if PRODUCT_CLASSES.help_url %}
+        <div class="inline_block help">
+          <a href="{PRODUCT_CLASSES.help_url}" target="_blank">
+            <i class="fa fa-question help"></i>
+          </a>
+          {% endif %}
+        </div>
+      </td>
+      <td class="pt-2">{PRODUCT_CLASSES.description}</td>
+      <td class="pt-2">{PRODUCT_CLASSES.n_bought} / {PRODUCT_CLASSES.max_per_user}</td>
+      <td class="pt-2">{PRODUCT_CLASSES.value} {PRODUCT_CLASSES.unit}</td>
+      <td class="pt-2">${PRODUCT_CLASSES.price_formatted}</td>
+      {% if PRODUCT_CLASSES.b_buy %}
+      <td class="pt-1">
+        <input id="shop_buy_quantity_{PRODUCT_CLASSES.id}" 
+               style="font-size: 1.1em; height:20px; width:60px; text-align:right;" 
+               class="form-control form-control-sm w-10" type="number" min="0" max="{PRODUCT_CLASSES.max_purchasable}" value="0"/>
+      </td>
+      <td class="pt-1 text-center">
+        <button 
+          data-id="{PRODUCT_CLASSES.id}"
+          data-json='{PRODUCT_CLASSES.json}'
+          onclick="ShopTransaction.initiate_buy(event);"
+          style="font-size:10px; padding:1px 5px 1px 5px;"
+          type="button" class="btn btn-success">Buy</button>
+      </td>
+      {% else %}
+      <td class="pt-1"></td>
+      <td class="pt-1"></td>
+      {% endif %} 
+    </tr>
+    <!-- END PRODUCT_CLASSES -->
+  </tbody>
+</table>
 
-      </div>
-    </div>
-  </div>
 
-</div>
+
+
+
+
 
 
 <div id="modal_shop_container">

@@ -9,22 +9,16 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Account Information</h5>
-            <div class="row">
+            <div class="row" style="font-size: 1.6em; font-weight: 900;">
               <div class="col-6"><p>Balance:</p></div>
               <div class="col-6"><p>${BALANCE}</p></div>
             </div>
-            <div class="row">
+            <div class="row" style="font-size: 1.4em; font-weight: 900;">
               <div class="col-6"><p>Invitation Points:</p></div>
               <div class="col-6"><p>{N_INV_PTS}</p></div>
             </div>
             <div class="row">
               <div class="col-6">
-                <button 
-                  data-id="{EXCHANGE_RATE.id}"
-                  data-json='{EXCHANGE_RATE.json}'
-                  onclick="BankTransaction.reset_user_balance(event);"
-                  style="font-size:10px; padding:1px 5px 1px 5px;"
-                  type="button" class="btn btn-danger">Sell</button>
 </div>
             </div>
           </div>
@@ -36,19 +30,39 @@
   <div class="Make Transactions">
     <div class="row mt-3">
       <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Trade-in Assets</h5>
+            <div class="col p-0">
             {% include '@jeb_snahp/bank/component/transactions/component/process/base.html' %}
-            {% include '@jeb_snahp/shop/base.html' %}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="transaction_history">
     <div class="row mt-3">
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Transaction History</h5>
-            {% include '@jeb_snahp/bank/component/transactions/component/history/base.html' %}
+            <h5 class="card-title">Shop</h5>
+            <div class="col p-0">
+            {% include '@jeb_snahp/shop/base.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banking_history">
+    <div class="row mt-3">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Banking History</h5>
+            <div class="col">
+              {% include '@jeb_snahp/bank/component/transactions/component/history/base.html' %}
+            </div>
           </div>
         </div>
       </div>

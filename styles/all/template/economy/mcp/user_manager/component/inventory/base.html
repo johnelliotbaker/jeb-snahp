@@ -1,0 +1,60 @@
+<script>
+var EconomyUserInventory = {};
+
+EconomyUserInventory.save_inventory_item = function(event)
+{
+  var user_id = UserSelection.data.user_id;
+  if (!user_id) { return false; }
+  $target = $(event.target);
+  var dataset = $target[0].dataset;
+  var id = dataset.id;
+  var quantity = $('#inventory_quantity_' + id).val();
+  if (quantity < 0) { return false; }
+  var url = '/app.php/snahp/economy/uam/set_user_inventory_item/?u=' + user_id + '&pcid=' + id + '&quantity=' + quantity;
+  $.get(url).done((resp)=>{
+    EconomyUserAccount.request_account_info();
+  });
+}
+</script>
+
+<style>
+.inline_block
+{
+    display: inline-block;
+    font-size: .9rem !important;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+</style>
+
+<div class="row mt-2">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">User Inventory</h5>
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Inventory</th>
+              <th scope="col">Value</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="user_inventory_table_body" style="font-size: 1.1em;">
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="modal_shop_container">
+  {% include '@jeb_snahp/economy/mcp/user_manager/component/inventory/confirmation.html' %}
+</div>

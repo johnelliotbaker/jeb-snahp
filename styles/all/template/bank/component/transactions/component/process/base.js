@@ -4,7 +4,21 @@ Formatter.number_with_commas = function(x)
     return x.toLocaleString();
 }
 
+Formatter.number_as_tokens = function(x)
+{
+  return '$' + x.toLocaleString();
+}
+
 var BankTransaction = {};
+
+BankTransaction.reset_user_balance = function(event)
+{
+    var user_id = $('input[name="snp_user_id"]').val();
+    var url = '/app.php/snahp/economy/user_dashboard/reset_user/?u=' + user_id;
+    $.get(url).done((resp)=>{
+        location.reload();
+    });
+}
 
 BankTransaction.initiate_exchange = function(event)
 {
@@ -17,10 +31,11 @@ BankTransaction.initiate_exchange = function(event)
     if (amount <= 0) { return false; }
     $('#mod_confirm').modal('show');
     var total = rate * amount;
-    total = Formatter.number_with_commas(total);
+    // total = Formatter.number_with_commas(total);
+    total = Formatter.number_as_tokens(total);
     $container = $('#mod_confirm_body');
     $container.html(`<p style="font-size:1.5em;">
-    You are about to sell ` + amount + ` Invitation Point and receive $` + total + `.
+    You are about to sell ` + amount + ` Invitation Point and receive   ` + total + `.
     This action is final.
     </p>`);
 }
@@ -36,10 +51,11 @@ BankTransaction.confirm_exchange = function(event)
     var j = JSON.parse($target[0].dataset.json);
     j.amount = $('#bank_exchange_amount_' + j.id).val();
     j.dir = 'sell';
-    var url = `/app.php/snahp/test/handle/exchange/?id=${j['id']}&dir=${j['dir']}&amount=${j['amount']}`
-    // console.log(url);
+    var url = `/app.php/snahp/economy/user_dashboard/exchange/?id=${j['id']}&dir=${j['dir']}&amount=${j['amount']}`
+    console.log(url);
     $.get(url).done((resp)=>{
         var status = resp.status;
+        console.log(resp);
         if (status==1)
         {
             location.reload();
@@ -68,5 +84,5 @@ BankTransaction.update_exchange_row_total = function(event)
     var rate = data.sell_rate;
     var amount = $('#bank_exchange_amount_' + id).val();
     $total = $('#bank_exchange_total_' + id);
-    $total.text(data.buy_unit + amount*rate);
+    $total.text(data.buy_unit + Formatter.number_with_commas(amount*rate));
 }

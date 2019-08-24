@@ -1,21 +1,6 @@
 <script>
-
-var CustomRank = {};
-
-CustomRank.save = function()
-{
-  var data = {};
-  data['rt'] = encodeURIComponent($('#custom_rank_title').val());
-  data['ri'] = encodeURIComponent($('#custom_rank_img').val());
-  var url = `/app.php/snahp/custom_rank/save/?rt=${data['rt']}&ri=${data['ri']}`;
-  console.log(url);
-  $.get(url).done((resp)=>{
-      console.log(resp);
-    })
-}
-
+  {% include '@jeb_snahp/ucp/customize/component/user_title/base.js' %}
 </script>
-
 
 <div class="row container mt-3 mb-3 m-0 p-0">
   <div class="card custom_title_card">
@@ -26,6 +11,9 @@ CustomRank.save = function()
             <i class="fa fa-question help"></i>
           </a>
         </span>
+      </div>
+      <div class="p-0 mb-2" style="font-size:.8em;">
+        *Disclaimer: Please read the help page for relevant rules
       </div>
       <div class="card-text">
         <div class="form-group row">
@@ -41,6 +29,8 @@ CustomRank.save = function()
           </div>
         </div>
         <div class="form-group row">
+          <div id="loading" class="ml-auto mr-3">
+          </div>
           <div class="ml-auto mr-3">
             <button onClick="CustomRank.save();"class="btn btn-primary">Save</button>
           </div>

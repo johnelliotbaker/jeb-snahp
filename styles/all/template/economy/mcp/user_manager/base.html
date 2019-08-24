@@ -1,0 +1,83 @@
+<!-- INCLUDE overall_header.html -->
+
+<p>{ELAPSED_TIME}</p>
+{% if ERROR %}
+{ERROR}
+{% else %}
+
+<script>
+  {% include '@jeb_snahp/economy/mcp/user_manager/base.js' %}
+  {% include '@jeb_snahp/economy/mcp/user_manager/component/assets/base.js' %}
+  {% include '@jeb_snahp/user_selection/component/widget/base.js' %}
+</script>
+
+<style>
+  {% include '@jeb_snahp/user_selection/component/widget/base.css' %}
+</style>
+
+<div class="twbs">
+
+  <div class="account_info">
+    <div class="row mt-3">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Account Information</h5>
+            <div class="row">
+              <div class="input-group my-0 mx-3">
+                <div class="searchbox_wrapper" style="margin-top:5px;">
+                  <div class="input-group mb-3" style="margin-bottom:4px !important;">
+                    <input id="username_searchbox" type="text" class="form-control" placeholder="Enter Username">
+                    <div class="input-group-append">
+                      <button onClick="EconomyUserAccount.request_account_info(event);" class="btn btn-outline-secondary" type="button" id="list_btn">Load</button>
+                    </div>
+                  </div>
+                  <div id="ajax_usernames" style="height:26px; padding-top:3px; margin-bottom:6px; font-size: 16px;"></div>
+                  <input type="hidden" id="username_data" data-json="">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-group my-0 mx-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="balance">Balance</span>
+                </div>
+                <input id="user_balance" type="number" value="{BALANCE}" min="0" class="form-control" placeholder="" aria-label="" aria-describedby="balance">
+                <button 
+                   data-id="{EXCHANGE_RATE.id}"
+                   data-json='{EXCHANGE_RATE.json}'
+                   onclick="UserAssets.save_user_balance(event);"
+                   style="font-size:1.6em; padding:1px 5px 1px 5px;"
+                   type="button" class="btn btn-success">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="row mt-3">
+      <div class="col">
+        {% include '@jeb_snahp/economy/mcp/user_manager/component/inventory/base.html' %}
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="transaction_history"> -->
+  <!--   <div class="row mt-3"> -->
+  <!--     <div class="col"> -->
+  <!--       <div class="card"> -->
+  <!--         <div class="card-body"> -->
+  <!--           <h5 class="card-title">Transaction History</h5> -->
+  <!--           {% include '@jeb_snahp/bank/component/transactions/component/history/base.html' %} -->
+  <!--         </div> -->
+  <!--       </div> -->
+  <!--     </div> -->
+  <!--   </div> -->
+  <!-- </div> -->
+
+</div>
+{% endif %}
+<!-- INCLUDE overall_footer.html -->

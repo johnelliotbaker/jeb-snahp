@@ -1,0 +1,56 @@
+<!-- INCLUDE overall_header.html -->
+
+<p>{ELAPSED_TIME}</p>
+{% if ERROR %}
+{ERROR}
+{% else %}
+
+<script>
+</script>
+
+<style>
+</style>
+
+<div class="twbs">
+  <div class="account_info">
+    <div class="row m-0">
+      <div class="col mx-2">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a 
+              class="nav-link active noselect" 
+              href="/app.php/snahp/economy/dashboard/overview/?t=bank">Bank
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link active noselect" 
+              href="/app.php/snahp/economy/dashboard/overview/?t=market">Market
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="col">
+        {% if type %}
+        <div class="card">
+          <div class="card-body">
+            <div class="col">{PAGINATION}</div>
+            {% if type=="bank" %}
+            <h5 class="card-title">Banking Transaction</h5>
+            {% include '@jeb_snahp/economy/mcp/economy_dashboard/component/transaction_table/bank.html' %}
+            {% elseif type=="market" %}
+            <h5 class="card-title">Market Transaction</h5>
+            {% include '@jeb_snahp/economy/mcp/economy_dashboard/component/transaction_table/market.html' %}
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endif %}
+<!-- INCLUDE overall_footer.html -->
