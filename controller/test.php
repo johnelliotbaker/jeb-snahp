@@ -10,22 +10,31 @@ class test extends base
     protected $prefix;
     protected $allowed_groupset;
 
-    public function __construct($prefix, $bank_helper, $market_helper, $user_inventory_helper)/*{{{*/
+    public function __construct($prefix, $bank_helper, $market_helper, $user_inventory_helper,
+        $bank_user_account, $user_inventory, $product_class
+    )/*{{{*/
     {
         $this->prefix = $prefix;
         $this->bank_helper = $bank_helper;
         $this->market_helper = $market_helper;
         $this->user_inventory_helper = $user_inventory_helper;
         $this->allowed_groupset = 'Red Team';
+        $this->bank_user_account = $bank_user_account;
+        $this->user_inventory = $user_inventory;
+        $this->product_class = $product_class;
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
     {
+        return false;
         $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
         $this->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
         switch ($mode)
         {
+        case 'user_manager':
+            $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/user_manager/base.html';
+            return $this->handle_user_manager($cfg);
         case 'transactions':
             $cfg['tpl_name'] = '@jeb_snahp/bank/component/transactions/base.html';
             return $this->handle_transactions($cfg);
@@ -38,11 +47,44 @@ class test extends base
         case 'test':
             $cfg['tpl_name'] = '@jeb_snahp/bank/base.html';
             return $this->handle_test($cfg);
+        case 'reset_user':
+            return $this->reset_user();
+        case 'set_user_balance':
+            return $this->set_user_balance();
         case 'process_exchange_confirm':
         default:
             break;
         }
         trigger_error('Nothing to see here. Move along.');
+    }/*}}}*/
+
+    private function set_user_balance()/*{{{*/
+    {
+        $user_id = $this->request->variable('u', 0);
+        if (!$user_id)
+        {
+            return false;
+        }
+        $balance = $this->request->variable('b', -1);
+        if ($balance < 0)
+        {
+            return false;
+        }
+        $js = new \phpbb\json_response();
+        $this->bank_user_account->set_balance($user_id, $balance);
+        return $js->send(['status' => 1, 'reason'=> 'Success']);
+    }/*}}}*/
+
+    private function reset_user()/*{{{*/
+    {
+        $user_id = $this->request->variable('u', 0);
+        if (!$user_id)
+        {
+            return false;
+        }
+        $js = new \phpbb\json_response();
+        $this->bank_user_account->reset($user_id);
+        return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
     private function has_enough_token($total_cost, $user_id)/*{{{*/
@@ -120,6 +162,53 @@ class test extends base
         return $js->send($data);
     }/*}}}*/
 
+    public function handle_user_manager($cfg)/*{{{*/
+    {
+        $this->reject_non_dev();
+        $time = microtime(true);
+        $bua = $this->bank_user_account;
+        $user_id = $this->request->variable('u', 0);
+        if (!$user_id)
+        {
+            $this->template->assign_vars([
+                'ERROR' => 'That user does not exist. Error Code: 2ee4fe201a',
+            ]);
+            return $this->helper->render($cfg['tpl_name'], 'Snahp Economy Manager');
+        }
+        $balance = $bua->get_balance($user_id);
+        if ($balance===null)
+        {
+            trigger_error('Could not get user balance. Error Code: 8d7fa5195e');
+        }
+        $pclasses = $this->product_class->get_product_classes();
+        $inventory = $this->user_inventory->get_inventory($user_id);
+        $tmp = [];
+        foreach ($inventory as $inv)
+        {
+            $tmp[$inv['product_class_id']] = $inv;
+        } 
+        foreach ($pclasses as $pc)
+        {
+            if (array_key_exists($pc['id'], $tmp))
+            {
+                $pc['quantity'] = $tmp[$pc['id']]['quantity'];
+            }
+            else
+            {
+                $pc['quantity'] = 0;
+            }
+            $pc['json'] = json_encode($pc);
+            $this->template->assign_block_vars('INV', $pc);
+        }
+        $elapsed_time = microtime(true) - $time;
+        $this->template->assign_vars([
+            'ELAPSED_TIME' => $elapsed_time,
+            'BALANCE' => $balance,
+            'BALANCE_FORMATTED' => number_format($balance),
+        ]);
+        return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
+    }/*}}}*/
+
     public function handle_transactions($cfg)/*{{{*/
     {
         $this->reject_non_dev();
@@ -163,7 +252,7 @@ class test extends base
         {
             $type = $entry['type'];
             $data = unserialize($entry['data']);
-            $comment = $data['comment'];
+            $comment = isset($data['comment']) ? $data['comment'] : '';
             $entry['comment'] = $comment;
             $this->template->assign_block_vars('HISTORY', $entry);
         }
