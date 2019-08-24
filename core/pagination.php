@@ -13,7 +13,7 @@ class pagination
     {
         $arr = [1,2,3,4,5,6,7];
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
-        $html .= '<li class="page-item"><a class="page-link" href="#">Previous</a></li>';
+        $html .= '<li class="page-item noselect"><a class="page-link" href="#">Previous</a></li>';
         foreach ($arr as $key => $entry)
         {
             if ($key==4)
@@ -24,9 +24,9 @@ class pagination
             {
                 $active = '';
             }
-            $html .= "<li onclick='test({$key});' class='page-item{$active}'><a class='page-link'>{$key}</a></li>";
+            $html .= "<li onclick='test({$key});' class='page-item noselect{$active}'><a class='page-link'>{$key}</a></li>";
         }
-        $html .= '<li class="page-item"><a class="page-link" href="#">Next</a></li>';
+        $html .= '<li class="page-item noselect"><a class="page-link" href="#">Next</a></li>';
         $html .= '</ul></nav>';
         return $html;
     }
@@ -42,11 +42,11 @@ class pagination
         ];
         if ($i_block <= $block_start)
         {
-            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
+            $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
         }
         else
         {
-            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">' . $block_start . '</a></li>';
+            $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">' . $block_start . '</a></li>';
         }
         return $html;
     }
@@ -62,11 +62,11 @@ class pagination
         ];
         if ($i_block >= $block_end)
         {
-            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
+            $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
         }
         else
         {
-            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">' . $block_end . '</a></li>';
+            $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">' . $block_end . '</a></li>';
         }
         return $html;
     }
@@ -78,11 +78,11 @@ class pagination
         $url = $base_url . "&per_page={$per_page}&start={$prev}";
         if ($i_block <= $block_start)
         {
-            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">Prev</span></li>';
+            $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Prev</span></li>';
         }
         else
         {
-            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">Prev</a></li>';
+            $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">Prev</a></li>';
         }
         return $html;
     }
@@ -94,11 +94,11 @@ class pagination
         $url = $base_url . "&per_page={$per_page}&start={$next}";
         if ($i_block >= $block_end)
         {
-            $html = '<li class="page-item"><span class="page-link" style="cursor: default;">Next</span></li>';
+            $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Next</span></li>';
         }
         else
         {
-            $html = '<li class="page-item"><a class="page-link" href="' . $url . '">Next</a></li>';
+            $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">Next</a></li>';
         }
         return $html;
     }
@@ -110,7 +110,7 @@ class pagination
         $i_block = ceil($start / $per_page)+1;
         $html .= $this->get_prev($total, $per_page, $i_block, $n_block, $base_url, $start);
         $html .= $this->get_start($total, $per_page, $i_block, $base_url);
-        $html .= "<li class='page-item'><span class='page-link' style='background-color: #007bff; color:white;'>{$i_block}</span></li>";
+        $html .= "<li class='page-item noselect'><span class='page-link' style='background-color: #007bff; color:white;'>{$i_block}</span></li>";
         $html .= $this->get_end($total, $per_page, $i_block, $base_url);
         $html .= $this->get_next($total, $per_page, $i_block, $n_block, $base_url);
         $html .= '</ul></nav>';
@@ -130,8 +130,8 @@ class pagination
         $next = ($i > $n-1) ? ($n-1)*$per_page : $i*$per_page;
         $prev = $base_url . "?per_page={$per_page}&start={$prev}";
         $next = $base_url . "?per_page={$per_page}&start={$next}";
-        $html .= "<li class='page-item'><a class='page-link' href='{$prev}'>Previous</a></li>";
-        $html .= "<li class='page-item'><a class='page-link' href='{$next}'>Next</a></li>";
+        $html .= "<li class='page-item noselect'><a class='page-link' href='{$prev}'>Previous</a></li>";
+        $html .= "<li class='page-item noselect'><a class='page-link' href='{$next}'>Next</a></li>";
         $html .= '</ul></nav>';
         return $html;
     }
