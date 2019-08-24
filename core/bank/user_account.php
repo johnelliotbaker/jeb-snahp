@@ -41,13 +41,13 @@ class user_account
     public function get_balance($user_id)/*{{{*/
     {
         $user_id = (int) $user_id;
-        $sql = 'SELECT snp_bank_n_token FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
+        $sql = 'SELECT snp_bank_n_balance FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         if ($row)
         {
-            return $row['snp_bank_n_token'];
+            return $row['snp_bank_n_balance'];
         }
         return null;
     }/*}}}*/
@@ -56,7 +56,7 @@ class user_account
     {
         $user_id = (int) $user_id;
         $value = (int) $value;
-        $data = [ 'snp_bank_n_token' => $value, ];
+        $data = [ 'snp_bank_n_balance' => $value, ];
         $sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id=${user_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
