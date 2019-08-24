@@ -37,7 +37,6 @@ class user_account_manager
         $this->bank_user_account = $bank_user_account;
         $this->user_inventory = $user_inventory;
         $this->product_class = $product_class;
-        $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
         $sauth->reject_non_dev('Error Code: 8b16954df1');
     }/*}}}*/

@@ -60,9 +60,6 @@ class economy_user_dashboard
         case 'user_manager':
             $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/user_manager/base.html';
             return $this->handle_user_manager($cfg);
-        case 'transactions':
-            $cfg['tpl_name'] = '@jeb_snahp/bank/component/transactions/base.html';
-            return $this->handle_transactions($cfg);
         case 'exchange':
             $cfg = [];
             return $this->handle_exchange($cfg);
@@ -227,7 +224,6 @@ class economy_user_dashboard
         $amount = $this->request->variable('amount', 0);
         $exchange_rate_id = $this->request->variable('id', 0);
         $direction = $this->request->variable('dir', 'sell');
-        // [$b_success, $reason] = $this->bank_helper->perform_exchange($exchange_rate_id, $direction, $amount);
         [$b_success, $reason] = $this->bank_user_account->do_exchange($exchange_rate_id, $direction, $amount, $user_id);
         $data = ['status' => $b_success, 'reason' => $reason];
         $js = new \phpbb\json_response();
@@ -279,101 +275,6 @@ class economy_user_dashboard
             'BALANCE_FORMATTED' => number_format($balance),
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
-    }/*}}}*/
-
-    public function handle_transactions($cfg)/*{{{*/
-    {
-        $this->reject_non_dev();
-        $time = microtime(true);
-        $user_id = $this->user->data['user_id'];
-        $n_token = $this->get_token($user_id);
-        $transaction_history = $this->bank_helper->get_transaction_history($user_id);
-        foreach($transaction_history as $entry)
-        {
-            $this->template->assign_block_vars('HISTORY', $entry);
-        }
-        $elapsed_time = microtime(true) - $time;
-        $this->template->assign_vars([
-            'ELAPSED_TIME' => $elapsed_time,
-            'N_TOKEN' => number_format($n_token),
-        ]);
-        return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
-    }/*}}}*/
-
-    public function handle_test($cfg)/*{{{*/
-    {
-        $this->reject_anon();
-        $user_id = $this->user->data['user_id'];
-        $this->reject_user_not_in_groupset($user_id, 'Red Team');
-        $time = microtime(true);
-
-        $n_token = $this->get_token($user_id);
-
-        $n_avail_inv_pts = $this->get_available_invite_points($user_id);
-
-        $exchange_rates = $this->bank_helper->get_exchange_rates();
-        foreach($exchange_rates as $entry)
-        {
-            $entry['sell_rate_formatted'] = number_format($entry['sell_rate']);
-            $entry['json'] = json_encode($entry);
-            $this->template->assign_block_vars('EXCHANGE_RATE', $entry);
-        }
-
-        $transaction_history = $this->bank_helper->get_transaction_history($user_id);
-        foreach($transaction_history as $entry)
-        {
-            $type = $entry['type'];
-            $data = unserialize($entry['data']);
-            $comment = isset($data['comment']) ? $data['comment'] : '';
-            $entry['comment'] = $comment;
-            $this->template->assign_block_vars('HISTORY', $entry);
-        }
-
-        $uinv = $this->user_inventory_helper;
-        $inv_count = $uinv->get_inventory_count_by_product_class($user_id);
-
-        $mk = $this->market_helper;
-        $product_classes = $mk->get_product_classes();
-        foreach($product_classes as $entry)
-        {
-            $id = $entry['id'];
-            $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
-            $entry['b_buy'] = $entry['n_bought'] < $entry['max_per_user'];
-            $entry['max_purchasable'] = $entry['max_per_user'] - $entry['n_bought'];
-            $entry['price_formatted'] = number_format($entry['price']);
-            $entry['json'] = json_encode($entry);
-            $this->template->assign_block_vars('PRODUCT_CLASSES', $entry);
-        }
-
-        $invoice_id = $mk->create_invoice($user_id);
-        $data = [
-            'product_class_id' => 1,
-            'price' => 5000,
-            'quantity' => 1,
-        ];
-        $mk->append_to_invoice($invoice_id, $data);
-
-
-        $elapsed_time = microtime(true) - $time;
-        $this->template->assign_vars([
-            'ELAPSED_TIME' => $elapsed_time,
-            'N_TOKEN' => number_format($n_token),
-            'N_INV_PTS' => $n_avail_inv_pts,
-        ]);
-        return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
-    }/*}}}*/
-
-    private function get_token($user_id)/*{{{*/
-    {
-        $sql = 'SELECT snp_bank_n_token FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        if ($row)
-        {
-            return (int) $row['snp_bank_n_token'];
-        }
-        return 0;
     }/*}}}*/
 
     private function get_available_invite_points($user_id)/*{{{*/

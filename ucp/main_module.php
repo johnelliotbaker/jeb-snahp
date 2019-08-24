@@ -211,6 +211,10 @@ class main_module
         }
         include_once('includes/functions_user.php');
         $user_id_ary = [$user_id];
+        if (!array_key_exists($groupset_name, $groupset))
+        {
+            return false;
+        }
         $group_id_ary = $groupset[$groupset_name];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;

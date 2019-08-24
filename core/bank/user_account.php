@@ -92,14 +92,14 @@ class user_account
             if ($exchange_rate['type'] == 'invitation_points')
             {
                 [$b, $status] = $this->sell_invitation_points($amount, $user_id, $exchange_rate);
+                if (!$b)
+                {
+                    return [$b, $status];
+                }
                 $b_log = $this->log_exchange($amount, $user_id, $exchange_rate, $broker_id);
                 if ($b_log)
                 {
                     $status .= ' Bank_Transaction_Logger_Success';
-                }
-                if (!$b)
-                {
-                    return [$b, $status];
                 }
             }
         }
