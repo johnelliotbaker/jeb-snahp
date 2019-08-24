@@ -13,11 +13,12 @@ class custom_rank extends base
 
 	public function handle($mode)/*{{{*/
 	{
-        $this->reject_anon();
         if (!$this->config['snp_ucp_custom_b_master'])
         {
             trigger_error('Custom settings are disabled. Error Code: 14c96e703c');
         }
+        $user_id = $this->user->data['user_id'];
+        $this->reject_user_not_in_groupset($user_id, 'Red Team');
         $cfg = [];
         switch ($mode)
         {
@@ -26,11 +27,21 @@ class custom_rank extends base
             $cfg['b_feedback'] = false;
             return $this->save($cfg);
             break;
+        case 'get_info':
+            return $this->respond_info_as_json();
         default:
             trigger_error('Invalid request category. Error Code: 57f43ea934');
             break;
         }
 	}/*}}}*/
+
+    public function respond_info_as_json()
+    {
+        $js = new \phpbb\json_response();
+        $user_id = $this->user->data['user_id'];
+        $row = $this->get_custom_rank($user_id);
+        return $js->send($row);
+    }
 
     public function save($cfg)/*{{{*/
     {

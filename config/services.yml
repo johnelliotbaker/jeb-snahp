@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: cron.yml }
+    - { resource: economy/economy.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
@@ -42,8 +43,8 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
-            - '@jeb.snahp.user_inventory_helper'
-            - '@jeb.snahp.market_helper'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
         tags:
             - { name: event.listener }
     jeb.snahp.registration_listener:
@@ -61,13 +62,6 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '%core.table_prefix%'
-    jeb.snahp.test:
-        class: jeb\snahp\controller\test
-        parent: jeb.snahp.base
-        arguments:
-            - '@jeb.snahp.bank_helper'
-            - '@jeb.snahp.market_helper'
-            - '@jeb.snahp.user_inventory_helper'
     jeb.snahp.analytics:
         class: jeb\snahp\controller\analytics
         parent: jeb.snahp.base
@@ -295,3 +289,11 @@ services:
             - '@cache.driver'
             - '@service_container'
             - '%jeb.snahp.tables%'
+# AUTH
+    jeb.snahp.auth.user_auth:
+        class: jeb\snahp\core\auth\user_auth
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@service_container'
