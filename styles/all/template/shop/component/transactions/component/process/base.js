@@ -42,7 +42,7 @@ ShopTransaction.confirm_buy = function(event)
       </div>`);
   var j = JSON.parse($target[0].dataset.json);
   j.quantity = $('#shop_buy_quantity_' + j.id).val();
-  var url = `/app.php/snahp/economy/user_dashboard/buy_product/?pcid=${j['id']}&quantity=${j['quantity']}`
+  var url = `/app.php/snahp/economy/dashboard/buy_product/?pcid=${j['id']}&quantity=${j['quantity']}`
   console.log(url);
   $.get(url).done((resp)=>{
     var status = resp.status;

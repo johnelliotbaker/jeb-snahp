@@ -125,7 +125,7 @@ class main_module extends base
                 'PURPOSE' => 'Economy',
                 'NAME' => 'Transaction History',
                 'DESCRIPTION' => 'View Economy System Transaction Logs',
-                'LINK' => '<a href="/app.php/snahp/economy/dashboard/overview/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+                'LINK' => '<a href="/app.php/snahp/economy/mcp/dashboard/overview/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
             foreach ($data as $entry)
             {

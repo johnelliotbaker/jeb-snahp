@@ -14,7 +14,7 @@ var BankTransaction = {};
 BankTransaction.reset_user_balance = function(event)
 {
     var user_id = $('input[name="snp_user_id"]').val();
-    var url = '/app.php/snahp/economy/user_dashboard/reset_user/?u=' + user_id;
+    var url = '/app.php/snahp/economy/dashboard/reset_user/?u=' + user_id;
     $.get(url).done((resp)=>{
         location.reload();
     });
@@ -51,7 +51,7 @@ BankTransaction.confirm_exchange = function(event)
     var j = JSON.parse($target[0].dataset.json);
     j.amount = $('#bank_exchange_amount_' + j.id).val();
     j.dir = 'sell';
-    var url = `/app.php/snahp/economy/user_dashboard/exchange/?id=${j['id']}&dir=${j['dir']}&amount=${j['amount']}`
+    var url = `/app.php/snahp/economy/dashboard/exchange/?id=${j['id']}&dir=${j['dir']}&amount=${j['amount']}`
     console.log(url);
     $.get(url).done((resp)=>{
         var status = resp.status;

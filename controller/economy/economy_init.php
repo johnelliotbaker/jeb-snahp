@@ -47,7 +47,7 @@ class economy_init
         $this->db->sql_query($sql);
         $data = [
             'name'         => 'custom_rank',
-            'display_name' => 'Custom Rank I',
+            'display_name' => 'Custom Rank',
             'description'  => 'Create custom rank',
             'price'        => '100000',
             'value'        => '1',
@@ -62,7 +62,7 @@ class economy_init
         $this->db->sql_query($sql);
         $data = [
             'name'         => 'search_cooldown_reducer',
-            'display_name' => 'Search Interval Reducer I',
+            'display_name' => 'Quick Search',
             'description'  => 'Reduce the time between consecutive searches',
             'price'        => '10000',
             'value'        => '1',

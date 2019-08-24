@@ -1,10 +1,10 @@
 jeb_snahp_economy.economy_user_dashboard:
-    path: /snahp/economy/user_dashboard/{mode}/
+    path: /snahp/economy/dashboard/{mode}/
     defaults: { _controller: jeb.snahp.economy_user_dashboard:handle}
     requirements:
         mode: \S+
 jeb_snahp_economy.economy_dashboard:
-    path: /snahp/economy/dashboard/{mode}/
+    path: /snahp/economy/mcp/dashboard/{mode}/
     defaults: { _controller: jeb.snahp.economy_dashboard:handle}
     requirements:
         mode: \S+

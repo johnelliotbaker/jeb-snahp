@@ -164,7 +164,7 @@ class economy_dashboard
             $this->template->assign_block_vars('T', $row);
         }
         $pg = new \jeb\snahp\core\pagination();
-        $base_url = '/app.php/snahp/economy/dashboard/overview/?t=' . $type;
+        $base_url = '/app.php/snahp/economy/mcp/dashboard/overview/?t=' . $type;
         $pagination = $pg->make($base_url, $total, $per_page, $start);
         $this->template->assign_vars([
             'PAGINATION' => $pagination,

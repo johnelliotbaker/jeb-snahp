@@ -160,3 +160,24 @@ div.codebox pre
     padding-top: 13px !important;
     margin-bottom: 2px;
 }
+
+
+/* Nav */
+
+.nav-tabs
+{
+    border-bottom: 0px solid black !important;
+}
+
+.nav-tabs .nav-link.active
+{
+    border-color: #444 !important;
+    background-color: black !important;
+}
+
+.input-group-text
+{
+    background-color: black !important;
+    color: #eee !important;
+    border-color: #777 !important;
+}
