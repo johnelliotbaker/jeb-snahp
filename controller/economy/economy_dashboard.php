@@ -68,8 +68,16 @@ class economy_dashboard
             'FROM'		=> [ $tbl_main	=> 'a', ],
             'LEFT_JOIN'	=> [
                 [
-                    'FROM'	=> [$tbl_items => 'b'],
+                    'FROM'	=> [
+                        $tbl_items => 'b',
+                    ],
                     'ON'	=> 'a.id=b.transaction_id',
+                ],
+                [
+                    'FROM'	=> [
+                        USERS_TABLE => 'u',
+                    ],
+                    'ON'	=> 'a.user_id=u.user_id',
                 ],
             ],
             // 'WHERE'		=> $where,
@@ -104,6 +112,12 @@ class economy_dashboard
                 [
                     'FROM'	=> [$tbl_items => 'b'],
                     'ON'	=> 'a.id=b.invoice_id',
+                ],
+                [
+                    'FROM'	=> [
+                        USERS_TABLE => 'u',
+                    ],
+                    'ON'	=> 'a.user_id=u.user_id',
                 ],
             ],
             // 'WHERE'		=> $where,
