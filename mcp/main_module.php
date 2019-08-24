@@ -113,6 +113,20 @@ class main_module extends base
                 'DESCRIPTION' => 'List users who thanked a list of topics',
                 'LINK' => '<a href="/app.php/snahp/analytics/handle/common_thanks/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 8,
+                'PURPOSE' => 'Economy',
+                'NAME' => 'User Account Manager',
+                'DESCRIPTION' => 'Manage User Assets and Inventory',
+                'LINK' => '<a href="/app.php/snahp/economy/uam/user_manager/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
+            $data[] = [
+                'ID' => 9,
+                'PURPOSE' => 'Economy',
+                'NAME' => 'Transaction History',
+                'DESCRIPTION' => 'View Economy System Transaction Logs',
+                'LINK' => '<a href="/app.php/snahp/economy/dashboard/overview/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);
