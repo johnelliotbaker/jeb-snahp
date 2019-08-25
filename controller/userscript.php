@@ -40,7 +40,7 @@ class userscript extends base
         if ($partial and strlen($partial)>2)
         {
             $sql = 'SELECT user_id, username_clean FROM ' . USERS_TABLE . 
-                " WHERE username_clean LIKE '%$partial%'";
+                " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
@@ -64,7 +64,7 @@ class userscript extends base
         if ($partial and strlen($partial)>2)
         {
             $sql = 'SELECT username_clean FROM ' . USERS_TABLE . 
-                " WHERE username_clean LIKE '%$partial%'";
+                " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
