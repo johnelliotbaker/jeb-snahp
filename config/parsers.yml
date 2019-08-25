@@ -1,0 +1,3 @@
+services:
+    jeb.snahp.parsers.parsedown:
+        class: jeb\snahp\core\parsers\parsedown
