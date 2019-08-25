@@ -1,0 +1,5 @@
+jeb_snahp_wiki.wiki:
+    path: /snahp/wiki/{mode}/
+    defaults: { _controller: jeb.snahp.wiki:handle}
+    requirements:
+        mode: \S+

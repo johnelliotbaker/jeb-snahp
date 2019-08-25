@@ -52,6 +52,7 @@
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  color: #24292e;
   line-height: 1.5;
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
   font-size: 16px;
@@ -953,56 +954,4 @@
 
 .markdown-body .pl-12 {
   padding-left: 128px!important;
-}
-
-
-/* custom */
-.markdown-body h1
-{
-    color: inherit;
-}
-
-.markdown-body p
-{
-    font-size: 1em;
-}
-
-.markdown-body i.fa
-{
-    font-size: 1.0em;
-    color: rgba( 15, 157, 88, 1);
-}
-
-.markdown-body h2
-{
-    font-size: 1.25em;
-}
-
-span.digg_subscribe
-{
-    background-color: black;
-    padding: 0px 4px 0px 4px;
-    border-radius: 3px;
-}
-
-span.digg_subscribe i.fa
-{
-    color: #CCC;
-}
-
-i.fa.fa-digg
-{
-  background-color: #333;
-  padding: 0px 6px 1px 6px;
-  border-radius: 2px;
-}
-
-i.fa.fa-digg.register
-{
-  color: #f8c301;
-}
-
-i.fa.fa-digg
-{
-  color: #4a4;
 }

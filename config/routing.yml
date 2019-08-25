@@ -1,3 +1,5 @@
+routing_wiki:
+    resource: 'routing/wiki.yml'
 routing_economy:
     resource: 'routing/economy.yml'
 jeb_snahp_admin:
@@ -17,11 +19,6 @@ jeb_snahp_acp_thanks:
 jeb_snahp_thanks:
     path: /snahp/thanks/handle/{mode}/
     defaults: { _controller: jeb.snahp.thanks:handle}
-    requirements:
-        mode: \S+
-jeb_snahp_test:
-    path: /snahp/test/handle/{mode}/
-    defaults: { _controller: jeb.snahp.test:handle}
     requirements:
         mode: \S+
 jeb_snahp_analytics:

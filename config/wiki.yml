@@ -1,0 +1,14 @@
+services:
+    jeb.snahp.wiki:
+        class: jeb\snahp\controller\wiki\wiki
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.parsers.parsedown'
