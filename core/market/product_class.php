@@ -15,6 +15,18 @@ class product_class
         $this->tbl = $tbl;
 	}
 
+    public function update_product_class($id, $data)/*{{{*/
+    {
+        if (!$this->get_product_class($id))
+        {
+            return false;
+        }
+        $update_strn = $this->db->sql_build_array('UPDATE', $data);
+        $sql = 'UPDATE ' . $this->tbl['mrkt_product_classes'] . " SET $update_strn  WHERE id=${id}" ;
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
     public function get_product_class($id)/*{{{*/
     {
         $sql = 'SELECT * FROM ' . $this->tbl['mrkt_product_classes'] . " WHERE id=${id}" ;

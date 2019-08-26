@@ -1,0 +1,35 @@
+input
+{
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+
+.table input
+{
+    width: 100%;
+}
+
+.table .td_max,
+.table .td_value
+{
+    max-width: 80px;
+}
+
+.btn.btn-action
+{
+    font-size: 9px;
+    padding: .2em !important;
+}
+
+{% if STYLE_NAME=='acieeed' or STYLE_NAME=='hexagon' %}
+input
+{
+    color: white;
+}
+{% else %}
+input
+{
+    color: black;
+}
+{% endif %}
+

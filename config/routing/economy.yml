@@ -1,3 +1,8 @@
+jeb_snahp_economy.product_class_editor:
+    path: /snahp/economy/pce/{mode}/
+    defaults: { _controller: jeb.snahp.product_class_editor:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_economy.economy_user_dashboard:
     path: /snahp/economy/dashboard/{mode}/
     defaults: { _controller: jeb.snahp.economy_user_dashboard:handle}

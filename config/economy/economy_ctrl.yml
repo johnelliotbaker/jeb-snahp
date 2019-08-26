@@ -4,6 +4,19 @@ services:
         arguments:
             - '@dbal.conn'
             - '%jeb.snahp.tables%'
+    jeb.snahp.product_class_editor:
+        class: jeb\snahp\controller\economy\product_class_editor
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.market.product_class'
     jeb.snahp.economy_user_dashboard:
         class: jeb\snahp\controller\economy\economy_user_dashboard
         arguments:

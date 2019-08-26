@@ -1,0 +1,55 @@
+<!-- INCLUDE overall_header.html -->
+<style>
+  {% include '@jeb_snahp/economy/mcp/product_class_editor/base.css' %}
+</style>
+<script>
+  {% include '@jeb_snahp/economy/mcp/product_class_editor/base.js' %}
+</script>
+
+<div class="twbs">
+  <div>
+    <table class="table table-sm table-dark my-2">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Value</th>
+          <th scope="col">Img Url</th>
+          <th scope="col">Help Url</th>
+          <th scope="col">Max</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- BEGIN PC -->
+        <tr>
+          <td>{PC.id}<input name="id" type="hidden" value="{PC.id}"></td>
+          <td>
+            <input name="display_name" type="text" value="{PC.display_name}"></input>
+          </td>
+          <td>
+            <input name="price" type="number" min="0" value="{PC.price}"></input>
+          </td>
+          <td class="td_value">
+            <input name="value" type="number" min="0" value="{PC.value}"></input>
+          </td>
+          <td>
+            <input name="img_url" type="text" value="{PC.img_url}"></input>
+          </td>
+          <td>
+            <input name="help_url" type="text" value="{PC.help_url}"></input>
+          </td>
+          <td class="td_max">
+            <input name="max_per_user" type="number" min="0" value="{PC.max_per_user}"></input>
+          </td>
+          <td>
+            <button onClick="pce.save(event);"class="btn btn-success btn-action" data-json='{PC.json}'>Save</button>
+          </td>
+        </tr>
+        <!-- END PC -->
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->

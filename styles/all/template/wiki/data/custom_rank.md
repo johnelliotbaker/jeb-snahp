@@ -27,3 +27,7 @@ The rank image has maximum height of 40 pixels and maximum width of 160 pixels.
 Will the upgrades expire?
 ---
 Most upgrades will have a life span between 6 to 12 months.
+
+Disclaimer
+---
+The moderation staff holds the right to adjust or disable any user upgrade.
