@@ -24,7 +24,6 @@ class imgcompare
             return 'First two arguments must be valid URL.';
         }
         $uuid = uniqid('imgcompare_');
-
         $head = '
 <div onClick="send_resize_event();"
 	class="imgcompare_thumbnail_container pointer noselect"
@@ -41,7 +40,10 @@ class imgcompare
   <div class="modal fade" id="' . $uuid . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-body p-0">
+        <div class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body p-1">
 ';
         $tail = '
         </div>
@@ -51,9 +53,9 @@ class imgcompare
 </div>
 ';
         $body = '
-          <div id="slider1" class="beer-slider" data-beer-label="before" data-start="50">
-            <img id="img1" src="' . $url1 . '" alt="Dogs - before, unprocessed image">
-            <div class="beer-reveal" data-beer-label="' . $label1 . '">
+          <div style="max-height:95vh;" id="slider1" class="beer-slider" data-beer-label="' . $label1 . '" data-start="50">
+            <img style="width:100%;" src="' . $url1 . '" alt="' . $label1 . '">
+            <div class="beer-reveal" data-beer-label="' . $label2 . '">
               <img src="' . $url2 . '" alt="' . $label2 . '">
             </div>
           </div>

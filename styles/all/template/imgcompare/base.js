@@ -20,9 +20,9 @@ $(window).resize(()=>{
   var ar = nw/nh;
   var ih = img.height;
   var iw = img.wight;
-  img.width = w;
-  $('.modal-dialog').css('max-width', '');
-  $('.modal-dialog').css('width', w + 'px');
+  // img.width = w;
+  // $('.modal-dialog').css('max-width', '');
+  // $('.modal-dialog').css('width', w + 'px');
 })
 
 $(document).ready(function() {
