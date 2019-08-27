@@ -240,6 +240,16 @@ class curly_parser
         return $strn;
     }
 
+    public function interpolate_ab($strn, $tag_name)
+    {
+        $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
+        preg_match($ptn, $strn, $match);
+        $content = $match[1];
+        $imgcompare = new \jeb\snahp\core\template\imgcompare();
+        $strn = $imgcompare->to_html($content);
+        return $strn;
+    }
+
     public function interpolate_youtube($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
@@ -379,6 +389,9 @@ class curly_parser
                 break;
             case 'gallery_compact_lg':
                 $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'lg']);
+                break;
+            case 'ab':
+                $res = $this->interpolate_ab($content, $tag_type);
                 break;
             case 'youtube':
                 $res = $this->interpolate_youtube($content, $tag_type);

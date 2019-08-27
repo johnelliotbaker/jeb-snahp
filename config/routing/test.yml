@@ -1,0 +1,5 @@
+jeb_snahp_test.test:
+    path: /snahp/test/{mode}/
+    defaults: { _controller: jeb.snahp.test:handle}
+    requirements:
+        mode: \S+

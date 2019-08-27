@@ -299,3 +299,17 @@ services:
             - '@user'
             - '@auth'
             - '@service_container'
+# TEST
+    jeb.snahp.test:
+        class: jeb\snahp\controller\test
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
