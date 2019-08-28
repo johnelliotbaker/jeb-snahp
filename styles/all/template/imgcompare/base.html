@@ -1,41 +1,14 @@
-<!-- INCLUDE overall_header.html -->
-
-
-
 <link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/imgcompare/base.css">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.css">
 <script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/imgcompare/base.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.js"></script>
-<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/BeerSlider.css">
-<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/BeerSlider.js"></script>
-
-<style>
-  .modal-dialog
-  {
-    max-width: none !important;
-  }
-
-</style>
+<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/imgcompare/BeerSlider.css">
+<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/imgcompare/BeerSlider.js"></script>
 
 <div class="twbs">
-  <!-- Button trigger modal -->
-  <button onClick="rr();" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-  </button>
-
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="imgcompare_modal" tabindex="-1" role="dialog" aria-labelledby="imgcompare_modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-
-          <div id="slider1" class="beer-slider" data-beer-label="before" data-start="25">
-            <img id="img1" src="https://i.postimg.cc/tqbb8gSy/1080p-SDR-1.jpg" alt="Dogs - before, unprocessed image">
-            <div class="beer-reveal" data-beer-label="after">
-              <img src="https://i.postimg.cc/9VWVprwY/4K-HDR-1.jpg" alt="Dogs - after, processed photo">
-            </div>
-          </div>
-
+      <div class="modal-content p-0">
+        <div class="modal-body p-0">
         </div>
       </div>
     </div>
@@ -43,41 +16,7 @@
 </div>
 
 <script>
-  function rr()
-  {
-    setTimeout(function(){
-      window.dispatchEvent(new Event('resize'));
-    }, 10);
-  }
-
-  $.fn.BeerSlider = function( options ) {
-    options = options || {};
-    return this.each( function () {
-      new BeerSlider( this, options );
-    });
-  };
-  $( ".beer-slider" ).each( function( index, el ) {
-    $( el ).BeerSlider( {start: $( el ).data( "start" ) } )
-  });
-  $(document).ready(function() {
-  });
-
   $(window).resize(()=>{
-    var vh = $(window).height();
-    var vw = $(window).width();
-    var h = vh*.8;
-    var w = vw*.8;
-    var img = document.getElementById("img1");
-    var nh = img.naturalHeight;
-    var nw = img.naturalWidth;
-    var ar = nw/nh;
-    var ih = img.height;
-    var iw = img.wight;
-    img.width = w;
-    $('.modal-dialog').css('max-width', '');
-    $('.modal-dialog').css('width', w + 'px');
+    ImgCompare.update_modal_window();
   })
 </script>
-
-
-<!-- INCLUDE overall_footer.html -->

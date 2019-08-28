@@ -1,4 +1,9 @@
-.modal-dialog .close
+#imgcompare_modal .modal-dialog
+{
+    max-width: none !important;
+}
+
+#imgcompare_modal .modal-dialog .close
 {
     position: absolute;!important;
     top: 0px;!important;
@@ -12,18 +17,18 @@
 
 }
 
-.modal-dialog
+#imgcompare_modal .modal-dialog
 {
-    max-width: 70vw !important;
+    max-width: 90vw !important;
     position: relative;
     top: 50%;
     transform: translateY(-53%);
 }
 
-.beer-slider {
-    font-family: Montserrat;
+#imgcompare_modal .beer-slider {
+    /* font-family: Montserrat; */
     /* text-transform: uppercase; */
-    /* font-size: 0.75rem; */
+    font-size: 0.75rem;
     letter-spacing: 1px;
 }
 
