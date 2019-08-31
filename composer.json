@@ -4,7 +4,7 @@
     "description": "Snahp Extension",
     "homepage": "",
     "version": "0.30.0",
-    "time": "2019-08-24",
+    "time": "2019-08-30",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "259d6bcb02b29f19091100e46872c64ecb25fd66",
+        "version": "c699b10d675eb76513e73d8f7e7a428eb739ad29",
         "features": "Achievement and Reputation Panels",
         "display-name": "Snahp",
         "soft-require": {
