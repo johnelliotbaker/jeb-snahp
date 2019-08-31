@@ -59,6 +59,7 @@ parameters:
                 gdrive:    '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">'
                 android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png">'
                 ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png">'
+                win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png">'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -70,6 +71,7 @@ parameters:
                 gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
                 android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
                 ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
+                win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png"></span>'
 
     jeb.snahp.req:
         def:
