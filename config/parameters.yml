@@ -37,6 +37,8 @@ parameters:
 
     jeb.snahp.tags:
         encode:
+            # Only key is being used in the base.php->encode_tags. Value
+            # is irrelevant
             request: 1
             accepted: 2
             fulfilled: 3
@@ -47,6 +49,8 @@ parameters:
             gdrive: 8
             android: 9
             ios: 10 
+            win: 11
+            pc: 12
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
