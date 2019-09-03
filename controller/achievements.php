@@ -311,8 +311,8 @@ class achievements extends base
             $js->send([]);
         }
         $stylename = $this->select_style_name();
-        $max_solve  = 500;
-        $max_rep    = 500;
+        $max_solve  = 900;
+        $max_rep    = 800;
         $max_thanks = 100000;
         $ref_data = array_map('log', [$max_solve, $max_rep, $max_thanks]);
         $row = $this->select_achievements($profile_id);

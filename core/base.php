@@ -675,24 +675,20 @@ abstract class base
         $lastdt = $time - $timedelta;
         // $lastdt is changing so cache timing is off.
         $lastdt = (int)($lastdt/$cooldown)*$cooldown;
+        $where = $a_fid ? $this->db->sql_in_set('t.forum_id', $a_fid) : 'false';
+        $where .= ' AND t.topic_time>' . $lastdt;
         switch ($sort_mode)
         {
         case 'views':
             $order_by = 't.topic_views DESC';
-            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
-            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         case 'replies':
             $order_by = 't.topic_posts_approved DESC';
-            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
-            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         case 'id':
         default:
             // $order_by = 't.topic_id DESC';
             $order_by = 't.topic_time DESC';
-            $where = $this->db->sql_in_set('t.forum_id', $a_fid);
-            $where .= ' AND t.topic_time>' . $lastdt;
             break;
         }
         $sql_array = [

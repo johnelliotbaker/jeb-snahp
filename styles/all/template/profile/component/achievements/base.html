@@ -12,6 +12,28 @@
 
             <div class="col-sm-5 col-12">
               <canvas id="radar-chart" width="280" height="200"></canvas>
+              <table class="table table-sm mt-3" style="font-size: 1.2em;">
+                <tbody>
+                  {% if N_REQUESTS_SOLVED %}
+                  <tr>
+                    <td>Requests Solved</td>
+                    <td>{N_REQUESTS_SOLVED}</td>
+                  </tr>
+                  {% endif %}
+                  {% if N_REPUTATION %}
+                  <tr>
+                    <td>Reputation</td>
+                    <td>{N_REPUTATION}</td>
+                  </tr>
+                  {% endif %}
+                  {% if N_THANKS_RECEIVED %}
+                  <tr>
+                    <td>Thanks</td>
+                    <td>{N_THANKS_RECEIVED}</td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
             </div>
 
             {% if achievements %}

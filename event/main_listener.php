@@ -79,7 +79,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['setup_core_vars', 0],
             ],
             'core.memberlist_prepare_profile_data'                => [
-                ['setup_profile_variables', 0],
+                ['setup_profile_variables', 10],
                 ['show_achievements_in_profile', 0],
                 ['show_reputation_in_profile', 0],
             ],
@@ -309,6 +309,7 @@ class main_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result, 1);
         $this->db->sql_freeresult($result);
         $this->poster_data = $row;
+        // TODO: users tables has the rep counts use that
         // Get reputation counts
         $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";
         $result = $this->db->sql_query($sql);
@@ -340,6 +341,27 @@ class main_listener extends base implements EventSubscriberInterface
             'S_PROFILE_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_PROFILE_USERNAME' => $profile_username,
         ]);
+        $contributions = $this->get_user_contributions($profile_id);
+        $reputation_received = $contributions['snp_rep_n_received'];
+        $thanks_received = $contributions['snp_thanks_n_received'];
+        $requests_solved = $contributions['snp_req_n_solve'];
+        $this->data['profile']['reputation_received'] = $reputation_received;
+        $this->data['profile']['thanks_received'] = $thanks_received;
+        $this->data['profile']['requests_solved'] = $requests_solved;
+        $this->template->assign_vars([
+            'N_REPUTATION' => $reputation_received,
+            'N_THANKS_RECEIVED' => $thanks_received,
+            'N_REQUESTS_SOLVED' => $requests_solved,
+        ]);
+    }/*}}}*/
+
+    public function get_user_contributions($user_id)/*{{{*/
+    {
+        $sql = 'SELECT snp_rep_n_received, snp_thanks_n_received, snp_req_n_solve FROM ' . USERS_TABLE . " WHERE user_id={$user_id}";
+        $result = $this->db->sql_query($sql, 30);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
     }/*}}}*/
 
     public function show_reputation_in_profile($event)/*{{{*/
@@ -359,16 +381,10 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         }
         $profile_username = $data['username'];
-        $sql = 'SELECT snp_rep_n_received FROM ' . USERS_TABLE . " WHERE user_id={$profile_id}";
-        $result = $this->db->sql_query($sql, 30);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        if (!$row || $row['snp_rep_n_received'] < 1)
-        {
-            return false;
-        }
+        $rep_received = $this->data['profile']['reputation_received'];
+        if (!$rep_received) return false;
         $this->template->assign_vars([
-            'N_REPUTATION' => $row['snp_rep_n_received'],
+            'N_REPUTATION' => $rep_received,
             'B_REPUTATION_PROFILE_PUBLIC' => $b_public,
         ]);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
