@@ -18,34 +18,55 @@ parameters:
                 id: 2
             'REGISTERED_COPPA':
                 id: 3
-            'GLOBAL_MODERATORS':
+            'GLOBAL_MODERATORS': &moderators
                 id: 4
-            'ADMINISTRATORS':
+                color: '#E91B56'
+            'ADMINISTRATORS': &administrators
                 id: 5
+                color: '#FF0000'
             'BOTS':
                 id: 6
             'NEWLY_REGISTERED':
                 id: 7
-            'Trusted Uploader':
+            'Trusted Uploader': &trusted_uploaders
                 id: 8
-            'VIPs':
+                color: '#008000'
+            'VIPs': &vips
                 id: 9
-            'Elite Users':
+                color: '#00BFFF'
+            'Elite Users': &elite_users
                 id: 10
-            'Developers':
+                color: '#FF6900'
+            'Developers': &developers
                 id: 13
+                color: '#0000BF'
             'Best Testers Alpha Team':
                 id: 14
             'Padding':
                 id: 15
-            'Junior Uploaders':
+            'Junior Uploaders': &junior_uploaders
                 id: 16
-            'Donors':
+                color: '#40BF00'
+            'Donors': &donors
                 id: 17
-            'Red Team':
+                color: '#B92DFF'
+            'Red Team': &red_team
                 id: 18
-            'Blue Team':
+                color: '#FF4000'
+            'Blue Team': &blue_team
                 id: 19
+                color: '#0040FF'
+        dev_staff_notification_alias:
+            'moderators': *moderators
+            'administrators': *administrators
+            'trusted_uploaders': *trusted_uploaders
+            'vips': *vips
+            'elite_users': *elite_users
+            'developers': *developers
+            'junior_uploaders': *junior_uploaders
+            'donors': *donors
+            'red_team': *red_team
+            'blue_team': *blue_team
         production:
             'set':
                 'Red Team':
@@ -64,31 +85,48 @@ parameters:
                 id: 2
             'REGISTERED_COPPA':
                 id: 3
-            'GLOBAL_MODERATORS':
+            'GLOBAL_MODERATORS': &moderators
                 id: 4
-            'ADMINISTRATORS':
+                color: '#E91B56'
+            'ADMINISTRATORS': &administrators
                 id: 5
+                color: '#FF0000'
             'BOTS':
                 id: 6
             'NEWLY_REGISTERED':
                 id: 7
-            'Uploaders':
+            'Uploaders': &trusted_uploaders
                 id: 9
-            'VIPs':
+                color: '#008000'
+            'VIPs': &vips
                 id: 11
-            'Elite Users':
+                color: '#00BFFF'
+            'Elite Users': &elite_users
                 id: 12
-            'Developers':
+                color: '#FF6900'
+            'Developers': &developers
                 id: 13
-            'Best Testers Alpha Team':
-                id: 14
-            'Padding':
-                id: 15
-            'Junior Uploaders':
+                color: '#0000BF'
+            'Junior Uploaders': &junior_uploaders
                 id: 16
-            'Donors':
+                color: '#40BF00'
+            'Donors': &donors
                 id: 17
-            'Red Team':
+                color: '#B92DFF'
+            'Red Team': &red_team
                 id: 18
-            'Blue Team':
+                color: '#FF4000'
+            'Blue Team': &blue_team
                 id: 19
+                color: '#0040FF'
+        production_staff_notification_alias:
+            'moderators': *moderators
+            'administrators': *administrators
+            'trusted_uploaders': *trusted_uploaders
+            'vips': *vips
+            'elite_users': *elite_users
+            'developers': *developers
+            'junior_uploaders': *junior_uploaders
+            'donors': *donors
+            'red_team': *red_team
+            'blue_team': *blue_team

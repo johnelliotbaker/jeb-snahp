@@ -4,6 +4,7 @@ imports:
     - { resource: economy/economy.yml }
     - { resource: wiki.yml }
     - { resource: parsers.yml }
+    - { resource: notifications.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
@@ -191,53 +192,6 @@ services:
         parent: jeb.snahp.base
         arguments:
             - '@jeb.snahp.topic_mover'
-    jeb.snahp.notification.type.reputation:
-        class: jeb\snahp\notification\reputation
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - '@dbal.conn'
-            - '@language'
-            - '@user'
-            - '@auth'
-            - '%core.root_path%'
-            - '%core.php_ext%'
-            - '%tables.user_notifications%'
-            - '%tables.notifications%'
-            - '@user_loader'
-            - '@service_container'
-        tags:
-            - { name: notification.type }
-    jeb.snahp.notification.type.digg:
-        class: jeb\snahp\notification\digg
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - '@dbal.conn'
-            - '@language'
-            - '@user'
-            - '@auth'
-            - '%core.root_path%'
-            - '%core.php_ext%'
-            - '%tables.user_notifications%'
-            - '%tables.notifications%'
-            - '@user_loader'
-            - '@service_container'
-        tags:
-            - { name: notification.type }
-    jeb.snahp.notification.type.basic:
-        class: jeb\snahp\notification\basic
-        scope: prototype # scope MUST be prototype for this to work!
-        arguments:
-            - '@dbal.conn'
-            - '@language'
-            - '@user'
-            - '@auth'
-            - '%core.root_path%'
-            - '%core.php_ext%'
-            - '%tables.user_notifications%'
-            - '%tables.notifications%'
-            - '@user_loader'
-        tags:
-            - { name: notification.type }
     jeb.snahp.topic_mover:
         class: jeb\snahp\core\topic_mover
         arguments:

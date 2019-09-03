@@ -1,0 +1,64 @@
+services:
+    jeb.snahp.notification.type.staff_notification:
+        class: jeb\snahp\notification\staff_notification
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+            - '@service_container'
+        tags:
+            - { name: notification.type }
+    jeb.snahp.notification.type.reputation:
+        class: jeb\snahp\notification\reputation
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+            - '@service_container'
+        tags:
+            - { name: notification.type }
+    jeb.snahp.notification.type.digg:
+        class: jeb\snahp\notification\digg
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+            - '@service_container'
+        tags:
+            - { name: notification.type }
+    jeb.snahp.notification.type.basic:
+        class: jeb\snahp\notification\basic
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+        tags:
+            - { name: notification.type }

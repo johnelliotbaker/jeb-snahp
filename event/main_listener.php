@@ -50,6 +50,7 @@ class main_listener extends base implements EventSubscriberInterface
     protected $table_prefix;
     protected $user_inventory;
     protected $product_class;
+    protected $data;
     public function __construct($table_prefix0, $table_prefix,
         $user_inventory, $product_class
     )/*{{{*/
@@ -58,8 +59,10 @@ class main_listener extends base implements EventSubscriberInterface
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
         $this->at_prefix          = '@@';
+        $this->staff_notification_prefix = '!!';
         $this->user_inventory = $user_inventory;
         $this->product_class = $product_class;
+        $this->data = [];
     }/*}}}*/
 
     static public function getSubscribedEvents()/*{{{*/
@@ -113,11 +116,13 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.posting_modify_submit_post_after'       => [
                 ['notify_on_poke', 0],
+                ['notify_staff_notification', 0],
             ],
             'core.posting_modify_message_text'            => [
                 ['colorize_at', 0],
                 ['modify_dice_roll', 0],
                 ['disable_magic_url_on_gallery', 1],
+                ['colorize_staff_notification', 1],
             ],
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
@@ -155,6 +160,78 @@ class main_listener extends base implements EventSubscriberInterface
                 ['modify_search_interval', 0],
             ],
         ];
+    }/*}}}*/
+
+    public function colorize_staff_notification($event)/*{{{*/
+    {
+        if (!$this->is_dev()) return false;
+        if (!$this->config['snp_b_snahp_notify'])
+            return false;
+        $prefix = $this->staff_notification_prefix;
+        $mp = $event['message_parser'];
+        $message = &$mp->message;
+        $message = strip_tags($message);
+        preg_match_all('#' . $prefix . '([a-z_]+)#is', $message, $matchall);
+        $a_group = [];
+        foreach($matchall[1] as $match) $a_group[$match] = utf8_clean_string($match);
+        if (!$a_group) return;
+        if ($this->is_dev_server())
+        {
+            $group_def = $this->container->getParameter('jeb.snahp.groups')['dev_staff_notification_alias'];
+        }
+        else
+        {
+            $group_def = $this->container->getParameter('jeb.snahp.groups')['production_staff_notification_alias'];
+        }
+        $a_group = array_map(function($arg) use($group_def) {
+            return ($arg != 'set' && isset($group_def[$arg])) ? $group_def[$arg] : null;
+        }, $a_group);
+        $a_group = array_filter($a_group, function($arg) {
+            return $arg != null;
+        });
+        foreach($a_group as $group_name => &$group_data)
+        {
+            $group_data['group_name'] = $group_name;
+            $b = "[color=${group_data['color']}][b]${prefix}${group_name}[/b][/color]";
+            $a = '#(?<!])'. $prefix . $group_name . '#is';
+            $message = preg_replace($a, $b, $message);
+        }
+        $this->data['staff_notification_group_data'] = $a_group;
+        // Also temporarily saves the data to send as notification
+    }/*}}}*/
+
+    public function notify_staff_notification($event)/*{{{*/
+    {
+        // The data is fed from colorize_staff_notification
+        if (!isset($this->data['staff_notification_group_data'])) return false;
+        $a_group = $this->data['staff_notification_group_data'];
+        $prefix = $this->staff_notification_prefix;
+        $post_data = $event['data'];
+        $forum_id = $post_data['forum_id'];
+        $topic_id = $post_data['topic_id'];
+        $post_id  = $post_data['post_id'];
+        $topic_title = $post_data['topic_title'];
+        $staff_id = $post_data['poster_id'];
+        foreach($a_group as $group_data)
+        {
+            $group_id = $group_data['id'];
+            $group_color = $group_data['color'];
+            $group_name = $group_data['group_name'];
+            $notification_data = [
+                'staff_id' => $staff_id,
+                'forum_id' => $forum_id,
+                'topic_id' => $topic_id,
+                'post_id'  => $post_id,
+                'group_id'    => $group_id,
+                'group_color' => $group_color,
+                'group_name'  => $group_name,
+                'topic_title' => $topic_title,
+                'post_time'   => time(),
+            ];
+            $this->notification->add_notifications (
+                'jeb.snahp.notification.type.staff_notification', $notification_data
+            );
+        }
     }/*}}}*/
 
     public function modify_user_rank($event)/*{{{*/
@@ -1130,7 +1207,7 @@ class main_listener extends base implements EventSubscriberInterface
         {
             $aUsername[$match] = utf8_clean_string($match);
         }
-        if (!$aUsername) return;
+        if (!isset($aUsername)) return;
         // Build sql query
         $count = 0;
         $user_id         = $this->user->data['user_id'];
