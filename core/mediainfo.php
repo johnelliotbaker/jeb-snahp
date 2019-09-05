@@ -191,7 +191,8 @@ class mediainfo
 
     private function get_video_format($data)/*{{{*/
     {
-        return $this->get_val_or_null('Format', $data);
+        $format = $this->get_val_or_null('Format', $data);
+        return $format ? $format : '?';
     }/*}}}*/
 
     private function format_bitrate($strn)/*{{{*/
@@ -206,13 +207,16 @@ class mediainfo
         $height = $this->get_val_or_null('Height', $data);
         $height = preg_replace('#(\d+)[\.\s]?(\d+)(.*)#s', '\1\2', $height);
         $ar = $this->get_val_or_null('Display aspect ratio', $data);
-        return "${width} x ${height} @ ${ar}";
+        $dimensions = $this->join_or_first($width, $height, 'x');
+        $res = $this->join_or_first($dimensions, $ar);
+        return $res ? $res : '?';
     }/*}}}*/
 
     private function get_video_framerate($data)/*{{{*/
     {
         $v = $this->get_val_or_null('Frame rate', $data);
-        return preg_replace('#(\d+\.?\d+)(.*)#s', '\1 fps', $v);
+        $v = preg_replace('#(\d+\.?\d+)(.*)#s', '\1 fps', $v);
+        return $v ? $v : '?';
     }/*}}}*/
 
     private function get_video_bitrate($data)/*{{{*/
