@@ -118,9 +118,19 @@ services:
             - '%core.table_prefix%'
     jeb.snahp.reputation:
         class: jeb\snahp\controller\reputation
-        parent: jeb.snahp.base
         arguments:
-            - '%core.table_prefix%'
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@notification_manager'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
     jeb.snahp.achievements:
         class: jeb\snahp\controller\achievements
         parent: jeb.snahp.base

@@ -18,7 +18,7 @@ class cron extends base
 
 	public function handle($mode)/*{{{*/
 	{
-        $this->reject_anon();
+        $this->reject_non_dev();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
         switch ($mode)
@@ -49,7 +49,6 @@ class cron extends base
             $rep_giveaway_duration  = (int) $this->config['snp_rep_giveaway_duration'];
             if (time() > $rep_giveaway_last_time + $rep_giveaway_duration)
             {
-                prn('doing it');
                 $cfg['target'] = $rep_minimum_target;
                 $cfg['u_action'] = '/';
                 $this->config->set('snp_rep_giveaway_last_time', time());

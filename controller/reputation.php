@@ -1,21 +1,45 @@
 <?php
-
 namespace jeb\snahp\controller;
 
-use jeb\snahp\core\base;
-
-class reputation extends base
+class reputation
 {
 
     protected $base_url = '';
-
-    public function __construct()/*{{{*/
+    protected $db;
+    protected $user;
+    protected $config;
+    protected $request;
+    protected $template;
+    protected $container;
+    protected $helper;
+    protected $notification;
+    protected $tbl;
+    protected $sauth;
+    protected $user_inventory;
+    protected $product_class;
+    public function __construct(
+        $db, $user, $config, $request, $template, $container, $helper, $notification,
+        $tbl,
+        $sauth, $user_inventory, $product_class
+    )/*{{{*/
     {
+        $this->db = $db;
+        $this->user = $user;
+        $this->config = $config;
+        $this->request = $request;
+        $this->template = $template;
+        $this->container = $container;
+        $this->helper = $helper;
+        $this->notification = $notification;
+        $this->tbl = $tbl;
+        $this->sauth = $sauth;
+        $this->user_inventory = $user_inventory;
+        $this->product_class = $product_class;
     }/*}}}*/
 
 	public function handle($mode)/*{{{*/
 	{
-        $this->reject_anon();
+        $this->sauth->reject_anon();
         if (!$this->config['snp_rep_b_master'])
         {
             trigger_error('Reputation system has been disabled by the administrator. Error Code: 11f4a36948');
@@ -30,7 +54,7 @@ class reputation extends base
             return $this->add($cfg);
             break;
         case 'mcp_rep_giveaways':
-            $this->reject_non_dev();
+            $this->sauth->reject_non_dev();
             $cfg['tpl_name'] = '@jeb_snahp/mcp/component/mcp_rep_giveaways/base.html';
             $cfg['b_feedback'] = false;
             return $this->mcp_rep_giveaways($cfg);
@@ -91,8 +115,35 @@ class reputation extends base
         trigger_error("All users' available reputation points were set to {$target}. {$time}");
     }/*}}}*/
 
+    private function add_user_reputation_pool($user_id, $quantity)
+    {
+        $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available=${quantity}" .
+            " WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+    }
+
+    public function mcp_set_min_for_users_with_upgrades($target)/*{{{*/
+    {
+        // A cron script runs this method to replenish user rep points
+        $name = 'larger_rep_pool';
+        $class_data = $this->product_class->get_product_class_by_name($name);
+        $value = (int) $class_data['value'];
+        $pcid = (int) $class_data['id'];
+        $sql = 'SELECT user_id, quantity FROM ' . $this->tbl['user_inventory'] . " WHERE product_class_id=${pcid}";
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        foreach($rowset as $row)
+        {
+            $user_id = $row['user_id'];
+            $quantity = $row['quantity'] + $target;
+            $this->add_user_reputation_pool($user_id, $quantity);
+        }
+    }/*}}}*/
+
     public function mcp_set_min($cfg)/*{{{*/
     {
+        // A cron script runs this method to replenish user rep points
         $target = $cfg['target'];
         if (!$target)
         {
@@ -104,6 +155,7 @@ class reputation extends base
             " WHERE snp_rep_n_available < {$target}";
         $this->db->sql_query($sql);
         $this->config->set('snp_rep_giveaway_last_time', time());
+        $this->mcp_set_min_for_users_with_upgrades($target);
         $time = microtime(true) - $time;
         $time = sprintf('The procedure took %0.6f seconds.', $time);
         meta_refresh(3, $cfg['u_action']);
@@ -343,6 +395,44 @@ class reputation extends base
             return false;
         }
         return true;
+    }/*}}}*/
+
+    public function select_post($pid, $field='*')/*{{{*/
+    {
+        $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function select_user($user_id, $cooldown=0)/*{{{*/
+    {
+        $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
+        $result = $this->db->sql_query($sql, $cooldown);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function make_username($row)/*{{{*/
+    {
+        $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
+        return $strn;
+    }/*}}}*/
+
+    public function select_rep_total_for_post($post_id, $cachetime=1)/*{{{*/
+    {
+        $tbl = $this->container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";
+        $result = $this->db->sql_query($sql, $cachetime);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return 0;
+        }
+        return (int) $row['count'];
     }/*}}}*/
 
 }
