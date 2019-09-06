@@ -105,8 +105,13 @@ class economy_user_dashboard
         }
         $inv_count = $this->user_inventory->get_inventory_count_by_product_class($user_id);
         $product_classes = $this->product_class->get_product_classes();
+        $group_data = $this->get_group_data();
         foreach($product_classes as $entry)
         {
+            if ($entry['name'] == 'search_cooldown_reducer')
+            {
+                $entry['max_per_user'] = min($entry['max_per_user'], $this->get_max_search_interval());
+            }
             $id = $entry['id'];
             $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
             $entry['b_buy'] = $entry['n_bought'] < $entry['max_per_user'];
@@ -290,4 +295,21 @@ class economy_user_dashboard
         return $invite_user_data['n_available'];
     }/*}}}*/
 
+    private function get_group_data()/*{{{*/
+    {
+        $group_id = $this->user->data['group_id'];
+        $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${group_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    private function get_max_search_interval()
+    {
+        $group_data = $this->get_group_data();
+        $base_search_interval = (int) $group_data['snp_search_interval'];
+        return max($base_search_interval-5, 0);
+
+    }
 }
