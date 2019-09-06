@@ -13,6 +13,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
+          <th scope="col">Description</th>
           <th scope="col">Price</th>
           <th scope="col">Value</th>
           <th scope="col">Img Url</th>
@@ -27,6 +28,9 @@
           <td>{PC.id}<input name="id" type="hidden" value="{PC.id}"></td>
           <td>
             <input name="display_name" type="text" value="{PC.display_name}"></input>
+          </td>
+          <td>
+            <input name="description" type="text" value="{PC.description}"></input>
           </td>
           <td>
             <input name="price" type="number" min="0" value="{PC.price}"></input>

@@ -1,24 +1,18 @@
 <div class="row">
 
-  <table class="table table-sm">
+  <table class="table table-sm table-striped">
     <thead>
       <tr>
-        <th clope="col">TID</th>
-        <th clope="col">ID</th>
+        <th clope="col">Transaction ID</th>
         <th clope="col">Time</th>
-        <th clope="col">Type</th>
-        <th clope="col">Amount</th>
-        <th clope="col">Comment</th>
+        <th clope="col">Description</th>
       </tr>
     </thead>
     <tbody>
       <!-- BEGIN HISTORY -->
       <tr>
-        <td>{HISTORY.transaction_id}</td>
-        <td>{HISTORY.id}</td>
+        <td>{HISTORY.transaction_id}-{HISTORY.id}</td>
         <td>{HISTORY.created_time_strn}</td>
-        <td>{HISTORY.type}</td>
-        <td>{HISTORY.amount}</td>
         <td>{% if HISTORY.comment %}{HISTORY.comment}{% endif %}</td>
       </tr>
       <!-- END HISTORY -->

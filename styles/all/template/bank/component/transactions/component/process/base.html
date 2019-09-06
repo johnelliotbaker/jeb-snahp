@@ -5,13 +5,9 @@
 <table class="table table-sm table-striped">
   <thead>
     <tr>
-      <th scope="col">Type</th>
       <th scope="col">Asset</th>
-      <th scope="col" style="width:5px;"></th>
       <th scope="col">Price</th>
-      <th scope="col" style="width:5px;"></th>
       <th scope="col">Quantity</th>
-      <th scope="col" style="width:5px;"></th>
       <th scope="col">Total</th>
       <th scope="col" style="width: 40px;">Action</th>
     </tr>
@@ -21,11 +17,8 @@
     <tr style="font-size: 1.1em;">
       <input type=hidden id="bank_exchange_row_data_{EXCHANGE_RATE.id}"
                          data-json='{EXCHANGE_RATE.json}'/>
-      <td class="pt-2">Sell</td>
       <td class="pt-2">{EXCHANGE_RATE.display_name} ({EXCHANGE_RATE.sell_unit})</td>
-      <td class="pt-2">@</td>
-      <td class="pt-2">{EXCHANGE_RATE.buy_unit}{EXCHANGE_RATE.sell_rate_formatted} / {EXCHANGE_RATE.sell_unit}</td>
-      <td class="pt-2">&times;</td>
+      <td class="pt-2">{EXCHANGE_RATE.buy_unit}{EXCHANGE_RATE.sell_rate_formatted}/{EXCHANGE_RATE.sell_unit}</td>
       <td class="pt-1">
         <input 
           onchange="BankTransaction.update_exchange_row_total(event);"
@@ -34,7 +27,6 @@
           style="font-size: 1.1em; height:20px; width:80px; text-align:right;" 
           class="form-control form-control-sm" type="number" min="0" value="0"/>
       </td>
-      <td class="pt-2">=</td>
       <td class="pt-2" id="bank_exchange_total_{EXCHANGE_RATE.id}">{EXCHANGE_RATE.buy_unit}0</td>
       <td class="pt-1 text-center">
         <button 

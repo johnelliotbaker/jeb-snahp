@@ -49,6 +49,45 @@ class main_module
         }
 	}
 
+    private function is_custom_rank_purchased($user_id)/*{{{*/
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['mrkt_product_classes'] . " WHERE name='custom_rank'";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        if (!$row) { return false; }
+        $pcid = $row['id'];
+        $sql = 'SELECT * FROM ' . $tbl['user_inventory'] . " WHERE user_id=${user_id} AND product_class_id=${pcid}";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        if (!$row) { return false; }
+        return true ? $row['quantity'] > 0 : false;
+    }/*}}}*/
+
+    private function get_quick_search_upgrade_count($user_id)/*{{{*/
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        $user_id = (int) $user_id;
+        $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
+        $sql = 'SELECT * FROM ' . $tbl['mrkt_product_classes'] . " WHERE name='search_cooldown_reducer'";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        $pcid = $row['id'];
+        $sql = 'SELECT * FROM ' . $tbl['user_inventory'] . " WHERE user_id=${user_id} AND product_class_id=${pcid}";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        if ($row)
+        {
+            return $row['quantity'];
+        }
+        return 0;
+    }/*}}}*/
+
     function handle_custom($cfg)/*{{{*/
     {
 		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
@@ -57,10 +96,18 @@ class main_module
             return;
         }
         $user_id = $user->data['user_id'];
+        $group_id = $user->data['group_id'];
         $b_enable = true;
+        $group_data = $this->select_group($group_id);
+        $n_quick_search = $this->get_quick_search_upgrade_count($user_id);
+        $overall_search_interval = max($group_data['snp_search_interval'] - $n_quick_search, 5);
         $template->assign_vars([
             'B_ENABLE' => $b_enable,
-            'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team')
+            'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team'),
+            'GROUP_DATA' => $group_data,
+            'N_QUICK_SEARCH' => $n_quick_search,
+            'OVERALL_SEARCH_INTERVAL' => $overall_search_interval,
+            'B_CUSTOM_RANK' => $this->is_custom_rank_purchased($user_id),
         ]);
         // Using config custom master switch
     }/*}}}*/
@@ -225,6 +272,17 @@ class main_module
 		global $config;
         $servername = $config['server_name'];
         return isset($servername) && $servername=='192.168.2.12';
+    }/*}}}*/
+
+    private function select_group($group_id)/*{{{*/
+    {
+		global $db;
+        $group_id = (int) $group_id;
+        $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${group_id}";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrow($result);
+        $db->sql_freeresult($result);
+        return $row;
     }/*}}}*/
 
 }

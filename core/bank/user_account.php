@@ -182,7 +182,10 @@ class user_account
         $rate_formatted = number_format($exchange_rate['sell_rate']);
         $sell_unit = $exchange_rate['sell_unit'];
         $buy_unit = $exchange_rate['buy_unit'];
-        $comment = "Exchange ${amount} ${source_type} @ ${buy_unit} ${rate_formatted} / ${sell_unit}";
+        $total = $rate*$amount;
+        $total_formatted = number_format($total);
+        $comment = "Exchange ${amount} ${source_type} @ ${buy_unit}${rate_formatted}/${sell_unit}";
+        $comment = "Sell ${amount} ${source_type} for ${buy_unit}${total_formatted}";
         $data = [
             'type' => 'exchange',
             'amount' => $amount,
@@ -191,7 +194,7 @@ class user_account
         $logger->append_to_transaction($transaction_id, $data);
         $balance_delta = $amount * $rate;
         $balance_delta_formatted = number_format($amount * $rate);
-        $comment = "Deposit $${balance_delta_formatted}";
+        $comment = "$${balance_delta_formatted} added to the account balance";
         $data = [
             'type' => 'deposit',
             'amount' => $balance_delta,

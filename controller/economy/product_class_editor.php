@@ -84,47 +84,4 @@ class product_class_editor
         return $this->helper->render($cfg['tpl_name'], 'Product Class Editor');
     }
 
-    private function get_bank_transaction_data_for_pagination($start, $per_page)/*{{{*/
-    {
-        $tbl_main = $this->tbl['bank_transactions'];
-        $tbl_items = $this->tbl['bank_transaction_items'];
-        $sql = 'SELECT COUNT(*) as total FROM ' . $tbl_main;
-        $result = $this->db->sql_query($sql, 3600);
-        $row = $this->db->sql_fetchrow($result);
-        $total = $row['total'];
-        $this->db->sql_freeresult($result);
-        // ,
-        $order_by = 'a.id DESC';
-        $sql_array = [
-            'SELECT'	=> '*',
-            'FROM'		=> [ $tbl_main	=> 'a', ],
-            'LEFT_JOIN'	=> [
-                [
-                    'FROM'	=> [
-                        $tbl_items => 'b',
-                    ],
-                    'ON'	=> 'a.id=b.transaction_id',
-                ],
-                [
-                    'FROM'	=> [
-                        USERS_TABLE => 'u',
-                    ],
-                    'ON'	=> 'a.user_id=u.user_id',
-                ],
-            ],
-            // 'WHERE'		=> $where,
-            'ORDER_BY' => $order_by,
-        ];
-        $sql = $this->db->sql_build_query('SELECT', $sql_array);
-        $result = $this->db->sql_query_limit($sql, $per_page, $start);
-        $rowset = $this->db->sql_fetchrowset($result);
-        $this->db->sql_freeresult($result);
-        foreach($rowset as &$row)
-        {
-            $row['created_time'] = $this->user->format_date($row['created_time']);
-        }
-        return [$rowset, $total];
-    }/*}}}*/
-
-
 }

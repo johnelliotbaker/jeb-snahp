@@ -1,41 +1,48 @@
+{% if B_CUSTOM_RANK %}
 <script>
   {% include '@jeb_snahp/ucp/customize/component/user_title/base.js' %}
 </script>
+<style>
+  {% include '@jeb_snahp/ucp/customize/component/user_title/base.css' %}
+</style>
 
-<div class="row container mt-3 mb-3 m-0 p-0">
-  <div class="card custom_title_card">
-    <div class="card-body">
-      <div class="card-title">
-        <b>Change your rank title</b>
-        <span class="help_block">
-          <a href="/app.php/snahp/wiki/custom_rank/" target="_blank">
-            <i class="fa fa-question help"></i>
-          </a>
-        </span>
-      </div>
-      <div class="p-0 mb-2" style="font-size:.8em;">
-        *Disclaimer: Please read the help page for relevant rules
-      </div>
-      <div class="card-text">
-        <div class="form-group row">
-          <label for="custom_rank_title" class="col col-form-label">New Title</label>
-          <div class="col-auto">
-            <input type="text" class="form-control form-control-sm"" id="custom_rank_title" maxlength="22" placeholder="">
-          </div>
+<div class="row m-0 p-0 mt-3 w-100">
+  <div class="col-auto m-0 p-0 w-100">
+    <div class="card custom_title_card">
+      <div class="card-body card-block">
+        <div class="card-title">
+          <b>Change your rank title</b>
+          <span class="help_block">
+            <a href="/app.php/snahp/wiki/custom_rank/" target="_blank">
+              <i class="fa fa-question help"></i>
+            </a>
+          </span>
         </div>
-        <div class="form-group row">
-          <label for="custom_rank_img" class="col col-form-label">Image Url</label>
-          <div class="col-auto">
-            <input type="text" class="form-control form-control-sm" id="custom_rank_img" maxlength="255" placeholder="https://i.imgur.com/60OquO6.png">
-          </div>
+        <div class="p-0 mb-2" style="font-size:.8em;">
+          *Disclaimer: Please read the help page for relevant rules
         </div>
-        <div class="form-group row">
-          <button onClick="CustomRank.save();"class="btn btn-block btn-success mx-3" style="height:46px;">
-            <span id="custom_rank_save_button">
-            </span>
-          </button>
+        <div class="card-text">
+          <div class="form-group row">
+            <label for="custom_rank_title" class="col col-form-label">New Rank Title</label>
+            <div class="col-auto col-8">
+              <input type="text" class="form-control form-control-sm"" id="custom_rank_title" maxlength="22" placeholder="">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="custom_rank_img" class="col col-form-label">Rank Image Url</label>
+            <div class="col-auto col-8">
+              <input type="text" class="form-control form-control-sm" id="custom_rank_img" maxlength="255" placeholder="https://i.imgur.com/60OquO6.png">
+            </div>
+          </div>
+          <div class="form-group row">
+            <button id="custom_rank_save_button" onClick="CustomRank.save(event);"class="btn btn-block btn-success mx-3" style="height:46px;">
+              <span id="custom_rank_spinner"></span>
+              <b><span id="custom_rank_text"></span></b>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+{% endif %}
