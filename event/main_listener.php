@@ -139,7 +139,8 @@ class main_listener extends base implements EventSubscriberInterface
                 ['remove_hide_in_pm_on_submit', 0]
             ],
             'core.memberlist_view_profile' => [
-                ['show_inviter_in_profile', 0]
+                ['show_inviter_in_profile', 0],
+                ['show_thanks_given_in_profile', 0]
             ],
             'core.search_modify_param_before' => [
                 ['search_modify_param_before', 0]
@@ -715,6 +716,26 @@ class main_listener extends base implements EventSubscriberInterface
         $sort_by_sql = $event['sort_by_sql'];
         $sort_by_sql += ['x' => 't.topic_time'];
         $event['sort_by_sql'] = $sort_by_sql;
+    }/*}}}*/
+
+    public function show_thanks_given_in_profile($event)/*{{{*/
+    {
+        if ($this->is_mod())
+        {
+            $member = $event['member'];
+            $profile_id = (int) $member['user_id'];
+            $sql = 'SELECT snp_thanks_n_given FROM ' . USERS_TABLE . " WHERE user_id=${profile_id}";
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            if (!$row) { return false; }
+            $n_thanks_given = $row['snp_thanks_n_given'];
+            $this->template->assign_vars([
+                'IS_MOD' => true,
+                'N_THANKS_GIVEN' => $n_thanks_given,
+                'PROFILE_ID' => $profile_id,
+            ]);
+        }
     }/*}}}*/
 
     public function show_inviter_in_profile($event)/*{{{*/
