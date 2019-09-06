@@ -3,22 +3,16 @@
   <table class="table table-sm">
     <thead>
       <tr>
-        <th clope="col">TID</th>
         <th clope="col">ID</th>
         <th clope="col">Time</th>
-        <th clope="col">Type</th>
-        <th clope="col">Amount</th>
-        <th clope="col">Comment</th>
+        <th clope="col">Description</th>
       </tr>
     </thead>
     <tbody>
       <!-- BEGIN INVOICES -->
       <tr>
-        <td>{INVOICES.transaction_id}</td>
         <td>{INVOICES.id}</td>
         <td>{INVOICES.created_time_strn}</td>
-        <td>{INVOICES.type}</td>
-        <td>{INVOICES.amount}</td>
         <td>{% if INVOICES.comment %}{INVOICES.comment}{% endif %}</td>
       </tr>
       <!-- END INVOICES -->

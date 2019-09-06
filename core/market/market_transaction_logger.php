@@ -43,4 +43,35 @@ class market_transaction_logger
         return (int) $this->db->sql_nextid();
     }/*}}}*/
 
+    public function get_user_market_transactions($user_id)
+    {
+        $maxi_query = 300;
+        $cooldown = 0;
+        $where = "user_id=${user_id}";
+        $order_by = 'a.id DESC';
+        $sql_array = [
+            'SELECT'    => '*',
+            'FROM'      => [ $this->tbl['mrkt_invoices'] => 'a', ],
+            'LEFT_JOIN' => [
+                [
+                    'FROM' => [$this->tbl['mrkt_invoice_items'] => 'b'],
+                    'ON'   => 'a.id=b.invoice_id',
+                ],
+            ],
+            'WHERE'    => $where,
+            'ORDER_BY' => $order_by,
+        ];
+        $per_page = 50;
+        $start = 0;
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query_limit($sql, $maxi_query, 0, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
+        $this->db->sql_freeresult($result);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }
+
 }

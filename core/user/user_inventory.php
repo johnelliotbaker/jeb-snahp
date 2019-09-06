@@ -130,8 +130,8 @@ class user_inventory
         $product_class = $this->product_class->get_product_class($product_class_id);
         $price = $product_class['price'];
         $name = $product_class['display_name'];
-        $price_formatted = number_format($product_class['price']);
-        $comment = "Purchasing ${quantity} x ${name} @ $${price_formatted}";
+        $price_formatted = number_format($product_class['price'] * $quantity);
+        $comment = "Purchasing ${quantity} ${name} for $${price_formatted}";
         $data = [
             'product_class_id' => $product_class_id,
             'price' => $price,

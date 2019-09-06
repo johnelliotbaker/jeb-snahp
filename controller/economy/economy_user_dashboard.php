@@ -93,7 +93,18 @@ class economy_user_dashboard
             $entry['json'] = json_encode($entry);
             $this->template->assign_block_vars('EXCHANGE_RATE', $entry);
         }
+        [$rowset, $total] = $this->market_transaction_logger->get_user_market_transactions($user_id);
+        $rowset = array_slice($rowset, 0, 30);
+        foreach($rowset as $entry)
+        {
+            $entry['created_time_strn'] = $this->user->format_date($entry['created_time']);
+            $data = unserialize($entry['data']);
+            $comment = isset($data['comment']) ? $data['comment'] : '';
+            $entry['comment'] = $comment;
+            $this->template->assign_block_vars('INVOICES', $entry);
+        }
         [$rowset, $total] = $this->bank_transaction_logger->get_user_bank_transactions($user_id);
+        $rowset = array_slice($rowset, 0, 30);
         foreach($rowset as $entry)
         {
             $type = $entry['type'];
