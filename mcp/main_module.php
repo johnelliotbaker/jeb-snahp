@@ -134,6 +134,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Modify User Upgrade Specifications',
                 'LINK' => '<a href="/app.php/snahp/economy/pce/edit/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 11,
+                'PURPOSE' => 'Thanks',
+                'NAME' => 'Top Thanks Given',
+                'DESCRIPTION' => 'Show Users With Most Thanks Given',
+                'LINK' => '<a href="/app.php/snahp/thanks/handle/top_thanks_given/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);

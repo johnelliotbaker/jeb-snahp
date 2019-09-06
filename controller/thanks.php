@@ -26,11 +26,47 @@ class thanks extends base
             $cfg['base_url'] = '/app.php/snahp/thanks/handle/thanks_given/';
             $cfg['title'] = 'Thanks Given';
             return $this->handle_thanks_given($cfg);
-
+        case 'top_thanks_given':
+            $this->reject_non_dev('Error Code: a71fca682e');
+            $cfg['tpl_name'] = '@jeb_snahp/thanks/component/top_thanks_given/base.html';
+            $cfg['base_url'] = '/app.php/snahp/thanks/handle/top_thanks_given/';
+            $cfg['title'] = 'Top Thanks Given';
+            return $this->resp_top_thanks_given($cfg);
         default:
             break;
         }
         trigger_error('You must provide a valid mode.');
+    }
+
+    public function resp_top_thanks_given($cfg)
+    {
+        $time = microtime(true);
+        $order_by = 'snp_thanks_n_given DESC';
+        $sql_array = [
+            'SELECT'       => '
+                username, user_id, snp_thanks_n_given, user_regdate,
+                user_posts
+                    ',
+            'FROM'         => [ USERS_TABLE	=> 'u', ],
+            'ORDER_BY'     => $order_by,
+        ];
+        $maxi_query = 300;
+        $cooldown = 3600;
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query_limit($sql, $maxi_query, 0, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $total = count($rowset);
+        $this->db->sql_freeresult($result);
+        $tpl_name = $cfg['tpl_name'];
+        foreach ($rowset as $row)
+        {
+            $row['user_regdate_strn'] = $this->user->format_date($row['user_regdate']);
+            $this->template->assign_block_vars('USERS', $row);
+        }
+        $this->template->assign_vars([
+            'ELAPSED_TIME' => microtime(true) - $time,
+        ]);
+        return $this->helper->render($tpl_name, $cfg['title']);
     }
 
     public function handle_thanks_given($cfg)

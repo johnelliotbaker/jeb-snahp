@@ -1,0 +1,27 @@
+<!-- INCLUDE overall_header.html -->
+<div class="twbs">
+  <p>{ELAPSED_TIME} seconds</p>
+  <table class="table table-sm table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">UID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Thanks Given</th>
+        <th scope="col">Post Count</th>
+        <th scope="col">Registered</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- BEGIN USERS -->
+      <tr>
+        <td>{USERS.user_id}</td>
+        <td><b><a href="/memberlist.php?mode=viewprofile&u={USERS.user_id}">{USERS.username}</a></b></td>
+        <td><a href="/app.php/snahp/thanks/handle/thanks_given/?user_id={USERS.user_id}">{USERS.snp_thanks_n_given}</a></td>
+        <td>{USERS.user_posts}</td>
+        <td>{USERS.user_regdate_strn}</td>
+      </tr>
+      <!-- END USERS -->
+    </tbody>
+  </table>
+</div>
+<!-- INCLUDE overall_footer.html -->
