@@ -43,12 +43,35 @@ class custom_rank extends base
         return $js->send($row);
     }
 
+    private function truncate_string($strn, $available)/*{{{*/
+    {
+        $array = str_split($strn);
+        $count = 0;
+        foreach($array as $letter)
+        {
+            if(mb_detect_encoding($letter)=='UTF-8')
+            {
+                $available -= 2.7;
+            }
+            else
+            {
+                $available -= 1;
+            }
+            $count += 1;
+            if ($available <= 0)
+            {
+                break;
+            }
+        }
+        return mb_substr($strn, 0, $count);
+    }/*}}}*/
+
     public function save($cfg)/*{{{*/
     {
         $js = new \phpbb\json_response();
-        $rank_title = $this->db->sql_escape($this->request->variable('rt', ''));
+        $rank_title = $this->db->sql_escape($this->request->variable('rt', '', true));
+        $rank_title = $this->truncate_string($rank_title, 22);
         $rank_img = $this->db->sql_escape($this->request->variable('ri', ''));
-        $rank_title = substr($rank_title, 0, 22);
         $user_id = (int) $this->user->data['user_id'];
         $b_success = $this->set_custom_rank($user_id, $rank_title, $rank_img);
         if ($b_success)
