@@ -385,7 +385,7 @@ class main_listener extends base implements EventSubscriberInterface
         $rep_received = $this->data['profile']['reputation_received'];
         if (!$rep_received) return false;
         $this->template->assign_vars([
-            'N_REPUTATION' => $rep_received,
+            'B_REPUTATION_SHOW' => true,
             'B_REPUTATION_PROFILE_PUBLIC' => $b_public,
         ]);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
