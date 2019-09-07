@@ -32,7 +32,7 @@ class userscript extends base
         trigger_error('Nothing to see here. Move along.');
     }
 
-    public function handle_userid()
+    public function handle_userid()/*{{{*/
     {
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
@@ -54,9 +54,9 @@ class userscript extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }
+    }/*}}}*/
 
-    public function handle_username()
+    public function handle_username()/*{{{*/
     {
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
@@ -75,9 +75,9 @@ class userscript extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }
+    }/*}}}*/
 
-    public function get_or_reject_topic_data($tid)
+    public function get_or_reject_topic_data($tid)/*{{{*/
     {
         if (!$tid)
         {
@@ -89,9 +89,9 @@ class userscript extends base
             trigger_error('That topic does not exist.');
         }
         return $topicdata;
-    }
+    }/*}}}*/
 
-    public function enable_bump_topic($b_enable=true, $perm=[])
+    public function enable_bump_topic($b_enable=true, $perm=[])/*{{{*/
     {
         $time = time();
         $tid = $this->request->variable('t', '');
@@ -162,9 +162,9 @@ class userscript extends base
         }
         meta_refresh(2, $return_url);
         trigger_error($strn);
-    }
+    }/*}}}*/
 
-    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
+    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)/*{{{*/
     {
         // From includes/functions_posting.php
         global $config, $db, $user, $phpEx, $phpbb_root_path, $phpbb_log;
@@ -217,10 +217,9 @@ class userscript extends base
             $db->sql_freeresult($result);
             update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time, false);
         }
-    }
+    }/*}}}*/
 
-
-    public function bump_topic()
+    public function bump_topic()/*{{{*/
     {
         $tid = $this->request->variable('t', '');
         $perm = $this->get_bump_permission($tid);
@@ -229,7 +228,7 @@ class userscript extends base
         {
             trigger_error('You don\'t have the permission to bump this topic.');
         }
-        $b_mod = $this->is_mod();
+        $b_mod = $this->is_dev();
         $group_id = $this->user->data['group_id'];
         $group_config = $this->select_bump_group_config($group_id);
         $cooldown = $group_config['snp_bump_cooldown'];
@@ -276,9 +275,9 @@ class userscript extends base
         }
         meta_refresh(2, $return_url);
         trigger_error($strn);
-    }
+    }/*}}}*/
 
-    public function handle_bump_topic($cfg)
+    public function handle_bump_topic($cfg)/*{{{*/
     {
         $this->reject_anon();
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
@@ -312,9 +311,9 @@ class userscript extends base
         }
         meta_refresh(2, $return_url);
         trigger_error($strn);
-    }
+    }/*}}}*/
 
-    public function handle_thanks_given($cfg)
+    public function handle_thanks_given($cfg)/*{{{*/
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
@@ -354,9 +353,9 @@ class userscript extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
-    public function handle_favorite($cfg)
+    public function handle_favorite($cfg)/*{{{*/
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
@@ -408,6 +407,6 @@ class userscript extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }
+    }/*}}}*/
 
 }
