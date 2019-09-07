@@ -100,7 +100,7 @@ class economy_init
         $this->make_row($data, 'name', $this->tbl['mrkt_product_classes']);
         $data = [
             'name'         => 'larger_rep_pool',
-            'display_name' => 'Increase Rep. Pool',
+            'display_name' => 'Larger Rep. Pool',
             'description'  => 'Increase the number of reputation points you can give away per cycle',
             'price'        => '50000',
             'value'        => '1',

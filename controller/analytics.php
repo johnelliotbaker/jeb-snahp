@@ -175,6 +175,7 @@ class analytics extends base
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
             $username_link = $this->make_username($row);
+            $total_thanks_given = $row['snp_thanks_n_given'];
             $topic_links = [];
             foreach($a_tid as $tid)
             {
@@ -185,6 +186,7 @@ class analytics extends base
                 'id' => $count,
                 'user_id' => $user_id,
                 'n_thanks' => count($a_tid),
+                'n_total_thanks' => $total_thanks_given,
                 'username_link' => $username_link,
                 'topic_links' => $topic_links,
             ];

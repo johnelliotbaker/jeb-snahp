@@ -20,16 +20,23 @@
   <tbody>
     <!-- BEGIN PRODUCT_CLASSES -->
     <tr style="font-size: 1.1em;">
-      <td class="pt-2"><img src="{PRODUCT_CLASSES.img_url}" style="max-height:20px; margin-right: 4px;">{PRODUCT_CLASSES.display_name}
-        {% if PRODUCT_CLASSES.help_url %}
+      <td class="pt-1 pb-1">
+        <span class="row ml-1">
+          <img src="{PRODUCT_CLASSES.img_url}" style="max-height:20px; margin-right: 4px;" title="{PRODUCT_CLASSES.display_name}">
+          <span class="d-none d-lg-block" style="margin-top:2px;">{PRODUCT_CLASSES.display_name}</span>
+        </span>
+      </td>
+      {% if PRODUCT_CLASSES.help_url %}
+      <td class="pt-1">{PRODUCT_CLASSES.description}
         <div class="inline_block help">
           <a href="{PRODUCT_CLASSES.help_url}" target="_blank">
             <i class="fa fa-question help"></i>
           </a>
-          {% endif %}
         </div>
       </td>
+      {% else %}
       <td class="pt-2">{PRODUCT_CLASSES.description}</td>
+      {% endif %}
       <td class="pt-2">{PRODUCT_CLASSES.n_bought} / {PRODUCT_CLASSES.max_per_user}</td>
       <td class="pt-2">{PRODUCT_CLASSES.value} {PRODUCT_CLASSES.unit}</td>
       <td class="pt-2">${PRODUCT_CLASSES.price_formatted}</td>

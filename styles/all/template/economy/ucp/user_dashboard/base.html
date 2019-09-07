@@ -54,13 +54,13 @@
     </div>
   </div>
 
-  <div class="market_history">
+  <div>
     <div class="row mt-3">
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Invoice</h5>
-            <div class="col">
+            <h5 class="card-title pointer noselect" data-target="#invoices" data-toggle="collapse">Invoice <i class="icon fa-plus-square-o collapse_plus" aria-hidden="true"></i></h5>
+            <div class="col collapse" id="invoices">
               {% include '@jeb_snahp/shop/component/transactions/component/history/base.html' %}
             </div>
           </div>
@@ -69,13 +69,13 @@
     </div>
   </div>
 
-  <div class="banking_history">
+  <div>
     <div class="row mt-3">
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Banking History</h5>
-            <div class="col">
+            <h5 class="card-title pointer noselect" data-target="#banking_history" data-toggle="collapse">Banking History <i class="icon fa-plus-square-o collapse_plus" aria-hidden="true"></i></h5>
+            <div class="col collapse" id="banking_history">
               {% include '@jeb_snahp/bank/component/transactions/component/history/base.html' %}
             </div>
           </div>

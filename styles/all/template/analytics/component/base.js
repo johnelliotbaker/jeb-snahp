@@ -51,7 +51,7 @@ cmtx.show_user_list = function() {
   <td class="username text-center">
       <b><span style="font-size: 1.1em">${entry['username_link']}</span></b>
       <a target="_blank" href="/app.php/snahp/thanks/handle/thanks_given/?user_id=${entry['user_id']}">
-          <i class="icon fa-thumbs-up fa-fw" aria-hidden="true"></i><span class="sr-only">Show thanks given</span>
+          <b>(${entry['n_total_thanks']})</b>
       </a>
   </td>
   <td class="count text-center">${entry['n_thanks']}</td>
