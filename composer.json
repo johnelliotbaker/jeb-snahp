@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.30.0",
-    "time": "2019-08-30",
+    "version": "0.30.1",
+    "time": "2019-09-07",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "c699b10d675eb76513e73d8f7e7a428eb739ad29",
+        "version": "8e47a7d10ed4198119b1e43781daf60d8b612828",
         "features": "Achievement and Reputation Panels",
         "display-name": "Snahp",
         "soft-require": {
