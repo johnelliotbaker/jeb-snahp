@@ -61,6 +61,17 @@ class user_auth
         return $this->auth->acl_gets('a_');
     }/*}}}*/
 
+    public function is_only_dev()/*{{{*/
+    {
+        include_once('includes/functions_user.php');
+        // TODO Get better method for checking for developer roles
+        $gid_developer = 13;
+        $uid_developer = 10414;
+        $user_id = $this->user->data['user_id'];
+        $b_dev = group_memberships($gid_developer, $user_id, true) && $user_id==$uid_developer;
+        return $b_dev;
+    }/*}}}*/
+
     public function is_dev()/*{{{*/
     {
         include_once('includes/functions_user.php');

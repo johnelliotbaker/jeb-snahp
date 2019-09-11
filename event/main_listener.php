@@ -237,6 +237,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function modify_user_rank($event)/*{{{*/
     {
+        // replace default rank with custom rank
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
         $product_class_name = 'custom_rank';
@@ -254,7 +255,7 @@ class main_listener extends base implements EventSubscriberInterface
                 }
                 if ($rank_title)
                 {
-                    $post_row['RANK_TITLE'] = $rank_title;
+                    $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em;'>$rank_title</span>";
                 }
             }
         }

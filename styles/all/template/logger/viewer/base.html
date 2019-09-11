@@ -1,0 +1,50 @@
+<!-- INCLUDE overall_header.html -->
+
+<div class="twbs">
+  <div class="account_info">
+    {% include '@jeb_snahp/logger/enabler/base.html' %}
+    <div class="row m-0">
+      <div class="col mx-2">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a 
+              class="nav-link active noselect" 
+              href="/app.php/snahp/logger/view/?type=posting">Posting
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link active noselect" 
+              href="/app.php/snahp/logger/view/?type=viewtopic">Viewtopic
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <table class="table table-sm table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Type</th>
+        <th scope="col">Name</th>
+        <th scope="col">Time</th>
+        <th scope="col">Epoch</th>
+        <th scope="col">Delta</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in LOG %}
+      <tr>
+        <td>{{ entry.id }}</td>
+        <td>{{ entry.type }}</td>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.datetime }}</td>
+        <td>{{ entry.time }}</td>
+        <td>{{ entry.timedelta }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+<!-- INCLUDE overall_footer.html -->

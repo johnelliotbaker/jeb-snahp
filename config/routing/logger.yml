@@ -1,0 +1,5 @@
+jeb_snahp_routing.logger_viewer:
+    path: /snahp/logger/{mode}/
+    defaults: { _controller: jeb.snahp.log_viewer_controller:handle}
+    requirements:
+        mode: \S+

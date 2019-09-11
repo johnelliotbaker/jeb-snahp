@@ -1,5 +1,7 @@
 routing_test:
     resource: 'routing/test.yml'
+routing_logger:
+    resource: 'routing/logger.yml'
 routing_wiki:
     resource: 'routing/wiki.yml'
 routing_economy:

@@ -1,4 +1,5 @@
 imports:
+    - { resource: logger.yml }
     - { resource: parameters.yml }
     - { resource: cron.yml }
     - { resource: economy/economy.yml }

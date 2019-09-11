@@ -392,7 +392,8 @@ abstract class base
         $bump_data = $this->select_bump_topic($tid);
         $group_config = $this->select_bump_group_config($group_id);
         // setup
-        $b_mod = $this->is_mod();
+        // TODO: Remove dev permission after trial
+        $b_mod = $this->is_dev();
         $status = $bump_data ? $bump_data['status'] : null;
         $b_op = $topic_data && $topic_data['topic_poster']==$user_id;
         $b_group_enabled = $group_config['snp_enable_bump'];
