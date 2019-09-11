@@ -1,0 +1,62 @@
+@media (min-width: 701px) and (max-width: 950px) {
+
+    ul.topiclist dt {
+        margin-right: -80px;
+    }
+
+    ul.topiclist dt .list-inner {
+        margin-right: 80px;
+    }
+
+    dd.mark, dd.posts, dd.topics, dd.views {
+        width: 80px;
+    }
+}
+
+.card-deck
+{
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+.card
+{
+    margin-right: 3px !important;
+    margin-left: 3px !important;
+}
+
+.card .card-header
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.card .card-body
+{
+    padding: 8px;
+}
+
+.form-check
+{
+    font-size: 1.5em;
+    margin-left: 2px;
+    margin-bottom: 14px;
+}
+
+::placeholder
+{
+    color: #888888 !important;
+    opacity: .5 !important;
+}
+
+:-ms-input-placeholder
+{
+    color: #888888 !important;
+    opacity: .5 !important;
+}
+
+::-ms-input-placeholder
+{
+    color: #888888 !important;
+    opacity: .5 !important;
+}
+
