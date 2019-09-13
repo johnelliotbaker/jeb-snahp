@@ -77,6 +77,7 @@ class achievements extends base
         $data[] = $this->update_bone_head();
         $data[] = $this->update_size_matters();
         $data[] = $this->update_child_at_heart();
+        $data[] = $this->update_solar_powered();
         foreach ($data as $entry)
         {
             if (!$entry)
@@ -227,6 +228,23 @@ class achievements extends base
         $data = [
             'unique' => true,
             'type' => 'the_gourmet',
+            'user_id' => $user_id,
+            'value' => 0,
+            'modified_time' => time(),
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function update_solar_powered()/*{{{*/
+    {
+        $user_id = 378;
+        if ($this->is_dev_server())
+        {
+            $user_id = 2;
+        }
+        $data = [
+            'unique' => true,
+            'type' => 'solar_powered',
             'user_id' => $user_id,
             'value' => 0,
             'modified_time' => time(),

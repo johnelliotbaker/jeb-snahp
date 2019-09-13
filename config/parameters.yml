@@ -150,7 +150,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/WKFO7iP.png'
             title: "Bone Head. A lesson in 'Be careful what you wish for, lest it come true.'\r{USERNAME} wished for something bigger, but the only thing he got from the doctor was 'Cranial Calcification'."
             url: 'https://forum.snahp.it/viewtopic.php?f=52&t=90345&start=425#p368629'
-            probability: 2 
+            probability: 1 
         gambler:
             name: 'Gambler'
             img:
@@ -183,7 +183,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
             url: ''
-            probability: 15
+            probability: 8
         grave_digger:
             name: 'Grave Digger'
             img:
@@ -205,7 +205,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             url: ''
-            probability: 8
+            probability: 4
         magnetic_personality:
             name: 'Magnetic Personality'
             img:
@@ -239,4 +239,15 @@ parameters:
             title: "Intense Training. No pain, no gain!\r{USERNAME} is the best-selling author and personal trainer known for his fitness, nutrition, and body awareness programs."
             url: 'https://forum.snahp.it/viewtopic.php?f=61&t=104439'
             probability: 8
+        solar_powered:
+            name: 'Sun Burned'
+            img:
+                url:
+                    prosilver: 'https://i.imgur.com/jwulcYy.png'
+                    Basic: 'https://i.imgur.com/jwulcYy.png'
+                    Hexagon: 'https://i.imgur.com/yT7nNVU.png'
+                    Acieeed!: 'https://i.imgur.com/zoc1xVd.png'
+            title: "Sun Burned. \r'One week on the Copacabana Beach in the warm embrace of Brazilian Sun and I could die happy!', said {USERNAME}.\r The tender pink skin is a painful reminder that good times are already in the distant past and that one should never forget to wear sunscreen."
+            url: 'https://forum.snahp.it/viewtopic.php?p=435658#p435658'
+            probability: 4
 
