@@ -343,6 +343,13 @@ class main_listener extends base implements EventSubscriberInterface
             'S_PROFILE_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_PROFILE_USERNAME' => $profile_username,
         ]);
+        // In-profile moderation: Usercolor
+        $this->template->assign_vars([
+            'B_SHOW_USER_COLOUR' => $this->is_dev(),
+            'PROFILE_USER_COLOUR' => $data['user_colour'],
+            'PROFILE_ID' => $profile_id,
+        ]);
+        // Contribution Statistics
         $contributions = $this->get_user_contributions($profile_id);
         $reputation_received = $contributions['snp_rep_n_received'];
         $thanks_received = $contributions['snp_thanks_n_received'];

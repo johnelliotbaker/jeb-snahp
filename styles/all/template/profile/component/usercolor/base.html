@@ -1,0 +1,14 @@
+{% if B_SHOW_USER_COLOUR %}
+<dt>
+  Usercolor:
+</dt>
+<dd>
+  <span id="usercolor_preview" style="margin-bottom:-4px; width: 16px; height: 16px; background-color: #{PROFILE_USER_COLOUR}; display:inline-block;"></span>
+  <input name="custom_usercolor" style="width: 60px;" type="text" value="{PROFILE_USER_COLOUR}" maxlength="6">
+  <input id="save_usercolor" type="button" name="save_usercolor" value="Save" class="button2">
+  <input id="reset_usercolor" type="button" name="reset_usercolor" value="Reset" class="button2">
+</dd>
+<script>
+  {% include '@jeb_snahp/profile/component/usercolor/base.js' %}
+</script>
+{% endif %}

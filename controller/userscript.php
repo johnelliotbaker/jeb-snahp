@@ -1,6 +1,7 @@
 <?php
 namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
 class userscript extends base
@@ -26,11 +27,92 @@ class userscript extends base
             return $this->handle_username();
         case 'userid':
             return $this->handle_userid();
+        case 'set_usercolor':
+            return $this->set_user_colour_as_json();
         default:
             break;
         }
         trigger_error('Nothing to see here. Move along.');
     }
+
+    private function get_user_colour($user_id)/*{{{*/
+    {
+        $sql = 'SELECT user_colour FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return isset($row['user_colour']) ? $row['user_colour'] : false;
+    }/*}}}*/
+
+    private function is_valid_user($user_id)/*{{{*/
+    {
+        $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        return !!$row;
+    }/*}}}*/
+
+    private function is_valid_user_colour($user_colour)/*{{{*/
+    {
+        return ctype_xdigit($user_colour) && strlen($user_colour) == 6;
+    }/*}}}*/
+
+    private function reset_user_colour($user_id)/*{{{*/
+    {
+        $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return false;
+        }
+        $group_id = $row['group_id'];
+        $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${group_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        if (!$row)
+        {
+            return false;
+        }
+        $group_colour = $row['group_colour'];
+        $this->set_user_colour($user_id, $group_colour);
+        return true;
+    }/*}}}*/
+
+    private function set_user_colour($user_id, $user_colour)/*{{{*/
+    {
+        $data = ['user_colour' => $user_colour];
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+            WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function set_user_colour_as_json()/*{{{*/
+    {
+        $this->reject_non_dev();
+        $profile_id = $this->request->variable('p', 0);
+        $user_colour = $this->request->variable('c', '000000');
+        $reset = $this->request->variable('r', 0);
+        if (!$profile_id || !$this->is_valid_user($profile_id))
+        {
+            return new JsonResponse(['status' => 'Invalid user']);
+        }
+        if ($reset)
+        {
+            $b_success = $this->reset_user_colour($profile_id) ? 1 : 0;
+            return new JsonResponse(['status' => $b_success]);
+        }
+        if (!$this->is_valid_user_colour($user_colour))
+        {
+            return new JsonResponse(['status' => 'Invalid user color']);
+        }
+        $b_success = $this->set_user_colour($profile_id, $user_colour) ? 1 : 0;
+        return new JsonResponse(['status' => $b_success]);
+    }/*}}}*/
 
     public function handle_userid()/*{{{*/
     {
