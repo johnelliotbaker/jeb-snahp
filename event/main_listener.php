@@ -159,8 +159,36 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.search_modify_interval' => [
                 ['modify_search_interval', 0],
+            ],    
+            'core.ucp_pm_compose_modify_data' => [
+                ['set_pm_mode', 0],
+            ],
+            'core.decode_message_before' => [
+                ['censor_hide_in_pm', 0],
             ],
         ];
+    }/*}}}*/
+
+    public function set_pm_mode($event)/*{{{*/
+    {
+        $this->data['mode'] = 'pm';
+    }/*}}}*/
+
+    public function censor_hide_in_pm($event)/*{{{*/
+    {
+        // Mode set in set_pm_mode()
+        if (!isset($this->data['mode']) || $this->data['mode'] != 'pm') { return false; }
+        $message_text = $event['message_text'];
+        preg_match('#\[hide\]#is', $message_text, $match);
+        $n_open = count($match);
+        preg_match('#\[\/hide\]#is', $message_text, $match);
+        $n_close = count($match);
+        if ($n_open != $n_close)
+        {
+            $message_text = '{{ Unmatched Hide Tags }}';
+        }
+        $message_text = preg_replace('#\[hide\].+\[\/hide\]#is', '{{ HIDDEN CONTENT }}', $message_text);
+        $event['message_text'] = $message_text;
     }/*}}}*/
 
     public function colorize_staff_notification($event)/*{{{*/
