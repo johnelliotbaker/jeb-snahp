@@ -127,7 +127,7 @@ Googlebooks.updatePosters = function(media)
     }, 100);
 }
 
-Imdb.googlebooks_dialog_template = `
+Googlebooks.googlebooks_dialog_template = `
 <div id="googlebooks_dialog" class="twbs modalDialog googlebooks">
   <div class="twbs card document rounded">
     <div class="twbs card-body dialog rounded">
@@ -192,7 +192,7 @@ Googlebooks.filterGooglebooksMedia = function(media)
 
 Googlebooks.handle_googlebooks = function(response, searchTerm)
 {
-    $googlebooks_dialog = $(Imdb.googlebooks_dialog_template).appendTo($("body"));
+    $googlebooks_dialog = $(Googlebooks.googlebooks_dialog_template).appendTo($("body"));
     $googlebooks_dialog = $("#googlebooks_dialog");
     $googlebooks_header = $("#googlebooks_header");
     $googlebooks_title  = $("#googlebooks_title").text(`Results for "${searchTerm}"`);
