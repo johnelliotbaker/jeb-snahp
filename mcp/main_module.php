@@ -141,6 +141,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Show Users With Most Thanks Given',
                 'LINK' => '<a href="/app.php/snahp/thanks/handle/top_thanks_given/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 11,
+                'PURPOSE' => 'Analytics',
+                'NAME' => 'Locker Common Thanks',
+                'DESCRIPTION' => 'Common Thanks for Lockers',
+                'LINK' => '<a href="/app.php/locker/common_thanks/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);

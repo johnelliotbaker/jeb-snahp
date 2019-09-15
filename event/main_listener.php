@@ -83,6 +83,9 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_achievements_in_profile', 0],
                 ['show_reputation_in_profile', 0],
             ],
+            'core.text_formatter_s9e_parse_before' => [
+                ['process_base64_bbcode', 10],
+            ],
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
             'core.display_forums_after'                   => 'show_thanks_top_list',
@@ -167,6 +170,25 @@ class main_listener extends base implements EventSubscriberInterface
                 ['censor_hide_in_pm', 0],
             ],
         ];
+    }/*}}}*/
+
+    public function process_base64_bbcode($event)/*{{{*/
+    {
+        $text = $event['text'];
+        $ptn = '#\[b64\](.*?)\[\/b64\]#uis';
+        $permission = false;
+        if ($this->user_belongs_to_groupset($this->user->data['user_id'], 'Blue Team'))
+        {
+            $permission = true;
+        }
+        $text = preg_replace_callback($ptn, function($matches) use($permission) {
+            if ($permission)
+            {
+                return base64_encode($matches[1]);
+            }
+            return ' *** You cannot use b64 encoder ***';
+        }, $text);
+        $event['text'] = $text;
     }/*}}}*/
 
     public function set_pm_mode($event)/*{{{*/

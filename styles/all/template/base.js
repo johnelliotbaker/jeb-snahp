@@ -3,10 +3,13 @@ var Clipboard = {};
 
 Clipboard.copy = function(strn)
 {
-    $tmp = $('<input>').appendTo('body');
-    $tmp.val(strn).select();
-    document.execCommand('copy');
-    $tmp.remove();
+    // https://stackoverflow.com/questions/46041831/copy-to-clipboard-with-break-line/46151806
+    var $temp = $("<textarea>");
+    var brRegex = /<br\s*[\/]?>/gi;
+    $("body").append($temp);
+    $temp.val(strn.replace(brRegex, "\r\n")).select();
+    document.execCommand("copy");
+    $temp.remove();
 }
 
 Clipboard.copy_gallery_link = function(ev)
