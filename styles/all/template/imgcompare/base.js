@@ -47,6 +47,7 @@ ImgCompare.setup_modal = function(url1, url2, label1='', label2='')
 ImgCompare.update_modal_window = function()
 {
     $img1 = this.img[0];
+    if (!$img1) return false;
     var nh = $img1[0].naturalHeight;
     var nw = $img1[0].naturalWidth;
     var ar_n = nw/nh;
