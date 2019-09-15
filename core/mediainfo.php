@@ -314,6 +314,11 @@ class mediainfo
         return $res;
     }/*}}}*/
 
+    private function get_text_format($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
     private function get_text_subtitle($data)/*{{{*/
     {
         return $this->get_val_or_null('Language', $data);
@@ -326,6 +331,7 @@ class mediainfo
         $a_data = $this->aggregate_text_data($data);
         $a_element = [
             ['f' => 'subtitle' , 'alias' => 'Language'],
+            ['f' => 'format' , 'alias' => 'Format'],
         ];
         $i = 1;
         foreach ($a_data as $data)
@@ -337,7 +343,8 @@ class mediainfo
             }
             $entry['type'] = 'fullwidth';
             $language =  $this->get_language_image_or_strn($tmp['Language'])['value'];
-            $html = '<div class="row"><div class="col-auto subtitle_key">#' . $i .  ':</div><div class="float-right subtitle_value col">' . $language . '</div></div>';
+            $format = $tmp['Format'];
+            $html = '<div class="row"><div class="col-auto subtitle_key">#' . $i .  ':</div><div class="float-right subtitle_value col">' . $language . " ${format}</div></div>";
             $entry['content'] =  $html;
             $res["Subtitle ${tmp['id']}"] = $entry;
             $i += 1;
