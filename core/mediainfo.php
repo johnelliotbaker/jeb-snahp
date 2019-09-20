@@ -371,6 +371,16 @@ class mediainfo
         return $res;
     }/*}}}*/
 
+    private function get_audio_format_profile($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
+    private function get_audio_commercial_name($data)/*{{{*/
+    {
+        return $this->get_val_or_null('Format', $data);
+    }/*}}}*/
+
     private function get_audio_format($data)/*{{{*/
     {
         return $this->get_val_or_null('Format', $data);
