@@ -1112,7 +1112,8 @@ class main_listener extends base implements EventSubscriberInterface
             {
                 $emote = $emotes[$keyword];
                 $css = array_key_exists('css', $emote) ? ' ' . $emote['css'] : '';
-                $repl = "<img class='emotes_default${css}' src='{$emotes[$keyword]['url']}'></img>";
+                $title = array_key_exists('title', $emote) ? ' ' . $emote['title'] : '';
+                $repl = "<img title='${title}' class='emotes_default${css}' src='{$emotes[$keyword]['url']}'></img>";
                 $curr_ptn = "/#($keyword)#/";
                 $message = preg_replace($curr_ptn, $repl, $message);
             }

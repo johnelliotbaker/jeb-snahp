@@ -119,6 +119,32 @@ parameters:
             url: 'https://i.imgur.com/wJpv1yL.gif'
             type: 1
 
+        # friends1
+        e_ac000:
+            url: 'https://i.imgur.com/V9urSJI.gif'
+            type: 0
+        e_ac001:
+            url: 'https://i.imgur.com/T0EYtQX.gif'
+            type: 0
+        e_ac002:
+            url: 'https://i.imgur.com/Qvt9QLo.gif'
+            type: 0
+        e_ac003:
+            url: 'https://i.imgur.com/Ryr6G5F.gif'
+            type: 0
+        e_ac004:
+            url: 'https://i.imgur.com/HAbrkRf.gif'
+            type: 0
+        e_ac005:
+            url: 'https://i.imgur.com/U3P59Mv.gif'
+            type: 0
+        e_ac006:
+            url: 'https://i.imgur.com/hVcMylU.gif'
+            type: 0
+        e_ac007:
+            url: 'https://i.imgur.com/WZIdxc0.gif'
+            type: 0
+
         # twitch1
         e_tw000:
             url: 'https://i.imgur.com/IHmm9Qs.png'
@@ -132,3 +158,38 @@ parameters:
             url: 'https://i.imgur.com/ClWGLwV.png'
             type: 0
             css: 'twitch_50'
+
+        # discord
+        e_ds000: &e_ds000
+            url: 'https://i.imgur.com/uENhb6d.png'
+            type: 0
+            css: 'discord_44'
+            title: 'comfy'
+        e_ds001: &e_ds001
+            url: 'https://i.imgur.com/AdWBoza.png'
+            type: 0
+            css: 'discord_44'
+            title: 'inspect'
+        e_ds002: &e_ds002
+            url: 'https://i.imgur.com/SlwxIdn.png'
+            type: 0
+            css: 'discord_44'
+            title: 'smug'
+        e_ds003: &e_ds003
+            url: 'https://i.imgur.com/5bXpTQD.png'
+            type: 0
+            css: 'discord_44'
+            title: 'lol'
+        e_ds004: &e_ds004
+            url: 'https://i.imgur.com/96mAOWK.gif'
+            type: 0
+            css: 'discord_44'
+            title: 'nom'
+
+        # common alias
+        e_comfy: *e_ds000
+        e_inspect: *e_ds001
+        e_smug: *e_ds002
+        e_lol: *e_ds003
+        e_nom: *e_ds004
+

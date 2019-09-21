@@ -78,6 +78,7 @@ qwer.setup_emotes = function()
         $content.empty();
         for(var key in data)
         {
+            if (!key.match(/e_[a-z]{2}[0-9]{3}/g)) { continue; }
             var entry = data[key];
             var url = entry.url;
             var emote_html = qwer.make_emote(url, key);
