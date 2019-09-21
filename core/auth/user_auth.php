@@ -152,6 +152,10 @@ class user_auth
 
     public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
     {
+        if ($user_id===null)
+        {
+            $user_id = $this->this_user_id;
+        }
         if ($this->is_dev_server())
         {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['dev']['set'];

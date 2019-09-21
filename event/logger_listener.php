@@ -114,6 +114,18 @@ class logger_listener implements EventSubscriberInterface
             'core.posting_modify_template_vars' => [
                 ['log_posting', 0],
             ],
+            'jeb.snahp.notify_on_poke_before' => [
+                ['log_posting', 0],
+            ],
+            'jeb.snahp.notify_on_poke_after' => [
+                ['log_posting', 0],
+            ],
+            'jeb.snahp.notify_on_poke_before_notification' => [
+                ['log_posting', 0],
+            ],
+            'jeb.snahp.notify_on_poke_after_notification' => [
+                ['log_posting', 0],
+            ],
         ];
     }/*}}}*/
 

@@ -1288,6 +1288,7 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         if (!$this->config['snp_b_notify_on_poke'])
             return false;
+        $this->trigger_dev_event('jeb.snahp.notify_on_poke_before');
         $at_prefix = $this->at_prefix;
         $data     = $event['data'];
         $tid      = $data['topic_id'];
@@ -1334,10 +1335,13 @@ class main_listener extends base implements EventSubscriberInterface
                 'post_subject' => $text,
                 'type'         => $type,
             );
+            $this->trigger_dev_event('jeb.snahp.notify_on_poke_before_notification');
             $this->notification->add_notifications (
                 'jeb.snahp.notification.type.basic', $data
             );
+            $this->trigger_dev_event('jeb.snahp.notify_on_poke_after_notification');
         }
+        $this->trigger_dev_event('jeb.snahp.notify_on_poke_after');
     }/*}}}*/
 
     public function notify_op_on_report($event)/*{{{*/
