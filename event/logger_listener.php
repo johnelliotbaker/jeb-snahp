@@ -126,6 +126,15 @@ class logger_listener implements EventSubscriberInterface
             'jeb.snahp.notify_on_poke_after_notification' => [
                 ['log_posting', 0],
             ],
+            'core.modify_submit_post_data' => [
+                ['log_posting', 0],
+            ],
+            'core.submit_post_modify_sql_data' => [
+                ['log_posting', 0],
+            ],
+            'core.submit_post_end' => [
+                ['log_posting', 0],
+            ],
         ];
     }/*}}}*/
 
