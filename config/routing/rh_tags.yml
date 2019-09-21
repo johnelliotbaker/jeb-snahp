@@ -1,0 +1,5 @@
+jeb_snahp_routing.rh_tags_list:
+    path: /snahp/rh_tags/list/{mode}/
+    defaults: { _controller: jeb.snahp.rh_tags_list_controller:handle}
+    requirements:
+        mode: \S+

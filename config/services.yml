@@ -1,5 +1,6 @@
 imports:
     - { resource: logger.yml }
+    - { resource: rh_tags.yml }
     - { resource: parameters.yml }
     - { resource: cron.yml }
     - { resource: economy/economy.yml }

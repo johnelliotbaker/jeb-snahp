@@ -62,3 +62,11 @@ td.category, tr { vertical-align: inherit }
     margin: 0px;
     line-height: 16px;
 }
+
+/* rh_tags */
+.rh_tag,
+.rh_tag a
+{
+    background-color: #cadceb !important;
+    color: black !important;
+}

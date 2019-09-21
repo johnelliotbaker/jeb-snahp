@@ -1,3 +1,5 @@
+routing_rh_tags:
+    resource: 'routing/rh_tags.yml'
 routing_test:
     resource: 'routing/test.yml'
 routing_logger:

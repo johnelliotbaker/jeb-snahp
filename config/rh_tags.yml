@@ -1,0 +1,20 @@
+services:
+    jeb.snahp.rh_tags_listener:
+        class: jeb\snahp\event\rh_tags_listener
+        arguments:
+            - '@jeb.snahp.auth.user_auth'
+        tags:
+            - { name: event.listener }
+    jeb.snahp.rh_tags_list_controller:
+        class: jeb\snahp\controller\rh_tags\rh_tags_list
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@config_text'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

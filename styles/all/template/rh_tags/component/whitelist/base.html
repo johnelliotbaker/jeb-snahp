@@ -1,0 +1,19 @@
+<!-- INCLUDE overall_header.html -->
+
+<script>
+  if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+  }
+</script>
+
+<div class="twbs">
+  <form action="{U_ACTION}" method="POST">
+    <div class="form-group mb-2">
+      <label for="whitelist_textarea">RH Tags Whitelist</label>
+      <textarea class="form-control" name="whitelist" id="whitelist_textarea" rows="3">{RH_TAGS_WHITELIST}</textarea>
+    </div>
+    <button type="submit" name="submit" class="btn btn-success btn-block">Save</button>
+    {S_FORM_TOKEN}
+  </form>
+</div>
+<!-- INCLUDE overall_footer.html -->

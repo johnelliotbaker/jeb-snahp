@@ -26,3 +26,11 @@ table.autofill tr:nth-child(odd) {
 {
     color: black !important;
 }
+
+/* rh_tags */
+.rh_tag,
+.rh_tag a
+{
+    background-color: #cadceb !important;
+    color: black !important;
+}

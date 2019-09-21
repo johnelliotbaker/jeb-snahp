@@ -181,3 +181,11 @@ div.codebox pre
     color: #eee !important;
     border-color: #777 !important;
 }
+
+/* rh_tags */
+.rh_tag,
+.rh_tag a
+{
+    background-color: #795f01 !important;
+    color: white !important;
+}
