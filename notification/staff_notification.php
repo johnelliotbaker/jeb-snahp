@@ -42,7 +42,7 @@ class staff_notification extends \phpbb\notification\type\base
     private function get_users_in_group($group_id)/*{{{*/
     {
         $group_id = (int) $group_id;
-        $sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . " WHERE group_id=${group_id}";
+        $sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . " WHERE group_id=${group_id} AND user_pending=0";
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
