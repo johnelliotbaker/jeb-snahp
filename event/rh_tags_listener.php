@@ -37,12 +37,11 @@ class rh_tags_listener implements EventSubscriberInterface
     public function modify_tags_permission($event, $event_name)/*{{{*/
     {
         $permission = $event['permission'];
-        if (!$this->sauth->user_belongs_to_groupset(null, 'Red Team'))
+        if ($this->sauth->user_belongs_to_groupset(null, 'Red Team'))
         {
-            return false;
+            $permission = true;
+            $event['permission'] = $permission;
         }
-        $permission = true;
-        $event['permission'] = $permission;
     }/*}}}*/
 
 }
