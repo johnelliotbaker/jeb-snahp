@@ -237,10 +237,10 @@ class achievements extends base
 
     public function update_solar_powered()/*{{{*/
     {
-        $user_id = 378;
+        $user_id = 0;
         if ($this->is_dev_server())
         {
-            $user_id = 2;
+            $user_id = 0;
         }
         $data = [
             'unique' => true,
