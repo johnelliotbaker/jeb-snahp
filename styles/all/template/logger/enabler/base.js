@@ -7,6 +7,9 @@ Logger.id = {
     'posting': {
         'checkbox': 'cb_log_posting',
     },
+    'user_spam': {
+        'checkbox': 'cb_log_user_spam',
+    },
 }
 
 Logger.enable = function(name, b)

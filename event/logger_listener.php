@@ -18,15 +18,21 @@ use jeb\snahp\core\logger\logger;
 
 class logger_listener implements EventSubscriberInterface
 {
+    protected $config;
+    protected $user;
     protected $logger;
     protected $sauth;
     public function __construct(
+        $config, $user,
         $logger, $sauth
     )/*{{{*/
     {
+        $this->config = $config;
+        $this->user = $user;
         $this->logger = $logger;
         $this->sauth = $sauth;
         $this->b_ban = !$this->sauth->is_only_dev();
+        $this->user_id = $this->user->data['user_id'];
     }/*}}}*/
 
     static public function getSubscribedEvents()/*{{{*/
@@ -77,7 +83,6 @@ class logger_listener implements EventSubscriberInterface
             'core.viewtopic_highlight_modify' => [
                 ['log_viewtopic', 0],
             ],
-
             'core.modify_posting_parameters' => [
                 ['log_posting', 0],
             ],
@@ -135,7 +140,35 @@ class logger_listener implements EventSubscriberInterface
             'core.submit_post_end' => [
                 ['log_posting', 0],
             ],
+            // Log spam
+            'core.viewtopic_before_f_read_check' => [
+                ['log_spam', 0],
+            ],
         ];
+    }/*}}}*/
+
+    public function log_spam($event, $event_name)/*{{{*/
+    {
+        $b = $this->config['snp_log_b_user_spam'];
+        if (!$b) { return false; }
+        $b_success = $this->logger->validate_or_reset_user_visit_time($this->user_id);
+        if (!$b_success) { return false; }
+        $curr = time();
+        $oldest = $this->logger->get_user_oldest_visit_time($this->user_id);
+        $interval = (int) $this->config['snp_log_user_spam_interval']; // In seconds
+        $timedelta = $curr-$oldest;
+        if ($timedelta < $interval)
+        {
+            $data = [
+                'type' => 'user_spam',
+                'name' => $event_name,
+                'created_time' => $curr*1000000,
+            ];
+            // Log Spam Activity
+            $this->logger->log($data);
+            trigger_error('Please do not spam the server!');
+        }
+        $b_success = $this->logger->log_user_visit($this->user_id);
     }/*}}}*/
 
     public function log_viewtopic($event, $event_name)/*{{{*/

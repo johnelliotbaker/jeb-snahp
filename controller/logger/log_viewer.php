@@ -50,10 +50,27 @@ class log_viewer
             return $this->respond_is_log_as_json();
         case 'enable':
             return $this->set_enable_as_json();
+        case 'user_spam_config':
+            return $this->set_user_spam_config_as_json();
         default:
             break;
         }
         trigger_error('Nothing to see here. Move along.');
+    }/*}}}*/
+
+    public function set_user_spam_config_as_json()/*{{{*/
+    {
+        $interval = $this->request->variable('interval', -1);
+        if ($interval >= 0)
+        {
+            $this->config->set('snp_log_user_spam_interval', $interval);
+        }
+        $buffer_length = $this->request->variable('buffer_length', 1);
+        if ($buffer_length >= 1)
+        {
+            $this->config->set('snp_log_user_spam_buffer_length', $buffer_length);
+        }
+        return new JsonResponse(['status' => 1]);
     }/*}}}*/
 
     public function set_enable_as_json()/*{{{*/
@@ -71,6 +88,9 @@ class log_viewer
         case 'viewtopic':
             $this->config->set('snp_log_b_viewtopic', $b);
             return new JsonResponse(['status' => $this->config['snp_log_b_viewtopic']]);
+        case 'user_spam':
+            $this->config->set('snp_log_b_user_spam', $b);
+            return new JsonResponse(['status' => $this->config['snp_log_b_user_spam']]);
         }
     }/*}}}*/
 
@@ -85,6 +105,8 @@ class log_viewer
             return new JsonResponse(['status' => $this->config['snp_log_b_posting']]);
         case 'viewtopic':
             return new JsonResponse(['status' => $this->config['snp_log_b_viewtopic']]);
+        case 'user_spam':
+            return new JsonResponse(['status' => $this->config['snp_log_b_user_spam']]);
         }
         return new JsonResponse(['status' => 0]);
     }/*}}}*/
@@ -111,6 +133,11 @@ class log_viewer
             $curr['time'] = sprintf('%0.1f', $curr['time']);
             $this->template->assign_block_vars('LOG', $curr);
         }
+        $this->template->assign_vars([
+            'USER_SPAM_INTERVAL' => $this->config['snp_log_user_spam_interval'],
+            'USER_SPAM_BUFFER_LENGTH' => $this->config['snp_log_user_spam_buffer_length'],
+            'TYPE' => $type,
+        ]);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
     }/*}}}*/
 

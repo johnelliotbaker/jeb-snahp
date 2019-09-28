@@ -18,6 +18,12 @@
               href="/app.php/snahp/logger/view/?type=viewtopic">Viewtopic
             </a>
           </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link active noselect" 
+              href="/app.php/snahp/logger/view/?type=user_spam">User Spam
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -25,7 +31,7 @@
   <table class="table table-sm table-dark table-striped">
     <thead>
       <tr>
-        <th scope="col">ID</th>
+        <th scope="col">UID</th>
         <th scope="col">Type</th>
         <th scope="col">Name</th>
         <th scope="col">Time</th>
@@ -36,7 +42,7 @@
     <tbody>
       {% for entry in LOG %}
       <tr>
-        <td>{{ entry.id }}</td>
+        <td><a href="/memberlist.php?mode=viewprofile&u={{ entry.user_id }}" target="_blank">{{ entry.user_id }}</a></td>
         <td>{{ entry.type }}</td>
         <td>{{ entry.name }}</td>
         <td>{{ entry.datetime }}</td>

@@ -31,7 +31,7 @@ class logger
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->log_varname = 'devlog_posting';
-        $this->sql_limit = 100;
+        $this->sql_limit = 500;
         $this->user_id = $this->user->data['user_id'];
 	}/*}}}*/
 
@@ -76,6 +76,58 @@ class logger
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
+    }/*}}}*/
+
+    public function get_user_oldest_visit_time($user_id)/*{{{*/
+    {
+        $udata = $this->user->data;
+        $timestrn = $udata['snp_log_visit_timestamps'];
+        $a_time = explode(',', $timestrn);
+        return (int) $a_time[0];
+    }/*}}}*/
+
+    public function reset_user_visit_time($user_id)/*{{{*/
+    {
+        $n_buffer = (int) $this->config['snp_log_user_spam_buffer_length']; // In seconds
+        $a_time = array_fill(0, $n_buffer, 0);
+        $timestrn = implode(',', $a_time);
+        prn($timestrn);
+        $data = ['snp_log_visit_timestamps' => $timestrn];
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+            WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function validate_or_reset_user_visit_time($user_id)/*{{{*/
+    {
+        $n_buffer = (int) $this->config['snp_log_user_spam_buffer_length'];
+        $udata = $this->user->data;
+        $timestrn = $udata['snp_log_visit_timestamps'];
+        $a_time = explode(',', $timestrn);
+        if (count($a_time) != $n_buffer || !is_numeric($a_time[0]))
+        {
+            $this->reset_user_visit_time($user_id);
+            return false;
+        }
+        return true;
+    }/*}}}*/
+
+    public function log_user_visit($user_id)/*{{{*/
+    {
+        $udata = $this->user->data;
+        $timestrn = $udata['snp_log_visit_timestamps'];
+        $a_time = explode(',', $timestrn);
+        $a_time = array_slice($a_time, 1);
+        $a_time[] = time();
+        $timestrn = implode(',', $a_time);
+        $data = ['snp_log_visit_timestamps' => $timestrn];
+        $sql = 'UPDATE ' . USERS_TABLE . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+            WHERE user_id=${user_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
 }
