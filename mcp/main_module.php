@@ -148,6 +148,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Common Thanks for Lockers',
                 'LINK' => '<a href="/app.php/locker/common_thanks/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 12,
+                'PURPOSE' => 'Move Topics',
+                'NAME' => 'Mass Topic Mover (w/ search)',
+                'DESCRIPTION' => 'Mass Topic Mover with Keyword Search',
+                'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move_v2/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);
