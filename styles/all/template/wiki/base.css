@@ -1006,3 +1006,23 @@ i.fa.fa-digg
 {
     color: #4a4;
 }
+
+.img_border
+{
+    border: 3px solid #07A !important;
+}
+
+.mt_2
+{
+    margin-top: 2px !important;
+}
+
+.mt_4
+{
+    margin-top: 4px !important;
+}
+
+.mt_8
+{
+    margin-top: 8px !important;
+}

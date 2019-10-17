@@ -189,3 +189,33 @@ div.codebox pre
     background-color: #795f01 !important;
     color: white !important;
 }
+
+tags-input .tags
+{
+    background-color: black !important;
+    box-shadow: none !important;
+    padding: 2px !important;
+    padding-bottom: 3px !important;
+}
+
+.tags,
+.tags.focused
+{
+    -webkit-appearance: none !important;
+    border: 2px solid #775300 !important;
+}
+
+tags-input li,
+tags-input input,
+tags-input .remove-button
+{
+    border: none !important;
+    background-color: #795f01 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+tags-input input
+{
+    margin-top: 3px !important;
+}

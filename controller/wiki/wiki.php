@@ -61,7 +61,7 @@ class wiki
         $text = fread($f, filesize($path));
         $html = $this->parsedown->text($text);
         $this->template->assign_var('HTML', $html);
-        return $this->helper->render($cfg['tpl_name'], 'Snahp Economy Dashboard');
+        return $this->helper->render($cfg['tpl_name'], 'Wikipedia');
     }/*}}}*/
 
 }
