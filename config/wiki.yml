@@ -11,4 +11,4 @@ services:
             - '@controller.helper'
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'
-            - '@jeb.snahp.parsers.parsedown_extra'
+            - '@jeb.snahp.parsers.parsedown_extra_plugin'
