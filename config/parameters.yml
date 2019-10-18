@@ -27,6 +27,7 @@ parameters:
             ios: 10 
             win: 11
             pc: 12
+            mac: 13
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -34,24 +35,26 @@ parameters:
                 fulfilled: '<span class="btn fulfill">F</span>'
                 solved:    '<span class="btn solve">S</span>'
                 closed:    '<span class="btn terminate">C</span>'
-                mega:      '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">'
-                zippy:     '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">'
-                gdrive:    '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">'
-                android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png">'
-                ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png">'
-                win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png">'
+                mega:      '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png" title="mega">'
+                zippy:     '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy">'
+                gdrive:    '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png" title="gdrive">'
+                android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android">'
+                ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios">'
+                mac:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac">'
+                win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win">'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
                 accepted:  '<span class="small_host_icon"><span class="btn dib">A</span></span>'
                 fulfilled: '<span class="small_host_icon"><span class="btn fulfill">F</span></span>'
                 closed:    '<span class="small_host_icon"><span class="btn terminate">C</span></span>'
-                mega:      '<span class="small_host_icon"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png"></span>'
-                zippy:     '<span class="small_host_icon"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png"></span>'
-                gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png"></span>'
-                android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png"></span>'
-                ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png"></span>'
-                win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png"></span>'
+                mega:      '<span class="small_host_icon"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png" title="mega"></span>'
+                zippy:     '<span class="small_host_icon"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy"></span>'
+                gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png" title="gdrive"></span>'
+                android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android"></span>'
+                ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios"></span>'
+                mac:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac"></span>'
+                win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
 
     jeb.snahp.req:
         def:
