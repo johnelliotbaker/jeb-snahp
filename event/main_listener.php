@@ -172,15 +172,48 @@ class main_listener extends base implements EventSubscriberInterface
         ];
     }/*}}}*/
 
+    public function extract_code_bbcode($text)/*{{{*/
+    {
+        $ptn = '#\[code\](.*?)\[\/code\]#uis';
+        preg_match_all($ptn, $text, $codebox_matches);
+        $uuid = uniqid('codebox_');
+        $ptn_uuid = '#' . $uuid . '#s';
+        $text = preg_replace($ptn, $uuid, $text);
+        return [$text, $ptn_uuid, $codebox_matches];
+    }/*}}}*/
+
+    public function reinsert_code_bbcode($text, $ptn_uuid, $codebox_matches)/*{{{*/
+    {
+        $start = 0;
+        $n = strlen($text);
+        $i = 0;
+        $new_text = '';
+        while (preg_match($ptn_uuid, $text, $matches, PREG_OFFSET_CAPTURE, $start))
+        {
+            $width = strlen($matches[0][0]);
+            $cursor = (int) $matches[0][1];
+            $new_text .= substr($text, $start, $cursor-$start);
+            $new_text .= $codebox_matches[0][$i];
+            $i += 1;
+            $start = $cursor + $width;
+        };
+        if ($start < $n)
+        {
+            $new_text .= substr($text, $start);
+        }
+        return $new_text;
+    }/*}}}*/
+
     public function process_base64_bbcode($event)/*{{{*/
     {
         $text = $event['text'];
         $ptn = '#\[b64\](.*?)\[\/b64\]#uis';
-        $permission = false;
-        if ($this->user_belongs_to_groupset($this->user->data['user_id'], 'Blue Team'))
-        {
-            $permission = true;
-        }
+        $permission = true;
+        // $permission = false;
+        // if ($this->user_belongs_to_groupset($this->user->data['user_id'], 'Blue Team'))
+        // {
+        //     $permission = true;
+        // }
         $text = preg_replace_callback($ptn, function($matches) use($permission) {
             if ($permission)
             {
