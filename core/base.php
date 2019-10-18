@@ -14,7 +14,7 @@ use phpbb\notification\manager;
 /*}}}*/
 
 global $phpbb_root_path;
-include_once($phpbb_root_path . '/ext/jeb/snahp/core/functions_utility.php');/*}}}*/
+include_once($phpbb_root_path . '/ext/jeb/snahp/core/functions_utility.php');
 
 abstract class base
 {
@@ -84,7 +84,7 @@ abstract class base
     public function set_notification(manager $manager)
     {
         $this->notification = $manager;
-    }/*}}}*/
+    }
     public function set_phpbb_root_path($phpbb_root_path)
     {
         $this->phpbb_root_path = $phpbb_root_path;
