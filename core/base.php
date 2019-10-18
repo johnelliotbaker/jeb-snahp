@@ -85,7 +85,11 @@ abstract class base
     {
         $this->notification = $manager;
     }/*}}}*/
-    
+    public function set_phpbb_root_path($phpbb_root_path)
+    {
+        $this->phpbb_root_path = $phpbb_root_path;
+    }/*}}}*/
+
     // SESSION MANAGEMENT
 
     public function set_cookie_new($key, $path, $data)/*{{{*/
@@ -507,7 +511,7 @@ abstract class base
 
     public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
     {
-        // include_once('includes/functions_admin.php');
+        // include_once($this->phpbb_root_path . 'includes/functions_admin.php');
         // $fid = get_forum_branch($fid_listings, 'children');
         $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
         $result = $this->db->sql_query($sql, $cooldown);
@@ -777,7 +781,7 @@ abstract class base
 
     public function update_forum_last_post($fid)/*{{{*/
     {
-        include_once('includes/functions_posting.php');
+        include_once($this->phpbb_root_path . 'includes/functions_posting.php');
         $type = 'forum';
         $ids = [$fid];
         update_post_information($type, $ids, $return_update_sql = false);
@@ -1040,7 +1044,7 @@ abstract class base
 
     public function is_only_dev()/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
         $gid_developer = 13;
         $uid_developer = 10414;
@@ -1051,7 +1055,7 @@ abstract class base
 
     public function is_dev()/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
         $gid_developer = 13;
         $uid_developer = 10414;
@@ -1493,7 +1497,7 @@ abstract class base
         {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['production']['set'];
         }
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
         if (!array_key_exists($groupset_name, $groupset))
         {
@@ -1506,7 +1510,7 @@ abstract class base
 
     public function user_belongs_to_group($user_id, $group_id)/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
         $group_id_ary = [$group_id];
         $res = group_memberships($group_id_ary, $user_id_ary);
