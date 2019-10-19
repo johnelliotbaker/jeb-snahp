@@ -28,6 +28,8 @@ parameters:
             win: 11
             pc: 12
             mac: 13
+            updating: &updating 14
+            ongoing: *updating
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -42,6 +44,8 @@ parameters:
                 ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios">'
                 mac:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac">'
                 win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win">'
+                updating: &updating '<img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating">'
+                ongoing: *updating
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -55,6 +59,8 @@ parameters:
                 ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios"></span>'
                 mac:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac"></span>'
                 win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
+                updating: &updating '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating"></span>'
+                ongoing: *updating
 
     jeb.snahp.req:
         def:

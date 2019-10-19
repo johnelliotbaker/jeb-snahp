@@ -1264,7 +1264,7 @@ abstract class base
         {
             $encoder = $this->container->getParameter('jeb.snahp.tags')['encode'];
             $decoder = $this->container->getParameter('jeb.snahp.tags')['decode']['default'];
-            $a_word = [ 'android' => 'android', 'mac|ios' => 'ios', 'mega' => 'mega', 'gdrive|gd' => 'gdrive', 'zippy|zs|zippyshare' => 'zippy', 'pc|win' => 'win'];
+            $a_word = [ 'updating|ongoing' => 'ongoing', 'android' => 'android', 'mac|ios' => 'ios', 'mega' => 'mega', 'gdrive|gd' => 'gdrive', 'zippy|zs|zippyshare' => 'zippy', 'pc|win' => 'win'];
             $this->icon_stack = [];
             foreach ($a_word as $word=>$key)
             {
