@@ -1,0 +1,5 @@
+jeb_snahp_database_manager.database_manager:
+    path: /snahp/database_manager/
+    defaults: { _controller: jeb.snahp.database_manager:handle}
+    # requirements:
+    #     mode: \S+

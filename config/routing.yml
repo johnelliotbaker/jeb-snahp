@@ -1,3 +1,5 @@
+routing_database_manager:
+    resource: 'routing/database_manager.yml'
 routing_rh_tags:
     resource: 'routing/rh_tags.yml'
 routing_test:
