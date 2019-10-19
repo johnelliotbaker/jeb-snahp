@@ -3,3 +3,8 @@ jeb_snahp_wiki.wiki:
     defaults: { _controller: jeb.snahp.wiki:handle}
     requirements:
         mode: \S+
+jeb_snahp_wiki.editor:
+    path: /snahp/wiki_editor/{mode}/
+    defaults: { _controller: jeb.snahp.wiki:handle_editor}
+    requirements:
+        mode: \S+

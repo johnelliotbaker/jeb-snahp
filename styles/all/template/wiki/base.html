@@ -1,4 +1,5 @@
 <!-- INCLUDE overall_header.html -->
+
 <style>
   {% include '@jeb_snahp/wiki/base.css' %}
   {% if STYLE_NAME=='hexagon' or STYLE_NAME=='acieeed' %}
@@ -8,7 +9,11 @@
 
 <div class="markdown-body">
   <div>
+    {% if B_HIDDEN %}
+    <p style="text-align: center; font-weight: 900;">This page is hidden from public view.</p>
+    {% endif %}
     {HTML}
   </div>
 </div>
+
 <!-- INCLUDE overall_footer.html -->

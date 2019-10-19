@@ -31,6 +31,7 @@ services:
             - [set_language,         ['@language']]
             - [set_template,         ['@template']]
             - [set_notification,     ['@notification_manager']]
+            - [set_phpbb_root_path,  ['%core.root_path%']]
     jeb.snahp.service:
         class: jeb\snahp\service
         arguments:

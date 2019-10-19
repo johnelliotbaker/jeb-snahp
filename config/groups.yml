@@ -12,6 +12,11 @@ parameters:
                     - 5
                     - 13
                     - 19
+                'Keepers':
+                    - 4
+                    - 5
+                    - 13
+                    - 20
             'GUESTS':
                 id: 1
             'REGISTERED':
@@ -56,6 +61,9 @@ parameters:
             'Blue Team': &blue_team
                 id: 19
                 color: '#0040FF'
+            'Keepers':
+                id: 20
+                color: '#888'
         dev_staff_notification_alias:
             'moderators': *moderators
             'administrators': *administrators
@@ -79,6 +87,11 @@ parameters:
                     - 5
                     - 13
                     - 19
+                'Keepers':
+                    - 4
+                    - 5
+                    - 13
+                    - 20
             'GUESTS':
                 id: 1
             'REGISTERED':
@@ -119,6 +132,9 @@ parameters:
             'Blue Team': &blue_team
                 id: 19
                 color: '#0040FF'
+            'Keepers':
+                id: 20
+                color: '#888'
         production_staff_notification_alias:
             'moderators': *moderators
             'administrators': *administrators
