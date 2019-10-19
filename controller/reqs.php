@@ -170,6 +170,7 @@ class reqs extends base
     {
         $ru   = $this->select_request_users($uid);
         $udata = $this->select_user($ru['user_id']);
+        if (!$ru || !$udata) { return; }
         $gdata = $this->select_group($udata['group_id']);
         $nu   = $ru['n_use'];
         $nb   = $gdata['snp_req_n_base'];
