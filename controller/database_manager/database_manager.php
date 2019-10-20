@@ -48,6 +48,9 @@ class database_manager
         case 'start_logging':
             $this->start_logging();
             break;
+        case 'clear_log':
+            $this->clear_log();
+            break;
         case 'stop_logging':
             $this->stop_logging();
             break;
@@ -57,6 +60,12 @@ class database_manager
         return $this->respond_query($cfg);
     }/*}}}*/
 
+
+    private function clear_log()
+    {
+        $sql = 'Truncate mysql.general_log;';
+        $this->db->sql_query($sql);
+    }
 
     private function start_logging()
     {
@@ -137,8 +146,11 @@ class database_manager
                         $tmp = preg_replace('#[\n\r\s]+#', ' ', $tmp);
                         $data[] = preg_replace('#[\n\r]#', ' ', $tmp);
                     }
-                    // $rowset = implode(PHP_EOL, $data);
-                    $rowset = implode('<br>', $data);
+                    $rowset = 'Empty rowset.';
+                    if (isset($data))
+                    {
+                        $rowset = implode('<br>', $data);
+                    }
                 }
                 $this->template->assign_vars([
                     'ROWSET' => $rowset,
