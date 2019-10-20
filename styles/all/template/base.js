@@ -1,6 +1,14 @@
 // Clipboard
 var Clipboard = {};
 
+Clipboard.copy_selector = function(selector)
+{
+    // https://stackoverflow.com/questions/46041831/copy-to-clipboard-with-break-line/46151806
+    var strn = $(selector).html();
+    console.log(strn);
+    this.copy(strn);
+}
+
 Clipboard.copy = function(strn)
 {
     // https://stackoverflow.com/questions/46041831/copy-to-clipboard-with-break-line/46151806

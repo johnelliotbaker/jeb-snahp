@@ -12,6 +12,16 @@
 
 <div class="twbs">
 
+  {% if B_LOGGING %}
+  <p class="text-center mt-3">
+    Logging is <span style="color:#A00; font-weight:900;">ON</span>
+  </p>
+  {% else %}
+  <p class="text-center mt-3">
+    Logging is <span style="color:#0A0; font-weight:900;">OFF</span>
+  </p>
+  {% endif %}
+
   <div>
     <form method="post">
       {S_FORM_TOKEN}
@@ -22,19 +32,52 @@
         </div>
       </div>
 
-      <table class="table table-sm table-dark">
-        <tbody>
-          {% for row in ROWSET %}
-          <tr>
-            {% for entry in row %}
-            <td style="width:1000px !important;">{{ entry|e }}</td>
-            {% endfor %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="card">
+        <div class="card-body">
+          {% if S_FORMAT=='csv' %}
+          <div id="csv_content">{ROWSET}</div>
+          {% else %}
+          <table class="table table-sm table-dark">
+            <tbody>
+              {% for row in ROWSET %}
+              <tr>
+                {% for entry in row %}
+                <td style="width:1000px !important;">{{ entry|e }}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+        </div>
+      </div>
 
+
+      <div class="form-group mb-3">
+        <div class="row">
+          <div class="col"></div>
+          <div class="col">
+            <div class="form-check pull-right">
+              <input type="checkbox" class="form-check-input" value="on" name="as_csv" id="as_csv"
+                                                                                       {% if S_FORMAT=='csv' %}checked{% endif %}>
+              <label class="form-check-label" for="as_csv">CSV</label>
+              <div class="clipboard" onclick="Clipboard.copy_selector('#csv_content');">
+                <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
+
+  </div>
+  <div class="card">
+    <div class="row inline">
+      <div class="card-body" style="color: white !important;">
+        <a href="/app.php/snahp/database_manager_commands/?command=start_logging" class="btn btn-secondary btn-sm" role="button">Start Logging</a>
+        <a href="/app.php/snahp/database_manager_commands/?command=stop_logging" class="btn btn-secondary btn-sm" role="button">Stop Logging</a>
+      </div>
+    </div>
   </div>
 
 </div>

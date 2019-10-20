@@ -3,3 +3,8 @@ jeb_snahp_database_manager.database_manager:
     defaults: { _controller: jeb.snahp.database_manager:handle}
     # requirements:
     #     mode: \S+
+jeb_snahp_database_manager.commands:
+    path: /snahp/database_manager_commands/
+    defaults: { _controller: jeb.snahp.database_manager:handle_commands}
+    # requirements:
+    #     mode: \S+
