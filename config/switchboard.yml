@@ -1,0 +1,13 @@
+services:
+    jeb.snahp.switchboard:
+        class: jeb\snahp\controller\switchboard\switchboard
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

@@ -1,0 +1,10 @@
+jeb_snahp_switchboard.switchboard:
+    path: /snahp/switchboard/
+    defaults: { _controller: jeb.snahp.switchboard:handle}
+    # requirements:
+    #     mode: \S+
+jeb_snahp_switchboard.commands:
+    path: /snahp/switchboard_commands/
+    defaults: { _controller: jeb.snahp.switchboard:handle_commands}
+    # requirements:
+    #     mode: \S+

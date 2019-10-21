@@ -8,6 +8,7 @@ imports:
     - { resource: parsers.yml }
     - { resource: notifications.yml }
     - { resource: database_manager.yml }
+    - { resource: switchboard.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
