@@ -26,8 +26,7 @@ class thanks_listener implements EventSubscriberInterface
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->n_allowed_per_cycle = 2;
-        // $this->cycle_in_seconds = 86400;
-        $this->cycle_in_seconds = 20;
+        $this->cycle_in_seconds = (int) $config['snp_thanks_cycle_duration'];
         $this->data = [];
         $this->sql_cooldown = 0;
     }/*}}}*/
@@ -122,6 +121,7 @@ class thanks_listener implements EventSubscriberInterface
         $groups = $this->sauth->get_user_groups($user_id);
         $inset = $this->db->sql_in_set('group_id', $groups);
         $sql = 'SELECT MAX(tfp_n_per_cycle) as max FROM ' . GROUPS_TABLE . ' WHERE ' . $inset;
+
         $result = $this->db->sql_query($sql, $this->sql_cooldown);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
