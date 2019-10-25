@@ -21,6 +21,11 @@ class main_info
 			'filename'	=> '\jeb\snahp\acp\main_module',
 			'title'		=> 'ACP_SNP_TITLE',
 			'modes'		=> array(
+				'thanks'	=> array(
+					'title'	=> 'ACP_SNP_THANKS',
+					'auth'	=> 'ext_jeb/snahp && acl_a_board',
+					'cat'	=> array('ACP_SNP_TITLE')
+				),
 				'emotes'	=> array(
 					'title'	=> 'ACP_SNP_EMOTES',
 					'auth'	=> 'ext_jeb/snahp && acl_a_board',

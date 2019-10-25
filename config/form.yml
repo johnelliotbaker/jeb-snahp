@@ -1,0 +1,14 @@
+services:
+    jeb.snahp.form:
+        class: jeb\snahp\core\form\form
+        arguments:
+            # - '@dbal.conn'
+            # - '@user'
+            # - '@config'
+            # - '@request'
+            # - '@template'
+            - '@service_container'
+            # - '@controller.helper'
+            # - '@config_text'
+            # - '%jeb.snahp.tables%'
+            # - '@jeb.snahp.auth.user_auth'

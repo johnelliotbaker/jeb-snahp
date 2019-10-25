@@ -17,6 +17,7 @@ class user_auth
         $this->auth = $auth;
         $this->container = $container;
         $this->this_user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data['user_id'];
 	}
 
     public function is_dev_server()/*{{{*/
@@ -171,8 +172,7 @@ class user_auth
             return false;
         }
         $group_id_ary = $groupset[$groupset_name];
-        $res = group_memberships($group_id_ary, $user_id_ary);
-        return !!$res;
+        return group_memberships($group_id_ary, $user_id_ary, true);
     }/*}}}*/
 
     public function user_belongs_to_group($user_id, $group_id)/*{{{*/
@@ -180,8 +180,16 @@ class user_auth
         include_once('includes/functions_user.php');
         $user_id_ary = [$user_id];
         $group_id_ary = [$group_id];
-        $res = group_memberships($group_id_ary, $user_id_ary);
-        return !!$res;
+        return group_memberships($group_id_ary, $user_id_ary, true);
+    }/*}}}*/
+
+    public function get_user_groups($user_id)/*{{{*/
+    {
+        include_once('includes/functions_user.php');
+        $user_id_ary = [$user_id];
+        $group_id_ary = false;
+        $rowset = group_memberships($group_id_ary, $user_id_ary);
+        return array_map(function($arg){return $arg['group_id'];}, $rowset);
     }/*}}}*/
 
 }

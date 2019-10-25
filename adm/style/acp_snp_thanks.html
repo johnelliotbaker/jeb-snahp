@@ -1,0 +1,103 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
+<!-- INCLUDE overall_header.html -->
+<h1>Thanks</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+  <div class="panel">
+    <div class="inner">
+
+      <fieldset>
+        <legend>Master Switch</legend>
+        <div class="form-check-inline">
+          <dl class="row mx-1 my-0">
+            <dt class="mr-2">
+              Thanks Master Switch:
+            </dt>
+            <dd>
+              <input class="form-check-input" type="radio" id="snp_thanks_b_enable_1" name="snp_thanks_b_enable" value="1"
+              {% if SNP_THANKS_B_ENABLE %}checked{% endif %}>
+              <label class="form-check-label" for="snp_thanks_b_enable_1">
+                Enable
+              </label>
+              <input class="form-check-input" type="radio" id="snp_thanks_b_enable_2" name="snp_thanks_b_enable" value="0"
+              {% if not SNP_THANKS_B_ENABLE %}checked{% endif %}>
+              <label class="form-check-label" for="snp_thanks_b_enable_2">
+                Disable
+              </label>
+            </dd>
+          </dl>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Limit Thanks per Cycle</legend>
+        <div class="form-check-inline">
+          <dl class="row mx-1 my-0">
+            <dt class="mr-2">
+              Limit Thanks per Cycle Switch:<br>
+              <b>Enable</b> users will not be able to thank more than the specified amount.<br>
+              <b>Disable</b> No database writes, and no checks other than this switch.
+            </dt>
+            <dd>
+              <input class="form-check-input" type="radio" id="snp_thanks_b_limit_cycle_1" name="snp_thanks_b_limit_cycle" value="1"
+              {% if SNP_THANKS_B_LIMIT_CYCLE %}checked{% endif %}>
+              <label class="form-check-label" for="snp_thanks_b_limit_cycle_1">
+                Enable
+              </label>
+              <input class="form-check-input" type="radio" id="snp_thanks_b_limit_cycle_2" name="snp_thanks_b_limit_cycle" value="0"
+              {% if not SNP_THANKS_B_LIMIT_CYCLE %}checked{% endif %}>
+              <label class="form-check-label" for="snp_thanks_b_limit_cycle_2">
+                Disable
+              </label>
+            </dd>
+          </dl>
+        </div>
+        <div class="form-check-inline">
+          <dl class="row mx-1 my-0">
+            <dt class="mr-2">
+              Cycle Duration (seconds):
+            </dt>
+            <dd>
+              <input type="number" value="{SNP_THANKS_CYCLE_DURATION}" name="snp_thanks_cycle_duration" id="snp_thanks_cycle_duration"/> seconds
+            </dd>
+          </dl>
+        </div>
+        <div class="twbs">
+          <table class="table table-sm table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Group Name</th>
+                <th scope="col" class="text-center">Thanks per Cycle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- BEGIN group -->
+              <tr>
+                <td>{group.GROUP_ID}</td>
+                <td>{group.GROUP_NAME}</td>
+                <td class="text-center">
+                  <input name="tfp_n_per_cycle_{group.GROUP_ID}" value="{group.TFP_N_PER_CYCLE}" type="number">
+                  </input>
+                </td>
+              </tr>
+              <!-- END group -->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+    </div>
+  </div>
+  <fieldset>
+    <dl>
+      <dt>&nbsp;</dt>
+      <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
+        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+    </dl>
+    {S_HIDDEN_FIELDS}
+    {S_FORM_TOKEN}
+  </fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

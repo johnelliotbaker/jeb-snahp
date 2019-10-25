@@ -9,6 +9,7 @@ imports:
     - { resource: notifications.yml }
     - { resource: database_manager.yml }
     - { resource: switchboard.yml }
+    - { resource: form.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
@@ -58,6 +59,17 @@ services:
     jeb.snahp.registration_listener:
         class: jeb\snahp\event\registration_listener
         parent: jeb.snahp.base
+        tags:
+            - { name: event.listener }
+    jeb.snahp.thanks_listener:
+        class: jeb\snahp\event\thanks_listener
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
         tags:
             - { name: event.listener }
     jeb.snahp.mod_listener:

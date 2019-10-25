@@ -58,16 +58,16 @@ class switchboard
         return $this->respond_query($cfg);
     }/*}}}*/
 
-    private function set_config_var($data)
+    private function set_config_var($data)/*{{{*/
     {
         prn("Setting config ${data['tpl_varname']} = ${data['value']}");
         $this->config->set($data['tpl_varname'], $data['value']);
-    }
+    }/*}}}*/
 
-    private function get_config_var($data)
+    private function get_config_var($data)/*{{{*/
     {
         return $this->config[$data['tpl_varname']];
-    }
+    }/*}}}*/
 
     public function handle()/*{{{*/
     {
@@ -119,7 +119,7 @@ class switchboard
         return $data;
     }/*}}}*/
 
-    private function set_template_vars_from_manifest($manifest)
+    private function set_template_vars_from_manifest($manifest)/*{{{*/
     {
         $tpl_vars = [];
         foreach ($manifest as $job)
@@ -130,8 +130,7 @@ class switchboard
             prn("Setting template ${tpl_varname} = ${stored_value}");
         }
         $this->template->assign_vars($tpl_vars);
-
-    }
+    }/*}}}*/
 
     private function respond_query($cfg)/*{{{*/
     {
@@ -152,7 +151,6 @@ class switchboard
             'SWITCHBOARD_STATEMENT' => 'asdf',
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Switchboard');
-    }/*}}*/
-
+    }/*}}}*/
 
 }

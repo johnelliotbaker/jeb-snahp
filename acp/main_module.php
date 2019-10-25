@@ -10,7 +10,6 @@
 
 namespace jeb\snahp\acp;
 
-
 function prn($var) {/*{{{*/
     if (is_array($var))
     { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
@@ -62,6 +61,11 @@ class main_module
         $cfg = array();
         switch ($mode)
         {
+        case 'thanks':
+            $cfg['tpl_name'] = 'acp_snp_thanks';
+            $cfg['b_feedback'] = false;
+            $this->handle_thanks($cfg);
+            break;
         case 'emotes':
             $cfg['tpl_name'] = 'acp_snp_emotes';
             $cfg['b_feedback'] = false;
@@ -262,19 +266,63 @@ class main_module
                 foreach($entry as $key=>$default)
                 {
                     $varname = implode('_', [$key, $group_id]);
-                    $val = $request->variable($varname, $default);
-                    if ($default==='array_int')
+                    switch ($default)
                     {
+                    case 'array_int':
+                        $val = $request->variable($varname, $default);
                         $val = array_map('intval', explode(',', $val));
                         sort($val);
                         $val = array_unique($val);
                         $val = serialize($val);
+                        break;
+                    case 'int':
+                        $val = $request->variable($varname, 0);
+                        break;
+                    default:
+                        $val = $request->variable($varname, $default);
                     }
                     $data[$key] = $val;
                 }
             }
             $this->update_one_group($group_id, $data);
         }    
+    }/*}}}*/
+
+    public function handle_thanks($cfg)/*{{{*/
+    {
+		global $config, $request, $template, $user, $db;
+        $tpl_name = $cfg['tpl_name'];
+        if ($tpl_name)
+        {
+            $this->tpl_name = $tpl_name;
+            add_form_key('jeb_snp');
+            // Non-block vars
+            $a_field = [
+                ['snp_thanks_b_enable' => 1],
+                ['snp_thanks_b_limit_cycle' => 1],
+                ['snp_thanks_cycle_duration' => 86400],
+            ];
+            if ($request->is_set_post('submit'))
+            {
+                if (!check_form_key('jeb_snp'))
+                {
+                    trigger_error('FORM_INVALID', E_USER_WARNING);
+                }
+                $this->process_form_fields($a_field);
+                // Block vars (Mostly for group based permissions)
+                $a_group_field_from_form = [
+                    ['tfp_n_per_cycle' => 'int'],
+                ];
+                $this->process_group_form_fields($a_group_field_from_form);
+            }
+            $this->set_form_fields($a_field);
+            $a_group_field_to_form = [
+                ['group_id' => 0],
+                ['group_name' => ''],
+                ['tfp_n_per_cycle' => 'int'],
+            ];
+            $this->set_group_form_fields($a_group_field_to_form);
+        }
     }/*}}}*/
 
     public function handle_emotes($cfg)/*{{{*/

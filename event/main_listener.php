@@ -86,8 +86,6 @@ class main_listener extends base implements EventSubscriberInterface
             'core.text_formatter_s9e_parse_before' => [
                 ['process_base64_bbcode', 10],
             ],
-            'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
-            'gfksx.thanksforposts.insert_thanks_before'   => 'insert_thanks',
             'core.display_forums_after'                   => 'show_thanks_top_list',
             'core.ucp_profile_modify_signature'           => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
@@ -1024,17 +1022,6 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }/*}}}*/
 
-    public function insert_thanks($event)/*{{{*/
-    {
-        if (!$this->config['snp_thanks_b_enable']) return false;
-        $from_id = $event['from_id'];
-        $to_id = $event['to_id'];
-        $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_given=snp_thanks_n_given+1 WHERE user_id=' . $from_id;
-        $this->db->sql_query($sql);
-        $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id=' . $to_id;
-        $this->db->sql_query($sql);
-    }/*}}}*/
-
     public function show_thanks_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_thanks_b_enable']) return false;
@@ -1579,26 +1566,6 @@ class main_listener extends base implements EventSubscriberInterface
         $user_sig = implode('\n', $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
-    }/*}}}*/
-
-    public function modify_avatar_thanks($event) /*{{{*/
-    {
-        $poster_id = $event['poster_id'];
-        $sql = 'SELECT snp_disable_avatar_thanks_link FROM ' . USERS_TABLE . ' WHERE user_id=' . $poster_id;
-        $result = $this->db->sql_query($sql, 30);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        $b_disable_avatar_thanks_link = false;
-        if ($row)
-        {
-            $b_disable_avatar_thanks_link= $row['snp_disable_avatar_thanks_link'];
-        }
-
-        if ($b_disable_avatar_thanks_link)
-        {
-            $event['u_receive_count_url'] = false;
-            $event['u_give_count_url'] = false;
-        }
     }/*}}}*/
 
 }
