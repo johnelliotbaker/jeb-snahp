@@ -2,17 +2,31 @@
 
 <style>
   {% include '@jeb_snahp/wiki/base.css' %}
+  {% include '@jeb_snahp/wiki/sidebar.css' %}
   {% if STYLE_NAME=='hexagon' or STYLE_NAME=='acieeed' %}
-    {% include '@jeb_snahp/wiki/dark.css' %}
+  {% include '@jeb_snahp/wiki/dark.css' %}
   {% endif %}
 </style>
 
-<div class="markdown-body">
-  <div>
-    {% if B_HIDDEN %}
-    <p style="text-align: center; font-weight: 900;">This page is hidden from public view.</p>
+<div class="twbs">
+  <div id="sidebar_wrapper" class="wrapper">
+    {% if NAVIGATION %}
+    <nav id="sidebar" class="d-none d-sm-block">
+      <ul class="list-unstyled components">
+        {NAVIGATION}
+      </ul>
+    </nav>
     {% endif %}
-    {HTML}
+    <div id="content">
+      <div class="markdown-body">
+        <div>
+          {% if B_HIDDEN %}
+          <p style="text-align: center; font-weight: 900;">This page is hidden from public view.</p>
+          {% endif %}
+          {HTML}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

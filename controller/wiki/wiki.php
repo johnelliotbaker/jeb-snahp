@@ -175,7 +175,7 @@ class wiki
             $this->template->assign_block_vars('WIKI_NAMES', $name);
         }
         return $this->helper->render($tpl_name, 'Wikipedia Editor');
-    }/*}}*/
+    }/*}}}*/
 
     private function add_or_edit_entry($name, $text, $b_public=0)/*{{{*/
     {
@@ -238,23 +238,84 @@ class wiki
         return $row;
     }/*}}}*/
 
+    private function select_nav()/*{{{*/
+    {
+        $navigation_name = 'snp_wiki_nav_json';
+        return $this->select_entry($navigation_name);
+    }/*}}}*/
+
+    private function get_nav_text()/*{{{*/
+    {
+        $row = $this->select_nav();
+        return isset($row['text']) ? $row['text'] : '';
+    }/*}}}*/
+
+    private function make_nav_parent_elem_before($entry)/*{{{*/
+    {
+        $uuid = uniqid('nav_');
+        return '<li>
+              <a href="#' . $uuid .'" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">' . $entry . '</a>
+              <ul class="collapse list-unstyled" id="' . $uuid . '">';
+    }/*}}}*/
+
+    private function make_nav_parent_elem_after($entry)/*{{{*/
+    {
+        return '</ul></li>';
+    }/*}}}*/
+
+    private function make_nav_leaf_elem($entry)/*{{{*/
+    {
+        $name = $entry['name'];
+        $link = $entry['link'];
+        return "<li><a href='${link}'>${name}</a></li>"  ;
+    }/*}}}*/
+
+    private function make_nav_html()/*{{{*/
+    {
+        $text = $this->get_nav_text();
+        $res = json_decode($text, true);
+        if (!$navdata = $res['navigation'])
+        {
+            return '';
+        };
+        $res = [];
+        foreach($navdata as $entry)
+        {
+            $res[] = $this->parse_navigation_entry($entry);
+        }
+        return implode(PHP_EOL, $res);
+    }/*}}}*/
+
+    private function parse_navigation_entry($entry)/*{{{*/
+    {
+        if (isset($entry['children']) && !empty($entry['children']))
+        {
+            $children = $entry['children'];
+            $tmp = [];
+            $tmp[] = $this->make_nav_parent_elem_before($entry['name']);
+            foreach($children as $child)
+            {
+                $tmp[] = $this->parse_navigation_entry($child);
+            }
+            $tmp[] = $this->make_nav_parent_elem_after($entry['name']);
+            $strn = implode(PHP_EOL, $tmp);
+        }
+        else
+        {
+            $strn = $this->make_nav_leaf_elem($entry);
+        }
+        return $strn;
+    }/*}}}*/
+
     private function render($cfg)/*{{{*/
     {
-        // $name = $cfg['name'] . '.md';
-        // $path = $this->datadir . $name;
-        // if (!file_exists($path))
-        // {
-        //     trigger_error('That wiki entry does not exist. Error Code: 976eaa8ce1');
-        // }
-        // $f = fopen($path, 'r') or die('unable');
-        // $text = fread($f, filesize($path));
-        // $html = $this->parsedown->text($text);
         $name = $cfg['name'];
         $row = $this->select_entry($name);
         if (!$row)
         {
             trigger_error("Wikipedia article for <b>${name}</b> does not exist. Error Code: 23a75a95b0");
         }
+        $navigation_html = $this->make_nav_html();
         $b_public = $row['b_public'];
         $text = $row['text'];
         $b_keepers = $this->sauth->user_belongs_to_groupset($this->user_id, 'Keepers');
@@ -273,6 +334,7 @@ class wiki
             'B_PUBLIC' => $b_public,
             'B_KEEPERS' => $b_keepers,
             'B_HIDDEN' => $b_hidden,
+            'NAVIGATION' => $navigation_html,
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Wikipedia');
     }/*}}}*/
