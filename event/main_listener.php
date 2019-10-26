@@ -1057,7 +1057,6 @@ class main_listener extends base implements EventSubscriberInterface
         $strn = $post_row['MESSAGE'];
         $chance = $this->config['snp_easter_chicken_chance'];
         $rand = rand(0, $chance);
-        $rand = 0;
         if ($rand > 0 || strlen($strn) > $MAX_STRN_LEN) return false;
         include_once('ext/jeb/snahp/core/chicken.php');
         $username = $this->user->data['username'];
