@@ -1052,22 +1052,22 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $snp_easter_b_chicken = $this->config['snp_easter_b_chicken'];
         if (!$snp_easter_b_chicken) return false;
+        $MAX_STRN_LEN = 500;
+        $post_row = $event['post_row'];
+        $strn = $post_row['MESSAGE'];
+        $chance = $this->config['snp_easter_chicken_chance'];
+        $rand = rand(0, $chance);
+        $rand = 0;
+        if ($rand > 0 || strlen($strn) > $MAX_STRN_LEN) return false;
         include_once('ext/jeb/snahp/core/chicken.php');
         $username = $this->user->data['username'];
         $motd_message = 'Hello ' . $username . ', thank you very much for being an important member of our community.<br>';
-        $chance = $this->config['snp_easter_chicken_chance'];
-        $MAX_STRN_LEN = 500;
         $topic_data = $event['topic_data'];
         $tt = $topic_data['topic_title'];
-        $post_row = $event['post_row'];
-        $strn = $post_row['MESSAGE'];
-        $rand = rand(0, $chance);
-        if ($rand < 1 && strlen($strn) < $MAX_STRN_LEN)
-        {
-            $strn = string2cluck($strn);
-            $post_row['MESSAGE'] = $motd_message . $strn;
-            $event['post_row'] = $post_row;
-        }
+        $strn = string2cluck($strn);
+        $post_row['MESSAGE'] = $motd_message . $strn;
+        $post_row['MESSAGE'] .= '<p style="font-size:.5em; text-align: center;">This is an easter egg</p>';
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function show_bump_button($event)/*{{{*/
