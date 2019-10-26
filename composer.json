@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.32.0",
-    "time": "2019-10-18",
+    "version": "0.33.0",
+    "time": "2019-10-26",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,8 +19,8 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "831320125754da242704170ffa0ce8f866294e81",
-        "features": "Keepers of the Light",
+        "version": "e3986acbea9222a7c9664459500cdefa7bd41a67",
+        "features": "Thanks Cycle Limiter",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"
