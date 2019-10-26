@@ -71,7 +71,7 @@ class reqs extends base
                 break;
             case $def['terminate']: // To terminate request
                 $this->reject_invalid_users($reqdata);
-                if ($reqdata['status']==$def['fulfill'])
+                if ($reqdata['status']==$def['fulfill'] || $reqdata['status']==$def['dib'])
                 {
                     $cfg['tpl_name'] = '@jeb_snahp/requests/component/terminate_confirm/base.html';
                     $cfg['base_url'] = "/viewtopic.php?f={$fid}&t={$tid}#p{$pid}";
@@ -97,11 +97,27 @@ class reqs extends base
         $confirm = (int) $this->request->variable('confirm', 0);
         if ($confirm)
         {
-            $this->solve_request($fid, $tid, $pid, $this->def['terminate'], $reqdata);
+            $termination_reason = $this->request->variable('termination_reasons', '');
+            if (!$termination_reason)
+            {
+                trigger_error('You must provide a reason for termination. Error Code: 2a9d306c8a');
+            }
+            $this->solve_request($fid, $tid, $pid, $this->def['terminate'], $reqdata, $termination_reason);
         }
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name)
         {
+            switch($reqdata['status'])
+            {
+            case $this->def['dib']:
+                $status_strn = 'Accepted';
+                break;
+            case $this->def['fulfill']:
+                $status_strn = 'Fulfilled';
+                break;
+            default:
+                $status_strn = '';
+            }
             $topic_data = $this->select_topic($tid);
             $username = '<span style="color: #' . $reqdata['fulfiller_colour'] . '; font-weight: 900;">' . $reqdata['fulfiller_username'] . '</span>';
             $this->template->assign_vars([
@@ -112,6 +128,7 @@ class reqs extends base
                 'DEF_SOLVE' => $this->def['solve'],
                 'FULFILLER_USERNAME' => $username,
                 'S_TOPIC_TITLE' => $topic_data['topic_title'],
+                'S_STATUS' => $status_strn,
             ]);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
@@ -200,7 +217,7 @@ class reqs extends base
         $this->db->sql_freeresult($result);
     }/*}}}*/
 
-    public function solve_request($fid, $tid, $pid, $new_status, $req)/*{{{*/
+    public function solve_request($fid, $tid, $pid, $new_status, $req, $termination_reason='')/*{{{*/
     {
         // Set confirmed_time
         $def = $this->def;
@@ -237,6 +254,11 @@ class reqs extends base
             'status' => $new_status,
             'solved_time' => $time,
         ];
+        if ($new_status == $def['terminate'])
+        {
+            $data['termination_reason'] = $termination_reason;
+            $data['terminator_uid'] = $this->user_id;
+        }
         $this->update_request($tid, $data);
         $this->increment_request_users_slot($req['requester_uid'], 1);
         $ptn = $this->ptn;

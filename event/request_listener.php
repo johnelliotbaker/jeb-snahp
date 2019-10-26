@@ -142,7 +142,7 @@ class request_listener extends base implements EventSubscriberInterface
             return false;
         if (!$this->config['snp_req_b_statbar'])
             return false;
-        $cache_cooldown = 60;
+        $cache_cooldown = 600;
         $tbl = $this->container->getParameter('jeb.snahp.tables')['req'];
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $forum_data = $event['forum_data'];
@@ -669,8 +669,17 @@ class request_listener extends base implements EventSubscriberInterface
             $solved_time     = $req['solved_time'];
             $datetime        = $this->user->format_date($solved_time);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
-            $strn            = "This request was solved by $username_string on $datetime";
+            $strn            = "Solved by $username_string on $datetime";
             // Show fulfilled text and hide fulfill button
+            $this->template->assign_var('S_REQUEST_INFO', $strn);
+        }
+        elseif($req['status'] == 9)
+        {
+            $reason          = $req['termination_reason'];
+            $solved_time     = $req['solved_time'];
+            $datetime        = $this->user->format_date($solved_time);
+            $username_string = get_username_string('no_profile', $uid, $username, $colour);
+            $strn            = "Closed on $datetime<br><span style='font-size:0.7em;'>Reason: ${reason}</span>";
             $this->template->assign_var('S_REQUEST_INFO', $strn);
         }
         else

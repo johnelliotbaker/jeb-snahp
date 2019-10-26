@@ -11,29 +11,31 @@
 
     <div class="card-title pt-3 pb-0 text-center">
       <h5>
-        YOU CHOSE TO TERMINATE A <span class="btn fulfill p-1">[FULLFILLED]</span> REQUEST!
+        YOU CHOSE TO TERMINATE <span class="btn fulfill p-1">[{S_STATUS}]</span> REQUEST!
       </h5>
       <h5>
         Are you sure you want to terminate this request?
       </h5>
     </div>
     <div class="card-body pt-1 request_termination_warning">
+      {% if S_STATUS=="Fulfilled" %}
       <p>
-        There are two ways to resolve any request that you have created.
+        There are two ways to resolve fulfilled requests.
       </p>
       <p>
-        <b>1)</b>
-        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_SOLVE}/" title="Mark Solved" class="button-icon-only">
-          <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="">Mark Solved</span>
-        </a>
+        <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="">Mark Solved</span>
         <br>
         By marking your request as solved, you are confirming that {FULFILLER_USERNAME} has fulfilled your request to your satisfaction. Our uploaders have an exemplary record of fulfilling requests and most requests should be resolved using this option.
       </p>
-      <p>
-        <b>2)</b>
-        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/" title="Terminate Request" class="button-icon-only">
-          <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i><span class="">Terminate Request</span>
+      <div align="center">
+        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_SOLVE}/" title="Mark Solved" class="button-icon-only">
+          <i class="icon fa-check-square fa-fw big" style="color:#383;" aria-hidden="true"></i><span class="">Mark Solved</span>
         </a>
+      </div>
+      <div class="m-3 p-2"></div>
+      {% endif %}
+      <p>
+        <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i><span class="">Terminate Request</span>
         <br>
         The termination of a fulfilled request means that you were dissatisfied with {FULFILLER_USERNAME}'s fulfillment of your request.
         For example, your request may have specified 1080p version of a video but were given 480p version instead.
@@ -41,19 +43,26 @@
         and you should only do so after careful consideration. It is considered a good practice to first communicate with {FULFILLER_USERNAME} to resolve any complaints before issuing a request termination.
       </p>
       <p>
-        Please click one of the following to resolve your request:<br>
+        For the following request:
         <div align="center">
-          {S_TOPIC_TITLE}
+          <b>{S_TOPIC_TITLE}</b>
         </div>
       </p>
-      <div align="center">
-        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_SOLVE}/" title="Mark Solved" class="button-icon-only">
-          <i class="icon fa-check-square fa-fw big" style="color:#383;" aria-hidden="true"></i><span class="">Mark Solved</span>
-        </a>
-        <a href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/?confirm=1" title="Terminate Request" class="button-icon-only">
-          <i class="icon fa-trash fa-fw big" style="color:#660000;" aria-hidden="true"></i><span class="">Terminate Request</span>
-        </a>
-      </div>
+      <p>Please provide reasons for the termination, then click the termination button below.</p>
+      <form method="post" action="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/?confirm=1">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Reasons for Termination</span>
+          </div>
+          <textarea class="form-control" aria-label="With textarea" name="termination_reasons"></textarea>
+        </div>
+        <div align="center">
+          <button type="submit" href="/app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{POST_ID}/{DEF_TERMINATE}/?confirm=1" title="Terminate Request" class="button-icon-only">
+            <i class="icon fa-trash fa-fw big" style="color:#660000;" aria-hidden="true"></i><span class="">Terminate Request</span>
+          </button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>

@@ -13,14 +13,15 @@
 <div class="twbs">
 
   {% if B_LOGGING %}
-  <p class="text-center mt-3">
+  <p class="text-center m-2 mt-3">
     Logging is <span style="color:#A00; font-weight:900;">ON</span>
   </p>
   {% else %}
-  <p class="text-center mt-3">
+  <p class="text-center m-2 mt-3">
     Logging is <span style="color:#0A0; font-weight:900;">OFF</span>
   </p>
   {% endif %}
+  <p class="text-center pt-0 mt-0">{PROCESS_TIME|number_format(6)} seconds</p>
 
   <div>
     <form method="post">

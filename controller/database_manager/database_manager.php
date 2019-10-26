@@ -136,6 +136,7 @@ class database_manager
             }
             if ($sql)
             {
+                $timeit0 = microtime(true);
                 $format = $this->request->variable('as_csv', 'off') === 'on' ? 'csv' : '';
                 $rowset = $this->exec_sql($sql);
                 if ($format === 'csv')
@@ -152,8 +153,10 @@ class database_manager
                         $rowset = implode('<br>', $data);
                     }
                 }
+                $process_time = microtime(true) - $timeit0;
                 $this->template->assign_vars([
                     'ROWSET' => $rowset,
+                    'PROCESS_TIME' => $process_time, 
                 ]);
             }
         }
