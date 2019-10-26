@@ -8,56 +8,15 @@
   {% endif %}
 </style>
 
-<script>
-  function tog()
-  {
-    console.log('effective');
-    $('#sidebar').toggleClass('hidden');
-    $('#content').toggleClass('active');
-  }
-</script>
-
-
 <div class="twbs">
   <div id="sidebar_wrapper" class="wrapper">
-    <nav id="sidebar">
+    {% if NAVIGATION %}
+    <nav id="sidebar" class="d-none d-sm-block">
       <ul class="list-unstyled components">
-        <li class="">
-          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-          <ul class="collapse list-unstyled" id="homeSubmenu">
-            <li>
-              <a href="../main/">Main</a>
-            </li>
-            <li>
-              <a href="../bookmark/">Bookmark</a>
-            </li>
-            <li>
-              <a href="#">Home 3</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-          <ul class="collapse list-unstyled" id="pageSubmenu">
-            <li>
-              <a href="#">Page 1</a>
-            </li>
-            <li>
-              <a href="#">Page 2</a>
-            </li>
-            <li>
-              <a href="#">Page 3</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">Portfolio</a>
-        </li>
-        <li>
-          <a href="#">Contact</a>
-        </li>
+        {NAVIGATION}
       </ul>
     </nav>
+    {% endif %}
     <div id="content">
       <div class="markdown-body">
         <div>
