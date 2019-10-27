@@ -158,11 +158,11 @@ class thanks_listener implements EventSubscriberInterface
 
     private function reject_excessive_thanks_per_cycle($thanks_user_data)/*{{{*/
     {
-        $b_exception = $this->sauth->is_dev();
-        if ($b_exception)
-        {
-            return false;
-        }
+        // $b_exception = $this->sauth->is_dev();
+        // if ($b_exception)
+        // {
+        //     return false;
+        // }
         if ($this->n_allowed_per_cycle < 1)
         {
             trigger_error('You cannot give any more thanks.');
@@ -170,19 +170,11 @@ class thanks_listener implements EventSubscriberInterface
         $curr = time();
         $oldest = $this->get_oldest_timestamp($thanks_user_data);
         $allowed_after = $oldest + $this->cycle_in_seconds;
-        prn('oldest time stamp');
-        prn($oldest);
-        prn('curr');
-        prn($curr);
-        prn('allowed_after');
-        prn($allowed_after);
         if ($curr < $allowed_after)
         {
             $datestrn = $this->user->format_date($allowed_after);
             trigger_error('You cannot give any more thanks until ' . $datestrn);
         }
-        prn('passed');
-        trigger_error('error');
     }/*}}}*/
 
     private function insert_timestamp($user_id)/*{{{*/
@@ -211,9 +203,7 @@ class thanks_listener implements EventSubscriberInterface
             $this->setup_thanks_user($from_id);
             $this->reject_banned_user($from_id);
             $this->reject_excessive_thanks_per_cycle($this->data);
-            trigger_error('passed 1');
         }
-        trigger_error('passed 2');
         $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_given=snp_thanks_n_given+1 WHERE user_id=' . $from_id;
         $this->db->sql_query($sql);
         $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id=' . $to_id;
