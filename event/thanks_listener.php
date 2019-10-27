@@ -158,11 +158,11 @@ class thanks_listener implements EventSubscriberInterface
 
     private function reject_excessive_thanks_per_cycle($thanks_user_data)/*{{{*/
     {
-        // $b_exception = $this->sauth->is_dev();
-        // if ($b_exception)
-        // {
-        //     return false;
-        // }
+        $b_exception = $this->sauth->is_dev();
+        if ($b_exception)
+        {
+            return false;
+        }
         if ($this->n_allowed_per_cycle < 1)
         {
             trigger_error('You cannot give any more thanks.');
