@@ -170,11 +170,18 @@ class thanks_listener implements EventSubscriberInterface
         $curr = time();
         $oldest = $this->get_oldest_timestamp($thanks_user_data);
         $allowed_after = $oldest + $this->cycle_in_seconds;
+        prn('oldest time stamp');
+        prn($oldest);
+        prn('curr');
+        prn($curr);
+        prn('allowed_after');
+        prn($allowed_after);
         if ($curr < $allowed_after)
         {
             $datestrn = $this->user->format_date($allowed_after);
             trigger_error('You cannot give any more thanks until ' . $datestrn);
         }
+        prn('passed');
     }/*}}}*/
 
     private function insert_timestamp($user_id)/*{{{*/
