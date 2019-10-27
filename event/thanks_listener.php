@@ -182,6 +182,7 @@ class thanks_listener implements EventSubscriberInterface
             trigger_error('You cannot give any more thanks until ' . $datestrn);
         }
         prn('passed');
+        trigger_error('error');
     }/*}}}*/
 
     private function insert_timestamp($user_id)/*{{{*/
@@ -210,7 +211,9 @@ class thanks_listener implements EventSubscriberInterface
             $this->setup_thanks_user($from_id);
             $this->reject_banned_user($from_id);
             $this->reject_excessive_thanks_per_cycle($this->data);
+            trigger_error('passed 1');
         }
+        trigger_error('passed 2');
         $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_given=snp_thanks_n_given+1 WHERE user_id=' . $from_id;
         $this->db->sql_query($sql);
         $sql = 'UPDATE ' . USERS_TABLE . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id=' . $to_id;
