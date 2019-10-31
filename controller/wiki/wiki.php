@@ -281,13 +281,17 @@ class wiki
         $res = [];
         foreach($navdata as $entry)
         {
-            $res[] = $this->parse_navigation_entry($entry);
+                $res[] = $this->parse_navigation_entry($entry);
         }
         return implode(PHP_EOL, $res);
     }/*}}}*/
 
     private function parse_navigation_entry($entry)/*{{{*/
     {
+        if (isset($entry['private']) && $entry['private'] && !$this->b_keepers)
+        {
+            return '';
+        }
         if (isset($entry['children']) && !empty($entry['children']))
         {
             $children = $entry['children'];
@@ -315,14 +319,14 @@ class wiki
         {
             trigger_error("Wikipedia article for <b>${name}</b> does not exist. Error Code: 23a75a95b0");
         }
+        $this->b_keepers = $this->sauth->user_belongs_to_groupset($this->user_id, 'Keepers');
         $navigation_html = $this->make_nav_html();
         $b_public = $row['b_public'];
         $text = $row['text'];
-        $b_keepers = $this->sauth->user_belongs_to_groupset($this->user_id, 'Keepers');
         $b_hidden = false;
         if (!$b_public)
         {
-            if (!$b_keepers)
+            if (!$this->b_keepers)
             {
                 trigger_error('You do not have the permission to view this wikipedia article. Error Code: 9888c98c71');
             }
@@ -332,7 +336,7 @@ class wiki
         $this->template->assign_vars([
             'HTML' => $html,
             'B_PUBLIC' => $b_public,
-            'B_KEEPERS' => $b_keepers,
+            'B_KEEPERS' => $this->b_keepers,
             'B_HIDDEN' => $b_hidden,
             'NAVIGATION' => $navigation_html,
         ]);
