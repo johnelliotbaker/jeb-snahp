@@ -679,7 +679,11 @@ class request_listener extends base implements EventSubscriberInterface
             $solved_time     = $req['solved_time'];
             $datetime        = $this->user->format_date($solved_time);
             $username_string = get_username_string('no_profile', $uid, $username, $colour);
-            $strn            = "Closed on $datetime<br><span style='font-size:0.7em;'>Reason: ${reason}</span>";
+            $strn = "Closed on $datetime";
+            if ($req['fulfiller_uid'])
+            {
+                $strn .= "<br><span style='font-size:0.7em;'>Reason: ${reason}</span>";
+            }
             $this->template->assign_var('S_REQUEST_INFO', $strn);
         }
         else
