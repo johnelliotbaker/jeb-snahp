@@ -10,6 +10,7 @@ imports:
     - { resource: database_manager.yml }
     - { resource: switchboard.yml }
     - { resource: form.yml }
+    - { resource: foe_blocker/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

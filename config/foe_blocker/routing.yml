@@ -1,0 +1,3 @@
+jeb_snahp_routing.foe_blocker:
+    path: /snahp/foe_blocker/
+    defaults: { _controller: jeb.snahp.foe_blocker:handle}

@@ -1,0 +1,86 @@
+<!-- INCLUDE overall_header.html -->
+<style>
+  {% include '@jeb_snahp/database_manager/base.css' %}
+  {% if STYLE_NAME=='hexagon' or STYLE_NAME=='acieeed' %}
+  {% include '@jeb_snahp/database_manager/dark.css' %}
+  {% endif %}
+</style>
+
+<script>
+  {% include '@jeb_snahp/database_manager/base.js' %}
+</script>
+
+<div class="twbs">
+
+  {% if B_LOGGING %}
+  <p class="text-center m-2 mt-3">
+    Logging is <span style="color:#A00; font-weight:900;">ON</span>
+  </p>
+  {% else %}
+  <p class="text-center m-2 mt-3">
+    Logging is <span style="color:#0A0; font-weight:900;">OFF</span>
+  </p>
+  {% endif %}
+  <p class="text-center pt-0 mt-0">{PROCESS_TIME|number_format(6)} seconds</p>
+
+  <div>
+    <form method="post">
+      {S_FORM_TOKEN}
+      <div class="input-group mb-2">
+        <input type="text" class="form-control" name="database_manager_statement" id="database_manager_statement" value="{DATABASE_MANAGER_STATEMENT}" maxlength="5000">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit" name="submit" value="submit" id="list_btn">Submit</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {% if S_FORMAT=='csv' %}
+          <div id="csv_content">{ROWSET}</div>
+          {% else %}
+          <table class="table table-sm table-dark">
+            <tbody>
+              {% for row in ROWSET %}
+              <tr>
+                {% for entry in row %}
+                <td>{{ entry|e }}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+        </div>
+      </div>
+
+
+      <div class="form-group mb-3">
+        <div class="row">
+          <div class="col"></div>
+          <div class="col">
+            <div class="form-check pull-right">
+              <input type="checkbox" class="form-check-input" value="on" name="as_csv" id="as_csv"
+                                                                                       {% if S_FORMAT=='csv' %}checked{% endif %}>
+              <label class="form-check-label" for="as_csv">CSV</label>
+              <div class="clipboard" onclick="Clipboard.copy_selector('#csv_content');">
+                <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="card">
+    <div class="row inline">
+      <div class="card-body" style="color: white !important;">
+        <a href="/app.php/snahp/database_manager_commands/?command=start_logging" class="btn btn-secondary btn-sm" role="button">Start Logging</a>
+        <a href="/app.php/snahp/database_manager_commands/?command=stop_logging" class="btn btn-secondary btn-sm" role="button">Stop Logging</a>
+        <a href="/app.php/snahp/database_manager_commands/?command=clear_log" class="btn btn-secondary btn-sm" role="button">Clear Log</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- INCLUDE overall_footer.html -->

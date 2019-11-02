@@ -1,0 +1,13 @@
+services:
+    jeb.snahp.foe_blocker:
+        class: jeb\snahp\controller\foe_blocker\foe_blocker
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

@@ -1,3 +1,5 @@
+routing_foe_blocker:
+    resource: 'foe_blocker/routing.yml'
 routing_switchboard:
     resource: 'routing/switchboard.yml'
 routing_database_manager:
