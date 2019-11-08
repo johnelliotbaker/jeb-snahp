@@ -859,6 +859,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_core_vars($event)/*{{{*/
     {
+        $this->user_id = $this->user->data['user_id'];
         $n_rep = $this->user->data['snp_rep_n_available'];
         $rep_giveaway_last_time = (int) $this->config['snp_rep_giveaway_last_time'];
         $rep_giveaway_duration  = (int) $this->config['snp_rep_giveaway_duration'];

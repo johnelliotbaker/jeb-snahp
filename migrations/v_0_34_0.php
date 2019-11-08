@@ -26,15 +26,19 @@ class v_0_34_0 extends \phpbb\db\migration\migration
                         'created_time' => ['INT:11', 0],
                         'duration'     => ['INT:11', 0],
                         'block_reason' => ['VCHAR:512', ''],
-                        'mod_id'       => ['INT:11', 0],
-                        'mod_reason'   => ['VCHAR:512', ''],
+                        'allow_viewtopic' => ['BOOL', 0],
+                        'allow_reply'     => ['BOOL', 0],
+                        'allow_quote'     => ['BOOL', 0],
+                        'allow_pm'        => ['BOOL', 0],
+                        'mod_id'     => ['INT:11', 0],
+                        'mod_reason' => ['VCHAR:512', ''],
                     ],
                     'PRIMARY_KEY' => 'id',
                 ],
             ],
             'add_unique_index'    => [
                 $this->table_prefix . 'snahp_foe' => [
-                    // 'id_pair' => ['blocker_id', 'blocked_id'],
+                    'id_pair' => ['blocker_id', 'blocked_id'],
                 ],
             ],
             'add_index'    => [
@@ -68,6 +72,13 @@ class v_0_34_0 extends \phpbb\db\migration\migration
     {
         return [
             ['config.add', ['snp_foe_b_master', 1]],
+            ['module.add', [
+                'ucp',
+                'UCP_SNP_TITLE', [
+                    'module_basename' => '\jeb\snahp\ucp\main_module',
+                    'modes'           => [ 'block', ],
+                ],
+            ]],
             // ['custom', [[$this, 'set_utf8mb4']]],
         ];
     }

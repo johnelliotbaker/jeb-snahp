@@ -1,0 +1,31 @@
+<!-- INCLUDE ucp_header.html -->
+<!-- INCLUDECSS @jeb_snahp/ucp/block/base.css -->
+{% if B_ENABLE %}
+  {% if B_PERMISSION %}
+  <div class="panel">
+    <div class="inner">
+      <div class="twbs">
+        <div style="height:200px;" class="pt-3">
+          <a href="/app.php/snahp/block/manage/" role="button" class="mt-3 btn btn-success btn-block"
+            style="color:white !important; font-weight:900;">Go to block management console</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div>
+    </div>
+  {% else %}
+    <div class="panel">
+      <div class="inner">
+        <h3>This feature is currently unavailable.</h3>
+      </div>
+    </div>
+  {% endif %}
+{% else %}
+  <div class="panel">
+    <div class="inner">
+      <h3>This feature is currently disabled by the administrator.</h3>
+    </div>
+  </div>
+{% endif %}
+<!-- INCLUDE ucp_footer.html -->

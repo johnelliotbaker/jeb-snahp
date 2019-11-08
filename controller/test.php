@@ -48,8 +48,15 @@ class test
         default:
             break;
         }
-        trigger_error('test.php');
+        return $this->respond_test();
     }/*}}}*/
+
+    public function respond_test()/*{{{*/
+    {
+        $tpl_name = '@jeb_snahp/test/base.html';
+        return $this->helper->render($tpl_name, 'test');
+    }/*}}}*/
+
 
     public function respond_imgcompare($cfg)/*{{{*/
     {

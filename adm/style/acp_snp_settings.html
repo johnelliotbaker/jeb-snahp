@@ -246,7 +246,7 @@
 
       <fieldset>
         <legend>Zebra</legend>
-        <span>Options used to control how friends & foe are able to see a user's post.</span><br><br>
+        <span>Options used to control how friends & foe are able to see a user's post. As of Nov-2019 zebra blocking is in legacy mode. Use foe blocking instead.</span><br><br>
 				<dl>
           <dt>
               <label>Zebra Master Switch</label>
@@ -254,6 +254,20 @@
 					<dd>
               <label><input type="radio" name="snp_zebra_b_master" class="radio" value="1" {% if SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Enable</label>
               <label><input type="radio" name="snp_zebra_b_master" class="radio" value="0" {% if not SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
+        <legend>Foe Blocking</legend>
+        <span>Replaces the old Foe Blocking done through phpbb's foe and friends</span><br><br>
+				<dl>
+          <dt>
+              <label>Foe Blocking Master Switch</label>
+          </dt>
+					<dd>
+              <label><input type="radio" name="snp_foe_b_master" class="radio" value="1" {% if SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+              <label><input type="radio" name="snp_foe_b_master" class="radio" value="0" {% if not SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>

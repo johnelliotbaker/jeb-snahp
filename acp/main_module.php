@@ -809,6 +809,8 @@ class main_module
                 $config->set('snp_thanks_b_op', $snp_thanks_b_op);
                 $snp_zebra_b_master = $request->variable('snp_zebra_b_master', '1');
                 $config->set('snp_zebra_b_master', $snp_zebra_b_master);
+                $snp_foe_b_master = $request->variable('snp_foe_b_master', '1');
+                $config->set('snp_foe_b_master', $snp_foe_b_master);
                 $snp_fid_requests = $request->variable('snp_fid_requests', '1');
                 $config->set('snp_fid_requests', $snp_fid_requests);
                 meta_refresh(2, $this->u_action);
@@ -839,6 +841,7 @@ class main_module
                 'SNP_THANKS_B_TOPLIST'         => $config['snp_thanks_b_toplist'],
                 'SNP_THANKS_B_OP'              => $config['snp_thanks_b_op'],
                 'SNP_ZEBRA_B_MASTER'           => $config['snp_zebra_b_master'],
+                'SNP_FOE_B_MASTER'             => $config['snp_foe_b_master'],
                 'SNP_FID_REQUESTS'             => $config['snp_fid_requests'],
                 'FID_LISTINGS'                 => $config['snp_fid_listings'],
                 'U_ACTION'                     => $this->u_action,

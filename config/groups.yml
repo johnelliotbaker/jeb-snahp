@@ -17,6 +17,14 @@ parameters:
                     - 5
                     - 13
                     - 20
+                'Staff':
+                    - 4
+                    - 5
+                    - 13
+                'Basic':
+                    - 1
+                    - 2
+                    - 7
             'GUESTS':
                 id: 1
             'REGISTERED':
@@ -92,6 +100,14 @@ parameters:
                     - 5
                     - 13
                     - 20
+                'Staff':
+                    - 4
+                    - 5
+                    - 13
+                'Basic':
+                    - 1
+                    - 2
+                    - 7
             'GUESTS':
                 id: 1
             'REGISTERED':

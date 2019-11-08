@@ -5,6 +5,8 @@ imports:
     - { resource: 'achievements.yml' }
 
 parameters:
+    jeb.snahp.phpbb_rootdir:
+        - '%core.root_path%'
 
     jeb.snahp.bump_topic:
         def:

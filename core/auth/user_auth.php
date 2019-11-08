@@ -57,6 +57,16 @@ class user_auth
             trigger_error('You must login before venturing forth.');
     }/*}}}*/
 
+    public function is_valid_user_id($user_id)/*{{{*/
+    {
+        $user_id = (int) $user_id;
+        $sql = 'SELECT 1 FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !empty($row);
+    }/*}}}*/
+
     public function is_admin()/*{{{*/
     {
         return $this->auth->acl_gets('a_');

@@ -1,0 +1,29 @@
+{% if B_FOE_BLOCK_NOTICE and postrow.POST_NUMBER==1 %}
+<!-- INCLUDECSS @jeb_snahp/foe_blocker/component/notice/base.css -->
+<div class="twbs">
+  <p class="mb-1">
+    {S_FOE_BLOCK_NOTICE}
+    <a href="/app.php/snahp/wiki/user_blocking/" target="_blank">
+      <i class="fa fa-question"></i>
+    </a>
+  </p>
+  <table class="table table-sm table-dark">
+    <tbody>
+      <tr>
+        <td>Blocked On</td>
+        <td>
+          {FOE_BLOCK_DATA.created_time_local}
+          <a href="/viewtopic.php?p={FOE_BLOCK_DATA.post_id}" target="_blank">
+            <i class="fa fa-external-link-square ml-1"></i>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Comment</td>
+        <td>{FOE_BLOCK_DATA.block_reason}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+

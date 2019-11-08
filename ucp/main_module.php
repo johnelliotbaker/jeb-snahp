@@ -43,6 +43,11 @@ class main_module
             $cfg['b_feedback'] = true;
             $this->handle_custom($cfg);
             break;
+        case 'block':
+            $cfg['tpl_name'] = '@jeb_snahp/ucp/block/base';
+            $cfg['b_feedback'] = true;
+            $this->handle_block($cfg);
+            break;
         }
         if (!empty($cfg)){
             $this->handle_mode($cfg);
@@ -86,6 +91,19 @@ class main_module
             return $row['quantity'];
         }
         return 0;
+    }/*}}}*/
+
+    function handle_block($cfg)/*{{{*/
+    {
+		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
+        $user_id = $user->data['user_id'];
+        $b_enable = $config['snp_foe_b_master'];
+        $b_permission = !$sauth->user_belongs_to_groupset($user_id, 'Basic');
+        $template->assign_vars([
+            'B_ENABLE' => $b_enable,
+            'B_PERMISSION' => $b_permission,
+        ]);
     }/*}}}*/
 
     function handle_custom($cfg)/*{{{*/

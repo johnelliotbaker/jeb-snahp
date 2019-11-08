@@ -1,0 +1,100 @@
+<!-- INCLUDECSS @jeb_snahp/foe_blocker/component/blocker_form/base.css -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Block a New User</h5>
+    <form action="{U_BLOCK}" method="POST" accept-charset="utf-8">
+
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Post ID</span>
+        </div>
+        <input type="number" max="1000000" min="1" class="form-control" name="post_id" value="{POST_ID}"/>
+      </div>
+
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">User ID</span>
+        </div>
+        <input type="number" max="1000000" min="1" class="form-control" name="emergency_blocked_id" value="{emergency_blocked_id}"/>
+      </div>
+
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Reason</span>
+        </div>
+        <input type="text" required pattern=".{3,500}" title="Minimum 3 characters & maximum 500 characters"  class="form-control" name="block_reason" />
+      </div>
+
+      <div class="input-group p-0 mb-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="duration">Duration</label>
+        </div>
+        <select class="form-control" name="duration" id="duration">
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+          <option value="month" selected>Month</option>
+          <option value="three_months">3 Months</option>
+        </select>
+      </div>
+
+      <div class="form-check-inline">
+        <dl class="row mx-1 my-0">
+          <dt class="mr-2">
+            View Opening Post
+          </dt>
+          <dd>
+            <input class="form-check-input" type="radio" id="radio_allow_viewtopic_1" name="allow_viewtopic" value="1"
+            {% if ALLOW_VIEWTOPIC %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_viewtopic_1">
+              Allow
+            </label>
+            <input class="form-check-input" type="radio" id="radio_allow_viewtopic_2" name="allow_viewtopic" value="0"
+            {% if not ALLOW_VIEWTOPIC %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_viewtopic_2">
+              Disallow
+            </label>
+          </dd>
+        </dl>
+        <dl class="row mx-1 my-0">
+          <dt class="mr-2">
+            Post in your topics
+          </dt>
+          <dd>
+            <input class="form-check-input" type="radio" id="radio_allow_reply_1" name="allow_reply" value="1"
+            {% if ALLOW_REPLY %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_reply_1">
+              Allow
+            </label>
+            <input class="form-check-input" type="radio" id="radio_allow_reply_2" name="allow_reply" value="0"
+            {% if not ALLOW_REPLY %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_reply_2">
+              Disallow
+            </label>
+          </dd>
+        </dl>
+        <dl class="row mx-1 my-0">
+          <dt class="mr-2">
+            Send you pm
+          </dt>
+          <dd>
+            <input class="form-check-input" type="radio" id="radio_allow_pm_1" name="allow_pm" value="1"
+            {% if ALLOW_PM %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_pm_1">
+              Allow
+            </label>
+            <input class="form-check-input" type="radio" id="radio_allow_pm_2" name="allow_pm" value="0"
+            {% if not ALLOW_PM %}checked{% endif %}>
+            <label class="form-check-label" for="radio_allow_pm_2">
+              Disallow
+            </label>
+          </dd>
+        </dl>
+      </div>
+
+
+      <button type="submit" value="block" name="block" class="btn btn-danger btn-block">Block</button>
+      {S_FORM_TOKEN}
+    </form>
+  </div>
+</div>

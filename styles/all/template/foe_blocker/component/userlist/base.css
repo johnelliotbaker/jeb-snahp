@@ -1,0 +1,44 @@
+table
+{
+    font-size: 1.1em;
+}
+
+th.icon_column
+{
+    width: 10px;
+}
+
+i.fa-unlock
+{
+    color: #3F3 !important;
+}
+
+td i
+{
+    font-size: 1.3em !important;
+}
+
+i.fa-close
+{
+    color: #cc3545 !important;
+}
+
+i.fa-check
+{
+    color: #3a3 !important;
+}
+
+i.fa-external-link-square
+{
+    color: #aaa !important;
+}
+
+i.fa-ambulance
+{
+    color: #1089ff !important;
+}
+
+p.legend
+{
+    font-size: .9em;
+}

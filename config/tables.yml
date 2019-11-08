@@ -27,4 +27,5 @@ parameters:
         custom_ranks: '%core.table_prefix%snahp_custom_ranks'
         log: '%core.table_prefix%snahp_log'
         wiki: '%core.table_prefix%snahp_wiki'
+        foe: '%core.table_prefix%snahp_foe'
 

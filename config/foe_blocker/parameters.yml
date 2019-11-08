@@ -1,0 +1,13 @@
+parameters:
+    jeb.snahp.foe_blocker:
+        status:
+            block: 1
+            allow: 2
+            relapse: 3
+        duration:
+            day: 86400
+            three_days: 259200
+            week: 604800
+            month: 2592000
+            three_months: 7776000
+            # year:  31536000

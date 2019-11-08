@@ -1,0 +1,58 @@
+<!-- INCLUDECSS @jeb_snahp/foe_blocker/component/userlist/base.css -->
+<!-- INCLUDEJS @jeb_snahp/foe_blocker/component/userlist/base.js -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Active Blocks</h5>
+    <div class="card-text">
+      <p class="legend mb-1">
+        Permission Legend: T = View Topic, R = Reply/Quote/Edit, PM = Private Message
+      </p>
+      <table class="table table-sm table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col" class="icon_column"></th>
+            <th scope="col" class="icon_column"></th>
+            <th scope="col">User</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Expires</th>
+            <th scope="col">T</th>
+            <th scope="col">R</th>
+            <th scope="col">PM</th>
+            <th scope="col" class="icon_column"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in ROWSET %}
+          <tr id="row_{loop.index0}">
+            <td class="text-center">
+              <a href="{U_UNBLOCK}?u={row.blocked_id}">
+                <i class="fa fa-unlock m-0 ml-1" aria-hidden="true"></i>
+              </a>
+            </td>
+            <td class="text-center">
+              <span onClick="Foe_blocker.transfer({loop.index0});">
+                <i class="fa fa-edit m-0 pointer noselect" aria-hidden="true"></i>
+              </span>
+            </td>
+            <td>{row.blocked_username}</td>
+            <td id="block_reason_{loop.index0}">{row.block_reason}</td>
+            <td>{row.until}</td>
+            <td id="allow_viewtopic_{loop.index0}" data-value="{% if row.allow_viewtopic %}1{% else %}0{% endif %}">{% if row.allow_viewtopic %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
+            <td id="allow_reply_{loop.index0}" data-value="{% if row.allow_reply %}1{% else %}0{% endif %}">{% if row.allow_reply %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
+            <td id="allow_pm_{loop.index0}" data-value="{% if row.allow_pm %}1{% else %}0{% endif %}">{% if row.allow_pm %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
+            <td>
+              {% if row.post_id %}
+              <a href="/viewtopic.php?p={row.post_id}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>
+              {% else %}
+              <i class="fa fa-ambulance" aria-hidden="true" title="Triage"></i>
+              {% endif %}
+            </td>
+            <input type="hidden" value="{row.post_id}" name="post_id_{loop.index0}" id="post_id_{loop.index0}"/>
+            <input type="hidden" value="{row.blocked_id}" name="blocked_id_{loop.index0}" id="blocked_id_{loop.index0}"/>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
