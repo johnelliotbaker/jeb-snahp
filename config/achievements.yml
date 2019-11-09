@@ -8,7 +8,7 @@ parameters:
                     Basic: 'https://i.imgur.com/ML9xSuc.png'
                     Hexagon: 'https://i.imgur.com/0CKB6uf.png'
                     Acieeed!: 'https://i.imgur.com/zkMuN2k.png'
-            title: "Child at Heart.\rMay you build a ladder to the stars and climb on every rung.\rMay your heart always be joyful, may your song always be sung."
+            title: "Child at Heart.\rIt's kind of fun to do the impossible."
             url: 'https://forum.snahp.it/viewtopic.php?f=73&t=66377'
             probability: 4
         size_matters:
@@ -65,7 +65,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
             url: ''
-            probability: 8
+            probability: 4
         grave_digger:
             name: 'Grave Digger'
             img:
@@ -76,7 +76,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
             title: "Grave Digger. {USERNAME}'s peculiar habit of secretly digging through someone else's belongings has earned him this unceremonious title."
             url: ''
-            probability: 2
+            probability: 1
         computer_whiz:
             name: 'Computer Whiz'
             img:
@@ -87,7 +87,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             url: ''
-            probability: 4
+            probability: 3
         magnetic_personality:
             name: 'Magnetic Personality'
             img:
@@ -98,7 +98,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
             url: ''
-            probability: 4
+            probability: 1
         the_gourmet:
             name: 'The Gourmet'
             img:
@@ -120,7 +120,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/6FSqzyd.png'
             title: "Intense Training. No pain, no gain!\r{USERNAME} is the best-selling author and personal trainer known for his fitness, nutrition, and body awareness programs."
             url: 'https://forum.snahp.it/viewtopic.php?f=61&t=104439'
-            probability: 8
+            probability: 5
         solar_powered:
             name: 'Sun Burned'
             img:
@@ -131,5 +131,5 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/zoc1xVd.png'
             title: "Sun Burned. \r'One week on the Copacabana Beach in the warm embrace of Brazilian Sun and I could die happy!', said {USERNAME}.\r The tender pink skin is a painful reminder that good times are already in the distant past and that one should never forget to wear sunscreen.\r The sun burn is starting to heal and {USERNAME}'s skin color is returning to normal!"
             url: 'https://forum.snahp.it/viewtopic.php?p=435658#p435658'
-            probability: 4
+            probability: 0
 
