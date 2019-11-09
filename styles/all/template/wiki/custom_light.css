@@ -20,6 +20,12 @@
     font-size: 1.25em;
 }
 
+.markdown-body a
+{
+    color: #0080ff !important;
+    font-weight: 700;
+}
+
 span.digg_subscribe
 {
     background-color: black;

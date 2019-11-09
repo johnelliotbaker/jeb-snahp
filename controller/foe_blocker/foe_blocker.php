@@ -36,7 +36,7 @@ class foe_blocker
         $this->sauth = $sauth;
         $this->foe_helper = $foe_helper;
         $this->user_id = $this->user->data['user_id'];
-        $this->redirect_time = 3;
+        $this->redirect_delay = 3;
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
@@ -50,6 +50,9 @@ class foe_blocker
         case 'manage':
             $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/base.html';
             return $this->respond_manage($cfg);
+        case 'mcp':
+            $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/component/mcp/base.html';
+            return $this->respond_mcp($cfg);
         case 'block':
             return $this->respond_block();
         case 'unblock':
@@ -176,8 +179,8 @@ class foe_blocker
             $blocker_id = $this->user_id;
             $this->block_user($post_data, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm);
             $u_action = $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'manage']);
-            meta_refresh($this->redirect_time, $u_action);
-            trigger_error("<b>${post_data['username']}</b> has been blocked. Redirecting in {$this->redirect_time} seconds ...");
+            meta_refresh($this->redirect_delay, $u_action);
+            trigger_error("<b>${post_data['username']}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
         }
         trigger_error('Invalid Form. Error Code: 8f57c0072b');
     }/*}}}*/
@@ -196,8 +199,8 @@ class foe_blocker
         $blocker_id = $this->user_id;
         $this->emergency_block_user($blocked_id, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm);
         $u_action = $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'manage']);
-        meta_refresh($this->redirect_time, $u_action);
-        trigger_error("<b>${blocked_id}</b> has been blocked. Redirecting in {$this->redirect_time} seconds ...");
+        meta_refresh($this->redirect_delay, $u_action);
+        trigger_error("<b>${blocked_id}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
     }/*}}}*/
 
     private function respond_manage($cfg)/*{{{*/
@@ -210,6 +213,53 @@ class foe_blocker
             'U_BLOCK' => $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'block']),
             'U_UNBLOCK' => $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'unblock']),
             'ROWSET' => $rowset,
+        ]);
+        return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
+    }/*}}}*/
+
+    private function generate_order_by_strn($order_by, $order_dir)/*{{{*/
+    {
+        switch($order_by)
+        {
+        case 'id':
+        case 'user_id':
+        case 'target_id':
+            break;
+        default:
+            $order_by = 'id';
+        }
+        switch($order_dir)
+        {
+        case 'desc':
+        case 'DESC':
+        case 'asc':
+        case 'ASC':
+            break;
+        default:
+            $order_dir = 'DESC';
+        }
+        return implode(' ', [$order_by, $order_dir]);
+    }/*}}}*/
+
+    private function respond_mcp($cfg)/*{{{*/
+    {
+        $start = $this->request->variable('start', 0);
+        $per_page = $this->request->variable('per_page', 3);
+        $order_by = $this->request->variable('o', 'id');
+        $order_dir = $this->request->variable('od', 'DESC');
+        $order_by_strn = $this->generate_order_by_strn($order_by, $order_dir);
+        $log = $this->container->get('jeb.snahp.logger');
+        [$rowset, $total] = $log->select_foe_block($start, $per_page, $order_by_strn);
+        foreach($rowset as &$row)
+        {
+            $row['local_time'] = $this->user->format_date($row['created_time'], '\'y.m.d');
+            $extra = unserialize($row['data']);
+            $row['extra'] = $extra;
+        }
+        $pagination = new \jeb\snahp\core\pagination;
+        $this->template->assign_vars([
+            'ROWSET' => $rowset,
+            'PAGINATION' => $pagination->make(null, $total, $per_page, $start)
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
     }/*}}}*/
@@ -268,19 +318,8 @@ class foe_blocker
         $sql = 'INSERT INTO ' . $this->tbl['foe'] . $this->db->sql_build_array('INSERT', $data) . '
             ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
-
-    private function insert_foe($blocker_id, $blocked_id, $post_id, $block_reason, $duration)/*{{{*/
-    {
-        if (count($block_reason) > 500) trigger_error('Please limit reason to 500 characters.');
-        $data = [
-            'blocker_id' => (int) $blocker_id,
-            'blocked_id' => (int) $blocked_id,
-            'post_id' => (int) $post_id,
-            'block_reason' => (string) $block_reason,
-            'duration' => (int) $duration,
-        ];
-        $sql = 'INSERT INTO ' . $this->tbl['foe'] . $this->db->sql_build_array('INSERT', $data);
+        $log = $this->container->get('jeb.snahp.logger');
+        $log->log_foe_block($this->user_id, 'ADD_USER', false, $extra=$data);
     }/*}}}*/
 
     private function respond_unblock()/*{{{*/
@@ -291,8 +330,8 @@ class foe_blocker
         $row = $rowset[0];
         $this->unblock_user($blocked_id);
         $u_action = $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'manage']);
-        meta_refresh($this->redirect_time, $u_action);
-        trigger_error("You have unblocked <b>${row['blocked_username']}</b>. Redirecting in {$this->redirect_time} seconds ...");
+        meta_refresh($this->redirect_delay, $u_action);
+        trigger_error("You have unblocked <b>${row['blocked_username']}</b>. Redirecting in {$this->redirect_delay} seconds ...");
     }/*}}}*/
 
     private function unblock_user($blocked_id, $blocker_id=null)/*{{{*/

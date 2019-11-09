@@ -15,6 +15,12 @@ class v_0_34_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
+            'add_columns' => [
+                $this->table_prefix . 'snahp_log' => [
+                    'target_id' => ['INT:11', 0],
+                    'data' => ['MTEXT_UNI', ''],
+                ],
+            ],
             'add_tables' => [
                 $this->table_prefix . 'snahp_foe' => [
                     'COLUMNS' => [
@@ -48,6 +54,10 @@ class v_0_34_0 extends \phpbb\db\migration\migration
                     'post_id'    => ['post_id'],
                     'status'    => ['status'],
                 ],
+                $this->table_prefix . 'snahp_log' => [
+                    'name' => ['name'],
+                    'target_id' => ['target_id'],
+                ],
             ],
         ];
     }
@@ -55,6 +65,9 @@ class v_0_34_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
+            'drop_columns' => [
+                $this->table_prefix . 'snahp_log' => [ 'data', 'target_id'],
+            ],
             'drop_tables' => [
                 $this->table_prefix . 'snahp_foe',
             ],

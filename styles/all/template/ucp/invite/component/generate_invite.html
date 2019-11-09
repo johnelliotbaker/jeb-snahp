@@ -3,9 +3,9 @@
 </script>
 <div class="searchbox_wrapper" style="margin-top:6px;">
   {% if B_INVITE_USER_EXISTS and N_AVAILABLE>0 %}
-  <button id="generate_btn" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#new_invite_modal">Create an Invite <span style="margin-top:5px;" class="badge badge-pill badge-light">{N_AVAILABLE}</span></button>
+  <button id="generate_btn" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#new_invite_modal">Create an Invite <span style="margin-top:5px;" class="badge badge-pill btn-light">{N_AVAILABLE}</span></button>
   {% else %}
-  <button id="generate_btn_disabled" type="button" class="btn btn-secondary btn-lg btn-block">Create an Invite <span style="margin-top:5px;" class="badge badge-pill badge-light">{N_AVAILABLE}</span></button>
+  <button id="generate_btn_disabled" type="button" class="btn btn-secondary btn-lg btn-block">Create an Invite <span style="margin-top:5px;" class="badge badge-pill btn-light">{N_AVAILABLE}</span></button>
   {% endif %}
 </div>
 

@@ -1,37 +1,37 @@
-# services:
-#     jeb.snahp.logger:
-#         class: jeb\snahp\core\logger\logger
-#         arguments:
-#             - '@dbal.conn'
-#             - '@user'
-#             - '@config'
-#             - '@request'
-#             - '@template'
-#             - '@service_container'
-#             - '@controller.helper'
-#             - '@config_text'
-#             - '%jeb.snahp.tables%'
-#             - '@jeb.snahp.auth.user_auth'
-#     jeb.snahp.logger_listener:
-#         class: jeb\snahp\event\logger_listener
-#         arguments:
-#             - '@config'
-#             - '@user'
-#             - '@jeb.snahp.logger'
-#             - '@jeb.snahp.auth.user_auth'
-#         tags:
-#             - { name: event.listener }
-#     jeb.snahp.log_viewer_controller:
-#         class: jeb\snahp\controller\logger\log_viewer
-#         arguments:
-#             - '@dbal.conn'
-#             - '@user'
-#             - '@config'
-#             - '@request'
-#             - '@template'
-#             - '@service_container'
-#             - '@controller.helper'
-#             - '@config_text'
-#             - '%jeb.snahp.tables%'
-#             - '@jeb.snahp.auth.user_auth'
-#             - '@jeb.snahp.logger'
+services:
+    jeb.snahp.logger:
+        class: jeb\snahp\core\logger\logger
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@config_text'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.log_viewer_controller:
+        class: jeb\snahp\controller\logger\log_viewer
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@config_text'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.logger'
+    # jeb.snahp.logger_listener:
+    #     class: jeb\snahp\event\logger_listener
+    #     arguments:
+    #         - '@config'
+    #         - '@user'
+    #         - '@jeb.snahp.logger'
+    #         - '@jeb.snahp.auth.user_auth'
+    #     tags:
+    #         - { name: event.listener }

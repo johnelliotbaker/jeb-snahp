@@ -2,12 +2,12 @@
 <!-- INCLUDEJS @jeb_snahp/foe_blocker/component/userlist/base.js -->
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Active Blocks</h5>
+    <h5 class="card-title">Active Blocks<a href="/app.php/snahp/wiki/user_blocking/#active_blocks" target="_blank"><i class="fa fa-question ml-1" style="font-size:0.9em;"></i></a></h5>
     <div class="card-text">
       <p class="legend mb-1">
         Permission Legend: T = View Topic, R = Reply/Quote/Edit, PM = Private Message
       </p>
-      <table class="table table-sm table-striped table-dark">
+      <table class="table table-sm table-borderless table-striped{% if STYLE_NAME in ['acieeed', 'Hexagon'] %} table-dark{% endif %}">
         <thead>
           <tr>
             <th scope="col" class="icon_column"></th>

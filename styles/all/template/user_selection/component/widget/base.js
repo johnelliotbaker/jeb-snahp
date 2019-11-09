@@ -9,7 +9,7 @@ UserSelection.make_clickable_username = function(resp, $parent)
         let user_id = entry['user_id'];
         let js = {};
         js['data'] = JSON.stringify(entry);
-        $elem = $(`<button type="button" data-json='${js['data']}' style="margin-left: 10px;" class="badge badge-primary pull-left" id="partial_` + username + '">' + username + '</span>');
+        $elem = $(`<button type="button" data-json='${js['data']}' style="margin-left: 10px;" class="badge btn-primary pull-left" id="partial_` + username + '">' + username + '</span>');
         $elem.click((e)=>{
             var username = $(e.target).text();
             UserSelection.searchbox.val();

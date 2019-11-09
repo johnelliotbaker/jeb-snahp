@@ -1,0 +1,11 @@
+.markdown-body h1
+{
+    color: inherit;
+}
+
+.markdown-body a
+{
+    color: #de7300 !important;
+    font-weight: 700;
+}
+

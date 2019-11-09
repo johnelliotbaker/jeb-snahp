@@ -35,7 +35,8 @@ class pagination
     {
         $i_start = 0;
         $block_start = 1;
-        $url = $base_url . "&per_page={$per_page}&start={$i_start}";
+        $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
+        $url = $base_url . "${prepend_char}per_page={$per_page}&start={$i_start}";
         $data = [
             'block' => 1,
             'index' => $i_start,
@@ -55,7 +56,8 @@ class pagination
     {
         $block_end = ceil($total / $per_page);
         $i_end = (int) ($block_end - 1) * $per_page;
-        $url = $base_url . "&per_page={$per_page}&start={$i_end}";
+        $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
+        $url = $base_url . "${prepend_char}per_page={$per_page}&start={$i_end}";
         $data = [
             'block' => $block_end,
             'index' => $i_end,
@@ -75,7 +77,8 @@ class pagination
     {
         $block_start = 1;
         $prev = ($i_block <= 1) ? 0 : $start - $per_page;
-        $url = $base_url . "&per_page={$per_page}&start={$prev}";
+        $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
+        $url = $base_url . "${prepend_char}per_page={$per_page}&start={$prev}";
         if ($i_block <= $block_start)
         {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Prev</span></li>';
@@ -91,7 +94,8 @@ class pagination
     {
         $block_end = ceil($total / $per_page);
         $next = ($i_block > $n_block-1) ? ($n_block-1)*$per_page : $i_block*$per_page;
-        $url = $base_url . "&per_page={$per_page}&start={$next}";
+        $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
+        $url = $base_url . "{$prepend_char}per_page={$per_page}&start={$next}";
         if ($i_block >= $block_end)
         {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Next</span></li>';
@@ -103,8 +107,25 @@ class pagination
         return $html;
     }
 
-    public function make($base_url='/', $total=0, $per_page=0, $start=0)
+    private function get_baseurl($a_exclude=[])/*{{{*/
     {
+        global $request;
+        $request->enable_super_globals();
+        $query = $_SERVER['QUERY_STRING'];
+        $self = $_SERVER['PHP_SELF'];
+        $request->disable_super_globals();
+        parse_str($query, $query);
+        $query = array_filter($query, function($key) use($a_exclude) {return !in_array($key, $a_exclude);}, ARRAY_FILTER_USE_KEY);
+        $query = http_build_query($query);
+        return $self . '?' . $query;
+    }/*}}}*/
+
+    public function make($base_url=null, $total=0, $per_page=0, $start=0)
+    {
+        if ($base_url===null)
+        {
+            $base_url = $this->get_baseurl(['per_page', 'start']);
+        }
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
         $n_block = ceil($total / $per_page);
         $i_block = ceil($start / $per_page)+1;

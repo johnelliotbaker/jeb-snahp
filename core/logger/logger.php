@@ -130,4 +130,60 @@ class logger
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
+    public function log_foe_block($logger_id, $name='ADD_USER', $created_time=false, $extra=[])/*{{{*/
+    {
+        $blocked_id = isset($extra['blocked_id']) ? $extra['blocked_id'] : 0;
+        $data = [
+            'user_id' => (int) $logger_id,
+            'target_id' => (int) $blocked_id,
+            'type' => 'LOG_FOE_BLOCKER',
+            'name' => $name,
+            'created_time' => $created_time ? $created_time : time(),
+            'data' => serialize($extra)
+        ];
+        return $this->insert_log($data);
+    }/*}}}*/
+
+    public function get_count($sql_array)/*{{{*/
+    {
+		$count_logs_sql_ary = $sql_array;
+		$count_logs_sql_ary['SELECT'] = 'COUNT(id) AS total_entries';
+		unset($count_logs_sql_ary['ORDER_BY']);
+		$sql = $this->db->sql_build_query('SELECT', $count_logs_sql_ary);
+		$result = $this->db->sql_query($sql);
+		$count = (int) $this->db->sql_fetchfield('total_entries');
+		$this->db->sql_freeresult($result);
+        return $count;
+    }/*}}}*/
+
+    public function select_foe_block($start=0, $per_page=50, $order_by='id DESC')/*{{{*/
+    {
+        $cooldown = 1;
+        $where = 'type="LOG_FOE_BLOCKER"';
+        $sql_array = [
+            'SELECT'	=> 'a.*,
+            b.user_id as blocker_user_id, b.username as blocker_username, b.user_colour as blocker_user_colour,
+            c.user_id as blocked_user_id, c.username as blocked_username, c.user_colour as blocked_user_colour',
+            'FROM'		=> [$this->tbl['log']=> 'a'],
+            'LEFT_JOIN'	=> [
+                [
+                    'FROM'	=> [USERS_TABLE => 'b'],
+                    'ON'	=> 'a.user_id=b.user_id',
+                ],
+                [
+                    'FROM'	=> [USERS_TABLE => 'c'],
+                    'ON'	=> 'a.target_id=c.user_id',
+                ],
+            ],
+            'WHERE'		=> $where,
+            'ORDER_BY' => $order_by,
+        ];
+        $total = $this->get_count($sql_array);
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query_limit($sql, $per_page, $start, $cooldown);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return [$rowset, $total];
+    }/*}}}*/
+
 }

@@ -3,7 +3,7 @@ function make_clickable_username(resp, $parent)
     $searchbox = $('#username_searchbox');
     for(var username of resp)
     {
-        $elem = $('<button type="button" style="margin-left: 10px;" class="badge badge-primary pull-left" id="partial_' + username + '">' + username + '</span>');
+        $elem = $('<button type="button" style="margin-left: 10px;" class="badge btn-primary pull-left" id="partial_' + username + '">' + username + '</span>');
         $elem.click((e)=>{
             var username = $(e.target).text();
             $searchbox.val(username);

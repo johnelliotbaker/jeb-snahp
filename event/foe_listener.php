@@ -100,7 +100,7 @@ class foe_listener implements EventSubscriberInterface
         $blocked_id = $this->user_id;
         if ($this->foe_helper->cannot_reply($blocked_id, $blocker_id))
         {
-            trigger_error('You have been blocked by the topic starter. Error Code: cf82bd2706');
+            trigger_error('You have been blocked by the topic starter from making posts in this topic. Error Code: cf82bd2706');
         }
     }/*}}}*/
 
