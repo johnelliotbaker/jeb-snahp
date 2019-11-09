@@ -44,7 +44,7 @@
               {% if row.post_id %}
               <a href="/viewtopic.php?p={row.post_id}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>
               {% else %}
-              <i class="fa fa-ambulance" aria-hidden="true" title="Triage"></i>
+              <a href="/app.php/snahp/wiki/user_blocking/#triage_mode" target="_blank"><i class="fa fa-ambulance" aria-hidden="true" title="Triage"></i></a>
               {% endif %}
             </td>
             <input type="hidden" value="{row.post_id}" name="post_id_{loop.index0}" id="post_id_{loop.index0}"/>
