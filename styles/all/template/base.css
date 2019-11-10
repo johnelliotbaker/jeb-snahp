@@ -310,3 +310,20 @@ img.emotes_default.discord_44
     margin: 0px;
     line-height: 19px;
 }
+
+{% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
+.headerbar
+{
+    background-image: url('https://i.imgur.com/74NCMtX.jpg');
+    background-color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height:70px;
+}
+#site-description
+{
+    display: none;
+}
+{% elseif STYLE_NAME in ['basic'] %}
+{% endif %}
