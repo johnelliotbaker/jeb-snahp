@@ -311,12 +311,24 @@ img.emotes_default.discord_44
     line-height: 19px;
 }
 
+/* Avatar Special */
+p.avatar_special a
+{
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+p.avatar_special
+{
+    margin-bottom: 2px;
+    font-size: .9em;
+}
+
 /* Thanksgiving Special */
 {% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
 .headerbar
 {
     background-image: url('https://i.imgur.com/74NCMtX.jpg');
-    background-color: white;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
