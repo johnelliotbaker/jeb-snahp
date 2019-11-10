@@ -156,6 +156,15 @@ $("body").keydown(function(event){
 });
 
 $(document).ready(()=>{
+    $('.headerbar').click((e)=>{
+        $target = $(e.target);
+        var cl = $target.attr('class');
+        if (['inner', 'headerbar'].indexOf(cl) != -1)
+        {
+            window.location = '/';
+        };
+    });
+    $('#search-box').unbind();
     // Add clipboarding to avatar usernames
     Avatar.append_copy_controls();
     // Allow codebox to resize
