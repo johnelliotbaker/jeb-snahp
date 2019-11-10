@@ -330,7 +330,7 @@ img.emotes_default.discord_44
 
 
 {% if STYLE_NAME in ['prosilver'] %}
-body
+html, body
 {
     background-image: url('https://www.clipartwiki.com/clipimg/full/183-1830058_beautiful-leaf-color-leaves-autumn-maple-clipart-fall.png');
     background-image: url('https://i.imgur.com/xbm0NBA.png');
@@ -341,7 +341,7 @@ body
 
 
 {% if STYLE_NAME in ['hexagon', 'acieeed'] %}
-body
+html, body
 {
     background-image: url('https://i.imgur.com/WFtaXnR.jpg');
 }
