@@ -61,7 +61,7 @@ class foe_listener implements EventSubscriberInterface
                 ['disable_blocked_user_on_pm_submit', 0]
             ],
             'core.decode_message_before' => [
-                ['clear_quoted_message_on_pm_preview', 0]
+                ['clear_quoted_message_on_blocked', 0],
             ],
         ];
     }/*}}}*/
@@ -95,8 +95,10 @@ class foe_listener implements EventSubscriberInterface
         }
     }/*}}}*/
 
-    public function clear_quoted_message_on_pm_preview($event)/*{{{*/
+    public function clear_quoted_message_on_blocked($event)/*{{{*/
     {
+        // TODO: This is run on every decode. Find a way to do this only on quotepost
+        // This would probably require modifying includes/ucp/ucp_pm_compose.php
         if (!$this->config['snp_foe_b_master']) return false;
         if (isset($this->status['user_blocked']) && $this->status['user_blocked'])
         {
@@ -117,15 +119,18 @@ class foe_listener implements EventSubscriberInterface
         {
             trigger_error('You have been blocked by the topic starter and cannot create new posts in this topic. Error Code: cf82bd2706');
         }
+        $poster_id = $post_data['poster_id'];
+        if (!isset($poster_id)) return false;
+        $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_blocker_id($blocked_id, $poster_id);
     }/*}}}*/
 
     public function hide_from_blocked_user_on_viewtopic($event)/*{{{*/
     {
         if (!$this->config['snp_foe_b_master']) return false;
-        $i_row = $event['current_row_number'];
-        if ($i_row > 0) return false;
-        $def_block = $this->container->getParameter('jeb.snahp.foe_blocker')['status']['block'];
+        $post_row = $event['post_row'];
         $topic_data = $event['topic_data'];
+        if ($topic_data['topic_first_post_id'] != $post_row['POST_ID']) return false;
+        $def_block = $this->container->getParameter('jeb.snahp.foe_blocker')['status']['block'];
         $blocked_id = $this->user_id;
         $blocker_id = $topic_data['topic_poster'];
         if ($row = $this->foe_helper->select_blocked_data($blocked_id, $blocker_id))
@@ -133,7 +138,6 @@ class foe_listener implements EventSubscriberInterface
             if (!$row['allow_viewtopic'])
             {
                 $row['created_time_local'] = $this->user->format_date($row['created_time']);
-                $post_row = $event['post_row'];
                 $post_row['MESSAGE'] = '';
                 $event['post_row'] = $post_row;
                 $this->template->assign_vars([
