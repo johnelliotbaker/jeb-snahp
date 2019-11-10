@@ -1,0 +1,12 @@
+/* Avatar Special */
+p.avatar_special a
+{
+    color: inherit !important;
+    /* text-decoration: none !important; */
+}
+
+p.avatar_special
+{
+    margin-bottom: 2px;
+    font-size: .9em;
+}
