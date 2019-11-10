@@ -225,7 +225,20 @@ class wiki
     {
         $tbl = $this->tbl['wiki'];
         $name = $this->db->sql_escape($name);
-        $sql = 'SELECT * FROM ' . $tbl . " WHERE name='${name}'";
+        // $sql = 'SELECT * FROM ' . $tbl . " WHERE name='${name}'";
+        $where = "name='${name}'";
+        $sql_array = [
+            'SELECT'	=> 'a.*, b.username, b.user_colour',
+            'FROM'		=> [$tbl => 'a'],
+            'LEFT_JOIN'	=> [
+                [
+                    'FROM'	=> [USERS_TABLE => 'b'],
+                    'ON'	=> 'a.editor_id=b.user_id',
+                ],
+            ],
+            'WHERE'		=> $where,
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -339,6 +352,10 @@ class wiki
             'B_KEEPERS' => $this->b_keepers,
             'B_HIDDEN' => $b_hidden,
             'NAVIGATION' => $navigation_html,
+            'EDITOR_ID' => $row['editor_id'],
+            'EDITOR_USERNAME' => $row['username'],
+            'EDITOR_USER_COLOUR' => $row['user_colour'],
+            'EDIT_LOCAL_TIME' => $this->user->format_date($row['edited_time']),
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Wikipedia');
     }/*}}}*/
