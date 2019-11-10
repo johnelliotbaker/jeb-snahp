@@ -158,6 +158,11 @@ parameters:
             url: 'https://i.imgur.com/ClWGLwV.png'
             type: 0
             css: 'twitch_50'
+        e_tw003: &e_tw003
+            url: 'https://i.imgur.com/1Ol0hmq.png'
+            type: 0
+            css: 'twitch_50'
+            title: 'cry'
 
         # discord
         e_ds000: &e_ds000
@@ -180,11 +185,23 @@ parameters:
             type: 0
             css: 'discord_44'
             title: 'lol'
+        e_ds005: &e_ds005
+            url: 'https://discordemoji.com/assets/emoji/6727_JigglyAngry.png'
+            url: 'https://i.imgur.com/yyfBusD.png'
+            type: 0
+            css: 'discord_44'
+            title: 'angry'
         e_ds004: &e_ds004
             url: 'https://i.imgur.com/96mAOWK.gif'
             type: 0
             css: 'discord_44'
             title: 'nom'
+
+        # Seasonals: Thanksgiving
+        e_th001:
+            url: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/223/turkey_1f983.png'
+            type: 0
+            title: 'Turkey Day!'
 
         # common alias
         e_comfy: *e_ds000
@@ -192,4 +209,5 @@ parameters:
         e_smug: *e_ds002
         e_lol: *e_ds003
         e_nom: *e_ds004
-
+        e_cry: *e_tw003
+        e_angry: *e_ds005

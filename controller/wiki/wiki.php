@@ -348,6 +348,7 @@ class wiki
         $html = $this->parsedown->text($text);
         $this->template->assign_vars([
             'HTML' => $html,
+            'NAME' => $name,
             'B_PUBLIC' => $b_public,
             'B_KEEPERS' => $this->b_keepers,
             'B_HIDDEN' => $b_hidden,

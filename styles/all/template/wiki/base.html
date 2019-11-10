@@ -19,6 +19,11 @@
     </nav>
     {% endif %}
     <div id="content">
+      {% if B_KEEPERS %}
+      <div id="keepers_only">
+        {% include '@jeb_snahp/wiki/component/keepers_only/base.html' %}
+      </div>
+      {% endif %}
       <div class="markdown-body">
         <div>
           {% if B_HIDDEN %}

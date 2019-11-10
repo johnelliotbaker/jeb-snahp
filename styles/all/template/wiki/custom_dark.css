@@ -9,3 +9,8 @@
     font-weight: 700;
 }
 
+.markdown-body code
+{
+    color: #b063c5;
+    background-color:#0d0d0d;
+}

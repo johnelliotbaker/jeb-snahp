@@ -311,6 +311,7 @@ img.emotes_default.discord_44
     line-height: 19px;
 }
 
+/* Thanksgiving Special */
 {% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
 .headerbar
 {
@@ -325,20 +326,15 @@ img.emotes_default.discord_44
 {
     display: none;
 }
-{% elseif STYLE_NAME in ['basic'] %}
 {% endif %}
-
 
 {% if STYLE_NAME in ['prosilver'] %}
 html, body
 {
-    background-image: url('https://www.clipartwiki.com/clipimg/full/183-1830058_beautiful-leaf-color-leaves-autumn-maple-clipart-fall.png');
-    background-image: url('https://i.imgur.com/xbm0NBA.png');
     background-image: url('https://i.imgur.com/EMA6YPm.png');
     background-repeat: no-repeat;
 }
 {% endif %}
-
 
 {% if STYLE_NAME in ['hexagon', 'acieeed'] %}
 html, body
