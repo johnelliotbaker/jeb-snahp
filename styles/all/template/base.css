@@ -327,3 +327,10 @@ img.emotes_default.discord_44
 }
 {% elseif STYLE_NAME in ['basic'] %}
 {% endif %}
+
+{% if STYLE_NAME in ['hexagon', 'acieeed'] %}
+body
+{
+    background-image: url('https://i.imgur.com/WFtaXnR.jpg');
+}
+{% endif %}
