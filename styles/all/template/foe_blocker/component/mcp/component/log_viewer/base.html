@@ -7,7 +7,8 @@
     <tr>
       <th scope="col">Blocker</th>
       <th scope="col">Blocked</th>
-      <th scope="col">Date</th>
+      <th scope="col">Begin</th>
+      <th scope="col">End</th>
       <th scope="col">Reason</th>
       <th scope="col">T</th>
       <th scope="col">R</th>
@@ -20,6 +21,7 @@
       <td><a href="/memberlist.php?mode=viewprofile&u={row.blocker_user_id}" target="_blank"><span style="color: #{row.blocker_user_colour};"><b>{row.blocker_username}</b></span></a></td>
       <td><a href="/memberlist.php?mode=viewprofile&u={row.blocked_user_id}" target="_blank"><span style="color: #{row.blocked_user_colour};"><b>{row.blocked_username}</b></span></a></td>
       <td>{row.local_time}</td>
+      <td>{row.expires}</td>
       <td>{row.extra.block_reason}</td>
       <td>
         {% if row.extra.allow_viewtopic %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}

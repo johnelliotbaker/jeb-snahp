@@ -51,6 +51,7 @@ class foe_blocker
             $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/base.html';
             return $this->respond_manage($cfg);
         case 'mcp':
+            $this->sauth->reject_non_dev('Error Code: 0d12964560');
             $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/component/mcp/base.html';
             return $this->respond_mcp($cfg);
         case 'block':
@@ -244,7 +245,7 @@ class foe_blocker
     private function respond_mcp($cfg)/*{{{*/
     {
         $start = $this->request->variable('start', 0);
-        $per_page = $this->request->variable('per_page', 3);
+        $per_page = $this->request->variable('per_page', 25);
         $order_by = $this->request->variable('o', 'id');
         $order_dir = $this->request->variable('od', 'DESC');
         $order_by_strn = $this->generate_order_by_strn($order_by, $order_dir);
@@ -252,9 +253,12 @@ class foe_blocker
         [$rowset, $total] = $log->select_foe_block($start, $per_page, $order_by_strn);
         foreach($rowset as &$row)
         {
-            $row['local_time'] = $this->user->format_date($row['created_time'], '\'y.m.d');
             $extra = unserialize($row['data']);
             $row['extra'] = $extra;
+            $created_time = isset($extra['created_time']) ? $extra['created_time'] : 0;
+            $duration = isset($extra['duration']) ? $extra['duration'] : 0;
+            $row['local_time'] = $this->user->format_date($created_time, '\'y.m.d');
+            $row['expires'] = $this->user->format_date($created_time + $duration, '\'y.m.d');
         }
         $pagination = new \jeb\snahp\core\pagination;
         $this->template->assign_vars([

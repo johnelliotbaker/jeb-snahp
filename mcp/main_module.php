@@ -9,13 +9,11 @@ class main_module extends base
 	public $tpl_name;
 	public $u_action;
 
-	public function main($id, $mode)
+	public function main($id, $mode)/*{{{*/
 	{
 		global $config, $request, $template, $user, $phpbb_container;
-
 		$user->add_lang_ext('jeb/snahp', 'common');
 		$this->page_title = $user->lang('MCP_SNP_TITLE');
-
         $cfg = array();
         $this->def = $phpbb_container->getParameter('jeb.snahp.req')['def'];
         $this->tbl = $phpbb_container->getParameter('jeb.snahp.tables');
@@ -56,9 +54,9 @@ class main_module extends base
         if (!empty($cfg)){
             $this->handle_default($cfg);
         }
-	}
+	}/*}}}*/
 
-    public function handle_scripts($cfg)
+    public function handle_scripts($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
         $tpl_name = $cfg['tpl_name'];
@@ -155,10 +153,16 @@ class main_module extends base
                 'DESCRIPTION' => 'Mass Topic Mover with Keyword Search',
                 'LINK' => '<a href="/app.php/snahp/mcp/handle_mass_move_v2/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 13,
+                'PURPOSE' => 'User Block',
+                'NAME' => 'User Block MCP',
+                'DESCRIPTION' => 'Manage User Blocks',
+                'LINK' => '<a href="/app.php/snahp/block/mcp/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry)
             {
                 $template->assign_block_vars('postrow', $entry);
-
             }
             $this->tpl_name = $tpl_name;
             $template->assign_vars(array(
@@ -166,9 +170,9 @@ class main_module extends base
                 'U_ACTION'    => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_invite($cfg)
+    public function handle_invite($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
         $helper = new \jeb\snahp\core\invite_helper( $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
@@ -204,9 +208,9 @@ class main_module extends base
                 'U_ACTION'    => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function select_topics()
+    public function select_topics()/*{{{*/
     {
         global $db;
         $sql = 'SELECT * from ' . TOPICS_TABLE;
@@ -216,9 +220,9 @@ class main_module extends base
             $data[] = $row;
         $db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function select_groups()
+    public function select_groups()/*{{{*/
     {
         global $db;
         $sql = 'SELECT * from ' . GROUPS_TABLE;
@@ -228,17 +232,18 @@ class main_module extends base
             $data[] = $row;
         $db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function select_request_users($uid)
+    public function select_request_users($uid)/*{{{*/
     {
         $sql = 'SELECT * FROM ' . $this->req_users_tbl ." WHERE user_id=$uid";
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }
-    public function handle_default($cfg)
+    }/*}}}*/
+
+    public function handle_default($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db;
         // prn(array_keys($GLOBALS)); // Lists all available globals
@@ -259,9 +264,9 @@ class main_module extends base
                 'U_ACTION'				=> $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function select_topic_bump_for_pagi($per_page, $start, $options)
+    public function select_topic_bump_for_pagi($per_page, $start, $options)/*{{{*/
     {
         global $db, $table_prefix;
         $p = $table_prefix;
@@ -291,9 +296,9 @@ class main_module extends base
         $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         return [$data, $total];
-    }
+    }/*}}}*/
 
-    public function select_requests_for_pagi($per_page, $start)
+    public function select_requests_for_pagi($per_page, $start)/*{{{*/
     {
         global $db, $table_prefix;
         $p = $table_prefix;
@@ -311,9 +316,9 @@ class main_module extends base
         $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function select_undibs_for_pagi($per_page, $start)
+    public function select_undibs_for_pagi($per_page, $start)/*{{{*/
     {
         global $db, $table_prefix;
         $p = $table_prefix;
@@ -331,9 +336,9 @@ class main_module extends base
         $data = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         return $data;
-    }
+    }/*}}}*/
 
-    public function select_total($tbl, $condition)
+    public function select_total($tbl, $condition)/*{{{*/
     {
         global $db;
         $sql_arr = [
@@ -346,9 +351,9 @@ class main_module extends base
         $row    = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row['total'];
-    }
+    }/*}}}*/
 
-    public function select_user_modal($mode, $data)
+    public function select_user_modal($mode, $data)/*{{{*/
     {
         global $db;
         switch ($mode)
@@ -372,9 +377,9 @@ class main_module extends base
         $row    = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }
+    }/*}}}*/
 
-    public function enable_dibber($mode, $data, $b_enable=true)
+    public function enable_dibber($mode, $data, $b_enable=true)/*{{{*/
     {
         global $db;
         switch ($mode)
@@ -401,9 +406,9 @@ class main_module extends base
             return true;
         }
         return false;
-    }
+    }/*}}}*/
 
-    public function handle_list_dibs($cfg)
+    public function handle_list_dibs($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -451,9 +456,9 @@ class main_module extends base
                 'U_ACTION' => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_dibs_ban($cfg)
+    public function handle_dibs_ban($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -504,9 +509,9 @@ class main_module extends base
                 'U_ACTION'    => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_list_topic_bump($cfg)
+    public function handle_list_topic_bump($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -581,9 +586,9 @@ class main_module extends base
                 'BASE_URL' => $base_url,
             ));
         }
-    }
+    }/*}}}*/
 
-    public function handle_list_request($cfg)
+    public function handle_list_request($cfg)/*{{{*/
     {
 		global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -627,6 +632,6 @@ class main_module extends base
                 'U_ACTION'    => $this->u_action,
             ));
         }
-    }
+    }/*}}}*/
 
 }

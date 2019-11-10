@@ -114,31 +114,46 @@ class user_auth
     public function reject_non_dev_or_self($user_id, $append='')/*{{{*/
     {
         if (!($this->is_dev() || $this->is_self($user_id)))
-            trigger_error('You don\'t have the permission to access this page. Error Code: 7f105fe648 ' . $append);
+        {
+            $ec = $append ? $append : 'Error Code: 63c3a68b37';
+            trigger_error("You don't have the permission to access this page. ${ec}");
+        }
     }/*}}}*/
 
     public function reject_non_dev_or_op($append='')/*{{{*/
     {
         if (!($this->is_dev() || $this->is_self()))
-            trigger_error('You don\'t have the permission to access this page. Error Code: 7f105fe648 ' . $append);
+        {
+            $ec = $append ? $append : 'Error Code: 2672a575d9';
+            trigger_error("You don't have the permission to access this page. ${ec}");
+        }
     }/*}}}*/
 
     public function reject_non_dev($append='')/*{{{*/
     {
         if (!$this->is_dev())
-            trigger_error('You don\'t have the permission to access this page. Error Code: d198252910 ' . $append);
+        {
+            $ec = $append ? $append : 'Error Code: 0302f34660';
+            trigger_error("You don't have the permission to access this page. ${ec}");
+        }
     }/*}}}*/
 
     public function reject_non_admin($append='')/*{{{*/
     {
         if (!$this->is_admin())
-            trigger_error('Only administrator may access this page. ' . $append);
+        {
+            $ec = $append ? $append : 'Error Code: b1d917f9e3';
+            trigger_error("Only administrator may access this page. ${ec}");
+        }
     }/*}}}*/
 
     public function reject_non_moderator($append='')/*{{{*/
     {
         if (!$this->is_mod())
-            trigger_error('Only moderators may access this page. ' . $append);
+        {
+            $ec = $append ? $append : 'Error Code: 0302f34660';
+            trigger_error("Only moderators may access this page. ${ec}");
+        }
     }/*}}}*/
 
     public function reject_non_group($group_id, $perm_name)/*{{{*/

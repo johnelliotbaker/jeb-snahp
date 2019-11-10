@@ -25,6 +25,7 @@ class foe_listener implements EventSubscriberInterface
     protected $tbl;
     protected $sauth;
     protected $foe_helper;
+    protected $status;
     public function __construct(
         $db, $config, $user, $template, $container,
         $tbl,
@@ -41,6 +42,7 @@ class foe_listener implements EventSubscriberInterface
         $this->foe_helper = $foe_helper;
         $this->user_id = $this->user->data['user_id'];
         $this->time = 0;
+        $this->status = [];
     }/*}}}*/
 
     static public function getSubscribedEvents()/*{{{*/
@@ -52,13 +54,29 @@ class foe_listener implements EventSubscriberInterface
             'core.modify_posting_auth' => [
                 ['hide_from_blocked_user_on_reply', 0],
             ],
-            'core.ucp_pm_compose_modify_data' => [
-                ['hide_from_blocked_user_on_pm', 0]
+            'core.ucp_pm_compose_modify_data' => [ // #1 call when making any pm
+                ['setup_pm', 0],
             ],
             'core.submit_pm_before' => [
                 ['disable_blocked_user_on_pm_submit', 0]
             ],
+            'core.decode_message_before' => [
+                ['clear_quoted_message_on_pm_preview', 0]
+            ],
         ];
+    }/*}}}*/
+
+    public function setup_pm($event)/*{{{*/
+    {
+        if (!$this->config['snp_foe_b_master']) return false;
+        $post_id = (int) $event['msg_id'];
+        $blocked_id = $this->user_id;
+        $this->status['pm']['blocked'] = $this->foe_helper->cannot_pm_with_post_id($blocked_id, $post_id);
+        if ($this->status['pm']['blocked'])
+        {
+            trigger_error('The recipient has chosen not to receive private messages from you. Error Code: 77d2a85f1e');
+        }
+        $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_post_id($blocked_id, $post_id);
     }/*}}}*/
 
     public function disable_blocked_user_on_pm_submit($event)/*{{{*/
@@ -70,23 +88,20 @@ class foe_listener implements EventSubscriberInterface
         $blocked_id = $this->user_id;
         foreach($a_to_user_id as $blocker_id=>$v)
         {
-            if ($this->foe_helper->is_blocked_with_blocker_id($blocked_id, $blocker_id))
+            if ($this->foe_helper->cannot_pm_with_blocker_id($blocked_id, $blocker_id))
             {
                 trigger_error('The recipient has chosen not to receive private messages from you. Error Code: 3a3abda323');
             }
         }
     }/*}}}*/
 
-    public function hide_from_blocked_user_on_pm($event)/*{{{*/
+    public function clear_quoted_message_on_pm_preview($event)/*{{{*/
     {
         if (!$this->config['snp_foe_b_master']) return false;
-        $action = $event['action'];
-        if ($action!='quotepost') return false;
-        $post_id = (int) $event['msg_id'];
-        $blocked_id = $this->user_id;
-        if ($this->foe_helper->is_blocked_with_post_id($blocked_id, $post_id))
+        if (isset($this->status['user_blocked']) && $this->status['user_blocked'])
         {
-            trigger_error('The recipient has chosen not to receive private messages from you. Error Code: 77d2a85f1e');
+            $message_text = '';
+            $event['message_text'] = $message_text;
         }
     }/*}}}*/
 

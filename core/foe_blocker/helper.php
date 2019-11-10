@@ -92,7 +92,23 @@ class helper
         return !empty($row);
     }/*}}}*/
 
-    public function cannot_pm($blocked_id, $post_id)/*{{{*/
+    public function cannot_pm_with_blocker_id($blocked_id, $blocker_id)/*{{{*/
+    {
+        $blocker_id = (int) $blocker_id;
+        $blocked_id = (int) $blocked_id;
+        $sql_array = [
+            'SELECT'       => '1',
+            'FROM'         => [ $this->tbl['foe'] => 'a', ],
+            'WHERE'        => "a.blocked_id=${blocked_id} AND a.blocker_id=${blocker_id} AND a.allow_pm=0",
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !empty($row);
+    }/*}}}*/
+
+    public function cannot_pm_with_post_id($blocked_id, $post_id)/*{{{*/
     {
         $post_id = (int) $post_id;
         $sql_array = [
