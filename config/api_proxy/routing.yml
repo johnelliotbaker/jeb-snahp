@@ -1,0 +1,5 @@
+jeb_snahp_routing.api_proxy:
+    path: /snahp/api_proxy/{mode}/
+    defaults: { _controller: jeb.snahp.api_proxy:handle}
+    requirements:
+        mode: \S+

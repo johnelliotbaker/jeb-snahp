@@ -1,3 +1,5 @@
+routing_api_proxy:
+    resource: 'api_proxy/routing.yml'
 routing_foe_blocker:
     resource: 'foe_blocker/routing.yml'
 routing_switchboard:

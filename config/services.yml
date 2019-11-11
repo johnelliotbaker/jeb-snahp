@@ -11,6 +11,7 @@ imports:
     - { resource: switchboard.yml }
     - { resource: form.yml }
     - { resource: foe_blocker/service.yml }
+    - { resource: api_proxy/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

@@ -1,0 +1,24 @@
+# imports:
+#     - { resource: 'foe_blocker/parameters.yml' }
+services:
+    jeb.snahp.api_proxy:
+        class: jeb\snahp\controller\api_proxy\api_proxy
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+    # jeb.snahp.foe_blocker_helper:
+    #     class: jeb\snahp\core\foe_blocker\helper
+    #     arguments:
+    #         - '@dbal.conn'
+    #         - '@user'
+    #         - '@auth'
+    #         - '@service_container'
+    #         - '%jeb.snahp.tables%'
+    #         - '@jeb.snahp.auth.user_auth'
