@@ -161,7 +161,7 @@ parameters:
         e_tw003: &e_tw003
             url: 'https://i.imgur.com/1Ol0hmq.png'
             type: 0
-            css: 'twitch_50'
+            css: 'discord_44'
             title: 'cry'
 
         # discord
