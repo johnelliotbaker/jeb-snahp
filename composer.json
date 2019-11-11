@@ -4,7 +4,7 @@
     "description": "Snahp Extension",
     "homepage": "",
     "version": "0.34.0",
-    "time": "2019-11-09",
+    "time": "2019-11-10",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "4dc9695749b59e45721723fad6f289689a0ce3e6",
+        "version": "86f89aa535f10cc1a3ca7938ebc3eda232f7ae61",
         "features": "Foe Blocker MKII",
         "display-name": "Snahp",
         "soft-require": {
