@@ -10,15 +10,18 @@ div.avatar_special
     font-size: .9em;
 }
 
-div.avatar_special img.avatar_badge
+.maxh_24
 {
     max-height: 24px;
-    margin-left: 2px;
 }
 
-div.avatar_special img.avatar_badge_anime
+.maxh_36
 {
     max-height: 36px;
+}
+
+div.avatar_special img.avatar_badge
+{
     margin-left: 2px;
 }
 
