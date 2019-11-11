@@ -1,17 +1,28 @@
 /* Avatar Special */
-p.avatar_special a
+div.avatar_special a
 {
     color: inherit !important;
 }
 
-p.avatar_special
+div.avatar_special
 {
     margin-bottom: 2px;
     font-size: .9em;
 }
 
-p.avatar_special img.avatar_badge
+div.avatar_special img.avatar_badge
 {
     max-height: 20px;
     margin-left: 2px;
+}
+
+div.avatar_special img.avatar_badge_anime
+{
+    max-height: 36px;
+    margin-left: 2px;
+}
+
+div.avatar_special p
+{
+    margin: 0;
 }

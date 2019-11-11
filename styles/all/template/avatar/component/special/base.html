@@ -1,40 +1,85 @@
 <!-- INCLUDECSS @jeb_snahp/avatar/component/special/base.css -->
-<p class="avatar_special">
+<div class="avatar_special">
   {% set AUTHOR = postrow.POST_AUTHOR|lower %}
   {% set AUTHOR_COLOUR = postrow.POST_AUTHOR_COLOUR %}
   {% set POSTER_ID = postrow.POSTER_ID %}
   {% set U_AUDIO_EXPERT_IMG = "https://i.imgur.com/N0fWbFu.png" %}
+  {% set U_ANIME_IMG = "https://i.imgur.com/gTTbWym.png" %}
   {% if STYLE_NAME in ['acieeed', 'hexagon'] %}
-    {% set U_AUDIO_EXPERT_IMG = "https://i.imgur.com/LNm8EAc.png" %}
+  {% set U_AUDIO_EXPERT_IMG = "https://i.imgur.com/LNm8EAc.png" %}
   {% endif %}
+
+  {% set AUTHOR = 'bluespOts'|lower %}
+
   {% if AUTHOR == 'sampad22' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b>.QxR. <a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">SAMPA</a></b></span>
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b>.QxR. <a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">SAMPA</a></b></p>
   {% elseif AUTHOR == 'eserafinojr' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">EPS</a></b>
-    <span class="audio_expert">
-      <img title="Audio Expert" class="avatar_badge" src="{U_AUDIO_EXPERT_IMG}"> 
-    </span>
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">EPS</a></p>
   {% elseif AUTHOR == '3xo' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">3xO</a></b></span>
-  {% elseif AUTHOR =='bluespots' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Bluespots</b></a></span>
-  {% elseif AUTHOR =='skumdog' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">.$.Millionaire.$.</b></a></span>
-  {% elseif AUTHOR =='smurf' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Smurf</b></a></span>
-  {% elseif AUTHOR =='fantompoke' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Poke</b></a></span>
-  {% elseif AUTHOR =='koyumu' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Koyumu</b></a></span>
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">3xO</a></b></p>
+  {% elseif AUTHOR =='mked' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">MKED</a></p>
   {% elseif AUTHOR =='magiin' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">MaG</b></a></span>
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">MaG</a></p>
+  {% elseif AUTHOR =='bluespots' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Bluespots</b></a></p>
+  {% elseif AUTHOR =='skumdog' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">.$.Millionaire.$.</b></a></p>
+  {% elseif AUTHOR =='smurf' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Smurf</b></a></p>
+  {% elseif AUTHOR =='fantompoke' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Poke</b></a></p>
+  {% elseif AUTHOR =='koyumu' %}
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Koyumu</b></a></p>
   {% elseif AUTHOR =='qebehsenue' %}
-    <span style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">qebe</b></a></span>
-  {% elseif AUTHOR =='pandacircus' %}
-    <span class="audio_expert">
-      <img title="Audio Expert" class="avatar_badge" src="{U_AUDIO_EXPERT_IMG}"> 
-    </span>
-  <!-- {% elseif AUTHOR =='itchyfinger' %} -->
-    <!-- <span style="color:{AUTHOR_COLOUR};"><b><a href="/search.php?st=0&sk=t&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">ItchyFinger</b></a></span> -->
+  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">qebe</b></a></p>
   {% endif %}
-</p>
+
+
+  {% if AUTHOR =='pandacircus' %}
+  <span class="audio_expert">
+    <img title="Audio Expert" class="avatar_badge" src="{U_AUDIO_EXPERT_IMG}"> 
+  </span>
+  {% elseif AUTHOR =='oldvcrguy' %}
+  <span style="color:{AUTHOR_COLOUR};" title="Drunken Master">
+    <a href="/viewtopic.php?f=73&t=26470" target="_blank">
+      <img title="Drunken Master" class="avatar_badge" src="https://i.imgur.com/FxX4vma.png"> 
+    </a>
+  </span>
+  {% elseif AUTHOR =='bonesandbillyclubs' %}
+  <span style="color:{AUTHOR_COLOUR};" title="President of the International Bureau for Preservation and Dissemination of Animated Art">
+    <a href="/viewtopic.php?f=13&t=34584" target="_blank">
+      <img class="avatar_badge_anime" src="{U_ANIME_IMG}"> 
+    </a>
+  </span>
+  {% elseif AUTHOR =='slipstream' %}
+  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
+    <a href="/viewtopic.php?f=13&t=112503" target="_blank">
+      <img class="avatar_badge_anime" src="{U_ANIME_IMG}"> 
+    </a>
+  </span>
+  {% elseif AUTHOR =='koyumu' %}
+  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
+    <a href="/viewtopic.php?f=56&t=5174" target="_blank">
+      <img class="avatar_badge_anime" src="{U_ANIME_IMG}"> 
+    </a>
+  </span>
+  {% elseif AUTHOR =='bluespots' %}
+  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
+    <a href="/viewtopic.php?f=84&t=114147" target="_blank">
+      <img class="avatar_badge_anime" src="{U_ANIME_IMG}"> 
+    </a>
+  </span>
+  {% elseif AUTHOR =='ski77' %}
+  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
+    <a href="/viewtopic.php?f=84&t=30484" target="_blank">
+      <img class="avatar_badge_anime" src="{U_ANIME_IMG}"> 
+    </a>
+  </span>
+  {% elseif AUTHOR == 'eserafinojr' %}
+  <span class="audio_expert">
+    <img title="Audio Expert" class="avatar_badge" src="{U_AUDIO_EXPERT_IMG}"> 
+  </span>
+  {% endif %}
+
+</div>
