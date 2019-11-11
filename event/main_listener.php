@@ -75,25 +75,28 @@ class main_listener extends base implements EventSubscriberInterface
                 ['setup_custom_css', 0],
                 // ['setup_core_vars', 0],
             ],
-            'core.user_setup_after'                            => [
+            'core.user_setup_after'                       => [
                 ['setup_core_vars', 0],
             ],
-            'core.memberlist_prepare_profile_data'                => [
+            'core.page_header'                            => [
+                ['setup_core_vars', 0],
+            ],
+            'core.memberlist_prepare_profile_data'        => [
                 ['setup_profile_variables', 10],
                 ['show_achievements_in_profile', 0],
                 ['show_reputation_in_profile', 0],
             ],
-            'core.text_formatter_s9e_parse_before' => [
+            'core.text_formatter_s9e_parse_before'        => [
                 ['process_base64_bbcode', 10],
             ],
             'core.display_forums_after'                   => 'show_thanks_top_list',
             'core.ucp_profile_modify_signature'           => 'modify_signature',
             'core.modify_posting_parameters'              => 'include_assets_before_posting',
-            'core.modify_format_display_text_after'      => [
+            'core.modify_format_display_text_after'       => [
                 ['process_curly_tags_for_preview', 0],
                 ['process_emotes_for_preview', 2],
             ],
-            'core.search_modify_tpl_ary'              => [
+            'core.search_modify_tpl_ary'                  => [
                 ['process_curly_tags_for_search', 1],
             ],
             'core.viewtopic_modify_post_row'              => [
@@ -130,41 +133,41 @@ class main_listener extends base implements EventSubscriberInterface
                 ['mark_topic_read',0],
                 ['show_search_index_btn',0],
             ],
-            'core.modify_posting_auth' => [
+            'core.modify_posting_auth'                    => [
                 ['block_zebra_foe_quote', 0],
             ],
-            'core.viewforum_modify_topics_data' => [
+            'core.viewforum_modify_topics_data'           => [
                 ['replace_with_host_icons_in_listings', 0]
             ],
-            'core.ucp_pm_compose_modify_parse_before' => [
+            'core.ucp_pm_compose_modify_parse_before'     => [
                 ['remove_hide_in_pm_on_submit', 0]
             ],
-            'core.memberlist_view_profile' => [
+            'core.memberlist_view_profile'                => [
                 ['show_inviter_in_profile', 0],
                 ['show_thanks_given_in_profile', 0]
             ],
-            'core.search_modify_param_before' => [
+            'core.search_modify_param_before'             => [
                 ['search_modify_param_before', 0]
             ],
-            'core.display_forums_before' => [
+            'core.display_forums_before'                  => [
                 ['encode_tags_on_display_forums', 0]
             ],
-            'core.display_forums_modify_template_vars' => [
+            'core.display_forums_modify_template_vars'    => [
                 ['decode_tags_on_display_forums', 0],
             ],
-            'core.viewtopic_modify_post_data' => [
+            'core.viewtopic_modify_post_data'             => [
                 ['embed_digg_controls_in_topic', 0],
             ],
             'core.notification_manager_add_notifications' => [
                 ['disable_email_notification', 0],
             ],
-            'core.search_modify_interval' => [
+            'core.search_modify_interval'                 => [
                 ['modify_search_interval', 0],
             ],    
-            'core.ucp_pm_compose_modify_data' => [
+            'core.ucp_pm_compose_modify_data'             => [
                 ['set_pm_mode', 0],
             ],
-            'core.decode_message_before' => [
+            'core.decode_message_before'                  => [
                 ['censor_hide_in_pm', 0],
             ],
         ];
@@ -1170,16 +1173,20 @@ class main_listener extends base implements EventSubscriberInterface
         {
         case 'Acieeed!':
             $this->template->assign_var('STYLE_NAME', 'acieeed');
+            $this->template->assign_var('STYLE_TYPE', 'dark');
             break;
         case 'Basic':
             $this->template->assign_var('STYLE_NAME', 'basic');
+            $this->template->assign_var('STYLE_TYPE', 'light');
             break;
         case 'Hexagon':
             $this->template->assign_var('STYLE_NAME', 'hexagon');
+            $this->template->assign_var('STYLE_TYPE', 'dark');
             break;
         case 'prosilver':
         default:
         $this->template->assign_var('STYLE_NAME', 'prosilver');
+        $this->template->assign_var('STYLE_TYPE', 'light');
         break;
         }
     }/*}}}*/
