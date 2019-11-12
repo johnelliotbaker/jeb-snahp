@@ -320,10 +320,12 @@ img.emotes_default.discord_44
     background-repeat: no-repeat;
     background-position: center center;
     min-height:70px;
+    cursor: pointer;
 }
 #site-description
 {
     display: none;
+    cursor: pointer;
 }
 {% endif %}
 
