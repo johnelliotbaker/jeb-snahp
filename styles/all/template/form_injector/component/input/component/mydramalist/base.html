@@ -1,9 +1,11 @@
 {% if B_SHOW_MYDRAMALIST %}
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/mydramalist/base.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/input/component/mydramalist/base.css -->
 <dt>
   <label for="mydramalist_input">MyDramaList:</label>
 </dt>
 <dd>
   <input value="" placeholder="" type="text" name="mydramalist_input" id="mydramalist_input" class="inputbox autowidth">
-  <button type="button" data-ajax="snahp.mydramalistCallback">Search</button>
+  <!-- <button type="button" onClick="Mydramalist.startHandlingMydramalistAjax();">Search</button> -->
 </dd>
 {% endif %}

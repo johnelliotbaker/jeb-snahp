@@ -240,7 +240,6 @@ Gamespot.startHandlingGamespotAjax = function()
     });
 }
 
-phpbb.addAjaxCallback('snahp.gamespotCallback', Gamespot.startHandlingGamespotAjax);
 $(document).ready(function() {
     $("#gamespot_input").keydown(function(event){
         if(event.keyCode == 13) {

@@ -297,7 +297,6 @@ Anilist.startHandlingAnilistAjax = function()
     });
 }
 
-phpbb.addAjaxCallback('snahp.anilistCallback', Anilist.startHandlingAnilistAjax);
 $(document).ready(function() {
     $("#anilist_input").keydown(function(event){
         if(event.keyCode == 13) {
@@ -306,3 +305,4 @@ $(document).ready(function() {
         }
     });
 });
+

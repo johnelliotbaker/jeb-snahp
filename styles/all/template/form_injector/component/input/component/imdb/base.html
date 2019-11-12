@@ -1,9 +1,11 @@
 {% if B_SHOW_IMDB %}
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/imdb/base.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/input/component/imdb/base.css -->
 <dt>
   <label for="imdb_term">IMDb:</label>
 </dt>
 <dd>
   <input value="" placeholder="" type="text" name="imdb_input" id="imdb_input" class="inputbox autowidth">
-  <button type="button" data-ajax="snahp.imdbCallback">Search</button>
+  <!-- <button type="button" onClick="Imdb.startHandlingImdbAjax();">Search</button> -->
 </dd>
 {% endif %}

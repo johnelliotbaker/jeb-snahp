@@ -87,7 +87,6 @@ Imdb.maketemplate = function(imdb)
     return text;
 }
 
-
 Imdb.getKey = function()
 {
     var max = aKey.length;
@@ -158,7 +157,6 @@ var imdb_dialog_template = `
     <button type="button" id="close_btn">Close</button>
     </h2>
     </div>
-
     <div class="modal-body">
     <div id="imdb_content" class="modal-content">
     </div>
@@ -190,7 +188,6 @@ Imdb.handle_imdb = function(response)
         .click(function(){
             $('#imdb_dialog').remove();
         })
-
     var responseType = Imdb.getResponseType(response);
     var aEntry = response['Search'] || [response];
     var count = 0;
@@ -244,7 +241,6 @@ Imdb.handle_imdb = function(response)
     $('#imdb_dialog').toggleClass('is-visible');
 }
 
-phpbb.addAjaxCallback('snahp.imdbCallback', Imdb.startHandlingImdbAjax);
 $(document).ready(function() {
     $("#imdb_input").keydown(function(event){
         if(event.keyCode == 13) {

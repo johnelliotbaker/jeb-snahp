@@ -1,9 +1,11 @@
 {% if B_SHOW_ANILIST %}
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/anilist/base.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/input/component/anilist/base.css -->
 <dt>
   <label for="anilist_term">Anime:</label>
 </dt>
 <dd>
   <input  value="" placeholder="" type="text" name="anilist_input" id="anilist_input" class="inputbox autowidth">
-  <button type="button" data-ajax="snahp.anilistCallback">Search</button>
+  <!-- <button type="button" onClick="Anilist.startHandlingAnilistAjax();">Search</button> -->
 </dd>
 {% endif %}

@@ -1,9 +1,11 @@
 {% if B_SHOW_GAMES %}
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/gamespot/base.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/input/component/gamespot/base.css -->
 <dt>
   <label for="gamespot_term">Games:</label>
 </dt>
 <dd>
   <input value="" type="text" placeholder="" name="gamespot_input" id="gamespot_input" class="inputbox autowidth">
-  <button type="button" data-ajax="snahp.gamespotCallback">Search</button>
+  <!-- <button type="button" onClick="Gamespot.startHandlingGamespotAjax();">Search</button> -->
 </dd>
 {% endif %}

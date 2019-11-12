@@ -1,9 +1,10 @@
 {% if B_SHOW_BOOKS %}
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/goodreads/base.js -->
 <dt>
   <label for="goodreads_term">Goodreads:</label>
 </dt>
 <dd>
   <input value="" type="text" placeholder="" name="goodreads_input" id="goodreads_input" class="inputbox autowidth">
-  <button type="button" data-ajax="snahp.goodreadsCallback">Search</button>
+  <!-- <button type="button" onClick="Goodreads.startHandlingGoodreadsAjax();">Search</button> -->
 </dd>
 {% endif %}

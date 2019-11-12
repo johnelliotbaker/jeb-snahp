@@ -1,31 +1,22 @@
-var Googlebooks = {};
+var Goodreads = {};
 
-Googlebooks.makeTemplate = function(data)
+Goodreads.makeTemplate = function(data)
 {
-    data = data.volumeInfo;
-    try { var thumbnail     = data.imageLinks.thumbnail.replace(/zoom=[0-9]+/ig, "zoom=3");} catch(e) { var thumbnail = "";};
-    try { var title         = data['title'];} catch(e) { var title = "";};
-    try { var subtitle      = data['subtitle'];} catch(e) { var subtitle = "";};
+    try { var thumbnail     = data.image_url.replace(/SX[0-9]+/ig,"SX2000");} catch(e) { var thumbnail = "";};
+    try { var title         = data.title;} catch(e) { var title = "";};
     try { var authors       = data['authors'];} catch(e) { var authors = "";};
-    try { var averageRating = data['averageRating'];} catch(e) { var averageRating = "";};
-    try { var url           = data['canonicalVolumeLink'];} catch(e) { var url = "";};
+    try { var averageRating = data.average_rating;} catch(e) { var averageRating = "";};
+    try { var url           = data.link;} catch(e) { var url = "";};
     try { var categories    = data['categories'];} catch(e) { var categories = "";};
-    try { var description   = data['description'];} catch(e) { var description = "";};
-    try { var language      = toTitleCase(data['language']);} catch(e) { var language = "";};
-    try { var pageCount     = data['pageCount'];} catch(e) { var pageCount = "";};
-    try {
-        var previewLink   = data['previewLink'];
-        match = /(.*)(&dq.*)/.exec(previewLink)
-        if (match && Array.isArray(match) && match.length > 2)
-            previewLink = match[1];
-    } catch(e) { var previewLink = "";};
+    try { var description   = data.description.replace(/(<([^>]+)>)/ig," ");} catch(e) { var description = "";};
+    try { var language      = toTitleCase(data.language_code);} catch(e) { var language = "";};
+    try { var pageCount     = data.num_pages;} catch(e) { var pageCount = "";};
     try { var printType     = toTitleCase(data['printType']);} catch(e) { var printType = "";};
-    try { var publishedDate = data['publishedDate'];} catch(e) { var publishedDate = "";};
-    try { var publisher     = data['publisher'];} catch(e) { var publisher = "";};
-    try { var ratingsCount  = data['ratingsCount'];} catch(e) { var ratingsCount = "";};
+    try { var publishedDate = data.publication_year;} catch(e) { var publishedDate = "";};
+    try { var publisher     = data.publisher;} catch(e) { var publisher = "";};
+    try { var ratingsCount  = data.ratings_count;} catch(e) { var ratingsCount = "";};
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
     var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
-    var subtitle      = getEntryOrEmpty(`[center][size=120][b]{text}[/b][/size][/center]\n`, subtitle);
     var authors       = getEntryOrEmpty(`[center][b][size=80]by[/size]\n\n[size=180]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(authors, ', '));
     var averageRating = getEntryOrEmpty(`[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`, averageRating);
     var categories    = getEntryOrEmpty(`[center][b][size=140]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(categories, ', '));
@@ -35,7 +26,6 @@ Googlebooks.makeTemplate = function(data)
     var language      = getEntryOrEmpty(`[color=#FF8000][b]Language[/b][/color]: {text}\n`, language);
     var publisher     = getEntryOrEmpty(`[color=#FF8000][b]Publisher[/b][/color]: {text}\n`, publisher);
     var pageCount     = getEntryOrEmpty(`[color=#FF8000][b]Page Count[/b][/color]: {text}\n`, pageCount);
-    var previewLink   = getEntryOrEmpty(`[color=#FF8000][b]Preview[/b][/color]: [url={url}]{text}[/url]\n`, "Google Books", previewLink);
     var ratingsCount  = getEntryOrEmpty(`[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`, ratingsCount);
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
     var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
@@ -43,43 +33,44 @@ Googlebooks.makeTemplate = function(data)
 [/b][/hide]\n`
     var text = '' + 
         thumbnail + '\n\n\n' +
-        title + subtitle +'\n\n\n' +
+        title + '\n\n\n' +
         authors +  '\n\n\n' +
         averageRating + '\n\n\n' +
-        categories + '\n\n' +
         description + '\n\n' +
-        publishedDate + printType + language +
-        publisher + pageCount + previewLink + '\n' +
+        publishedDate + language +
         ddl + dlink;
     text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
     text = text.replace(/(\r?\n|\r){5,99}/g, '\n\n\n\n');
     return text;
 }
 
-Googlebooks.fillMessage = function(entry)
+Goodreads.fillMessage = function(entry)
 {
-    var summary = Googlebooks.makeTemplate(entry);
-    var text = summary;
-    $('#message').val(text);
+    var book_id = entry.best_book.id;
+    var url = 'http://192.168.2.12:888/app.php/snahp/api_proxy/goodreads/?cmd=book&bid=' + book_id;
+    $.get(url).done((resp)=>{
+        var summary = Goodreads.makeTemplate(resp);
+        var text = summary;
+        $('#message').val(text);
+    });
 }
 
-Googlebooks.updatePosters = function(media)
+Goodreads.updatePosters = function(media)
 {
-    $googlebooks_dialog = $("#googlebooks_dialog");
-    $googlebooks_header = $("#googlebooks_header");
-    $googlebooks_title  = $("#googlebooks_title");
-    $googlebooks_content = $("#googlebooks_poster_list").empty();
+    $goodreads_dialog = $("#goodreads_dialog");
+    $goodreads_header = $("#goodreads_header");
+    $goodreads_title  = $("#goodreads_title");
+    $goodreads_content = $("#goodreads_poster_list").empty();
     var count = 0;
     for (var entry of media)
     {
-        var vinfo = entry.volumeInfo;
-        title = vinfo.title;
-        author =  vinfo.authors;
-        pubDate =  vinfo.publishedDate;
-        try {img = vinfo.imageLinks.thumbnail;} catch(e) {img = ''};
+        title = entry.best_book.title;
+        author =  entry.best_book.author.name;
+        pubDate =  entry.original_publication_year;
+        img = entry.best_book.image_url;
         $li = $("<li/>")
             .addClass("img_li")
-            .appendTo($googlebooks_content);
+            .appendTo($goodreads_content);
         $imgDiv = $('<div/>')
             .addClass('img_container')
             .appendTo($li);
@@ -95,9 +86,9 @@ Googlebooks.updatePosters = function(media)
                 var tid = $(target).attr("id");
                 var match = tid.match(/img-(\d+)/);
                 tid = parseInt(match[1], 10);
-                var googlebooksid = $(target).attr("googlebooksid");
-                Googlebooks.fillMessage(media[tid]);
-                $("#googlebooks_dialog").remove();
+                var goodreadsid = $(target).attr("goodreadsid");
+                Goodreads.fillMessage(media[tid]);
+                $("#goodreads_dialog").remove();
             })
             .appendTo($imgDiv)
         $type_txt = $("<div/>")
@@ -113,9 +104,9 @@ Googlebooks.updatePosters = function(media)
     if (count == 0)
     {
         $notfound = $("<h>Not Found</h>").css({"font-size": "200%"});
-        $googlebooks_content.append($notfound);
+        $goodreads_content.append($notfound);
     }
-    $('<a href="#googlebooks_dialog" id="modalTriggerLink"></a>').appendTo($("body"));
+    $('<a href="#goodreads_dialog" id="modalTriggerLink"></a>').appendTo($("body"));
     setTimeout(function(){
         $("#modalTriggerLink")[0].click();
         $("#modalTriggerLink").remove();
@@ -127,34 +118,34 @@ Googlebooks.updatePosters = function(media)
     }, 100);
 }
 
-Googlebooks.googlebooks_dialog_template = `
-<div id="googlebooks_dialog" class="twbs modalDialog googlebooks">
+Goodreads.goodreads_dialog_template = `
+<div id="goodreads_dialog" class="twbs modalDialog goodreads">
   <div class="twbs card document rounded">
     <div class="twbs card-body dialog rounded">
       <div class="twbs card-title">
-        <h5 id="googlebooks_title"></h5>
+        <h5 id="goodreads_title"></h5>
       </div>
-      <div class="twbs card dialog_content" id="googlebooks_content">
+      <div class="twbs card dialog_content" id="goodreads_content">
         <button id="close_btn" type="button" class="twbs dialog_close_btn">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div class="twbs card-group dialog_top_menu" id="googlebooks_top_filter">
+        <div class="twbs card-group dialog_top_menu" id="goodreads_top_filter">
           <div class="twbs card text-center">
             <div class="twbs card-body">
               <div class="twbs row">
                 <div class="twbs card col-12">
                   <div class="modal-menu">
-                    <input type="checkbox" id="cb_show_googlebooks_enable_sort" value="0">
-                    <label class="checkbox_label" for="cb_show_googlebooks_enable_sort">Sort By Date</label>
-                    <input type="checkbox" id="cb_show_googlebooks_sort_asc" value="1" checked>
-                    <label class="checkbox_label" for="cb_show_googlebooks_sort_asc">Newest to Oldest</label>
+                    <input type="checkbox" id="cb_show_goodreads_enable_sort" value="0">
+                    <label class="checkbox_label" for="cb_show_goodreads_enable_sort">Sort By Date</label>
+                    <input type="checkbox" id="cb_show_goodreads_sort_asc" value="1" checked>
+                    <label class="checkbox_label" for="cb_show_goodreads_sort_asc">Newest to Oldest</label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="poster_list" id="googlebooks_poster_list">
+        <div class="poster_list" id="goodreads_poster_list">
         </div>
       </div>
     </div>
@@ -162,7 +153,7 @@ Googlebooks.googlebooks_dialog_template = `
 </div>
 `;
 
-Googlebooks.filterGooglebooksMedia = function(media)
+Goodreads.filterGoodreadsMedia = function(media)
 {
     var aType = [];
     aType.push("BOOK");
@@ -179,10 +170,10 @@ Googlebooks.filterGooglebooksMedia = function(media)
             selectedMedia.push(media[i]);
         }
     }
-    if ($("#cb_show_googlebooks_enable_sort").prop("checked"))
+    if ($("#cb_show_goodreads_enable_sort").prop("checked"))
     {
         selectedMedia = selectedMedia.sort(function(a, b){
-            if ($("#cb_show_googlebooks_sort_asc").prop("checked"))
+            if ($("#cb_show_goodreads_sort_asc").prop("checked"))
                 return -a.date+b.date;
             return a.date-b.date;
         });
@@ -190,27 +181,27 @@ Googlebooks.filterGooglebooksMedia = function(media)
     return selectedMedia;
 }
 
-Googlebooks.handle_googlebooks = function(response, searchTerm)
+Goodreads.handle_goodreads = function(response, searchTerm)
 {
-    $googlebooks_dialog = $(Googlebooks.googlebooks_dialog_template).appendTo($("body"));
-    $googlebooks_dialog = $("#googlebooks_dialog");
-    $googlebooks_header = $("#googlebooks_header");
-    $googlebooks_title  = $("#googlebooks_title").text(`Results for "${searchTerm}"`);
-    $googlebooks_content = $("#googlebooks_poster_list");
+    $goodreads_dialog = $(Goodreads.goodreads_dialog_template).appendTo($("body"));
+    $goodreads_dialog = $("#goodreads_dialog");
+    $goodreads_header = $("#goodreads_header");
+    $goodreads_title  = $("#goodreads_title").text(`Results for "${searchTerm}"`);
+    $goodreads_content = $("#goodreads_poster_list");
     $close_btn = $("#close_btn")
         .click(function(){
-            $('#googlebooks_dialog').remove();
+            $('#goodreads_dialog').remove();
         })
-    $("[id^=cb_show_googlebooks]").change(function(event){
-            var selectedMedia = Googlebooks.filterGooglebooksMedia(media);
-            Googlebooks.updatePosters(selectedMedia);
+    $("[id^=cb_show_goodreads]").change(function(event){
+            var selectedMedia = Goodreads.filterGoodreadsMedia(media);
+            Goodreads.updatePosters(selectedMedia);
         });
-    var media = response.items;
-    var selectedMedia = Googlebooks.filterGooglebooksMedia(media);
-    Googlebooks.updatePosters(selectedMedia);
+    var media = response;
+    // var selectedMedia = Goodreads.filterGoodreadsMedia(media);
+    Goodreads.updatePosters(media);
 }
 
-Googlebooks.addSearchQualifier = function(url, dict)
+Goodreads.addSearchQualifier = function(url, dict)
 {
     for (var key in dict)
     {
@@ -237,24 +228,12 @@ Googlebooks.addSearchQualifier = function(url, dict)
     return url;
 }
 
-Googlebooks.startHandlingGooglebooksAjax = function()
+Goodreads.startHandlingGoodreadsAjax = function()
 {
     dict ={};
-    $googlebooks_input = $("#googlebooks_input");
-    $googlebooks_input_author = $("#googlebooks_input_author");
-    var author = $googlebooks_input_author.val();
-    var searchTerm = $googlebooks_input.val();
-    var regex = /author:"([^"]*)"/;
-    var match = regex.exec(searchTerm)
-    searchTerm = searchTerm.replace(regex, "");
-    if (Array.isArray(match) && match[1])
-        dict['author'] = match[1];
-    var url = `https://www.googleapis.com/books/v1/volumes?&maxResults=40&q=${searchTerm}`;
-    if (author)
-    {
-        url += `+inauthor:${author}`;
-    }
-    console.log(url);
+    $goodreads_input = $("#goodreads_input");
+    var searchTerm = encodeURI($goodreads_input.val());
+    var url = `/app.php/snahp/api_proxy/goodreads/?s=${searchTerm}`;
     $ajax = $.ajax(
         {
             url: url,
@@ -262,22 +241,15 @@ Googlebooks.startHandlingGooglebooksAjax = function()
         }
     );
     $ajax.done(function(response){
-        Googlebooks.handle_googlebooks(response, searchTerm);
+        Goodreads.handle_goodreads(response, searchTerm);
     });
 }
 
-phpbb.addAjaxCallback('snahp.googlebooksCallback', Googlebooks.startHandlingGooglebooksAjax);
 $(document).ready(function() {
-    $("#googlebooks_input_author").keydown(function(event){
+    $("#goodreads_input").keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
-            Googlebooks.startHandlingGooglebooksAjax();
-        }
-    });
-    $("#googlebooks_input").keydown(function(event){
-        if(event.keyCode == 13) {
-            event.preventDefault();
-            Googlebooks.startHandlingGooglebooksAjax();
+            Goodreads.startHandlingGoodreadsAjax();
         }
     });
 });

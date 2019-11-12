@@ -148,14 +148,17 @@ function collectAvatarUsername()
 $("body").keydown(function(event){
     if(event.keyCode == 27) {
         event.preventDefault();
+        $(".modal_imdb").remove();
         $("#anilist_dialog").remove();
         $("#googlebooks_dialog").remove();
+        $("#goodreads_dialog").remove();
         $("#gamespot_dialog").remove();
-        $(".modal_imdb").remove();
+        $("#mydramalist_dialog").remove();
     }
 });
 
 $(document).ready(()=>{
+    // Thanksgivings special. Clicking on banner to goto home
     $('.headerbar').click((e)=>{
         $target = $(e.target);
         var cl = $target.attr('class');
