@@ -18,8 +18,14 @@ class gallery
         $this->allowed_interpreted_tags = join('|', ['b', 'sm', 'br']);
 	}
 
+    private function set_default_options($options)
+    {
+        $this->options['justify_content'] = array_key_exists('justify_content', $options) ? $options['justify_content'] : 'justify-content-left';
+    }
+
     public function handle($mode, $data, $options=[])/*{{{*/
     {
+        $this->set_default_options($options);
         switch ($mode)
         {
         case 'compact':
@@ -42,7 +48,7 @@ class gallery
 <div class="twbs">
 <section class="gallery-block cards-gallery">
     <div class="container">
-        <div class="row">
+        <div class="row ' . $this->options['justify_content'] . '">
 ';
         $html['end'][] = '
     </div>
@@ -157,7 +163,7 @@ class gallery
 <div class="twbs">
 <section class="gallery-block compact-gallery">
   <div class="container">
-    <div class="row no-gutters">
+    <div class="row no-gutters ' . $this->options['justify_content'] . '">
 ';
         $html['end'][] = '
     </div>

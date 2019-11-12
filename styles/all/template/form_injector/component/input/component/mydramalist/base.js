@@ -190,7 +190,6 @@ Mydramalist.startHandlingMydramalistAjax = function()
     });
 }
 
-phpbb.addAjaxCallback('snahp.mydramalistCallback', Mydramalist.startHandlingMydramalistAjax);
 $(document).ready(function() {
     $("#mydramalist_input").keydown(function(event){
         if(event.keyCode == 13) {

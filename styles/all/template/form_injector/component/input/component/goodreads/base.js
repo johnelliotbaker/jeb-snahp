@@ -1,5 +1,42 @@
 var Goodreads = {};
 
+Goodreads.get_pub_date = function(data)
+{
+    var a_name = ['publication_year', 'publication_month', 'publication_day'];
+    return a_name.filter(key => key in data).map(x => data[x]).join('-');
+}
+
+Goodreads.make_authors_html = function(data)
+{
+    try {
+        var authors = data.authors.author;
+        if (Array.isArray(authors))
+        {
+            var res = [];
+            for (var author of authors) {
+                var url = author.link;
+                var thumbnail = author.image_url;
+                var name = author.name;
+                res.push([name, '', url, thumbnail].join('`').replace(/(\r\n|\n|\r)/gm,""));
+            }
+            var entry = res.join('\n');
+        }
+        else
+        {
+            var url = authors.link;
+            var thumbnail = authors.image_url;
+            var name = authors.name;
+            var entry = [name, '', url, thumbnail].join('`').replace(/(\r\n|\n|\r)/gm,"");
+        }
+        var start = '[center][b][size=80]by[/size][/b][/center]\n\n{snahp}{gallery_compact_sm_c}\n';
+        var end = '{/gallery_compact_sm_c}{/snahp}';
+        return start + entry + end;
+    } catch(e)
+    {
+        return '';
+    }
+}
+
 Goodreads.makeTemplate = function(data)
 {
     try { var thumbnail     = data.image_url.replace(/SX[0-9]+/ig,"SX2000");} catch(e) { var thumbnail = "";};
@@ -12,12 +49,13 @@ Goodreads.makeTemplate = function(data)
     try { var language      = toTitleCase(data.language_code);} catch(e) { var language = "";};
     try { var pageCount     = data.num_pages;} catch(e) { var pageCount = "";};
     try { var printType     = toTitleCase(data['printType']);} catch(e) { var printType = "";};
-    try { var publishedDate = data.publication_year;} catch(e) { var publishedDate = "";};
+    var publishedDate       = this.get_pub_date(data);
     try { var publisher     = data.publisher;} catch(e) { var publisher = "";};
     try { var ratingsCount  = data.ratings_count;} catch(e) { var ratingsCount = "";};
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
     var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
     var authors       = getEntryOrEmpty(`[center][b][size=80]by[/size]\n\n[size=180]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(authors, ', '));
+    var authors       = this.make_authors_html(data);
     var averageRating = getEntryOrEmpty(`[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`, averageRating);
     var categories    = getEntryOrEmpty(`[center][b][size=140]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(categories, ', '));
     var description   = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, description);
@@ -34,10 +72,10 @@ Goodreads.makeTemplate = function(data)
     var text = '' + 
         thumbnail + '\n\n\n' +
         title + '\n\n\n' +
-        authors +  '\n\n\n' +
+        authors +  '\n\n' +
         averageRating + '\n\n\n' +
         description + '\n\n' +
-        publishedDate + language +
+        publishedDate + language + publisher + pageCount +
         ddl + dlink;
     text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
     text = text.replace(/(\r?\n|\r){5,99}/g, '\n\n\n\n');

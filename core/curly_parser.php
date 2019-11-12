@@ -7,22 +7,22 @@ class curly_parser
 
 	public function __construct(
 	)
-	{
+	{/*{{{*/
         $this->wrapper_tag = 'snahp';
         $this->allowed_major_tags = [
             'table', 'table_autofill',
         ];
         $this->allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
-	}
+	}/*}}}*/
 
-    public function get_wrapper_pattern()
+    public function get_wrapper_pattern()/*{{{*/
     {
         $w = $this->wrapper_tag;
         $ptn = '#{' . $w . '}(.*?){/' . $w . '}#is';
         return $ptn;
-    }
+    }/*}}}*/
 
-    public function validate_curly_tags($html)
+    public function validate_curly_tags($html)/*{{{*/
     {
         preg_match_all('#{([a-z]+)(?: .*)?(?<![/|/ ])}#iU', $html, $result);
         $openedtags = $result[1];   #put all closed tags into an array
@@ -46,15 +46,15 @@ class curly_parser
             }
         }
         return True;
-    }
+    }/*}}}*/
 
-    public function return_malformed($strn)
+    public function return_malformed($strn)/*{{{*/
     {
         $res = '***Malformed snahp tag.***';
         return $res . '<br>' . $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_curly_table($strn)
+    public function interpolate_curly_table($strn)/*{{{*/
     {
         $ptn = '/{([^}]*)}/is';
         $strn = preg_replace_callback($ptn, function($m) {
@@ -94,9 +94,9 @@ class curly_parser
         }, $strn);
         $strn = str_replace('<br>', '', $strn);
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_table_search_master($strn, $tag_name)
+    public function interpolate_table_search_master($strn, $tag_name)/*{{{*/
     {
         $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
@@ -107,9 +107,9 @@ class curly_parser
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_gallery($strn, $tag_name, $type, $options=[])
+    public function interpolate_gallery($strn, $tag_name, $type, $options=[])/*{{{*/
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -132,9 +132,9 @@ class curly_parser
         $gallery = new \jeb\snahp\core\template\gallery;
         $html = $gallery->handle($type, $data, $options);
         return $html;
-    }
+    }/*}}}*/
 
-    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)
+    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)/*{{{*/
     {
         $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
@@ -171,9 +171,9 @@ class curly_parser
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_fulfill($strn, $tag_name)
+    public function interpolate_fulfill($strn, $tag_name)/*{{{*/
     {
         global $db, $request, $user, $phpbb_container;
         $def = $phpbb_container->getParameter('jeb.snahp.req')['def'];
@@ -227,9 +227,9 @@ class curly_parser
             
 </div>';
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_mega_video($strn, $tag_name)
+    public function interpolate_mega_video($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -238,9 +238,9 @@ class curly_parser
         $content = $match[1];
         $strn = '<div align="center"><iframe src="https://mega.nz/embed#' . $content . '" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>';
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_ab($strn, $tag_name)
+    public function interpolate_ab($strn, $tag_name)/*{{{*/
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -248,9 +248,9 @@ class curly_parser
         $imgcompare = new \jeb\snahp\core\template\imgcompare();
         $strn = $imgcompare->to_html($content);
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_youtube($strn, $tag_name)
+    public function interpolate_youtube($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -259,9 +259,9 @@ class curly_parser
         $content = $match[1];
         $strn = '<div align="center"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/' . $content . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_gfycat($strn, $tag_name)
+    public function interpolate_gfycat($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -270,9 +270,9 @@ class curly_parser
         $content = $match[1];
         $strn = "<div style='position:relative; padding-bottom:calc(75.00% + 44px)'><iframe src='https://gfycat.com/ifr/" . $content . "?&hd=1' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>";
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_img($strn, $tag_name)
+    public function interpolate_img($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -295,9 +295,9 @@ class curly_parser
         $content = preg_replace("#<br>#", PHP_EOL, $content);
         $strn = '<div align="'. $align . '"><img '. $content . '></img></div>';
         return $strn;
-    }
+    }/*}}}*/
 
-    public function interpolate_mediainfo($strn, $tag_name)
+    public function interpolate_mediainfo($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -309,13 +309,13 @@ class curly_parser
         # $content = preg_replace("#<br>#", PHP_EOL, $content);
         $strn = $content;
         return $strn;
-    }
+    }/*}}}*/
 
-    private function parse_general($arr)
+    private function parse_general($arr)/*{{{*/
     {
-    }
+    }/*}}}*/
 
-    public function parse_snahp($strn)
+    public function parse_snahp($strn)/*{{{*/
     {
         // Exclude codebox
         $p = '#<code>(.*?)<\/code>#s';
@@ -366,8 +366,14 @@ class curly_parser
             case 'gallery_cards':
                 $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'default']);
                 break;
+            case 'gallery_cards_c':
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'default', 'justify_content' => 'justify-content-center']);
+                break;
             case 'gallery_cards_sm':
                 $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'sm']);
+                break;
+            case 'gallery_cards_sm_c':
+                $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'sm', 'justify_content' => 'justify-content-center']);
                 break;
             case 'gallery_cards_lg':
                 $res = $this->interpolate_gallery($content, $tag_type, 'cards', ['size' => 'lg']);
@@ -386,6 +392,9 @@ class curly_parser
                 break;
             case 'gallery_compact_sm':
                 $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'sm']);
+                break;
+            case 'gallery_compact_sm_c':
+                $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'sm', 'justify_content' => 'justify-content-center']);
                 break;
             case 'gallery_compact_lg':
                 $res = $this->interpolate_gallery($content, $tag_type, 'compact', ['size' => 'lg']);
@@ -427,14 +436,14 @@ class curly_parser
             $new_strn .= substr($strn, $start);
         }
         return $new_strn;
-    }
+    }/*}}}*/
 
-    public function parse($strn)
+    public function parse($strn)/*{{{*/
     {
         $ptn = '#.*#';
         $strn = preg_replace_callback($ptn, 'self::callback', $strn);
         return $strn;
-    }
+    }/*}}}*/
 
     public function is_request($forum_id)/*{{{*/
     {
