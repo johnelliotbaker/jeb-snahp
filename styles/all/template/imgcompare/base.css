@@ -35,6 +35,8 @@
 .imgcompare_thumbnail
 {
     height: 150px;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
 }
 
 .imgcompare_thumbnail_container
