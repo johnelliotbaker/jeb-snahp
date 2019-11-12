@@ -85,7 +85,7 @@ Goodreads.makeTemplate = function(data)
 Goodreads.fillMessage = function(entry)
 {
     var book_id = entry.best_book.id;
-    var url = 'http://192.168.2.12:888/app.php/snahp/api_proxy/goodreads/?cmd=book&bid=' + book_id;
+    var url = '/app.php/snahp/api_proxy/goodreads/?cmd=book&bid=' + book_id;
     $.get(url).done((resp)=>{
         var summary = Goodreads.makeTemplate(resp);
         var text = summary;
