@@ -24,16 +24,14 @@ class imgcompare
             return 'First two arguments must be valid URL.';
         }
         $html = '
-<div 
+<span 
 onClick="ImgCompare.setup_modal(' . "'$url1', '$url2', '$label1', '$label2'" . ')"
 	class="imgcompare_thumbnail_container pointer noselect">
-    <div class="crop_top">
-        <img src="'. $url1 .'" class="imgcompare_thumbnail_left">
-    </div>
-    <div class="crop_bottom">
-        <img src="'. $url2 .'" class="imgcompare_thumbnail_right">
-    </div>
-</div>
+    <img src="'. $url1 .'" class="imgcompare_thumbnail">
+    <span class="crop_bottom">
+        <img src="'. $url2 .'" class="imgcompare_thumbnail">
+    </span>
+</span>
 ';
         return $html;
     }/*}}}*/

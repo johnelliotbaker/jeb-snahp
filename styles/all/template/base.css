@@ -315,7 +315,7 @@ img.emotes_default.discord_44
 {% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
 .headerbar
 {
-    background-image: url('https://i.imgur.com/74NCMtX.jpg');
+    /* background-image: url('https://i.imgur.com/74NCMtX.jpg'); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -330,7 +330,7 @@ img.emotes_default.discord_44
 {% if STYLE_NAME in ['prosilver'] %}
 html, body
 {
-    background-image: url('https://i.imgur.com/EMA6YPm.png');
+    /* background-image: url('https://i.imgur.com/EMA6YPm.png'); */
     background-repeat: no-repeat;
 }
 {% endif %}
@@ -338,6 +338,6 @@ html, body
 {% if STYLE_NAME in ['hexagon', 'acieeed'] %}
 html, body
 {
-    background-image: url('https://i.imgur.com/WFtaXnR.jpg');
+    /* background-image: url('https://i.imgur.com/WFtaXnR.jpg'); */
 }
 {% endif %}

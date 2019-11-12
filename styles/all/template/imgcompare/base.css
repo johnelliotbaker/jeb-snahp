@@ -32,33 +32,7 @@
     letter-spacing: 1px;
 }
 
-.imgcompare_thumbnail_left
-{
-    height: 150px;
-}
-
-.crop_top
-{
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: 3;
-    max-height: 75px;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(255,255,255,.1);
-}
-
-.crop_bottom
-{
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: 1;
-    height: 150px;
-    overflow: hidden;
-}
-
-.imgcompare_thumbnail_right
+.imgcompare_thumbnail
 {
     height: 150px;
 }
@@ -67,5 +41,12 @@
 {
     position: relative;
     height: 150px;
-    max-width: 50px;
 }
+.crop_bottom
+{
+    position: absolute;
+    height: 75px;
+    overflow: hidden;
+    left: 0px;
+}
+
