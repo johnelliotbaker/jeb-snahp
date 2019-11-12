@@ -37,6 +37,7 @@ class mediainfo
             'italian'   => 'it',
             'thai'      => 'th',
             'malaysian' => 'my',
+            'swedish'   => 'se',
             // 'danish'    => 'dk',
             'czech'     => 'cz',
             'dutch'     => 'nl',
@@ -342,7 +343,7 @@ class mediainfo
                 $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
             }
             $entry['type'] = 'fullwidth';
-            $language =  $this->get_language_image_or_strn($tmp['Language'])['value'];
+            $language =  $this->get_language_image_or_strn($tmp['Language'] , ['append_text' => true])['value'];
             $format = $tmp['Format'];
             $html = '<div class="row"><div class="col-auto subtitle_key">#' . $i .  ':</div><div class="float-right subtitle_value col">' . $language . " ${format}</div></div>";
             $entry['content'] =  $html;
@@ -431,14 +432,19 @@ class mediainfo
         return null;
     }/*}}}*/
 
-    private function get_language_image_or_strn($strn)/*{{{*/
+    private function get_language_image_or_strn($strn, $options=[])/*{{{*/
     {
         $country_code = $this->get_country_code_from_language($strn);
         if (!$country_code)
         {
             return ['type' => 'string', 'value' => $strn];
         }
-        return ['type' => 'html', 'value' => '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>'];
+        $img_html = '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>';
+        if (isset($options['append_text']) && $options['append_text'])
+        {
+            $img_html .= " $strn";
+        }
+        return ['type' => 'html', 'value' => $img_html];
     }/*}}}*/
 
     private function join_or_first($first, $second, $delimiter=' @ ')/*{{{*/

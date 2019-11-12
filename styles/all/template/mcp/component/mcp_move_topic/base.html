@@ -3,11 +3,8 @@
 <script>
   {% include '@jeb_snahp/mcp/component/mcp_move_topic/base.js' %}
 </script>
-<button id="mod_move_topic" class="button" title="Post a new topic"
-  style="float:none">
-  <span>Move</span> <i class="icon fa-arrows fa-fw" aria-hidden="true"></i>
+<select id="to_forum_id" name="to_forum_id">{S_FORUM_SELECT}</select>
+<button id="mod_move_topic" class="button" title="Move topic" style="float:none">
+  <i class="icon fa-arrows fa-fw" aria-hidden="true"></i>
 </button>
-<label>
-  <select id="to_forum_id" name="to_forum_id">{S_FORUM_SELECT}</select>
-</label>
 {% endif %}
