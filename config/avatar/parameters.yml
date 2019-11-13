@@ -1,13 +1,6 @@
 parameters:
   jeb.snahp.avatar.badge.users:
 
-    2: #Oldvcrguy
-      queue:
-        - 'drunken_master'
-      data:
-        drunken_master:
-          url: 'https://forum.snahp.it/viewtopic.php?f=73&t=26470'
-
 
     22391: #SampaD22
       queue:
