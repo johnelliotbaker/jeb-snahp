@@ -343,3 +343,12 @@ html, body
     background-image: url('https://i.imgur.com/WFtaXnR.jpg');
 }
 {% endif %}
+
+.thx
+{
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    margin: -20px;
+    background-color: #888;
+}

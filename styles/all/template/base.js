@@ -105,6 +105,35 @@ $(function () {
     Form_util.setup_ctrlenter_quickreply();
 });
 
+// Thanksgivings
+var Thanks_givings = {};
+Thanks_givings.setup = function()
+{
+    var seasonal = Cookie.get('seasonal');
+    if (seasonal === undefined)
+    {
+        Cookie.set('seasonal', 'b_enable', 1);
+        var seasonal = Cookie.get('seasonal');
+    }
+    var b_enable = seasonal.b_enable;
+    if (!b_enable)
+    {
+        $('body').css('background-image', 'none');
+        $('html').css('background-image', 'none');
+        $('#site-description').css('display', 'block');
+        $('.headerbar').css('background-image', 'none');
+    }
+    $widget = $('<div class="thx"></div>');
+    $widget.click((e)=>{
+        Cookie.set('seasonal', 'b_enable', b_enable ? 0 : 1);
+        location.reload();
+    })
+    $widget.css('z-index', 1000);
+    console.log(seasonal);
+    $inner = $('.headerbar .inner');
+    $inner.append($widget);
+}
+
 
 function getAtUsername(event)
 {
