@@ -1,0 +1,227 @@
+parameters:
+  jeb.snahp.avatar.badge.users:
+
+    2: #Oldvcrguy
+      queue:
+        - 'drunken_master'
+      data:
+        drunken_master:
+          url: 'https://forum.snahp.it/viewtopic.php?f=73&t=26470'
+
+
+    22391: #SampaD22
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          template_type: 'alias'
+          alias: '.QxR. SAMPA'
+          tagname: 'SAMPA'
+    161958: #eserafinojr
+      queue:
+        - 'encoder'
+        - 'audio_expert'
+      data:
+        encoder:
+          tagname: 'EPS'
+        audio_expert:
+    150397: #3XO
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: '3xO'
+    156: #MKED
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'MKED'
+    162225: #magiin
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'MaG'
+    94091: #Bluespots
+      queue:
+        - 'encoder'
+        - 'anime_pack'
+      data:
+        encoder:
+          tagname: 'Bluespots'
+        anime_pack:
+          title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
+          url: 'https://forum.snahp.it/viewtopic.php?f=84&t=114147'
+    111: #SkumDog
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          template_type: 'alias'
+          alias: '$ Millionaire $'
+          tagname: 'SkumDog'
+    8324: #Smurf
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'Smurf'
+    5495: #Fantompoke
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'Poke'
+    3068: #Koyumu
+      queue:
+        - 'encoder'
+        - 'anime_pack'
+      data:
+        encoder:
+          tagname: 'Koyumu'
+        anime_pack:
+          title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
+          url: 'https://forum.snahp.it/viewtopic.php?f=56&t=5174'
+    133765: #qebehsenue
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'qebe'
+    126178: #PrivateCodex
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'PvtCdx'
+    113291: #ItchyFinger
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'ItchyFinger'
+
+    12694: #pandacircus
+      queue:
+        - 'audio_expert'
+      data:
+        audio_expert:
+    2585: #Oldvcrguy
+      queue:
+        - 'drunken_master'
+      data:
+        drunken_master:
+          url: 'https://forum.snahp.it/viewtopic.php?f=73&t=26470'
+    49485: #bonesandbillyclubs
+      queue:
+        - 'anime_pack'
+      data:
+        anime_pack:
+          title: 'President of the International Bureau for Preservation and Dissemination of Animated Art'
+          url: 'https://forum.snahp.it/viewtopic.php?f=13&t=34584'
+          img_url: 'https://i.imgur.com/PwBDgBQ.png'
+    58626: #slipstream
+      queue:
+        - 'anime_pack'
+      data:
+        anime_pack:
+          title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
+          url: 'https://forum.snahp.it/viewtopic.php?f=13&t=112503'
+    37031: #ski77
+      queue:
+        - 'anime_pack'
+        - 'updater'
+      data:
+        anime_pack:
+          title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
+          url: 'https://forum.snahp.it/viewtopic.php?f=84&t=30484'
+        updater:
+          title: 'Perpetual Energy Machine, Model 101'
+          url: 'https://forum.snahp.it/search.php?keywords=UPDATING&terms=all&author_id=37031&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search'
+          img_url: 'https://i.imgur.com/LBcQOv1.png'
+    50759: #chamako
+      queue:
+        - 'updater'
+      data:
+        updater:
+          url: 'https://forum.snahp.it/search.php?keywords=update&terms=all&author_id=50759&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search'
+
+
+  # PROCESSOR DEFINITIONS
+  jeb.snahp.avatar.badge.items:
+    drunken_master:
+      data:
+        title: 'Drunken Master'
+        img_url: 'https://i.imgur.com/FxX4vma.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<div title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge maxh_36"></img></a></div>'
+    audio_expert:
+      data:
+        title: 'Audio Expert'
+        img_url: 'https://i.imgur.com/N0fWbFu.png'
+        img_css: 'avatar_badge maxh_24'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'img_css'
+          html: '<div title="{title}" class="audio_expert"></div>'
+          html: '<span title="{title}"><img src="{img_url}" class="{img_css}"></img></span>'
+    updater:
+      data:
+        title: 'Perpetual Energy Machine'
+        img_url: 'https://i.imgur.com/rgplXx8.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'url'
+            - 'img_url'
+          html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_24"></img></a></span>'
+    anime_pack:
+      data:
+        title: 'International Bureau for Preservation and Dissemination of Animated Art'
+        img_url: 'https://i.imgur.com/gTTbWym.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'url'
+            - 'img_url'
+          html: '<span title="{title}"><a href="{url}" target="_blank"><img class="avatar_badge maxh_36" src="{img_url}"></img></a></span>'
+    encoder_group:
+      data:
+      template:
+        basic:
+          fields:
+            - 'groupname'
+            - 'user_colour'
+          html: '<span style="color:#{user_colour};">.{groupname}. </span>'
+    encoder:
+      data:
+          title: 'Encoder'
+      template:
+        basic:
+          fields: &fields
+            - 'title'
+            - 'user_id'
+            - 'tagname'
+            - 'username'
+            - 'user_colour'
+          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="https://forum.snahp.it/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a></div>'
+        alias:
+          fields:
+            - 'alias'
+            - 'title'
+            - 'user_id'
+            - 'tagname'
+            - 'username'
+            - 'user_colour'
+          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="https://forum.snahp.it/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{alias}</span></a></div>'

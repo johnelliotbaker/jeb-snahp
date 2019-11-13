@@ -78,9 +78,6 @@ class main_listener extends base implements EventSubscriberInterface
             'core.user_setup_after'                       => [
                 ['setup_core_vars', 0],
             ],
-            'core.page_header'                            => [
-                ['setup_core_vars', 0],
-            ],
             'core.memberlist_prepare_profile_data'        => [
                 ['setup_profile_variables', 10],
                 ['show_achievements_in_profile', 0],
@@ -113,6 +110,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_thanks_for_op', 2],
                 ['show_achievements_in_avatar', 2],
                 ['show_reputation_in_avatar', 2],
+                ['show_badges_in_avatar', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -514,6 +512,25 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }/*}}}*/
 
+    public function show_badges_in_avatar($event)/*{{{*/
+    {
+        $poster_data = $this->poster_data;
+        if (!$poster_data)
+        {
+            return false;
+        }
+        $post_row = $event['post_row'];
+        $poster_id = $post_row['POSTER_ID'];
+        if (!isset($this->badges_helper))
+        {
+            $this->badges_helper = $this->container->get('jeb.snahp.avatar.badges_helper');
+        }
+        $options = [ 'style_type' => $this->style_type, ];
+        $html = $this->badges_helper->process_badges($poster_data, $options);
+        $post_row['S_BADGE'] = $html;
+        $event['post_row'] = $post_row;
+    }/*}}}*/
+
     public function show_reputation_in_avatar($event)/*{{{*/
     {
         if (!$this->config['snp_rep_b_master'])
@@ -875,7 +892,7 @@ class main_listener extends base implements EventSubscriberInterface
         ];
         $s_hidden_fields = build_hidden_fields($hidden_fields);
         $this->template->assign_vars([
-            'S_HIDDEN_FIELDS' => $s_hidden_fields,
+            // 'S_HIDDEN_FIELDS' => $s_hidden_fields,
             'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
             'N_REP_AVAILABLE' => $n_rep,
             'T_REP_NEXT' => $t_rep_next,
@@ -1174,19 +1191,23 @@ class main_listener extends base implements EventSubscriberInterface
         case 'Acieeed!':
             $this->template->assign_var('STYLE_NAME', 'acieeed');
             $this->template->assign_var('STYLE_TYPE', 'dark');
+            $this->style_type = 'dark';
             break;
         case 'Basic':
             $this->template->assign_var('STYLE_NAME', 'basic');
             $this->template->assign_var('STYLE_TYPE', 'light');
+            $this->style_type = 'light';
             break;
         case 'Hexagon':
             $this->template->assign_var('STYLE_NAME', 'hexagon');
             $this->template->assign_var('STYLE_TYPE', 'dark');
+            $this->style_type = 'dark';
             break;
         case 'prosilver':
         default:
         $this->template->assign_var('STYLE_NAME', 'prosilver');
         $this->template->assign_var('STYLE_TYPE', 'light');
+        $this->style_type = 'light';
         break;
         }
     }/*}}}*/

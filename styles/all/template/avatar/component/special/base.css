@@ -29,3 +29,10 @@ div.avatar_special p
 {
     margin: 0;
 }
+
+.audio_expert
+{
+    width: 27px;
+    height: 24px;
+    background-size: cover;
+}

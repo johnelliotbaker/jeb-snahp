@@ -12,6 +12,7 @@ imports:
     - { resource: form.yml }
     - { resource: foe_blocker/service.yml }
     - { resource: api_proxy/service.yml }
+    - { resource: avatar/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

@@ -1,96 +1,14 @@
+{% if postrow.S_BADGE %}
+<!-- IF not $varset_99028487a4 -->
+<!-- DEFINE $varset_99028487a4 = true -->
 <!-- INCLUDECSS @jeb_snahp/avatar/component/special/base.css -->
+{% if STYLE_NAME in ['acieeed', 'hexagon'] %}
+<!-- INCLUDECSS @jeb_snahp/avatar/component/special/dark.css -->
+{% else %}
+<!-- INCLUDECSS @jeb_snahp/avatar/component/special/light.css -->
+{% endif %}
+<!-- ENDIF -->
 <div class="avatar_special">
-  {% set AUTHOR = postrow.POST_AUTHOR|lower %}
-  {% set AUTHOR_COLOUR = postrow.POST_AUTHOR_COLOUR %}
-  {% set POSTER_ID = postrow.POSTER_ID %}
-  {% set U_AUDIO_EXPERT_IMG = "https://i.imgur.com/N0fWbFu.png" %}
-  {% set U_ANIME_IMG = "https://i.imgur.com/gTTbWym.png" %}
-  {% if STYLE_NAME in ['acieeed', 'hexagon'] %}
-  {% set U_AUDIO_EXPERT_IMG = "https://i.imgur.com/LNm8EAc.png" %}
-  {% endif %}
-
-  {% if AUTHOR == 'sampad22' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b>.QxR. <a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">SAMPA</a></b></p>
-  {% elseif AUTHOR == 'eserafinojr' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">EPS</a></b></p>
-  {% elseif AUTHOR == '3xo' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">3xO</a></b></p>
-  {% elseif AUTHOR =='mked' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">MKED</a></b></p>
-  {% elseif AUTHOR =='magiin' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">MaG</a></b></p>
-  {% elseif AUTHOR =='bluespots' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Bluespots</b></a></p>
-  {% elseif AUTHOR =='skumdog' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">.$.Millionaire.$.</b></a></p>
-  {% elseif AUTHOR =='smurf' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Smurf</b></a></p>
-  {% elseif AUTHOR =='fantompoke' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Poke</b></a></p>
-  {% elseif AUTHOR =='koyumu' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">Koyumu</b></a></p>
-  {% elseif AUTHOR =='qebehsenue' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">qebe</b></a></p>
-  {% elseif AUTHOR =='itchyfinger' %}
-  <p style="color:{AUTHOR_COLOUR};" title="Encoder"><b><a href="/search.php?st=0&sk=x&sd=d&sr=topics&author_id={POSTER_ID}&sf=firstpost" target="_blank">ItchyFinger</b></a></p>
-  {% endif %}
-
-
-  {% if AUTHOR =='pandacircus' %}
-  <span class="audio_expert">
-    <img title="Audio Expert" class="avatar_badge maxh_24" src="{U_AUDIO_EXPERT_IMG}"> 
-  </span>
-  {% elseif AUTHOR == 'eserafinojr' %}
-  <span class="audio_expert">
-    <img title="Audio Expert" class="avatar_badge maxh_24" src="{U_AUDIO_EXPERT_IMG}"> 
-  </span>
-  {% elseif AUTHOR =='oldvcrguy' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Drunken Master">
-    <a href="/viewtopic.php?f=73&t=26470" target="_blank">
-      <img title="Drunken Master" class="avatar_badge maxh_36" src="https://i.imgur.com/FxX4vma.png"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='bonesandbillyclubs' %}
-  <span style="color:{AUTHOR_COLOUR};" title="President of the International Bureau for Preservation and Dissemination of Animated Art">
-    <a href="/viewtopic.php?f=13&t=34584" target="_blank">
-      <img class="avatar_badge maxh_36" src="https://i.imgur.com/PwBDgBQ.png"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='slipstream' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
-    <a href="/viewtopic.php?f=13&t=112503" target="_blank">
-      <img class="avatar_badge maxh_36" src="{U_ANIME_IMG}"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='koyumu' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
-    <a href="/viewtopic.php?f=56&t=5174" target="_blank">
-      <img class="avatar_badge maxh_36" src="{U_ANIME_IMG}"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='bluespots' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
-    <a href="/viewtopic.php?f=84&t=114147" target="_blank">
-      <img class="avatar_badge maxh_36" src="{U_ANIME_IMG}"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='ski77' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Regional Director of the International Bureau for Preservation and Dissemination of Animated Art">
-    <a href="/viewtopic.php?f=84&t=30484" target="_blank">
-      <img class="avatar_badge maxh_36" src="{U_ANIME_IMG}"> 
-    </a>
-  </span>
-  <span style="color:{AUTHOR_COLOUR};" title="Perpetual Energy Machine, Model 101">
-    <a href="/search.php?keywords=UPDATING&terms=all&author=ski77&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">
-      <img class="avatar_badge maxh_24" src="https://i.imgur.com/LBcQOv1.png"> 
-    </a>
-  </span>
-  {% elseif AUTHOR =='chamako' %}
-  <span style="color:{AUTHOR_COLOUR};" title="Perpetual Energy Machine">
-    <a href="/search.php?keywords=update&terms=all&author=Chamako&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">
-      <img class="avatar_badge maxh_24" src="https://i.imgur.com/rgplXx8.png"> 
-    </a>
-  </span>
-  {% endif %}
-
+  {postrow.S_BADGE}
 </div>
+{% endif %}

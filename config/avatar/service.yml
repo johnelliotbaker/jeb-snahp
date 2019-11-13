@@ -1,0 +1,20 @@
+imports:
+    - { resource: 'avatar/parameters.yml' }
+services:
+    jeb.snahp.avatar.badges_helper:
+        class: jeb\snahp\core\avatar\badges_helper
+        arguments:
+            - '@service_container'
+    # jeb.snahp.foe_listener:
+    #     class: jeb\snahp\event\foe_listener
+    #     arguments:
+    #         - '@dbal.conn'
+    #         - '@config'
+    #         - '@user'
+    #         - '@template'
+    #         - '@service_container'
+    #         - '%jeb.snahp.tables%'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.foe_blocker_helper'
+    #     tags:
+    #         - { name: event.listener }
