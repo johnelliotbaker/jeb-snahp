@@ -13,6 +13,7 @@
       <th scope="col">T</th>
       <th scope="col">R</th>
       <th scope="col">PM</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
     <tr>
       <td><a href="/memberlist.php?mode=viewprofile&u={row.blocker_user_id}" target="_blank"><span style="color: #{row.blocker_user_colour};"><b>{row.blocker_username}</b></span></a></td>
       <td><a href="/memberlist.php?mode=viewprofile&u={row.blocked_user_id}" target="_blank"><span style="color: #{row.blocked_user_colour};"><b>{row.blocked_username}</b></span></a></td>
+      {% if row.local_time %}
       <td>{row.local_time}</td>
       <td>{row.expires}</td>
       <td>{row.extra.block_reason}</td>
@@ -32,6 +34,16 @@
       <td>
         {% if row.extra.allow_pm %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}
       </td>
+      <td>
+        {% if row.post_id %}
+        <a href="/viewtopic.php?p={row.post_id}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>
+        {% else %}
+        <a href="/app.php/snahp/wiki/user_blocking/#triage_mode" target="_blank"><i class="fa fa-ambulance" aria-hidden="true" title="Triage"></i></a>
+        {% endif %}
+      </td>
+      {% else %}
+      <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>

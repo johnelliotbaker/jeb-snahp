@@ -1,29 +1,51 @@
 <!-- INCLUDECSS @jeb_snahp/foe_blocker/component/blocker_form/base.css -->
+{% if STYLE_TYPE == 'dark' %}
+<!-- INCLUDECSS @jeb_snahp/foe_blocker/component/blocker_form/dark.css -->
+{% endif %}
+<!-- INCLUDEJS @jeb_snahp/foe_blocker/component/blocker_form/base.js -->
 
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Block a New User<a href="/app.php/snahp/wiki/user_blocking/#block_form" target="_blank"><i class="fa fa-question ml-1" style="font-size:0.9em;"></i></a></h5>
     <form action="{U_BLOCK}" method="POST" accept-charset="utf-8">
 
-      <div class="input-group mb-2">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Post ID</span>
-        </div>
-        <input type="number" max="1000000" min="1" class="form-control" name="post_id" value="{POST_ID}"/>
+      <div class="form-check-inline">
+        <dl class="row mx-1 my-0">
+          <dt class="mr-2">
+            Select Mode
+          </dt>
+          <dd>
+            <input class="form-check-input" type="radio" id="mode_selector_1" name="mode_selector" value="1" checked>
+            <label class="form-check-label" for="mode_selector_1">
+              Normal
+            </label>
+            <input class="form-check-input" type="radio" id="mode_selector_2" name="mode_selector" value="0">
+            <label class="form-check-label" for="mode_selector_2">
+              Triage
+            </label>
+          </dd>
+        </dl>
       </div>
 
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text">User ID</span>
+          <span class="input-group-text pointer noselect" data-toggle="popover" data-container="poppin" data-placement="auto" data-content="Post ID can be found from the address bar as either p=[Post ID] or #p[Post ID]">Post ID [?]</span>
         </div>
-        <input type="number" max="1000000" min="1" class="form-control" name="emergency_blocked_id" value="{emergency_blocked_id}"/>
+        <input type="text" required pattern="[0-9]{1,7}" title="Must be a number between 1 and 9999999" class="form-control" name="post_id" value="{POST_ID}" placeholder="Post ID or url to a post"/>
+      </div>
+
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text pointer noselect" data-toggle="popover" data-container="poppin" data-placement="auto" data-content="Username should be filled in only if you are blocking under Triage mode. First select 'Triage' option from Select Mode, then enter the username. Blocks in triage mode will only last for 72 hours. See the wiki for details.">Username [?]</span>
+        </div>
+        <input type="text" class="form-control" name="triage_username" value="{triage_username}" placeholder="Available for triage mode only" disabled/>
       </div>
 
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <span class="input-group-text">Reason</span>
         </div>
-        <input type="text" required pattern=".{3,500}" title="Minimum 3 characters & maximum 500 characters"  class="form-control" name="block_reason" />
+        <input type="text" required pattern=".{3,500}" title="Minimum 3 characters & maximum 500 characters" class="form-control" name="block_reason" placeholder=""/>
       </div>
 
       <div class="input-group p-0 mb-2">
@@ -98,3 +120,6 @@
     </form>
   </div>
 </div>
+
+<poppin>
+</poppin>

@@ -1,0 +1,4 @@
+.twbs .form-control:disabled, .twbs .form-control[readonly]
+{
+    background-color: #181818 !important;
+}

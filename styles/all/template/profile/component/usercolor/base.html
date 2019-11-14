@@ -1,4 +1,11 @@
 {% if B_SHOW_USER_COLOUR %}
+<!-- IF not $varset_fac7701b98 -->
+<!-- DEFINE $varset_fac7701b98 = true -->
+<!-- INCLUDECSS @jeb_snahp/profile/component/usercolor/base.css -->
+{% if STYLE_TYPE == 'dark' %}
+  <!-- INCLUDECSS @jeb_snahp/profile/component/usercolor/dark.css -->
+{% endif %}
+<!-- ENDIF -->
 <dt>
   Usercolor:
 </dt>
