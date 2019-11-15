@@ -21,7 +21,7 @@ class thanks extends base
             $cfg = [];
             return $this->delete_all_thanks_notifications($cfg);
         case 'thanks_given':
-            $this->reject_non_moderator('Error Code: f8b2eb3b1e');
+            $this->reject_non_dev('Error Code: f8b2eb3b1e');
             $cfg['tpl_name'] = '@jeb_snahp/favorite/thanks_given.html';
             $cfg['base_url'] = '/app.php/snahp/thanks/handle/thanks_given/';
             $cfg['title'] = 'Thanks Given';
