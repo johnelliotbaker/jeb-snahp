@@ -106,27 +106,10 @@ if ($user->load && $config['limit_search_load'] && ($user->load > doubleval($con
 
 // It is applicable if the configuration setting is non-zero, and the user cannot
 // ignore the flood setting, and the search is a keyword search.
-//
 ///////////// DOCMOD ////////////////
 $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];
 $doc_vars = ['interval'];
 extract($phpbb_dispatcher->trigger_event('core.search_modify_interval', compact($doc_vars)));
-// if (array_key_exists('snp_search_b_enable', $config) && $config['snp_search_b_enable'])
-
-// if ($config['snp_search_b_enable'])
-// {
-//     $snp_group_id = $user->data['group_id'];
-//     $sql = 'SELECT * FROM ' . GROUPS_TABLE . ' WHERE group_id=' . $snp_group_id;
-//     $result = $db->sql_query($sql);
-//     $row = $db->sql_fetchrow($result);
-//     $db->sql_freeresult($result);
-//     if ($row && array_key_exists('snp_search_interval', $row))
-//     {
-//         $group_search_interval = $row['snp_search_interval'];
-//         $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $group_search_interval;
-//     }
-// }
-
 /////////////////////////////////////
 // $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];
 /////////////////////////////////////
