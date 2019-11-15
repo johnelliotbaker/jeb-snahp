@@ -312,43 +312,44 @@ img.emotes_default.discord_44
 }
 
 /* Thanksgiving Special */
-{% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
-.headerbar
-{
-    background-image: url('https://i.imgur.com/74NCMtX.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+.default-link{
+	position:relative; 
+    width:100%;
     min-height:70px;
-    cursor: pointer;
+	z-index: 1;
 }
-#site-description
+
+{% if STYLE_NAME in ['hexagon', 'prosilver', 'acieeed'] %}
+.headerbar.thanksgiving
 {
-    display: none;
-    cursor: pointer;
+	background-image: url('https://i.imgur.com/74NCMtX.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	min-height:70px;
+}
+#site-description.thanksgiving
+{
+	display: none;
+	cursor: pointer;
 }
 {% endif %}
 
 {% if STYLE_NAME in ['prosilver'] %}
-html, body
+html.thanksgiving, body.thanksgiving
 {
-    background-image: url('https://i.imgur.com/EMA6YPm.png');
-    background-repeat: no-repeat;
+	background-image: url('https://i.imgur.com/EMA6YPm.png');
+	background-repeat: no-repeat;
+}
+#search-box.thanksgiving
+{
+    margin-top: 3px;
 }
 {% endif %}
 
 {% if STYLE_NAME in ['hexagon', 'acieeed'] %}
-html, body
+html.thanksgiving, body.thanksgiving
 {
-    background-image: url('https://i.imgur.com/WFtaXnR.jpg');
+	background-image: url('https://i.imgur.com/WFtaXnR.jpg');
 }
 {% endif %}
-
-.thx
-{
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    margin: -20px;
-    background-color: #888;
-}
