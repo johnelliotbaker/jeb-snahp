@@ -1,0 +1,62 @@
+<!-- INCLUDE overall_header.html -->
+<script charset="utf-8">
+  $(document).ready(function(){
+    Form_util.disable_resubmit();
+  });
+</script>
+
+<div class="twbs">
+  {% include '@jeb_snahp/rh_tags/component/nav/base.html' %}
+  <form action="{U_ACTION}" method="POST">
+
+    <div class="input-group mt-2 mb-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Tag Group</span>
+      </div>
+      <input type="text" class="form-control form-control" name="groupname" placeholder="video_res"></input>
+    </div>
+
+    <div class="row">
+      <div class="col pr-1">
+        {% for row_id in 0..9 %}
+        <div class="input-group input-group-sm mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Tagname</span>
+          </div>
+          <input type="text" class="form-control form-control-sm" name="tagname_{row_id}" placeholder="1080"></input>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col pl-1">
+        {% for row_id in 10..19 %}
+        <div class="input-group input-group-sm mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Tagname</span>
+          </div>
+          <input type="text" class="form-control form-control-sm" name="tagname_{row_id}" placeholder="1080"></input>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="row mx-0 mt-1 mb-2">
+      <button type="submit" name="add" class="btn btn-success btn-block">Add</button>
+    </div>
+
+    <div class="mb-2">
+      <div class="input-group mt-2 mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Delete Tags</span>
+        </div>
+        <input type="text" class="form-control form-control" name="delete_queue" placeholder="1080,4k"></input>
+      </div>
+      <button type="submit" name="delete" class="btn btn-secondary btn-block">Delete</button>
+    </div>
+
+    {S_FORM_TOKEN}
+  </form>
+  <div>
+    {% include '@jeb_snahp/rh_tags/component/group_tags_tree/base.html' %}
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->

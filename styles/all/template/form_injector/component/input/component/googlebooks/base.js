@@ -254,7 +254,6 @@ Googlebooks.startHandlingGooglebooksAjax = function()
     {
         url += `+inauthor:${author}`;
     }
-    console.log(url);
     $ajax = $.ajax(
         {
             url: url,

@@ -37,7 +37,6 @@ Imdb.getRating = function(aRating)
 
 Imdb.maketemplate = function(imdb)
 {
-    console.log(imdb);
     try { var img               = `[center][img width="300"]${imdb['Poster']}[/img][/center]\n`;
     } catch(err) { var img      = ""; }
     try { var title             = `[center][size=150][color=#FF0000][b]${imdb['Title']} (${imdb['Year']})[/b][/color][/size][/center]\n`;

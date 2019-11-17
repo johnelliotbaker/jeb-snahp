@@ -144,6 +144,13 @@ Form_util.setup_ctrlenter_quickreply = function()
     });
 }
 
+Form_util.disable_resubmit = function()
+{
+  if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+  }
+}
+
 $(function () {
     Form_util.setup_ctrlenter_quickreply();
 });
@@ -172,7 +179,6 @@ Thanks_givings.setup = function()
         location.reload();
     })
     $widget.css('z-index', 1000);
-    console.log(seasonal);
     $inner = $('.headerbar .inner');
     $inner.append($widget);
 }

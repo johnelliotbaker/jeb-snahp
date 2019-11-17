@@ -1,0 +1,27 @@
+<!-- IF not $varset_4917bcb86c -->
+<!-- DEFINE $varset_4917bcb86c = true -->
+<!-- INCLUDEJS @jeb_snahp/rh_tags/component/group_tags_tree/base.js -->
+<!-- ENDIF -->
+
+<table class="table table-sm table-dark table-striped table-borderless">
+  <thead>
+    <tr class="row mx-0">
+      <th scope="col" class="col-3">Tag Group</th>
+      <th scope="col" class="col-9">Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for groupname, GROUP in TAGTREE %}
+    <tr class="row mx-0">
+      <td class="col-3">
+        <span class="pointer noselect" data-groupname="{groupname}" onClick="Rh_tags_tree.append_forum_id(event);">
+          {groupname}
+        </span>
+      </td>
+      <td class="col-9 noselect" id="tags_{groupname}">
+        {{GROUP.tagnames | join(', ')}}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

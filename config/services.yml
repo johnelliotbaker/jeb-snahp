@@ -1,6 +1,5 @@
 imports:
     - { resource: logger.yml }
-    - { resource: rh_tags.yml }
     - { resource: parameters.yml }
     - { resource: cron.yml }
     - { resource: economy/economy.yml }
@@ -13,6 +12,7 @@ imports:
     - { resource: foe_blocker/service.yml }
     - { resource: api_proxy/service.yml }
     - { resource: avatar/service.yml }
+    - { resource: rh_tags/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

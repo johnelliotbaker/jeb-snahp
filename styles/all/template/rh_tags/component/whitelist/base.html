@@ -1,12 +1,12 @@
 <!-- INCLUDE overall_header.html -->
-
-<script>
-  if ( window.history.replaceState ) {
-    window.history.replaceState( null, null, window.location.href );
-  }
+<script charset="utf-8">
+  $(document).ready(function(){
+    Form_util.disable_resubmit();
+  });
 </script>
 
 <div class="twbs">
+  {% include '@jeb_snahp/rh_tags/component/nav/base.html' %}
   <form action="{U_ACTION}" method="POST">
     <div class="form-group mb-2">
       <label for="whitelist_textarea">RH Tags Whitelist</label>
@@ -15,5 +15,8 @@
     <button type="submit" name="submit" class="btn btn-success btn-block">Save</button>
     {S_FORM_TOKEN}
   </form>
+
 </div>
+
+
 <!-- INCLUDE overall_footer.html -->

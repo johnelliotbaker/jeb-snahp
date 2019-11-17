@@ -13,7 +13,6 @@ Gamespot.select_key = function(aKey)
 
 Gamespot.makeGamespotTemplate = function(data)
 {
-    // console.log(data.image);
     try { var thumbnail     = data.image.original;} catch(e) { var thumbnail = "";};
     try { var title         = data.name;} catch(e) { var title = "";};
     try { var subtitle      = data['subtitle'];} catch(e) { var subtitle = "";};

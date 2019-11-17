@@ -119,9 +119,7 @@ class foe_listener implements EventSubscriberInterface
         {
             trigger_error('You have been blocked by the topic starter and cannot create new posts in this topic. Error Code: cf82bd2706');
         }
-        $poster_id = $post_data['poster_id'];
-        if (!isset($poster_id)) return false;
-        $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_blocker_id($blocked_id, $poster_id);
+        $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_blocker_id($blocked_id, $blocker_id);
     }/*}}}*/
 
     public function hide_from_blocked_user_on_viewtopic($event)/*{{{*/

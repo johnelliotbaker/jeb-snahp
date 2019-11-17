@@ -24,14 +24,9 @@
 {% endif %}
 {% if B_SHOW_REQUESTS_SOLVED and postrow.REQUESTS_SOLVED %}
 <dd class="profile-posts">
-  <strong>Has solved: 
+  <strong>Requests solved: 
     <span class="text_secondary">
       {postrow.REQUESTS_SOLVED} 
-      {% if postrow.REQUESTS_SOLVED==1 %}
-      request
-      {% else %}
-      requests
-      {% endif %}
     </span>
     {% include '@jeb_snahp/avatar/component/request_solved_image/base.html' %}
   </strong>

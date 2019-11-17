@@ -1,0 +1,46 @@
+<!-- INCLUDE overall_header.html -->
+<script charset="utf-8">
+  $(document).ready(function(){
+    Form_util.disable_resubmit();
+  });
+</script>
+
+<div class="twbs">
+  {% include '@jeb_snahp/rh_tags/component/nav/base.html' %}
+  <form action="{U_ACTION}" method="POST">
+
+    <div class="input-group mt-2 mb-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Forum IDs</span>
+      </div>
+      <input type="text" class="form-control" name="forum_ids" placeholder="1,2,10-11,22"></input>
+    </div>
+
+    {% for row_id in 0..4  %}
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Priority</span>
+      </div>
+      <input type="number" min="1" max="9999" value="1" class="col-2 form-control text-right mr-1" name="priority_{row_id}"></input>
+
+
+      <div class="input-group-prepend">
+        <span class="input-group-text">Tag Group</span>
+      </div>
+      <input type="text" class="form-control" name="groupname_{row_id}" placeholder="video_res"></input>
+    </div>
+    {% endfor %}
+
+    <div class="row mx-0 mb-2">
+      <button type="submit" name="add" class="btn btn-success btn-block">Add</button>
+      <button type="submit" name="delete" class="btn btn-secondary btn-block">Delete</button>
+    </div>
+    {S_FORM_TOKEN}
+  </form>
+
+  <div class="mt-2">
+    {% include '@jeb_snahp/rh_tags/component/forum_tags_tree/base.html' %}
+  </div>
+
+</div>
+<!-- INCLUDE overall_footer.html -->

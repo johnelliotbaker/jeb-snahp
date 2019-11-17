@@ -1,8 +1,12 @@
+imports:
+    - { resource: 'rh_tags/parameters.yml' }
 services:
     jeb.snahp.rh_tags_listener:
         class: jeb\snahp\event\rh_tags_listener
         arguments:
+            - '@request'
             - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.rh_tags_helper'
         tags:
             - { name: event.listener }
     jeb.snahp.rh_tags_list_controller:
@@ -16,5 +20,15 @@ services:
             - '@service_container'
             - '@controller.helper'
             - '@config_text'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.rh_tags_helper'
+    jeb.snahp.rh_tags_helper:
+        class: jeb\snahp\core\rh_tags\helper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@request'
+            - '@service_container'
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'

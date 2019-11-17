@@ -1,3 +1,5 @@
+routing_rh_tags:
+    resource: 'rh_tags/routing.yml'
 routing_api_proxy:
     resource: 'api_proxy/routing.yml'
 routing_foe_blocker:
@@ -6,8 +8,6 @@ routing_switchboard:
     resource: 'routing/switchboard.yml'
 routing_database_manager:
     resource: 'routing/database_manager.yml'
-routing_rh_tags:
-    resource: 'routing/rh_tags.yml'
 routing_test:
     resource: 'routing/test.yml'
 routing_logger:
