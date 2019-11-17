@@ -96,6 +96,9 @@ class main_listener extends base implements EventSubscriberInterface
             'core.search_modify_tpl_ary'                  => [
                 ['process_curly_tags_for_search', 1],
             ],
+            'core.viewtopic_cache_user_data' => [
+                ['shorter_join_date', 1],
+            ],
             'core.viewtopic_modify_post_row'              => [
                 ['setup_viewtopic_modify_post_row_data', 1000],
                 ['easter_cluck', 1],
@@ -510,6 +513,14 @@ class main_listener extends base implements EventSubscriberInterface
             $this->template->assign_block_vars('reputation', $data);
             $i += 1;
         }
+    }/*}}}*/
+
+    public function shorter_join_date($event)/*{{{*/
+    {
+        $row = $event['row'];
+        $user_cache_data = $event['user_cache_data'];
+        $user_cache_data['joined'] = $this->user->format_date($row['user_regdate'], 'M d, Y');
+        $event['user_cache_data'] = $user_cache_data;
     }/*}}}*/
 
     public function show_badges_in_avatar($event)/*{{{*/
