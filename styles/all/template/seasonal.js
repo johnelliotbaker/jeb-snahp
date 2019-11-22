@@ -1,5 +1,8 @@
 // Season Theme
 var Seasonal_theme = {};
+
+Seasonal_theme.modify_elem_list = [ '.headerbar', '.site_logo', '.logo', '.site-description'];
+
 Seasonal_theme.toggle_thanksgiving = function()
 {
     var tg_enable = Cookie.get('seasonal', 'thanksgiving_enable');
@@ -22,22 +25,18 @@ Seasonal_theme.toggle_thanksgiving = function()
 Seasonal_theme.apply_thanksgiving = function()
 {
     var enable = Cookie.get('seasonal', 'thanksgiving_enable');
-    console.log(enable);
     if (enable===undefined || enable)
     {
-        $('.headerbar .inner').prepend('<a class="default-link" href="/"></a>');
-        $('.headerbar').addClass('thanksgiving');
-        $('#site-description').addClass('thanksgiving');
-        $('#search-box').addClass('thanksgiving');
-        $('body').addClass('thanksgiving');
-        $('html').addClass('thanksgiving');
+        for (var elem_name of this.modify_elem_list)
+        {
+            $(elem_name).addClass('thanksgiving');
+        }
     }
     else
     {
-        $('.headerbar').removeClass('thanksgiving');
-        $('#site-description').removeClass('thanksgiving');
-        $('#search-box').removeClass('thanksgiving');
-        $('body').removeClass('thanksgiving');
-        $('html').removeClass('thanksgiving');
+        for (var elem_name of this.modify_elem_list)
+        {
+            $(elem_name).removeClass('thanksgiving');
+        }
     }
 }

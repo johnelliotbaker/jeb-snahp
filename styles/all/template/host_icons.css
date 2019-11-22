@@ -20,14 +20,3 @@ img.ios_icon
     margin-right: 1px;
     margin-bottom: 3px;
 }
-
-{% if STYLE_NAME=='basic' %}
-.small_host_icon img.mega_icon,
-.small_host_icon img.gdrive_icon,
-.small_host_icon img.zippy_icon,
-.small_host_icon img.android_icon,
-.small_host_icon img.ios_icon
-{
-    margin-bottom: -6px;
-}
-{% endif %}

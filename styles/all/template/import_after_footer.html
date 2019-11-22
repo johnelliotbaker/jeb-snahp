@@ -1,0 +1,8 @@
+{% include '@jeb_snahp/imgcompare/base.html' %}
+
+<div id="preloader">
+  <!-- Dynamic loading of background is not being cached properly -->
+  {% for PRELOAD_BANNER_IMG_URL in PRELOAD_BANNER_IMG_URLS %}
+  <img src="{PRELOAD_BANNER_IMG_URL}"></img>
+  {% endfor %}
+</div>

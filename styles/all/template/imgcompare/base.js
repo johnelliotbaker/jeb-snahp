@@ -96,3 +96,6 @@ ImgCompare.initbeer = function()
     });
 }
 
+$(window).resize(()=>{
+    ImgCompare.update_modal_window();
+})

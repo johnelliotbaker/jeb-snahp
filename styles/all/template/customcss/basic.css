@@ -1,3 +1,14 @@
+/* host icons */
+.small_host_icon img,
+img.mega_icon,
+img.gdrive_icon,
+img.zippy_icon,
+img.android_icon,
+img.ios_icon
+{
+    margin-bottom: -6px !important;
+}
+
 /* Favorites */
 tr.favorite:hover
 {

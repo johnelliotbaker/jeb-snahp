@@ -1190,6 +1190,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_custom_css($event)/*{{{*/
     {
+        $p_banners = $this->container->getParameter('jeb.snahp.styles.banners');
+        $banner_url = $p_banners[array_rand($p_banners)];
+        $this->template->assign_vars([
+            'BANNER_IMG_URL' => $banner_url,
+            'PRELOAD_BANNER_IMG_URLS' => $p_banners,
+        ]);
         $user_style = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
             WHERE style_id=' . $user_style;

@@ -386,3 +386,50 @@ tags-input input
 {
     margin-top: 3px !important;
 }
+
+/* banner */
+
+.headerbar.thanksgiving
+{
+    background-color: #171717;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 0;
+}
+
+.site-description.thanksgiving
+{
+    width: 100%;
+    text-align: center;
+}
+
+.logo.thanksgiving
+{
+    padding: 0;
+    float: none;
+}
+
+.site_logo.thanksgiving
+{
+    background-image:  url(https://i.imgur.com/IUnIe2E.png);
+    opacity: 0.6;
+    background-size: auto 80px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-top: 80px;
+    margin: 0;
+}
+
+@media (max-width: 700px)
+{
+    .site_logo.thanksgiving
+    {
+        background: none;
+    }
+
+    .logo.thanksgiving
+    {
+        height: 8px;
+    }
+}

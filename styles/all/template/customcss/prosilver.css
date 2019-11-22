@@ -34,3 +34,43 @@ table.autofill tr:nth-child(odd) {
     background-color: #cadceb !important;
     color: black !important;
 }
+
+
+/* banner */
+
+.headerbar.thanksgiving
+{
+    background-color: #12A3EB;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#site-description > h1,
+#site-description > p:nth-child(3)
+{
+    display: none;
+}
+
+.site_logo.thanksgiving
+{
+    background-image:  url(https://i.imgur.com/DqGHQ7N.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0 0 8px 0;
+    min-height: 50px;
+}
+
+@media( max-width: 700px )
+{
+    .headerbar.thanksgiving
+    {
+        padding: 0;
+    }
+
+    .site_logo.thanksgiving
+    {
+        margin: 0;
+    }
+}

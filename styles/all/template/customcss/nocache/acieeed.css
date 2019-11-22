@@ -1,0 +1,3 @@
+/* nocache */
+/* dynamic loading cannot be cached */
+.headerbar.thanksgiving { background-image: url({BANNER_IMG_URL}); }

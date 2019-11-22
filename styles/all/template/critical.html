@@ -1,9 +1,48 @@
+{S_HIDDEN_FIELDS_ALT}
+{S_REQ_HIDDEN_FIELDS}
+
+<!-- When javascript contains curly braces, including with twig will have erratic behavior. -->
+<!-- So include using INCLUDEJS directive. -->
+<!-- However, INCLUDEJS directive will add javascript at the end. -->
+<!-- So if javascript is needed in flow dependent location, use twig to embed the code. -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!-- INCLUDECSSS @jeb_snahp/bootstrap4-ns.min.css -->
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,700&display=swap" rel="stylesheet">
+
+<!-- preload -->
+<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/dereferrer.js?v=1"></script>
+<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/cookie.js?v=1"></script>
+<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/dict.js?v=1"></script>
+<!-- preload -->
+
+<!-- volatile  -->
+<!-- While in development, add scripts here. When stable, move to either preload or lastload -->
 <script>
-  {% include '@jeb_snahp/dereferrer.js' %}
-  {% include '@jeb_snahp/dict.js' %}
-  {% include '@jeb_snahp/cookie.js' %}
   {% include '@jeb_snahp/seasonal.js' %}
 </script>
-{% include '@jeb_snahp/imgcompare/base.html' %}
+<!-- volatile -->
+
+<style>
+  {% include '@jeb_snahp/base.css' %}
+</style>
+{% if STYLE_NAME %}
+<style>
+{% include '@jeb_snahp/customcss/nocache/' ~ STYLE_NAME ~ '.css' %}
+</style>
+<!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_TYPE}.css?v=9 -->
+<!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_NAME}.css?v=9 -->
+<!-- INCLUDEJS @jeb_snahp/customcss/{STYLE_NAME}.js?v=7 -->
+{% endif %}
+
+<!-- loadlast -->
+<!-- INCLUDECSS @jeb_snahp/twbs.css -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->
+<!-- INCLUDECSS @jeb_snahp/host_icons.css -->
+<!-- INCLUDECSS @jeb_snahp/request_tags.css -->
+<!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
+<!-- INCLUDEJS @jeb_snahp/utility.js -->
+<!-- INCLUDEJS @jeb_snahp/base.js -->
+<!-- INCLUDEJS @jeb_snahp/emote_selector.js -->
+<!-- loadlast -->

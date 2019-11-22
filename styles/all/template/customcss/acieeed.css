@@ -154,7 +154,7 @@ div.codebox pre
 .mediainfo .video,
 .mediainfo .audio
 {
-	background: #000000 url(/ext/jeb/snahp/styles/all/template/bg_fora.png) repeat-x !important;
+    background: #000000 url(/ext/jeb/snahp/styles/all/template/bg_fora.png) repeat-x !important;
     border: 1px solid #f8c301;
     border-radius: 6px !important;
     padding-top: 13px !important;
@@ -218,4 +218,49 @@ tags-input .remove-button
 tags-input input
 {
     margin-top: 3px !important;
+}
+
+/* banner */
+
+.headerbar.thanksgiving
+{
+    background-color: #12A3EB;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.logo.thanksgiving
+{
+    background: none;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+    margin: 0 0 10px 0;
+    background-image: url(https://i.imgur.com/DqGHQ7N.png);
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    max-height: 50px;
+}
+
+@media( max-width: 700px )
+{
+    .logo.thanksgiving
+    {
+        display: inline-block;
+        margin: 0 0 4px 0;
+        padding: 0;
+    }
+
+    .site_logo.thanksgiving
+    {
+        margin: 0;
+    }
+
+    .headerbar.thanksgiving
+    {
+        display: none;
+        padding: 0;
+    }
 }
