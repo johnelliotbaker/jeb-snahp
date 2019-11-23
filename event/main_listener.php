@@ -1236,7 +1236,6 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $hour = $this->user->format_date(time(), 'H');
         $time_of_day = 'default';
-        $hour = 6;
         if (in_array($hour, [12, 13, 14, 15, 16]))
         {
             $time_of_day = 'afternoon';
