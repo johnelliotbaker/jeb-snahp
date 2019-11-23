@@ -16,3 +16,29 @@ parameters:
             morning:
                 - https://i.imgur.com/7szjSt7.jpg
         dark: *light
+        time_of_day:
+            0: &zero 'latenight'
+            1: 'twilight'
+            2: 'twilight'
+            3: 'twilight'
+            4: 'twilight'
+            5: 'twilight'
+            6: 'morning'
+            7: 'morning'
+            8: 'morning'
+            9: 'morning'
+            10: 'morning'
+            11: 'morning'
+            12: 'afternoon'
+            13: 'afternoon'
+            14: 'afternoon'
+            15: 'afternoon'
+            16: 'afternoon'
+            17: 'evening'
+            18: 'evening'
+            19: 'evening'
+            20: 'evening'
+            21: 'latenight'
+            22: 'latenight'
+            23: 'latenight'
+            24: *zero

@@ -1191,6 +1191,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_custom_css($event)/*{{{*/
     {
+        $assets_version = $this->config['assets_version'];
         $user_style = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
             WHERE style_id=' . $user_style;
@@ -1229,33 +1230,14 @@ class main_listener extends base implements EventSubscriberInterface
         $s_hidden_fields = build_hidden_fields($hidden_fields);
         $this->template->assign_vars([
             'S_STYLE_INFO' => $s_hidden_fields,
+            'ASSETS_VERSION' => $assets_version,
         ]);
     }/*}}}*/
 
     public function setup_custom_css_after($event)/*{{{*/
     {
         $hour = $this->user->format_date(time(), 'H');
-        $time_of_day = 'default';
-        if (in_array($hour, [12, 13, 14, 15, 16]))
-        {
-            $time_of_day = 'afternoon';
-        }
-        elseif (in_array($hour, [17, 18, 19, 20]))
-        {
-            $time_of_day = 'evening';
-        }
-        elseif (in_array($hour, [21, 22, 23, 24, 0]))
-        {
-            $time_of_day = 'latenight';
-        }
-        elseif (in_array($hour, [1, 2, 3, 4, 5]))
-        {
-            $time_of_day = 'twilight';
-        }
-        elseif (in_array($hour, [6,7,8,9,10,11]))
-        {
-            $time_of_day = 'morning';
-        }
+        $time_of_day = $this->container->getParameter('jeb.snahp.styles.banners')['time_of_day'][$hour];
         $p_banners = $this->container->getParameter('jeb.snahp.styles.banners')[$this->style_type][$time_of_day];
         $banner_url = $p_banners[array_rand($p_banners)];
         $this->template->assign_vars([
