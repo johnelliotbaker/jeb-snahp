@@ -40,7 +40,7 @@ table.autofill tr:nth-child(odd) {
 
 .headerbar.thanksgiving
 {
-    background-color: #12A3EB;
+    background-color: transparent;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

@@ -77,6 +77,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.user_setup_after'                       => [
                 ['setup_core_vars', 0],
+                ['setup_custom_css_after', 0],
             ],
             'core.memberlist_prepare_profile_data'        => [
                 ['setup_profile_variables', 10],
@@ -1190,12 +1191,6 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_custom_css($event)/*{{{*/
     {
-        $p_banners = $this->container->getParameter('jeb.snahp.styles.banners');
-        $banner_url = $p_banners[array_rand($p_banners)];
-        $this->template->assign_vars([
-            'BANNER_IMG_URL' => $banner_url,
-            'PRELOAD_BANNER_IMG_URLS' => $p_banners,
-        ]);
         $user_style = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . $this->table_prefix . 'styles
             WHERE style_id=' . $user_style;
@@ -1227,6 +1222,39 @@ class main_listener extends base implements EventSubscriberInterface
         $this->style_type = 'light';
         break;
         }
+    }/*}}}*/
+
+    public function setup_custom_css_after($event)/*{{{*/
+    {
+        $hour = $this->user->format_date(time(), 'H');
+        $time_of_day = 'default';
+        $hour = 6;
+        if (in_array($hour, [12, 13, 14, 15, 16]))
+        {
+            $time_of_day = 'afternoon';
+        }
+        elseif (in_array($hour, [17, 18, 19, 20]))
+        {
+            $time_of_day = 'evening';
+        }
+        elseif (in_array($hour, [21, 22, 23, 24, 0]))
+        {
+            $time_of_day = 'latenight';
+        }
+        elseif (in_array($hour, [1, 2, 3, 4, 5]))
+        {
+            $time_of_day = 'twilight';
+        }
+        elseif (in_array($hour, [6,7,8,9,10,11]))
+        {
+            $time_of_day = 'morning';
+        }
+        $p_banners = $this->container->getParameter('jeb.snahp.styles.banners')[$this->style_type][$time_of_day];
+        $banner_url = $p_banners[array_rand($p_banners)];
+        $this->template->assign_vars([
+            'BANNER_IMG_URL' => $banner_url,
+            'PRELOAD_BANNER_IMG_URLS' => $p_banners,
+        ]);
     }/*}}}*/
 
     public function modify_quickreply_signature($event)/*{{{*/

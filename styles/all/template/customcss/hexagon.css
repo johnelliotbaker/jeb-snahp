@@ -413,12 +413,13 @@ tags-input input
 .site_logo.thanksgiving
 {
     background-image:  url(https://i.imgur.com/IUnIe2E.png);
-    opacity: 0.6;
+    opacity: 0.9;
     background-size: auto 80px;
     background-repeat: no-repeat;
     background-position: center center;
     padding-top: 80px;
     margin: 0;
+    margin-bottom: -2px;
 }
 
 @media (max-width: 700px)

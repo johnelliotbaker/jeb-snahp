@@ -17,7 +17,7 @@ UserColor.elem.save_button.click((event)=>{
             }
             else
             {
-                console.log(resp);
+                // console.log(resp);
             }
         });
     }
@@ -31,7 +31,7 @@ UserColor.elem.reset_button.click((event)=>{
         }
         else
         {
-            console.log(resp);
+            // console.log(resp);
         }
     });
 })
