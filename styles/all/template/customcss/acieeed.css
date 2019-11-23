@@ -237,30 +237,17 @@ tags-input input
     box-shadow: none;
     text-align: center;
     margin: 3px 0 0 0;
-    background-image: url(https://i.imgur.com/DqGHQ7N.png);
+    background-image: url(https://i.imgur.com/ubNxk9H.png);
     background-size: auto 100%;
     background-repeat: no-repeat;
     background-position: center center;
-    max-height: 50px;
+    max-height: 67px;
 }
 
 @media( max-width: 700px )
 {
-    .logo.thanksgiving
-    {
-        display: inline-block;
-        margin: 0 0 4px 0;
-        padding: 0;
-    }
-
-    .site_logo.thanksgiving
-    {
-        margin: 0;
-    }
-
     .headerbar.thanksgiving
     {
         display: none;
-        padding: 0;
     }
 }
