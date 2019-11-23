@@ -1222,6 +1222,14 @@ class main_listener extends base implements EventSubscriberInterface
         $this->style_type = 'light';
         break;
         }
+        $hidden_fields = [
+            'snp_style_name' => $style_name,
+            'snp_style_type' => $this->style_type,
+        ];
+        $s_hidden_fields = build_hidden_fields($hidden_fields);
+        $this->template->assign_vars([
+            'S_STYLE_INFO' => $s_hidden_fields,
+        ]);
     }/*}}}*/
 
     public function setup_custom_css_after($event)/*{{{*/
