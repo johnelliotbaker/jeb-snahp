@@ -1236,7 +1236,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function setup_custom_css_after($event)/*{{{*/
     {
-        $hour = $this->user->format_date(time(), 'H');
+        $hour = (int) $this->user->format_date(time(), 'H');
         $time_of_day = $this->container->getParameter('jeb.snahp.styles.banners')['time_of_day'][$hour];
         $p_banners = $this->container->getParameter('jeb.snahp.styles.banners')[$this->style_type][$time_of_day];
         $banner_url = $p_banners[array_rand($p_banners)];
