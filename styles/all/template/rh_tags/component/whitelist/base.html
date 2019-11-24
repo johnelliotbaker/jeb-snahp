@@ -9,8 +9,7 @@
   {% include '@jeb_snahp/rh_tags/component/nav/base.html' %}
   <form action="{U_ACTION}" method="POST">
     <div class="form-group mb-2">
-      <label for="whitelist_textarea">RH Tags Whitelist</label>
-      <textarea class="form-control" name="whitelist" id="whitelist_textarea" rows="3">{RH_TAGS_WHITELIST}</textarea>
+      <textarea class="form-control mt-2" name="whitelist" id="whitelist_textarea" rows="3">{RH_TAGS_WHITELIST}</textarea>
     </div>
     <button type="submit" name="submit" class="btn btn-success btn-block">Save</button>
     {S_FORM_TOKEN}

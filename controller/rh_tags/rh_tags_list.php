@@ -264,7 +264,7 @@ class rh_tags_list
     {
         $cd = 3600;
         $fid_listings = $this->config['snp_fid_listings'];
-        $a_forum_data = $this->select_subforum($fid_listings, $cd);
+        $a_forum_data = $this->get_sub_forums();
         $sql_array = [
             'SELECT'	=> 'a.groupname',
             'FROM'		=> [$this->tbl['tags_forum_map'] => 'a'],
@@ -274,6 +274,7 @@ class rh_tags_list
         {
             $forum_id = $forum_data['forum_id'];
             $forum_name = $forum_data['forum_name'];
+            $depth = $forum_data['depth'];
             $sql_array['WHERE'] = "a.forum_id=${forum_id}";
             $sql = $this->db->sql_build_query('SELECT', $sql_array);
             $result = $this->db->sql_query($sql);
@@ -282,6 +283,7 @@ class rh_tags_list
             $arr = array_map(function($arg){return $arg['groupname'];}, $rowset);
             $data[$forum_id]['forumname'] = $forum_name;
             $data[$forum_id]['groupnames'] = $arr;
+            $data[$forum_id]['depth'] = $depth;
         }
         return $data;
     }/*}}}*/
@@ -290,10 +292,52 @@ class rh_tags_list
     {
         global $phpbb_root;
         include_once($phpbb_root . 'includes/functions_admin.php');
+        $fid = get_forum_branch($parent_id, 'children');
+        return array_map(function($array){return $array['forum_id'];}, $fid);
+    }/*}}}*/
+
+    private function get_sub_forums()/*{{{*/
+    {
         $fid_listings = $this->config['snp_fid_listings'];
-        $fid = get_forum_branch($fid_listings, 'children');
-        $data = array_map(function($array){return ['forum_name' => $array['forum_name'], 'forum_id' => $array['forum_id']];}, $fid);
-        return $data;
+        $allowed_forum_ids = $this->select_subforum($fid_listings, $cd=60);
+        if (sizeof($allowed_forum_ids) > 0)
+        {
+            $sql = 'SELECT forum_name, forum_id, parent_id, forum_type
+                    FROM ' . FORUMS_TABLE . '
+                    WHERE ' . $this->db->sql_in_set('forum_id', $allowed_forum_ids) . ' AND forum_type <> ' . FORUM_LINK . '
+                    ORDER BY left_id ASC';
+            $result = $this->db->sql_query($sql);
+            $current_level = 0;			// How deeply nested are we at the moment
+            $parent_stack = [0];	// Holds a stack showing the current parent_id of the forum
+            $res = [];
+            while ($row = $this->db->sql_fetchrow($result))
+            {
+                if ((int) $row['parent_id'] != (int) end($parent_stack) || (end($parent_stack) == 0))
+                {
+                    if (in_array($row['parent_id'], $parent_stack))
+                    {
+                        while ((int) $row['parent_id'] != (int) end($parent_stack))
+                        {
+                            array_pop($parent_stack);
+                            $current_level--;
+                        }
+                    }
+                    else
+                    {
+                        array_push($parent_stack, (int) $row['parent_id']);
+                        $current_level++;
+                    }
+                }
+                $entry = [
+                    'forum_name' => $row['forum_name'],
+                    'forum_id' => $row['forum_id'],
+                    'depth' => $current_level,
+                ];
+                $res[] = $entry;
+            }
+            $this->db->sql_freeresult($result);
+        }
+        return $res;
     }/*}}}*/
 
 }

@@ -6,19 +6,19 @@
 <table class="table table-sm table-dark table-striped table-borderless">
   <thead>
     <tr class="row mx-0">
-      <th scope="col" class="col-3">Forum</th>
-      <th scope="col" class="col-9">Tag Groups</th>
+      <th scope="col" class="col-4">Forum</th>
+      <th scope="col" class="col-8">Tag Groups</th>
     </tr>
   </thead>
   <tbody>
     {% for forum_id, FORUM in TAGTREE %}
     <tr class="row mx-0">
-      <td class="col-3">
-        <span class="pointer noselect" data-forum_id="{forum_id}" onClick="Rh_tags_tree.append_forum_id(event);">
+      <td class="col-4">
+        <span style="margin-left:{FORUM.depth}0px;" class="pointer noselect" data-forum_id="{forum_id}" onClick="Rh_tags_tree.append_forum_id(event);">
           {FORUM.forumname}
         </span>
       </td>
-      <td class="col-9 noselect">
+      <td class="col-8 noselect">
         {{FORUM.groupnames | join(', ')}}
       </td>
     </tr>
