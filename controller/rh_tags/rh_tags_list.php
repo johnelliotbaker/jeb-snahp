@@ -266,8 +266,9 @@ class rh_tags_list
         $fid_listings = $this->config['snp_fid_listings'];
         $a_forum_data = $this->get_sub_forums();
         $sql_array = [
-            'SELECT'	=> 'a.groupname',
+            'SELECT'	=> 'a.groupname, a.priority',
             'FROM'		=> [$this->tbl['tags_forum_map'] => 'a'],
+            'ORDER_BY' => 'a.priority DESC',
         ];
         $data = [];
         foreach($a_forum_data as $forum_data)
@@ -280,7 +281,7 @@ class rh_tags_list
             $result = $this->db->sql_query($sql);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
-            $arr = array_map(function($arg){return $arg['groupname'];}, $rowset);
+            $arr = array_map(function($arg){return $arg['groupname'] . " ({$arg['priority']})";}, $rowset);
             $data[$forum_id]['forumname'] = $forum_name;
             $data[$forum_id]['groupnames'] = $arr;
             $data[$forum_id]['depth'] = $depth;
