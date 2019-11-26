@@ -6,7 +6,7 @@ Goodreads.get_pub_date = function(data)
     return a_name.filter(key => key in data).map(x => data[x]).join('-');
 }
 
-Goodreads.make_authors_html = function(data)
+Goodreads.make_authors_html_with_compact_gallery = function(data)
 {
     try {
         var authors = data.authors.author;
@@ -37,6 +37,27 @@ Goodreads.make_authors_html = function(data)
     }
 }
 
+Goodreads.make_authors_html = function(data)
+{
+    try {
+        var authors = data.authors.author;
+        if (Array.isArray(authors))
+        {
+            authors = authors.map((elem, index) => { return elem.name; });
+            var entry = authors.slice(0, -1).join(', ') + ' & '+ authors.slice(-1);
+        }
+        else
+        {
+            var entry = authors.name;
+        }
+        var a = `[center][b][size=90]by[/size][/b]\n\n[size=165][color=#ff4000]${entry}[/color][/size][/center]\n\n`
+        return a;
+    } catch(e)
+    {
+        return '';
+    }
+}
+
 Goodreads.makeTemplate = function(data)
 {
     try { var thumbnail     = data.image_url.replace(/SX[0-9]+/ig,"SX2000");} catch(e) { var thumbnail = "";};
@@ -53,12 +74,12 @@ Goodreads.makeTemplate = function(data)
     try { var publisher     = data.publisher;} catch(e) { var publisher = "";};
     try { var ratingsCount  = data.ratings_count;} catch(e) { var ratingsCount = "";};
     var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
-    var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
+    var title         = getEntryOrEmpty(`[center][size=180][b][url={url}]{text}[/url][/b][/size][/center]\n`, title, url);
     var authors       = getEntryOrEmpty(`[center][b][size=80]by[/size]\n\n[size=180]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(authors, ', '));
     var authors       = this.make_authors_html(data);
-    var averageRating = getEntryOrEmpty(`[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`, averageRating);
+    var averageRating = getEntryOrEmpty(`[center][size=110]{text} / 5[/size] (based on ${ratingsCount} ratings)[/center]\n`, averageRating);
     var categories    = getEntryOrEmpty(`[center][b][size=140]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(categories, ', '));
-    var description   = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, description);
+    var description   = getEntryOrEmpty(`{text}\n`, description);
     var publishedDate = getEntryOrEmpty(`[color=#FF8000][b]Published Date[/b][/color]: {text}\n`, publishedDate);
     var printType     = getEntryOrEmpty(`[color=#FF8000][b]Print Type[/b][/color]: {text}\n`, printType);
     var language      = getEntryOrEmpty(`[color=#FF8000][b]Language[/b][/color]: {text}\n`, language);
@@ -66,17 +87,14 @@ Goodreads.makeTemplate = function(data)
     var pageCount     = getEntryOrEmpty(`[color=#FF8000][b]Page Count[/b][/color]: {text}\n`, pageCount);
     var ratingsCount  = getEntryOrEmpty(`[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`, ratingsCount);
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
-    var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
-[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
-[/b][/hide]\n`
+    var dlink         = `[hide]\n\n[/hide]\n`
     var text = '' + 
         thumbnail + '\n\n\n' +
         title + '\n\n\n' +
         authors +  '\n\n' +
-        averageRating + '\n\n\n' +
-        description + '\n\n' +
-        publishedDate + language + publisher + pageCount +
-        ddl + dlink;
+        averageRating + '\n\n' +
+        description + '\n' +
+        publishedDate + language + publisher + pageCount + '\n';
     text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
     text = text.replace(/(\r?\n|\r){5,99}/g, '\n\n\n\n');
     return text;

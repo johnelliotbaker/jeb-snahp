@@ -94,6 +94,12 @@ parameters:
       data:
         encoder:
           tagname: 'ItchyFinger'
+    93017: #HandsMcgee
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'HANDS'
 
     12694: #pandacircus
       queue:
