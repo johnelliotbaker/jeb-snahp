@@ -1,4 +1,9 @@
 dt
 {
-    width: 130px;
+    width: 150px;
+}
+
+form.blocker_form
+{
+    font-size: 13px;
 }

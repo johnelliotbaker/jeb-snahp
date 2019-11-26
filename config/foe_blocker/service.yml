@@ -14,6 +14,19 @@ services:
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'
             - '@jeb.snahp.foe_blocker_helper'
+    jeb.snahp.foe_blocker_mcp:
+        class: jeb\snahp\controller\foe_blocker\mcp
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.foe_blocker_helper'
     jeb.snahp.foe_blocker_helper:
         class: jeb\snahp\core\foe_blocker\helper
         arguments:

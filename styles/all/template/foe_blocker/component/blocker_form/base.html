@@ -7,7 +7,7 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Block a New User<a href="/app.php/snahp/wiki/user_blocking/#block_form" target="_blank"><i class="fa fa-question ml-1" style="font-size:0.9em;"></i></a></h5>
-    <form action="{U_BLOCK}" method="POST" accept-charset="utf-8">
+    <form action="{U_BLOCK}" method="POST" accept-charset="utf-8" class="blocker_form">
 
       <div class="form-check-inline">
         <dl class="row mx-1 my-0">
@@ -16,11 +16,11 @@
           </dt>
           <dd>
             <input class="form-check-input" type="radio" id="mode_selector_1" name="mode_selector" value="1" checked>
-            <label class="form-check-label" for="mode_selector_1">
+            <label class="form-check-label pointer noselect" for="mode_selector_1">
               Normal
             </label>
             <input class="form-check-input" type="radio" id="mode_selector_2" name="mode_selector" value="0">
-            <label class="form-check-label" for="mode_selector_2">
+            <label class="form-check-label pointer noselect" for="mode_selector_2">
               Triage
             </label>
           </dd>
@@ -68,12 +68,12 @@
           <dd>
             <input class="form-check-input" type="radio" id="radio_allow_viewtopic_1" name="allow_viewtopic" value="1"
             {% if ALLOW_VIEWTOPIC %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_viewtopic_1">
+            <label class="form-check-label pointer noselect" for="radio_allow_viewtopic_1">
               Allow
             </label>
             <input class="form-check-input" type="radio" id="radio_allow_viewtopic_2" name="allow_viewtopic" value="0"
             {% if not ALLOW_VIEWTOPIC %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_viewtopic_2">
+            <label class="form-check-label pointer noselect" for="radio_allow_viewtopic_2">
               Disallow
             </label>
           </dd>
@@ -85,12 +85,12 @@
           <dd>
             <input class="form-check-input" type="radio" id="radio_allow_reply_1" name="allow_reply" value="1"
             {% if ALLOW_REPLY %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_reply_1">
+            <label class="form-check-label pointer noselect" for="radio_allow_reply_1">
               Allow
             </label>
             <input class="form-check-input" type="radio" id="radio_allow_reply_2" name="allow_reply" value="0"
             {% if not ALLOW_REPLY %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_reply_2">
+            <label class="form-check-label pointer noselect" for="radio_allow_reply_2">
               Disallow
             </label>
           </dd>
@@ -102,12 +102,12 @@
           <dd>
             <input class="form-check-input" type="radio" id="radio_allow_pm_1" name="allow_pm" value="1"
             {% if ALLOW_PM %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_pm_1">
+            <label class="form-check-label pointer noselect" for="radio_allow_pm_1">
               Allow
             </label>
             <input class="form-check-input" type="radio" id="radio_allow_pm_2" name="allow_pm" value="0"
             {% if not ALLOW_PM %}checked{% endif %}>
-            <label class="form-check-label" for="radio_allow_pm_2">
+            <label class="form-check-label pointer noselect" for="radio_allow_pm_2">
               Disallow
             </label>
           </dd>

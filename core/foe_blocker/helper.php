@@ -61,6 +61,36 @@ class helper
         return !empty($row);
     }/*}}}*/
 
+    public function select_blocked_data_by_username($username)/*{{{*/
+    {
+        $username = (string) $username;
+        $user_id = $this->username2userid($username);
+        $def_block = $this->container->getParameter('jeb.snahp.foe_blocker')['status']['block'];
+        $sql_array = [
+            'SELECT'	=> 'a.*,
+            b.username as blocked_username, b.user_colour as blocked_user_colour,
+             c.username as blocker_username, c.user_colour as blocker_user_colour',
+            'FROM'		=> [$this->tbl['foe'] => 'a'],
+            'LEFT_JOIN'	=> [
+                [
+                    'FROM'	=> [USERS_TABLE => 'b'],
+                    'ON'	=> 'a.blocked_id=b.user_id',
+                ],
+                [
+                    'FROM'	=> [USERS_TABLE => 'c'],
+                    'ON'	=> 'a.blocker_id=c.user_id',
+                ],
+            ],
+            'WHERE'		=> "a.blocked_id=${user_id} OR a.blocker_id=${user_id}",
+            'ORDER_BY' => "c.username"
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }/*}}}*/
+
     public function select_blocked_data($blocked_id, $blocker_id)/*{{{*/
     {
         $def_block = $this->container->getParameter('jeb.snahp.foe_blocker')['status']['block'];
@@ -143,6 +173,104 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
+    }/*}}}*/
+
+    public function toggle_permission_type($blocked_id, $blocker_id, $permission_type)/*{{{*/
+    {
+        $allowed_permission_types = [
+            'viewtopic' => 'allow_viewtopic',
+            'reply' => 'allow_reply',
+            'quote' => 'allow_quote',
+            'pm' => 'allow_pm',
+        ];
+        $blocked_id = (int) $blocked_id;
+        $blocker_id = (int) $blocker_id;
+        $permission_type =  $this->db->sql_escape($permission_type);
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
+        {
+            return false;
+        }
+        if (!array_key_exists($permission_type, $allowed_permission_types))
+        {
+            return false;
+        }
+        $column_name = $allowed_permission_types[$permission_type];
+        $sql = 'UPDATE ' . $this->tbl['foe'] . " SET ${column_name}=1-${column_name}" .
+            " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function toggle_perma_block($blocked_id, $blocker_id)/*{{{*/
+    {
+        $blocked_id = (int) $blocked_id;
+        $blocker_id = (int) $blocker_id;
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
+        {
+            return false;
+        }
+        $sql = 'UPDATE ' . $this->tbl['foe'] . ' SET b_permanent=1-b_permanent' .
+            " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function toggle_freeze($blocked_id, $blocker_id)/*{{{*/
+    {
+        $blocked_id = (int) $blocked_id;
+        $blocker_id = (int) $blocker_id;
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
+        {
+            return false;
+        }
+        $sql = 'UPDATE ' . $this->tbl['foe'] . ' SET b_frozen=1-b_frozen' .
+            " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function update_mod_reason($blocked_id, $blocker_id, $mod_reason)/*{{{*/
+    {
+        $blocked_id = (int) $blocked_id;
+        $blocker_id = (int) $blocker_id;
+        $mod_reason = $this->db->sql_escape((string) $mod_reason);
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
+        {
+            return false;
+        }
+        $data = [ 
+            'mod_reason' => $mod_reason,
+            'mod_id' => $this->user_id,
+        ];
+        $sql = 'UPDATE ' . $this->tbl['foe'] . '
+            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+            WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
+        $this->db->sql_query($sql);
+        return $this->db->sql_affectedrows() > 0;
+    }/*}}}*/
+
+    public function username2userid($username)/*{{{*/
+    {
+        $username_clean = utf8_clean_string($this->db->sql_escape($username));
+        $sql = 'SELECT user_id from ' . USERS_TABLE . " WHERE username_clean='${username_clean}'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row ? (int) $row['user_id'] : 0;
+    }/*}}}*/
+
+    public function format_userlist($rowset)/*{{{*/
+    {
+        foreach($rowset as &$row)
+        {
+            $created_time = $row['created_time'];
+            $duration = $row['duration'];
+            $row['local_time'] = $this->user->format_date($created_time, 'y.m.d');
+            $row['expires'] = $this->user->format_date($created_time + $duration, 'y.m.d');
+            $row['block_reason'] = stripslashes($row['block_reason']);
+            $row['mod_reason'] = stripslashes($row['mod_reason']);
+        }
+        return $rowset;
     }/*}}}*/
 
 }

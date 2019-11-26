@@ -159,14 +159,14 @@ class foe_blocker
         return $reason;
     }/*}}}*/
 
-    private function format_userlist($rowset)/*{{{*/
+    private function reject_on_frozen($blocked_id, $blocker_id)/*{{{*/
     {
-        foreach($rowset as &$row)
+        $block_data = $this->foe_helper->select_blocked_data($blocked_id, $blocker_id);
+        if ($block_data && $block_data['b_frozen'] && !$this->sauth->is_dev())
         {
-            $until = $row['created_time'] + $row['duration'];
-            $row['until'] = $this->user->format_date($until, 'Y-m-d');
+            meta_refresh($this->redirect_delay_long, $this->u_manage);
+            trigger_error("This block has been frozen and cannot be changed. Error Code: 1400805639");
         }
-        return $rowset;
     }/*}}}*/
 
     private function respond_block()/*{{{*/
@@ -179,17 +179,17 @@ class foe_blocker
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
             $post_id = $this->request->variable('post_id', 0);
-            $emergency_blocked_id = $this->request->variable('emergency_blocked_id', 0);
+            $blocker_id = $this->user_id;
             $triage_username = $this->request->variable('triage_username', '');
             if (!$post_id && $triage_username)
             {
+                $blocked_id = $this->foe_helper->username2userid($triage_username);
+                $this->reject_on_frozen($blocked_id, $blocker_id);
                 return $this->respond_triage_block();
             }
-            // if (!$post_id && $emergency_blocked_id)
-            // {
-            //     return $this->respond_triage_block();
-            // }
             $post_data = $this->get_or_reject_post($post_id);
+            $blocked_id = $post_data['poster_id'];
+            $this->reject_on_frozen($blocked_id, $blocker_id);
             $block_reason = $this->request->variable('block_reason', '');
             $block_reason = $this->validate_or_reject_block_reason($block_reason);
             $duration_strn = $this->request->variable('duration', '');
@@ -197,7 +197,6 @@ class foe_blocker
             $allow_viewtopic = $this->request->variable('allow_viewtopic', 0);
             $allow_pm = $this->request->variable('allow_pm', 0);
             $allow_reply = $this->request->variable('allow_reply', 0);
-            $blocker_id = $this->user_id;
             $this->block_user($post_data, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm);
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("<b>${post_data['username']}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
@@ -240,7 +239,7 @@ class foe_blocker
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         add_form_key('jeb_snp');
         $rowset = $this->select_blocked_users($this->user_id);
-        $rowset = $this->format_userlist($rowset);
+        $rowset = $this->foe_helper->format_userlist($rowset);
         $this->template->assign_vars([
             'U_BLOCK' => $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'block']),
             'U_UNBLOCK' => $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'unblock']),
@@ -372,6 +371,8 @@ class foe_blocker
     private function respond_unblock()/*{{{*/
     {
         $blocked_id = $this->request->variable('u', 0);
+        $blocker_id = $this->user_id;
+        $this->reject_on_frozen($blocked_id, $blocker_id);
         $rowset = $this->select_blocked_users($this->user_id, $blocked_id);
         if (!$rowset) 
         {

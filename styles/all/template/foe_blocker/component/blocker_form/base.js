@@ -8,6 +8,8 @@ User_blocker_form.setup = function()
     this.elem.input.emergency_blocked_id = $('input[name=emergency_blocked_id]');
     this.elem.input.triage_username = $('input[name=triage_username]');
     this.elem.input.mode_selector = $('input[name=mode_selector');
+    this.elem.input.normal_mode = $('#mode_selector_1');
+    this.elem.input.triage_mode = $('#mode_selector_2');
     User_blocker_form.register_post_id_parser();
     User_blocker_form.register_mode_selector();
     this.select_mode('normal');
@@ -25,6 +27,8 @@ User_blocker_form.select_mode = function(mode)
 {
     if (mode=='triage')
     {
+        this.elem.input.triage_mode.prop('checked', true);
+        this.elem.input.normal_mode.prop('checked', false);
         this.elem.input.post_id.val('');
         this.elem.input.post_id.prop('disabled', true);
         this.elem.input.triage_username.prop('disabled', false);
@@ -32,6 +36,8 @@ User_blocker_form.select_mode = function(mode)
     }
     else
     {
+        this.elem.input.triage_mode.prop('checked', false);
+        this.elem.input.normal_mode.prop('checked', true);
         this.elem.input.triage_username.val('');
         this.elem.input.triage_username.prop('disabled', true);
         this.elem.input.post_id.prop('disabled', false);

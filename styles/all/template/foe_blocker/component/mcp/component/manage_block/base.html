@@ -1,0 +1,119 @@
+<!-- IF not $varset_aefa9ac5f4 -->
+  <!-- DEFINE $varset_aefa9ac5f4 = true -->
+  <!-- INCLUDECSS @jeb_snahp/foe_blocker/component/userlist/base.css -->
+  <!-- INCLUDECSS @jeb_snahp/foe_blocker/component/mcp/component/manage_block/base.css -->
+  <!-- INCLUDEJS @jeb_snahp/foe_blocker/component/mcp/component/manage_block/base.js -->
+<!-- ENDIF -->
+<div class="ml-1">
+  <h6 class="font-weight-bold">Manage User Blocks</h6>
+  <p>Available Actions: <b>Mod Reason</b>, <b>∞</b>, <b>T</b>, <b>R</b>, <b>PM</b>.
+    Click on the entry to edit.
+    Mod Reason will be shown to the blocker. When the block is set to permanent, the users will see the expiration date as "Never".
+  </p>
+</div>
+<div class="mt-3">
+  <table class="table table-sm table-striped table-borderless">
+    <thead>
+      <tr>
+        <th scope="col">Blocker</th>
+        <th scope="col">Blocked</th>
+        <th scope="col">Begin</th>
+        <th scope="col">End</th>
+        <th scope="col">Reason</th>
+        <th scope="col">MID</th>
+        <th scope="col">Mod Reason</th>
+        <th scope="col" title="Freeze"><i class="fa fa-square" aria-hidden="true"></i></th>
+        <th scope="col">∞</th>
+        <th scope="col">T</th>
+        <th scope="col">R</th>
+        <th scope="col">PM</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in ROWSET %}
+      <tr data-data="{{ row|json_encode()|escape }}">
+        <td><a href="/memberlist.php?mode=viewprofile&u={row.blocker_id}" target="_blank"><span style="color: #{row.blocker_user_colour};"><b>{row.blocker_username}</b></span></a></td>
+        <td><a href="/memberlist.php?mode=viewprofile&u={row.blocked_id}" target="_blank"><span style="color: #{row.blocked_user_colour};"><b>{row.blocked_username}</b></span></a></td>
+        {% if row.local_time %}
+        <td>{row.local_time}</td>
+        <td>{row.expires}</td>
+        <td>{row.block_reason}</td>
+        <td>
+          {% if row.mod_id %}
+          {row.mod_id}
+          {% endif %}
+        </td>
+        <td class="pointer noselect" data-toggle="modal" data-target="#edit_mod_reason" onClick="User_block_mcp_manage_block.populate_mod_reason_form(this);">
+          {{ row.mod_reason }}
+        </td>
+        <td class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_freeze(this);">
+          {% if row.b_frozen %}
+            <i class="fa fa-square" aria-hidden="true" title="This block has been frozen and the blocker cannot make any further changes."></i>
+          {% else %}
+          {% endif %}
+        </td>
+        <td class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_perma_block(this);">
+          {% if row.b_permanent %}
+          <span title="This block is permanent">∞</span>
+          {% else %}
+          <i class="fa fa-clock-o" aria-hidden="true" title="This block will expire"></i>
+          {% endif %}
+        </td>
+        <td data-permission_type="viewtopic" class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_permission(this);">
+          {% if row.allow_viewtopic %}<i class="fa fa-check" aria-hidden="true" title="Currently Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Currently Blocked"></i>{% endif %}
+        </td>
+        <td data-permission_type="reply" class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_permission(this);">
+          {% if row.allow_reply %}<i class="fa fa-check" aria-hidden="true" title="Currently Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Currently Blocked"></i>{% endif %}
+        </td>
+        <td data-permission_type="pm" class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_permission(this);">
+          {% if row.allow_pm %}<i class="fa fa-check" aria-hidden="true" title="Currently Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Currently Blocked"></i>{% endif %}
+        </td>
+        <td>
+          {% if row.post_id %}
+          <a href="/viewtopic.php?p={row.post_id}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>
+          {% else %}
+          <a href="/app.php/snahp/wiki/user_blocking/#triage_mode" target="_blank"><i class="fa fa-ambulance" aria-hidden="true" title="Triage"></i></a>
+          {% endif %}
+        </td>
+        {% else %}
+        <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="edit_mod_reason" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Moderation Reason</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="font-size: 13px;">
+        <input type="hidden" value="" id="blocked_id"/>
+        <input type="hidden" value="" id="blocker_id"/>
+        <p class="text-center font-weight-bold">
+          <span id="blocker_username"></span> is blocking <span id="blocked_username"></span>
+        </p>
+
+        <div class="input-group input-group-sm mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Reason</span>
+          </div>
+          <textarea maxlength="500" id="mod_reason" name="mod_reason" class="form-control form-control-sm"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group btn-block" role="group">
+          <button onClick="User_block_mcp_manage_block.save_mod_reason(this);" type="button" class="btn btn-success btn-block">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,10 +14,11 @@
             <th scope="col" class="icon_column"></th>
             <th scope="col">User</th>
             <th scope="col">Reason</th>
-            <th scope="col">Expires</th>
-            <th scope="col">T</th>
-            <th scope="col">R</th>
-            <th scope="col">PM</th>
+            <th scope="col" title="yy.mm.dd">Expires</th>
+            <th scope="col" title="Moderation Notes">M</th>
+            <th scope="col" title="Allow Viewtopic">T</th>
+            <th scope="col" title="Allow Reply">R</th>
+            <th scope="col" title="Allow Private Message">PM</th>
             <th scope="col" class="icon_column"></th>
           </tr>
         </thead>
@@ -30,16 +31,27 @@
               </a>
             </td>
             <td class="text-center">
-              <span onClick="Foe_blocker.transfer({loop.index0});">
-                <i class="fa fa-edit m-0 pointer noselect" aria-hidden="true" title="Edit {row.blocked_username}"></i>
+              <span>
+                {% if row.b_frozen %}
+                <i class="fa fa-square" aria-hidden="true" title="This block has been frozen and cannot be changed."></i>
+                {% else %}
+                <i onClick="Foe_blocker.transfer({loop.index0});" class="fa fa-edit m-0 pointer noselect" aria-hidden="true" title="Edit {row.blocked_username}"></i>
+                {% endif %}
               </span>
             </td>
             <td id="triage_username_{loop.index0}">{row.blocked_username}</td>
             <td id="block_reason_{loop.index0}">{row.block_reason}</td>
-            <td>{row.until}</td>
-            <td id="allow_viewtopic_{loop.index0}" data-value="{% if row.allow_viewtopic %}1{% else %}0{% endif %}">{% if row.allow_viewtopic %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
-            <td id="allow_reply_{loop.index0}" data-value="{% if row.allow_reply %}1{% else %}0{% endif %}">{% if row.allow_reply %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
-            <td id="allow_pm_{loop.index0}" data-value="{% if row.allow_pm %}1{% else %}0{% endif %}">{% if row.allow_pm %}<i class="fa fa-check" aria-hidden="true" title="Allow"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Block"></i>{% endif %}</td>
+            <td>
+              {% if row.b_permanent %}
+              Never
+              {% else %}
+              {row.expires}
+              {% endif %}
+            </td>
+            <td>{row.mod_reason}</td>
+            <td id="allow_viewtopic_{loop.index0}" data-value="{% if row.allow_viewtopic %}1{% else %}0{% endif %}">{% if row.allow_viewtopic %}<i class="fa fa-check" aria-hidden="true" title="Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Blocked"></i>{% endif %}</td>
+            <td id="allow_reply_{loop.index0}" data-value="{% if row.allow_reply %}1{% else %}0{% endif %}">{% if row.allow_reply %}<i class="fa fa-check" aria-hidden="true" title="Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Blocked"></i>{% endif %}</td>
+            <td id="allow_pm_{loop.index0}" data-value="{% if row.allow_pm %}1{% else %}0{% endif %}">{% if row.allow_pm %}<i class="fa fa-check" aria-hidden="true" title="Allowed"></i>{% else %}<i class="fa fa-close" aria-hidden="true" title="Blocked"></i>{% endif %}</td>
             <td id="status_{loop.index0}"data-triage="{% if row.post_id %}0{% else %}1{% endif %}">
               {% if row.post_id %}
               <a href="/viewtopic.php?p={row.post_id}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>

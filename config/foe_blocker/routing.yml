@@ -1,3 +1,8 @@
+jeb_snahp_routing.foe_blocker_mcp:
+    path: /snahp/block_mcp/{mode}/
+    defaults: { _controller: jeb.snahp.foe_blocker_mcp:handle}
+    requirements:
+        mode: \S+
 jeb_snahp_routing.foe_blocker:
     path: /snahp/block/{mode}/
     defaults: { _controller: jeb.snahp.foe_blocker:handle}
