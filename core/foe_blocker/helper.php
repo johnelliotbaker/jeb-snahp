@@ -82,9 +82,10 @@ class helper
                 ],
             ],
             'WHERE'		=> "a.blocked_id=${user_id} OR a.blocker_id=${user_id}",
-            'ORDER_BY' => "c.username"
+            'ORDER_BY' => "c.username ASC"
         ];
         $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $sql = 'SELECT t.* FROM (' . $sql . ') t ORDER BY blocked_username ASC';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
