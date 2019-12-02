@@ -79,7 +79,16 @@ class badges_helper
             }
             elseif (isset($item_data[$varname]))
             {
-                $res[$varname] = $item_data[$varname];
+              // If final item is array, randomly pick one. Useful for titles
+              $item = $item_data[$varname];
+              if (is_array($item))
+              {
+                $res[$varname] = $item[array_rand($item)];
+              }
+              else
+              {
+                $res[$varname] = $item;
+              }
             }
             else
             {

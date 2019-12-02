@@ -20,6 +20,27 @@ div.avatar_special
     max-height: 36px;
 }
 
+.the_oracle
+{
+    max-height: 46px;
+    margin: 3px 0px;
+}
+
+.adobe_infinity
+{
+  max-height: 40px;
+  margin: 3px 1px;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.game_machine
+{
+  max-height: 28px;
+  margin: 3px 1px;
+}
+
 div.avatar_special img.avatar_badge
 {
     margin-left: 2px;
