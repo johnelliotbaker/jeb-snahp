@@ -89,7 +89,7 @@ class mod_listener extends base implements EventSubscriberInterface
 
     public function setup_moderator($event)
     {
-        if (!$this->is_mod()) return false;
+        if (!$this->is_dev()) return false;
         $this->template->assign_vars([
             'B_MOD' => true,
         ]);
