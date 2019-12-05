@@ -81,7 +81,6 @@ Goodreads.make_authors_html = function(data)
 
 Goodreads.makeTemplate = function(data)
 {
-  console.log(data);
   try { var thumbnail     = data.image_url.replace(/SX[0-9]+/ig,"SX2000");} catch(e) { var thumbnail = "";};
   try { var title         = data.title;} catch(e) { var title = "";};
   try { var authors       = data['authors'];} catch(e) { var authors = "";};
@@ -95,7 +94,7 @@ Goodreads.makeTemplate = function(data)
   var publishedDate       = this.get_pub_date(data);
   try { var publisher     = data.publisher;} catch(e) { var publisher = "";};
   try { var ratingsCount  = data.ratings_count;} catch(e) { var ratingsCount = "";};
-  var thumbnail     = getEntryOrEmpty(`[url={url}][himg=500]{text}[/himg][/url]\n`, thumbnail, url);
+  var thumbnail     = getEntryOrEmpty(`[url={url}][himg=370]{text}[/himg][/url]\n`, thumbnail, url);
   var title         = getEntryOrEmpty(`[size=180][b][nurl={url}]{text}[/nurl][/b][/size]\n`, title, url);
   var authors       = getEntryOrEmpty(`[b][size=110]by[/size]\n\n[size=200]{text}[/size][/b]\n`, joinArrayOrEmpty(authors, ', '));
   var authors       = this.make_authors_html(data);

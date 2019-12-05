@@ -81,3 +81,9 @@ td.category, tr { vertical-align: inherit }
     background-color: #cadceb !important;
     color: black !important;
 }
+
+/* custom_rank */
+dd.profile-rank > img
+{
+  max-width: 140px !important;
+}

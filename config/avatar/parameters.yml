@@ -249,7 +249,7 @@ parameters:
             - 'title'
             - 'img_url'
             - 'img_css'
-          html: '<div title="{title}" class="audio_expert">/div>'
+          html: '<div title="{title}" class="audio_expert"></div>'
           html: '<span title="{title}"><img src="{img_url}" class="{img_css}"></img></span>'
     updater:
       data:
