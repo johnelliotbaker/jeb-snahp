@@ -18,7 +18,7 @@ class custom_rank extends base
             trigger_error('Custom settings are disabled. Error Code: 14c96e703c');
         }
         $user_id = $this->user->data['user_id'];
-        $this->reject_user_not_in_groupset($user_id, 'Red Team');
+        // $this->reject_user_not_in_groupset($user_id, 'Red Team');
         $cfg = [];
         switch ($mode)
         {
@@ -35,13 +35,13 @@ class custom_rank extends base
         }
 	}/*}}}*/
 
-    public function respond_info_as_json()
+    public function respond_info_as_json()/*{{{*/
     {
         $js = new \phpbb\json_response();
         $user_id = $this->user->data['user_id'];
         $row = $this->get_custom_rank($user_id);
         return $js->send($row);
-    }
+    }/*}}}*/
 
     private function truncate_string($strn, $available)/*{{{*/
     {

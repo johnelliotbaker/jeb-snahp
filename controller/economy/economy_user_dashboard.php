@@ -48,9 +48,9 @@ class economy_user_dashboard
         $this->exchange_rates = $exchange_rates;
         $this->bank_transaction_logger = $bank_transaction_logger;
         $this->market_transaction_logger = $market_transaction_logger;
-        $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
-        $sauth->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
+        // $allowed_groupset = 'Red Team';
+        // $sauth->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
     }/*}}}*/
 
     public function handle($mode)/*{{{*/

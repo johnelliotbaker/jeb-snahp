@@ -121,7 +121,8 @@ class main_module
         $overall_search_interval = max($group_data['snp_search_interval'] - $n_quick_search, 5);
         $template->assign_vars([
             'B_ENABLE' => $b_enable,
-            'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team'),
+            // 'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team'),
+            'B_PERMISSION' => true,
             'GROUP_DATA' => $group_data,
             'N_QUICK_SEARCH' => $n_quick_search,
             'OVERALL_SEARCH_INTERVAL' => $overall_search_interval,
