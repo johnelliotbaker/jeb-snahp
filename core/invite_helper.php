@@ -94,7 +94,7 @@ class invite_helper
         ];
         $sql = 'Update ' . $tbl . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . " WHERE user_id=${user_id}";
         $this->db->sql_query($sql);
-        return $true;
+        return true;
     }
 
     public function decrease_invite_points($user_id, $amount)
