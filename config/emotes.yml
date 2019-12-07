@@ -202,6 +202,11 @@ parameters:
             url: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/223/turkey_1f983.png'
             type: 9
             title: 'Turkey Day!'
+        e_xm001:
+            url: 'https://i.imgur.com/LvWC2Ey.png'
+            type: 0
+            title: 'One Shatner'
+            css: 'twitch_50'
 
         # common alias
         e_comfy: *e_ds000
