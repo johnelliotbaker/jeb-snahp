@@ -175,9 +175,10 @@ class economy_user_dashboard
         $balance = (int) $this->bank_user_account->get_balance($user_id);
         if ((int) $total_cost > $balance)
         {
-            return false;
+            $err = "This purchase requires $${total_cost} but your balance is at $${balance}.";
+            return [false, $err];
         }
-        return true;
+        return [true, ''];
     }/*}}}*/
 
     private function get_total_cost($quantity, $product_class_id)/*{{{*/
@@ -198,8 +199,7 @@ class economy_user_dashboard
         if ($required_quantity > $purchasable_quantity) return [0, "You cannot purchase more than ${purchasable_quantity}."];
         // Check if there is enough fund
         $total_cost = $this->get_total_cost($required_quantity, $product_class_id);
-        if (!$this->has_enough_balance($total_cost, $user_id)) return [0, 'Insufficient fund.'];
-        return [1, 'Success'];
+        return $this->has_enough_balance($total_cost, $user_id);
     }/*}}}*/
 
     public function handle_buy_product($cfg)/*{{{*/

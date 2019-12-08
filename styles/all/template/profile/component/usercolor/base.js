@@ -15,10 +15,6 @@ UserColor.elem.save_button.click((event)=>{
             {
                 location.reload();
             }
-            else
-            {
-                // console.log(resp);
-            }
         });
     }
 })
@@ -28,10 +24,6 @@ UserColor.elem.reset_button.click((event)=>{
         if (resp.status==1)
         {
             location.reload();
-        }
-        else
-        {
-            // console.log(resp);
         }
     });
 })

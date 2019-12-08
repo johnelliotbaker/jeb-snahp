@@ -132,7 +132,7 @@ class user_account
         $fund = $invite_user_data && $invite_user_data['n_available'] ? $invite_user_data['n_available'] : 0;
         if (!$invite_user_data || $invite_user_data['n_available'] < $amount)
         {
-            return [0, "Insufficient Invitation Points: ${fund} < ${amount}"];
+            return [0, "You are trying to sell ${amount} invitation points but you only have ${fund} available."];
         }
         $rate = $exchange_rate['sell_rate'];
         $balance_delta = $rate * $amount;

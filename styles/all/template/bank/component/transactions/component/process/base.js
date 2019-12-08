@@ -52,10 +52,8 @@ BankTransaction.confirm_exchange = function(event)
     j.amount = $('#bank_exchange_amount_' + j.id).val();
     j.dir = 'sell';
     var url = `/app.php/snahp/economy/dashboard/exchange/?id=${j['id']}&dir=${j['dir']}&amount=${j['amount']}`
-    console.log(url);
     $.get(url).done((resp)=>{
         var status = resp.status;
-        console.log(resp);
         if (status==1)
         {
             location.reload();
@@ -64,7 +62,7 @@ BankTransaction.confirm_exchange = function(event)
         {
             $('#mod_confirm_btn').addClass('d-none');
             $container.html(`<p style="font-size:1.6em;">
-                Unfortunately, we were unable process your request.<br><br>
+                We were unable process your request.<br><br>
                 <b>Reason: ${resp['reason']}</b>
                 </p>`);
         }

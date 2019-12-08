@@ -1,6 +1,5 @@
 var profile_id = $('input[name="snp_profile_id"]').val();
 $.get('/app.php/snahp/achievements/powerchart/?u=' + profile_id, (resp)=>{
-    // console.log(resp);
     var angleLines = {};
     var pointLabels = {};
     var chartOptions = {};

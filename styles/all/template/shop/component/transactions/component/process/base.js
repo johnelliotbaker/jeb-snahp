@@ -43,7 +43,6 @@ ShopTransaction.confirm_buy = function(event)
   var j = JSON.parse($target[0].dataset.json);
   j.quantity = $('#shop_buy_quantity_' + j.id).val();
   var url = `/app.php/snahp/economy/dashboard/buy_product/?pcid=${j['id']}&quantity=${j['quantity']}`
-  console.log(url);
   $.get(url).done((resp)=>{
     var status = resp.status;
     if (status==1)
@@ -54,7 +53,7 @@ ShopTransaction.confirm_buy = function(event)
     {
       $('#mod_confirm_shop_btn').addClass('d-none');
       $container.html(`<p style="font-size:1.6em;">
-                Unfortunately, we were unable process your request.<br><br>
+                We were unable process your request.<br><br>
                 <b>Reason: ${resp['reason']}</b>
                 </p>`);
     }
