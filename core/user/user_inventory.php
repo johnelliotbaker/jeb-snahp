@@ -124,14 +124,17 @@ class user_inventory
         return false;
     }/*}}}*/
 
-    public function do_add_item_with_logging($product_class_id, $quantity, $user_id=null)/*{{{*/
+    public function do_add_item_with_logging($product_class_id, $quantity, $user_id=null, $comment='')/*{{{*/
     {
         $b_item_added = $this->do_add_item($product_class_id, $quantity, $user_id);
         $product_class = $this->product_class->get_product_class($product_class_id);
         $price = $product_class['price'];
         $name = $product_class['display_name'];
         $price_formatted = number_format($product_class['price'] * $quantity);
-        $comment = "Purchasing ${quantity} ${name} for $${price_formatted}";
+        if (!$comment)
+        {
+            $comment = "Purchasing ${quantity} ${name} for $${price_formatted}";
+        }
         $data = [
             'product_class_id' => $product_class_id,
             'price' => $price,
@@ -149,6 +152,24 @@ class user_inventory
         $quantity = abs((int) $quantity);
         $b_item_added = $this->add_item($product_class_id, $quantity, $user_id);
         return $b_item_added;
+    }/*}}}*/
+
+    public function set_item_quantity_public($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
+    {
+        $b_success = false;
+        if ($quantity < 1)
+        {
+            $b_success = $this->delete_item($product_class_id, $user_id, $broker_id);
+        }
+        else
+        {
+            $b_success = $this->upsert_inventory($product_class_id, $quantity, $user_id, $broker_id);
+        }
+        if ($b_success)
+        {
+            return true;
+        }
+        return false;
     }/*}}}*/
 
     public function set_item_quantity($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
