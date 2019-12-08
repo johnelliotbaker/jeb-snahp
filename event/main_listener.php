@@ -102,6 +102,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.viewtopic_modify_post_row'              => [
                 ['setup_viewtopic_modify_post_row_data', 1000],
+                ['giftbox', 1],
                 ['easter_cluck', 1],
                 ['block_zebra_foe_topicview', 1],
                 ['show_requests_solved_avatar', 1],
@@ -1079,6 +1080,20 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_REQUESTS_SOLVED' => true,
         ]);
+    }/*}}}*/
+
+    public function giftbox($event)/*{{{*/
+    {
+        global $phpbb_root_path;
+        $ext_path = 'ext/jeb/snahp/styles/all/template/giftbox/';
+        $html_src_path = $phpbb_root_path . $ext_path . 'index.html';
+        $html = file_get_contents($html_src_path);
+        $post_row = $event['post_row'];
+        if ($post_row['POST_ID']!=$this->config['snp_giv_injection_post_id']) return;
+        $start_html = '<div class="twbs"><div class="text-center">';
+        $end_html = '</div></div>';
+        $post_row['MESSAGE'] = $start_html . $html . $end_html . $post_row['MESSAGE'];
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function easter_cluck($event)/*{{{*/
