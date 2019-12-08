@@ -13,6 +13,8 @@ imports:
     - { resource: api_proxy/service.yml }
     - { resource: avatar/service.yml }
     - { resource: rh_tags/service.yml }
+    - { resource: giftbox/service.yml }
+    - { resource: invite/service.yml }
     - { resource: styles/service.yml }
 services:
     jeb.snahp.core:
@@ -296,5 +298,6 @@ services:
             - '@template'
             - '@service_container'
             - '@controller.helper'
+            - '@cache'
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'
