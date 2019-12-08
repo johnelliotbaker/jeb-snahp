@@ -1,0 +1,14 @@
+# imports:
+#     - { resource: 'invite/parameters.yml' }
+services:
+    jeb.snahp.invite_helper:
+        class: jeb\snahp\core\invite_helper
+        arguments:
+            - '@service_container'
+            - '@user'
+            - '@auth'
+            - '@request'
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@template'
