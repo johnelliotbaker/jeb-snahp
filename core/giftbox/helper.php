@@ -62,7 +62,8 @@ class helper
 
     public function can_unwrap($user_id)/*{{{*/
     {
-        $sql = 'SELECT id, created_time FROM ' . $this->tbl['giveaways'] . ' ORDER BY id DESC LIMIT 1';
+        $user_id = (int) $user_id;
+        $sql = 'SELECT id, created_time FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id} ORDER BY id DESC LIMIT 1";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
