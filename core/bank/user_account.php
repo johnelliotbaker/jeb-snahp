@@ -69,6 +69,21 @@ class user_account
         return $b_log;
     }/*}}}*/
 
+    public function create_transaction_and_deposit($amount, $user_id, $broker_id=-1, $comment='')/*{{{*/
+    {
+        $logger = $this->bank_transaction_logger;
+        $transaction_id = $logger->create_transaction($user_id, $broker_id);
+        $data = [
+            'type' => 'exchange',
+            'amount' => $amount,
+            'data' => serialize(['comment' => $comment]),
+        ];
+        $logger->append_to_transaction($transaction_id, $data);
+        $this->deposit($amount, $user_id);
+        // $b_success = $this->set_balance($user_id, 0);
+        return $transaction_id;
+    }/*}}}*/
+
     public function create_transaction_and_withdraw($amount, $user_id, $broker_id=-1, $comment='')/*{{{*/
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
