@@ -113,7 +113,6 @@ extract($phpbb_dispatcher->trigger_event('core.search_modify_interval', compact(
 /////////////////////////////////////
 // $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];
 /////////////////////////////////////
-
 if ($interval && !in_array($search_id, array('unreadposts', 'unanswered', 'active_topics', 'egosearch')) && !$auth->acl_get('u_ignoreflood'))
 {
 	if ($user->data['user_last_search'] > time() - $interval)
@@ -126,8 +125,9 @@ if ($interval && !in_array($search_id, array('unreadposts', 'unanswered', 'activ
 // Define some vars
 $limit_days		= array(0 => $user->lang['ALL_RESULTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
 ///////////// DOCMOD ////////////////
-// Define sort_key keyword for searching by topic time
-$sort_by_text	= array('a' => $user->lang['SORT_AUTHOR'], 't' => $user->lang['SORT_TIME'], 'f' => $user->lang['SORT_FORUM'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT'], 'x' => 'Topic time');
+// v1. Define sort_key keyword for searching by topic time
+// v2. Add sort by view in advanced search
+$sort_by_text	= array('a' => $user->lang['SORT_AUTHOR'], 't' => $user->lang['SORT_TIME'], 'f' => $user->lang['SORT_FORUM'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT'], 'x' => 'Topic time', 'v' => $user->lang['VIEWS']);
 /////////////////////////////////////
 // $sort_by_text	= array('a' => $user->lang['SORT_AUTHOR'], 't' => $user->lang['SORT_TIME'], 'f' => $user->lang['SORT_FORUM'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']);
 /////////////////////////////////////
@@ -344,7 +344,12 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	}
 
 	// define some variables needed for retrieving post_id/topic_id information
-	$sort_by_sql = array('a' => 'u.username_clean', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'f' => 'f.forum_id', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title'));
+  ///////////// DOCMOD ////////////////
+  // Allow sort by view in advanced search
+  $sort_by_sql = array('a' => 'u.username_clean', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'f' => 'f.forum_id', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title'), 'v' => 't.topic_views');
+  /////////////////////////////////////
+  // $sort_by_sql = array('a' => 'u.username_clean', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'f' => 'f.forum_id', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title'));
+  /////////////////////////////////////
 
 	/**
 	* Event to modify the SQL parameters before pre-made searches
