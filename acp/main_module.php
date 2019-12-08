@@ -793,6 +793,8 @@ class main_module
                 $config->set('snp_rep_giveaway_minimum', $snp_rep_giveaway_minimum);
                 $snp_achi_b_master = $request->variable('snp_achi_b_master', '1');
                 $config->set('snp_achi_b_master', $snp_achi_b_master);
+                $snp_giv_injection_post_id = $request->variable('snp_giv_injection_post_id', 0);
+                $config->set('snp_giv_injection_post_id', $snp_giv_injection_post_id);
                 $snp_easter_chicken_chance = $request->variable('snp_easter_chicken_chance', '10000');
                 $config->set('snp_easter_chicken_chance', $snp_easter_chicken_chance);
                 $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', '10000');
@@ -833,6 +835,7 @@ class main_module
                 'SNP_REP_GIVEAWAY_LAST_TIME'   => $config['snp_rep_giveaway_last_time'],
                 'SNP_REP_GIVEAWAY_DURATION'    => $config['snp_rep_giveaway_duration'],
                 'SNP_ACHI_B_MASTER'            => $config['snp_achi_b_master'],
+                'SNP_GIV_INJECTION_POST_ID'    => $config['snp_giv_injection_post_id'],
                 'SNP_EASTER_B_CHICKEN'         => $config['snp_easter_b_chicken'],
                 'SNP_EASTER_CHICKEN_CHANCE'    => $config['snp_easter_chicken_chance'],
                 'SNP_REQ_B_AVATAR'             => $config['snp_req_b_avatar'],
