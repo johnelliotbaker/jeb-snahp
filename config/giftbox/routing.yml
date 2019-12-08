@@ -1,0 +1,10 @@
+jeb_snahp_routing.giftbox:
+    path: /snahp/giftbox/{mode}/
+    defaults: { _controller: jeb.snahp.giftbox:handle}
+    requirements:
+        mode: \S+
+# jeb_snahp_routing.giftbox_mcp:
+#     path: /snahp/giftbox_mcp/{mode}/
+#     defaults: { _controller: jeb.snahp.giftbox_mcp:handle}
+#     requirements:
+#         mode: \S+

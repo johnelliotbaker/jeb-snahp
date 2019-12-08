@@ -1,0 +1,57 @@
+imports:
+    - { resource: 'giftbox/parameters.yml' }
+services:
+    jeb.snahp.giftbox:
+        class: jeb\snahp\controller\giftbox\giftbox
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.giftbox_helper'
+    # jeb.snahp.giftbox_mcp:
+    #     class: jeb\snahp\controller\giftbox\mcp
+    #     arguments:
+    #         - '@dbal.conn'
+    #         - '@user'
+    #         - '@config'
+    #         - '@request'
+    #         - '@template'
+    #         - '@service_container'
+    #         - '@controller.helper'
+    #         - '%jeb.snahp.tables%'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.giftbox_helper'
+    jeb.snahp.giftbox_helper:
+        class: jeb\snahp\core\giftbox\helper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.bank.user_account'
+            - '@jeb.snahp.market.product_class'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.invite_helper'
+            - '@jeb.snahp.market.market_transaction_logger'
+    # jeb.snahp.foe_listener:
+    #     class: jeb\snahp\event\foe_listener
+    #     arguments:
+    #         - '@dbal.conn'
+    #         - '@config'
+    #         - '@user'
+    #         - '@template'
+    #         - '@service_container'
+    #         - '%jeb.snahp.tables%'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.giftbox_helper'
+    #     tags:
+    #         - { name: event.listener }
