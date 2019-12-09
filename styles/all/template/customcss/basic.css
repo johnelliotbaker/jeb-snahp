@@ -87,3 +87,12 @@ dd.profile-rank > img
 {
   max-width: 140px !important;
 }
+
+/* Christmas */
+.giftbox_countdown_hours,
+.giftbox_countdown_minutes,
+.giftbox_countdown_seconds
+{
+  bottom: 107px !important;
+}
+
