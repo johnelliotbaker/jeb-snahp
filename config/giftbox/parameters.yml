@@ -17,7 +17,7 @@ parameters:
         uncommon:
           type: 'uncommon'
           description: 'This is a uncommon item.'
-          probability: 2
+          probability: 3
           img_url: 'https://i.imgur.com/D9n5a6N.jpg'
           job_queue:
             giveaway_shatners:
@@ -26,7 +26,7 @@ parameters:
         rare:
           type: 'rare'
           description: 'This is a rare item.'
-          probability: 4
+          probability: 6
           img_url: 'https://i.imgur.com/rEuUyhf.jpg'
           job_queue:
             giveaway_shatners:
@@ -35,7 +35,7 @@ parameters:
         mythical:
           type: 'mythical'
           description: 'This is a mythical item.'
-          probability: 6
+          probability: 18
           img_url: 'https://i.imgur.com/BwhaA2I.jpg'
           job_queue:
             giveaway_shatners:
@@ -44,7 +44,7 @@ parameters:
         legendary:
           type: 'legendary'
           description: 'This is a legendary item.'
-          probability: 8
+          probability: 100
           img_url: 'https://i.imgur.com/xrPq4bs.jpg'
           job_queue:
             giveaway_custom_rank:
