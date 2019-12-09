@@ -21,7 +21,7 @@ parameters:
           img_url: 'https://i.imgur.com/D9n5a6N.jpg'
           job_queue:
             giveaway_shatners:
-              amount: 500
+              amount: 2000
               display_name: 'Uncommon Item'
         rare:
           type: 'rare'
@@ -30,7 +30,7 @@ parameters:
           img_url: 'https://i.imgur.com/rEuUyhf.jpg'
           job_queue:
             giveaway_shatners:
-              amount: 2000
+              amount: 5000
               display_name: 'Rare Item'
         mythical:
           type: 'mythical'
