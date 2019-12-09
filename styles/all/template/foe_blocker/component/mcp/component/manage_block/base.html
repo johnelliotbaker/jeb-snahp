@@ -49,8 +49,9 @@
         </td>
         <td class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_freeze(this);">
           {% if row.b_frozen %}
-            <i class="fa fa-square" aria-hidden="true" title="This block has been frozen and the blocker cannot make any further changes."></i>
+            <i class="fa fa-square" aria-hidden="true" title="This block is currently frozen and the blocker cannot make any further changes."></i>
           {% else %}
+						<i class="fa fa-play" aria-hidden="true" title="This block is currently not frozen and the blocker can change or delete this block."></i>
           {% endif %}
         </td>
         <td class="pointer noselect" onClick="User_block_mcp_manage_block.toggle_perma_block(this);">
