@@ -117,8 +117,15 @@ class database_manager
     {
         // $sql = $this->db->sql_escape($sql);
         $result = $this->db->sql_query($sql);
-        $rowset = $this->db->sql_fetchrowset($result);
-        $this->db->sql_freeresult($result);
+        if (!is_bool($result))
+        {
+            $rowset = $this->db->sql_fetchrowset($result);
+            $this->db->sql_freeresult($result);
+        }
+        else
+        {
+            $rowset = [];
+        }
         return $rowset;
     }
 

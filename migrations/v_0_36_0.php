@@ -54,6 +54,8 @@ class v_0_36_0 extends \phpbb\db\migration\migration
             ['config.add', ['snp_giv_b_master', 1]],
             ['config.add', ['snp_giv_cycle_time', 86400]],
             ['config.add', ['snp_giv_injection_post_id', 548964]],
+            ['config.add', ['snp_giv_start_time', 1575907200]],
+            ['config.add', ['snp_giv_end_time', 1576166400]],
         ];
     }
 

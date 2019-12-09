@@ -62,6 +62,18 @@ class helper
 
     public function can_unwrap($user_id)/*{{{*/
     {
+        if ($this->sauth->is_dev()) return [true, 0];
+        $start_time = $this->config['snp_giv_start_time'];
+        $end_time = $this->config['snp_giv_end_time'];
+        $time = time();
+        if ($time < $start_time)
+        {
+            return [false, $start_time-$time];
+        }
+        elseif ($time > $end_time)
+        {
+            return [false, 86400];
+        }
         $user_id = (int) $user_id;
         $sql = 'SELECT id, created_time FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id} ORDER BY id DESC LIMIT 1";
         $result = $this->db->sql_query($sql);
