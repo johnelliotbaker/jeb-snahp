@@ -37,11 +37,12 @@ class helper
         $this->invite_helper = $invite_helper;
         $this->market_transaction_logger = $market_transaction_logger;
         $this->user_id = (int) $this->user->data['user_id'];
-        $this->event_name = 'pre_christmas_2019';
+        $this->event_name = 'christmas_2019';
         $this->event_display_name= '2019 Christmas Giveaway';
         $this->event_def = $container-> getParameter('jeb.snahp.giftbox')[$this->event_name];
         $this->item_defs = $this->event_def['items'];
         $this->cycle_time = (int) $this->config['snp_giv_cycle_time'];
+        $this->max_gift = 10;
         // $this->cycle_time = 20;
     }/*}}}*/
 
@@ -60,19 +61,35 @@ class helper
         return true;
     }/*}}}*/
 
-    public function can_unwrap($user_id)/*{{{*/
+    private function count_received_gift($user_id)/*{{{*/
     {
-        if ($this->sauth->is_dev()) return [true, 0];
+        $user_id = (int) $user_id;
+        $sql = 'SELECT COUNT(*) as total FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return isset($row['total']) ? $row['total'] : 0;
+    }/*}}}*/
+
+    private function is_gift_count_excess($user_id)/*{{{*/
+    {
+        return $this->count_received_gift($user_id) >= $this->max_gift;
+    }/*}}}*/
+
+    public function get_unwrap_status($user_id)/*{{{*/
+    {
+        // if ($this->sauth->is_dev()) return ['ready', 0];
+        if ($this->is_gift_count_excess($user_id)) return ['after', 0];
         $start_time = $this->config['snp_giv_start_time'];
         $end_time = $this->config['snp_giv_end_time'];
         $time = time();
         if ($time < $start_time)
         {
-            return [false, $start_time-$time];
+            return ['before', $start_time-$time];
         }
         elseif ($time > $end_time)
         {
-            return [false, 86400];
+            return ['after', 86400];
         }
         $user_id = (int) $user_id;
         $sql = 'SELECT id, created_time FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id} ORDER BY id DESC LIMIT 1";
@@ -81,14 +98,19 @@ class helper
         $this->db->sql_freeresult($result);
         $created_time = $row['created_time'];
         $time_left = max($created_time + $this->cycle_time - time(), 0);
-        return [$time_left<=0, $time_left];
+        return [$time_left<=0 ? 'ready' : 'not_ready', $time_left];
+    }/*}}}*/
+
+    public function can_unwrap($user_id)/*{{{*/
+    {
+        [$status, $t] = $this->get_unwrap_status($user_id);
+        return $status==='ready';
     }/*}}}*/
 
     public function simulate($n=10000)/*{{{*/
     {
+        return false;
         $user_id = $this->user_id;
-        // [$b_unwrap, $time_left] = $this->can_unwrap($user_id);
-        // if (!$b_unwrap) { return false; };
         $js = new \phpbb\json_response();
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
@@ -106,26 +128,83 @@ class helper
         return $item_def;
     }/*}}}*/
 
+    private function apply_streak($user_id, $item_def)/*{{{*/
+    {
+        $item_type = $item_def['type'];
+        $job_queue = $item_def['job_queue'];
+        if ($item_type !== 'common')
+        {
+            return $job_queue;
+        }
+        $rowset = $this->get_user_history($user_id);
+        $count = 1;
+        foreach ($rowset as $row)
+        {
+            $latest = $row['item_name'];
+            if ($latest === $item_type)
+            {
+                $count += 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+        $count = min($count, 10);
+        if ($count > 2)
+        {
+            $job_queue['apply_streak_multiplier'] = [
+                'display_name' => "x${count} Streak Multiplier",
+                'level' => $count
+            ];
+        }
+        return $job_queue;
+    }/*}}}*/
+
     public function give_random_item()/*{{{*/
     {
         $user_id = $this->user_id;
-        [$b_unwrap, $time_left] = $this->can_unwrap($user_id);
+        $b_unwrap = $this->can_unwrap($user_id);
         if (!$b_unwrap) { return false; };
         $item_def = $this->randomly_generate_item($user_id);
         $extra = [];
         $item_type = $item_def['type'];
-        // $user_id = 2;
+        $job_queue = $this->apply_streak($user_id, $item_def);
         $this->insert_item($item_type, $user_id, $extra);
-        $job_queue = $item_def['job_queue'];
         $this->process_job_queue($job_queue, $user_id);
         return $item_def;
     }/*}}}*/
 
+    private function is_after_double_time()/*{{{*/
+    {
+        // Hardcode double time as 1 day before end time
+        // see randomly_choose_item() for follow up
+        $end_time = (int) $this->config['snp_giv_end_time'];
+        $double_time = $end_time - 86400;
+        if (!$double_time || $double_time < 1) return false;
+        return time() > $double_time;
+    }/*}}}*/
+
     private function randomly_generate_item()/*{{{*/
     {
-        $item_type = $this->randomly_choose_item();
+        $mode = 'normal';
+        if ($this->is_after_double_time())
+        {
+            $mode = 'double';
+        }
+        $item_type = $this->randomly_choose_item($mode);
         $item_def = $this->item_defs[$item_type];
         return $item_def;
+    }/*}}}*/
+
+    public function get_user_history($user_id=null)/*{{{*/
+    {
+        $user_id = $user_id===null ? $user_id=$this->user_id : (int) $user_id;;
+        $sql = 'SELECT item_name FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id} ORDER BY id DESC LIMIT 10";
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
     }/*}}}*/
 
     private function insert_item($item_name, $user_id, $extra=[])/*{{{*/
@@ -150,15 +229,17 @@ class helper
         }
     }/*}}}*/
 
-    private function randomly_choose_item()/*{{{*/
+    private function randomly_choose_item($mode='normal')/*{{{*/
     {
         foreach (array_reverse($this->item_defs) as $key => $item) {
-            $rand = mt_rand(1, $item['probability']);
-            // if ($item['type']==='legendary')
-            // if ($item['type']==='immortal')
-            // {
-            //     $rand = 1;
-            // }
+            if ($mode==='double')
+            {
+                $rand = mt_rand(1, max(1, (int) (0.3 *$item['probability'])));
+            }
+            else
+            {
+                $rand = mt_rand(1, $item['probability']);
+            }
             if ($rand == 1)
             {
                 return $key;
@@ -204,6 +285,40 @@ class helper
         $logger->create_single_item_invoice($user_id, $broker_id=-1, $data);
         // $comment = "Deposit $${amount} for 2019 Christmas Giveaway (${display_name})";
         // $this->deposit_fund($user_id, $amount, $comment);
+    }/*}}}*/
+
+    private function process_giveaway_arcana($jobdata, $user_id)/*{{{*/
+    {
+        $logger = $this->market_transaction_logger;
+        $comment = $this->event_display_name . " (${jobdata['display_name']})";
+        $data = [
+            'data' => serialize(['comment' => $comment]),
+        ];
+        $logger->create_single_item_invoice($user_id, $broker_id=-1, $data);
+        // $comment = "Deposit $${amount} for 2019 Christmas Giveaway (${display_name})";
+        // $this->deposit_fund($user_id, $amount, $comment);
+    }/*}}}*/
+
+    private function process_apply_streak_multiplier($jobdata, $user_id)/*{{{*/
+    {
+        $level = $jobdata['level'];
+        $multiplier_def = [
+            0 => 0,
+            1 => 0,
+            2 => 0,
+            3 => 500,
+            4 => 1000,
+            5 => 2000,
+            6 => 3000,
+            7 => 9000,
+            8 => 12000,
+            9 => 20000,
+            10 => 50000
+        ];
+        $amount = $multiplier_def[$level];
+        $display_name = $jobdata['display_name'];
+        $comment = "Deposit $${amount} for 2019 Christmas Giveaway (${display_name})";
+        $this->deposit_fund($user_id, $amount, $comment);
     }/*}}}*/
 
     public function setup_block_data()/*{{{*/
