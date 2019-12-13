@@ -74,7 +74,7 @@ class user_account
         $logger = $this->bank_transaction_logger;
         $transaction_id = $logger->create_transaction($user_id, $broker_id);
         $data = [
-            'type' => 'exchange',
+            'type' => 'deposit',
             'amount' => $amount,
             'data' => serialize(['comment' => $comment]),
         ];
