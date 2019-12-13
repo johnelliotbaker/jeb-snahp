@@ -23,7 +23,7 @@ class helper
         $invite_helper, $market_transaction_logger
     )
     {/*{{{*/
-        // $sauth->reject_anon();
+        $sauth->reject_anon();
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;

@@ -43,11 +43,7 @@ class giftbox
 
     public function handle($mode)/*{{{*/
     {
-        // if ($this->sauth->user_belongs_to_groupset($this->user_id, 'Basic'))
-        // {
-        //     meta_refresh($this->redirect_delay_long, '/');
-        //     trigger_error("You do not have permission to view this page. Error Code: 805345a533. Redirecting in {$this->redirect_delay_long} seconds ...");
-        // }
+        $this->sauth->reject_anon();
         switch($mode)
         {
         case 'unwrap_status':
@@ -57,8 +53,10 @@ class giftbox
         case 'unwrap':
             return $this->respond_unwrap_as_json();
         case 'simulate':
+            if(!$this->sauth->is_only_dev()) trigger_error('Error Code: 4a18be0eae');
             return $this->respond_simulate_as_stream();
         case 'set_cycle_time':
+            $this->sauth->reject_non_dev();
             return $this->respond_set_cycle_time_as_json();
         }
         trigger_error('Invalid mode. Error Code: 39319143d2');
