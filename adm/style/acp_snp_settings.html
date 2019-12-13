@@ -9,126 +9,126 @@
         <legend>General Forum ID</legend>
         <dl>
           <dt>
-            <label for="fid_listings">Listings Root Forum ID:</label>
-            <dd>
-              <input type="number" value="{FID_LISTINGS}" min="0" name="fid_listings" id="fid_listings" />
-            </dd>
+          <label for="fid_listings">Listings Root Forum ID:</label>
+          <dd>
+          <input type="number" value="{FID_LISTINGS}" min="0" name="fid_listings" id="fid_listings" />
+          </dd>
           </dt>
         </dl>
         <dl>
           <dt>
-            <label for="fid_listings">Requests Root Forum ID:</label>
-            <dd>
-              <input type="number" value="{SNP_FID_REQUESTS}" min="0" name="snp_fid_requests" id="snp_fid_requests" />
-            </dd>
+          <label for="fid_listings">Requests Root Forum ID:</label>
+          <dd>
+          <input type="number" value="{SNP_FID_REQUESTS}" min="0" name="snp_fid_requests" id="snp_fid_requests" />
+          </dd>
           </dt>
         </dl>
       </fieldset>
 
       <fieldset>
         <legend>Thanks</legend>
-				<dl>
+        <dl>
           <dt>
-              <label>Thanks Master Switch</label>
+          <label>Thanks Master Switch</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="1" {% if SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="0" {% if not SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="1" {% if SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_thanks_b_enable" class="radio" value="0" {% if not SNP_THANKS_B_ENABLE %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
-				<dl>
+        <dl>
           <dt>
-              <label>Show Under Avatar:</label>
+          <label>Show Under Avatar:</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="1" {% if SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="0" {% if not SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="1" {% if SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_thanks_b_avatar" class="radio" value="0" {% if not SNP_THANKS_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
-				<dl>
+        <dl>
           <dt>
-              <label>Show Total Number of Thanks a Topic Received:</label>
+          <label>Show Total Number of Thanks a Topic Received:</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_thanks_b_op" class="radio" value="1" {% if SNP_THANKS_B_OP %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_thanks_b_op" class="radio" value="0" {% if not SNP_THANKS_B_OP %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_thanks_b_op" class="radio" value="1" {% if SNP_THANKS_B_OP %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_thanks_b_op" class="radio" value="0" {% if not SNP_THANKS_B_OP %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
-				<dl>
+        <dl>
           <dt>
-              <label>Show Top 10 List:</label>
+          <label>Show Top 10 List:</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="1" {% if SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="0" {% if not SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="1" {% if SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_thanks_b_toplist" class="radio" value="0" {% if not SNP_THANKS_B_TOPLIST %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
-				<dl>
+        <dl>
           <dt>
-            <label>Rebuild Thanks Count</label><br>
-            When thanks count is corrupted, use the rebuilder console to auto correct.
+          <label>Rebuild Thanks Count</label><br>
+          When thanks count is corrupted, use the rebuilder console to auto correct.
           </dt>
-					<dd>
-            <a href="/app.php/snahp/acp_thanks/handle/resync_all/"> Go to the Rebuilder Console</a>
+          <dd>
+          <a href="/app.php/snahp/acp_thanks/handle/resync_all/"> Go to the Rebuilder Console</a>
           </dd>
         </dl>
       </fieldset>
 
       <fieldset>
         <legend>Requests Solved Statistics</legend>
-				<dl>
+        <dl>
           <dt>
-              <label>Show under avatar:</label>
+          <label>Show under avatar:</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_req_b_avatar" class="radio" value="1" {% if SNP_REQ_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_req_b_avatar" class="radio" value="0" {% if not SNP_REQ_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_req_b_avatar" class="radio" value="1" {% if SNP_REQ_B_AVATAR %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_req_b_avatar" class="radio" value="0" {% if not SNP_REQ_B_AVATAR %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>
 
       <fieldset>
         <legend>Reputation Sytem</legend>
-				<dl>
+        <dl>
           <dt>
-              <label>Reputation Master Switch</label>
+          <label>Reputation Master Switch</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_rep_b_master" class="radio" value="1" {% if SNP_REP_B_MASTER %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_rep_b_master" class="radio" value="0" {% if not SNP_REP_B_MASTER %}checked="checked"{% endif %}> Disable</label>
-          </dd>
-        </dl>
-				<dl>
-          <dt>
-              <label>Reputation Cron Switch</label>
-          </dt>
-					<dd>
-              <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="1" {% if SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="0" {% if not SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_rep_b_master" class="radio" value="1" {% if SNP_REP_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_rep_b_master" class="radio" value="0" {% if not SNP_REP_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_rep_giveaway_minimum">Set Minimum to</label>
-            <dd>
-              <input type="number" value="{SNP_REP_GIVEAWAY_MINIMUM}" min="0" name="snp_rep_giveaway_minimum" id="snp_rep_giveaway_minimum" /> reputation points per
-            </dd>
+          <label>Reputation Cron Switch</label>
+          </dt>
+          <dd>
+          <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="1" {% if SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_rep_b_cron_giveaway" class="radio" value="0" {% if not SNP_REP_B_CRON_GIVEAWAY %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+          <label for="snp_rep_giveaway_minimum">Set Minimum to</label>
+          <dd>
+          <input type="number" value="{SNP_REP_GIVEAWAY_MINIMUM}" min="0" name="snp_rep_giveaway_minimum" id="snp_rep_giveaway_minimum" /> reputation points per
+          </dd>
           </dt>
         </dl>
         <dl>
           <dt>
-            <label for="snp_rep_giveaway_duration">Giveaway Cycle</label>
-            <dd>
-              <input type="number" value="{SNP_REP_GIVEAWAY_DURATION}" min="0" name="snp_rep_giveaway_duration" id="snp_rep_giveaway_duration" /> seconds
-            </dd>
+          <label for="snp_rep_giveaway_duration">Giveaway Cycle</label>
+          <dd>
+          <input type="number" value="{SNP_REP_GIVEAWAY_DURATION}" min="0" name="snp_rep_giveaway_duration" id="snp_rep_giveaway_duration" /> seconds
+          </dd>
           </dt>
         </dl>
         <dl>
           <dt>
-            <label for="snp_rep_giveaway_last_time">Last Giveaway Time</label>
-            <dd>
-              <input type="number" value="{SNP_REP_GIVEAWAY_LAST_TIME}" style="width: 94px;" min="0" name="snp_rep_giveaway_last_time" id="snp_rep_giveaway_last_time" />
-            </dd>
+          <label for="snp_rep_giveaway_last_time">Last Giveaway Time</label>
+          <dd>
+          <input type="number" value="{SNP_REP_GIVEAWAY_LAST_TIME}" style="width: 94px;" min="0" name="snp_rep_giveaway_last_time" id="snp_rep_giveaway_last_time" />
+          </dd>
           </dt>
         </dl>
         Note: If a user's available points are greater than "Set Minimum to", it will be unchanged.
@@ -136,13 +136,13 @@
 
       <fieldset>
         <legend>Achievements</legend>
-				<dl>
+        <dl>
           <dt>
-              <label>Achievements Master Switch</label>
+          <label>Achievements Master Switch</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_achi_b_master" class="radio" value="1" {% if SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_achi_b_master" class="radio" value="0" {% if not SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_achi_b_master" class="radio" value="1" {% if SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_achi_b_master" class="radio" value="0" {% if not SNP_ACHI_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>
@@ -151,31 +151,47 @@
         <legend>Christmas Event</legend>
         <dl>
           <dt>
-            <label for="injection_post_id">Injection Post ID</label>
-            <dd>
-              <input type="number" value="{SNP_GIV_INJECTION_POST_ID}" min="0" name="snp_giv_injection_post_id" id="snp_giv_injection_post_id" />
-            </dd>
+          <label for="injection_post_id">Injection Post ID:</label>
           </dt>
+          <dd>
+          <input type="number" value="{SNP_GIV_INJECTION_POST_ID}" min="0" name="snp_giv_injection_post_id" id="snp_giv_injection_post_id" />
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+          <label for="injection_post_id">Start Time:</label>
+          </dt>
+          <dd>
+          <input type="number" style="width: 94px;" value="{SNP_GIV_START_TIME}" min="0" name="snp_giv_start_time" id="snp_giv_start_time" />
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+          <label for="injection_post_id">End Time:</label>
+          </dt>
+          <dd>
+          <input type="number" style="width: 94px;" value="{SNP_GIV_END_TIME}" min="0" name="snp_giv_end_time" id="snp_giv_end_time" />
+          </dd>
         </dl>
       </fieldset>
 
       <fieldset>
         <legend>Easter Eggs</legend>
-				<dl>
+        <dl>
           <dt>
-              <label>Easter Egg: Chicken Edition</label>
+          <label>Easter Egg: Chicken Edition</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="1" {% if SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="0" {% if not SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="1" {% if SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_easter_b_chicken" class="radio" value="0" {% if not SNP_EASTER_B_CHICKEN %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="Probability">Chicken Post Probability:</label>
-            <dd>
-              1 in <input type="number" value="{SNP_EASTER_CHICKEN_CHANCE}" min="0" name="snp_easter_chicken_chance" id="snp_easter_chicken_chance" />
-            </dd>
+          <label for="Probability">Chicken Post Probability:</label>
+          <dd>
+          1 in <input type="number" value="{SNP_EASTER_CHICKEN_CHANCE}" min="0" name="snp_easter_chicken_chance" id="snp_easter_chicken_chance" />
+          </dd>
           </dt>
         </dl>
       </fieldset>
@@ -184,74 +200,74 @@
         <legend>Quick Links</legend>
         <dl>
           <dt>
-            <label for="snp_ql_your_topics">Your Topics:</label><br>
+          <label for="snp_ql_your_topics">Your Topics:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_your_topics" class="radio" value="1" {% if SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_your_topics" class="radio" value="0" {% if not SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_your_topics" class="radio" value="1" {% if SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_your_topics" class="radio" value="0" {% if not SNP_QL_YOUR_TOPICS %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_fav_b_time">New Listing:</label><br>
+          <label for="snp_ql_fav_b_time">New Listing:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="1" {% if SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="0" {% if not SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="1" {% if SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_fav_b_time" class="radio" value="0" {% if not SNP_QL_FAV_B_TIME %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_fav_b_views">Popular Listings:</label><br>
+          <label for="snp_ql_fav_b_views">Popular Listings:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="1" {% if SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="0" {% if not SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="1" {% if SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_fav_b_views" class="radio" value="0" {% if not SNP_QL_FAV_B_VIEWS %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_fav_b_replies">Most Discussed:</label><br>
+          <label for="snp_ql_fav_b_replies">Most Discussed:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="1" {% if SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="0" {% if not SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="1" {% if SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_fav_b_replies" class="radio" value="0" {% if not SNP_QL_FAV_B_REPLIES %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_thanks_given">My Thanks:</label><br>
+          <label for="snp_ql_thanks_given">My Thanks:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="1" {% if SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="0" {% if not SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="1" {% if SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_thanks_given" class="radio" value="0" {% if not SNP_QL_THANKS_GIVEN %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_ucp_bookmark">Bookmarks:</label><br>
+          <label for="snp_ql_ucp_bookmark">Bookmarks:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="1" {% if SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="0" {% if not SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="1" {% if SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_ucp_bookmark" class="radio" value="0" {% if not SNP_QL_UCP_BOOKMARK %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_req_open_requests">Open Requests:</label><br>
+          <label for="snp_ql_req_open_requests">Open Requests:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="1" {% if SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="0" {% if not SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="1" {% if SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_req_open_requests" class="radio" value="0" {% if not SNP_QL_REQ_OPEN_REQUESTS %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
         <dl>
           <dt>
-            <label for="snp_ql_req_accepted_requests">Accepted Requests:</label><br>
+          <label for="snp_ql_req_accepted_requests">Accepted Requests:</label><br>
           </dt>
           <dd>
-            <label><input type="radio" name="snp_ql_req_accepted_requests" class="radio" value="1" {% if SNP_QL_REQ_ACCEPTED_REQUESTS %}checked="checked"{% endif %}> Yes</label>
-            <label><input type="radio" name="snp_ql_req_accepted_requests" class="radio" value="0" {% if not SNP_QL_REQ_ACCEPTED_REQUESTS %}checked="checked"{% endif %}> No</label>
+          <label><input type="radio" name="snp_ql_req_accepted_requests" class="radio" value="1" {% if SNP_QL_REQ_ACCEPTED_REQUESTS %}checked="checked"{% endif %}> Yes</label>
+          <label><input type="radio" name="snp_ql_req_accepted_requests" class="radio" value="0" {% if not SNP_QL_REQ_ACCEPTED_REQUESTS %}checked="checked"{% endif %}> No</label>
           </dd>
         </dl>
       </fieldset>
@@ -259,13 +275,13 @@
       <fieldset>
         <legend>Zebra</legend>
         <span>Options used to control how friends & foe are able to see a user's post. As of Nov-2019 zebra blocking is in legacy mode. Use foe blocking instead.</span><br><br>
-				<dl>
+        <dl>
           <dt>
-              <label>Zebra Master Switch</label>
+          <label>Zebra Master Switch</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_zebra_b_master" class="radio" value="1" {% if SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_zebra_b_master" class="radio" value="0" {% if not SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_zebra_b_master" class="radio" value="1" {% if SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_zebra_b_master" class="radio" value="0" {% if not SNP_ZEBRA_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>
@@ -273,13 +289,13 @@
       <fieldset>
         <legend>Foe Blocking</legend>
         <span>Replaces the old Foe Blocking done through phpbb's foe and friends</span><br><br>
-				<dl>
+        <dl>
           <dt>
-              <label>Foe Blocking Master Switch</label>
+          <label>Foe Blocking Master Switch</label>
           </dt>
-					<dd>
-              <label><input type="radio" name="snp_foe_b_master" class="radio" value="1" {% if SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Enable</label>
-              <label><input type="radio" name="snp_foe_b_master" class="radio" value="0" {% if not SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          <dd>
+          <label><input type="radio" name="snp_foe_b_master" class="radio" value="1" {% if SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_foe_b_master" class="radio" value="0" {% if not SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>
@@ -290,7 +306,7 @@
     <dl>
       <dt>&nbsp;</dt>
       <dd><input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="2" />&nbsp;
-        <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
+      <input type="reset" value="{L_RESET}" name="reset" class="button2" /></dd>
     </dl>
     {S_HIDDEN_FIELDS}
     {S_FORM_TOKEN}
