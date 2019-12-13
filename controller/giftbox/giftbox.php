@@ -52,6 +52,8 @@ class giftbox
         {
         case 'unwrap_status':
             return $this->respond_unwrap_status_as_json();
+        case 'history':
+            return $this->respond_history_as_json();
         case 'unwrap':
             return $this->respond_unwrap_as_json();
         case 'simulate':
@@ -69,11 +71,26 @@ class giftbox
         return new JsonResponse([]);
     }/*}}}*/
 
+    private function respond_history_as_json()/*{{{*/
+    {
+        $user_id = (int) $this->user_id;
+        if ($user_id < 1)
+        {
+            return new JsonResponse(['status' => 'failure', 'history' => []]);
+        }
+        $history = array_reverse($this->giftbox_helper->get_user_history());
+        $data = [
+            'status' => 'success',
+            'history' => $history
+        ];
+        return new JsonResponse($data);
+    }/*}}}*/
+
     private function respond_unwrap_status_as_json()/*{{{*/
     {
-        [$b, $time_left] = $this->giftbox_helper->can_unwrap($this->user_id);
+        [$status, $time_left] = $this->giftbox_helper->get_unwrap_status($this->user_id);
         $data = [
-            'status' => $b ? 'closed' : 'not_ready',
+            'status' => $status,
             'time_left' => $time_left
         ];
         return new JsonResponse($data);
