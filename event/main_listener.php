@@ -1090,8 +1090,8 @@ class main_listener extends base implements EventSubscriberInterface
         $html = file_get_contents($html_src_path);
         $post_row = $event['post_row'];
         if ($post_row['POST_ID']!=$this->config['snp_giv_injection_post_id']) return;
-        $start_html = '<div class="twbs"><div class="text-center">';
-        $end_html = '</div></div>';
+        $start_html = '';
+        $end_html = '';
         $post_row['MESSAGE'] = $start_html . $html . $end_html . $post_row['MESSAGE'];
         $event['post_row'] = $post_row;
     }/*}}}*/
