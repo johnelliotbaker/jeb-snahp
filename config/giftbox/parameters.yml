@@ -1,6 +1,6 @@
 parameters:
   jeb.snahp.giftbox:
-    pre_christmas_2019:
+    christmas_2019:
       startDate: 1576368000
       endDate: 1577231999
       title: 'Happy Holidays.'
@@ -9,7 +9,7 @@ parameters:
           type: 'common'
           description: 'This is a common item.'
           probability: 1
-          img_url: 'https://i.imgur.com/KQS8M50.png'
+          img_url: 'https://i.imgur.com/J3qRpHX.png'
           job_queue:
             giveaway_shatners:
               amount: 1000
@@ -18,7 +18,7 @@ parameters:
           type: 'uncommon'
           description: 'This is a uncommon item.'
           probability: 3
-          img_url: 'https://i.imgur.com/D9n5a6N.jpg'
+          img_url: 'https://i.imgur.com/3UDxPoB.jpg'
           job_queue:
             giveaway_shatners:
               amount: 2000
@@ -26,17 +26,17 @@ parameters:
         rare:
           type: 'rare'
           description: 'This is a rare item.'
-          probability: 6
-          img_url: 'https://i.imgur.com/rEuUyhf.jpg'
+          probability: 9
+          img_url: 'https://i.imgur.com/h0jnljA.png'
           job_queue:
             giveaway_shatners:
-              amount: 5000
+              amount: 4000
               display_name: 'Rare Item'
         mythical:
           type: 'mythical'
           description: 'This is a mythical item.'
-          probability: 18
-          img_url: 'https://i.imgur.com/BwhaA2I.jpg'
+          probability: 100 
+          img_url: 'https://i.imgur.com/uYaHsN9.png'
           job_queue:
             giveaway_shatners:
               amount: 20000
@@ -44,7 +44,7 @@ parameters:
         legendary:
           type: 'legendary'
           description: 'This is a legendary item.'
-          probability: 100
+          probability: 2000
           img_url: 'https://i.imgur.com/xrPq4bs.jpg'
           job_queue:
             giveaway_custom_rank:
@@ -52,75 +52,8 @@ parameters:
         immortal:
           type: 'immortal'
           description: 'This is an immortal item.'
-          probability: 50000
-          img_url: 'https://cdn.shopify.com/s/files/1/0107/0472/products/Medium_Navy_Updated_21_Aug.jpg'
-          job_queue:
-            giveaway_invites:
-              amount: 1
-              display_name: '1 Invitation Points - Immortal Item'
-        arcana:
-          type: 'arcana'
-          description: 'This is a arcana item.'
-          probability: 1000000
-          img_url: 'https://cdn.shopify.com/s/files/1/0107/0472/products/Medium_Navy_Updated_21_Aug.jpg'
-          job_queue:
-            giveaway_donor:
-              display_name: 'Benefector - Arcana Item'
-    pre_christmas_2019:
-      startDate: 1576368000
-      endDate: 1577231999
-      title: 'Happy Holidays.'
-      items:
-        common:
-          type: 'common'
-          description: 'This is a common item.'
-          probability: 1
-          img_url: 'https://i.imgur.com/KQS8M50.png'
-          job_queue:
-            giveaway_shatners:
-              amount: 1000
-              display_name: 'Common Item'
-        uncommon:
-          type: 'uncommon'
-          description: 'This is a uncommon item.'
-          probability: 5
-          img_url: 'https://i.imgur.com/D9n5a6N.jpg'
-          img_url: 'https://i.imgur.com/rfiK02c.jpg'
-          job_queue:
-            giveaway_shatners:
-              amount: 500
-              display_name: 'Uncommon Item'
-        rare:
-          type: 'rare'
-          description: 'This is a rare item.'
-          probability: 20
-          img_url: 'https://i.imgur.com/rEuUyhf.jpg'
-          job_queue:
-            giveaway_shatners:
-              amount: 2000
-              display_name: 'Rare Item'
-        mythical:
-          type: 'mythical'
-          description: 'This is a mythical item.'
-          probability: 1000
-          img_url: 'https://i.imgur.com/BwhaA2I.jpg'
-          job_queue:
-            giveaway_shatners:
-              amount: 20000
-              display_name: 'Mythical Item'
-        legendary:
-          type: 'legendary'
-          description: 'This is a legendary item.'
           probability: 10000
-          img_url: 'https://i.imgur.com/xrPq4bs.jpg'
-          job_queue:
-            giveaway_custom_rank:
-              display_name: 'Custom Rank - Legendary Item'
-        immortal:
-          type: 'immortal'
-          description: 'This is an immortal item.'
-          probability: 50000
-          img_url: 'https://cdn.shopify.com/s/files/1/0107/0472/products/Medium_Navy_Updated_21_Aug.jpg'
+          img_url: 'https://i.imgur.com/mG8JXFK.png'
           job_queue:
             giveaway_invites:
               amount: 1
@@ -129,7 +62,7 @@ parameters:
           type: 'arcana'
           description: 'This is a arcana item.'
           probability: 1000000
-          img_url: 'https://cdn.shopify.com/s/files/1/0107/0472/products/Medium_Navy_Updated_21_Aug.jpg'
+          img_url: 'https://i.imgur.com/J3s644u.png'
           job_queue:
-            giveaway_donor:
-              display_name: 'Benefector - Arcana Item'
+            giveaway_arcana:
+              display_name: 'Arcana Item'
