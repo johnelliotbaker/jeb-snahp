@@ -2,19 +2,24 @@ parameters:
     jeb.snahp.styles.banners:
         light: &light
             default: &default
-                - https://i.imgur.com/YJYPp1Y.jpg
+                - https://i.imgur.com/sqWHc2h.png
+                - https://i.imgur.com/FIcm4d7.png
             afternoon: *default
             evening:
-                - https://i.imgur.com/IckC5Cz.png
-                - https://i.imgur.com/BFSPBWk.jpg
+                - https://i.imgur.com/SxCc3z9.jpg
+                - https://i.imgur.com/Fuum0fj.png
+                - https://i.imgur.com/ybtvdxb.png
             latenight:
-                - https://i.imgur.com/Kp5Bz34.png
-                - https://i.imgur.com/oGB7dlG.png
+                - https://i.imgur.com/aw2s9vT.jpg
+                - https://i.imgur.com/47konmN.jpg
+                - https://i.imgur.com/6Pk55So.jpg
             twilight:
-                - https://i.imgur.com/vNH2eQC.png
-                - https://i.imgur.com/sJTxMiQ.png
+                - https://i.imgur.com/35Jo4B4.png
+                - https://i.imgur.com/4gJp2uo.png
+                - https://i.imgur.com/hOGLP3F.jpg
             morning:
-                - https://i.imgur.com/7szjSt7.jpg
+                - https://i.imgur.com/rzWMxJ6.jpg
+                - https://i.imgur.com/59rc8Ah.jpg
         dark: *light
         time_of_day:
             0: &zero 'latenight'

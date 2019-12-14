@@ -24,7 +24,6 @@ Seasonal_theme.toggle_thanksgiving = function()
 
 Seasonal_theme.apply_thanksgiving = function()
 {
-  return;
   var enable = Cookie.get('seasonal', 'thanksgiving_enable');
   if (enable===undefined || enable)
   {
