@@ -49,6 +49,9 @@ parameters:
           job_queue:
             giveaway_custom_rank:
               display_name: 'Custom Rank - Legendary Item'
+            giveaway_shatners:
+              amount: 30000
+              display_name: 'Legendary Item Bundle'
         immortal:
           type: 'immortal'
           description: 'This is an immortal item.'
@@ -57,7 +60,10 @@ parameters:
           job_queue:
             giveaway_invites:
               amount: 1
-              display_name: '1 Invitation Points - Immortal Item'
+              display_name: '1 Invitation Point - Immortal Item'
+            giveaway_shatners:
+              amount: 60000
+              display_name: 'Immortal Item Bundle'
         arcana:
           type: 'arcana'
           description: 'This is a arcana item.'

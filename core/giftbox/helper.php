@@ -57,6 +57,7 @@ class helper
 
     public function set_cycle_time($cycle_time)/*{{{*/
     {
+        $this->sauth->reject_non_dev();
         $this->config->set('snp_giv_cycle_time', (int) $cycle_time);
         return true;
     }/*}}}*/
