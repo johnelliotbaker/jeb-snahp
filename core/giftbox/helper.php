@@ -77,6 +77,20 @@ class helper
         return $this->count_received_gift($user_id) >= $this->max_gift;
     }/*}}}*/
 
+    private function time_to_next_interval($time, $start_time, $end_time, $latest_unwrap_time)
+    {
+        $interval = max($this->cycle_time, 1);
+        $range = range($start_time, $end_time, $interval);
+        for ($i = 0; $i < count($range)-1; $i++) {
+            [$s, $e] = [$range[$i], $range[$i+1]];
+            if ($time >= $s && $time < $e && $latest_unwrap_time >= $s && $latest_unwrap_time < $e)
+            {
+                return [false, $e-$time];
+            }
+        }
+        return [true, 0];
+    }
+
     public function get_unwrap_status($user_id)/*{{{*/
     {
         // if ($this->sauth->is_dev()) return ['ready', 0];
@@ -88,7 +102,7 @@ class helper
         {
             return ['before', $start_time-$time];
         }
-        elseif ($time > $end_time)
+        elseif ($time >= $end_time)
         {
             return ['after', 86400];
         }
@@ -97,9 +111,10 @@ class helper
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
+        if (!$row) { return ['ready', 0]; }
         $created_time = $row['created_time'];
-        $time_left = max($created_time + $this->cycle_time - time(), 0);
-        return [$time_left<=0 ? 'ready' : 'not_ready', $time_left];
+        [$ready, $time_left] = $this->time_to_next_interval($time, $start_time, $end_time, $created_time);
+        return [$ready ? 'ready' : 'not_ready', $time_left];
     }/*}}}*/
 
     public function can_unwrap($user_id)/*{{{*/
