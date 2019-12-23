@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.34.0",
-    "time": "2019-11-10",
+    "version": "0.36.1",
+    "time": "2019-12-22",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "86f89aa535f10cc1a3ca7938ebc3eda232f7ae61",
+        "version": "be6b39681361145449f2aecb7555bc3f12c96ece",
         "features": "Foe Blocker MKII",
         "display-name": "Snahp",
         "soft-require": {
