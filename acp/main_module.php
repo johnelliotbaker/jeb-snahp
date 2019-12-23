@@ -927,7 +927,7 @@ class main_module
     {
 		global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
-        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist'];
+        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
         if ($tpl_name)
         {
             $this->tpl_name = $tpl_name;
@@ -969,6 +969,22 @@ class main_module
                 }
                 $sql = 'UPDATE ' . GROUPS_TABLE . 
                     buildSqlSetCase('group_id', 'snp_mydramalist_enable', $aMydramalistEnable);
+                $db->sql_query($sql);
+                // Code to limit discogs based on group membership
+                $aDiscogsEnable = [];
+                foreach ($request->variable_names() as $k => $varname)
+                {
+                    preg_match('/discogs-(\d+)/', $varname, $match_discogs_toggle);
+                    if ($match_discogs_toggle)
+                    {
+                        $gid = $match_discogs_toggle[1];
+                        $var = "discogs-$gid";
+                        $var = $request->variable($var, '0');
+                        $aDiscogsEnable[$gid] = $var ? 1 : 0;
+                    }
+                }
+                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                    buildSqlSetCase('group_id', 'snp_discogs_enable', $aDiscogsEnable);
                 $db->sql_query($sql);
                 // Code to limit googlebooks based on group membership
                 $aGooglebooksEnable = [];
@@ -1123,6 +1139,19 @@ class main_module
                     'gcheck'=> $row['snp_mydramalist_enable'],
                 );
                 $template->assign_block_vars('aMydramalist', $group);
+            };
+            $db->sql_freeresult($result);
+            // Code to show discogs configuration in ACP
+            $sql = 'SELECT * from ' . GROUPS_TABLE;
+            $result = $db->sql_query($sql);
+            while ($row = $db->sql_fetchrow($result))
+            {
+                $group = array(
+                    'gid'=>$row['group_id'],
+                    'gname'=>$row['group_name'],
+                    'gcheck'=> $row['snp_discogs_enable'],
+                );
+                $template->assign_block_vars('aDiscogs', $group);
             };
             $db->sql_freeresult($result);
             // Code to show gamespot configuration in ACP

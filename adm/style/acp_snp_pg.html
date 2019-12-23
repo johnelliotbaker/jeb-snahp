@@ -242,6 +242,44 @@
             </span>
           </dd>
         </dl>
+        <br>
+        <dl>
+					<dt><label>Discogs</label><br />
+            <span><br>
+              Check Allowed to enable Discogs form generator for that group.<br><br>
+              Add forum ID to the textarea to show the form generator on that forum.
+            </span>
+          </dt>
+					<dd>
+            <span>
+              <label for="discogs_fid">Discogs Forum ID: </label>
+              <textarea name="discogs_fid" rows="3" style="width:98%">{discogs_fid}</textarea> <table>
+                <tbody>
+                  <tr>
+                    <td>GID</td>
+                    <td>Group Name</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <!-- BEGIN aDiscogs -->
+                  <tr>
+                    <td>{aDiscogs.gid}</td>
+                    <td>{aDiscogs.gname}</td>
+                    <td>
+                      <input type="hidden"
+                               name="discogs-{aDiscogs.gid}"
+                               value="0">
+                      <input type="checkbox"
+                               name="discogs-{aDiscogs.gid}"
+                               id="discogs-{aDiscogs.gname}"
+                             {% if aDiscogs.gcheck %}value="1" checked{% endif %}>
+                    </td>
+                  </tr>
+                  <!-- END aDiscogs -->
+                </tbody>
+              </table>
+            </span>
+          </dd>
+        </dl>
 			</fieldset>
 		</div>
 	</div>

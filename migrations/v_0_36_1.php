@@ -1,21 +1,23 @@
 <?php
 
+// Foe Blocking
+
 namespace jeb\snahp\migrations;
 
-class v_0_27_2 extends \phpbb\db\migration\migration
+class v_0_36_1 extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
     { return false; }
 
     static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_27_1']; }
+    { return ['\jeb\snahp\migrations\v_0_36_0']; }
 
     public function update_schema()
     {
         return [
             'add_columns' => [
                 GROUPS_TABLE => [
-                    'snp_mydramalist_enable'  => ['BOOL', 0],
+                    'snp_discogs_enable'  => ['BOOL', 0],
                 ],
             ],
         ];
@@ -26,7 +28,7 @@ class v_0_27_2 extends \phpbb\db\migration\migration
         return [
             'drop_columns' => [
                 GROUPS_TABLE => [
-                    'snp_mydramalist_enable',
+                    'snp_discogs_enable',
                 ],
             ],
         ];
@@ -35,7 +37,7 @@ class v_0_27_2 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_pg_fid_mydramalist', '72,73,74,75']],
+            ['config.add', ['snp_pg_fid_discogs', '34,35,36,58,63']],
         ];
     }
 
