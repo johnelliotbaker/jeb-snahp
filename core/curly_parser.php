@@ -297,6 +297,23 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
+    private function set_style_type()/*{{{*/
+    {
+        if (!isset($this->style_type))
+        {
+            global $user, $db, $table_prefix;
+            $user_style = $user->data['user_style'];
+            $sql = 'SELECT style_name FROM ' . $table_prefix . 'styles
+                WHERE style_id=' . $user_style;
+            $result = $db->sql_query_limit($sql, 1);
+            $row = $db->sql_fetchrow($result);
+            $db->sql_freeresult($result);
+            $style_name = $row['style_name'];
+            $this->style_name = $style_name;
+            $this->style_type = in_array($style_name, ['Acieeed!', 'Hexagon']) ? 'dark' : 'light';
+        }
+    }/*}}}*/
+
     public function interpolate_mediainfo($strn, $tag_name)/*{{{*/
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];

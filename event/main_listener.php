@@ -909,6 +909,7 @@ class main_listener extends base implements EventSubscriberInterface
             'S_HIDDEN_FIELDS_ALT' => $s_hidden_fields,
             'N_REP_AVAILABLE' => $n_rep,
             'T_REP_NEXT' => $t_rep_next,
+            'B_RED_TEAM' => $this->user_belongs_to_groupset($this->user_id, 'Red Team'),
         ]);
     }/*}}}*/
 
@@ -1518,7 +1519,7 @@ class main_listener extends base implements EventSubscriberInterface
     {
         $forum_id = (int) $this->request->variable('f', '');
         $topic_id = $this->request->variable('t', '');
-        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist'];
+        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
         if ($forum_id && !($topic_id))
         {
             foreach ($pg_names as $pg_name)
@@ -1529,7 +1530,8 @@ class main_listener extends base implements EventSubscriberInterface
             $gid = $this->user->data['group_id'];
             $sql = 'SELECT snp_imdb_enable, snp_anilist_enable,
                 snp_googlebooks_enable, snp_gamespot_enable,
-                snp_customtemplate_enable, snp_mydramalist_enable
+                snp_customtemplate_enable, snp_mydramalist_enable,
+                snp_discogs_enable
                 FROM ' . GROUPS_TABLE . '
                 WHERE group_id = ' . $gid;
             $result = $this->db->sql_query($sql);
@@ -1551,6 +1553,9 @@ class main_listener extends base implements EventSubscriberInterface
 
             if ($row['snp_mydramalist_enable'] && in_array($forum_id, $fid_allowed['mydramalist']))
                 $this->template->assign_vars(['B_SHOW_MYDRAMALIST' => true,]);
+
+            if ($row['snp_discogs_enable'] && in_array($forum_id, $fid_allowed['discogs']))
+                $this->template->assign_vars(['B_SHOW_DISCOGS' => true,]);
 
             if ($row['snp_customtemplate_enable'])
                 $this->template->assign_vars(['B_SHOW_CUSTOM_TPL' => true,]);
