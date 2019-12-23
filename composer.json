@@ -20,7 +20,7 @@
     },
     "extra": {
         "version": "be6b39681361145449f2aecb7555bc3f12c96ece",
-        "features": "Foe Blocker MKII",
+        "features": "React Post Generators",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"

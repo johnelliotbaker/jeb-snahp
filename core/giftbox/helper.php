@@ -93,6 +93,7 @@ class helper
 
     public function get_unwrap_status($user_id)/*{{{*/
     {
+        $bin_type = 'from-last-prize';
         // if ($this->sauth->is_dev()) return ['ready', 0];
         if ($this->is_gift_count_excess($user_id)) return ['after', 0];
         $start_time = $this->config['snp_giv_start_time'];
@@ -113,6 +114,11 @@ class helper
         $this->db->sql_freeresult($result);
         if (!$row) { return ['ready', 0]; }
         $created_time = $row['created_time'];
+        if ($bin_type==='from-last-prize')
+        {
+            $time_left = max($created_time + $this->cycle_time - time(), 0);
+            return [$time_left<=0 ? 'ready' : 'not_ready', $time_left];
+        }
         [$ready, $time_left] = $this->time_to_next_interval($time, $start_time, $end_time, $created_time);
         return [$ready ? 'ready' : 'not_ready', $time_left];
     }/*}}}*/
