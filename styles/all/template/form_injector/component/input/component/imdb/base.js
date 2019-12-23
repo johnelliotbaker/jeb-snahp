@@ -96,7 +96,7 @@ Imdb.getKey = function()
 
 Imdb.fillPostMessage = function(term)
 {
-    var url = `https://www.omdbapi.com/?apikey=${Imdb.getKey()}&i=${term}`
+    var url = `https://www.omdbapi.com/?apikey=${Imdb.getKey()}&plot=full&i=${term}`
     $ajax = $.ajax({url: url, dataType:'jsonp'});
     $ajax.done(function(response){
         var summary = Imdb.maketemplate(response);
