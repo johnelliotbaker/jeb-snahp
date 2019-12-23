@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <!-- INCLUDECSSS @jeb_snahp/bootstrap4-ns.min.css -->
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,700&display=swap" rel="stylesheet">
 
 <!-- preload -->
@@ -38,6 +39,7 @@
 {% endif %}
 
 <!-- loadlast -->
+
 <!-- INCLUDECSS @jeb_snahp/giftbox/base.css -->
 <!-- INCLUDECSS @jeb_snahp/twbs.css -->
 <!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->
@@ -47,4 +49,19 @@
 <!-- INCLUDEJS @jeb_snahp/utility.js -->
 <!-- INCLUDEJS @jeb_snahp/base.js -->
 <!-- INCLUDEJS @jeb_snahp/emote_selector.js -->
+
+<!-- IF not $rx_imdb_template -->
+<!-- DEFINE $rx_imdb_template = true -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.css -->
+<!-- ENDIF -->
+
+<!-- IF not $rx_disco_template -->
+<!-- DEFINE $rx_disco_template = true -->
+<!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.css -->
+<!-- ENDIF -->
+
 <!-- loadlast -->
+
+
