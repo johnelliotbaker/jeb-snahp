@@ -50,6 +50,12 @@
 <!-- INCLUDEJS @jeb_snahp/base.js -->
 <!-- INCLUDEJS @jeb_snahp/emote_selector.js -->
 
+<!-- IF not $rx_menu -->
+<!-- DEFINE $rx_menu = true -->
+<!-- INCLUDEJS @jeb_snahp/widgets/rx_menu/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/widgets/rx_menu/bundle.css -->
+<!-- ENDIF -->
+
 <!-- IF not $rx_imdb_template -->
 <!-- DEFINE $rx_imdb_template = true -->
 <!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.js -->

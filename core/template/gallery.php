@@ -40,6 +40,34 @@ class gallery
         return '';
     }/*}}}*/
 
+    private function is_json($strn)
+    {
+        json_decode($strn);
+        return (json_last_error() === JSON_ERROR_NONE);
+    }
+
+    private function generate_menu_from_json_url($d, $choice)
+    {
+        if ($choice===1) { return ''; };
+        $strn = '';
+        if (isset($d[5]) && $d[5])
+        {
+            $strn = $d[5];
+        }
+        if ($this->is_json($strn))
+        {
+            $json = json_decode($strn, true);
+            if (array_key_exists('menu', $json))
+            {
+                $menu_data = $json['menu'];
+                $strn = json_encode($menu_data, JSON_HEX_APOS);
+                $data_string = htmlspecialchars($strn, ENT_QUOTES, 'UTF-8');
+                return '<div class="rx_menu" data-data="' . $data_string . '"></div>';
+            }
+        }
+        return '';
+    }
+
     private function handle_cards($data, $options=[])/*{{{*/
     {
         $column_size = $this->def['column_sizes'][$options['size']];
@@ -70,8 +98,9 @@ class gallery
                     $choice = 1;
                 }
             }
+            $rx_menu_html = $this->generate_menu_from_json_url($d, $choice);
             $pastebin = '';
-            if (isset($d[4]))
+            if (isset($d[4]) && $d[4])
             {
                 $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>'; 
             }
@@ -93,6 +122,7 @@ class gallery
 	                    <div class="card-body">
 	                        <h6>'. $d[0] . '</h6>
 	                        <p class="text-muted card-text">' . $d[1] . '</p>
+                          ' . $rx_menu_html . '
 	                    </div>
 	                </div>
                 </div>';
