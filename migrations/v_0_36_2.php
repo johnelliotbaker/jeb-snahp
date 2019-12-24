@@ -39,6 +39,11 @@ class v_0_36_2 extends container_aware_migration
 				'bbcode_match'       => '[discogs]{TEXT}[/discogs]',
 				'bbcode_tpl'         => '<div class="rx_discogs_template" data-data="{TEXT}"><div>',
 			],
+			'menu' => [
+				'display_on_posting' => false,
+				'bbcode_match'       => '[menu]{TEXT}[/menu]',
+				'bbcode_tpl'         => '<div class="rx_menu" data-data="{TEXT}"></div>',
+			],
 		]);
 	}
 
