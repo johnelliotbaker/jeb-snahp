@@ -256,7 +256,7 @@ class helper
         foreach (array_reverse($this->item_defs) as $key => $item) {
             if ($mode==='double')
             {
-                $rand = mt_rand(1, max(1, (int) (0.3 *$item['probability'])));
+                $rand = mt_rand(1, max(1, (int) (0.01 *$item['probability'])));
             }
             else
             {
