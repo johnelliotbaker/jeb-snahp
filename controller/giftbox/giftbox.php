@@ -52,6 +52,9 @@ class giftbox
             return $this->respond_history_as_json();
         case 'unwrap':
             return $this->respond_unwrap_as_json();
+        case 'giveaway':
+            if(!$this->sauth->is_dev()) trigger_error('Error Code: a445f32ba5');
+            return $this->respond_giveaway_as_stream();
         case 'simulate':
             if(!$this->sauth->is_only_dev()) trigger_error('Error Code: 4a18be0eae');
             return $this->respond_simulate_as_stream();
@@ -60,6 +63,13 @@ class giftbox
             return $this->respond_set_cycle_time_as_json();
         }
         trigger_error('Invalid mode. Error Code: 39319143d2');
+    }/*}}}*/
+
+    private function respond_giveaway_as_stream()/*{{{*/
+    {
+        $simulate = $this->request->variable('simulate', 1);
+        $this->giftbox_helper->manual_giveaway($simulate);
+        return new JsonResponse([]);
     }/*}}}*/
 
     private function respond_simulate_as_stream()/*{{{*/

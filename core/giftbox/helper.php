@@ -37,9 +37,9 @@ class helper
         $this->invite_helper = $invite_helper;
         $this->market_transaction_logger = $market_transaction_logger;
         $this->user_id = (int) $this->user->data['user_id'];
-        $this->event_name = 'christmas_2019';
+        $this->event_name = 'christmas_2019_bonus';
         $this->event_display_name= '2019 Christmas Giveaway';
-        $this->event_def = $container-> getParameter('jeb.snahp.giftbox')[$this->event_name];
+        $this->event_def = $container->getParameter('jeb.snahp.giftbox')[$this->event_name];
         $this->item_defs = $this->event_def['items'];
         $this->cycle_time = (int) $this->config['snp_giv_cycle_time'];
         $this->max_gift = 10;
@@ -77,7 +77,7 @@ class helper
         return $this->count_received_gift($user_id) >= $this->max_gift;
     }/*}}}*/
 
-    private function time_to_next_interval($time, $start_time, $end_time, $latest_unwrap_time)
+    private function time_to_next_interval($time, $start_time, $end_time, $latest_unwrap_time)/*{{{*/
     {
         $interval = max($this->cycle_time, 1);
         $range = range($start_time, $end_time, $interval);
@@ -89,7 +89,7 @@ class helper
             }
         }
         return [true, 0];
-    }
+    }/*}}}*/
 
     public function get_unwrap_status($user_id)/*{{{*/
     {
@@ -127,6 +127,87 @@ class helper
     {
         [$status, $t] = $this->get_unwrap_status($user_id);
         return $status==='ready';
+    }/*}}}*/
+
+    private function isClaimed($user_id, $type_name, $item_name)/*{{{*/
+    {
+        $sql = 'SELECT 1 FROM ' . $this->tbl['giveaways'] . "
+            WHERE user_id=${user_id} AND type_name='${type_name}' AND item_name='${item_name}'";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !!$row;
+    }/*}}}*/
+
+    public function manual_giveaway($simulate=true)/*{{{*/
+    {
+        $js = new \phpbb\json_response();
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+        $n = 3;
+				$item_defs = $this->event_def['items'];
+        $sql = 'SELECT user_id, count(*) count FROM ' . $this->tbl['giveaways'] . 'group by user_id';
+        for ($user_id = 2; $user_id < $n; $user_id++) {
+            if ($user_id%10==0)
+            {
+                $this->send_message(['i'=>$user_id]);
+            }
+            $sql = 'SELECT user_id, count(*) as count FROM ' . $this->tbl['giveaways'] . " 
+                WHERE user_id=${user_id} AND type_name='christmas_2019'";
+            $result = $this->db->sql_query($sql);
+            $rowset = $this->db->sql_fetchrowset($result);
+            $this->db->sql_freeresult($result);
+            $item_def5  = $item_defs['completion_5'];
+            $item_def9  = $item_defs['completion_9'];
+            $item_def10 = $item_defs['completion_10'];
+            $b5 = $this->isClaimed($user_id, 'christmas_2019_bonus', 'completion_5');
+            $b9 = $this->isClaimed($user_id, 'christmas_2019_bonus', 'completion_9');
+            $b10 = $this->isClaimed($user_id, 'christmas_2019_bonus', 'completion_10');
+            $extra = [];
+            foreach($rowset as $row)
+            {
+                $count = $row['count'];
+                if ($count >=5 && !$b5)
+                {
+                    if ($simulate)
+                    {
+                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 5 - $5000"]);
+                    }
+                    else
+                    {
+                        $item_def = $item_def5;
+                        $this->insert_item($item_def['type'], $user_id, $extra);
+                        $this->process_job_queue($item_def['job_queue'], $user_id);
+                    }
+                }
+                if ($count >= 9 && !$b9)
+                {
+                    if ($simulate)
+                    {
+                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 9 - $5000"]);
+                    }
+                    else
+                    {
+                        $item_def = $item_def9;
+                        $this->insert_item($item_def['type'], $user_id, $extra);
+                        $this->process_job_queue($item_def['job_queue'], $user_id);
+                    }
+                }
+                if ($count >= 10 && !$b10)
+                {
+                    if ($simulate)
+                    {
+                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 10 - $10000"]);
+                    }
+                    else
+                    {
+                        $item_def = $item_def10;
+                        $this->insert_item($item_def['type'], $user_id, $extra);
+                        $this->process_job_queue($item_def['job_queue'], $user_id);
+                    }
+                }
+            }
+        }
     }/*}}}*/
 
     public function simulate($n=10000)/*{{{*/

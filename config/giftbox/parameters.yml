@@ -1,5 +1,31 @@
 parameters:
   jeb.snahp.giftbox:
+    christmas_2019_bonus:
+      items:
+        completion_5:
+          type: 'completion_5'
+          description: '5 Days Completion'
+          required: 5
+          job_queue:
+            giveaway_shatners:
+              amount: 5000
+              display_name: '5 Days Completion'
+        completion_9:
+          type: 'completion_9'
+          description: '9 Days Completion'
+          required: 9
+          job_queue:
+            giveaway_shatners:
+              amount: 5000
+              display_name: '9 Days Completion'
+        completion_10:
+          type: 'completion_10'
+          description: '10 Days Completion'
+          required: 10
+          job_queue:
+            giveaway_shatners:
+              amount: 10000
+              display_name: '10 Days Completion'
     christmas_2019:
       startDate: 1576368000
       endDate: 1577231999
