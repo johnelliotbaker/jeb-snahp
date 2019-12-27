@@ -46,6 +46,7 @@ class wiki
 
     public function handle($mode)/*{{{*/
     {
+        $this->sauth->reject_anon();
         $cfg['tpl_name'] = $this->templatedir . 'base.html';
         $cfg['name'] = $mode;
         return $this->render($cfg);
