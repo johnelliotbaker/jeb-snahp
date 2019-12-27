@@ -1,4 +1,4 @@
-{% if B_SHOW_IMDB %}
+{% if false %}
 <!-- IF not $imdb_injector -->
   <!-- DEFINE $rx_imdb_injector = true -->
   <!-- INCLUDEJS @jeb_snahp/form_injector/component/input/component/imdb/base.js -->
@@ -11,9 +11,9 @@
   <input value="" placeholder="" type="text" name="imdb_input" id="imdb_input" class="inputbox autowidth">
   <!-- <button type="button" onClick="Imdb.startHandlingImdbAjax();">Search</button> -->
 </dd>
-{% if B_RED_TEAM %}
+{% endif %}
+{% if B_SHOW_IMDB %}
 <!-- INCLUDEJS @jeb_snahp/form_injector/component/injectors/component/rx_imdb_injector/bundle.js -->
 <!-- INCLUDECSS @jeb_snahp/form_injector/component/injectors/component/rx_imdb_injector/bundle.css -->
 <div id="rx_imdb_injector" data-data='{"styleType": "{STYLE_TYPE}", "styleName": "{STYLE_NAME}"}'></div>
-{% endif %}
 {% endif %}
