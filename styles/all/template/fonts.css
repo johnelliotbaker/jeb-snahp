@@ -1,0 +1,5 @@
+/* fonts */
+@font-face {
+    font-family: "DejaVu Sans";
+    src: local("/ext/jeb/snahp/styles/all/template/DejaVuSans.ttf") format("truetype");
+}
