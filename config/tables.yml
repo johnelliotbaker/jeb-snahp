@@ -16,6 +16,8 @@ parameters:
         achievements: '%core.table_prefix%snahp_achievements'
         reputation: '%core.table_prefix%snahp_reputation'
         styles: '%core.table_prefix%styles'
+        notifications: '%core.table_prefix%notifications'
+        notification_types: '%core.table_prefix%notification_types'
         user_notifications: '%core.table_prefix%user_notifications'
         bank_transactions: '%core.table_prefix%snahp_bank_transactions'
         bank_transaction_items: '%core.table_prefix%snahp_bank_transaction_items'

@@ -47,6 +47,21 @@ services:
             - '@service_container'
         tags:
             - { name: notification.type }
+    jeb.snahp.notification.type.simple:
+        class: jeb\snahp\notification\simple
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+        tags:
+            - { name: notification.type }
     jeb.snahp.notification.type.basic:
         class: jeb\snahp\notification\basic
         scope: prototype # scope MUST be prototype for this to work!
