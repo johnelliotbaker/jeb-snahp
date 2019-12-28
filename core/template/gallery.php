@@ -108,8 +108,9 @@ class gallery
             $el = $elem[$choice];
             $d[0] = preg_replace('#&lt;(br)&gt;#', '<\1>', $d[0]);
             $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
+            // <div class="card border-0 transform-on-hover"> ' . $pastebin . ' // For hover effect
             $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
-	                <div class="card border-0 transform-on-hover"> ' . $pastebin . '
+	                <div class="card border-0"> ' . $pastebin . '
                         <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
                             <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
                         </div>
