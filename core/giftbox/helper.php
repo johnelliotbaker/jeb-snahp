@@ -1,6 +1,7 @@
 <?php
 namespace jeb\snahp\core\giftbox;
 use \Symfony\Component\HttpFoundation\JsonResponse;
+use phpbb\notification\manager;
 
 class helper
 {
@@ -139,21 +140,45 @@ class helper
         return !!$row;
     }/*}}}*/
 
+    public function mark_unread($item_id, $user_id)/*{{{*/
+    {
+        $t0 = $this->tbl['notifications'];
+        $t1 = $this->tbl['notification_types'];
+        $time = time();
+        $sql = "UPDATE ${t0} a LEFT JOIN ${t1} b ON a.notification_type_id=b.notification_type_id 
+            SET a.notification_read=0, a.notification_time=${time} WHERE
+            user_id=${user_id} AND
+            b.notification_type_name='jeb.snahp.notification.type.simple'";
+        $this->db->sql_query($sql);
+    }/*}}}*/
+
     public function manual_giveaway($simulate=true)/*{{{*/
     {
         $js = new \phpbb\json_response();
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
-        $n = 3;
 				$item_defs = $this->event_def['items'];
-        $sql = 'SELECT user_id, count(*) count FROM ' . $this->tbl['giveaways'] . 'group by user_id';
-        for ($user_id = 2; $user_id < $n; $user_id++) {
-            if ($user_id%10==0)
+        $sql = 'SELECT user_id, count(*) as count FROM ' . $this->tbl['giveaways'] . ' group by user_id';
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $notification = $this->container->get('notification_manager');
+        $i_loop = 0;
+        if ($simulate)
+        {
+            $rowset = [
+                ['user_id' => 2, 'count' => 10],
+            ];
+            $this->send_message(['0'=>"This is simulation: No actual reward given. Notification sent."]);
+        }
+        foreach ($rowset as $row) {
+            $user_id = $row['user_id'];
+            $count = $row['count'];
+            if ($i_loop%10==0)
             {
                 $this->send_message(['i'=>$user_id]);
             }
-            $sql = 'SELECT user_id, count(*) as count FROM ' . $this->tbl['giveaways'] . " 
-                WHERE user_id=${user_id} AND type_name='christmas_2019'";
+            $i_loop += 1;
             $result = $this->db->sql_query($sql);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
@@ -164,6 +189,16 @@ class helper
             $b9 = $this->isClaimed($user_id, 'christmas_2019_bonus', 'completion_9');
             $b10 = $this->isClaimed($user_id, 'christmas_2019_bonus', 'completion_10');
             $extra = [];
+            $message = 'What up bruh';
+            $notification_data = [
+                'recipient_id' => $user_id,
+                'message'      => $message,
+                'title'       => '2019 Christmas Event',
+                'description' => '',
+                'link'        => '/app.php/snahp/economy/dashboard/overview/',
+                'item_id'     => 0,
+                'type'        => '2019 Christmas Event',
+            ];
             foreach($rowset as $row)
             {
                 $count = $row['count'];
@@ -179,6 +214,11 @@ class helper
                         $this->insert_item($item_def['type'], $user_id, $extra);
                         $this->process_job_queue($item_def['job_queue'], $user_id);
                     }
+                    $notification_data['item_id'] = 0;
+                    $notification_data['description'] = '5 Days Completion Bonus ($5,000)';
+                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $this->mark_unread($notification_data['item_id'], $user_id);
                 }
                 if ($count >= 9 && !$b9)
                 {
@@ -192,6 +232,11 @@ class helper
                         $this->insert_item($item_def['type'], $user_id, $extra);
                         $this->process_job_queue($item_def['job_queue'], $user_id);
                     }
+                    $notification_data['item_id'] = 1;
+                    $notification_data['description'] = '9 Days Completion Bonus ($5,000)';
+                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $this->mark_unread($notification_data['item_id'], $user_id);
                 }
                 if ($count >= 10 && !$b10)
                 {
@@ -205,6 +250,11 @@ class helper
                         $this->insert_item($item_def['type'], $user_id, $extra);
                         $this->process_job_queue($item_def['job_queue'], $user_id);
                     }
+                    $notification_data['item_id'] = 2;
+                    $notification_data['description'] = '10 Days Completion Bonus ($10,000)';
+                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                    $this->mark_unread($notification_data['item_id'], $user_id);
                 }
             }
         }
