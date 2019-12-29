@@ -168,12 +168,18 @@ class helper
         {
             $rowset = [
                 ['user_id' => 2, 'count' => 10],
+                ['user_id' => 10414, 'count' => 9],
+                ['user_id' => 55, 'count' => 5],
             ];
             $this->send_message(['0'=>"This is simulation: No actual reward given. Notification sent."]);
         }
         foreach ($rowset as $row) {
             $user_id = $row['user_id'];
             $count = $row['count'];
+            if ($simulate)
+            {
+                $this->send_message(["Simulating: user: ${user_id} with count: ${count}"]);
+            }
             if ($i_loop%10==0)
             {
                 $this->send_message(['i'=>$user_id]);
@@ -199,63 +205,59 @@ class helper
                 'item_id'     => 0,
                 'type'        => '2019 Christmas Event',
             ];
-            foreach($rowset as $row)
+            if ($count >=5 && !$b5)
             {
-                $count = $row['count'];
-                if ($count >=5 && !$b5)
+                if ($simulate)
                 {
-                    if ($simulate)
-                    {
-                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 5 - $5000"]);
-                    }
-                    else
-                    {
-                        $item_def = $item_def5;
-                        $this->insert_item($item_def['type'], $user_id, $extra);
-                        $this->process_job_queue($item_def['job_queue'], $user_id);
-                    }
-                    $notification_data['item_id'] = 0;
-                    $notification_data['description'] = '5 Days Completion Bonus ($5,000)';
-                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $this->mark_unread($notification_data['item_id'], $user_id);
+                    $this->send_message(['0'=>"Giving user_id: ${user_id} completion 5 - $5000"]);
                 }
-                if ($count >= 9 && !$b9)
+                else
                 {
-                    if ($simulate)
-                    {
-                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 9 - $5000"]);
-                    }
-                    else
-                    {
-                        $item_def = $item_def9;
-                        $this->insert_item($item_def['type'], $user_id, $extra);
-                        $this->process_job_queue($item_def['job_queue'], $user_id);
-                    }
-                    $notification_data['item_id'] = 1;
-                    $notification_data['description'] = '9 Days Completion Bonus ($5,000)';
-                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $this->mark_unread($notification_data['item_id'], $user_id);
+                    $item_def = $item_def5;
+                    $this->insert_item($item_def['type'], $user_id, $extra);
+                    $this->process_job_queue($item_def['job_queue'], $user_id);
                 }
-                if ($count >= 10 && !$b10)
+                $notification_data['item_id'] = 0;
+                $notification_data['description'] = '5 Days Completion Bonus ($5,000)';
+                $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $this->mark_unread($notification_data['item_id'], $user_id);
+            }
+            if ($count >= 9 && !$b9)
+            {
+                if ($simulate)
                 {
-                    if ($simulate)
-                    {
-                        $this->send_message(['0'=>"Giving user_id: ${user_id} completion 10 - $10000"]);
-                    }
-                    else
-                    {
-                        $item_def = $item_def10;
-                        $this->insert_item($item_def['type'], $user_id, $extra);
-                        $this->process_job_queue($item_def['job_queue'], $user_id);
-                    }
-                    $notification_data['item_id'] = 2;
-                    $notification_data['description'] = '10 Days Completion Bonus ($10,000)';
-                    $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
-                    $this->mark_unread($notification_data['item_id'], $user_id);
+                    $this->send_message(['0'=>"Giving user_id: ${user_id} completion 9 - $5000"]);
                 }
+                else
+                {
+                    $item_def = $item_def9;
+                    $this->insert_item($item_def['type'], $user_id, $extra);
+                    $this->process_job_queue($item_def['job_queue'], $user_id);
+                }
+                $notification_data['item_id'] = 1;
+                $notification_data['description'] = '9 Days Completion Bonus ($5,000)';
+                $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $this->mark_unread($notification_data['item_id'], $user_id);
+            }
+            if ($count >= 10 && !$b10)
+            {
+                if ($simulate)
+                {
+                    $this->send_message(['0'=>"Giving user_id: ${user_id} completion 10 - $10000"]);
+                }
+                else
+                {
+                    $item_def = $item_def10;
+                    $this->insert_item($item_def['type'], $user_id, $extra);
+                    $this->process_job_queue($item_def['job_queue'], $user_id);
+                }
+                $notification_data['item_id'] = 2;
+                $notification_data['description'] = '10 Days Completion Bonus ($10,000)';
+                $notification->add_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
+                $this->mark_unread($notification_data['item_id'], $user_id);
             }
         }
     }/*}}}*/
