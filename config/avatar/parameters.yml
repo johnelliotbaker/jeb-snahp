@@ -169,10 +169,59 @@ parameters:
       data:
         adobe_infinity:
           url: '/search.php?keywords=adobe&terms=any&author_id=61485&fid[]=9&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search'
+    2573: #perpetualmotions
+      queue:
+        - 'trekki'
+      data:
+        trekki:
+          url: '/viewtopic.php?f=74&t=173091'
+    2: #tituspullo
+      queue:
+        - 'james_bond'
+      data:
+        james_bond:
+          url: '/viewtopic.php?f=56&t=5648'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    james_bond:
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/Gg4xPaI.png'
+          dark:
+            img_url: 'https://i.imgur.com/pMmcsTk.png'
+      data:
+        title: 'Shaken, Not Stirred.'
+        img_url: 'https://i.imgur.com/Gg4xPaI.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
+    trekki:
+      data:
+        title:
+          - 'KHAAANNN!'
+          - 'To boldly go where no man has gone before.'
+          - 'You can use logic to justify almost anything. That''s its power. And its flaw.'
+          - 'But we''re going to learn from these mistakes. That''s what being human is all about.'
+          - 'Our species can only survive if we have obstacles to overcome.'
+          - 'Sometimes a feeling is all we humans have to go on.'
+          - 'Sometimes the universe allows for the making of unexpected memories.'
+          - 'Live long, and prosper.'
+          - 'Things are only impossible until they''re not.'
+        img_url: 'https://i.imgur.com/hJ6Vchq.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     adobe_infinity:
       data:
         title: 'To Adobe and Beyond!'

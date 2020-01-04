@@ -6,19 +6,30 @@ class badges_helper
     protected $container;
     protected $user_data = [];
     protected $post_data = [];
-	public function __construct(
+    public function __construct(
         $container
-	)
-	{/*{{{*/
+    )
+    {/*{{{*/
         $this->container  = $container;
         $this->p['users'] = $container->getParameter('jeb.snahp.avatar.badge.users');
         $this->p['items'] = $container->getParameter('jeb.snahp.avatar.badge.items');
-        $user = $container->get('user');
-	}/*}}}*/
+        $this->user = $container->get('user');
+        $this->db = $container->get('dbal.conn');
+        $this->style_type = 'light';
+    }/*}}}*/
+
+    private function setup_style_info($options)/*{{{*/
+    {
+        if (isset($options['style_type']))
+        {
+            $this->style_type = $options['style_type'];
+        }
+    }/*}}}*/
 
     public function process_badges($post_data, $options=[])/*{{{*/
     {
         $this->options = $options;
+        $this->setup_style_info($options);
         $this->post_data = $post_data;
         $user_params = $this->setup_user($post_data['user_id']);
         $queue = $this->make_jobs($user_params);
@@ -53,8 +64,24 @@ class badges_helper
         return $this->generate_named_html($jobname, $post_data, $user_params, $item_params);
     }/*}}}*/
 
+    private function override_item_params($item_params)/*{{{*/
+    {
+        if (!isset($item_params['override'])) return $item_params;
+        $overrides = $item_params['override'];
+        if (isset($overrides['style_type']))
+        {
+            $style_info = $overrides['style_type'][$this->style_type];
+            foreach($style_info as $key=>$val)
+            {
+                $item_params['data'][$key] = $val;
+            }
+        }
+        return $item_params;
+    }/*}}}*/
+
     private function generate_named_html($jobname, $post_data, $user_params, $item_params)/*{{{*/
     {
+        $item_params = $this->override_item_params($item_params);
         $job_data = $user_params['data'][$jobname];
         $type = isset($job_data['template_type']) ? $job_data['template_type'] : 'basic';
         $required_vars = $item_params['template'][$type]['fields'];
@@ -62,6 +89,15 @@ class badges_helper
         $template_vars = $this->get_required_vars($required_vars, $post_data, $job_data, $item_params['data']);
         $html = $this->replace_template($template_html, $template_vars);
         return $html;
+    }/*}}}*/
+
+    private function select_random($item)/*{{{*/
+    {
+        if (is_array($item))
+        {
+            return $item[array_rand($item)];
+        }
+        return $item;
     }/*}}}*/
 
     private function get_required_vars($varnames, $post_data, $job_data, $item_data)/*{{{*/
@@ -75,20 +111,11 @@ class badges_helper
             }
             elseif (isset($job_data[$varname]))
             {
-                $res[$varname] = $job_data[$varname];
+                $res[$varname] = $this->select_random($job_data[$varname]);
             }
             elseif (isset($item_data[$varname]))
             {
-              // If final item is array, randomly pick one. Useful for titles
-              $item = $item_data[$varname];
-              if (is_array($item))
-              {
-                $res[$varname] = $item[array_rand($item)];
-              }
-              else
-              {
-                $res[$varname] = $item;
-              }
+                $res[$varname] = $this->select_random($item_data[$varname]);
             }
             else
             {
