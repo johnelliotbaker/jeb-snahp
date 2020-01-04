@@ -102,7 +102,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.viewtopic_modify_post_row'              => [
                 ['setup_viewtopic_modify_post_row_data', 1000],
-                ['giftbox', 1],
+                // ['giftbox', 1],
                 ['easter_cluck', 1],
                 ['block_zebra_foe_topicview', 1],
                 ['show_requests_solved_avatar', 1],

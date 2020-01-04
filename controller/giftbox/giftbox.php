@@ -43,6 +43,7 @@ class giftbox
 
     public function handle($mode)/*{{{*/
     {
+        trigger_error('Event is over. Error Code: 539e6cd572');
         $this->sauth->reject_anon();
         switch($mode)
         {
