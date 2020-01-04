@@ -1518,12 +1518,12 @@ class main_listener extends base implements EventSubscriberInterface
     public function include_assets_before_posting($event)/*{{{*/
     {
         $mode = $event['mode'];
-        $b_enable = false;
+        $b_first_post = false;
         $topic_id = $event['topic_id'];
         $event['topic_id'] = $topic_id;
         switch ($mode) {
             case 'post':
-                $b_enable = true;
+                $b_first_post = true;
                 break;
             case 'edit':
                 $post_id = $event['post_id'];
@@ -1532,21 +1532,13 @@ class main_listener extends base implements EventSubscriberInterface
                 $result = $this->db->sql_query($sql);
                 $row = $this->db->sql_fetchrow($result);
                 $this->db->sql_freeresult($result);
-                if ($row && $row['topic_first_post_id']==$post_id)
+                if ($row && (int)$row['topic_first_post_id']===$post_id)
                 {
-                    $b_enable = true;
+                    $b_first_post = true;
                 }
             default:
             break;
         }
-        if (!$b_enable) return;
-        $forum_id = (int) $this->request->variable('f', '');
-        $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
-        foreach ($pg_names as $pg_name)
-        {
-            $fid_allowed[$pg_name] = explode(',', $this->config['snp_pg_fid_' . $pg_name]);
-        }
-        $user_id = $this->user->data['user_id'];
         $gid = $this->user->data['group_id'];
         $sql = 'SELECT snp_imdb_enable, snp_anilist_enable,
             snp_googlebooks_enable, snp_gamespot_enable,
@@ -1554,22 +1546,30 @@ class main_listener extends base implements EventSubscriberInterface
             snp_discogs_enable
             FROM ' . GROUPS_TABLE . '
             WHERE group_id = ' . $gid;
-        $result = $this->db->sql_query($sql);
+        $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
-        $bGroupEnable = $row['snp_imdb_enable'];
         $this->db->sql_freeresult($result);
-        if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
-            $this->template->assign_vars(['B_SHOW_IMDB' => true,]);
-        if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
-            $this->template->assign_vars(['B_SHOW_ANILIST' => true,]);
-        if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
-            $this->template->assign_vars(['B_SHOW_BOOKS' => true,]);
-        if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
-            $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
-        if ($row['snp_mydramalist_enable'] && in_array($forum_id, $fid_allowed['mydramalist']))
-            $this->template->assign_vars(['B_SHOW_MYDRAMALIST' => true,]);
-        if ($row['snp_discogs_enable'] && in_array($forum_id, $fid_allowed['discogs']))
-            $this->template->assign_vars(['B_SHOW_DISCOGS' => true,]);
+        if ($b_first_post)
+        {
+            $forum_id = (int) $this->request->variable('f', '');
+            $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
+            foreach ($pg_names as $pg_name)
+            {
+                $fid_allowed[$pg_name] = explode(',', $this->config['snp_pg_fid_' . $pg_name]);
+            }
+            if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
+                $this->template->assign_vars(['B_SHOW_IMDB' => true,]);
+            if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
+                $this->template->assign_vars(['B_SHOW_ANILIST' => true,]);
+            if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
+                $this->template->assign_vars(['B_SHOW_BOOKS' => true,]);
+            if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
+                $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
+            if ($row['snp_mydramalist_enable'] && in_array($forum_id, $fid_allowed['mydramalist']))
+                $this->template->assign_vars(['B_SHOW_MYDRAMALIST' => true,]);
+            if ($row['snp_discogs_enable'] && in_array($forum_id, $fid_allowed['discogs']))
+                $this->template->assign_vars(['B_SHOW_DISCOGS' => true,]);
+        }
         if ($row['snp_customtemplate_enable'])
             $this->template->assign_vars(['B_SHOW_CUSTOM_TPL' => true,]);
     }/*}}}*/
