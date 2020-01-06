@@ -175,7 +175,7 @@ parameters:
       data:
         trekki:
           url: '/viewtopic.php?f=74&t=173091'
-    2: #tituspullo
+    25790: #tituspullo
       queue:
         - 'james_bond'
       data:
