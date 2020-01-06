@@ -292,10 +292,11 @@ abstract class base
             'name' => $name,
             'text' => $text,
         ];
+        $escaped_text = $this->db->sql_escape($text);
         $sql = 'INSERT INTO ' . $tbl['tpl'] . $this->db->sql_build_array('INSERT', $data) . "
-            ON DUPLICATE KEY UPDATE text='{$text}'";
+            ON DUPLICATE KEY UPDATE text='${escaped_text}'";
         $this->db->sql_query($sql);
-        return $sql;
+        return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
     public function update_tpl($user_id, $name, $text)/*{{{*/
@@ -311,7 +312,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE user_id={$user_id} AND name='{$name}'";
         $this->db->sql_query($sql);
-        return $sql;
+        return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
     public function delete_tpl($user_id, $name)/*{{{*/
@@ -325,7 +326,7 @@ abstract class base
         $sql = 'DELETE FROM '  . $tbl['tpl'] . "
             WHERE user_id={$user_id} AND " . $this->db->sql_in_set('name', $name);
         $this->db->sql_query($sql);
-        return true;
+        return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
     public function select_tpl($user_id, $b_full=true, $name='')/*{{{*/
