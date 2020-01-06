@@ -10,7 +10,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/zkMuN2k.png'
             title: "Child at Heart.\rIt's kind of fun to do the impossible."
             url: 'https://forum.snahp.it/viewtopic.php?f=73&t=66377'
-            probability: 4
+            probability: 1
         size_matters:
             name: 'Size Matters'
             img:
@@ -21,7 +21,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/LIFCCnv.png'
             title: "Size Matters. {USERNAME} maintains THE LARGEST collection of ... something."
             url: 'https://forum.snahp.it/viewtopic.php?f=13&t=34584'
-            probability: 4
+            probability: 1
         bone_head:
             name: 'Bone Head'
             img:
@@ -54,7 +54,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
             title: "Thumbs Up! People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
             url: ''
-            probability: 10
+            probability: 1
         life_giver:
             name: 'Life Giver'
             img:
@@ -65,7 +65,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
             url: ''
-            probability: 4
+            probability: 1
         grave_digger:
             name: 'Grave Digger'
             img:
@@ -87,7 +87,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             url: ''
-            probability: 3
+            probability: 1
         magnetic_personality:
             name: 'Magnetic Personality'
             img:
@@ -109,7 +109,7 @@ parameters:
                     Acieeed!: 'https://i.imgur.com/hbfkjIp.png'
             title: 'The Gourmet. The Master Chef. The Delacroix of French Cuisine.'
             url: ''
-            probability: 4
+            probability: 1
         intense_training:
             name: 'Intense Training'
             img:
