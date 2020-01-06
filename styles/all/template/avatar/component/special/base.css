@@ -30,9 +30,6 @@ div.avatar_special
 {
   max-height: 40px;
   margin: 3px 1px;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
 }
 
 .game_machine
@@ -41,9 +38,18 @@ div.avatar_special
   margin: 3px 1px;
 }
 
+.trekki
+{
+  max-height: 40px;
+  margin: 3px 1px;
+}
+
 div.avatar_special img.avatar_badge
 {
     margin-left: 2px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 div.avatar_special p

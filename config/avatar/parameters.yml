@@ -160,9 +160,12 @@ parameters:
     119546: #GP10Ellison
       queue:
         - 'the_oracle'
+        - 'trekki'
       data:
         the_oracle:
           url: '/viewtopic.php?f=37&t=110567'
+        trekki:
+          url: '/viewtopic.php?f=33&t=127131'
     61485: #Existence
       queue:
         - 'adobe_infinity'
@@ -175,33 +178,23 @@ parameters:
       data:
         trekki:
           url: '/viewtopic.php?f=74&t=173091'
+          img_url: 'https://i.imgur.com/hJ6Vchq.png'
     25790: #tituspullo
       queue:
         - 'james_bond'
       data:
         james_bond:
           url: '/viewtopic.php?f=56&t=5648'
+    51956: #Mimccann
+      queue:
+        - 'trekki'
+      data:
+        trekki:
+          url: '/viewtopic.php?f=74&t=173967'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
-    james_bond:
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/Gg4xPaI.png'
-          dark:
-            img_url: 'https://i.imgur.com/pMmcsTk.png'
-      data:
-        title: 'Shaken, Not Stirred.'
-        img_url: 'https://i.imgur.com/Gg4xPaI.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     trekki:
       data:
         title:
@@ -214,7 +207,26 @@ parameters:
           - 'Sometimes the universe allows for the making of unexpected memories.'
           - 'Live long, and prosper.'
           - 'Things are only impossible until they''re not.'
-        img_url: 'https://i.imgur.com/hJ6Vchq.png'
+        img_url: 'https://i.imgur.com/JEbCl63.png'
+        class: 'trekki'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    james_bond:
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/Gg4xPaI.png'
+          dark:
+            img_url: 'https://i.imgur.com/pMmcsTk.png'
+      data:
+        title: 'Shaken, Not Stirred.'
+        img_url: 'https://i.imgur.com/Gg4xPaI.png'
       template:
         basic:
           fields:
