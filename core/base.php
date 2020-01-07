@@ -299,7 +299,7 @@ abstract class base
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function update_tpl($user_id, $name, $text)/*{{{*/
+    public function update_tpl($user_id, $name, $text, $priority=0)/*{{{*/
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
@@ -308,6 +308,7 @@ abstract class base
             return false;
         }
         $data['text'] = $text;
+        $data['priority'] = $priority;
         $sql = 'UPDATE ' . $tbl['tpl'] . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE user_id={$user_id} AND name='{$name}'";
@@ -332,7 +333,7 @@ abstract class base
     public function select_tpl($user_id, $b_full=true, $name='')/*{{{*/
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
-        $s_fields = $b_full ? '*' : 'id, name';
+        $s_fields = $b_full ? '*' : 'id, name, priority';
         $sql = "SELECT {$s_fields} FROM " . $tbl['tpl'] . ' WHERE user_id=' . (int)$user_id;
         if ($name)
         {

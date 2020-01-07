@@ -109,9 +109,10 @@ class template extends base
         $user_id = $this->user->data['user_id'];
         $name = $this->request->variable('name', '');
         $text = $this->request->variable('text', '', true);
+        $priority = $this->request->variable('priority', 0);
         if ($text)
         {
-          $sql = $this->update_tpl($user_id, $name, $text);
+          $sql = $this->update_tpl($user_id, $name, $text, $priority);
         }
         $js->send(['status' => $sql ? 'success' : 'fail']);
     }
