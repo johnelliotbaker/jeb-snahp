@@ -1,0 +1,16 @@
+# imports:
+#     - { resource: 'handlebar_blocker/parameters.yml' }
+services:
+    jeb.snahp.handlebar_helper:
+        class: jeb\snahp\core\handlebar\helper
+        arguments:
+            - '@service_container'
+    jeb.snahp.handlebar_listener:
+        class: jeb\snahp\event\handlebar_listener
+        arguments:
+            - '@service_container'
+            - '@config'
+            - '@template'
+            - '@jeb.snahp.handlebar_helper'
+        tags:
+            - { name: event.listener }

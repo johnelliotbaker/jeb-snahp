@@ -16,6 +16,7 @@ imports:
     - { resource: giftbox/service.yml }
     - { resource: invite/service.yml }
     - { resource: styles/service.yml }
+    - { resource: handlebar/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

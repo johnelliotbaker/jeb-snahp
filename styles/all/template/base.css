@@ -324,3 +324,16 @@ img.emotes_default.discord_44
 {
     border-bottom-color: transparent;
 }
+
+/* spoiler */
+.spoiler-wrapper
+{
+    background-color: #444444;
+    cursor: pointer;
+    display: inline-block;
+}
+.spoiler
+{
+    opacity: 0;
+    display: inline-block;
+}

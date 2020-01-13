@@ -162,6 +162,21 @@ $("body").keydown(function(event){
     }
 });
 
+const Spoilers = {
+    init: () => {
+        $(document).on( 'click', '.spoiler-wrapper', function (e) {
+            $(this).toggleClass('spoiler-wrapper');
+            e.preventDefault();
+        });
+        $(document).on( 'click', '.spoiler', function (e) {
+            $(this).toggleClass('spoiler');
+            e.preventDefault();
+        });
+    }
+};
+Spoilers.init();
+
+
 $(document).ready(()=>{
     // Add clipboarding to avatar usernames
     Avatar.append_copy_controls();
