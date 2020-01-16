@@ -191,6 +191,12 @@ parameters:
       data:
         trekki:
           url: '/viewtopic.php?f=74&t=173967'
+    83907: #koolkunz
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'K1tKat'
 
 
   # PROCESSOR DEFINITIONS
