@@ -130,6 +130,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['modify_dice_roll', 0],
                 ['disable_magic_url_on_gallery', 1],
                 ['colorize_staff_notification', 1],
+                ['disable_quoting_blocker', 2],
             ],
             'core.viewtopic_assign_template_vars_before'  => [
                 ['insert_new_topic_button',0],
@@ -1027,6 +1028,18 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }/*}}}*/
 
+    public function disable_quoting_blocker($event)/*{{{*/
+    {
+        preg_match('#\[quote=([^\]]*)\]#', $event['message_parser']->message, $match);
+        if (!$match) return;
+        $username = trim($match[1]);
+        $foe_blocker_helper = $this->container->get('jeb.snahp.foe_blocker_helper');
+        if ($foe_blocker_helper->is_blocked_with_blocker_username($this->user_id, $username))
+        {
+            trigger_error("You have been blocked by <b>${username}</b> and cannot quote. Error Code: 299a70edf4");
+        }
+    }/*}}}*/
+
     public function show_thanks_top_list($event)/*{{{*/
     {
         $uid = $this->user->data['user_id'];
@@ -1370,11 +1383,12 @@ class main_listener extends base implements EventSubscriberInterface
         foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         $aUserdata = $this->get_user_data($aUsername);
+        // Disable poke notification to blocker
         foreach($aUserdata as $userdata)
         {
             if ($foe_blocker_helper->is_blocked_with_blocker_id($this->user_id, $userdata['user_id']))
             {
-                trigger_error("You are blocked by <b>${userdata['username']}</b> and cannot send poke notifications. Error Code: 769a81bcab");
+                trigger_error("You have been blocked by <b>${userdata['username']}</b> and cannot send poke notifications. Error Code: 769a81bcab");
             }
         }
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);

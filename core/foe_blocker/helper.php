@@ -61,6 +61,17 @@ class helper
         return !empty($row);
     }/*}}}*/
 
+    public function is_blocked_with_blocker_username($blocked_id, $blocker_username)/*{{{*/
+    {
+        $blocker_id = $this->username2userid($blocker_username);
+        $def_block = $this->container->getParameter('jeb.snahp.foe_blocker')['status']['block'];
+        $sql = 'SELECT 1 FROM ' . $this->tbl['foe'] . " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id} AND status=${def_block}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !empty($row);
+    }/*}}}*/
+
     public function select_blocked_data_by_username($username)/*{{{*/
     {
         $username = (string) $username;
