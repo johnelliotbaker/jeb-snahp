@@ -39,17 +39,22 @@ class spotlight
 
     public function handle($mode)/*{{{*/
     {
+        $this->sauth->reject_anon();
         switch($mode)
         {
         case 'ls':
             return $this->respond_list_as_json();
         case 'clear':
+            $this->sauth->reject_non_dev();
             return $this->respond_clear_as_json();
         case 'disable':
+            $this->sauth->reject_non_dev();
             return $this->respond_disable_as_json();
         case 'enable':
+            $this->sauth->reject_non_dev();
             return $this->respond_enable_as_json();
         case 'update':
+            $this->sauth->reject_non_dev();
             return $this->respond_update_as_json();
         }
         trigger_error('Invalid mode. Error Code: 3015f74010');
