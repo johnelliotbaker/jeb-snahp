@@ -1359,6 +1359,7 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         if (!$this->config['snp_b_notify_on_poke'])
             return false;
+        $foe_blocker_helper = $this->container->get('jeb.snahp.foe_blocker_helper');
         $at_prefix = $this->at_prefix;
         $mp = $event['message_parser'];
         $message = &$mp->message;
@@ -1369,6 +1370,13 @@ class main_listener extends base implements EventSubscriberInterface
         foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
         if (!$aUsername) return;
         $aUserdata = $this->get_user_data($aUsername);
+        foreach($aUserdata as $userdata)
+        {
+            if ($foe_blocker_helper->is_blocked_with_blocker_id($this->user_id, $userdata['user_id']))
+            {
+                trigger_error("You are blocked by <b>${userdata['username']}</b> and cannot send poke notifications. Error Code: 769a81bcab");
+            }
+        }
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
