@@ -147,33 +147,7 @@
         </dl>
       </fieldset>
 
-      <fieldset>
-        <legend>Christmas Event</legend>
-        <dl>
-          <dt>
-          <label for="injection_post_id">Injection Post ID:</label>
-          </dt>
-          <dd>
-          <input type="number" value="{SNP_GIV_INJECTION_POST_ID}" min="0" name="snp_giv_injection_post_id" id="snp_giv_injection_post_id" />
-          </dd>
-        </dl>
-        <dl>
-          <dt>
-          <label for="injection_post_id">Start Time:</label>
-          </dt>
-          <dd>
-          <input type="number" style="width: 94px;" value="{SNP_GIV_START_TIME}" min="0" name="snp_giv_start_time" id="snp_giv_start_time" />
-          </dd>
-        </dl>
-        <dl>
-          <dt>
-          <label for="injection_post_id">End Time:</label>
-          </dt>
-          <dd>
-          <input type="number" style="width: 94px;" value="{SNP_GIV_END_TIME}" min="0" name="snp_giv_end_time" id="snp_giv_end_time" />
-          </dd>
-        </dl>
-      </fieldset>
+      <!-- <fieldset> <legend>Christmas Event</legend> <dl> <dt> <label for="injection_post_id">Injection Post ID:</label> </dt> <dd> <input type="number" value="{SNP_GIV_INJECTION_POST_ID}" min="0" name="snp_giv_injection_post_id" id="snp_giv_injection_post_id" /> </dd> </dl> <dl> <dt> <label for="injection_post_id">Start Time:</label> </dt> <dd> <input type="number" style="width: 94px;" value="{SNP_GIV_START_TIME}" min="0" name="snp_giv_start_time" id="snp_giv_start_time" /> </dd> </dl> <dl> <dt> <label for="injection_post_id">End Time:</label> </dt> <dd> <input type="number" style="width: 94px;" value="{SNP_GIV_END_TIME}" min="0" name="snp_giv_end_time" id="snp_giv_end_time" /> </dd> </dl> </fieldset> -->
 
       <fieldset>
         <legend>Easter Eggs</legend>
@@ -287,15 +261,29 @@
       </fieldset>
 
       <fieldset>
-        <legend>Foe Blocking</legend>
+        <legend>User Blocking</legend>
         <span>Replaces the old Foe Blocking done through phpbb's foe and friends</span><br><br>
         <dl>
           <dt>
-          <label>Foe Blocking Master Switch</label>
+          <label>User Blocking Master Switch</label>
           </dt>
           <dd>
           <label><input type="radio" name="snp_foe_b_master" class="radio" value="1" {% if SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Enable</label>
           <label><input type="radio" name="snp_foe_b_master" class="radio" value="0" {% if not SNP_FOE_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
+      <fieldset>
+        <legend>Spotlight</legend>
+        <span>Content Spotlight on Index Page</span><br><br>
+        <dl>
+          <dt>
+          <label>Spotlight Master Switch</label>
+          </dt>
+          <dd>
+          <label><input type="radio" name="snp_spot_b_master" class="radio" value="1" {% if SNP_SPOT_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_spot_b_master" class="radio" value="0" {% if not SNP_SPOT_B_MASTER %}checked="checked"{% endif %}> Disable</label>
           </dd>
         </dl>
       </fieldset>

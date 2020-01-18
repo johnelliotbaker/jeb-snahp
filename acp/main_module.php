@@ -803,8 +803,10 @@ class main_module
                 $config->set('snp_giv_double_time', $snp_giv_double_time);
                 $snp_easter_chicken_chance = $request->variable('snp_easter_chicken_chance', '10000');
                 $config->set('snp_easter_chicken_chance', $snp_easter_chicken_chance);
-                $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', '10000');
+                $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', 1);
                 $config->set('snp_easter_b_chicken', $snp_easter_b_chicken);
+                $snp_spot_b_master = $request->variable('snp_spot_b_master', 1);
+                $config->set('snp_spot_b_master', $snp_spot_b_master);
                 $snp_req_b_avatar = $request->variable('snp_req_b_avatar', '1');
                 $config->set('snp_req_b_avatar', $snp_req_b_avatar);
                 $snp_thanks_b_enable = $request->variable('snp_thanks_b_enable', '1');
@@ -847,6 +849,7 @@ class main_module
                 'SNP_GIV_DOUBLE_TIME'          => $config['snp_giv_double_time'],
                 'SNP_EASTER_B_CHICKEN'         => $config['snp_easter_b_chicken'],
                 'SNP_EASTER_CHICKEN_CHANCE'    => $config['snp_easter_chicken_chance'],
+                'SNP_SPOT_B_MASTER'            => $config['snp_spot_b_master'],
                 'SNP_REQ_B_AVATAR'             => $config['snp_req_b_avatar'],
                 'SNP_THANKS_B_ENABLE'          => $config['snp_thanks_b_enable'],
                 'SNP_THANKS_B_AVATAR'          => $config['snp_thanks_b_avatar'],
