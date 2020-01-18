@@ -219,26 +219,26 @@ parameters:
 
         # Anchors
         e_nq000: # Apps
-            url: 'https://i.imgur.com/Q81umGG.png'
+            url: 'https://i.imgur.com/6Vje5na.png'
             type: 0
             link: '/viewforum.php?f=16'
         e_nq001: # Games
-            url: 'https://i.imgur.com/0QvKiG1.png'
+            url: 'https://i.imgur.com/sPioGIm.png'
             type: 0
             link: '/viewforum.php?f=67'
-        e_nq002: # Movies
-            url: 'https://i.imgur.com/AhKrAi2.png'
+        e_nq002: # Movie
+            url: 'https://i.imgur.com/rJhNuBZ.png'
             type: 0
             link: '/viewforum.php?f=17'
         e_nq003: # TV
-            url: 'https://i.imgur.com/ODysDLN.png'
+            url: 'https://i.imgur.com/fvsPcWc.png'
             type: 0
             link: '/viewforum.php?f=68'
         e_nq004: # Music
-            url: 'https://i.imgur.com/4GPl3TO.png'
+            url: 'https://i.imgur.com/6BCLOfI.png'
             type: 0
             link: '/viewforum.php?f=69'
         e_nq005: # Other
-            url: 'https://i.imgur.com/iPEUqrn.png'
+            url: 'https://i.imgur.com/Nns3rEB.png'
             type: 0
             link: '/viewforum.php?f=18'
