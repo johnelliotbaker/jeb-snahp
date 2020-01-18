@@ -70,4 +70,17 @@
 <!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.css -->
 <!-- ENDIF -->
 
+<!-- IF not $rx_emote -->
+<!-- DEFINE $rx_emote = true -->
+<!--- INCLUDEJS @jeb_snahp/rx_emote/bundle.js -->
+<!--- INCLUDECSS @jeb_snahp/rx_emote/bundle.css -->
+<!-- ENDIF -->
+
+<!-- IF not $rx_spotlight -->
+<!-- DEFINE $rx_spotlight = true -->
+<!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/spotlight/rx_spotlight/bundle.css -->
+<!-- ENDIF -->
+
+
 <!-- loadlast -->

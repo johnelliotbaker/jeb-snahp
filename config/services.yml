@@ -17,6 +17,7 @@ imports:
     - { resource: invite/service.yml }
     - { resource: styles/service.yml }
     - { resource: handlebar/service.yml }
+    - { resource: spotlight/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

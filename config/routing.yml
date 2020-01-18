@@ -1,3 +1,5 @@
+routing_spotlight:
+    resource: 'spotlight/routing.yml'
 routing_giftbox:
     resource: 'giftbox/routing.yml'
 routing_rh_tags:

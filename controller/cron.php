@@ -16,8 +16,8 @@ class cron extends base
         $this->reputation_controller = $reputation_controller;
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
-	{
+    public function handle($mode)/*{{{*/
+    {
         $this->reject_non_dev();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
@@ -37,10 +37,14 @@ class cron extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-	}/*}}}*/
+    }/*}}}*/
 
     private function hourly($cfg)/*{{{*/
     {
+        $container = $this->container;
+        // Spotlight Updates
+        $spotlight_helper = $this->container->get('jeb.snahp.spotlight_helper');
+        $spotlight_helper->update_list();
         // Giving reputation points
         if ($this->config['snp_rep_b_master'] && $this->config['snp_rep_b_cron_giveaway'])
         {
@@ -57,6 +61,7 @@ class cron extends base
                 $this->reputation_controller->mcp_set_min($cfg);
             }
         }
+        //
         trigger_error('Finished doing hourly stuff.');
     }/*}}}*/
 

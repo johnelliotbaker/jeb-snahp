@@ -1,0 +1,5 @@
+jeb_snahp_routing.spotlight:
+    path: /snahp/spotlight/{mode}/
+    defaults: { _controller: jeb.snahp.spotlight:handle}
+    requirements:
+        mode: \S+
