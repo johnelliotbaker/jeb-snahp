@@ -206,7 +206,14 @@ parameters:
             url: 'https://i.imgur.com/LvWC2Ey.png'
             type: 0
             title: 'One Shatner'
-            css: 'twitch_50'
+
+        # Star Trek
+        e_tr000: # picard
+            url: 'https://i.imgur.com/AT3Tgdd.png'
+            type: 0
+            css: 'discord_44'
+            title: 'Make it so'
+            link: 'https://www.youtube.com/watch?v=sZt6eU5REN8'
 
         # common alias
         e_comfy: *e_ds000
@@ -242,3 +249,5 @@ parameters:
             url: 'https://i.imgur.com/Nns3rEB.png'
             type: 0
             link: '/viewforum.php?f=18'
+
+
