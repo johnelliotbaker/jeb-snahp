@@ -35,9 +35,16 @@ class handlebar_listener implements EventSubscriberInterface
 
     public function hide_spoiler($event)/*{{{*/
     {
-        $event['html'] = preg_replace_callback('#\|\|(.*?)\|\|#s', function($match){
-            return '<span class="spoiler-wrapper"><span class="spoiler">' . $match[1] . '</span></span>';
-        }, $event['html']);
+        // Logic for hiding
+        $hide = function($html) 
+        {
+            return preg_replace_callback('#\|\|(.*?)\|\|#s', function($match){
+                return '<span class="spoiler-wrapper"><span class="spoiler">' . $match[1] . '</span></span>';
+            }, $html);
+        };
+        // Decorator for ignoring code block
+        $string_util = new \jeb\snahp\core\string_util();
+        $event['html'] = $string_util->ignore_codeblock($hide)($event['html']);
     }/*}}}*/
 
 }

@@ -1,0 +1,30 @@
+# imports:
+#     - { resource: 'reputation/parameters.yml' }
+services:
+    jeb.snahp.reputation:
+        class: jeb\snahp\controller\reputation
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '@notification_manager'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'
+    jeb.snahp.reputation_helper:
+        class: jeb\snahp\core\reputation\helper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.user.user_inventory'
+            - '@jeb.snahp.market.product_class'

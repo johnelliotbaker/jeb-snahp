@@ -1,0 +1,23 @@
+# imports:
+#     - { resource: 'cron/parameters.yml' }
+services:
+    jeb.snahp.cron:
+        class: jeb\snahp\controller\cron
+        parent: jeb.snahp.base
+        arguments:
+            - '%core.table_prefix%'
+            - '@dbal.conn'
+            - '@jeb.snahp.cron_helper'
+            - '@ger.feedpostbot.classes.driver'
+            - '@jeb.snahp.reputation_helper'
+            - '@jeb.snahp.spotlight_helper'
+    jeb.snahp.cron_helper:
+        class: jeb\snahp\core\cron\helper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '@service_container'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

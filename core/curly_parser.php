@@ -169,8 +169,13 @@ class curly_parser
         }
         $res[] = '</tbody></table></div>';
         $res = implode(PHP_EOL, $res);
-        $strn = preg_replace($ptn, $res, $strn);
-        return $strn;
+        return $res;
+        // The following was causing problem when res contained ${number} 
+        // with preg_replace back referencing. 
+        // preg_replace was using $0 & $1 for example as reference
+        // instead of string literals.
+        // $strn = preg_replace($ptn, $res, $strn);
+        // return $strn;
     }/*}}}*/
 
     public function interpolate_fulfill($strn, $tag_name)/*{{{*/

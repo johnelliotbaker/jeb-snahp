@@ -18,6 +18,7 @@ class user_auth
         $this->container = $container;
         $this->this_user_id = $this->user->data['user_id'];
         $this->user_id = $this->user->data['user_id'];
+        $this->phpbb_root_path = $container->getParameter('core.root_path');
 	}
 
     public function is_dev_server()/*{{{*/
@@ -74,7 +75,7 @@ class user_auth
 
     public function is_only_dev()/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
         $gid_developer = 13;
         $uid_developer = 10414;
@@ -85,7 +86,7 @@ class user_auth
 
     public function is_dev()/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
         $gid_developer = 13;
         $uid_developer = 10414;
@@ -190,7 +191,7 @@ class user_auth
         {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['production']['set'];
         }
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
         if (!array_key_exists($groupset_name, $groupset))
         {
@@ -202,7 +203,7 @@ class user_auth
 
     public function user_belongs_to_group($user_id, $group_id)/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
         $group_id_ary = [$group_id];
         return group_memberships($group_id_ary, $user_id_ary, true);
@@ -210,7 +211,7 @@ class user_auth
 
     public function get_user_groups($user_id)/*{{{*/
     {
-        include_once('includes/functions_user.php');
+        include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
         $group_id_ary = false;
         $rowset = group_memberships($group_id_ary, $user_id_ary);

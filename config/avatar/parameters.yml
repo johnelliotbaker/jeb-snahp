@@ -135,9 +135,12 @@ parameters:
           url: '/viewtopic.php?f=13&t=112503'
     37031: #ski77
       queue:
+        - 'picard'
         - 'anime_pack'
         - 'updater'
       data:
+        picard:
+          url: '/viewtopic.php?f=31&t=185015'
         anime_pack:
           title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
           url: '/viewtopic.php?f=84&t=30484'
@@ -197,10 +200,27 @@ parameters:
       data:
         encoder:
           tagname: 'K1tKat'
+    3585: #Toragh
+      queue:
+        - 'picard'
+      data:
+        picard:
+          url: '/viewtopic.php?f=57&t=185181'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    picard:
+      data:
+        title: 'Make it so.'
+        img_url: 'https://i.imgur.com/AT3Tgdd.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     trekki:
       data:
         title:
