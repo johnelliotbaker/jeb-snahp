@@ -1,0 +1,21 @@
+{% set search_query_array = SEARCHED_QUERY|split(' ') %}
+{% set n_two_letter_word = 0 %}
+{% set new_search_terms = [] %}
+{% for s in search_query_array %}
+  {% if s|length <= 2 %}
+    {% set n_two_letter_word = n_two_letter_word + 1 %}
+  {% else %}
+    {% set new_search_terms = new_search_terms|merge([s]) %}
+  {% endif %}
+{% endfor %}
+
+{% if n_two_letter_word > 0 %}
+  {% set new_search_terms = new_search_terms|join(' ') %}
+  {% set new_search_url = "/search.php?sf=titleonly&keywords=" ~ new_search_terms|replace(' ', '+') %}
+<div style="font-size: 1.2em; margin-bottom: 16px;">
+  Your search <b>{SEARCHED_QUERY}</b> contains short word{% if n_two_letter_word > 1 %}s{% endif %} 
+  and some results may have been omitted.<br>
+  Repeating the search with <b><a href="{new_search_url}">{new_search_terms}</a></b> might yield better results.<br>
+  For more information, please visit <a href="/app.php/snahp/wiki/search_short_words/"><b>wiki</b></a>.
+</div>
+{% endif %}
