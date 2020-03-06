@@ -2,7 +2,7 @@
 {% set n_two_letter_word = 0 %}
 {% set new_search_terms = [] %}
 {% for s in search_query_array %}
-  {% if s|length <= 2 %}
+  {% if s and s|length <= 2 %}
     {% set n_two_letter_word = n_two_letter_word + 1 %}
   {% else %}
     {% set new_search_terms = new_search_terms|merge([s]) %}
