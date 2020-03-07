@@ -1,3 +1,16 @@
 {% if S_USER_LOGGED_IN %}
 <div class="rx_spotlight"></div>
+<style>
+{% if STYLE_TYPE=='dark' %}
+{% include '@jeb_snahp/spotlight/dark.css' %}
+{% endif %}
+{% if STYLE_NAME=='basic' %}
+div.slick-slider {
+  margin-bottom: 25px;
+}
+div.rx_spotlight {
+  min-height: 21px;
+}
+{% endif %}
+</style>
 {% endif %}
