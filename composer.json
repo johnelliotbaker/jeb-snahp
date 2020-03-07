@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.36.3",
-    "time": "2020-01-06",
+    "version": "0.36.6",
+    "time": "2020-03-07",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "aaa3375d84e77d28f2722040129af46810cdd665",
+        "version": "3592071493d64741838bdb0854c45fbc18789a1f",
         "features": "React Post Generators",
         "display-name": "Snahp",
         "soft-require": {
