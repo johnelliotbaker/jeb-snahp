@@ -20,6 +20,7 @@ imports:
     - { resource: spotlight/service.yml }
     - { resource: cron/service.yml }
     - { resource: reputation/service.yml }
+    - { resource: poi/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core

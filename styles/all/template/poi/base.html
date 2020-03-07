@@ -1,0 +1,61 @@
+<!-- INCLUDE overall_header.html -->
+<div class="twbs">
+
+
+  <table class="table table-sm table-dark table-striped table-borderless"
+         style="vertical-align:middle;"
+    >
+    <!-- <thead> -->
+    <!--   <tr> -->
+    <!--     <th scope="col">Title</th> -->
+    <!--     <th scope="col">Description</th> -->
+    <!--     <th scope="col">Users</th> -->
+    <!--   </tr> -->
+    <!-- </thead> -->
+    <tbody>
+      {% for item in ITEMS|sort %}
+      <tr>
+        <th scope="col" style="width:1px; text-align: center; padding: 3px 8px 3px 8px;">
+          <img style="height: 30px;" src="{{item['img_url']}}" alt="{key}" />
+        </th>
+        <td>{{item['type']}}</td>
+        <td style="font-size:1.0em; font-weight:700; margin-right: 0.3em;" >
+          {% for user in item['users']|sort %}
+          {% set url = user['url'] %}
+          <span style="color:#{{user['user_colour']}};">
+            {% if url %}
+              <a href="{{user['url']}}">{{user['username']}}</a>
+            {% else %}
+              {{user['username']}}
+            {% endif %}
+          </span>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<style>
+.twbs .btn .badge { top: 3px; }
+a.btn.btn-primary.tag-button {
+  font-size: 1.4em;
+  color: white !important;
+  border-radius: 40px;
+  margin: 2px 0px 2px 0px; 
+  padding: 0px 4px 0px 6px;
+}
+</style>
+
+<h5>Tag Cloud</h5>
+{% for tag in TAGS %}
+<a role="button" type="button" class="btn btn-primary tag-button" 
+   href="/app.php/tag/{{tag['tag_lowercase']}}"
+  >
+  {{tag['tag_lowercase']}} <span class="badge badge-pill badge-light" style="border-radius: 10px; background: white; color:black;" >{{tag['count']}}</span>
+</a>
+{% endfor %}
+
+
+</div>
+<!-- INCLUDE overall_footer.html -->

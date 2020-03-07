@@ -1,3 +1,5 @@
+routing_poi:
+    resource: 'poi/routing.yml'
 routing_spotlight:
     resource: 'spotlight/routing.yml'
 routing_giftbox:

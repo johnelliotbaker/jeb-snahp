@@ -30,6 +30,7 @@ parameters:
         log: '%core.table_prefix%snahp_log'
         wiki: '%core.table_prefix%snahp_wiki'
         foe: '%core.table_prefix%snahp_foe'
+        topic_tags: '%core.table_prefix%rh_topictags_tag'
         tags_group_map: '%core.table_prefix%rh_topictags_group_map'
         tags_forum_map: '%core.table_prefix%rh_topictags_forum_map'
         giveaways: '%core.table_prefix%snahp_giveaways'

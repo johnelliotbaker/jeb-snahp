@@ -1,0 +1,42 @@
+imports:
+  # - { resource: 'poi/parameters.yml' }
+services:
+  jeb.snahp.poi: # CONTROLLER
+    class: jeb\snahp\controller\poi\poi
+    arguments:
+      - '@dbal.conn'
+      - '@user'
+      - '@config'
+      - '@request'
+      - '@template'
+      - '@service_container'
+      - '@controller.helper'
+      - '%jeb.snahp.tables%'
+      - '@jeb.snahp.auth.user_auth'
+      # - '@jeb.snahp.spotlight_helper'
+
+  # jeb.snahp.spotlight_helper: # HELPER
+  #   class: jeb\snahp\core\poi\helper
+  #   arguments:
+  #     - '@dbal.conn'
+  #     - '@user'
+  #     - '@auth'
+  #     - '@config'
+  #     - '@config_text'
+  #     - '@service_container'
+  #     - '%jeb.snahp.tables%'
+  #     - '@jeb.snahp.auth.user_auth'
+
+  # jeb.snahp.spotlight_listener: # EVENT LISTENER
+  #   class: jeb\snahp\event\spotlight_listener
+  #   arguments:
+  #     - '@dbal.conn'
+  #     - '@config'
+  #     - '@user'
+  #     - '@template'
+  #     - '@service_container'
+  #     - '%jeb.snahp.tables%'
+  #     - '@jeb.snahp.auth.user_auth'
+  #     - '@jeb.snahp.spotlight_helper'
+  #   tags:
+  #     - { name: event.listener }

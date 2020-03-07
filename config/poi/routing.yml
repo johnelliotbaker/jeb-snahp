@@ -1,0 +1,5 @@
+jeb_snahp_routing.poi:
+    path: /snahp/poi/{mode}/
+    defaults: { _controller: jeb.snahp.poi:handle}
+    requirements:
+        mode: \S+

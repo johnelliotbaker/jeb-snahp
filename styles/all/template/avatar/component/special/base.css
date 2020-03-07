@@ -63,3 +63,27 @@ div.avatar_special p
     height: 24px;
     background-size: cover;
 }
+
+.tidal
+{
+  height: 40px;
+  margin: 3px 1px;
+}
+
+.formula_one
+{
+  height: 30px;
+  margin: 3px 1px;
+}
+
+.marvel
+{
+  height: 40px;
+  margin: 3px 1px;
+}
+
+.attenborough
+{
+  height: 30px;
+  margin: 3px 1px;
+}

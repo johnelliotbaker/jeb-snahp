@@ -1,7 +1,6 @@
 parameters:
   jeb.snahp.avatar.badge.users:
 
-
     22391: #SampaD22
       queue:
         - 'encoder'
@@ -106,7 +105,6 @@ parameters:
       data:
         encoder:
           tagname: 'DSG'
-
     12694: #pandacircus
       queue:
         - 'audio_expert'
@@ -206,11 +204,116 @@ parameters:
       data:
         picard:
           url: '/viewtopic.php?f=57&t=185181'
+    17561: #Sylveon
+      queue:
+        - 'tidal'
+      data:
+        tidal:
+          url: '/viewtopic.php?f=35&t=166566'
+    12498: #taskmaster
+      queue:
+        - 'anime_pack'
+      data:
+        anime_pack:
+          url: '/viewtopic.php?f=13&t=21463'
+    156: #MKED
+      queue:
+        - 'formula_one'
+      data:
+        formula_one:
+          url: '/search.php?st=0&sk=x&sd=d&sr=topics&keywords=Formula&author_id=156&sf=titleonly'
+    71633: #Stroopwafelandcoffee
+      queue:
+        - 'marvel'
+      data:
+        marvel:
+          url: '/viewtopic.php?f=43&t=102774'
+    268: #nehpets1999
+      queue:
+        - 'marvel'
+      data:
+        marvel:
+          url: '/viewtopic.php?f=73&t=79046'
+    17379: #BagOfNothing
+      queue:
+        - 'attenborough'
+      data:
+        attenborough:
+          url: '/viewtopic.php?f=33&t=188902'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    attenborough:
+      description: 'David Attenborough'
+      data:
+        title: 'Explore the world with Sir David Attenborough'
+        class: 'attenborough'
+        img_url: 'https://i.imgur.com/0HH4jv8.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    marvel:
+      description: 'Marvel'
+      data:
+        title: 'With great power comes great responsibility.'
+        class: 'marvel'
+        img_url: 'https://i.imgur.com/aiD7gAa.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    formula_one:
+      description: 'Formula 1 Racing'
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/WKaiwCk.png'
+          dark:
+            img_url: 'https://i.imgur.com/WKaiwCk.png'
+      data:
+        title: 'Engineered Insanity'
+        class: 'formula_one'
+        img_url: 'https://i.imgur.com/WKaiwCk.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    tidal:
+      description: 'Tidal Music Collection'
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/HI1fnph.png'
+          dark:
+            img_url: 'https://i.imgur.com/2is3LzM.png'
+      data:
+        title: 'TIDAL for all'
+        class: 'tidal'
+        img_url: 'https://i.imgur.com/2is3LzM.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     picard:
+      description: "Picard"
       data:
         title: 'Make it so.'
         img_url: 'https://i.imgur.com/AT3Tgdd.png'
@@ -222,6 +325,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     trekki:
+      description: 'Trekkie'
       data:
         title:
           - 'KHAAANNN!'
@@ -244,6 +348,7 @@ parameters:
             - 'class'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     james_bond:
+      description: 'James Bond Ultimate Collection'
       override:
         style_type:
           light:
@@ -252,7 +357,7 @@ parameters:
             img_url: 'https://i.imgur.com/pMmcsTk.png'
       data:
         title: 'Shaken, Not Stirred.'
-        img_url: 'https://i.imgur.com/Gg4xPaI.png'
+        img_url: 'https://i.imgur.com/pMmcsTk.png'
       template:
         basic:
           fields:
@@ -261,6 +366,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     adobe_infinity:
+      description: 'Adobe Suite'
       data:
         title: 'To Adobe and Beyond!'
         img_url: 'https://i.imgur.com/pIFLOKL.png'
@@ -272,6 +378,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     game_machine:
+      description: 'Games 4 Days'
       data:
         img_url: 'https://i.imgur.com/Uo7648y.png'
         title:
@@ -285,6 +392,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge game_machine"></img></a></span>'
     the_oracle:
+      description: 'The Complete Delphi Classics'
       data:
         title:
           - 'Those who do not read history are doomed to repeat it.'
@@ -321,6 +429,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge the_oracle"></img></a></span>'
     drunken_master:
+      description: 'The Legend of Jackie Chan'
       data:
         title: 'Drunken Master'
         img_url: 'https://i.imgur.com/FxX4vma.png'
@@ -332,6 +441,7 @@ parameters:
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge maxh_36"></img></a></span>'
     audio_expert:
+      description: 'Audio Experts'
       data:
         title: 'Audio Expert'
         img_url: 'https://i.imgur.com/N0fWbFu.png'
@@ -345,6 +455,7 @@ parameters:
           html: '<div title="{title}" class="audio_expert"></div>'
           html: '<span title="{title}"><img src="{img_url}" class="{img_css}"></img></span>'
     updater:
+      description: 'Ongoing TV Shows'
       data:
         title: 'Perpetual Energy Machine'
         img_url: 'https://i.imgur.com/rgplXx8.png'
@@ -356,6 +467,7 @@ parameters:
             - 'img_url'
           html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_24"></img></a></span>'
     anime_pack:
+      description: 'All Things Animated'
       data:
         title: 'International Bureau for Preservation and Dissemination of Animated Art'
         img_url: 'https://i.imgur.com/gTTbWym.png'
@@ -375,8 +487,10 @@ parameters:
             - 'user_colour'
           html: '<span style="color:#{user_colour};">.{groupname}. </span>'
     encoder:
+      description: 'Encoders'
       data:
           title: 'Encoder'
+          img_url: 'https://i.imgur.com/FBSvIdl.png'
       template:
         basic:
           fields: &fields
