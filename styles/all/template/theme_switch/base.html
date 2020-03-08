@@ -1,0 +1,34 @@
+<!--- overall_footer_copyright_prepend -->
+<div style="padding-bottom: 5px;">
+  <i class="icon fa-cubes fa-fw" aria-hidden="true"></i>
+  <span class="form-group">
+    <select class="form-control form-control-sm" id="theme-switch">
+      <option value="acieeed!" {% if STYLE_NAME=='acieeed!' %}selected{% endif %}>Acieeed!</option>
+      <option value="basic" {% if STYLE_NAME=='basic' %}selected{% endif %}>Basic</option>
+      <option value="hexagon" {% if STYLE_NAME=='hexagon' %}selected{% endif %}>Hexagon</option>
+      <option value="prosilver" {% if STYLE_NAME=='prosilver' %}selected{% endif %}>Prosilver</option>
+    </select>
+  </span>
+</div>
+<style>
+{% if STYLE_NAME=='acieeed' %}
+#theme-switch {
+  background-color: #111;
+  color: #f8c301;
+}
+{% endif %}
+</style>
+<script>
+  const themeSwitch = $('#theme-switch');
+  themeSwitch.change((e)=>{
+    const style_name = $(e.target).children('option:selected').val();
+    const url = '/app.php/snahp/theme_switch/theme_switch/?style_name=' + style_name;
+    fetch(url)
+      .then(r => {
+        if (r.status===200)
+        {
+          location.reload();
+        }
+      })
+  })
+</script>

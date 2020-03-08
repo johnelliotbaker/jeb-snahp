@@ -1,0 +1,5 @@
+jeb_snahp_routing.theme_switch:
+    path: /snahp/theme_switch/{mode}/
+    defaults: { _controller: jeb.snahp.theme_switch:handle}
+    requirements:
+        mode: \S+

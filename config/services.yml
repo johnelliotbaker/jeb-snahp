@@ -21,6 +21,7 @@ imports:
     - { resource: cron/service.yml }
     - { resource: reputation/service.yml }
     - { resource: poi/service.yml }
+    - { resource: theme_switch/service.yml }
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
