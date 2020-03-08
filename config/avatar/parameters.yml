@@ -105,11 +105,6 @@ parameters:
       data:
         encoder:
           tagname: 'DSG'
-    12694: #pandacircus
-      queue:
-        - 'audio_expert'
-      data:
-        audio_expert:
     2585: #Oldvcrguy
       queue:
         - 'drunken_master'
@@ -240,10 +235,49 @@ parameters:
       data:
         attenborough:
           url: '/viewtopic.php?f=33&t=188902'
+    12694: #pandacircus
+      queue:
+        - 'dj'
+      data:
+        dj:
+    143: #grell851
+      queue:
+        - 'dj'
+      data:
+        dj:
+    115557: #Verio
+      queue:
+        - 'dj'
+      data:
+        dj:
+          url: ''
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    dj:
+      description: 'Music Aficionado'
+      override:
+        style_name:
+          acieeed!:
+            img_url: 'https://i.imgur.com/gPfRztn.png'
+          basic:
+            img_url: 'https://i.imgur.com/lvBNNtJ.png'
+          hexagon:
+            img_url: 'https://i.imgur.com/FC2JGKC.png'
+          prosilver:
+            img_url: 'https://i.imgur.com/lvBNNtJ.png'
+      data:
+        title: 'Music Aficionado'
+        class: 'dj'
+        img_url: 'https://i.imgur.com/r0NBdgG.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'class'
+          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
     attenborough:
       description: 'David Attenborough'
       data:

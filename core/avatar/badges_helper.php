@@ -16,6 +16,7 @@ class badges_helper
         $this->user = $container->get('user');
         $this->db = $container->get('dbal.conn');
         $this->style_type = 'light';
+        $this->style_name = 'prosilver';
     }/*}}}*/
 
     private function setup_style_info($options)/*{{{*/
@@ -23,6 +24,10 @@ class badges_helper
         if (isset($options['style_type']))
         {
             $this->style_type = $options['style_type'];
+        }
+        if (isset($options['style_name']))
+        {
+            $this->style_name = $options['style_name'];
         }
     }/*}}}*/
 
@@ -67,10 +72,18 @@ class badges_helper
     private function override_item_params($item_params)/*{{{*/
     {
         if (!isset($item_params['override'])) return $item_params;
+        $style_info = null;
         $overrides = $item_params['override'];
-        if (isset($overrides['style_type']))
+        if (isset($overrides['style_name']))
+        {
+            $style_info = $overrides['style_name'][$this->style_name];
+        }
+        elseif (isset($overrides['style_type']))
         {
             $style_info = $overrides['style_type'][$this->style_type];
+        }
+        if ($style_info)
+        {
             foreach($style_info as $key=>$val)
             {
                 $item_params['data'][$key] = $val;

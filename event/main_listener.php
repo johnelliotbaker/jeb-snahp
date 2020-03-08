@@ -539,7 +539,7 @@ class main_listener extends base implements EventSubscriberInterface
         {
             $this->badges_helper = $this->container->get('jeb.snahp.avatar.badges_helper');
         }
-        $options = [ 'style_type' => $this->style_type, ];
+        $options = [ 'style_type' => $this->style_type, 'style_name' => $this->style_name ];
         $html = $this->badges_helper->process_badges($poster_data, $options);
         $post_row['S_BADGE'] = $html;
         $event['post_row'] = $post_row;
@@ -1230,22 +1230,26 @@ class main_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $style_name = $row['style_name'];
+        $this->style_name = 'prosilver';
         switch ($style_name)
         {
         case 'Acieeed!':
             $this->template->assign_var('STYLE_NAME', 'acieeed');
             $this->template->assign_var('STYLE_TYPE', 'dark');
             $this->style_type = 'dark';
+            $this->style_name = 'acieeed!';
             break;
         case 'Basic':
             $this->template->assign_var('STYLE_NAME', 'basic');
             $this->template->assign_var('STYLE_TYPE', 'light');
             $this->style_type = 'light';
+            $this->style_name = 'basic';
             break;
         case 'Hexagon':
             $this->template->assign_var('STYLE_NAME', 'hexagon');
             $this->template->assign_var('STYLE_TYPE', 'dark');
             $this->style_type = 'dark';
+            $this->style_name = 'hexagon';
             break;
         case 'prosilver':
         default:
