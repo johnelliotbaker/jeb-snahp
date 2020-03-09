@@ -199,12 +199,12 @@ parameters:
       data:
         picard:
           url: '/viewtopic.php?f=57&t=185181'
-    17561: #Sylveon
-      queue:
-        - 'tidal'
-      data:
-        tidal:
-          url: '/viewtopic.php?f=35&t=166566'
+    # 17561: #Sylveon
+    #   queue:
+    #     - 'tidal'
+    #   data:
+    #     tidal:
+    #       url: '/viewtopic.php?f=35&t=166566'
     12498: #taskmaster
       queue:
         - 'anime_pack'
