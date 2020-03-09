@@ -326,26 +326,26 @@ parameters:
             - 'url'
             - 'class'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    tidal:
-      description: 'Tidal Music Collection'
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/HI1fnph.png'
-          dark:
-            img_url: 'https://i.imgur.com/2is3LzM.png'
-      data:
-        title: 'TIDAL for all'
-        class: 'tidal'
-        img_url: 'https://i.imgur.com/2is3LzM.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    # tidal:
+    #   description: 'Tidal Music Collection'
+    #   override:
+    #     style_type:
+    #       light:
+    #         img_url: 'https://i.imgur.com/HI1fnph.png'
+    #       dark:
+    #         img_url: 'https://i.imgur.com/2is3LzM.png'
+    #   data:
+    #     title: 'TIDAL for all'
+    #     class: 'tidal'
+    #     img_url: 'https://i.imgur.com/2is3LzM.png'
+    #   template:
+    #     basic:
+    #       fields:
+    #         - 'title'
+    #         - 'img_url'
+    #         - 'url'
+    #         - 'class'
+    #       html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     picard:
       description: "Picard"
       data:
