@@ -251,10 +251,68 @@ parameters:
       data:
         dj:
           url: ''
+    133765: #qebehsenue
+      queue:
+        - 'hidden_dragon'
+      data:
+        hidden_dragon:
+    17561: #Sylveon
+      queue:
+        - 'crouching_tiger'
+      data:
+        crouching_tiger:
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    crouching_tiger:
+      description: 'Crouching Tiger'
+      override:
+        style_name:
+          acieeed!:
+            img_url: 'https://i.imgur.com/7Kc7KSs.png'
+          hexagon:
+            img_url: 'https://i.imgur.com/YXwn3r2.png'
+            img_url: 'https://i.imgur.com/m6YGc79.png'
+          basic:
+            img_url: 'https://i.imgur.com/c5w5Yb0.png'
+          prosilver:
+            img_url: 'https://i.imgur.com/c5w5Yb0.png'
+      data:
+        title: 'Crouching Tiger'
+        class: 'crouching_tiger'
+        img_url: 'https://i.imgur.com/YXwn3r2.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'class'
+          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
+    hidden_dragon:
+      description: 'Hidden Dragon'
+      override:
+        style_name:
+          acieeed!:
+            img_url: 'https://i.imgur.com/u40uLHb.png'
+          hexagon:
+            img_url: 'https://i.imgur.com/GqlbjQW.png'
+            img_url: 'https://i.imgur.com/XPcVXeF.png'
+          basic:
+            img_url: 'https://i.imgur.com/i4Sxu8R.png'
+          prosilver:
+            img_url: 'https://i.imgur.com/i4Sxu8R.png'
+      data:
+        title: 'Hidden Dragon'
+        class: 'hidden_dragon'
+        img_url: 'https://i.imgur.com/GqlbjQW.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'class'
+          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
     dj:
       description: 'Music Aficionado'
       override:

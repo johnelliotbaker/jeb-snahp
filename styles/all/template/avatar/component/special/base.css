@@ -93,3 +93,23 @@ div.avatar_special p
   height: 40px;
   margin: 3px 1px;
 }
+
+.crouching_tiger
+{
+  position: absolute;
+  opacity: .8;
+  top: -12px;
+  right: -22px;
+  max-height: 130px;
+  z-index: 0;
+}
+
+.hidden_dragon
+{
+  position: absolute;
+  opacity: .9;
+  top: -14px;
+  right: -18px;
+  max-height: 180px;
+  z-index: 0;
+}

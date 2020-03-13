@@ -85,7 +85,7 @@ class poi
 
   public function respond_poi($cfg)/*{{{*/
   {
-    $excluded_items = ['encoder_group', ];
+    $excluded_items = ['encoder_group', 'crouching_tiger', 'hidden_dragon'];
     $users_raw = $this->container->getParameter('jeb.snahp.avatar.badge.users');
     $items_raw = $this->container->getParameter('jeb.snahp.avatar.badge.items');
     $items = [];
