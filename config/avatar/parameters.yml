@@ -78,7 +78,9 @@ parameters:
     133765: #qebehsenue
       queue:
         - 'encoder'
+        - 'hidden_dragon'
       data:
+        hidden_dragon:
         encoder:
           tagname: 'qebe'
     126178: #PrivateCodex
