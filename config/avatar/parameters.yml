@@ -26,9 +26,12 @@ parameters:
     156: #MKED
       queue:
         - 'encoder'
+        - 'formula_one'
       data:
         encoder:
           tagname: 'MKED'
+        formula_one:
+          url: '/search.php?st=0&sk=x&sd=d&sr=topics&keywords=Formula&author_id=156&sf=titleonly'
     162225: #magiin
       queue:
         - 'encoder'
@@ -201,24 +204,12 @@ parameters:
       data:
         picard:
           url: '/viewtopic.php?f=57&t=185181'
-    # 17561: #Sylveon
-    #   queue:
-    #     - 'tidal'
-    #   data:
-    #     tidal:
-    #       url: '/viewtopic.php?f=35&t=166566'
     12498: #taskmaster
       queue:
         - 'anime_pack'
       data:
         anime_pack:
           url: '/viewtopic.php?f=13&t=21463'
-    156: #MKED
-      queue:
-        - 'formula_one'
-      data:
-        formula_one:
-          url: '/search.php?st=0&sk=x&sd=d&sr=topics&keywords=Formula&author_id=156&sf=titleonly'
     71633: #Stroopwafelandcoffee
       queue:
         - 'marvel'
@@ -256,8 +247,11 @@ parameters:
     17561: #Sylveon
       queue:
         - 'crouching_tiger'
+    #     - 'tidal'
       data:
         crouching_tiger:
+    #     tidal:
+    #       url: '/viewtopic.php?f=35&t=166566'
 
 
   # PROCESSOR DEFINITIONS
