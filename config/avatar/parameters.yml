@@ -253,11 +253,6 @@ parameters:
       data:
         dj:
           url: ''
-    133765: #qebehsenue
-      queue:
-        - 'hidden_dragon'
-      data:
-        hidden_dragon:
     17561: #Sylveon
       queue:
         - 'crouching_tiger'
