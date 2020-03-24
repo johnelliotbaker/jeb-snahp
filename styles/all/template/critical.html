@@ -85,5 +85,14 @@
 <!-- INCLUDECSS @jeb_snahp/spotlight/rx_spotlight/bundle.css -->
 <!-- ENDIF -->
 
+<!-- IF not $rx_snahplyr -->
+<!-- DEFINE $rx_snahplyr = true -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.5.10/plyr.css" />
+<!-- INCLUDEJS @jeb_snahp/snahplyr/rx_snahplyr/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/snahplyr/rx_snahplyr/bundle.css -->
+{% if STYLE_TYPE=='light' %}
+<!-- INCLUDECSS @jeb_snahp/snahplyr/base.css -->
+{% endif %}
+<!-- ENDIF -->
 
 <!-- loadlast -->
