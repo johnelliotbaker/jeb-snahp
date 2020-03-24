@@ -42,12 +42,15 @@ parameters:
       queue:
         - 'encoder'
         - 'anime_pack'
+        - 'one_piece'
       data:
         encoder:
           tagname: 'Bluespots'
         anime_pack:
           title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
           url: '/viewtopic.php?f=84&t=114147'
+        one_piece:
+          url: '/viewtopic.php?t=112668'
     111: #SkumDog
       queue:
         - 'encoder'
@@ -245,17 +248,32 @@ parameters:
         dj:
           url: ''
     17561: #Sylveon
+    2: #Sylveon
       queue:
-        - 'crouching_tiger'
-    #     - 'tidal'
+        # - 'crouching_tiger'
+        - 'tidal'
       data:
-        crouching_tiger:
-    #     tidal:
-    #       url: '/viewtopic.php?f=35&t=166566'
+        # crouching_tiger:
+        tidal:
+          url: '/viewtopic.php?f=35&t=166566'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    one_piece:
+      description: 'One Piece'
+      data:
+        title: 'To Be Continued'
+        class: 'one_piece'
+        img_url: 'https://i.imgur.com/cWLXlH9.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'class'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     crouching_tiger:
       description: 'Crouching Tiger'
       override:
@@ -375,26 +393,26 @@ parameters:
             - 'url'
             - 'class'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    # tidal:
-    #   description: 'Tidal Music Collection'
-    #   override:
-    #     style_type:
-    #       light:
-    #         img_url: 'https://i.imgur.com/HI1fnph.png'
-    #       dark:
-    #         img_url: 'https://i.imgur.com/2is3LzM.png'
-    #   data:
-    #     title: 'TIDAL for all'
-    #     class: 'tidal'
-    #     img_url: 'https://i.imgur.com/2is3LzM.png'
-    #   template:
-    #     basic:
-    #       fields:
-    #         - 'title'
-    #         - 'img_url'
-    #         - 'url'
-    #         - 'class'
-    #       html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    tidal:
+      description: 'Tidal Music Collection'
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/HI1fnph.png'
+          dark:
+            img_url: 'https://i.imgur.com/2is3LzM.png'
+      data:
+        title: 'TIDAL for all'
+        class: 'tidal'
+        img_url: 'https://i.imgur.com/2is3LzM.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     picard:
       description: "Picard"
       data:

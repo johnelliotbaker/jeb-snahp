@@ -113,3 +113,9 @@ div.avatar_special p
   max-height: 180px;
   z-index: 0;
 }
+
+.one_piece
+{
+  height: 40px;
+  margin: 3px 1px;
+}
