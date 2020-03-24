@@ -248,7 +248,6 @@ parameters:
         dj:
           url: ''
     17561: #Sylveon
-    2: #Sylveon
       queue:
         # - 'crouching_tiger'
         - 'tidal'
