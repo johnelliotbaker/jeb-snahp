@@ -191,8 +191,11 @@ parameters:
           url: '/viewtopic.php?f=56&t=5648'
     51956: #Mimccann
       queue:
+        - 'encoder'
         - 'trekki'
       data:
+        encoder:
+          tagname: 'MiM'
         trekki:
           url: '/viewtopic.php?f=74&t=173967'
     83907: #koolkunz
@@ -255,10 +258,31 @@ parameters:
         # crouching_tiger:
         tidal:
           url: '/viewtopic.php?f=35&t=166566'
+    # 91: #Cgermino1989
+    2: #Cgermino1989
+      queue:
+        - 'upscale'
+      data:
+        upscale:
+          url: '/search.php?st=0&sk=x&sd=d&sr=topics&keywords=upscale&author_id=91&sf=titleonly'
 
 
   # PROCESSOR DEFINITIONS
   jeb.snahp.avatar.badge.items:
+    upscale:
+      description: 'The Upscale Project'
+      data:
+        title: '10% Luck, 20% Skill, 200% Concerntrated Power of Waifu'
+        class: 'upscale'
+        img_url: 'https://i.imgur.com/GVn4gYJ.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'class'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     one_piece:
       description: 'One Piece'
       data:
