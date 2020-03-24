@@ -271,7 +271,7 @@ parameters:
     upscale:
       description: 'The Upscale Project'
       data:
-        title: '10% Luck, 20% Skill, 200% Concerntrated Power of Waifu'
+        title: '10% Luck, 20% Skill, Two Times the Concerntrated Power of Waifu'
         class: 'upscale'
         img_url: 'https://i.imgur.com/GVn4gYJ.png'
       template:
