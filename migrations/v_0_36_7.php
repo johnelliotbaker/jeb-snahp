@@ -29,9 +29,9 @@ class v_0_36_7 extends container_aware_migration
   {
     $install = new bbcodes_installer($this->db, $this->container->get('request'), $this->container->get('user'), $this->phpbb_root_path, $this->php_ext);
     $install->install_bbcodes([
-      'thehub' => [
+      'tub' => [
         'display_on_posting' => false,
-        'bbcode_match'       => '[thehub]{TEXT}[/thehub]',
+        'bbcode_match'       => '[tub]{TEXT}[/tub]',
         'bbcode_tpl'         => '<div class="rx_snahplyr" data-data="{TEXT}"><div>',
       ],
     ]);
