@@ -11,7 +11,7 @@ const TopicTitleMenu = (function(){
     }
 
     prependClipboard() {
-      const clipboard = $('<i title="Copy Title" class="fa icon fa-clipboard noselect pointer" style="margin-right:0.2em;"></i>');
+      const clipboard = $('<i title="Copy Title" class="fa icon fa-clipboard noselect pointer" style="margin-right:0.2em; font-size:14px;"></i>');
       clipboard.click((e)=>{
         Clipboard.copy(this.text);
       })
@@ -20,7 +20,7 @@ const TopicTitleMenu = (function(){
 
     prependDeboner() {
       const topicTitleLink = this.topicTitleHeader.find('a');
-      const unlink = $('<i title="Debone" class="fa icon fa-unlink noselect pointer" style="margin-right:0.2em;"></i>');
+      const unlink = $('<i title="Debone" class="fa icon fa-unlink noselect pointer" style="margin-right:0.2em; font-size:14px;"></i>');
       const text = topicTitleLink.text().slice();
       this.topicTitleHeader.prepend(unlink);
       unlink.click((e)=>{
