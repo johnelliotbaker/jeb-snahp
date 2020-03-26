@@ -258,7 +258,7 @@ parameters:
         # crouching_tiger:
         tidal:
           url: '/viewtopic.php?f=35&t=166566'
-    91: #Cgermino1989
+    2: #Cgermino1989
       queue:
         - 'upscale'
       data:
@@ -271,7 +271,7 @@ parameters:
     upscale:
       description: 'The Upscale Project'
       data:
-        title: '10% Luck, 20% Skill, Two Times the Concerntrated Power of Waifu'
+        title: '10% Luck, 20% Skill, Two Times the Concentrated Power of Waifu'
         class: 'upscale'
         img_url: 'https://i.imgur.com/GVn4gYJ.png'
       template:
