@@ -19,8 +19,8 @@ class helper
   )
   {/*{{{*/
     // settings
-    $this->max_per_user = 4;
-    $this->max_list = 100;
+    $this->max_per_user = 6;
+    $this->max_list = 6*12;
     $this->job_queue = [
       [
         'f_data' => function($row){
