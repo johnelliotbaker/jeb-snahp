@@ -84,7 +84,7 @@ parameters:
     133765: #qebehsenue
       queue:
         - 'encoder'
-        - 'hidden_dragon'
+        # - 'hidden_dragon'
       data:
         hidden_dragon:
         encoder:
@@ -136,7 +136,7 @@ parameters:
           url: '/viewtopic.php?f=13&t=112503'
     37031: #ski77
       queue:
-        - 'picard'
+        # - 'picard'
         - 'anime_pack'
         - 'updater'
       data:
@@ -204,12 +204,12 @@ parameters:
       data:
         encoder:
           tagname: 'K1tKat'
-    3585: #Toragh
-      queue:
-        - 'picard'
-      data:
-        picard:
-          url: '/viewtopic.php?f=57&t=185181'
+    # 3585: #Toragh
+    #   queue:
+    #     - 'picard'
+    #   data:
+    #     picard:
+    #       url: '/viewtopic.php?f=57&t=185181'
     12498: #taskmaster
       queue:
         - 'anime_pack'
