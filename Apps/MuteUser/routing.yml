@@ -1,0 +1,5 @@
+jeb_snahp_routing.mute_user:
+    path: /snahp/mute_user/mcp/{mode}/
+    defaults: { _controller: jeb.snahp.MuteUserMCPController:handle}
+    requirements:
+        mode: \S+

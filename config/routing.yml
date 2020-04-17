@@ -1,3 +1,5 @@
+routing_mute_user:
+    resource: '../Apps/MuteUser/routing.yml'
 routing_theme_switch:
     resource: 'theme_switch/routing.yml'
 routing_poi:

@@ -16,19 +16,17 @@ include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
 class mcp extends base
 {
-
     public function __construct()
     {
     }
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_non_moderator();
-		$this->user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = $this->user->lang('mcp');
+        $this->user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = $this->user->lang('mcp');
         $cfg = [];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'handle_mass_move_v2':
             $cfg['tpl_name'] = "@jeb_snahp/mcp/component/mcp_mass_move_v2/base.html";
             $cfg['base_url'] = "/app.php/snahp/mcp/$mode/";
@@ -47,9 +45,10 @@ class mcp extends base
             trigger_error('Invalid request category. Error Code: c9299cfd2d');
             break;
         }
-	}
+    }
 
-    public function send_message($data) {/*{{{*/
+    public function send_message($data)
+    {/*{{{*/
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
@@ -68,7 +67,7 @@ class mcp extends base
                 WHERE
                     t.forum_id=$forum_id AND t.topic_title LIKE '%${search}%'
                 ORDER BY topic_id DESC";
-                // topic_type=0 means regular topics. i.e. not sticky, etc.
+        // topic_type=0 means regular topics. i.e. not sticky, etc.
         $result = $this->db->sql_query_limit($sql, $maxi_query);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);
@@ -82,31 +81,24 @@ class mcp extends base
     public function handle_mass_move_v2($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             add_form_key('jeb_snp');
             // IF SUBMITTED
             $search = $this->request->variable('searchterms', '');
-            if ($this->request->is_set_post('search'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('search')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
             }
-            if ($this->request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $vn = $this->request->variable_names();
                 $arr = [];
-                foreach($vn as $key)
-                {
+                foreach ($vn as $key) {
                     $b = preg_match('#tid_(\d+)#', $key, $match);
-                    if ($b)
-                    {
+                    if ($b) {
                         $arr[] = (int) $match[1];
                     }
                 }
@@ -160,10 +152,14 @@ class mcp extends base
             $start = $this->request->variable('start', 0);
             [$data, $total] = $this->select_topics_with_search($per_page, $start, $from_fid, $search);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['topic_id'];
                 $created_time = $this->user->format_date($row['topic_time']);
                 $u_details = "/viewtopic.php?t=$tid";
@@ -195,15 +191,12 @@ class mcp extends base
         $cond_request = ' r.tid IS NULL ';
         $cond_request_type = ' 1=1 ';
         $b_request = key_exists('b_request', $options) ? $options['b_request'] : false;
-        if ($b_request)
-        {
+        if ($b_request) {
             $cond_request = ' r.tid IS NOT NULL ';
             $request_type = key_exists('request_type', $options) ? $options['request_type'] : false;
-            if ($request_type )
-            {
+            if ($request_type) {
                 $status = key_exists($request_type, $def) ? $def[$request_type] : false;
-                if ($status)
-                {
+                if ($status) {
                     $cond_request_type = " r.status=$status ";
                 }
             }
@@ -217,7 +210,7 @@ class mcp extends base
                     t.forum_id=$forum_id AND $cond_request AND $cond_request_type AND
                     t.topic_type=0
                 ORDER BY topic_id DESC";
-                // topic_type=0 means regular topics. i.e. not sticky, etc.
+        // topic_type=0 means regular topics. i.e. not sticky, etc.
         $result = $this->db->sql_query_limit($sql, $maxi_query);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);
@@ -231,23 +224,18 @@ class mcp extends base
     public function handle_mass_move($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             add_form_key('jeb_snp');
             // IF SUBMITTED
-            if ($this->request->is_set_post('graveyard'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('graveyard')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $vn = $this->request->variable_names();
                 $arr = [];
-                foreach($vn as $key)
-                {
+                foreach ($vn as $key) {
                     $b = preg_match('#tid_(\d+)#', $key, $match);
-                    if ($b)
-                    {
+                    if ($b) {
                         $arr[] = (int) $match[1];
                     }
                 }
@@ -295,10 +283,14 @@ class mcp extends base
             $start = $this->request->variable('start', 0);
             [$data, $total] = $this->select_moderation_topics($per_page, $start, $from_fid, $options);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['topic_id'];
                 $created_time = $this->user->format_date($row['topic_time']);
                 $u_details = "/viewtopic.php?t=$tid";
@@ -319,8 +311,7 @@ class mcp extends base
     {
         $this->reject_non_moderator();
         include_once('includes/functions_admin.php');
-        if (is_array($a_topic_id))
-        {
+        if (is_array($a_topic_id)) {
             move_topics($a_topic_id, (int) $to_fid, $auto_sync=true);
         }
         return false;
@@ -331,11 +322,9 @@ class mcp extends base
         $this->reject_non_moderator();
         include_once('includes/functions_admin.php');
         $fid_graveyard = $this->get_fid('graveyard');
-        if (is_array($a_topic_id))
-        {
+        if (is_array($a_topic_id)) {
             move_topics($a_topic_id, $fid_graveyard, $auto_sync=true);
         }
         return false;
     }/*}}}*/
-
 }

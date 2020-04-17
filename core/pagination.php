@@ -3,25 +3,19 @@ namespace jeb\snahp\core;
 
 class pagination
 {
-
-	public function __construct(
-	)
-	{
-	}
+    public function __construct(
+    ) {
+    }
 
     public function makejs($base_url='/', $total=0, $per_page=0, $start=0)
     {
         $arr = [1,2,3,4,5,6,7];
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
         $html .= '<li class="page-item noselect"><a class="page-link" href="#">Previous</a></li>';
-        foreach ($arr as $key => $entry)
-        {
-            if ($key==4)
-            {
+        foreach ($arr as $key => $entry) {
+            if ($key==4) {
                 $active = ' active';
-            }
-            else
-            {
+            } else {
                 $active = '';
             }
             $html .= "<li onclick='test({$key});' class='page-item noselect{$active}'><a class='page-link'>{$key}</a></li>";
@@ -41,12 +35,9 @@ class pagination
             'block' => 1,
             'index' => $i_start,
         ];
-        if ($i_block <= $block_start)
-        {
+        if ($i_block <= $block_start) {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
-        }
-        else
-        {
+        } else {
             $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">' . $block_start . '</a></li>';
         }
         return $html;
@@ -62,12 +53,9 @@ class pagination
             'block' => $block_end,
             'index' => $i_end,
         ];
-        if ($i_block >= $block_end)
-        {
+        if ($i_block >= $block_end) {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">&nbsp;</span></li>';
-        }
-        else
-        {
+        } else {
             $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">' . $block_end . '</a></li>';
         }
         return $html;
@@ -79,12 +67,9 @@ class pagination
         $prev = ($i_block <= 1) ? 0 : $start - $per_page;
         $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
         $url = $base_url . "${prepend_char}per_page={$per_page}&start={$prev}";
-        if ($i_block <= $block_start)
-        {
+        if ($i_block <= $block_start) {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Prev</span></li>';
-        }
-        else
-        {
+        } else {
             $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">Prev</a></li>';
         }
         return $html;
@@ -96,12 +81,9 @@ class pagination
         $next = ($i_block > $n_block-1) ? ($n_block-1)*$per_page : $i_block*$per_page;
         $prepend_char = (substr($base_url, -1)==='/') ? '?' : '&';
         $url = $base_url . "{$prepend_char}per_page={$per_page}&start={$next}";
-        if ($i_block >= $block_end)
-        {
+        if ($i_block >= $block_end) {
             $html = '<li class="page-item noselect"><span class="page-link" style="cursor: default;">Next</span></li>';
-        }
-        else
-        {
+        } else {
             $html = '<li class="page-item noselect"><a class="page-link" href="' . $url . '">Next</a></li>';
         }
         return $html;
@@ -115,15 +97,16 @@ class pagination
         $self = $_SERVER['PHP_SELF'];
         $request->disable_super_globals();
         parse_str($query, $query);
-        $query = array_filter($query, function($key) use($a_exclude) {return !in_array($key, $a_exclude);}, ARRAY_FILTER_USE_KEY);
+        $query = array_filter($query, function ($key) use ($a_exclude) {
+            return !in_array($key, $a_exclude);
+        }, ARRAY_FILTER_USE_KEY);
         $query = http_build_query($query);
         return $self . '?' . $query;
     }/*}}}*/
 
     public function make($base_url=null, $total=0, $per_page=0, $start=0)
     {
-        if ($base_url===null)
-        {
+        if ($base_url===null) {
             $base_url = $this->get_baseurl(['per_page', 'start']);
         }
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
@@ -140,8 +123,7 @@ class pagination
 
     public function make_fixed($base_url='/', $total=0, $per_page=0, $start=0)
     {
-        if ($total < $per_page)
-        {
+        if ($total < $per_page) {
             return '';
         }
         $html = '<nav aria-label="Page navigation"><ul class="pagination">';
@@ -156,5 +138,4 @@ class pagination
         $html .= '</ul></nav>';
         return $html;
     }
-
 }

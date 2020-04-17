@@ -128,6 +128,27 @@ class user_auth
         }
     }/*}}}*/
 
+    public function reject_muted_user($user_id, $mode, $append='')/*{{{*/
+    {
+        if ($mode=='post') {
+            $no_topic_msg = [
+                'You are muted and cannot create a new topic.',
+                'Error Code: 7695d3509e'
+            ];
+            if ($this->user->data["snp_mute_topic"]) {
+                trigger_error(implode(' ', $no_topic_msg));
+            }
+        } elseif ($mode=='reply') {
+            $no_reply_msg = [
+                'You are muted and cannot reply to a topic.',
+                'Error Code: af6a453392'
+            ];
+            if ($this->user->data["snp_mute_reply"]) {
+                trigger_error(implode(' ', $no_reply_msg));
+            }
+        }
+    }/*}}}*/
+
     public function reject_non_dev_or_op($append='')/*{{{*/
     {
         if (!($this->is_dev() || $this->is_self())) {
@@ -219,8 +240,23 @@ class user_auth
         $user_id_ary = [$user_id];
         $group_id_ary = false;
         $rowset = group_memberships($group_id_ary, $user_id_ary);
-        return array_map(function ($arg) {
-            return $arg['group_id'];
-        }, $rowset);
+        return array_map(
+            function ($arg) {
+                return $arg['group_id'];
+            },
+            $rowset
+        );
+    }/*}}}*/
+
+    public function userNameToUserId($username)/*{{{*/
+    {
+        $cache_duration = 3600;
+        $username_clean = $this->db->sql_escape(utf8_clean_string($username));
+        $sql = 'SELECT user_id FROM ' .
+            USERS_TABLE . " WHERE username_clean='${username_clean}'";
+        $result = $this->db->sql_query($sql, $cache_duration);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row ? $row['user_id'] : null;
     }/*}}}*/
 }

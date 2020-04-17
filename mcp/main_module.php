@@ -5,20 +5,19 @@ use jeb\snahp\core\base;
 
 class main_module extends base
 {
-	public $page_title;
-	public $tpl_name;
-	public $u_action;
+    public $page_title;
+    public $tpl_name;
+    public $u_action;
 
-	public function main($id, $mode)/*{{{*/
-	{
-		global $config, $request, $template, $user, $phpbb_container;
-		$user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = $user->lang('MCP_SNP_TITLE');
+    public function main($id, $mode)/*{{{*/
+    {
+        global $config, $request, $template, $user, $phpbb_container;
+        $user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = $user->lang('MCP_SNP_TITLE');
         $cfg = array();
         $this->def = $phpbb_container->getParameter('jeb.snahp.req')['def'];
         $this->tbl = $phpbb_container->getParameter('jeb.snahp.tables');
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'dibs':
             $cfg['tpl_name'] = '@jeb_snahp/mcp/mcp_snp_list_dibs';
             $cfg['b_feedback'] = false;
@@ -51,17 +50,16 @@ class main_module extends base
             $this->handle_scripts($cfg);
             break;
         }
-        if (!empty($cfg)){
+        if (!empty($cfg)) {
             $this->handle_default($cfg);
         }
-	}/*}}}*/
+    }/*}}}*/
 
     public function handle_scripts($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
+        global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $data[] = [
                 'ID' => 1,
                 'PURPOSE' => 'Search',
@@ -160,8 +158,14 @@ class main_module extends base
                 'DESCRIPTION' => 'Manage User Blocks',
                 'LINK' => '<a href="/app.php/snahp/block/mcp/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
-            foreach ($data as $entry)
-            {
+            $data[] = [
+                'ID' => 14,
+                'PURPOSE' => 'Mute User',
+                'NAME' => 'Mute User',
+                'DESCRIPTION' => 'Options to Mute Users',
+                'LINK' => '<a href="/app.php/snahp/mute_user/mcp/manage/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
+            foreach ($data as $entry) {
                 $template->assign_block_vars('postrow', $entry);
             }
             $this->tpl_name = $tpl_name;
@@ -174,23 +178,19 @@ class main_module extends base
 
     public function handle_invite($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
-        $helper = new \jeb\snahp\core\invite_helper( $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
+        global $config, $request, $template, $user, $db, $phpbb_container, $auth, $helper;
+        $helper = new \jeb\snahp\core\invite_helper($phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $id = $request->variable('invitation_id', '0');
                 $inviter_id = $request->variable('user_id', '0');
-                if ($inviter_id)
-                {
+                if ($inviter_id) {
                     $data['n_available'] = $request->variable('current_available', '0');
                     $data['b_redeem_enable'] = $request->variable('can_redeem', '0');
                     $data['b_ban'] = $request->variable('banned', '0');
@@ -216,8 +216,9 @@ class main_module extends base
         $sql = 'SELECT * from ' . TOPICS_TABLE;
         $result = $db->sql_query($sql);
         $data = [];
-        while ($row = $db->sql_fetchrow($result))
+        while ($row = $db->sql_fetchrow($result)) {
             $data[] = $row;
+        }
         $db->sql_freeresult($result);
         return $data;
     }/*}}}*/
@@ -228,8 +229,9 @@ class main_module extends base
         $sql = 'SELECT * from ' . GROUPS_TABLE;
         $result = $db->sql_query($sql);
         $data = [];
-        while ($row = $db->sql_fetchrow($result))
+        while ($row = $db->sql_fetchrow($result)) {
             $data[] = $row;
+        }
         $db->sql_freeresult($result);
         return $data;
     }/*}}}*/
@@ -245,17 +247,14 @@ class main_module extends base
 
     public function handle_default($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         // prn(array_keys($GLOBALS)); // Lists all available globals
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // trigger_error('Handling default');
@@ -356,8 +355,7 @@ class main_module extends base
     public function select_user_modal($mode, $data)/*{{{*/
     {
         global $db;
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'user_id':
             $where = 'user_id="'. $data . '"';
             break;
@@ -382,8 +380,7 @@ class main_module extends base
     public function enable_dibber($mode, $data, $b_enable=true)/*{{{*/
     {
         global $db;
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'user_id':
             $where = ' WHERE user_id="' . $data . '"';
             break;
@@ -394,8 +391,7 @@ class main_module extends base
         default:
             return false;
         }
-        if ($where && $row = $this->select_user_modal($mode, $data))
-        {
+        if ($where && $row = $this->select_user_modal($mode, $data)) {
             $status = $b_enable ? 1 : 0;
             $sql_arr = [
                 'snp_req_dib_enable' => $status,
@@ -410,16 +406,13 @@ class main_module extends base
 
     public function handle_list_dibs($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 meta_refresh(2, $this->u_action);
@@ -432,10 +425,14 @@ class main_module extends base
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach($dibdata as $row)
-            {
+            foreach ($dibdata as $row) {
                 $tid = $row['tid'];
                 $topic_time = $user->format_date($row['topic_time']);
                 $undib_time = $user->format_date($row['undib_time']);
@@ -460,26 +457,23 @@ class main_module extends base
 
     public function handle_dibs_ban($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $a_username = $request->variable('ban', '');
                 $a_username = preg_split("#" . PHP_EOL . "|,#", $a_username);
                 $b_enable = $request->variable('banexclude', '1');
-                foreach ($a_username as $username)
-                {
+                foreach ($a_username as $username) {
                     $b_success = $this->enable_dibber('username', $username, $b_enable);
-                    if (!$b_success)
+                    if (!$b_success) {
                         prn('Could not process ' . $username);
+                    }
                 }
             }
             $per_page = $config['posts_per_page'];
@@ -489,10 +483,14 @@ class main_module extends base
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach($reqdata as $row)
-            {
+            foreach ($reqdata as $row) {
                 $tid = $row['tid'];
                 $topic_time = $user->format_date($row['topic_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;
@@ -513,16 +511,13 @@ class main_module extends base
 
     public function handle_list_topic_bump($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 meta_refresh(2, $this->u_action);
@@ -532,8 +527,7 @@ class main_module extends base
             $start = $request->variable('start', 0);
             // Sorting
             $sortkey = $request->variable('sortkey', 'bumpdate');
-            switch ($sortkey)
-            {
+            switch ($sortkey) {
             case 'count':
                 $options['sortkey'] = 'ORDER BY topic_bump.n_bump DESC';
                 break;
@@ -545,18 +539,21 @@ class main_module extends base
             // Filtering by username
             $bump_username = strtolower($request->variable('bump_username', ''));
             $options['bump_username'] = '';
-            if ($bump_username)
-            {
+            if ($bump_username) {
                 $options['bump_username'] = ' AND users.username_clean="' . $bump_username . '"';
             }
             [$reqdata, $total] = $this->select_topic_bump_for_pagi($per_page, $start, $options);
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action . "&sortkey=$sortkey&bump_username=$bump_username";
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach($reqdata as $row)
-            {
+            foreach ($reqdata as $row) {
                 $tid = $row['tid'];
                 $bump_time = $user->format_date($row['topic_time']);
                 $topic_time = $user->format_date($row['prev_topic_time']);
@@ -590,16 +587,13 @@ class main_module extends base
 
     public function handle_list_request($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 meta_refresh(2, $this->u_action);
@@ -612,10 +606,14 @@ class main_module extends base
             $pagination = $phpbb_container->get('pagination');
             $base_url = $this->u_action;
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach($reqdata as $row)
-            {
+            foreach ($reqdata as $row) {
                 $tid = $row['tid'];
                 $topic_time = $user->format_date($row['topic_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;
@@ -633,5 +631,4 @@ class main_module extends base
             ));
         }
     }/*}}}*/
-
 }
