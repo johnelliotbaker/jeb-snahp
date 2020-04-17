@@ -106,30 +106,22 @@ class mcp extends base
                 $this->move_to($arr, $to_fid);
             }
             // DEFAULT
-            $this->template->assign_vars([
-                'SEARCH_TERMS' => $search,
-            ]);
+            $this->template->assign_var('SEARCH_TERMS', $search);
             // Use cookie to setup navigation settings
             // per page
             $per_page = $this->get_cookie_new('mcp', 'mass_move.per_page');
             $per_page = $per_page ? $per_page : 10;
-            $this->template->assign_vars([
-                'B_SELECT_' . $per_page => true,
-            ]);
+            $this->template->assign_vars("B_SELECT_${per_page}", true);
             // filter topics that has request entry
             $b_request = $this->get_cookie_new('mcp', 'mass_move.b_request');
             $b_request = $b_request ? $b_request : 0;
             $options['b_request'] = $b_request;
-            $this->template->assign_vars([
-                'B_REQUEST' => $b_request,
-            ]);
+            $this->template->assign_vars('B_REQUEST', $b_request);
             // Filter request types
             $request_type = $this->get_cookie_new('mcp', 'mass_move.request_type');
             $request_type = $request_type ? $request_type : 'all';
             $options['request_type'] = $request_type;
-            $this->template->assign_vars([
-                'B_SELECT_' . $request_type => true,
-            ]);
+            $this->template->assign_vars("B_SELECT_${request_type}", true);
             // Source forum id
             $from_fid = $this->get_cookie_new('mcp', 'mass_move.from_fid');
             $from_fid = $from_fid ? $from_fid : 0;
@@ -140,17 +132,40 @@ class mcp extends base
             include_once('includes/functions_admin.php');
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
-            $from_forum_select = make_forum_select($select_id = $from_fid, $ignore_id = false, $ignore_acl = false, $ignore_nonpost = false, $ignore_emptycat = true, $only_acl_post = false, $return_array = false);
-            $to_forum_select = make_forum_select($select_id = $to_fid, $ignore_id = false, $ignore_acl = false, $ignore_nonpost = false, $ignore_emptycat = true, $only_acl_post = false, $return_array = false);
-            $this->template->assign_vars([
-                'S_FORUM_SELECT' => $from_forum_select,
-                'S_TO_FORUM_SELECT' => $to_forum_select,
-                'FROM_FORUM_ID' => $from_fid,
-                'TO_FORUM_ID' => $to_fid,
-            ]);
+            $from_forum_select = make_forum_select(
+                $select_id = $from_fid,
+                $ignore_id = false,
+                $ignore_acl = false,
+                $ignore_nonpost = false,
+                $ignore_emptycat = true,
+                $only_acl_post = false,
+                $return_array = false
+            );
+            $to_forum_select = make_forum_select(
+                $select_id = $to_fid,
+                $ignore_id = false,
+                $ignore_acl = false,
+                $ignore_nonpost = false,
+                $ignore_emptycat = true,
+                $only_acl_post = false,
+                $return_array = false
+            );
+            $this->template->assign_vars(
+                [
+                    'S_FORUM_SELECT' => $from_forum_select,
+                    'S_TO_FORUM_SELECT' => $to_forum_select,
+                    'FROM_FORUM_ID' => $from_fid,
+                    'TO_FORUM_ID' => $to_fid,
+                ]
+            );
             // Get topic data
             $start = $this->request->variable('start', 0);
-            [$data, $total] = $this->select_topics_with_search($per_page, $start, $from_fid, $search);
+            [$data, $total] = $this->select_topics_with_search(
+                $per_page,
+                $start,
+                $from_fid,
+                $search
+            );
             $pagination->generate_template_pagination(
                 $base_url,
                 'pagination',
