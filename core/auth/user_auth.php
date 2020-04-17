@@ -8,10 +8,12 @@ class user_auth
     protected $user;
     protected $container;
     protected $this_user_id;
-	public function __construct(
-        $db, $user, $auth, $container
-	)
-	{
+    public function __construct(
+        $db,
+        $user,
+        $auth,
+        $container
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -19,7 +21,7 @@ class user_auth
         $this->this_user_id = $this->user->data['user_id'];
         $this->user_id = $this->user->data['user_id'];
         $this->phpbb_root_path = $container->getParameter('core.root_path');
-	}
+    }
 
     public function is_dev_server()/*{{{*/
     {
@@ -30,13 +32,13 @@ class user_auth
 
     public function reject_group($column, $group_id)/*{{{*/
     {
-        $sql = 'SELECT COUNT(group_id) as count from ' . GROUPS_TABLE . " WHERE {$column}=1 AND group_id={$group_id}";
+        $sql = 'SELECT COUNT(group_id) as count from ' . GROUPS_TABLE .
+            " WHERE {$column}=1 AND group_id={$group_id}";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $b = $row && $row['count'] ? true : false;
-        if (!$b)
-        {
+        if (!$b) {
             trigger_error('Permission Error. Error Code: ca546fad27');
         }
         return true;
@@ -47,15 +49,17 @@ class user_auth
         // $BOT_GID = 6
         $BOTS_GID = 6;
         $gid = $this->user->data['group_id'];
-        if (!$gid || $gid == $BOTS_GID)
+        if (!$gid || $gid == $BOTS_GID) {
             trigger_error('Access to bots has been denied.');
+        }
     }/*}}}*/
 
     public function reject_anon()/*{{{*/
     {
         $uid = $this->user->data['user_id'];
-        if ($uid == ANONYMOUS)
+        if ($uid == ANONYMOUS) {
             trigger_error('You must login before venturing forth.');
+        }
     }/*}}}*/
 
     public function is_valid_user_id($user_id)/*{{{*/
@@ -80,7 +84,8 @@ class user_auth
         $gid_developer = 13;
         $uid_developer = 10414;
         $user_id = $this->user->data['user_id'];
-        $b_dev = group_memberships($gid_developer, $user_id, true) && $user_id==$uid_developer;
+        $b_dev = group_memberships($gid_developer, $user_id, true)
+            && $user_id==$uid_developer;
         return $b_dev;
     }/*}}}*/
 
@@ -91,7 +96,8 @@ class user_auth
         $gid_developer = 13;
         $uid_developer = 10414;
         $user_id = $this->user->data['user_id'];
-        $b_dev = group_memberships($gid_developer, $user_id, true) && $user_id==$uid_developer;
+        $b_dev = group_memberships($gid_developer, $user_id, true)
+            && $user_id==$uid_developer;
         return $this->auth->acl_gets('a_', 'm_') || $b_dev;
     }/*}}}*/
 
@@ -114,35 +120,37 @@ class user_auth
 
     public function reject_non_dev_or_self($user_id, $append='')/*{{{*/
     {
-        if (!($this->is_dev() || $this->is_self($user_id)))
-        {
+        if (!($this->is_dev() || $this->is_self($user_id))) {
             $ec = $append ? $append : 'Error Code: 63c3a68b37';
-            trigger_error("You don't have the permission to access this page. ${ec}");
+            trigger_error(
+                "You don't have the permission to access this page. ${ec}"
+            );
         }
     }/*}}}*/
 
     public function reject_non_dev_or_op($append='')/*{{{*/
     {
-        if (!($this->is_dev() || $this->is_self()))
-        {
+        if (!($this->is_dev() || $this->is_self())) {
             $ec = $append ? $append : 'Error Code: 2672a575d9';
-            trigger_error("You don't have the permission to access this page. ${ec}");
+            trigger_error(
+                "You don't have the permission to access this page. ${ec}"
+            );
         }
     }/*}}}*/
 
     public function reject_non_dev($append='')/*{{{*/
     {
-        if (!$this->is_dev())
-        {
+        if (!$this->is_dev()) {
             $ec = $append ? $append : 'Error Code: 0302f34660';
-            trigger_error("You don't have the permission to access this page. ${ec}");
+            trigger_error(
+                "You don't have the permission to access this page. ${ec}"
+            );
         }
     }/*}}}*/
 
     public function reject_non_admin($append='')/*{{{*/
     {
-        if (!$this->is_admin())
-        {
+        if (!$this->is_admin()) {
             $ec = $append ? $append : 'Error Code: b1d917f9e3';
             trigger_error("Only administrator may access this page. ${ec}");
         }
@@ -150,8 +158,7 @@ class user_auth
 
     public function reject_non_moderator($append='')/*{{{*/
     {
-        if (!$this->is_mod())
-        {
+        if (!$this->is_mod()) {
             $ec = $append ? $append : 'Error Code: 0302f34660';
             trigger_error("Only moderators may access this page. ${ec}");
         }
@@ -165,36 +172,33 @@ class user_auth
         $result = $this->db->sql_query($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
+        if (!$row) {
             trigger_error('Your don\'t have the permission to access this page.');
+        }
     }/*}}}*/
 
     public function reject_user_not_in_groupset($user_id, $groupset_name)/*{{{*/
     {
-        if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
-        {
-            trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
+        if (!$this->user_belongs_to_groupset($user_id, $groupset_name)) {
+            trigger_error(
+                'You do not have the permission to view this page. Error Code: ad5611c89b'
+            );
         }
     }/*}}}*/
 
     public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
     {
-        if ($user_id===null)
-        {
+        if ($user_id===null) {
             $user_id = $this->this_user_id;
         }
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['dev']['set'];
-        }
-        else
-        {
+        } else {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['production']['set'];
         }
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
-        if (!array_key_exists($groupset_name, $groupset))
-        {
+        if (!array_key_exists($groupset_name, $groupset)) {
             return false;
         }
         $group_id_ary = $groupset[$groupset_name];
@@ -215,7 +219,8 @@ class user_auth
         $user_id_ary = [$user_id];
         $group_id_ary = false;
         $rowset = group_memberships($group_id_ary, $user_id_ary);
-        return array_map(function($arg){return $arg['group_id'];}, $rowset);
+        return array_map(function ($arg) {
+            return $arg['group_id'];
+        }, $rowset);
     }/*}}}*/
-
 }
