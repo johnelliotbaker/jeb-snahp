@@ -111,17 +111,17 @@ class mcp extends base
             // per page
             $per_page = $this->get_cookie_new('mcp', 'mass_move.per_page');
             $per_page = $per_page ? $per_page : 10;
-            $this->template->assign_vars("B_SELECT_${per_page}", true);
+            $this->template->assign_var("B_SELECT_${per_page}", true);
             // filter topics that has request entry
             $b_request = $this->get_cookie_new('mcp', 'mass_move.b_request');
             $b_request = $b_request ? $b_request : 0;
             $options['b_request'] = $b_request;
-            $this->template->assign_vars('B_REQUEST', $b_request);
+            $this->template->assign_var('B_REQUEST', $b_request);
             // Filter request types
             $request_type = $this->get_cookie_new('mcp', 'mass_move.request_type');
             $request_type = $request_type ? $request_type : 'all';
             $options['request_type'] = $request_type;
-            $this->template->assign_vars("B_SELECT_${request_type}", true);
+            $this->template->assign_var("B_SELECT_${request_type}", true);
             // Source forum id
             $from_fid = $this->get_cookie_new('mcp', 'mass_move.from_fid');
             $from_fid = $from_fid ? $from_fid : 0;
