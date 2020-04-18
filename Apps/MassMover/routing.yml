@@ -1,0 +1,5 @@
+jeb_snahp_routing.mass_mover.mcp:
+    path: /snahp/mass_mover/mcp/{mode}/
+    defaults: { _controller: jeb.snahp.MassMoverMCPController:handle}
+    requirements:
+        mode: \S+

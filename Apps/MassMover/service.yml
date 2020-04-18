@@ -1,0 +1,25 @@
+imports:
+  # - { resource: 'mute_user/parameters.yml' }
+services:
+  jeb.snahp.MassMoverMCPController:
+    class: jeb\snahp\Apps\MassMover\MassMoverMCPController
+    arguments:
+      - '@dbal.conn'
+      - '@user'
+      - '@config'
+      - '@request'
+      - '@template'
+      - '@service_container'
+      - '@controller.helper'
+      - '%jeb.snahp.tables%'
+      - '@jeb.snahp.auth.user_auth'
+      - '@jeb.snahp.MassMoverHelper'
+      - '@jeb.snahp.FormHelper'
+  jeb.snahp.MassMoverHelper: # HELPER
+    class: jeb\snahp\Apps\MassMover\MassMoverHelper
+    arguments:
+      - '@dbal.conn'
+      - '@user'
+      - '%jeb.snahp.tables%'
+      - '@jeb.snahp.auth.user_auth'
+      - '@jeb.snahp.ForumStructureHelper'

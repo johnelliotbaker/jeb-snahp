@@ -1,4 +1,6 @@
 routing_mute_user:
+    resource: '../Apps/MassMover/routing.yml'
+routing_mute_user:
     resource: '../Apps/MuteUser/routing.yml'
 routing_theme_switch:
     resource: 'theme_switch/routing.yml'

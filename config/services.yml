@@ -23,6 +23,8 @@ imports:
     - { resource: poi/service.yml }
     - { resource: theme_switch/service.yml }
     - { resource: ../Apps/MuteUser/service.yml }
+    - { resource: ../Apps/MassMover/service.yml }
+
 services:
     jeb.snahp.core:
         class: jeb\snahp\core\core
@@ -287,3 +289,13 @@ services:
             - '@cache'
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.FormHelper:
+        class: jeb\snahp\core\FormHelper
+        arguments:
+            - '@request'
+            - '@template'
+    jeb.snahp.ForumStructureHelper:
+        class: jeb\snahp\core\ForumStructureHelper
+        arguments:
+            - '%core.root_path%'
+            - '%core.php_ext%'
