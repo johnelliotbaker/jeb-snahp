@@ -165,6 +165,13 @@ class main_module extends base
                 'DESCRIPTION' => 'Options to Mute Users',
                 'LINK' => '<a href="/app.php/snahp/mute_user/mcp/manage/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
             ];
+            $data[] = [
+                'ID' => 15,
+                'PURPOSE' => 'Move Topics (Username)',
+                'NAME' => 'Mass Topic Mover (w/ username)',
+                'DESCRIPTION' => 'Mass Move Topics Based on Username',
+                'LINK' => '<a href="/app.php/snahp/mass_mover/mcp/main/" target="_blank"><i class="icon fa-external-link-square fa-fw" aria-hidden="true"></i></a>',
+            ];
             foreach ($data as $entry) {
                 $template->assign_block_vars('postrow', $entry);
             }
