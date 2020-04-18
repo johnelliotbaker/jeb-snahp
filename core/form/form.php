@@ -4,16 +4,15 @@ namespace jeb\snahp\core\form;
 class form
 {
     protected $container;
-	public function __construct(/*{{{*/
+    public function __construct(/*{{{*/
         $container
-	)
-	{
+    ) {
         $this->container = $container;
         $this->config = $container->get('config');
         $this->db = $container->get('dbal.conn');
         $this->request = $container->get('request');
         $this->template = $container->get('template');
-	}/*}}}*/
+    }/*}}}*/
 
     public function test()/*{{{*/
     {
@@ -53,8 +52,7 @@ class form
 
     public function process_manifest($manifest)/*{{{*/
     {
-        foreach($manifest as $job)
-        {
+        foreach ($manifest as $job) {
             $varname = $job['varname'];
             $job['value'] = $this->request->variable((string)$varname, $job['default']);
             $this->{$job['func_set']}($job);
@@ -66,13 +64,11 @@ class form
     public function set_template_vars_from_manifest($manifest)/*{{{*/
     {
         $tpl_vars = [];
-        foreach ($manifest as $job)
-        {
+        foreach ($manifest as $job) {
             $tpl_varname = strtoupper($job['tpl_varname']);
             $stored_value = $this->{$job['func_get']}($job);
             $tpl_vars[$tpl_varname] = $stored_value;
         }
         $this->template->assign_vars($tpl_vars);
     }/*}}}*/
-
 }
