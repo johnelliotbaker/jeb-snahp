@@ -1,4 +1,4 @@
-routing_mute_user:
+routing_mass_mover:
     resource: '../Apps/MassMover/routing.yml'
 routing_mute_user:
     resource: '../Apps/MuteUser/routing.yml'

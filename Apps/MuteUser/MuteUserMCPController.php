@@ -39,7 +39,6 @@ class MuteUserMCPController
         $this->sauth = $sauth;
         $this->muteUserHelper = $muteUserHelper;
         $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: e9610041bc');
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
