@@ -5,15 +5,14 @@ class curly_parser
 {
     protected $allowed_directive;
 
-	public function __construct(
-	)
-	{/*{{{*/
+    public function __construct(
+    ) {/*{{{*/
         $this->wrapper_tag = 'snahp';
         $this->allowed_major_tags = [
             'table', 'table_autofill',
         ];
         $this->allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
-	}/*}}}*/
+    }/*}}}*/
 
     public function get_wrapper_pattern()/*{{{*/
     {
@@ -31,21 +30,17 @@ class curly_parser
         $len_opened = count($openedtags);
         $len_closed = count($closedtags);
         if ($len_closed != $len_opened) {
-            return False;
+            return false;
         }
         $openedtags = array_reverse($openedtags);
-        for ($i=0; $i < $len_opened; $i++)
-        {
-            if (!in_array($openedtags[$i], $closedtags))
-            {
-                return False;
-            }
-            else
-            {
+        for ($i=0; $i < $len_opened; $i++) {
+            if (!in_array($openedtags[$i], $closedtags)) {
+                return false;
+            } else {
                 unset($closedtags[array_search($openedtags[$i], $closedtags)]);
             }
         }
-        return True;
+        return true;
     }/*}}}*/
 
     public function return_malformed($strn)/*{{{*/
@@ -57,31 +52,23 @@ class curly_parser
     public function interpolate_curly_table($strn)/*{{{*/
     {
         $ptn = '/{([^}]*)}/is';
-        $strn = preg_replace_callback($ptn, function($m) {
+        $strn = preg_replace_callback($ptn, function ($m) {
             $allowed_directive = $this->allowed_directive;
             $sub = $m[1];
-            $b_open = False;
-            if ($sub && $sub[0] == '/')
-            {
+            $b_open = false;
+            if ($sub && $sub[0] == '/') {
                 $sub = substr($sub, 1);
-            }
-            else
-            {
-                $b_open = True;
+            } else {
+                $b_open = true;
             }
             preg_match('/(\w+)/is', $sub, $match);
-            if ($match && in_array($match[0], $allowed_directive))
-            {
-                switch ($match[0])
-                {
+            if ($match && in_array($match[0], $allowed_directive)) {
+                switch ($match[0]) {
                 case 'table':
-                    if ($b_open)
-                    {
+                    if ($b_open) {
                         $tag = '<div class="request_table container"><div class="request_table wrapper">';
                         $tag .= "<$m[1]>";
-                    }
-                    else
-                    {
+                    } else {
                         $tag = "<$m[1]>";
                         $tag .= '</div></div>';
                     }
@@ -116,17 +103,14 @@ class curly_parser
         $content = $match[1];
         $content = preg_replace("#<br>#", PHP_EOL, $content);
         $arr = explode(PHP_EOL, $content);
-        foreach($arr as $entry)
-        {
-            if ($entry)
-            {
+        foreach ($arr as $entry) {
+            if ($entry) {
                 $entry = preg_replace('#\s+#', ' ', $entry);
                 $entry = preg_replace('#`\s*#', '` ', $entry);
                 $data[] = explode('` ', $entry);
             }
         }
-        if (!$data)
-        {
+        if (!$data) {
             return '';
         }
         $gallery = new \jeb\snahp\core\template\gallery;
@@ -141,8 +125,7 @@ class curly_parser
         $res = [];
         $class = ['autofill'];
         $class_strn = implode(' ', $class);
-        if ($b_search)
-        {
+        if ($b_search) {
             $res[] = '<input id="searchbox_' . $uuid . '"type="search" class="' . $class_strn . '" placeholder="Search"></input>';
         }
         preg_match($ptn, $strn, $match);
@@ -152,16 +135,13 @@ class curly_parser
         $res[] = "<div class=\"$class_strn\">";
         $res[] = "<table id=\"table_$uuid\" class=\"$class_strn\">";
         $res[] = '<tbody>';
-        foreach($arr as $entry)
-        {
-            if ($entry)
-            {
+        foreach ($arr as $entry) {
+            if ($entry) {
                 $tmp = '';
                 $entry = preg_replace('#\s+#', ' ', $entry);
                 $entry = preg_replace('#`\s*#', '` ', $entry);
                 $a_elem = explode('` ', $entry);
-                foreach($a_elem as $elem)
-                {
+                foreach ($a_elem as $elem) {
                     $tmp .= "<td>$elem</td>";
                 }
                 $res[] = "<tr>$tmp</tr>";
@@ -170,8 +150,8 @@ class curly_parser
         $res[] = '</tbody></table></div>';
         $res = implode(PHP_EOL, $res);
         return $res;
-        // The following was causing problem when res contained ${number} 
-        // with preg_replace back referencing. 
+        // The following was causing problem when res contained ${number}
+        // with preg_replace back referencing.
         // preg_replace was using $0 & $1 for example as reference
         // instead of string literals.
         // $strn = preg_replace($ptn, $res, $strn);
@@ -188,19 +168,16 @@ class curly_parser
         preg_match($ptn, $strn, $match);
         $content = $match[1];
         $topic_id = $request->variable('t', 0);
-        if (!$topic_id)
-        {
+        if (!$topic_id) {
             $post_id = $request->variable('p', 0);
-            if (!$post_id)
-            {
+            if (!$post_id) {
                 return '#fulfill#';
             }
             $post_data = $this->select_post($post_id, 'topic_id');
             $topic_id = $post_data['topic_id'];
         }
         $request_data = $this->select_request($topic_id);
-        if (!$request_data)
-        {
+        if (!$request_data) {
             return '#fulfill#';
         }
         $topic_id = $request_data['tid'];
@@ -209,12 +186,10 @@ class curly_parser
         $user_id = $user->data['user_id'];
         $requester_id = $request_data['requester_uid'];
         $fulfiller_id = $request_data['fulfiller_uid'];
-        if (!in_array($user_id, [$requester_id, $fulfiller_id]))
-        {
+        if (!in_array($user_id, [$requester_id, $fulfiller_id])) {
             return '';
         }
-        if (in_array($request_data['status'], $def['set']['closed']))
-        {
+        if (in_array($request_data['status'], $def['set']['closed'])) {
             return '';
         }
         $u_solve = "/app.php/snahp/reqs/{$forum_id}/{$topic_id}/{$post_id}/2/";
@@ -286,14 +261,11 @@ class curly_parser
         $content = $match[1];
         preg_match_all('#(\w*)="([^"]*?)"#is', $content, $matches);
         $align = 'left';
-        foreach($matches[1] as $key => $attr)
-        {
-            if (!in_array($attr, $allowed_attr))
-            {
+        foreach ($matches[1] as $key => $attr) {
+            if (!in_array($attr, $allowed_attr)) {
                 return $this->return_malformed($match[0]);
             }
-            if ($attr=='align')
-            {
+            if ($attr=='align') {
                 $align = $matches[2][$key];
             }
         }
@@ -304,8 +276,7 @@ class curly_parser
 
     private function set_style_type()/*{{{*/
     {
-        if (!isset($this->style_type))
-        {
+        if (!isset($this->style_type)) {
             global $user, $db, $table_prefix;
             $user_style = $user->data['user_style'];
             $sql = 'SELECT style_name FROM ' . $table_prefix . 'styles
@@ -347,22 +318,22 @@ class curly_parser
         $strn = preg_replace($p, $uuid, $strn);
         // Start parsing
         $ptn = $this->get_wrapper_pattern();
-        $strn = preg_replace_callback($ptn, function($match){
+        $strn = preg_replace_callback($ptn, function ($match) {
             $content = $match[1];
             // If {snahp}{/snahp}
-            if (!$content) return $match[0];
+            if (!$content) {
+                return $match[0];
+            }
             // {snahp} must be followed by curly
-            if ($content[0] != '{')
-            {
+            if ($content[0] != '{') {
                 return $this->return_malformed($match[0]);
             }
             preg_match('#{([a-zA-Z_]*?)}#is', $content, $tag_type);
-            if (!$tag_type || count($tag_type)<2)
-            {
+            if (!$tag_type || count($tag_type)<2) {
                 return $this->return_malformed($match[0]);
             }
             $tag_type = $tag_type[1];
-            switch ($tag_type)/*{{{*/
+            switch ($tag_type) /*{{{*/
             {
             case 'mi':
                 $res = $this->interpolate_mediainfo($content, $tag_type);
@@ -444,8 +415,7 @@ class curly_parser
         $n = strlen($strn);
         $i = 0;
         $new_strn = '';
-        while (preg_match($ptn_uuid, $strn, $matches, PREG_OFFSET_CAPTURE, $start))
-        {
+        while (preg_match($ptn_uuid, $strn, $matches, PREG_OFFSET_CAPTURE, $start)) {
             $width = strlen($matches[0][0]);
             $cursor = (int) $matches[0][1];
             $new_strn .= substr($strn, $start, $cursor-$start);
@@ -453,8 +423,7 @@ class curly_parser
             $i += 1;
             $start = $cursor + $width;
         };
-        if ($start < $n)
-        {
+        if ($start < $n) {
             $new_strn .= substr($strn, $start);
         }
         return $new_strn;
@@ -487,12 +456,13 @@ class curly_parser
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
         $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
-        if ($b_immediate==true)
-        {
+        if ($b_immediate==true) {
             $sql .= ' AND parent_id=' . $parent_id;
         }
         $result = $db->sql_query($sql, $cooldown);
-        $data = array_map(function($array){return $array['forum_id'];}, $db->sql_fetchrowset($result));
+        $data = array_map(function ($array) {
+            return $array['forum_id'];
+        }, $db->sql_fetchrowset($result));
         $db->sql_freeresult($result);
         return $data;
     }/*}}}*/
@@ -517,5 +487,4 @@ class curly_parser
         $db->sql_freeresult($result);
         return $row;
     }/*}}}*/
-
 }
