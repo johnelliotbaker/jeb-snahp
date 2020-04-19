@@ -211,13 +211,29 @@ class curly_parser
 
     public function interpolate_mega_video($strn, $tag_name)/*{{{*/
     {
-        $allowed_attr = ['style', 'class', 'src', 'align'];
-        $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
         $content = $match[1];
-        $strn = '<div align="center"><iframe src="https://mega.nz/embed#' . $content . '" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>';
-        return $strn;
+        $patterns = [
+            [
+                'pattern' => '%mega.nz/file/([\w-]+)#([\w-]+)%is',
+                'transform' => ''
+            ],
+            [
+                'pattern' => '%#!([\w-]+)!([\w-]+)%is',
+                'transform' => ''
+            ],
+        ];
+        foreach ($patterns as $entry) {
+            $pattern = $entry['pattern'];
+            if (preg_match($pattern, $content, $match)) {
+                return '<div align="center"><iframe src="https://mega.nz/embed#' .
+                    "#!${match[1]}!${match[2]}" .
+                    '" width="640" height="360" frameborder="0" allowfullscreen>' .
+                    '</iframe></div>';
+            }
+        }
+        return '';
     }/*}}}*/
 
     public function interpolate_ab($strn, $tag_name)/*{{{*/
