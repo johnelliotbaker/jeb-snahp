@@ -217,18 +217,22 @@ class curly_parser
         $patterns = [
             [
                 'pattern' => '%mega.nz/file/([\w-]+)#([\w-]+)%is',
-                'transform' => ''
+                'transform' => function ($m) {
+                    return "#!${m[1]}!${m[2]}";
+                },
             ],
             [
                 'pattern' => '%#!([\w-]+)!([\w-]+)%is',
-                'transform' => ''
+                'transform' => function ($m) {
+                    return "#!${m[1]}!${m[2]}";
+                },
             ],
         ];
         foreach ($patterns as $entry) {
             $pattern = $entry['pattern'];
             if (preg_match($pattern, $content, $match)) {
                 return '<div align="center"><iframe src="https://mega.nz/embed#' .
-                    "#!${match[1]}!${match[2]}" .
+                    $entry['transform']($match) .
                     '" width="640" height="360" frameborder="0" allowfullscreen>' .
                     '</iframe></div>';
             }
