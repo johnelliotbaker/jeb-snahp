@@ -23,7 +23,8 @@ class MuteUserHelper
     public function getMutedUserList($start=0, $limit=10)/*{{{*/
     {
         $fields = [
-            'user_id', 'username', 'user_colour', 'snp_mute_topic', 'snp_mute_reply'
+            'user_id', 'username', 'user_colour',
+            'snp_mute_topic', 'snp_mute_reply', 'snp_mute_created',
         ];
         $fields = implode(', ', $fields);
         $sql = "SELECT ${fields} FROM " . USERS_TABLE .
@@ -48,8 +49,10 @@ class MuteUserHelper
     {
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
+        $created = time();
         $sql = 'UPDATE ' . USERS_TABLE .
-            " SET snp_mute_topic=${status} WHERE user_id=${userId}";
+            " SET snp_mute_topic=${status}, snp_mute_created=${created}" .
+            " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
     }/*}}}*/
 
@@ -57,8 +60,10 @@ class MuteUserHelper
     {
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
+        $created = time();
         $sql = 'UPDATE ' . USERS_TABLE .
-            " SET snp_mute_reply=${status} WHERE user_id=${userId}";
+            " SET snp_mute_reply=${status}, snp_mute_created=${created}" .
+            " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
     }/*}}}*/
 
