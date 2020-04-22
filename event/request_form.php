@@ -13,7 +13,7 @@ define('DEFINITION', [
             'req_v_comp_mp3'  => ['MP3', ''],
             'req_v_comp_wav'  => ['WAV', ''],
         ],
-        'Mininum Bitrate' => [ 'req_a_min_bitrate'   => [
+        'Minimum Bitrate' => [ 'req_a_min_bitrate'   => [
                             '96 kbps', '128 kbps', '160 kbps',
                             '192 kbps', '256 kbps', '320 kbps',
                         ],
@@ -101,30 +101,26 @@ function make_request_form($request)
     $res[] = '{snahp}{table}' . PHP_EOL;
     $varnames = $request->variable_names();
     $type = $request->variable('request_type', 'video');
-    if (in_array($type, ['tv', 'movie', 'video']))
-    {
+    if (in_array($type, ['tv', 'movie', 'video'])) {
         $type = 'video';
     }
     $definition = DEFINITION[$type];
     $n_padding = $definition['padding'][0];
-    foreach($definition as $attr_name => $attr)
-    {
+    foreach ($definition as $attr_name => $attr) {
         $data = [];
-        foreach($attr as $key => $val)
-        {
+        foreach ($attr as $key => $val) {
             $var = $request->variable($key, $val[1]);
-            if (!$var && $var!==0) continue;
-            switch ($key)
-            {
+            if (!$var && $var!==0) {
+                continue;
+            }
+            switch ($key) {
             case 'req_v_host':
                 $b_mega = stripos($var, 'mega');
                 $b_zippy = stripos($var, 'zippy');
-                if ($b_mega !== false)
-                {
+                if ($b_mega !== false) {
                     $data[] = '{img class="host-icon" src="//i.imgur.com/kkmC4dv.png"}{/img}';
                 }
-                if ($b_zippy !== false)
-                {
+                if ($b_zippy !== false) {
                     $data[] = '{img class="host-icon" src="//i.imgur.com/EO7Nyo7.png"}{/img}';
                 }
                 break;
@@ -140,40 +136,33 @@ function make_request_form($request)
             case 'req_v_reference_url':
                 break;
             default:
-                if ($var[0]=='x')
-                {
+                if ($var[0]=='x') {
                     $i = (int) $var[1];
                     $data[] = $val[$i];
-                }
-                elseif ($var == 2)
-                {
+                } elseif ($var == 2) {
                     $elem = '{span class="bold"}' . $val[0] . '{/span}';
                     array_unshift($data, $elem);
-                }
-                else
-                {
+                } else {
                     $data[] = $val[0];
                 }
                 break;
             }
         }
-        if ($data)
-        {
-            if($attr_name=='Link') continue; // Skip link
-            elseif ($attr_name == 'Size')
-            {
-                if ($data[1] <= 0) continue;
-                else
-                {
+        if ($data) {
+            if ($attr_name=='Link') {
+                continue;
+            } // Skip link
+            elseif ($attr_name == 'Size') {
+                if ($data[1] <= 0) {
+                    continue;
+                } else {
                     $data[] = array_pop($data) . ' GB';
                     $res[] = '{tr}' . PHP_EOL;
                     $strn = implode(' to ', $data);
                     $res[] = "    {td}$attr_name{/td}" . PHP_EOL . "    {td}$strn{/td}" . PHP_EOL;
                     $res[] = '{/tr}' . PHP_EOL;
                 }
-            }
-            else
-            {
+            } else {
                 $res[] = '{tr}' . PHP_EOL;
                 $strn = implode(' or ', $data);
                 $res[] = "    {td}$attr_name{/td}".PHP_EOL."    {td}$strn{/td}" . PHP_EOL;
@@ -182,8 +171,7 @@ function make_request_form($request)
         }
     }
     $url = $request->variable('req_v_reference_url', '');
-    if ($url)
-    {
+    if ($url) {
         $parsed_url = parse_url($url);
         $host = $parsed_url['host'];
         $res[] = '{tr}' . PHP_EOL;
