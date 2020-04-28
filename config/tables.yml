@@ -1,6 +1,6 @@
 parameters:
     jeb.snahp.tables.snp_table: '%core.table_prefix%snp_table'
-    jeb.snahp.tables: 
+    jeb.snahp.tables:
         req:    '%core.table_prefix%snahp_request'
         requsr: '%core.table_prefix%snahp_request_users'
         dibs:   '%core.table_prefix%snahp_dibs'
@@ -35,4 +35,4 @@ parameters:
         tags_forum_map: '%core.table_prefix%rh_topictags_forum_map'
         giveaways: '%core.table_prefix%snahp_giveaways'
         cron_log: '%core.table_prefix%snahp_cron_log'
-
+        reaction: '%core.table_prefix%snahp_reaction'

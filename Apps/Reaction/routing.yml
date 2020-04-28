@@ -1,0 +1,8 @@
+jeb_snahp_routing.reaction.retrieve:
+    path: /snahp/reaction/{id}
+    defaults: { _controller: jeb.snahp.ReactionController:retrieveView}
+    requirements:
+        id: \d+
+jeb_snahp_routing.reaction.list:
+    path: /snahp/reaction
+    defaults: { _controller: jeb.snahp.ReactionController:createListView}

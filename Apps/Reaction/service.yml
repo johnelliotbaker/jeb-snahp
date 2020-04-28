@@ -1,0 +1,32 @@
+imports:
+    # - { resource: 'mute_user/parameters.yml' }
+services:
+    jeb.snahp.ReactionController:
+        class: jeb\snahp\Apps\Reaction\ReactionController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ReactionHelper'
+    jeb.snahp.ReactionHelper: # HELPER
+        class: jeb\snahp\Apps\Reaction\ReactionHelper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.ReactionEventListener:
+        class: jeb\snahp\Apps\Reaction\ReactionEventListener
+        arguments:
+            - '@user'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ReactionHelper'
+        tags:
+            - { name: event.listener }

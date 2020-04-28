@@ -24,6 +24,7 @@ imports:
     - { resource: theme_switch/service.yml }
     - { resource: ../Apps/MuteUser/service.yml }
     - { resource: ../Apps/MassMover/service.yml }
+    - { resource: ../Apps/Reaction/service.yml }
 
 services:
     jeb.snahp.core:
