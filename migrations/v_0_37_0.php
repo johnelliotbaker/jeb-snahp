@@ -69,6 +69,7 @@ class v_0_37_0 extends container_aware_migration
     public function update_data()
     {
         return [
+            ['config.add', ['snp_rxn_b_master', 1]],
         ];
     }
 }

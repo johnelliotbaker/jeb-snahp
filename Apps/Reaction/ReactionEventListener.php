@@ -7,14 +7,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ReactionEventListener implements EventSubscriberInterface
 {
     protected $user;
+    protected $config;
     protected $sauth;
     protected $myHelper;
     public function __construct(/*{{{*/
         $user,
+        $config,
         $sauth,
         $myHelper
     ) {
         $this->user = $user;
+        $this->config = $config;
         $this->sauth = $sauth;
         $this->myHelper = $myHelper;
         $this->user_id = $this->user->data['user_id'];
@@ -31,6 +34,9 @@ class ReactionEventListener implements EventSubscriberInterface
 
     public function showReactions($event)
     {
+        if (!$this->config['snp_rxn_b_master']) {
+            return;
+        }
         $row = $event["post_row"];
         $postId = (int) $row['POST_ID'];
         $row["REACTIONS"] = ['postId' => $postId];

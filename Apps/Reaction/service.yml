@@ -26,6 +26,7 @@ services:
         class: jeb\snahp\Apps\Reaction\ReactionEventListener
         arguments:
             - '@user'
+            - '@config'
             - '@jeb.snahp.auth.user_auth'
             - '@jeb.snahp.ReactionHelper'
         tags:
