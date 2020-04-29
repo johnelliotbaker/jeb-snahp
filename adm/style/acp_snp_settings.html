@@ -288,6 +288,20 @@
         </dl>
       </fieldset>
 
+      <fieldset>
+        <legend>Reaction</legend>
+        <span>Twitter like brief replies to posts with emoticons.</span><br><br>
+        <dl>
+          <dt>
+          <label>Reaction Master Switch</label>
+          </dt>
+          <dd>
+          <label><input type="radio" name="snp_rxn_b_master" class="radio" value="1" {% if SNP_RXN_B_MASTER %}checked="checked"{% endif %}> Enable</label>
+          <label><input type="radio" name="snp_rxn_b_master" class="radio" value="0" {% if not SNP_RXN_B_MASTER %}checked="checked"{% endif %}> Disable</label>
+          </dd>
+        </dl>
+      </fieldset>
+
     </div>
   </div>
   <fieldset>

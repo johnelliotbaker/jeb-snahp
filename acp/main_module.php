@@ -10,17 +10,22 @@
 
 namespace jeb\snahp\acp;
 
-function prn($var) {/*{{{*/
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "$k => "; prn($v); }
-    } else { echo "$var<br>"; }
+function prn($var)
+{/*{{{*/
+    if (is_array($var)) {
+        foreach ($var as $k => $v) {
+            echo "$k => ";
+            prn($v);
+        }
+    } else {
+        echo "$var<br>";
+    }
 }/*}}}*/
 
 function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
 {
     $strn = " SET $varname = CASE $casename ";
-    foreach($arr as $k => $v)
-    {
+    foreach ($arr as $k => $v) {
         $strn .= "WHEN '$k' THEN '$v' ";
     }
     $strn .= "ELSE $varname END ";
@@ -31,10 +36,8 @@ function sanitize_fid($fid)/*{{{*/
 {
     $fid1 = explode(',', $fid);
     $fid_sane = [];
-    foreach($fid1 as $k => $v)
-    {
-        if (is_numeric($v))
-        {
+    foreach ($fid1 as $k => $v) {
+        if (is_numeric($v)) {
             $fid_sane[] = preg_replace('/\s+/', '', $v);
         }
     }
@@ -49,18 +52,17 @@ function sanitize_fid($fid)/*{{{*/
  */
 class main_module
 {
-	public $page_title;
-	public $tpl_name;
-	public $u_action;
+    public $page_title;
+    public $tpl_name;
+    public $u_action;
 
-	public function main($id, $mode)/*{{{*/
-	{
-		global $config, $request, $template, $user;
-		$user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = $user->lang('ACP_SNP_TITLE');
+    public function main($id, $mode)/*{{{*/
+    {
+        global $config, $request, $template, $user;
+        $user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = $user->lang('ACP_SNP_TITLE');
         $cfg = array();
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'thanks':
             $cfg['tpl_name'] = 'acp_snp_thanks';
             $cfg['b_feedback'] = false;
@@ -132,10 +134,10 @@ class main_module
             ]);
             break;
         }
-        if (!empty($cfg)){
+        if (!empty($cfg)) {
             $this->handle_default($cfg);
         }
-	}/*}}}*/
+    }/*}}}*/
 
     public function select_groups()/*{{{*/
     {
@@ -143,8 +145,9 @@ class main_module
         $sql = 'SELECT * from ' . GROUPS_TABLE;
         $result = $db->sql_query($sql);
         $data = [];
-        while ($row = $db->sql_fetchrow($result))
+        while ($row = $db->sql_fetchrow($result)) {
             $data[] = $row;
+        }
         $db->sql_freeresult($result);
         return $data;
     }/*}}}*/
@@ -153,8 +156,7 @@ class main_module
     {
         global $db;
         $strn = " SET $varname = CASE $casename ";
-        foreach($arr as $k => $v)
-        {
+        foreach ($arr as $k => $v) {
             $strn .= "WHEN '$k' THEN '$v' ";
         }
         $strn .= "ELSE $varname END ";
@@ -173,17 +175,14 @@ class main_module
 
     public function handle_default($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         // prn(array_keys($GLOBALS)); // Lists all available globals
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
@@ -196,11 +195,9 @@ class main_module
 
     private function process_form_fields($a_field)/*{{{*/
     {
-		global $config, $request;
-        foreach($a_field as $entry)
-        {
-            foreach($entry as $key=>$default)
-            {
+        global $config, $request;
+        foreach ($a_field as $entry) {
+            foreach ($entry as $key=>$default) {
                 $val = $request->variable($key, $default);
                 $config->set($key, $val);
             }
@@ -209,14 +206,11 @@ class main_module
 
     private function set_form_fields($a_field)/*{{{*/
     {
-		global $template, $config;
-        foreach($a_field as $entry)
-        {
-            foreach($entry as $key=>$default)
-            {
+        global $template, $config;
+        foreach ($a_field as $entry) {
+            foreach ($entry as $key=>$default) {
                 $val = $default;
-                if (isset($config[$key]))
-                {
+                if (isset($config[$key])) {
                     $val = $config[$key];
                 }
                 $upper = strtoupper($key);
@@ -227,20 +221,15 @@ class main_module
 
     private function set_group_form_fields($a_field)/*{{{*/
     {
-		global $config, $request, $template;
+        global $config, $request, $template;
         $gd = $this->select_groups();
-        foreach($gd as $group)
-        {
+        foreach ($gd as $group) {
             $data = [];
-            foreach($a_field as $entry)
-            {
-                foreach($entry as $key=>$default)
-                {
-                    if (isset($group[$key]))
-                    {
+            foreach ($a_field as $entry) {
+                foreach ($entry as $key=>$default) {
+                    if (isset($group[$key])) {
                         $val = $group[$key];
-                        if ($default==='array_int')
-                        {
+                        if ($default==='array_int') {
                             $val = unserialize($val);
                             $val = implode(', ', $val);
                         }
@@ -255,19 +244,15 @@ class main_module
 
     private function process_group_form_fields($a_field)/*{{{*/
     {
-		global $config, $request, $template;
+        global $config, $request, $template;
         $gd = $this->select_groups();
-        foreach($gd as $group)
-        {
+        foreach ($gd as $group) {
             $group_id = $group['group_id'];
             $data = [];
-            foreach($a_field as $entry)
-            {
-                foreach($entry as $key=>$default)
-                {
+            foreach ($a_field as $entry) {
+                foreach ($entry as $key=>$default) {
                     $varname = implode('_', [$key, $group_id]);
-                    switch ($default)
-                    {
+                    switch ($default) {
                     case 'array_int':
                         $val = $request->variable($varname, $default);
                         $val = array_map('intval', explode(',', $val));
@@ -285,15 +270,14 @@ class main_module
                 }
             }
             $this->update_one_group($group_id, $data);
-        }    
+        }
     }/*}}}*/
 
     public function handle_thanks($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
             // Non-block vars
@@ -302,10 +286,8 @@ class main_module
                 ['snp_thanks_b_limit_cycle' => 1],
                 ['snp_thanks_cycle_duration' => 86400],
             ];
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $this->process_form_fields($a_field);
@@ -327,20 +309,17 @@ class main_module
 
     public function handle_emotes($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
             // Non-block vars
             $a_field = [
                 ['snp_emo_b_master' => 1],
             ];
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $this->process_form_fields($a_field);
@@ -362,16 +341,13 @@ class main_module
 
     public function handle_invite($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // Enabler
@@ -388,16 +364,13 @@ class main_module
 
     public function handle_analytics($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // Enabler
@@ -405,17 +378,15 @@ class main_module
                 $config->set('snp_ana_b_master', $snp_ana_b_master);
                 // Group Permission and Configurations
                 $a_enable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/enable-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
+                    if ($match) {
                         $gid = $match[1];
                         $var = $request->variable("enable-$gid", '0');
                         $a_enable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_ana_b_enable', $a_enable);
                 $db->sql_query($sql);
                 // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
@@ -427,8 +398,7 @@ class main_module
             // Code to show signature configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'GID'=>$row['group_id'],
                     'NAME'=>$row['group_name'],
@@ -442,16 +412,13 @@ class main_module
 
     public function handle_group_based_search($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // Enabler
@@ -461,27 +428,23 @@ class main_module
                 $config->set('snp_search_b_enhancer', $snp_search_b_enhancer);
                 // Group Permission and Configurations
                 $aInterval = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/interval-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
+                    if ($match) {
                         $gid = $match[1];
                         $var = $request->variable("interval-$gid", '0');
                         $aInterval[$gid] = (int) $var;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_search_interval', $aInterval);
                 $db->sql_query($sql);
                 // Indexer
                 $a_indexer = [];
                 // prn($request->variable_names());
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/enable-indexer-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
+                    if ($match) {
                         $gid = $match[1];
                         $var = $request->variable("enable-indexer-$gid", '0');
                         $a_indexer[$gid] = $var ? 1 : 0;
@@ -499,8 +462,7 @@ class main_module
             // Code to show signature configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'GID'=>$row['group_id'],
                     'NAME'=>$row['group_name'],
@@ -515,16 +477,13 @@ class main_module
 
     public function handle_bump_topic($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // Enabler
@@ -532,27 +491,24 @@ class main_module
                 $config->set('snp_bump_b_topic', $snp_bump_b_topic);
                 // Group Permission and Configurations
                 $aCooldown = $aEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/enable-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
+                    if ($match) {
                         $gid = $match[1];
                         $var = $request->variable("enable-$gid", '0');
                         $aEnable[$gid] = $var ? 1 : 0;
                     }
                     preg_match('/cooldown-(\d+)/', $varname, $match);
-                    if ($match)
-                    {
+                    if ($match) {
                         $gid = $match[1];
                         $var = $request->variable("cooldown-$gid", '0');
                         $aCooldown[$gid] = (int) $var;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_enable_bump', $aEnable);
                 $db->sql_query($sql);
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_bump_cooldown', $aCooldown);
                 $db->sql_query($sql);
                 // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
@@ -564,8 +520,7 @@ class main_module
             // Code to show signature configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'GID'=>$row['group_id'],
                     'NAME'=>$row['group_name'],
@@ -580,17 +535,14 @@ class main_module
 
     public function handle_request($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
             $groupdata = $this->select_groups();
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $config->set('snp_b_request', $request->variable('snp_b_request', '0'));
@@ -609,20 +561,15 @@ class main_module
                     'n_cycle'   => 'cycle',
                     'b_solve'   => 'solve', // group can solve fulfilled requests
                 ];
-                foreach ($fields as $name => $field)
-                {
+                foreach ($fields as $name => $field) {
                     $data = [];
-                    foreach ($groupdata as $group)
-                    {
+                    foreach ($groupdata as $group) {
                         $gid = $group['group_id'];
                         $html_name = "$field-$gid";
-                        if ($name[0] == 'b')
-                        {
+                        if ($name[0] == 'b') {
                             $var = $request->variable($html_name, '0');
                             $var = $var ? 1 : 0;
-                        }
-                        else
-                        {
+                        } else {
                             $var = $request->variable($html_name, '0');
                         }
                         $data[$gid] = $var;
@@ -632,8 +579,7 @@ class main_module
                 // POSTFORM
                 $postform_fid = unserialize($config['snp_req_postform_fid']);
                 $postform_data = [];
-                foreach($postform_fid as $name => $a_fid)
-                {
+                foreach ($postform_fid as $name => $a_fid) {
                     $pf_fid_entry = $request->variable('postform-'.$name, 0);
                     $postform_data[$name] = $pf_fid_entry;
                 }
@@ -648,8 +594,7 @@ class main_module
                 trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
             }
             // Request Users Properties
-            foreach($groupdata as $row)
-            {
+            foreach ($groupdata as $row) {
                 $group = array(
                     'gid'     => $row['group_id'],
                     'gname'   => substr($row['group_name'], 0, 13),
@@ -664,8 +609,7 @@ class main_module
             };
             // Postform FID
             $postform_fid = unserialize($config['snp_req_postform_fid']);
-            foreach ($postform_fid as $name => $fid)
-            {
+            foreach ($postform_fid as $name => $fid) {
                 $fid_data['name'] = $name;
                 $fid_data['fid'] = $fid;
                 $template->assign_block_vars('POSTFORM_FID', $fid_data);
@@ -698,34 +642,29 @@ class main_module
 
     public function handle_notification($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
+            if ($request->is_set_post('submit')) {
                 $phpbb_notifications = $phpbb_container->get('notification_manager');
-                if (!check_form_key('jeb_snp'))
-                {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $config->set('snp_b_notify_op_on_report', $request->variable('b_notify_op_on_report', '0'));
-                $config->set('snp_b_snahp_notify',        $request->variable('b_snahp_notify', '0'));
-                $config->set('snp_b_notify_on_poke',      $request->variable('b_notify_on_poke', '0'));
-                $config->set('snp_digg_b_master',         $request->variable('snp_digg_b_master', '0'));
-                $config->set('snp_digg_b_notify',         $request->variable('snp_digg_b_notify', '0'));
-                $config->set('snp_digg_broadcast_cooldown',         $request->variable('snp_digg_broadcast_cooldown', 86400));
-                if ($config['snp_b_snahp_notify'])
-                {
+                $config->set('snp_b_snahp_notify', $request->variable('b_snahp_notify', '0'));
+                $config->set('snp_b_notify_on_poke', $request->variable('b_notify_on_poke', '0'));
+                $config->set('snp_digg_b_master', $request->variable('snp_digg_b_master', '0'));
+                $config->set('snp_digg_b_notify', $request->variable('snp_digg_b_notify', '0'));
+                $config->set('snp_digg_broadcast_cooldown', $request->variable('snp_digg_broadcast_cooldown', 86400));
+                if ($config['snp_b_snahp_notify']) {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
                 } else {
                     $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
                     // $phpbb_notifications->purge_notifications('jeb.snahp.notification.type.basic');
                 }
-                if ($config['snp_digg_b_notify'])
-                {
+                if ($config['snp_digg_b_notify']) {
                     $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.digg');
                 } else {
                     $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.digg');
@@ -747,16 +686,13 @@ class main_module
 
     public function handle_settings($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $fid_listings = $request->variable('fid_listings', '4');
@@ -805,6 +741,8 @@ class main_module
                 $config->set('snp_easter_chicken_chance', $snp_easter_chicken_chance);
                 $snp_easter_b_chicken = $request->variable('snp_easter_b_chicken', 1);
                 $config->set('snp_easter_b_chicken', $snp_easter_b_chicken);
+                $snp_rxn_b_master = $request->variable('snp_rxn_b_master', 1);
+                $config->set('snp_rxn_b_master', $snp_rxn_b_master);
                 $snp_spot_b_master = $request->variable('snp_spot_b_master', 1);
                 $config->set('snp_spot_b_master', $snp_spot_b_master);
                 $snp_req_b_avatar = $request->variable('snp_req_b_avatar', '1');
@@ -849,6 +787,7 @@ class main_module
                 'SNP_GIV_DOUBLE_TIME'          => $config['snp_giv_double_time'],
                 'SNP_EASTER_B_CHICKEN'         => $config['snp_easter_b_chicken'],
                 'SNP_EASTER_CHICKEN_CHANCE'    => $config['snp_easter_chicken_chance'],
+                'SNP_RXN_B_MASTER'             => $config['snp_rxn_b_master'],
                 'SNP_SPOT_B_MASTER'            => $config['snp_spot_b_master'],
                 'SNP_REQ_B_AVATAR'             => $config['snp_req_b_avatar'],
                 'SNP_THANKS_B_ENABLE'          => $config['snp_thanks_b_enable'],
@@ -866,42 +805,36 @@ class main_module
 
     public function handle_signature($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db;
+        global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $aSigRows = $aSigEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/sig-(\d+)/', $varname, $match_sig_toggle);
-                    if ($match_sig_toggle)
-                    {
+                    if ($match_sig_toggle) {
                         $gid = $match_sig_toggle[1];
                         $var = "sig-$gid";
                         $var = $request->variable($var, '0');
                         $aSigEnable[$gid] = $var ? 1 : 0;
                     }
                     preg_match('/sigrows-(\d+)/', $varname, $match_sig_rows);
-                    if ($match_sig_rows)
-                    {
+                    if ($match_sig_rows) {
                         $gid = $match_sig_rows[1];
                         $sid = "sigrows-$gid";
                         $var = $request->variable($sid, '0');
                         $aSigRows[$gid] = (int) $var;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_enable_signature', $aSigEnable);
                 $db->sql_query($sql);
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_signature_rows', $aSigRows);
                 $db->sql_query($sql);
                 // trigger_error($user->lang('ACP_SNP_SETTING_SAVED') . adm_back_link($this->u_action));
@@ -912,8 +845,7 @@ class main_module
             // Code to show signature configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -928,161 +860,140 @@ class main_module
 
     public function handle_pg($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $table_prefix;
+        global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
         $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 // Code to limit IMDb based on group membership
                 $aImdbEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/imdb-(\d+)/', $varname, $match_imdb_toggle);
-                    if ($match_imdb_toggle)
-                    {
+                    if ($match_imdb_toggle) {
                         $gid = $match_imdb_toggle[1];
                         $var = "imdb-$gid";
                         $var = $request->variable($var, '0');
                         $aImdbEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_imdb_enable', $aImdbEnable);
                 $db->sql_query($sql);
                 // Code to limit mydramalist based on group membership
                 $aMydramalistEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/mydramalist-(\d+)/', $varname, $match_mydramalist_toggle);
-                    if ($match_mydramalist_toggle)
-                    {
+                    if ($match_mydramalist_toggle) {
                         $gid = $match_mydramalist_toggle[1];
                         $var = "mydramalist-$gid";
                         $var = $request->variable($var, '0');
                         $aMydramalistEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_mydramalist_enable', $aMydramalistEnable);
                 $db->sql_query($sql);
                 // Code to limit discogs based on group membership
                 $aDiscogsEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/discogs-(\d+)/', $varname, $match_discogs_toggle);
-                    if ($match_discogs_toggle)
-                    {
+                    if ($match_discogs_toggle) {
                         $gid = $match_discogs_toggle[1];
                         $var = "discogs-$gid";
                         $var = $request->variable($var, '0');
                         $aDiscogsEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_discogs_enable', $aDiscogsEnable);
                 $db->sql_query($sql);
                 // Code to limit googlebooks based on group membership
                 $aGooglebooksEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/googlebooks-(\d+)/', $varname, $match_googlebooks_toggle);
-                    if ($match_googlebooks_toggle)
-                    {
+                    if ($match_googlebooks_toggle) {
                         $gid = $match_googlebooks_toggle[1];
                         $var = "googlebooks-$gid";
                         $var = $request->variable($var, '0');
                         $aGooglebooksEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
                 // Code to limit anilist based on group membership
                 $aAnilistEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/anilist-(\d+)/', $varname, $match_anilist_toggle);
-                    if ($match_anilist_toggle)
-                    {
+                    if ($match_anilist_toggle) {
                         $gid = $match_anilist_toggle[1];
                         $var = "anilist-$gid";
                         $var = $request->variable($var, '0');
                         $aAnilistEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_anilist_enable', $aAnilistEnable);
                 $db->sql_query($sql);
                 // Code to limit googlebooks based on group membership
                 $aGooglebooksEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/googlebooks-(\d+)/', $varname, $match_googlebooks_toggle);
-                    if ($match_googlebooks_toggle)
-                    {
+                    if ($match_googlebooks_toggle) {
                         $gid = $match_googlebooks_toggle[1];
                         $var = "googlebooks-$gid";
                         $var = $request->variable($var, '0');
                         $aGooglebooksEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_googlebooks_enable', $aGooglebooksEnable);
                 $db->sql_query($sql);
                 // Code to limit gamespot based on group membership
                 $aGamespotEnable = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/gamespot-(\d+)/', $varname, $match_gamespot_toggle);
-                    if ($match_gamespot_toggle)
-                    {
+                    if ($match_gamespot_toggle) {
                         $gid = $match_gamespot_toggle[1];
                         $var = "gamespot-$gid";
                         $var = $request->variable($var, '0');
                         $aGamespotEnable[$gid] = $var ? 1 : 0;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_gamespot_enable', $aGamespotEnable);
                 $db->sql_query($sql);
                 // Code to limit CustomTemplate based on group membership
                 $aCustomTemplateEnable = $aCustomTemplateMax = [];
-                foreach ($request->variable_names() as $k => $varname)
-                {
+                foreach ($request->variable_names() as $k => $varname) {
                     preg_match('/customtemplate-(\d+)/', $varname, $match_CustomTemplate_toggle);
-                    if ($match_CustomTemplate_toggle)
-                    {
+                    if ($match_CustomTemplate_toggle) {
                         $gid = $match_CustomTemplate_toggle[1];
                         $var = "customtemplate-$gid";
                         $var = $request->variable($var, '0');
                         $aCustomTemplateEnable[$gid] = $var ? 1 : 0;
                     }
                     preg_match('/customtemplate-max-(\d+)/', $varname, $match_CustomTemplate_max);
-                    if ($match_CustomTemplate_max)
-                    {
+                    if ($match_CustomTemplate_max) {
                         $gid = $match_CustomTemplate_max[1];
                         $var = "customtemplate-max-$gid";
                         $var = $request->variable($var, 0);
                         $aCustomTemplateMax[$gid] = $var;
                     }
                 }
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_customtemplate_enable', $aCustomTemplateEnable);
                 $db->sql_query($sql);
-                $sql = 'UPDATE ' . GROUPS_TABLE . 
+                $sql = 'UPDATE ' . GROUPS_TABLE .
                     buildSqlSetCase('group_id', 'snp_customtemplate_n_max', $aCustomTemplateMax);
                 $db->sql_query($sql);
                 // Store Forum IDs from template
-                foreach ($pg_names as $pg_name)
-                {
+                foreach ($pg_names as $pg_name) {
                     $config->set('snp_pg_fid_' . $pg_name, sanitize_fid($request->variable($pg_name . '_fid', '')));
                 }
                 // show status screen
@@ -1095,8 +1006,7 @@ class main_module
             // Code to show imdb configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1108,8 +1018,7 @@ class main_module
             // Code to show anilist configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1121,8 +1030,7 @@ class main_module
             // Code to show googlebooks configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1134,8 +1042,7 @@ class main_module
             // Code to show mydramalist configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1147,8 +1054,7 @@ class main_module
             // Code to show discogs configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1160,8 +1066,7 @@ class main_module
             // Code to show gamespot configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1173,8 +1078,7 @@ class main_module
             // Code to show CustomTemplate configuration in ACP
             $sql = 'SELECT * from ' . GROUPS_TABLE;
             $result = $db->sql_query($sql);
-            while ($row = $db->sql_fetchrow($result))
-            {
+            while ($row = $db->sql_fetchrow($result)) {
                 $group = array(
                     'gid'=>$row['group_id'],
                     'gname'=>$row['group_name'],
@@ -1185,8 +1089,7 @@ class main_module
             };
             $db->sql_freeresult($result);
             // To fill the forum id for the textarea
-            foreach ($pg_names as $pg_name)
-            {
+            foreach ($pg_names as $pg_name) {
                 $fid = $config['snp_pg_fid_' . $pg_name];
                 $template->assign_var($pg_name . '_fid', $fid);
             }
@@ -1195,17 +1098,14 @@ class main_module
 
     public function handle_donation($cfg)/*{{{*/
     {
-		global $config, $request, $template, $user, $db, $phpbb_container;
+        global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($request->is_set_post('submit'))
-            {
+            if ($request->is_set_post('submit')) {
                 $phpbb_notifications = $phpbb_container->get('notification_manager');
-                if (!check_form_key('jeb_snp'))
-                {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $config->set('snp_don_b_show_navlink', $request->variable('b_show_navlink', 0));
@@ -1222,5 +1122,4 @@ class main_module
             ));
         }
     }/*}}}*/
-
 }
