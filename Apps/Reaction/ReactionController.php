@@ -86,7 +86,7 @@ class ReactionController
         // $userId = rand(48, 73);
         $type = $this->request->variable('type', '');
         $postId = $this->request->variable('postId', 0);
-        $message = $this->request->variable('message', '');
+        $message = $this->request->variable('message', '', true);
         $this->validateAddReactionData($userId, $postId, $type);
         $this->myHelper->addOrUpdate($userId, $type, $postId, $message);
         return new JsonResponse(['status' => $this::SUCCESS]);

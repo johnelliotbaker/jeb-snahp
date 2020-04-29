@@ -66,10 +66,19 @@ class v_0_37_0 extends container_aware_migration
         ];
     }
 
+    public function set_utf8mb4()
+    {
+        global $table_prefix, $db;
+        $sql = 'ALTER TABLE ' . $table_prefix . 'snahp_reaction CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+        $db->sql_query($sql);
+    }
+
+
     public function update_data()
     {
         return [
             ['config.add', ['snp_rxn_b_master', 1]],
+            ['custom', [[$this, 'set_utf8mb4']]],
         ];
     }
 }
