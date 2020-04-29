@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "homepage": "",
-    "version": "0.36.10",
-    "time": "2020-04-20",
+    "version": "0.37.0",
+    "time": "2020-04-28",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "version": "1be233d2c442d1a6ad21f8a101e4e9aa3c89305e",
+        "version": "6cf162ce1c7009b68b554b7c7fdeed17f08c1906",
         "features": "Mute/MassMover",
         "display-name": "Snahp",
         "soft-require": {
