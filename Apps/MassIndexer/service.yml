@@ -1,0 +1,34 @@
+imports:
+    # - { resource: 'mute_user/parameters.yml' }
+services:
+    jeb.snahp.MassIndexerController:
+        class: jeb\snahp\Apps\MassIndexer\MassIndexerController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.MassIndexerHelper'
+    jeb.snahp.MassIndexerHelper: # HELPER
+        class: jeb\snahp\Apps\MassIndexer\MassIndexerHelper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ForumStructureHelper'
+    # jeb.snahp.MassIndexerEventListener:
+    #     class: jeb\snahp\Apps\MassIndexer\MassIndexerEventListener
+    #     arguments:
+    #         - '@user'
+    #         - '@config'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.MassIndexerHelper'
+    #     tags:
+    #         - { name: event.listener }

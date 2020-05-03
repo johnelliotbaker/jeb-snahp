@@ -25,6 +25,7 @@ imports:
     - { resource: ../Apps/MuteUser/service.yml }
     - { resource: ../Apps/MassMover/service.yml }
     - { resource: ../Apps/Reaction/service.yml }
+    - { resource: ../Apps/MassIndexer/service.yml }
 
 services:
     jeb.snahp.core:

@@ -1,0 +1,10 @@
+jeb_snahp_routing.mass_indexer.user:
+    path: /snahp/mass-indexer/unindex-user/{username}
+    defaults: { _controller: jeb.snahp.MassIndexerController:unindexUser}
+    requirements:
+        username: \S+
+jeb_snahp_routing.mass_indexer.topic:
+    path: /snahp/mass-indexer/unindex-topic/{topicId}
+    defaults: { _controller: jeb.snahp.MassIndexerController:unindexTopic}
+    requirements:
+        topidIc: \d+
