@@ -1,0 +1,33 @@
+imports:
+    # - { resource: 'mute_user/parameters.yml' }
+services:
+    jeb.snahp.BoilerplateController:
+        class: jeb\snahp\Apps\Boilerplate\BoilerplateController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.BoilerplateHelper'
+    jeb.snahp.BoilerplateHelper: # HELPER
+        class: jeb\snahp\Apps\Boilerplate\BoilerplateHelper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.BoilerplateEventListener:
+        class: jeb\snahp\Apps\Boilerplate\BoilerplateEventListener
+        arguments:
+            - '@user'
+            - '@config'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.BoilerplateHelper'
+        tags:
+            - { name: event.listener }
