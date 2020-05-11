@@ -12,7 +12,6 @@
 
 namespace jeb\snahp\event;
 
-
 use jeb\snahp\core\core;
 use jeb\snahp\core\base;
 use phpbb\auth\auth;
@@ -23,9 +22,11 @@ use phpbb\db\driver\driver_interface;
 use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /*}}}*/
 
-function closetags($html) {/*{{{*/
+function closetags($html)
+{/*{{{*/
     preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
     $openedtags = $result[1];
     preg_match_all('#</([a-z]+)>#iU', $html, $result);
@@ -51,8 +52,11 @@ class main_listener extends base implements EventSubscriberInterface
     protected $user_inventory;
     protected $product_class;
     protected $data;
-    public function __construct($table_prefix0, $table_prefix,
-        $user_inventory, $product_class
+    public function __construct(
+        $table_prefix0,
+        $table_prefix,
+        $user_inventory,
+        $product_class
     )/*{{{*/
     {
         $this->table_prefix = $table_prefix;
@@ -65,7 +69,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->data = [];
     }/*}}}*/
 
-    static public function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()/*{{{*/
     {
         return [
             'core.user_setup'                             => [
@@ -167,7 +171,7 @@ class main_listener extends base implements EventSubscriberInterface
             ],
             'core.search_modify_interval'                 => [
                 ['modify_search_interval', 0],
-            ],    
+            ],
             'core.ucp_pm_compose_modify_data'             => [
                 ['set_pm_mode', 0],
             ],
@@ -193,8 +197,7 @@ class main_listener extends base implements EventSubscriberInterface
         $n = strlen($text);
         $i = 0;
         $new_text = '';
-        while (preg_match($ptn_uuid, $text, $matches, PREG_OFFSET_CAPTURE, $start))
-        {
+        while (preg_match($ptn_uuid, $text, $matches, PREG_OFFSET_CAPTURE, $start)) {
             $width = strlen($matches[0][0]);
             $cursor = (int) $matches[0][1];
             $new_text .= substr($text, $start, $cursor-$start);
@@ -202,8 +205,7 @@ class main_listener extends base implements EventSubscriberInterface
             $i += 1;
             $start = $cursor + $width;
         };
-        if ($start < $n)
-        {
+        if ($start < $n) {
             $new_text .= substr($text, $start);
         }
         return $new_text;
@@ -219,9 +221,8 @@ class main_listener extends base implements EventSubscriberInterface
         // {
         //     $permission = true;
         // }
-        $text = preg_replace_callback($ptn, function($matches) use($permission) {
-            if ($permission)
-            {
+        $text = preg_replace_callback($ptn, function ($matches) use ($permission) {
+            if ($permission) {
                 return base64_encode($matches[1]);
             }
             return ' *** You cannot use b64 encoder ***';
@@ -237,14 +238,15 @@ class main_listener extends base implements EventSubscriberInterface
     public function censor_hide_in_pm($event)/*{{{*/
     {
         // Mode set in set_pm_mode()
-        if (!isset($this->data['mode']) || $this->data['mode'] != 'pm') { return false; }
+        if (!isset($this->data['mode']) || $this->data['mode'] != 'pm') {
+            return false;
+        }
         $message_text = $event['message_text'];
         preg_match('#\[hide\]#is', $message_text, $match);
         $n_open = count($match);
         preg_match('#\[\/hide\]#is', $message_text, $match);
         $n_close = count($match);
-        if ($n_open != $n_close)
-        {
+        if ($n_open != $n_close) {
             $message_text = '{{ Unmatched Hide Tags }}';
         }
         $message_text = preg_replace('#\[hide\].+\[\/hide\]#is', '{{ HIDDEN CONTENT }}', $message_text);
@@ -253,33 +255,36 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function colorize_staff_notification($event)/*{{{*/
     {
-        if (!$this->is_dev()) return false;
-        if (!$this->config['snp_b_snahp_notify'])
+        if (!$this->is_dev()) {
             return false;
+        }
+        if (!$this->config['snp_b_snahp_notify']) {
+            return false;
+        }
         $prefix = $this->staff_notification_prefix;
         $mp = $event['message_parser'];
         $message = &$mp->message;
         $message = strip_tags($message);
         preg_match_all('#' . $prefix . '([a-z_]+)#is', $message, $matchall);
         $a_group = [];
-        foreach($matchall[1] as $match) $a_group[$match] = utf8_clean_string($match);
-        if (!$a_group) return;
-        if ($this->is_dev_server())
-        {
-            $group_def = $this->container->getParameter('jeb.snahp.groups')['dev_staff_notification_alias'];
+        foreach ($matchall[1] as $match) {
+            $a_group[$match] = utf8_clean_string($match);
         }
-        else
-        {
+        if (!$a_group) {
+            return;
+        }
+        if ($this->is_dev_server()) {
+            $group_def = $this->container->getParameter('jeb.snahp.groups')['dev_staff_notification_alias'];
+        } else {
             $group_def = $this->container->getParameter('jeb.snahp.groups')['production_staff_notification_alias'];
         }
-        $a_group = array_map(function($arg) use($group_def) {
+        $a_group = array_map(function ($arg) use ($group_def) {
             return ($arg != 'set' && isset($group_def[$arg])) ? $group_def[$arg] : null;
         }, $a_group);
-        $a_group = array_filter($a_group, function($arg) {
+        $a_group = array_filter($a_group, function ($arg) {
             return $arg != null;
         });
-        foreach($a_group as $group_name => &$group_data)
-        {
+        foreach ($a_group as $group_name => &$group_data) {
             $group_data['group_name'] = $group_name;
             $b = "[color=${group_data['color']}][b]${prefix}${group_name}[/b][/color]";
             $a = '#(?<!])'. $prefix . $group_name . '#is';
@@ -292,7 +297,9 @@ class main_listener extends base implements EventSubscriberInterface
     public function notify_staff_notification($event)/*{{{*/
     {
         // The data is fed from colorize_staff_notification
-        if (!isset($this->data['staff_notification_group_data'])) return false;
+        if (!isset($this->data['staff_notification_group_data'])) {
+            return false;
+        }
         $a_group = $this->data['staff_notification_group_data'];
         $prefix = $this->staff_notification_prefix;
         $post_data = $event['data'];
@@ -301,8 +308,7 @@ class main_listener extends base implements EventSubscriberInterface
         $post_id  = $post_data['post_id'];
         $topic_title = $post_data['topic_title'];
         $staff_id = $post_data['poster_id'];
-        foreach($a_group as $group_data)
-        {
+        foreach ($a_group as $group_data) {
             $group_id = $group_data['id'];
             $group_color = $group_data['color'];
             $group_name = $group_data['group_name'];
@@ -317,8 +323,9 @@ class main_listener extends base implements EventSubscriberInterface
                 'topic_title' => $topic_title,
                 'post_time'   => time(),
             ];
-            $this->notification->add_notifications (
-                'jeb.snahp.notification.type.staff_notification', $notification_data
+            $this->notification->add_notifications(
+                'jeb.snahp.notification.type.staff_notification',
+                $notification_data
             );
         }
     }/*}}}*/
@@ -330,19 +337,15 @@ class main_listener extends base implements EventSubscriberInterface
         $poster_id = $post_row['POSTER_ID'];
         $product_class_name = 'custom_rank';
         $product_class_data = $this->product_class->get_product_class_by_name((string)$product_class_name);
-        if ($product_class_data)
-        {
+        if ($product_class_data) {
             $pcid = (int)$product_class_data['id'];
             $inv_data = $this->user_inventory->get_single_inventory("product_class_id=${pcid}", $poster_id);
-            if ($inv_data)
-            {
+            if ($inv_data) {
                 [$rank_title, $rank_img] = $this->get_custom_rank($poster_id);
-                if ($rank_img)
-                {
+                if ($rank_img) {
                     $post_row['RANK_IMG'] = '<img style="margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
                 }
-                if ($rank_title)
-                {
+                if ($rank_title) {
                     $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em;'>$rank_title</span>";
                 }
             }
@@ -355,15 +358,13 @@ class main_listener extends base implements EventSubscriberInterface
         // Group Based Search
         $user_id = $this->user->data['user_id'];
         $interval = $event['interval'];
-        if ($this->config['snp_search_b_enable'])
-        {
+        if ($this->config['snp_search_b_enable']) {
             $snp_group_id = $this->user->data['group_id'];
             $sql = 'SELECT * FROM ' . GROUPS_TABLE . ' WHERE group_id=' . $snp_group_id;
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
-            if ($row && array_key_exists('snp_search_interval', $row))
-            {
+            if ($row && array_key_exists('snp_search_interval', $row)) {
                 $group_search_interval = $row['snp_search_interval'];
                 $interval = ($user_id == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
             }
@@ -371,14 +372,12 @@ class main_listener extends base implements EventSubscriberInterface
         // User Inventory Upgrade
         $product_class_name = 'search_cooldown_reducer';
         $product_class_data = $this->product_class->get_product_class_by_name((string)$product_class_name);
-        if ($product_class_data)
-        {
+        if ($product_class_data) {
             $pcid = (int)$product_class_data['id'];
             $inv_data = $this->user_inventory->get_single_inventory("product_class_id=${pcid}");
-            if ($inv_data && $this->user_belongs_to_groupset($user_id, 'Red Team'))
-            {
+            if ($inv_data) {
                 $multiplier = (int) $inv_data['quantity'];
-                $value = $product_class_data['value']; 
+                $value = $product_class_data['value'];
                 $interval_reduction = abs($value * $multiplier);
                 $new_interval = $interval - $interval_reduction;
                 $interval = $new_interval < 5 ? 5 : $new_interval;
@@ -463,8 +462,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_reputation_in_profile($event)/*{{{*/
     {
-        if (!$this->config['snp_rep_b_master'])
-        {
+        if (!$this->config['snp_rep_b_master']) {
             return false;
         }
         $visitor_id = (int) $this->user->data['user_id'];
@@ -472,14 +470,15 @@ class main_listener extends base implements EventSubscriberInterface
         $username = $data['username'];
         $b_public = $data['snp_rep_b_profile'];
         $profile_id = (int) $data['user_id'];
-        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public)
-        {
+        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public) {
             // Block public if unless mod or profile owner
             return false;
         }
         $profile_username = $data['username'];
         $rep_received = $this->data['profile']['reputation_received'];
-        if (!$rep_received) return false;
+        if (!$rep_received) {
+            return false;
+        }
         $this->template->assign_vars([
             'B_REPUTATION_SHOW' => true,
             'B_REPUTATION_PROFILE_PUBLIC' => $b_public,
@@ -504,8 +503,7 @@ class main_listener extends base implements EventSubscriberInterface
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         $i = 1;
-        foreach($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $data = [];
             $data['INDEX'] = $i;
             $data['COUNT'] = $row['count'];
@@ -529,14 +527,12 @@ class main_listener extends base implements EventSubscriberInterface
     public function show_badges_in_avatar($event)/*{{{*/
     {
         $poster_data = $this->poster_data;
-        if (!$poster_data)
-        {
+        if (!$poster_data) {
             return false;
         }
         $post_row = $event['post_row'];
         $poster_id = $post_row['POSTER_ID'];
-        if (!isset($this->badges_helper))
-        {
+        if (!isset($this->badges_helper)) {
             $this->badges_helper = $this->container->get('jeb.snahp.avatar.badges_helper');
         }
         $options = [ 'style_type' => $this->style_type, 'style_name' => $this->style_name ];
@@ -547,13 +543,11 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_reputation_in_avatar($event)/*{{{*/
     {
-        if (!$this->config['snp_rep_b_master'])
-        {
+        if (!$this->config['snp_rep_b_master']) {
             return false;
         }
         $poster_data = $this->poster_data;
-        if (!$poster_data)
-        {
+        if (!$poster_data) {
             return false;
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -562,11 +556,9 @@ class main_listener extends base implements EventSubscriberInterface
         $b_public = $poster_data['snp_rep_b_avatar'];
         $user_id = $this->user->data['user_id'];
         // Hiding public view
-        if ($b_public || $poster_id==$user_id || $this->is_mod())
-        {
+        if ($b_public || $poster_id==$user_id || $this->is_mod()) {
             $n_rep = $poster_data['snp_rep_n_received'];
-            if ($n_rep > 0)
-            {
+            if ($n_rep > 0) {
                 $res = [
                     $poster_data['snp_rep_n_received'],
                     !$b_public && ($this->is_mod() || $poster_id==$user_id) ? 'p' : ''];
@@ -574,8 +566,7 @@ class main_listener extends base implements EventSubscriberInterface
                 $post_row['REPUTATION'] = $strn;
             }
         }
-        if (!$this->b_rep_given)
-        {
+        if (!$this->b_rep_given) {
             $post_row['SHOW_REPUTATION_BTN'] = $this->user->data['user_id'] == $poster_id ? false : true;
         }
         $event['post_row'] = $post_row;
@@ -583,8 +574,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_achievements_in_profile($event)/*{{{*/
     {
-        if (!$this->config['snp_achi_b_master'])
-        {
+        if (!$this->config['snp_achi_b_master']) {
             return false;
         }
         $data = $event['data'];
@@ -592,26 +582,25 @@ class main_listener extends base implements EventSubscriberInterface
         $visitor_id = (int) $this->user->data['user_id'];
         $profile_id = $data['user_id'];
         $b_public = $data['snp_achi_b_profile'];
-        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public)
-        {
+        if (!$this->is_mod() && $profile_id != $visitor_id && !$b_public) {
             // Block public if unless mod or profile owner
             return false;
         }
         $this->template->assign_var('B_ACHIEVEMENTS_PROFILE_PUBLIC', $b_public);
         $this->template->assign_var('B_ACHIEVEMENTS', true);
         $rowset = $this->select_user_achievements($profile_id, 10);
-        if (!$rowset)
-        {
+        if (!$rowset) {
             return false;
         }
         $params = $this->container->getParameter('jeb.snahp.avatar.achievements');
         $style_name = $this->select_style_name();
         $postrow = [];
-        foreach($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $data = [];
             $type = $row['type'];
-            if (!array_key_exists($type, $params)) { continue; }
+            if (!array_key_exists($type, $params)) {
+                continue;
+            }
             $param = $params[$type];
             $title = $param['title'];
             $title = preg_replace('#{USERNAME}#', $profile_username, $title);
@@ -626,13 +615,11 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_achievements_in_avatar($event)/*{{{*/
     {
-        if (!$this->config['snp_achi_b_master'])
-        {
+        if (!$this->config['snp_achi_b_master']) {
             return false;
         }
         $poster_data = $this->poster_data;
-        if (!$poster_data)
-        {
+        if (!$poster_data) {
             return false;
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -641,8 +628,7 @@ class main_listener extends base implements EventSubscriberInterface
         $post_author = $post_row['POST_AUTHOR'];
         $poster_id = $poster_data['user_id'];
         $b_public = $poster_data['snp_achi_b_avatar'];
-        if (!$b_public)
-        {
+        if (!$b_public) {
             // Block public
             return false;
         }
@@ -650,8 +636,7 @@ class main_listener extends base implements EventSubscriberInterface
         $result = $this->db->sql_query($sql, 5);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        if (!$rowset)
-        {
+        if (!$rowset) {
             return false;
         }
         $i_achi = rand(0, count($rowset)-1);
@@ -659,12 +644,10 @@ class main_listener extends base implements EventSubscriberInterface
         $type = $row['type'];
         $style_name = $this->select_style_name();
         $params = $this->container->getParameter('jeb.snahp.avatar.achievements');
-        if (!array_key_exists($type, $params))
-        {
+        if (!array_key_exists($type, $params)) {
             return false;
         }
-        if (rand(0,100) > (int) $params[$type]['probability'])
-        {
+        if (rand(0, 100) > (int) $params[$type]['probability']) {
             return false;
         }
         $title = preg_replace('#{USERNAME}#', $post_author, $params[$type]['title']);
@@ -690,17 +673,13 @@ class main_listener extends base implements EventSubscriberInterface
     public function disable_email_notification($event)/*{{{*/
     {
         $type = $event['notification_type_name'];
-        if (substr($type, 0, 3) == 'jeb')
-        {
+        if (substr($type, 0, 3) == 'jeb') {
             return false;
         }
         $notify_users = $event['notify_users'];
-        foreach($notify_users as $key=>$user)
-        {
-            foreach($user as $i=>$method)
-            {
-                if($method==='notification.method.email')
-                {
+        foreach ($notify_users as $key=>$user) {
+            foreach ($user as $i=>$method) {
+                if ($method==='notification.method.email') {
                     unset($notify_users[$key][$i]);
                 }
             }
@@ -710,16 +689,14 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function embed_digg_controls_in_topic($event)/*{{{*/
     {
-        if (!$this->config['snp_b_snahp_notify'] || !$this->config['snp_digg_b_master'] || !$this->config['snp_digg_b_notify'])
-        {
+        if (!$this->config['snp_b_snahp_notify'] || !$this->config['snp_digg_b_master'] || !$this->config['snp_digg_b_notify']) {
             return false;
         }
         $cooldown = 2;
         $user_id = $this->user->data['user_id'];
         $topic_data = $event['topic_data'];
         $b_listing = $this->is_listing($topic_data, 'topic_data');
-        if (!$b_listing)
-        {
+        if (!$b_listing) {
             return false;
         }
         $topic_id = $topic_data['topic_id'];
@@ -730,31 +707,25 @@ class main_listener extends base implements EventSubscriberInterface
         $b_can_unregister = false;
         $count = 0;
         $state = 0;
-        if ($master_data)
-        {
+        if ($master_data) {
             $b_digg_master = true;
             $slave_data = $this->select_digg_slave_count($topic_id, $cooldown=$cooldown);
             $count = $slave_data['count'];
             $state = 1;
-            if ($b_op)
-            {
+            if ($b_op) {
                 $b_can_unregister = true;
             }
         }
-        if (!$b_op)
-        {
-            if ($b_digg_master)
-            {
+        if (!$b_op) {
+            if ($b_digg_master) {
                 $state = 2;
                 $slave_data = $this->select_digg_slave($topic_id, $where="user_id={$user_id}");
-                if ($slave_data)
-                {
+                if ($slave_data) {
                     $state = 3;
                 }
             }
         }
-        switch ($state)
-        {
+        switch ($state) {
         case 2:
             $s_digg_name = 'digg';
             $s_digg_url_mode = 'subscribe';
@@ -791,8 +762,7 @@ class main_listener extends base implements EventSubscriberInterface
         $mp = $event['message_parser'];
         $message = $mp->message;
         $b_match = preg_match('#{gallery_.*?}#s', htmlspecialchars_decode($message), $match);
-        if ($b_match)
-        {
+        if ($b_match) {
             $post_data = $event['post_data'];
             $post_data['enable_magic_url'] = 0;
             $post_data['enable_urls'] = 0;
@@ -804,13 +774,10 @@ class main_listener extends base implements EventSubscriberInterface
     {
         // For showing the minified tags on forum listings
         $forum_rows = $event['forum_rows'];
-        if (is_array($forum_rows))
-        {
-            foreach($forum_rows as $k=>$row)
-            {
+        if (is_array($forum_rows)) {
+            foreach ($forum_rows as $k=>$row) {
                 $type = $row['forum_type'];
-                if ($type==0)
-                {
+                if ($type==0) {
                     continue;
                 }
                 $tmp = $row['forum_last_post_subject'];
@@ -825,8 +792,7 @@ class main_listener extends base implements EventSubscriberInterface
     public function decode_tags_on_display_forums($event)/*{{{*/
     {
         $forum_row = $event['forum_row'];
-        if (is_array($forum_row))
-        {
+        if (is_array($forum_row)) {
             $tmp = $forum_row['LAST_POST_SUBJECT_TRUNCATED'];
             $tmp = $this->decode_tags($tmp);
             $forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $tmp;
@@ -843,15 +809,16 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_thanks_given_in_profile($event)/*{{{*/
     {
-        if ($this->is_mod())
-        {
+        if ($this->is_mod()) {
             $member = $event['member'];
             $profile_id = (int) $member['user_id'];
             $sql = 'SELECT snp_thanks_n_given FROM ' . USERS_TABLE . " WHERE user_id=${profile_id}";
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
-            if (!$row) { return false; }
+            if (!$row) {
+                return false;
+            }
             $n_thanks_given = $row['snp_thanks_n_given'];
             $this->template->assign_vars([
                 'IS_MOD' => true,
@@ -863,16 +830,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_inviter_in_profile($event)/*{{{*/
     {
-        if ($this->is_mod())
-        {
+        if ($this->is_mod()) {
             $member = $event['member'];
             $row = $this->select_invitee((int) $member['user_id']);
-            if (!$row)
-            {
+            if (!$row) {
                 $inviter_strn = 'The First of Her Kind';
-            }
-            else
-            {
+            } else {
                 $inviter_id = $row['inviter_id'];
                 $inviter = $this->select_user($inviter_id);
                 $inviter_strn = $this->make_username($inviter);
@@ -920,11 +883,14 @@ class main_listener extends base implements EventSubscriberInterface
         $fid = $event['forum_id'];
         $fid_listings = $this->config['snp_fid_listings'];
         $fid_listings = $this->select_subforum($fid_listings, $cache_time);
-        if (!in_array($fid, $fid_listings)) return false;
+        if (!in_array($fid, $fid_listings)) {
+            return false;
+        }
         $rowset = $event['rowset'];
-        if (!$rowset) return false;
-        foreach($rowset as $key => $row)
-        {
+        if (!$rowset) {
+            return false;
+        }
+        foreach ($rowset as $key => $row) {
             $tt = $row['topic_title'];
             $row['topic_title'] = $this->add_host_icon($tt, 'open');
             $rowset[$key] = $row;
@@ -937,8 +903,7 @@ class main_listener extends base implements EventSubscriberInterface
         $cachetime = 30;
         $b_master = $this->config['snp_thanks_b_enable'];
         $b_op = $this->config['snp_thanks_b_op'];
-        if (!$b_master || !$b_op)
-        {
+        if (!$b_master || !$b_op) {
             return false;
         }
         $post_row = $event['post_row'];
@@ -947,12 +912,10 @@ class main_listener extends base implements EventSubscriberInterface
         $topic_id = $topic_data['topic_id'];
         $topic_poster = $topic_data['topic_poster'];
         $thanks_total = 0;
-        if ($this->poster_data['snp_thanks_b_topic'] || $this->is_op($topic_data) || $this->is_mod())
-        {
+        if ($this->poster_data['snp_thanks_b_topic'] || $this->is_op($topic_data) || $this->is_mod()) {
             $thanks_total = $this->select_thanks_for_op($topic_id, $cachetime);
         }
-        if ($post_id != $topic_data['topic_first_post_id'])
-        {
+        if ($post_id != $topic_data['topic_first_post_id']) {
             $thanks_total = 0;
         }
         $rep_total = $this->select_rep_total_for_post($post_id);
@@ -964,8 +927,7 @@ class main_listener extends base implements EventSubscriberInterface
     public function show_search_index_btn($event)/*{{{*/
     {
         $topic_data = $event['topic_data'];
-        if ($this->is_search_enhancer_allowed($topic_data))
-        {
+        if ($this->is_search_enhancer_allowed($topic_data)) {
             $this->template->assign_var('SNP_SEARCH_INDEX_B_ENABLE', true);
         }
     }/*}}}*/
@@ -983,31 +945,37 @@ class main_listener extends base implements EventSubscriberInterface
     public function block_zebra_foe_quote($event)/*{{{*/
     {
         $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
-        if (!$snp_zebra_b_master) return false;
+        if (!$snp_zebra_b_master) {
+            return false;
+        }
         $mode = $event['mode'];
         $user_id = $this->user->data['user_id'];
         $topic_id = $event['topic_id'];
         $topic_data = $this->select_topic($topic_id);
-        if (!$topic_data) return false;
+        if (!$topic_data) {
+            return false;
+        }
         $topic_poster = $topic_data['topic_poster'];
         $sql = 'SELECT 1 FROM ' . ZEBRA_TABLE . '
             WHERE foe=1 AND user_id=' . $topic_poster . ' AND zebra_id=' . $user_id;
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row && $mode=='quote')
-        {
+        if ($row && $mode=='quote') {
             trigger_error('Sorry, quoting in this topic is currently disabled.');
         }
     }/*}}}*/
 
     public function block_zebra_foe_topicview($event)/*{{{*/
     {
-
         $i_row = $event['current_row_number'];
-        if ($i_row > 0) return false;
+        if ($i_row > 0) {
+            return false;
+        }
         $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
-        if (!$snp_zebra_b_master) return false;
+        if (!$snp_zebra_b_master) {
+            return false;
+        }
         $topic_data = $event['topic_data'];
         $user_id = $this->user->data['user_id'];
         $topic_poster = $topic_data['topic_poster'];
@@ -1018,8 +986,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->db->sql_freeresult($result);
         $topic_first_poster_name = $topic_data['topic_first_poster_name'];
         $topic_first_poster_colour = $topic_data['topic_first_poster_colour'];
-        if ($row)
-        {
+        if ($row) {
             $this->template->assign_vars([ 'ZEBRA_BLOCK' => true, ]);
             $post_row = $event['post_row'];
             $username = '<span style="color:#'. $topic_first_poster_colour .'">' . $topic_first_poster_name . '</span>';
@@ -1031,11 +998,12 @@ class main_listener extends base implements EventSubscriberInterface
     public function disable_quoting_blocker($event)/*{{{*/
     {
         preg_match('#\[quote=([^\]]*)\]#', $event['message_parser']->message, $match);
-        if (!$match) return;
+        if (!$match) {
+            return;
+        }
         $username = trim($match[1]);
         $foe_blocker_helper = $this->container->get('jeb.snahp.foe_blocker_helper');
-        if ($foe_blocker_helper->is_blocked_with_blocker_username($this->user_id, $username))
-        {
+        if ($foe_blocker_helper->is_blocked_with_blocker_username($this->user_id, $username)) {
             trigger_error("You have been blocked by <b>${username}</b> and cannot quote. Error Code: 299a70edf4");
         }
     }/*}}}*/
@@ -1043,17 +1011,22 @@ class main_listener extends base implements EventSubscriberInterface
     public function show_thanks_top_list($event)/*{{{*/
     {
         $uid = $this->user->data['user_id'];
-        if ($uid == ANONYMOUS) return false;
-        if (!$this->config['snp_thanks_b_enable']) return false;
-        if (!$this->config['snp_thanks_b_toplist']) return false;
+        if ($uid == ANONYMOUS) {
+            return false;
+        }
+        if (!$this->config['snp_thanks_b_enable']) {
+            return false;
+        }
+        if (!$this->config['snp_thanks_b_toplist']) {
+            return false;
+        }
         $sql = 'SELECT user_id, username, user_colour, snp_thanks_n_received FROM ' . USERS_TABLE . '
             ORDER BY snp_thanks_n_received DESC';
         $result = $this->db->sql_query_limit($sql, 10, 0);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         $n_row = count($rowset);
-        foreach ($rowset as $key => $row)
-        {
+        foreach ($rowset as $key => $row) {
             $delim = ($n_row==$key+1) ? '' : ',';
             $data = [
                 'USERNAME'              => $row['username'],
@@ -1072,8 +1045,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_thanks_avatar($event)/*{{{*/
     {
-        if (!$this->config['snp_thanks_b_enable']) return false;
-        if (!$this->config['snp_thanks_b_avatar']) return false;
+        if (!$this->config['snp_thanks_b_enable']) {
+            return false;
+        }
+        if (!$this->config['snp_thanks_b_avatar']) {
+            return false;
+        }
         $post_row = $event['post_row'];
         $user_data = $this->poster_data;
         $post_row['THANKS_GIVEN'] = $user_data['snp_thanks_n_given'];
@@ -1086,7 +1063,9 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_requests_solved_avatar($event)/*{{{*/
     {
-        if (!$this->config['snp_req_b_avatar']) return false;
+        if (!$this->config['snp_req_b_avatar']) {
+            return false;
+        }
         $post_row = $event['post_row'];
         $poster_data = $this->poster_data;
         $post_row['REQUESTS_SOLVED'] = $poster_data['snp_req_n_solve'];
@@ -1103,7 +1082,9 @@ class main_listener extends base implements EventSubscriberInterface
         $html_src_path = $phpbb_root_path . $ext_path . 'index.html';
         $html = file_get_contents($html_src_path);
         $post_row = $event['post_row'];
-        if ($post_row['POST_ID']!=$this->config['snp_giv_injection_post_id']) return;
+        if ($post_row['POST_ID']!=$this->config['snp_giv_injection_post_id']) {
+            return;
+        }
         $start_html = '';
         $end_html = '';
         $post_row['MESSAGE'] = $start_html . $html . $end_html . $post_row['MESSAGE'];
@@ -1113,13 +1094,17 @@ class main_listener extends base implements EventSubscriberInterface
     public function easter_cluck($event)/*{{{*/
     {
         $snp_easter_b_chicken = $this->config['snp_easter_b_chicken'];
-        if (!$snp_easter_b_chicken) return false;
+        if (!$snp_easter_b_chicken) {
+            return false;
+        }
         $MAX_STRN_LEN = 500;
         $post_row = $event['post_row'];
         $strn = $post_row['MESSAGE'];
         $chance = $this->config['snp_easter_chicken_chance'];
         $rand = rand(0, $chance);
-        if ($rand > 0 || strlen($strn) > $MAX_STRN_LEN) return false;
+        if ($rand > 0 || strlen($strn) > $MAX_STRN_LEN) {
+            return false;
+        }
         include_once('ext/jeb/snahp/core/chicken.php');
         $username = $this->user->data['username'];
         $motd_message = 'Hello ' . $username . ', thank you very much for being an important member of our community.<br>';
@@ -1134,15 +1119,21 @@ class main_listener extends base implements EventSubscriberInterface
     public function show_bump_button($event)/*{{{*/
     {
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
-        if (!$snp_bump_b_topic) return false;
+        if (!$snp_bump_b_topic) {
+            return false;
+        }
         $topic_data = $event['topic_data'];
         $tid = $topic_data['topic_id'];
         $i_row = $event['current_row_number'];
-        if ($i_row > 0) return false;
+        if ($i_row > 0) {
+            return false;
+        }
         $forum_id = $topic_data['forum_id'];
         $fid_listings = $this->config['snp_fid_listings'];
         $a_fid = $this->select_subforum($fid_listings);
-        if (!in_array($forum_id, $a_fid)) return false;
+        if (!in_array($forum_id, $a_fid)) {
+            return false;
+        }
         $user_bump_data = $this->get_bump_permission($tid);
         $this->template->assign_vars([
             'B_SHOW_BUMP_ENABLER' => $user_bump_data['b_enable'],
@@ -1183,20 +1174,19 @@ class main_listener extends base implements EventSubscriberInterface
         $emotes = $this->container->getParameter('jeb.snahp.emotes');
         $ptn = '/#(e_\w+)#/';
         $b_match = preg_match_all($ptn, $message, $a_match);
-        if (!$b_match)
-        {
+        if (!$b_match) {
             return $message;
         }
-        foreach($a_match[1] as $keyword)
-        {
-            if (array_key_exists($keyword, $emotes))
-            {
+        foreach ($a_match[1] as $keyword) {
+            if (array_key_exists($keyword, $emotes)) {
                 $emote = $emotes[$keyword];
                 $css = array_key_exists('css', $emote) ? ' ' . $emote['css'] : '';
                 $title = array_key_exists('title', $emote) ? ' ' . $emote['title'] : '';
                 $link = array_key_exists('link', $emote) ? ' ' . $emote['link'] : '';
                 $repl = "<img title='${title}' class='emotes_default${css}' src='{$emotes[$keyword]['url']}'></img>";
-                if ($link) { $repl = "<a href='${link}'>" . $repl . '</a>'; }
+                if ($link) {
+                    $repl = "<a href='${link}'>" . $repl . '</a>';
+                }
                 $curr_ptn = "/#($keyword)#/";
                 $message = preg_replace($curr_ptn, $repl, $message);
             }
@@ -1231,8 +1221,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->db->sql_freeresult($result);
         $style_name = $row['style_name'];
         $this->style_name = 'prosilver';
-        switch ($style_name)
-        {
+        switch ($style_name) {
         case 'Acieeed!':
             $this->template->assign_var('STYLE_NAME', 'acieeed');
             $this->template->assign_var('STYLE_TYPE', 'dark');
@@ -1289,16 +1278,15 @@ class main_listener extends base implements EventSubscriberInterface
         // 2) utility.js to remove the hidden checkbox
         // 3) this event listener to get checkbox data and set enable_sig
         $varnames = $this->request->variable_names();
-        if (!in_array('qr_exists', $varnames))
+        if (!in_array('qr_exists', $varnames)) {
             return false;
+        }
         $var = $this->request->variable('qr_attach_sig', '0');
         $enable_sig = $var ? 1 : 0;
         $data = $event['data'];
-        if ($enable_sig){
+        if ($enable_sig) {
             $data['enable_sig'] = 1;
-        }
-        else
-        {
+        } else {
             $data['enable_sig'] = 0;
         }
         $event['data'] = $data;
@@ -1329,18 +1317,21 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)/*{{{*/
     {
-        if (!$aUserdata)
+        if (!$aUserdata) {
             return [];
-        foreach ($aUserdata as $key => $row)
-        {
+        }
+        foreach ($aUserdata as $key => $row) {
             $username_clean = $row['username_clean'];
             $username = $row['username'];
             $uid = $row['user_id'];
-            if ($bDullBlocked && !$row['snp_enable_at_notify'])
+            if ($bDullBlocked && !$row['snp_enable_at_notify']) {
                 $color = '555588';
-            else
+            } else {
                 $color = $row['user_colour'];
-            if (!$color) $color = '000000';
+            }
+            if (!$color) {
+                $color = '000000';
+            }
             $username_string = "[color=#$color][b]$prepend$username".'[/b][/color]';
             $a_user_string[$username_clean] = $username_string;
         }
@@ -1352,8 +1343,7 @@ class main_listener extends base implements EventSubscriberInterface
         $sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
             $this->db->sql_in_set('username_clean', $aUsername);
         $result = $this->db->sql_query_limit($sql, $this->sql_limit);
-        while ($row = $this->db->sql_fetchrow($result))
-        {
+        while ($row = $this->db->sql_fetchrow($result)) {
             $data[] = $row;
         }
         $this->db->sql_freeresult($result);
@@ -1366,7 +1356,7 @@ class main_listener extends base implements EventSubscriberInterface
         $message = &$mp->message;
         $message = strip_tags($message);
         preg_match_all('/#roll#/', $message, $matchall);
-        $num = sprintf('%04d', rand(0,100));
+        $num = sprintf('%04d', rand(0, 100));
         $a = '/#roll#/';
         $b = '[center][fimg=250,250]' . 'https://raw.githubusercontent.com/codexologist/img/master/img/roll/ishihara_' . $num . '.png' . '[/fimg][/center]';
         $message = preg_replace($a, $b, $message);
@@ -1374,10 +1364,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function colorize_at($event)/*{{{*/
     {
-        if (!$this->config['snp_b_snahp_notify'])
+        if (!$this->config['snp_b_snahp_notify']) {
             return false;
-        if (!$this->config['snp_b_notify_on_poke'])
+        }
+        if (!$this->config['snp_b_notify_on_poke']) {
             return false;
+        }
         $foe_blocker_helper = $this->container->get('jeb.snahp.foe_blocker_helper');
         $at_prefix = $this->at_prefix;
         $mp = $event['message_parser'];
@@ -1386,22 +1378,23 @@ class main_listener extends base implements EventSubscriberInterface
         preg_match_all('#' . $at_prefix . '([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
         $aUsername = [];
-        foreach($matchall[1] as $match) $aUsername[$match] = utf8_clean_string($match);
-        if (!$aUsername) return;
+        foreach ($matchall[1] as $match) {
+            $aUsername[$match] = utf8_clean_string($match);
+        }
+        if (!$aUsername) {
+            return;
+        }
         $aUserdata = $this->get_user_data($aUsername);
         // Disable poke notification to blocker
-        foreach($aUserdata as $userdata)
-        {
-            if ($foe_blocker_helper->is_blocked_with_blocker_id($this->user_id, $userdata['user_id']))
-            {
+        foreach ($aUserdata as $userdata) {
+            if ($foe_blocker_helper->is_blocked_with_blocker_id($this->user_id, $userdata['user_id'])) {
                 trigger_error("You have been blocked by <b>${userdata['username']}</b> and cannot send poke notifications. Error Code: 769a81bcab");
             }
         }
         $aUserString = $this->get_user_string_from_usernames_sql($aUserdata, $at_prefix, true);
         array_multisort(array_map('strlen', $aUsername), $aUsername);
         $aUsername = array_reverse($aUsername);
-        foreach($aUsername as $username_in_msg => $username_clean)
-        {
+        foreach ($aUsername as $username_in_msg => $username_clean) {
             $b = $aUserString[$username_clean] . ' ';
             // $a = '#(?<!])'. $at_prefix . $username_in_msg . '#is';
             $a = '#(?<!])'. $at_prefix . $username_clean . '#is';
@@ -1411,10 +1404,12 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function notify_on_poke($event)/*{{{*/
     {
-        if (!$this->config['snp_b_snahp_notify'])
+        if (!$this->config['snp_b_snahp_notify']) {
             return false;
-        if (!$this->config['snp_b_notify_on_poke'])
+        }
+        if (!$this->config['snp_b_notify_on_poke']) {
             return false;
+        }
         $this->trigger_dev_event('jeb.snahp.notify_on_poke_before');
         $at_prefix = $this->at_prefix;
         $data     = $event['data'];
@@ -1426,11 +1421,12 @@ class main_listener extends base implements EventSubscriberInterface
         $message = filter_quote($message);
         preg_match_all('#' . $at_prefix .'([A-Za-z0-9_\-]+)#is', $message, $matchall);
         // Collect Usernames
-        foreach($matchall[1] as $match)
-        {
+        foreach ($matchall[1] as $match) {
             $aUsername[$match] = utf8_clean_string($match);
         }
-        if (!isset($aUsername)) return;
+        if (!isset($aUsername)) {
+            return;
+        }
         // Build sql query
         $count = 0;
         $user_id         = $this->user->data['user_id'];
@@ -1438,12 +1434,15 @@ class main_listener extends base implements EventSubscriberInterface
         $color           = $this->user->data['user_colour'];
         $username_string = get_username_string('no_profile', $user_id, $username, $color);
         $aReceiverData = $this->get_user_data($aUsername);
-        foreach ($aReceiverData as $row)
-        {
+        foreach ($aReceiverData as $row) {
             // If too many notifications are being sent, stop
-            if ($count > $this->notification_limit) break;
+            if ($count > $this->notification_limit) {
+                break;
+            }
             // If user doesn't want to receive notify skip this user
-            if (!$row['snp_enable_at_notify']) continue;
+            if (!$row['snp_enable_at_notify']) {
+                continue;
+            }
             $count++;
             $receiver_id     = $row['user_id'];
             $receiver_name   = $row['username'];
@@ -1463,8 +1462,9 @@ class main_listener extends base implements EventSubscriberInterface
                 'type'         => $type,
             );
             $this->trigger_dev_event('jeb.snahp.notify_on_poke_before_notification');
-            $this->notification->add_notifications (
-                'jeb.snahp.notification.type.basic', $data
+            $this->notification->add_notifications(
+                'jeb.snahp.notification.type.basic',
+                $data
             );
             $this->trigger_dev_event('jeb.snahp.notify_on_poke_after_notification');
         }
@@ -1473,15 +1473,16 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function notify_op_on_report($event)/*{{{*/
     {
-        if (!$this->config['snp_b_snahp_notify'])
+        if (!$this->config['snp_b_snahp_notify']) {
             return false;
-        if (!$this->config['snp_b_notify_op_on_report'])
+        }
+        if (!$this->config['snp_b_notify_op_on_report']) {
             return false;
+        }
         // data, notification_type_name, notify_users, options
         $data         = $event['data'];
         $notification_type_name = $event['notification_type_name'];
-        switch($notification_type_name)
-        {
+        switch ($notification_type_name) {
         case 'notification.type.report_post':
             $tid          = $data['topic_id'];
             $fid          = $data['forum_id'];
@@ -1493,11 +1494,9 @@ class main_listener extends base implements EventSubscriberInterface
                 '/contains links to illegal or pirated software./',
                 '/post has dead links or an incorrect password/',
             ];
-            foreach ($aPattern as $pattern)
-            {
+            foreach ($aPattern as $pattern) {
                 $match = preg_match($pattern, $reason);
-                if ($match)
-                {
+                if ($match) {
                     $text = 'This post was reported for: broken link.';
                     $data = array(
                         'user_id'      => $topic_poster,
@@ -1528,13 +1527,11 @@ class main_listener extends base implements EventSubscriberInterface
                 WHERE notification_type_name="jeb.snahp.notification.type.basic" AND
                 item_id=' . $pid;
             $result = $this->db->sql_query($sql);
-            if ($row = $this->db->sql_fetchrow($result))
-            {
+            if ($row = $this->db->sql_fetchrow($result)) {
                 $nid = $row['notification_id'];
             }
             $this->db->sql_freeresult($result);
-            if (isset($nid))
-            {
+            if (isset($nid)) {
                 $sql = 'DELETE FROM ' . $pre . 'notifications 
                     WHERE notification_id=' . $nid;
                 $result = $this->db->sql_query($sql);
@@ -1560,10 +1557,10 @@ class main_listener extends base implements EventSubscriberInterface
                 $result = $this->db->sql_query($sql);
                 $row = $this->db->sql_fetchrow($result);
                 $this->db->sql_freeresult($result);
-                if ($row && (int)$row['topic_first_post_id']===$post_id)
-                {
+                if ($row && (int)$row['topic_first_post_id']===$post_id) {
                     $b_first_post = true;
                 }
+                // no break
             default:
             break;
         }
@@ -1577,29 +1574,34 @@ class main_listener extends base implements EventSubscriberInterface
         $result = $this->db->sql_query($sql, 30);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($b_first_post)
-        {
+        if ($b_first_post) {
             $forum_id = (int) $this->request->variable('f', '');
             $pg_names = ['anime', 'listing', 'book', 'game', 'mydramalist', 'discogs'];
-            foreach ($pg_names as $pg_name)
-            {
+            foreach ($pg_names as $pg_name) {
                 $fid_allowed[$pg_name] = explode(',', $this->config['snp_pg_fid_' . $pg_name]);
             }
-            if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing']))
+            if ($row['snp_imdb_enable'] && in_array($forum_id, $fid_allowed['listing'])) {
                 $this->template->assign_vars(['B_SHOW_IMDB' => true,]);
-            if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime']))
+            }
+            if ($row['snp_anilist_enable'] && in_array($forum_id, $fid_allowed['anime'])) {
                 $this->template->assign_vars(['B_SHOW_ANILIST' => true,]);
-            if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book']))
+            }
+            if ($row['snp_googlebooks_enable'] && in_array($forum_id, $fid_allowed['book'])) {
                 $this->template->assign_vars(['B_SHOW_BOOKS' => true,]);
-            if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game']))
+            }
+            if ($row['snp_gamespot_enable'] && in_array($forum_id, $fid_allowed['game'])) {
                 $this->template->assign_vars(['B_SHOW_GAMES' => true,]);
-            if ($row['snp_mydramalist_enable'] && in_array($forum_id, $fid_allowed['mydramalist']))
+            }
+            if ($row['snp_mydramalist_enable'] && in_array($forum_id, $fid_allowed['mydramalist'])) {
                 $this->template->assign_vars(['B_SHOW_MYDRAMALIST' => true,]);
-            if ($row['snp_discogs_enable'] && in_array($forum_id, $fid_allowed['discogs']))
+            }
+            if ($row['snp_discogs_enable'] && in_array($forum_id, $fid_allowed['discogs'])) {
                 $this->template->assign_vars(['B_SHOW_DISCOGS' => true,]);
+            }
         }
-        if ($row['snp_customtemplate_enable'])
+        if ($row['snp_customtemplate_enable']) {
             $this->template->assign_vars(['B_SHOW_CUSTOM_TPL' => true,]);
+        }
     }/*}}}*/
 
     public function insert_new_topic_button($event)/*{{{*/
@@ -1608,8 +1610,7 @@ class main_listener extends base implements EventSubscriberInterface
         // Note that this means user must properly walk their way into
         // a forum. viewtopic.php?t=3 for example will not work.
         // This is done to reduce the number of sql calls.
-        if ($forum_id && is_numeric($forum_id))
-        {
+        if ($forum_id && is_numeric($forum_id)) {
             $this->template->assign_vars([
                 'snp_forum_id' => $forum_id,
             ]);
@@ -1633,8 +1634,7 @@ class main_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $bShowSignature = $row['snp_enable_signature'] ? true : false;
         $this->db->sql_freeresult($result);
-        if (!$bShowSignature)
-        {
+        if (!$bShowSignature) {
             $pr['SIGNATURE'] = false;
             $event['post_row'] = $pr;
         }
@@ -1655,12 +1655,9 @@ class main_listener extends base implements EventSubscriberInterface
         $b_match = false;
         $b_match |= preg_match('#\[[^]]*?(' . $disabled_bbcode . ')[^]]*?\]#is', $signature, $match);
         // Delete signature if certain bbcodes are used
-        if ($b_match)
-        {
+        if ($b_match) {
             $event['signature'] = '';
-        }
-        else
-        {
+        } else {
             $split = explode(PHP_EOL, $signature);
             $split = array_slice($split, 0, $nSignatureRow);
             $signature = implode(PHP_EOL, $split);
@@ -1689,5 +1686,4 @@ class main_listener extends base implements EventSubscriberInterface
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
     }/*}}}*/
-
 }
