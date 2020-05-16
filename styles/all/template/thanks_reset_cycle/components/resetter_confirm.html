@@ -1,0 +1,41 @@
+<script>
+  const onClickThanksReset = () => {
+    url = '{ACTION}/{S_USER_ID}';
+    fetch(url)
+      .then(r=>{
+        if (r.ok){
+          return r.json();
+        }
+        throw new Error('Something went wrong.')
+      })
+      .then(r=>{
+        {# console.log(r); #}
+        alert(r.message);
+        location.reload();
+      })
+      .catch(e=>{
+        console.log(e);
+      })
+  };
+</script>
+
+<div class="modal fade" id="reset-confirmation" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Reset Thanks</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="font-size:1.5em;">
+        <p>This will consume one (of {TOKENS} available) reset token.</p>
+        <p>Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="onClickThanksReset();" type="button" class="btn btn-primary">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

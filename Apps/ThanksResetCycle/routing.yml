@@ -1,0 +1,13 @@
+jeb_snahp_routing.thanks_reset_cycle.list:
+    path: /snahp/thanks-reset-cycle/{userId}/list
+    defaults: { _controller: jeb.snahp.ThanksResetCycleController:respondRecentThanksList}
+    requirements:
+        id: \d+
+jeb_snahp_routing.thanks_reset_cycle.reset:
+    path: /snahp/thanks-reset-cycle/{userId}
+    defaults: { _controller: jeb.snahp.ThanksResetCycleController:respondResetThanksCycle}
+    requirements:
+        id: \d+
+jeb_snahp_routing.thanks_reset_cycle.overview:
+    path: /snahp/thanks-reset-cycle
+    defaults: { _controller: jeb.snahp.ThanksResetCycleController:overview}

@@ -1,0 +1,12 @@
+<!-- INCLUDE overall_header.html -->
+<!-- IF not $rx_thanks_reset_cycle -->
+<!-- DEFINE $rx_thanks_reset_cycle = true -->
+<!-- INCLUDEJS @jeb_snahp/thanks_reset_cycle/rx_thanks_reset_cycle/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/thanks_reset_cycle/rx_thanks_reset_cycle/bundle.css -->
+<!-- ENDIF -->
+<div style="height: 30px"></div>
+<div class="rx_thanks_reset_cycle" data-data="{{ DATA | json_encode | e }}">
+  Loading...
+</div>
+<div style="height: 30px"></div>
+<!-- INCLUDE overall_footer.html -->

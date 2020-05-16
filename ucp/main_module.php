@@ -19,11 +19,11 @@ function prn($var, $b_html=false) {
 
 class main_module
 {
-	var $u_action;
+    var $u_action;
 
-	function main($id, $mode)
-	{
-		global $db, $request, $template, $user;
+    function main($id, $mode)
+    {
+        global $db, $request, $template, $user;
 
         $cfg = array();
         switch ($mode)
@@ -52,11 +52,11 @@ class main_module
         if (!empty($cfg)){
             $this->handle_mode($cfg);
         }
-	}
+    }
 
     private function is_custom_rank_purchased($user_id)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['mrkt_product_classes'] . " WHERE name='custom_rank'";
         $result = $db->sql_query($sql);
@@ -74,7 +74,7 @@ class main_module
 
     private function get_quick_search_upgrade_count($user_id)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $user_id = (int) $user_id;
         $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['mrkt_product_classes'] . " WHERE name='search_cooldown_reducer'";
@@ -95,7 +95,7 @@ class main_module
 
     function handle_block($cfg)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
         $user_id = $user->data['user_id'];
         $b_enable = $config['snp_foe_b_master'];
@@ -106,9 +106,19 @@ class main_module
         ]);
     }/*}}}*/
 
+    private function showThanksResetter($userId)/*{{{*/
+    {
+        global $phpbb_container, $template;
+        $helper = $phpbb_container->get('jeb.snahp.ThanksResetCycleHelper');
+        $tokens = $helper->getThanksResetTokenCount($userId);
+        $gaveAllAvailableThanks = $helper->hasGivenAllAvailableThanks($userId);
+        $shouldShow = $tokens;
+        $template->assign_var('B_THANKS_RESET', $shouldShow);
+    }/*}}}*/
+    
     function handle_custom($cfg)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if (!$config['snp_ucp_custom_b_master'])
         {
             return;
@@ -128,12 +138,13 @@ class main_module
             'OVERALL_SEARCH_INTERVAL' => $overall_search_interval,
             'B_CUSTOM_RANK' => $this->is_custom_rank_purchased($user_id),
         ]);
+        $this->showThanksResetter($user_id);
         // Using config custom master switch
     }/*}}}*/
 
     function handle_invite($cfg)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if (!$config['snp_inv_b_master'])
         {
             return;
@@ -189,7 +200,7 @@ class main_module
 
     function handle_visibility($cfg)/*{{{*/
     {
-		global $db, $request, $template, $user;
+        global $db, $request, $template, $user;
         $user_id = $user->data['user_id'];
         $this->tpl_name = $cfg['tpl_name'];
         $this->page_title = $user->lang('UCP_SNP_TITLE');
@@ -229,14 +240,14 @@ class main_module
             'SNP_REP_B_PROFILE'                => $data['snp_rep_b_profile'],
             'SNP_ACHI_B_AVATAR'                => $data['snp_achi_b_avatar'],
             'SNP_ACHI_B_PROFILE'               => $data['snp_achi_b_profile'],
-            'S_UCP_ACTION'	=> $this->u_action,
+            'S_UCP_ACTION'  => $this->u_action,
         );
         $template->assign_vars($template_vars);
     }/*}}}*/
 
     function handle_mode($cfg)/*{{{*/
     {
-		global $db, $request, $template, $user;
+        global $db, $request, $template, $user;
         $this->tpl_name = $cfg['tpl_name'];
         $this->page_title = $user->lang('UCP_SNP_TITLE');
         add_form_key('jeb/snahp');
@@ -266,7 +277,7 @@ class main_module
 
     public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
     {
-		global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
+        global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if ($this->is_dev_server())
         {
             $groupset = $phpbb_container->getParameter('jeb.snahp.groups')['dev']['set'];
@@ -288,14 +299,14 @@ class main_module
 
     public function is_dev_server()/*{{{*/
     {
-		global $config;
+        global $config;
         $servername = $config['server_name'];
         return isset($servername) && $servername=='192.168.2.12';
     }/*}}}*/
 
     private function select_group($group_id)/*{{{*/
     {
-		global $db;
+        global $db;
         $group_id = (int) $group_id;
         $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${group_id}";
         $result = $db->sql_query($sql);

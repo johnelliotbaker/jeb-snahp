@@ -1,5 +1,6 @@
 <?php
-
+// THIS HAS BEEN DEPRECATED
+// USE core/user/user_inventory.php INSTEAD
 namespace jeb\snahp\core\user_inventory;
 
 class user_inventory_helper

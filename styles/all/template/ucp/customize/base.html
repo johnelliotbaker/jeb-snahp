@@ -2,22 +2,25 @@
 <!-- INCLUDEJS @jeb_snahp/bootstrap4.min.js -->
 <!-- INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css -->
 <style>
-  {% include '@jeb_snahp/ucp/customize/base.css' %}
+{% include '@jeb_snahp/ucp/customize/base.css' %}
 </style>
 {% if B_ENABLE %}
   {% if B_PERMISSION %}
-  <div class="panel">
-    <div class="inner">
-      <div class="twbs">
-        <div>
-          {% include '@jeb_snahp/ucp/customize/component/economy_user_dashboard/base.html' %}
-          {% include '@jeb_snahp/ucp/customize/component/statistics/base.html' %}
-          {% include '@jeb_snahp/ucp/customize/component/user_title/base.html' %}
+    <div class="panel">
+      <div class="inner">
+        <div class="twbs">
+          <div>
+            {% include '@jeb_snahp/ucp/customize/component/statistics/base.html' %}
+            {% include '@jeb_snahp/ucp/customize/component/user_title/base.html' %}
+            <div class="d-flex">
+                {% include '@jeb_snahp/ucp/customize/component/economy_user_dashboard/base.html' %}
+                {% if B_THANKS_RESET %}
+                {% include '@jeb_snahp/ucp/customize/component/thanks_reset/base.html' %}
+                {% endif %}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-    <div>
     </div>
   {% else %}
     <div class="panel">

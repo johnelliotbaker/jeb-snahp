@@ -1,0 +1,36 @@
+imports:
+    # - { resource: 'mute_user/parameters.yml' }
+services:
+    jeb.snahp.ThanksResetCycleController:
+        class: jeb\snahp\Apps\ThanksResetCycle\ThanksResetCycleController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ThanksResetCycleHelper'
+    jeb.snahp.ThanksResetCycleHelper: # HELPER
+        class: jeb\snahp\Apps\ThanksResetCycle\ThanksResetCycleHelper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ThanksUsers'
+            - '@jeb.snahp.market.product_class'
+            - '@jeb.snahp.user.user_inventory'
+    # jeb.snahp.ThanksResetCycleEventListener:
+    #     class: jeb\snahp\Apps\ThanksResetCycle\ThanksResetCycleEventListener
+    #     arguments:
+    #         - '@user'
+    #         - '@config'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.ThanksResetCycleHelper'
+    #     tags:
+    #         - { name: event.listener }

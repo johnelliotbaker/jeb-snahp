@@ -1,0 +1,10 @@
+services:
+    jeb.snahp.ThanksUsers: # HELPER
+        class: jeb\snahp\core\Thanks\ThanksUsers
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

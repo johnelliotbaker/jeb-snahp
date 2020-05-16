@@ -26,6 +26,8 @@ imports:
     - { resource: ../Apps/MassMover/service.yml }
     - { resource: ../Apps/Reaction/service.yml }
     - { resource: ../Apps/MassIndexer/service.yml }
+    - { resource: ../core/Thanks/service.yml }
+    - { resource: ../Apps/ThanksResetCycle/service.yml }
 
 services:
     jeb.snahp.core:
@@ -87,6 +89,7 @@ services:
             - '@service_container'
             - '%jeb.snahp.tables%'
             - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ThanksUsers'
         tags:
             - { name: event.listener }
     jeb.snahp.mod_listener:

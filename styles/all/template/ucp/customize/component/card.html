@@ -1,0 +1,25 @@
+<div class="card m-2 mt-0 p-0" 
+    style="width: 200px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    ">
+  <div class="p-3">
+    <img 
+      class="card-img-top px-0" 
+      src="{% block img_src %}{% endblock %}" 
+      alt="{% block img_alt %}{% endblock img_alt %}">
+  </div>
+  <div class="card-body mt-0 pt-0">
+    <p class="card-text" style="font-size:1.4em;">
+      {% block text %}{% endblock text %}
+    </p>
+  </div>
+  <div class="card-footer bg-transparent p-0">
+    <a href="{% block link %}{% endblock link %}"
+      role="button" class="btn btn-success mx-auto w-100 rounded-0"
+      target="_blank"
+    >
+      <b style="color: white;">{% block link_text %}{% endblock link_text %}</b>
+    </a>
+  </div>
+</div>

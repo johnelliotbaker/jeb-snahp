@@ -1,0 +1,32 @@
+{% include '@jeb_snahp/thanks_reset_cycle/components/resetter_confirm.html' %}
+<div class="d-flex justify-content-center align-items-center my-2">
+  <button
+    type="button"
+    class="btn btn-danger btn-sm"
+    data-toggle="modal"
+    data-target="#reset-confirmation"
+    {%
+    if
+    not
+    TOKENS
+    or
+    TOKENS
+    <
+    1
+    %}
+    disabled
+    {%
+    endif
+    %}
+  >
+    <div class="d-flex align-items-center">
+      <span class="align-self-baseline">Use Reset Token</span>
+      <span
+        style="background-color: white; color: black;"
+        class="badge badge-light align-self-baseline ml-2 p-1"
+      >
+        {TOKENS}
+      </span>
+    </div>
+  </button>
+</div>

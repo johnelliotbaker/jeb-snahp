@@ -154,6 +154,52 @@ class user_inventory
         return $b_item_added;
     }/*}}}*/
 
+    public function doRemoveItemWithLogging($productClassId, $quantity, $userId, $comment='')/*{{{*/
+    {
+        $this->doRemoveItem($productClassId, $quantity, $userId);
+        $productClass = $this->product_class->get_product_class($productClassId);
+        $price = $productClass['price'];
+        $name = $productClass['display_name'];
+        $priceFormatted = number_format($productClass['price'] * $quantity);
+        if (!$comment) {
+            $comment = "Removing ${quantity} ${name}";
+        }
+        $data = [
+            'product_class_id' => $productClassId,
+            'price' => $price,
+            'quantity' => $quantity,
+            'data' => serialize(['comment' => $comment]),
+        ];
+        $brokerId = -1;
+        $this->market_transaction_logger
+            ->create_single_item_invoice($userId, $brokerId, $data);
+    }/*}}}*/
+
+    public function doRemoveItem($productClassId, $quantity, $userId)/*{{{*/
+    {
+        $quantity = (int) $quantity;
+        if ($quantity < 0) {
+            trigger_error("Quantity cannot be less than 0. Error Code: 72b59fc267");
+        }
+        $productClassId = (int) $productClassId;
+        $this->removeItem($productClassId, $quantity, $userId);
+    }/*}}}*/
+
+    public function removeItem($productClassId, $quantity, $userId)/*{{{*/
+    {
+        $quantity = (int) $quantity;
+        $productClassId = (int) $productClassId;
+        $row = $this->get_inventory_by_product_class($productClassId, $userId);
+        if ($row) {
+            $quantity = max((int) $row['quantity'] - $quantity, 0);
+            $sql = 'UPDATE '
+                . $this->tbl['user_inventory']
+                . " SET quantity=${quantity}"
+                . " WHERE user_id=${userId} AND product_class_id=${productClassId}";
+            $this->db->sql_query($sql);
+        }
+    }/*}}}*/
+
     public function set_item_quantity_public($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
     {
         $b_success = false;
