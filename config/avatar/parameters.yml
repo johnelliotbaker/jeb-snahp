@@ -236,6 +236,14 @@ parameters:
           template_type: 'internal'
           internal: 'LoE'
           tagname: 'Quack93'
+    136682: #AlecHex
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          template_type: 'internal'
+          internal: 'TAoE'
+          tagname: 'HxD'
     142388: #theweasley
       queue:
         - 'encoder'
@@ -424,7 +432,7 @@ parameters:
             - 'tagname'
             - 'username'
             - 'user_colour'
-          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="/search.php?st=0&sk=x&sd=d&sr=topics&keywords={internal}&sf=titleonly" target="_blank"><span style="color:#{user_colour} !important;">.{internal}.</span></a> <a href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a></div>'
+          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><div class="encoder_group rh_tag"><a href="/app.php/tag/{internal}" target="_blank">{internal}</a></div><a href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a></div>'
     formula_one:
       description: 'Formula 1 Racing'
       override:
