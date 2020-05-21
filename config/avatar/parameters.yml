@@ -529,291 +529,6 @@ parameters:
             - 'class'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    the_oracle:
-      description: 'The Complete Delphi Classics'
-      data:
-        title:
-          - 'Those who do not read history are doomed to repeat it.'
-          - 'γνῶθι σεαυτόν'
-          - 'An unsophisticated forecaster uses statistics as a drunken man uses lamp-posts - for support rather than for illumination.'
-          - 'Quoth the raven, &quot;Nevermore!&quot;'
-          - 'To expect defeat is nine-tenths of defeat itself.'
-          - 'Invention, it must be humbly admitted, does not consist in creating out of void, but out of chaos.'
-          - 'To love another person is to see the face of God.'
-          - 'Our words are giants when they do us an injury, and dwarfs when they do us a service.'
-          - 'Only mothers can think of the future - because they give birth to it in their children.'
-          - 'We must not allow the clock and the calendar to blind us to the fact that each moment of life is a miracle and mystery.'
-          - 'Every branch of human knowledge, if traced up to its source and final principles, vanishes into mystery.'
-          - 'Happiness is a butterfly, which when pursued, is always just beyond your grasp, but which, if you will sit down quietly, may alight upon you.'
-          - 'No amount of evidence will ever persuade an idiot.'
-          - 'It is better to have dreamed a thousand dreams that never were than never to have dreamed at all.'
-          - 'When you look at me, when you think of me, I am in paradise.'
-          - 'The task of leadership is not to put greatness into people, but to elicit it, for the greatness is there already.'
-          - 'Three things in human life are important. The first is to be kind. The second is to be kind. And the third is to be kind.'
-          - 'There is pleasure in the pathless woods, there is rapture in the lonely shore, there is society where none intrudes, by the deep sea, and music in its roar; I love not Man the less, but Nature more.'
-          - 'The most important thing in life is to stop saying &quot;I wish&quot; and start saying &quot;I will.&quot; Consider nothing impossible, then treat possibilities as probabilities.'
-          - 'Speak when you are angry and you will make the best speech you will ever regret.'
-          - 'If you make it a habit not to blame others, you will feel the growth of the ability to love in your soul, and you will see the growth of goodness in your life.'
-          - 'Choose love not in the shallows but in the deep.'
-          - 'Three grand essentials to happiness in this life are something to do, something to love, and something to hope for.'
-          - 'Those that go searching for love only make manifest their own lovelessness, and the loveless never find love, only the loving find love, and they never have to seek for it.'
-          - 'There are two ways of spreading light: to be the candle or the mirror that reflects it.'
-        img_url: 'https://i.imgur.com/qNw8qDZ.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge the_oracle"></img></a></span>'
-    tidal:
-      description: 'Tidal Music Collection'
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/HI1fnph.png'
-          dark:
-            img_url: 'https://i.imgur.com/2is3LzM.png'
-      data:
-        title: 'TIDAL for all'
-        class: 'tidal'
-        img_url: 'https://i.imgur.com/2is3LzM.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-# picard:
-#   description: "Picard"
-#   data:
-#     title: 'Make it so.'
-#     img_url: 'https://i.imgur.com/AT3Tgdd.png'
-#   template:
-#     basic:
-#       fields:
-#         - 'title'
-#         - 'img_url'
-#         - 'url'
-#       html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
-    trekki:
-      description: 'Trekkie'
-      data:
-        title:
-          - 'KHAAANNN!'
-          - 'To boldly go where no man has gone before.'
-          - 'You can use logic to justify almost anything. That''s its power. And its flaw.'
-          - 'But we''re going to learn from these mistakes. That''s what being human is all about.'
-          - 'Our species can only survive if we have obstacles to overcome.'
-          - 'Sometimes a feeling is all we humans have to go on.'
-          - 'Sometimes the universe allows for the making of unexpected memories.'
-          - 'Live long, and prosper.'
-          - 'Things are only impossible until they''re not.'
-        img_url: 'https://i.imgur.com/JEbCl63.png'
-        class: 'trekki'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    updater:
-      description: 'Ongoing TV Shows'
-      data:
-        title: 'Perpetual Energy Machine'
-        img_url: 'https://i.imgur.com/rgplXx8.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'url'
-            - 'img_url'
-          html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_24"></img></a></span>'
-    upscale:
-      description: 'The Upscale Project'
-      data:
-        title: '10% Luck, 20% Skill, Two Times the Concentrated Power of Waifu'
-        class: 'upscale'
-        img_url: 'https://i.imgur.com/GVn4gYJ.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    upscale:
-      description: 'The Upscale Project'
-      data:
-        title: '10% Luck, 20% Skill, Two Times the Concentrated Power of Waifu'
-        class: 'upscale'
-        img_url: 'https://i.imgur.com/GVn4gYJ.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    one_piece:
-      description: 'One Piece'
-      data:
-        title: 'To Be Continued'
-        class: 'one_piece'
-        img_url: 'https://i.imgur.com/cWLXlH9.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    crouching_tiger:
-      description: 'Crouching Tiger'
-      override:
-        style_name:
-          acieeed!:
-            img_url: 'https://i.imgur.com/7Kc7KSs.png'
-          hexagon:
-            img_url: 'https://i.imgur.com/YXwn3r2.png'
-            img_url: 'https://i.imgur.com/m6YGc79.png'
-          basic:
-            img_url: 'https://i.imgur.com/c5w5Yb0.png'
-          prosilver:
-            img_url: 'https://i.imgur.com/c5w5Yb0.png'
-      data:
-        title: 'Crouching Tiger'
-        class: 'crouching_tiger'
-        img_url: 'https://i.imgur.com/YXwn3r2.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
-    hidden_dragon:
-      description: 'Hidden Dragon'
-      override:
-        style_name:
-          acieeed!:
-            img_url: 'https://i.imgur.com/u40uLHb.png'
-          hexagon:
-            img_url: 'https://i.imgur.com/GqlbjQW.png'
-            img_url: 'https://i.imgur.com/XPcVXeF.png'
-          basic:
-            img_url: 'https://i.imgur.com/i4Sxu8R.png'
-          prosilver:
-            img_url: 'https://i.imgur.com/i4Sxu8R.png'
-      data:
-        title: 'Hidden Dragon'
-        class: 'hidden_dragon'
-        img_url: 'https://i.imgur.com/GqlbjQW.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
-    dj:
-      description: 'Music Aficionado'
-      override:
-        style_name:
-          acieeed!:
-            img_url: 'https://i.imgur.com/gPfRztn.png'
-          basic:
-            img_url: 'https://i.imgur.com/lvBNNtJ.png'
-          hexagon:
-            img_url: 'https://i.imgur.com/FC2JGKC.png'
-          prosilver:
-            img_url: 'https://i.imgur.com/lvBNNtJ.png'
-      data:
-        title: 'Music Aficionado'
-        class: 'dj'
-        img_url: 'https://i.imgur.com/r0NBdgG.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'class'
-          html: '<span title="{title}"><img src="{img_url}" class="avatar_badge {class}"></img></span>'
-    attenborough:
-      description: 'David Attenborough'
-      data:
-        title: 'Explore the world with Sir David Attenborough'
-        class: 'attenborough'
-        img_url: 'https://i.imgur.com/0HH4jv8.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    marvel:
-      description: 'Marvel'
-      data:
-        title: 'With great power comes great responsibility.'
-        class: 'marvel'
-        img_url: 'https://i.imgur.com/aiD7gAa.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    formula_one:
-      description: 'Formula 1 Racing'
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/WKaiwCk.png'
-          dark:
-            img_url: 'https://i.imgur.com/WKaiwCk.png'
-      data:
-        title: 'Engineered Insanity'
-        class: 'formula_one'
-        img_url: 'https://i.imgur.com/WKaiwCk.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    tidal:
-      description: 'Tidal Music Collection'
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/HI1fnph.png'
-          dark:
-            img_url: 'https://i.imgur.com/2is3LzM.png'
-      data:
-        title: 'TIDAL for all'
-        class: 'tidal'
-        img_url: 'https://i.imgur.com/2is3LzM.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     # picard:
     #   description: "Picard"
     #   data:
@@ -826,73 +541,6 @@ parameters:
     #         - 'img_url'
     #         - 'url'
     #       html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
-    trekki:
-      description: 'Trekkie'
-      data:
-        title:
-          - 'KHAAANNN!'
-          - 'To boldly go where no man has gone before.'
-          - 'You can use logic to justify almost anything. That''s its power. And its flaw.'
-          - 'But we''re going to learn from these mistakes. That''s what being human is all about.'
-          - 'Our species can only survive if we have obstacles to overcome.'
-          - 'Sometimes a feeling is all we humans have to go on.'
-          - 'Sometimes the universe allows for the making of unexpected memories.'
-          - 'Live long, and prosper.'
-          - 'Things are only impossible until they''re not.'
-        img_url: 'https://i.imgur.com/JEbCl63.png'
-        class: 'trekki'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-            - 'class'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    james_bond:
-      description: 'James Bond Ultimate Collection'
-      override:
-        style_type:
-          light:
-            img_url: 'https://i.imgur.com/Gg4xPaI.png'
-          dark:
-            img_url: 'https://i.imgur.com/pMmcsTk.png'
-      data:
-        title: 'Shaken, Not Stirred.'
-        img_url: 'https://i.imgur.com/pMmcsTk.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
-    adobe_infinity:
-      description: 'Adobe Suite'
-      data:
-        title: 'To Adobe and Beyond!'
-        img_url: 'https://i.imgur.com/pIFLOKL.png'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
-    game_machine:
-      description: 'Games 4 Days'
-      data:
-        img_url: 'https://i.imgur.com/Uo7648y.png'
-        title:
-          - 'The Game Theory'
-          - 'No game, no life!'
-      template:
-        basic:
-          fields:
-            - 'title'
-            - 'img_url'
-            - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge game_machine"></img></a></span>'
     the_oracle:
       description: 'The Complete Delphi Classics'
       data:
@@ -930,32 +578,49 @@ parameters:
             - 'img_url'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge the_oracle"></img></a></span>'
-    drunken_master:
-      description: 'The Legend of Jackie Chan'
+    tidal:
+      description: 'Tidal Music Collection'
+      override:
+        style_type:
+          light:
+            img_url: 'https://i.imgur.com/HI1fnph.png'
+          dark:
+            img_url: 'https://i.imgur.com/2is3LzM.png'
       data:
-        title: 'Drunken Master'
-        img_url: 'https://i.imgur.com/FxX4vma.png'
+        title: 'TIDAL for all'
+        class: 'tidal'
+        img_url: 'https://i.imgur.com/2is3LzM.png'
       template:
         basic:
           fields:
             - 'title'
             - 'img_url'
             - 'url'
-          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge maxh_36"></img></a></span>'
-    audio_expert:
-      description: 'Audio Experts'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    trekki:
+      description: 'Trekkie'
       data:
-        title: 'Audio Expert'
-        img_url: 'https://i.imgur.com/N0fWbFu.png'
-        img_css: 'avatar_badge maxh_24'
+        title:
+          - 'KHAAANNN!'
+          - 'To boldly go where no man has gone before.'
+          - 'You can use logic to justify almost anything. That''s its power. And its flaw.'
+          - 'But we''re going to learn from these mistakes. That''s what being human is all about.'
+          - 'Our species can only survive if we have obstacles to overcome.'
+          - 'Sometimes a feeling is all we humans have to go on.'
+          - 'Sometimes the universe allows for the making of unexpected memories.'
+          - 'Live long, and prosper.'
+          - 'Things are only impossible until they''re not.'
+        img_url: 'https://i.imgur.com/JEbCl63.png'
+        class: 'trekki'
       template:
         basic:
           fields:
             - 'title'
             - 'img_url'
-            - 'img_css'
-          html: '<div title="{title}" class="audio_expert"></div>'
-          html: '<span title="{title}"><img src="{img_url}" class="{img_css}"></img></span>'
+            - 'url'
+            - 'class'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
     updater:
       description: 'Ongoing TV Shows'
       data:
@@ -968,47 +633,17 @@ parameters:
             - 'url'
             - 'img_url'
           html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_24"></img></a></span>'
-    anime_pack:
-      description: 'All Things Animated'
+    upscale:
+      description: 'The Upscale Project'
       data:
-        title: 'International Bureau for Preservation and Dissemination of Animated Art'
-        img_url: 'https://i.imgur.com/gTTbWym.png'
+        title: '10% Luck, 20% Skill, Two Times the Concentrated Power of Waifu'
+        class: 'upscale'
+        img_url: 'https://i.imgur.com/GVn4gYJ.png'
       template:
         basic:
           fields:
             - 'title'
-            - 'url'
             - 'img_url'
-          html: '<span title="{title}"><a href="{url}" target="_blank"><img class="avatar_badge maxh_36" src="{img_url}"></img></a></span>'
-    encoder:
-      description: 'Encoders'
-      data:
-          title: 'Encoder'
-          img_url: 'https://i.imgur.com/FBSvIdl.png'
-      template:
-        basic:
-          fields: &fields
-            - 'title'
-            - 'user_id'
-            - 'tagname'
-            - 'username'
-            - 'user_colour'
-          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a></div>'
-        alias:
-          fields:
-            - 'alias'
-            - 'title'
-            - 'user_id'
-            - 'tagname'
-            - 'username'
-            - 'user_colour'
-          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{alias}</span></a></div>'
-        internal:
-          fields:
-            - 'internal'
-            - 'title'
-            - 'user_id'
-            - 'tagname'
-            - 'username'
-            - 'user_colour'
-          html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a href="/search.php?st=0&sk=x&sd=d&sr=topics&keywords={internal}&sf=titleonly" target="_blank"><span style="color:#{user_colour} !important;">.{internal}.</span></a> <a href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a></div>'
+            - 'class'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
