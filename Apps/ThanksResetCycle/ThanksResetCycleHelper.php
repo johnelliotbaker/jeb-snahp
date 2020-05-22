@@ -127,6 +127,9 @@ class ThanksResetCycleHelper
         $topicTitleDict = $this->getTopicTitlesAsDict($timestamps);
         $res = [];
         foreach ($timestamps as $timestamp) {
+            if (!$timestamp['t']) {
+                continue;
+            }
             $tid = $timestamp['tid'];
             $timestamp['tt'] = $topicTitleDict[$tid];
             $res[] = $timestamp;
@@ -137,7 +140,7 @@ class ThanksResetCycleHelper
             function ($arg) use ($cycleDuration, $now) {
                 $next = $cycleDuration + (int) $arg['t'];
                 $next = new \datetime("@$next");
-                $arg['tl'] = date_diff($now, $next)->format('%H:%I:%S');
+                $arg['tl'] = date_diff($now, $next)->format('%R%dd %hh %im %ss');
                 $arg['t'] = $arg['t']
                     ? $this->user->format_date($arg['t'], 'M d, g:i a')
                     : '';
