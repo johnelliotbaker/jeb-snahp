@@ -1,0 +1,5 @@
+jeb_snahp_routing.mass_tagger.mcp:
+    path: /snahp/mass_tagger/mcp/{mode}/
+    defaults: { _controller: jeb.snahp.MassTaggerMCPController:handle}
+    requirements:
+        mode: \S+

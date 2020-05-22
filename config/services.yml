@@ -28,6 +28,7 @@ imports:
     - { resource: ../Apps/MassIndexer/service.yml }
     - { resource: ../core/Thanks/service.yml }
     - { resource: ../Apps/ThanksResetCycle/service.yml }
+    - { resource: ../Apps/MassTagger/service.yml }
 
 services:
     jeb.snahp.core:

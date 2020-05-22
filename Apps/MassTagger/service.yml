@@ -1,0 +1,24 @@
+services:
+  jeb.snahp.MassTaggerMCPController:
+    class: jeb\snahp\Apps\MassTagger\MassTaggerMCPController
+    arguments:
+      - '@dbal.conn'
+      - '@user'
+      - '@config'
+      - '@request'
+      - '@template'
+      - '@service_container'
+      - '@controller.helper'
+      - '%jeb.snahp.tables%'
+      - '@jeb.snahp.auth.user_auth'
+      - '@jeb.snahp.MassTaggerHelper'
+      - '@jeb.snahp.FormHelper'
+  jeb.snahp.MassTaggerHelper: # HELPER
+    class: jeb\snahp\Apps\MassTagger\MassTaggerHelper
+    arguments:
+      - '@dbal.conn'
+      - '@user'
+      - '%jeb.snahp.tables%'
+      - '@jeb.snahp.auth.user_auth'
+      - '@jeb.snahp.ForumStructureHelper'
+      - '@robertheim.topictags.tags_manager'
