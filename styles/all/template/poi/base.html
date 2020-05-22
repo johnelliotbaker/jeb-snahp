@@ -50,9 +50,9 @@ a.btn.btn-primary.tag-button {
 <h5>Tag Cloud</h5>
 {% for tag in TAGS %}
 <a role="button" type="button" class="btn btn-primary tag-button" 
-   href="/app.php/tag/{{tag['tag_lowercase']}}"
+   href="/app.php/tag/{{tag['tag']}}"
   >
-  {{tag['tag_lowercase']}} <span class="badge badge-pill badge-light" style="border-radius: 10px; background: white; color:black;" >{{tag['count']}}</span>
+  {{tag['tag']}} <span class="badge badge-pill badge-light" style="border-radius: 10px; background: white; color:black;" >{{tag['count']}}</span>
 </a>
 {% endfor %}
 

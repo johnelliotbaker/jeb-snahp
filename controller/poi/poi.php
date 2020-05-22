@@ -76,7 +76,7 @@ class poi
 
   private function get_tags()/*{{{*/
   {
-    $sql = 'SELECT tag_lowercase, count FROM ' . $this->tbl['topic_tags'] . ' order by count DESC';
+    $sql = 'SELECT tag, tag_lowercase, count FROM ' . $this->tbl['topic_tags'] . ' order by count DESC';
     $result = $this->db->sql_query($sql, 600);
     $rowset = $this->db->sql_fetchrowset($result);
     $this->db->sql_freeresult($result);
