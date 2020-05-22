@@ -1,0 +1,22 @@
+services:
+    jeb.snahp.PostCreatorController:
+        class: jeb\snahp\Apps\PostCreator\PostCreatorController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.PostCreatorHelper'
+    jeb.snahp.PostCreatorHelper: # HELPER
+        class: jeb\snahp\Apps\PostCreator\PostCreatorHelper
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'

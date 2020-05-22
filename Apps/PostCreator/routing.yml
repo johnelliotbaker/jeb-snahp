@@ -1,0 +1,6 @@
+jeb_snahp_routing.PostCreator.create:
+    path: /snahp/PostCreator/{forumId}/{total}
+    defaults: { _controller: jeb.snahp.PostCreatorController:respondCreate}
+    requirements:
+        forumId: \d+
+        total: \d+
