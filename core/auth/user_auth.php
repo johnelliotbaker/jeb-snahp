@@ -250,6 +250,19 @@ class user_auth
         return isset($row['max']) ? $row['max'] : 0;
     }/*}}}*/
 
+    public function getMinFromGroupMemberships($userId, $name)/*{{{*/
+    {
+        $name = $this->db->sql_escape((string) $name);
+        $groups = $this->get_user_groups($userId);
+        $inset = $this->db->sql_in_set('group_id', $groups);
+        $sql = "SELECT MIN(${name}) as min FROM "
+            . GROUPS_TABLE . ' WHERE ' . $inset;
+        $result = $this->db->sql_query($sql, $this::CACHE_DURATION);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return isset($row['min']) ? $row['min'] : 0;
+    }/*}}}*/
+
     public function get_user_groups($user_id)/*{{{*/
     {
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
