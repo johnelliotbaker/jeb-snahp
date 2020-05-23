@@ -122,7 +122,7 @@ class economy_user_dashboard
         {
             if ($entry['name'] == 'search_cooldown_reducer')
             {
-                $entry['max_per_user'] = min($entry['max_per_user'], $this->get_max_search_interval());
+                $entry['max_per_user'] = min($entry['max_per_user'], $this->getMaxSearchInterval($user_id));
             }
             $id = $entry['id'];
             $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
@@ -317,11 +317,11 @@ class economy_user_dashboard
         return $row;
     }/*}}}*/
 
-    private function get_max_search_interval()
+    private function getMaxSearchInterval($userId)
     {
-        $group_data = $this->get_group_data();
-        $base_search_interval = (int) $group_data['snp_search_interval'];
-        return max($base_search_interval-5, 0);
-
+        $baseSearchInterval = $this->sauth->getMinFromGroupMemberships(
+            $userId, 'snp_search_interval'
+        );
+        return max($baseSearchInterval - 5, 0);
     }
 }
