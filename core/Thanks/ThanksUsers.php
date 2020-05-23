@@ -66,17 +66,7 @@ class ThanksUsers
 
     public function getCycleLimit($userId)/*{{{*/
     {
-        $groups = $this->sauth->get_user_groups($userId);
-        $inset = $this->db->sql_in_set('group_id', $groups);
-        $sql = 'SELECT MAX(tfp_n_per_cycle) as max FROM '
-            . GROUPS_TABLE . ' WHERE ' . $inset;
-        $result = $this->db->sql_query($sql, $this::CACHE_DURATION_LONG);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        if ($row) {
-            return (int) $row['max'];
-        }
-        return 0;
+        return $this->sauth->getMaxFromGroupMemberships($userId, 'tfp_n_per_cycle');
     }/*}}}*/
 
     private function getOrCreateThanksUser($userId)/*{{{*/
