@@ -5,7 +5,7 @@ class ThanksResetCycleHelper
 {
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
-    const THANKS_RESET_PRODUCT_CLASS_NAME = 'thanks_reset';
+    const THANKS_RESET_PRODUCT_CLASS_NAME = 'thanks_reset_token';
 
     protected $db;/*{{{*/
     protected $user;
@@ -124,10 +124,12 @@ class ThanksResetCycleHelper
         if (!$timestamps) {
             return [];
         }
+        $cycleDuration = $this->thanksUsers->getCycleDuration($userId);
         $topicTitleDict = $this->getTopicTitlesAsDict($timestamps);
         $res = [];
+        $now = time();
         foreach ($timestamps as $timestamp) {
-            if (!$timestamp['t']) {
+            if (($timestamp['t'] + $cycleDuration) < $now) {
                 continue;
             }
             $tid = $timestamp['tid'];
@@ -135,7 +137,6 @@ class ThanksResetCycleHelper
             $res[] = $timestamp;
         }
         $now = new \datetime();
-        $cycleDuration = $this->thanksUsers->getCycleDuration($userId);
         $res = array_map(
             function ($arg) use ($cycleDuration, $now) {
                 $next = $cycleDuration + (int) $arg['t'];
