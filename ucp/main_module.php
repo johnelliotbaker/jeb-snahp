@@ -123,17 +123,16 @@ class main_module
         {
             return;
         }
+        $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
         $user_id = $user->data['user_id'];
         $group_id = $user->data['group_id'];
         $b_enable = true;
-        $group_data = $this->select_group($group_id);
+        $search_interval = $sauth->getMinFromGroupMemberships($user_id, 'snp_search_interval');
         $n_quick_search = $this->get_quick_search_upgrade_count($user_id);
-        $overall_search_interval = max($group_data['snp_search_interval'] - $n_quick_search, 5);
+        $overall_search_interval = max($search_interval - $n_quick_search, 5);
         $template->assign_vars([
             'B_ENABLE' => $b_enable,
-            // 'B_PERMISSION' => $this->user_belongs_to_groupset($user_id, 'Red Team'),
             'B_PERMISSION' => true,
-            'GROUP_DATA' => $group_data,
             'N_QUICK_SEARCH' => $n_quick_search,
             'OVERALL_SEARCH_INTERVAL' => $overall_search_interval,
             'B_CUSTOM_RANK' => $this->is_custom_rank_purchased($user_id),

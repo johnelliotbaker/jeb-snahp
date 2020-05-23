@@ -51,14 +51,15 @@ class main_listener extends base implements EventSubscriberInterface
     protected $table_prefix;
     protected $user_inventory;
     protected $product_class;
+    protected $sauth;
     protected $data;
     public function __construct(
         $table_prefix0,
         $table_prefix,
         $user_inventory,
-        $product_class
-    )/*{{{*/
-    {
+        $product_class,
+        $sauth
+    ) {/*{{{*/
         $this->table_prefix = $table_prefix;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
@@ -66,6 +67,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->staff_notification_prefix = '!!';
         $this->user_inventory = $user_inventory;
         $this->product_class = $product_class;
+        $this->sauth = $sauth;
         $this->data = [];
     }/*}}}*/
 
@@ -359,15 +361,9 @@ class main_listener extends base implements EventSubscriberInterface
         $user_id = $this->user->data['user_id'];
         $interval = $event['interval'];
         if ($this->config['snp_search_b_enable']) {
-            $snp_group_id = $this->user->data['group_id'];
-            $sql = 'SELECT * FROM ' . GROUPS_TABLE . ' WHERE group_id=' . $snp_group_id;
-            $result = $this->db->sql_query($sql);
-            $row = $this->db->sql_fetchrow($result);
-            $this->db->sql_freeresult($result);
-            if ($row && array_key_exists('snp_search_interval', $row)) {
-                $group_search_interval = $row['snp_search_interval'];
-                $interval = ($user_id == ANONYMOUS) ? $this->config['search_anonymous_interval'] : $group_search_interval;
-            }
+            $interval = ($user_id == ANONYMOUS)
+                ? $this->config['search_anonymous_interval']
+                : $this->sauth->getMinFromGroupMemberships($user_id, 'snp_search_interval');
         }
         // User Inventory Upgrade
         $product_class_name = 'search_cooldown_reducer';
@@ -1521,8 +1517,8 @@ class main_listener extends base implements EventSubscriberInterface
             $topic_poster = $data['poster_id'];
             // When report is closed by mod, remove the notification
             $pre = $this->table_prefix;
-            $sql = 'SELECT * FROM ' . $pre . 'notifications as n 
-                LEFT JOIN ' . $pre . 'notification_types as t 
+            $sql = 'SELECT * FROM ' . $pre . 'notifications as n
+                LEFT JOIN ' . $pre . 'notification_types as t
                 ON n.notification_type_id=t.notification_type_id
                 WHERE notification_type_name="jeb.snahp.notification.type.basic" AND
                 item_id=' . $pid;
@@ -1532,7 +1528,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
             $this->db->sql_freeresult($result);
             if (isset($nid)) {
-                $sql = 'DELETE FROM ' . $pre . 'notifications 
+                $sql = 'DELETE FROM ' . $pre . 'notifications
                     WHERE notification_id=' . $nid;
                 $result = $this->db->sql_query($sql);
             }

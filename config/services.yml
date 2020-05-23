@@ -74,6 +74,7 @@ services:
             - '%core.table_prefix%'
             - '@jeb.snahp.user.user_inventory'
             - '@jeb.snahp.market.product_class'
+            - '@jeb.snahp.auth.user_auth'
         tags:
             - { name: event.listener }
     jeb.snahp.registration_listener:
