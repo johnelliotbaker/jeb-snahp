@@ -3,6 +3,9 @@ namespace jeb\snahp\core\auth;
 
 class user_auth
 {
+    const CACHE_DURATION = 10;
+    const CACHE_DURATION_LONG = 3600;
+
     protected $db;
     protected $auth;
     protected $user;
@@ -232,6 +235,19 @@ class user_auth
         $user_id_ary = [$user_id];
         $group_id_ary = [$group_id];
         return group_memberships($group_id_ary, $user_id_ary, true);
+    }/*}}}*/
+
+    public function getMaxFromGroupMemberships($userId, $name)/*{{{*/
+    {
+        $name = $this->db->sql_escape((string) $name);
+        $groups = $this->get_user_groups($userId);
+        $inset = $this->db->sql_in_set('group_id', $groups);
+        $sql = "SELECT MAX(${name}) as max FROM "
+            . GROUPS_TABLE . ' WHERE ' . $inset;
+        $result = $this->db->sql_query($sql, $this::CACHE_DURATION);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return isset($row['max']) ? $row['max'] : 0;
     }/*}}}*/
 
     public function get_user_groups($user_id)/*{{{*/
