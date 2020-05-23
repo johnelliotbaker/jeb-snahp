@@ -1,127 +1,120 @@
 /* Avatar Special */
-div.avatar_special a
-{
-    color: inherit !important;
+div.avatar_special a {
+  color: inherit !important;
 }
 
-div.avatar_special
-{
-    margin-bottom: 2px;
-    font-size: .9em;
+div.avatar_special {
+  margin-bottom: 2px;
+  font-size: 0.9em;
 }
 
-.maxh_24
-{
-    max-height: 24px;
+.maxh_24 {
+  max-height: 24px;
 }
 
-.maxh_36
-{
-    max-height: 36px;
+.maxh_36 {
+  max-height: 36px;
 }
 
-.the_oracle
-{
-    max-height: 46px;
-    margin: 3px 0px;
+.maxh_40 {
+  max-height: 40px;
 }
 
-.adobe_infinity
-{
+.maxh_44 {
+  max-height: 44px;
+}
+
+.the_oracle {
+  max-height: 46px;
+  margin: 3px 0px;
+}
+
+.adobe_infinity {
   max-height: 40px;
   margin: 3px 1px;
 }
 
-.game_machine
-{
+.game_machine {
   max-height: 28px;
   margin: 3px 1px;
 }
 
-.trekki
-{
+.trekki {
   max-height: 40px;
   margin: 3px 1px;
 }
 
-div.avatar_special img.avatar_badge
-{
-    margin-left: 2px;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
+dd.avatar_special img.avatar_badge {
+  margin-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
-div.avatar_special p
-{
-    margin: 0;
+dd.avatar_special img.sharp {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
 }
 
-.audio_expert
-{
-    width: 27px;
-    height: 24px;
-    background-size: cover;
+div.avatar_special p {
+  margin: 0;
 }
 
-.tidal
-{
+.audio_expert {
+  width: 27px;
+  height: 24px;
+  background-size: cover;
+}
+
+.tidal {
   height: 40px;
   margin: 3px 1px;
 }
 
-.formula_one
-{
+.formula_one {
   height: 30px;
   margin: 3px 1px;
 }
 
-.marvel
-{
+.marvel {
   height: 40px;
   margin: 3px 1px;
 }
 
-.attenborough
-{
+.attenborough {
   height: 30px;
   margin: 3px 1px;
 }
 
-.dj
-{
+.dj {
   height: 40px;
   margin: 3px 1px;
 }
 
-.crouching_tiger
-{
+.crouching_tiger {
   position: absolute;
-  opacity: .8;
+  opacity: 0.8;
   top: -12px;
   right: -22px;
   max-height: 130px;
   z-index: 0;
 }
 
-.hidden_dragon
-{
+.hidden_dragon {
   position: absolute;
-  opacity: .9;
+  opacity: 0.9;
   top: -14px;
   right: -18px;
   max-height: 180px;
   z-index: 0;
 }
 
-.one_piece
-{
+.one_piece {
   height: 40px;
   margin: 3px 1px;
 }
 
-.upscale
-{
+.upscale {
   height: 30px;
   margin: 3px 1px;
 }

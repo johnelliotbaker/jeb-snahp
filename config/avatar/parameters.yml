@@ -286,6 +286,12 @@ parameters:
       data:
         encoder:
           tagname: 'MaG'
+    162444: #DamonSchultz
+      queue:
+        - 'wwe'
+      data:
+        wwe:
+          url: '/viewtopic.php?f=61&t=188333'
 
 
   # PROCESSOR DEFINITIONS
@@ -655,3 +661,17 @@ parameters:
             - 'class'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
+    wwe:
+      description: 'WWE'
+      data:
+        title: 'The SmackDown'
+        img_url: 'https://i.imgur.com/n3dfLBf.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge maxh_36"></img></a></span>'
+
+# vim: sw=2 tw=2
