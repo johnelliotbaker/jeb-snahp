@@ -1,11 +1,28 @@
 <!-- /var/www/forum/ext/jeb/snahp/styles/all/template/event/viewtopic_body_postrow_custom_fields_after.html -->
 {% if postrow.REPUTATION %}
-<dd class="profile-posts">
-<strong>
-  Reputation:
-  <span class="text_secondary">
-    {postrow.REPUTATION} 
-  </span>
-</strong>
-</dd>
+  <dd class="profile-posts">
+  <strong>
+    Reputation:
+    <span>
+      {% if postrow.REPUTATION['gold'] %}
+        <span class="text_secondary reputation_badge_text">
+          <img class="reputation_badge" src="https://i.imgur.com/vPA1QDP.png" />{{ postrow.REPUTATION['gold'] }}
+        </span>
+      {% endif %}
+      {% if postrow.REPUTATION['silver'] %}
+        <span class="text_secondary reputation_badge_text">
+          <img class="reputation_badge" src="https://i.imgur.com/UV7YWIu.png" />{{ postrow.REPUTATION['silver'] }}
+        </span>
+      {% endif %}
+      {% if postrow.REPUTATION['bronze'] %}
+        <span class="text_secondary reputation_badge_text">
+          <img class="reputation_badge" src="https://i.imgur.com/KwyX1RR.png" />{{ postrow.REPUTATION['bronze'] }}
+        </span>
+      {% endif %}
+      {% if postrow.REPUTATION['private'] %}
+        p
+      {% endif %}
+    </span>
+  </strong>
+  </dd>
 {% endif %}

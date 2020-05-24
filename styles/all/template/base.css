@@ -342,3 +342,14 @@ img.emotes_default.discord_44
 {
   margin-bottom: 6px;
 }
+
+/* reputation */
+.reputation_badge {
+    max-width:6px;
+    margin-right:1px;
+    position: relative;
+    top:-1px;
+}
+.reputation_badge_text {
+    margin-right: 2px;
+}
