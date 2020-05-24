@@ -1230,6 +1230,12 @@ class main_listener extends base implements EventSubscriberInterface
             $this->style_type = 'light';
             $this->style_name = 'basic';
             break;
+        case 'Digi Orange':
+            $this->template->assign_var('STYLE_NAME', 'digi_orange');
+            $this->template->assign_var('STYLE_TYPE', 'dark');
+            $this->style_type = 'dark';
+            $this->style_name = 'digi_orange';
+            break;
         case 'Hexagon':
             $this->template->assign_var('STYLE_NAME', 'hexagon');
             $this->template->assign_var('STYLE_TYPE', 'dark');

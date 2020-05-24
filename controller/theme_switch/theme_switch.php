@@ -54,11 +54,10 @@ class theme_switch
       'basic' => 'Basic',
       'acieeed!' => 'Acieeed!',
       'hexagon' => 'Hexagon',
+      'digi_orange' => 'Digi Orange',
     ];
     $style_name = $this->db->sql_escape($style_name);
-    prn($style_name);
     $style_name =  isset($style_name_ref[$style_name]) ? $style_name_ref[$style_name] : 'prosilver';
-    prn($style_name);
     $user_id = (int) $this->user->data['user_id'];
     $sql = 'SELECT style_id FROM ' . STYLES_TABLE . " WHERE style_name='${style_name}'";
     $result = $this->db->sql_query($sql);

@@ -1,0 +1,227 @@
+/* Favorites */
+table.table1 tbody td.body {
+    padding-top: 3px !important;
+}
+
+/* hidebox */
+.hidebox.hi {
+    background-color: #de7300;
+    border: 0;
+}
+.hidebox.hi dd {
+    color: black;
+}
+.hidebox.unhide {
+    background-color: #111;
+}
+.hidebox.hi dd i {
+    color: black;
+}
+
+/* Request Template */
+.request_table.wrapper {
+    border: 5px solid #de7300;
+    background: #de7300;
+}
+.request_table.wrapper a {
+    color: #0080ff;
+}
+
+/* Curlies */
+table.autofill {
+    background: #111;
+    color: white;
+}
+table.autofill td {
+    color: white;
+}
+table.autofill tr {
+    background: #000;
+}
+table.autofill tr:nth-child(odd) {
+    background: #0a0a0a;
+}
+input.autofill {
+    background: black;
+    border: 2px solid #de7300;
+}
+input.search_master {
+    background: black;
+    border: 2px solid #de7300;
+}
+
+/* pagination */
+div.pagination > ul > li.active > span {
+    background: #de7300;
+    color: black;
+    margin: 1px;
+    border: solid 1px #d08030;
+}
+
+/* bootstrap modal */
+.twbs .modal-header,
+.twbs .modal-body,
+.twbs .modal-footer {
+    background-color: black !important;
+}
+.twbs .card {
+    background-color: black !important;
+    border: 1px solid #444 !important;
+}
+.twbs .card-footer {
+    background-color: #111 !important;
+    border-top: 1px solid #444 !important;
+}
+.twbs .close {
+    color: #fff !important;
+}
+.twbs .modal-backdrop.in {
+    opacity: 0.9 !important;
+}
+.twbs .modal-content {
+    background-color: black !important;
+}
+
+/* bootstrap table */
+.twbs .table {
+    color: #eee !important;
+}
+.twbs .table td,
+.twbs .table th {
+    border-top: 1px solid #222 !important;
+}
+.twbs textarea,
+.twbs input {
+    background-color: black;
+    border: 1px solid #777 !important;
+}
+.twbs .form-control {
+    background-color: black !important;
+    border: 1px solid #777 !important;
+    color: #eee !important;
+}
+
+/* gallery */
+div.card-body > h6 {
+    color: #ccc;
+}
+
+/* codebox resizing and scrollbar */
+
+div.codebox,
+div.codebox pre {
+    scrollbar-color: #de7300 #2e3645 !important;
+    scrollbar-width: thin !important;
+    border-color: #444;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: #2e3645 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #202630;
+    /* background: #de7300; */
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+    background: #000;
+    -webkit-border-radius: 0ex;
+}
+
+.profile-posts .text_secondary {
+    color: white;
+}
+
+/* defaults */
+.default_text_color {
+    color: #e9ebee !important;
+}
+
+/* mediainfo */
+.mediainfo {
+    background-color: #1a1918 !important;
+}
+
+.mediainfo .title {
+    background-color: #333;
+}
+
+.mediainfo .general,
+.mediainfo .video,
+.mediainfo .audio {
+    padding: 4px !important;
+    border-right: 2px solid #444;
+    border-left: 2px solid #444;
+}
+
+/* Nav */
+
+.nav-tabs {
+    border-bottom: 0px solid black !important;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: #444 !important;
+    background-color: black !important;
+}
+
+.input-group-text {
+    background-color: black !important;
+    color: #eee !important;
+    border-color: #777 !important;
+}
+
+/* rh_tags */
+.rh_tag,
+.rh_tag a {
+    background-color: #444 !important;
+    color: #ddd !important;
+}
+
+tags-input .tags {
+    background-color: black !important;
+    box-shadow: none !important;
+    padding: 2px !important;
+    padding-bottom: 3px !important;
+}
+
+.tags,
+.tags.focused {
+    -webkit-appearance: none !important;
+    border: 2px solid #603000 !important;
+}
+
+tags-input li,
+tags-input input,
+tags-input .remove-button {
+    border: none !important;
+    background-color: #793e00 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+tags-input input {
+    margin-top: 3px !important;
+}
+
+/* spotlight */
+.rx_spotlight {
+    min-height: 21px;
+    margin-bottom: 21px;
+}
+
+.logo img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.page-width {
+    max-width: 1152px;
+    min-width: 625px;
+    margin: 0 auto;
+}
