@@ -118,3 +118,8 @@ div.avatar_special p {
   height: 30px;
   margin: 3px 1px;
 }
+
+a.encoder_tag,
+a.encoder_tag:hover{
+    text-decoration: none;
+}
