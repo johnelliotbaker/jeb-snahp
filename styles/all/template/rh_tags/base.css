@@ -1,17 +1,8 @@
 div.rh_tag,
 div.rh_tag > a,
 div.rh_tag:hover,
-div.rh_tag:hover > a
-{
-    display: none;
-    /* padding: 0; */
-    /* margin: 0; */
-    /* font-size: .55rem; */
-    /* background: none !important; */
-    /* color: inherit !important; */
-    /* border-radius: 0 !important; */
-    /* border: 0 !important; */
-    /* line-height: 0px !important; */
+div.rh_tag:hover > a {
+  display: none;
 }
 
 .encoder_group.rh_tag,
@@ -25,12 +16,16 @@ div.rh_tag:hover > a
 .rh_topictags_whitelist .rh_tag,
 .rh_topictags_whitelist .rh_tag:hover,
 .rh_topictags_whitelist .rh_tag > a,
-.rh_topictags_whitelist .rh_tag:hover > a
-{
-    display: inline;
-    padding: 1px 2px 2px 2px;
-    line-height: 1.2rem;
-    border-radius: 0;
-    font-size: .55rem;
-    text-decoration: None;
+.rh_topictags_whitelist .rh_tag:hover > a {
+  display: inline;
+  padding: 1px 2px 2px 2px;
+  line-height: 1.2rem;
+  border-radius: 0;
+  font-size: 0.55rem;
+  text-decoration: None;
+}
+
+tags-input .tags,
+tags-input .host {
+  height: auto !important;
 }
