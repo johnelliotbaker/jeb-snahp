@@ -7,6 +7,7 @@ img.ios_icon
 {
     height: 24px;
     margin-right: 3px;
+    vertical-align: middle;
 }
 
 .small_host_icon img.mega_icon,

@@ -1,6 +1,25 @@
+/* Top Level */
+.page-width {
+    max-width: 1400px !important;
+}
+
+div.inner.page-width.static div.static-inner {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+div.inner.static {
+    margin: 0 auto;
+}
+
+
 /* Favorites */
 table.table1 tbody td.body {
     padding-top: 3px !important;
+}
+
+td.category {
+    vertical-align: middle;
 }
 
 /* hidebox */

@@ -26,7 +26,7 @@ parameters:
             zippy: 7
             gdrive: 8
             android: 9
-            ios: 10 
+            ios: 10
             win: 11
             pc: 12
             mac: 13
@@ -98,13 +98,13 @@ parameters:
             img:
                 50: 'https://i.imgur.com/m6XofFz.png'  # Imported
                 51: 'https://i.imgur.com/7hjHY25.png'  # Apps
-                52: 'https://i.imgur.com/YBPkBaX.png'  # Games
+                10: 'https://i.imgur.com/YBPkBaX.png'  # Games
                 53: 'https://i.imgur.com/i9pIvNy.png'  # TV Shows
                 54: 'https://i.imgur.com/RKQJ9Vl.png'  # Music
                 55: 'https://i.imgur.com/w8Tmnyk.png'  # Anime
                 56: 'https://i.imgur.com/X4OIR7c.png'  # Miscellaneous
                 57: 'https://i.imgur.com/OU5XZDq.png'  # Developmental Resources
-                82: 'https://i.imgur.com/pK0D79T.png'  # Movies
+                13: 'https://i.imgur.com/pK0D79T.png'  # Movies
                 74: 'https://i.imgur.com/Z1NwGH5.png'  # Manga
                 75: 'https://i.imgur.com/YtWaxUg.png'  # ebooks
                 105: 'https://i.imgur.com/IHNXV9h.png' # sports
@@ -128,4 +128,3 @@ parameters:
                 40: 'https://i.imgur.com/FszcDV4.png' # Apps PC
                 43: 'https://i.imgur.com/FPEhkvf.png' # Misc Comics
                 25: 'https://i.imgur.com/YBPkBaX.png' # Games Console
-

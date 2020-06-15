@@ -353,3 +353,10 @@ img.emotes_default.discord_44
 .reputation_badge_text {
     margin-right: 2px;
 }
+
+.sharp {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
