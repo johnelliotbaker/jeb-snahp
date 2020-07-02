@@ -555,10 +555,9 @@ class main_listener extends base implements EventSubscriberInterface
         if ($b_public || $poster_id==$user_id || $this->is_mod()) {
             $n_rep = $poster_data['snp_rep_n_received'];
             if ($n_rep > 0) {
-                $rep_as_strn = (string) $n_rep;
-                $bronze = substr($rep_as_strn, -1);
-                $silver = substr($rep_as_strn, -2, -1);
-                $gold = (string) floor($n_rep/100);
+                $bronze = $n_rep % 10;
+                $silver = (int) ($n_rep / 10) % 10;
+                $gold = (int) ($n_rep / 100);
                 $private = !$b_public && ($this->is_mod() || $poster_id==$user_id);
                 $post_row['REPUTATION'] = [
                     'gold'=>$gold, 'silver'=>$silver, 'bronze'=>$bronze, 'private'=>$private, ];
