@@ -6,7 +6,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/ML9xSuc.png'
                     Basic: 'https://i.imgur.com/ML9xSuc.png'
-                    Hexagon: 'https://i.imgur.com/0CKB6uf.png'
+                    Hexagon: &h 'https://i.imgur.com/0CKB6uf.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/zkMuN2k.png'
             title: "Child at Heart.\rIt's kind of fun to do the impossible."
             url: 'https://forum.snahp.it/viewtopic.php?f=73&t=66377'
@@ -17,7 +18,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/Q7UDOq4.png'
                     Basic: 'https://i.imgur.com/Q7UDOq4.png'
-                    Hexagon: 'https://i.imgur.com/tz216YX.png'
+                    Hexagon: &h 'https://i.imgur.com/tz216YX.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/LIFCCnv.png'
             title: "Size Matters. {USERNAME} maintains THE LARGEST collection of ... something."
             url: 'https://forum.snahp.it/viewtopic.php?f=13&t=34584'
@@ -28,7 +30,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/nlW5Ita.png'
                     Basic: 'https://i.imgur.com/nlW5Ita.png'
-                    Hexagon: 'https://i.imgur.com/shOMJjD.png'
+                    Hexagon: &h 'https://i.imgur.com/shOMJjD.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/WKFO7iP.png'
             title: "Bone Head. A lesson in 'Be careful what you wish for, lest it come true.'\r{USERNAME} wished for something bigger, but the only thing he got from the doctor was 'Cranial Calcification'."
             url: 'https://forum.snahp.it/viewtopic.php?f=52&t=90345&start=425#p368629'
@@ -39,7 +42,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/bwNL1cp.png'
                     Basic: 'https://i.imgur.com/bwNL1cp.png'
-                    Hexagon: 'https://i.imgur.com/esHx4Jt.png'
+                    Hexagon: &h 'https://i.imgur.com/esHx4Jt.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/LhiBN7O.png'
             title: "Gambler. {USERNAME} once went into a casino, casually rolled a 100, then left with bags o'cash."
             url: 'https://forum.snahp.it/viewtopic.php?f=52&t=112472#p364169'
@@ -50,7 +54,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/6ZKQIWN.png'
                     Basic: 'https://i.imgur.com/6ZKQIWN.png'
-                    Hexagon: 'https://i.imgur.com/g0GgdaL.png'
+                    Hexagon: &h 'https://i.imgur.com/g0GgdaL.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/9sPuh9F.png'
             title: "Thumbs Up! People everywhere raise their thumbs in {USERNAME}'s honor. No questions asked."
             url: ''
@@ -61,7 +66,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/Cpj3H7J.png'
                     Basic: 'https://i.imgur.com/Cpj3H7J.png'
-                    Hexagon: 'https://i.imgur.com/VDYMGKY.png'
+                    Hexagon: &h 'https://i.imgur.com/VDYMGKY.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/b8671CB.png'
             title: "Life Giver. {USERNAME} breathes new life into every stranger he meets - one request at a time."
             url: ''
@@ -72,7 +78,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/c2AlUKM.png'
                     Basic: 'https://i.imgur.com/c2AlUKM.png'
-                    Hexagon: 'https://i.imgur.com/qGrUH0v.png'
+                    Hexagon: &h 'https://i.imgur.com/qGrUH0v.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/gnccFDf.png'
             title: "Grave Digger. {USERNAME}'s peculiar habit of secretly digging through someone else's belongings has earned him this unceremonious title."
             url: ''
@@ -83,7 +90,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/BIts5ks.png'
                     Basic: 'https://i.imgur.com/BIts5ks.png'
-                    Hexagon: 'https://i.imgur.com/dbTWs5M.png'
+                    Hexagon: &h 'https://i.imgur.com/dbTWs5M.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/QTD3GSu.png'
             title: "Computer Whiz. {USERNAME} has published more scholarly articles in the field of computer science than anyone else."
             url: ''
@@ -94,7 +102,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/NtvZyy4.png'
                     Basic: 'https://i.imgur.com/NtvZyy4.png'
-                    Hexagon: 'https://i.imgur.com/SSOngus.png'
+                    Hexagon: &h 'https://i.imgur.com/SSOngus.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/VNCDFan.png'
             title: 'Magnetic Personality. Everyone diggs {USERNAME}!!! He is the most digged person on the planet.'
             url: ''
@@ -105,7 +114,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/SNKqybw.png'
                     Basic: 'https://i.imgur.com/SNKqybw.png'
-                    Hexagon: 'https://i.imgur.com/WQIbPu4.png'
+                    Hexagon: &h 'https://i.imgur.com/WQIbPu4.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/hbfkjIp.png'
             title: 'The Gourmet. The Master Chef. The Delacroix of French Cuisine.'
             url: ''
@@ -116,7 +126,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/LTMmCYT.png'
                     Basic: 'https://i.imgur.com/LTMmCYT.png'
-                    Hexagon: 'https://i.imgur.com/VLeJqpL.png'
+                    Hexagon: &h 'https://i.imgur.com/VLeJqpL.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/6FSqzyd.png'
             title: "Intense Training. No pain, no gain!\r{USERNAME} is the best-selling author and personal trainer known for his fitness, nutrition, and body awareness programs."
             url: 'https://forum.snahp.it/viewtopic.php?f=61&t=104439'
@@ -127,7 +138,8 @@ parameters:
                 url:
                     prosilver: 'https://i.imgur.com/jwulcYy.png'
                     Basic: 'https://i.imgur.com/jwulcYy.png'
-                    Hexagon: 'https://i.imgur.com/yT7nNVU.png'
+                    Hexagon: &h 'https://i.imgur.com/yT7nNVU.png'
+                    Digi Orange: *h
                     Acieeed!: 'https://i.imgur.com/zoc1xVd.png'
             title: "Sun Burned. \r'One week on the Copacabana Beach in the warm embrace of Brazilian Sun and I could die happy!', said {USERNAME}.\r The tender pink skin is a painful reminder that good times are already in the distant past and that one should never forget to wear sunscreen.\r The sun burn is starting to heal and {USERNAME}'s skin color is returning to normal!"
             url: 'https://forum.snahp.it/viewtopic.php?p=435658#p435658'
