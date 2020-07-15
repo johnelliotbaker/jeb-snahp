@@ -3,7 +3,6 @@ namespace jeb\snahp\Apps\Boilerplate;
 
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
-use jeb\snahp\Apps\Boilerplate\BoilerplateHelper;
 
 class BoilerplateController
 {
@@ -13,10 +12,10 @@ class BoilerplateController
     protected $request;
     protected $template;
     protected $container;
-    protected $helper;
+    protected $phpHelper;
     protected $tbl;
     protected $sauth;
-    protected $myHelper;
+    protected $helper;
     public function __construct(
         $db,
         $user,
@@ -24,10 +23,10 @@ class BoilerplateController
         $request,
         $template,
         $container,
-        $helper,
+        $phpHelper,
         $tbl,
         $sauth,
-        $myHelper
+        $helper
     ) {
         $this->db = $db;
         $this->user = $user;
@@ -35,10 +34,10 @@ class BoilerplateController
         $this->request = $request;
         $this->template = $template;
         $this->container = $container;
-        $this->helper = $helper;
+        $this->phpHelper = $phpHelper;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-        $this->myHelper = $myHelper;
+        $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
@@ -57,7 +56,7 @@ class BoilerplateController
         if ($id===0) {
             return new JsonResponse([]);
         }
-        $row = $this->myHelper->getBoilerplateById($id);
+        $row = $this->helper->getBoilerplateById($id);
         return $row ? new JsonResponse($row) : new JsonResponse([]);
     }/*}}}*/
 
