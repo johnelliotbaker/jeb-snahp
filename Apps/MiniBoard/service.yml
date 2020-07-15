@@ -1,13 +1,4 @@
-imports:
-    # - { resource: 'mute_user/parameters.yml' }
 services:
-
-    jeb.snahp.miniboard.TestView:
-        class: jeb\snahp\Apps\MiniBoard\TestView
-        arguments:
-            - '@request'
-            # - '@template'
-            # - '@controller.helper'
 
     jeb.snahp.miniboard.MiniBoardMCP:
         class: jeb\snahp\Apps\MiniBoard\MiniBoardMCP
@@ -15,11 +6,6 @@ services:
             - '@request'
             - '@template'
             - '@controller.helper'
-
-    jeb.snahp.ForumPermissionRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\MiniBoard\ForumPermissionRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
 
     jeb.snahp.ForumListCreateAPIView:
         class: jeb\snahp\Apps\MiniBoard\ForumListCreateAPIView
@@ -39,25 +25,7 @@ services:
         arguments:
             - '@request'
 
-    jeb.snahp.PostListCreateAPIView:
-        class: jeb\snahp\Apps\MiniBoard\PostListCreateAPIView
-        arguments:
-            - '@request'
-    jeb.snahp.PostRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\MiniBoard\PostRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
-
     jeb.snahp.MiniBoardEventListener:
         class: jeb\snahp\Apps\MiniBoard\MiniBoardEventListener
         tags:
             - { name: event.listener }
-
-    # jeb.snahp.MiniBoardHelper: # HELPER
-    #     class: jeb\snahp\Apps\MiniBoard\MiniBoardHelper
-    #     arguments:
-    #         - '@dbal.conn'
-    #         - '@user'
-    #         - '@template'
-    #         - '%jeb.snahp.tables%'
-    #         - '@jeb.snahp.auth.user_auth'

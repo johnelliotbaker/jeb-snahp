@@ -1,16 +1,6 @@
-jeb_snahp_routing.miniboard.testview:
-    path: /snahp/mini-board/test
-    defaults: { _controller: jeb.snahp.miniboard.TestView:testView}
-
 jeb_snahp_routing.miniboard.mcp:
     path: /snahp/mini-board/mcp
     defaults: { _controller: jeb.snahp.miniboard.MiniBoardMCP:manage}
-
-jeb_snahp_routing.mini_board.retrieve_forum_permission:
-    path: /snahp/mini-board/forum-perm/{id}
-    defaults: { _controller: jeb.snahp.ForumPermissionRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
 
 jeb_snahp_routing.mini_board.retrieve_forum:
     path: /snahp/mini-board/forum/{id}
@@ -31,16 +21,5 @@ jeb_snahp_routing.mini_board.retrieve_topic:
 jeb_snahp_routing.mini_board.list_topic:
     path: /snahp/mini-board/topic
     defaults: { _controller: jeb.snahp.TopicListCreateAPIView:dispatch}
-    requirements:
-        id: \d+
-
-jeb_snahp_routing.mini_board.retrieve_post:
-    path: /snahp/mini-board/post/{id}
-    defaults: { _controller: jeb.snahp.PostRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
-jeb_snahp_routing.mini_board.list_post:
-    path: /snahp/mini-board/post
-    defaults: { _controller: jeb.snahp.PostListCreateAPIView:dispatch}
     requirements:
         id: \d+
