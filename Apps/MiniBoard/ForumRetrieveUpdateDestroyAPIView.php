@@ -22,10 +22,24 @@ class ForumRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
 {
     protected $serializerClass = __NAMESPACE__ . '\MySerializer';
     protected $request;
-    public function __construct($request)
+    public function __construct($request, $sauth)
     {
         $this->request = $request;
+        $this->sauth = $sauth;
+        $sauth->reject_anon('Error Code: d861e86e82');
         $this->connectDatabase();
         $this->model = new Forum();
     }
+
+    public function update($request)/*{{{*/
+    {
+        $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
+        return parent::update($request);
+    }/*}}}*/
+
+    public function delete($request)/*{{{*/
+    {
+        $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
+        return parent::delete($request);
+    }/*}}}*/
 }

@@ -25,9 +25,11 @@ class TopicRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
     protected $serializerClass = __NAMESPACE__ . '\MySerializer';
     protected $request;
 
-    public function __construct($request)/*{{{*/
+    public function __construct($request, $sauth)/*{{{*/
     {
         $this->request = $request;
+        $this->sauth = $sauth;
+        $sauth->reject_anon('Error Code: b28a40899f');
         $this->connectDatabase();
         $this->model = new Topic();
     }/*}}}*/

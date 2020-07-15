@@ -74,7 +74,7 @@ class RetrieveUpdateDestroyAPIView extends GenericAPIView
             return $this->get($this->request);
         case 'DELETE':
             return $this->delete($this->request);
-        case 'PUT':
+        // case 'PUT':
             // return $this->put($this->request);
         case 'PATCH':
             return $this->patch($this->request);

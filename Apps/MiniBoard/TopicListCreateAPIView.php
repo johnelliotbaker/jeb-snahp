@@ -28,9 +28,11 @@ class TopicListCreateAPIView extends ListCreateAPIView
 
     protected $foreignNameParam = 'miniforum';
 
-    public function __construct($request)/*{{{*/
+    public function __construct($request, $sauth)/*{{{*/
     {
         $this->request = $request;
+        $this->sauth = $sauth;
+        $sauth->reject_anon('Error Code: b28a40899f');
         $this->connectDatabase();
         $this->model = new Topic();
         $this->paginator = new $this->paginationClass();

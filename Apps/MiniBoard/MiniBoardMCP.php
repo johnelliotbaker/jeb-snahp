@@ -12,11 +12,13 @@ class MiniBoardMCP
 
     protected $request;
 
-    public function __construct($request, $template, $phpHelper)
+    public function __construct($request, $template, $phpHelper, $sauth)
     {
         $this->request = $request;
         $this->template = $template;
         $this->phpHelper = $phpHelper;
+        $this->sauth = $sauth;
+        $sauth->reject_non_dev('Error Code: 6d14c8fe2c');
         $this->connectDatabase();
     }
 

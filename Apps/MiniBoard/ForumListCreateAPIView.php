@@ -25,11 +25,11 @@ class ForumListCreateAPIView extends ListCreateAPIView
     protected $request;
     protected $sauth;
 
-    public function __construct($request)
+    public function __construct($request, $sauth)
     {
         $this->request = $request;
-        // $this->userId = (int) $this->user->data['user_id'];
-        // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth = $sauth;
+        $sauth->reject_anon('Error Code: d861e86e82');
         $this->connectDatabase();
         $this->model = new Forum();
     }
@@ -45,5 +45,11 @@ class ForumListCreateAPIView extends ListCreateAPIView
         }
         $where = implode(' AND ', $sqlAry);
         return array_values(\R::find($this->model::TABLE_NAME, $where));
+    }/*}}}*/
+
+    public function create($request)/*{{{*/
+    {
+        $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
+        return parent::create($request);
     }/*}}}*/
 }

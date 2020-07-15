@@ -1,9 +1,7 @@
 const MiniBoardMCP = {};
 
 MiniBoardMCP.requestForumData = async function (mainpost) {
-  const url =
-    "http://192.168.2.12:888/app.php/snahp/mini-board/forum?mainpost=" +
-    mainpost;
+  const url = "/app.php/snahp/mini-board/forum?mainpost=" + mainpost;
   const resp = await fetch(url, { method: "GET" });
   const json = await resp.json();
   if (!json || json.length !== 1) {
@@ -39,31 +37,31 @@ MiniBoardMCP.getFormData = function (data) {
 MiniBoardMCP.save = async function () {
   const data = this.getData();
   const formData = this.getFormData(data);
-  const forum = await this.requestForumData(formData.get("mainpost", 0));
+  const forum = await this.requestForumData(formData.get("mainpost", -1));
+  let success = false;
   if (forum) {
-    const resp = await this.update(forum.id, data);
+    success = await this.update(forum.id, data);
   } else {
-    const resp = await this.create(formData);
+    success = await this.create(formData);
+  }
+  if (success) {
+    location.reload();
   }
 };
 
 MiniBoardMCP.update = async function (id, data) {
-  const url = "http://192.168.2.12:888/app.php/snahp/mini-board/forum/" + id;
-  console.log(data);
+  const url = "/app.php/snahp/mini-board/forum/" + id;
   const resp = await fetch(url, {
     method: "PATCH",
     body: JSON.stringify(data),
   });
-  console.log(resp);
-  const json = await resp.json();
-  return json;
+  return resp && resp.status === 200;
 };
 
 MiniBoardMCP.create = async function (formData) {
-  const url = "http://192.168.2.12:888/app.php/snahp/mini-board/forum";
+  const url = "/app.php/snahp/mini-board/forum";
   const resp = await fetch(url, { method: "POST", body: formData });
-  const json = await resp.json();
-  return json;
+  return resp && resp.status === 201;
 };
 
 MiniBoardMCP.test = function (e) {
