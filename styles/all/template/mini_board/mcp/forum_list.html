@@ -1,0 +1,27 @@
+<div class="table-responsive">
+  <table class="table table-sm table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Post ID</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Moderators</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in data %}
+        <tr onclick="MiniBoardMCP.test(event)">
+          <td data-data="{entry.mainpost}">
+            {entry.mainpost}
+          </td>
+          <td data-data="{entry.owner}">
+            {entry.owner}
+          </td>
+          <td data-data="{entry.moderators}">
+            {entry.moderators}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
