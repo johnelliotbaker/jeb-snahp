@@ -1,4 +1,5 @@
 <?php
+
 namespace jeb\snahp\Apps\MiniBoard;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -23,16 +24,16 @@ class MiniBoardEventListener implements EventSubscriberInterface
         $this->userId = $user->data['user_id'];
     }/*}}}*/
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()/*{{{*//*{{{*/
     {
         return [
             'core.viewtopic_modify_post_row' => [
                 ['setForumDataset', 1],
             ],
         ];
-    }/*}}}*/
+    }/*}}}*//*}}}*/
 
-    public function getMiniforum($postId)
+    public function getMiniforum($postId)/*{{{*/
     {
         $cache = 0;
         $postId = (int) $postId;
@@ -41,9 +42,9 @@ class MiniBoardEventListener implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }
+    }/*}}}*/
 
-    public function setForumDataset($event)
+    public function setForumDataset($event)/*{{{*/
     {
         $post_row = $event["post_row"];
         $msg = &$post_row['MESSAGE'];
@@ -61,6 +62,5 @@ class MiniBoardEventListener implements EventSubscriberInterface
             . '"></div>';
         $msg = preg_replace($pattern, $repl, $msg, 1);
         $event["post_row"] = $post_row;
-    }
-
+    }/*}}}*/
 }

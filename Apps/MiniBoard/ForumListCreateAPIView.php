@@ -1,4 +1,5 @@
 <?php
+
 namespace jeb\snahp\Apps\MiniBoard;
 
 require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
@@ -33,7 +34,7 @@ class ForumListCreateAPIView extends ListCreateAPIView
         $this->model = new Forum();
     }
 
-    public function getQueryset()
+    public function getQueryset()/*{{{*/
     {
         $data = getRequestData($this->request);
         if (!$data) {
@@ -44,5 +45,5 @@ class ForumListCreateAPIView extends ListCreateAPIView
         }
         $where = implode(' AND ', $sqlAry);
         return array_values(\R::find($this->model::TABLE_NAME, $where));
-    }
+    }/*}}}*/
 }

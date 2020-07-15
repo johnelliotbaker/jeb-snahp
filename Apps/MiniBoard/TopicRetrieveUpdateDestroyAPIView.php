@@ -25,18 +25,17 @@ class TopicRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
     protected $serializerClass = __NAMESPACE__ . '\MySerializer';
     protected $request;
 
-    public function __construct($request)
+    public function __construct($request)/*{{{*/
     {
         $this->request = $request;
         $this->connectDatabase();
         $this->model = new Topic();
-    }
+    }/*}}}*/
 
-    public function retrieve($request)
+    public function retrieve($request)/*{{{*/
     {
         $instance = $this->getObject();
         $instance = $this->model->appendUserInfo($instance);
         return new JsonResponse($instance);
-    }
-
+    }/*}}}*/
 }

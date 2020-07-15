@@ -1,4 +1,5 @@
 <?php
+
 namespace jeb\snahp\Apps\MiniBoard;
 
 require_once 'ext/jeb/snahp/core/Rest/Paginations/PageNumberPagination.php';
@@ -27,29 +28,29 @@ class TopicListCreateAPIView extends ListCreateAPIView
 
     protected $foreignNameParam = 'miniforum';
 
-    public function __construct($request)
+    public function __construct($request)/*{{{*/
     {
         $this->request = $request;
         $this->connectDatabase();
         $this->model = new Topic();
         $this->paginator = new $this->paginationClass();
-    }
+    }/*}}}*/
 
-    public function getQueryset()
+    public function getQueryset()/*{{{*/
     {
         $queryset = $this->model->filter($this->request);
         $queryset = $this->model->appendUserInfo($queryset);
         return $queryset;
-    }
+    }/*}}}*/
 
-    public function performCreate($serializer)
+    public function performCreate($serializer)/*{{{*/
     {
         $instance = parent::performCreate($serializer);
         return $this->model->appendUserInfo($instance);
-    }
+    }/*}}}*/
 
-    public function getForeignPk($default='')
+    public function getForeignPk($default='')/*{{{*/
     {
         return $this->request->variable($this->foreignNameParam, $default);
-    }
+    }/*}}}*/
 }

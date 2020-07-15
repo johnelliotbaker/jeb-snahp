@@ -1,4 +1,5 @@
 <?php
+
 namespace jeb\snahp\Apps\MiniBoard;
 
 require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
@@ -29,7 +30,7 @@ class ForumPermissionRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyA
         $this->model = new Forum();
     }
 
-    public function getObject()
+    public function getObject()/*{{{*/
     {
         global $user;
         $userId = $user->data['user_id'];
@@ -38,5 +39,5 @@ class ForumPermissionRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyA
         $moderators = explode(',', $instance->moderators);
         $data['moderator'] = in_array($userId, $moderators) ? true : false;
         return $data;
-    }
+    }/*}}}*/
 }

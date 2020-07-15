@@ -1,4 +1,5 @@
 <?php
+
 namespace jeb\snahp\Apps\MiniBoard;
 
 require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
@@ -16,7 +17,6 @@ class MySerializer extends Serializer
         $this->model = new Forum();
     }
 }
-
 
 class ForumRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
 {
