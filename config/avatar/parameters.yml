@@ -127,6 +127,14 @@ parameters:
       data:
         james_bond:
           url: '/viewtopic.php?f=56&t=5648'
+    30091: #sxales
+      queue:
+        - 'anime_pack'
+      data:
+        anime_pack:
+          img_url: 'https://i.imgur.com/fIATLKA.png'
+          title: 'International Bureau for Preservation and Dissemination of Animated Art, Master of The Archives'
+          url: '/viewtopic.php?f=13&t=181964'
     37031: #ski77
       queue:
         - 'anime_pack'
@@ -383,7 +391,7 @@ parameters:
             - 'img_url'
           html: '<span title="{title}"><a href="{url}" target="_blank"><img class="avatar_badge maxh_36" src="{img_url}"></img></a></span>'
     attenborough:
-      description: 'David Attenborough'
+      description: 'Earth, Nature, and Space'
       data:
         title: 'Explore the world with Sir David Attenborough'
         class: 'attenborough'
