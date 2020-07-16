@@ -5,9 +5,8 @@ class gallery
 {
     protected $def;
     protected $allowed_interpreted_tags;
-	public function __construct(
-	)
-	{
+    public function __construct(
+    ) {
         $column_sizes = [
             'sm'      => 'col-lg-2 col-3 sm',
             'default' => 'col-lg-3 col-sm-4 col-6 default',
@@ -16,7 +15,7 @@ class gallery
         $def['column_sizes'] = $column_sizes;
         $this->def = $def;
         $this->allowed_interpreted_tags = join('|', ['b', 'sm', 'br']);
-	}
+    }
 
     private function set_default_options($options)
     {
@@ -26,8 +25,7 @@ class gallery
     public function handle($mode, $data, $options=[])/*{{{*/
     {
         $this->set_default_options($options);
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'compact':
             return $this->handle_compact($data, $options);
         case 'grid':
@@ -48,17 +46,16 @@ class gallery
 
     private function generate_menu_from_json_url($d, $choice)
     {
-        if ($choice===1) { return ''; };
+        if ($choice===1) {
+            return '';
+        };
         $strn = '';
-        if (isset($d[5]) && $d[5])
-        {
+        if (isset($d[5]) && $d[5]) {
             $strn = $d[5];
         }
-        if ($this->is_json($strn))
-        {
+        if ($this->is_json($strn)) {
             $json = json_decode($strn, true);
-            if (array_key_exists('menu', $json))
-            {
+            if (array_key_exists('menu', $json)) {
                 $menu_data = $json['menu'];
                 $strn = json_encode($menu_data, JSON_HEX_APOS);
                 $data_string = htmlspecialchars($strn, ENT_QUOTES, 'UTF-8');
@@ -86,53 +83,48 @@ class gallery
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ['', ' hi'];
         $elem = ['a', 'span'];
-        foreach($data as $d)
-        {
+        foreach ($data as $d) {
             $link = strip_tags($d[2]);
             $choice = 0;
             preg_match($ptn, $d[2], $match);
-            if (count($match)>0)
-            {
-                if($match[1]=='hi')
-                {
+            if (count($match)>0) {
+                if ($match[1]=='hi') {
                     $choice = 1;
                 }
             }
             $rx_menu_html = $this->generate_menu_from_json_url($d, $choice);
             $pastebin = '';
-            if (isset($d[4]) && $d[4])
-            {
-                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>'; 
+            if (isset($d[4]) && $d[4]) {
+                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>';
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
             $d[0] = preg_replace('#&lt;(br)&gt;#', '<\1>', $d[0]);
             $d[1] = preg_replace('#&lt;((/)?(' . $this->allowed_interpreted_tags . '))&gt;#', '<\1>', $d[1]);
             // <div class="card border-0 transform-on-hover"> ' . $pastebin . ' // For hover effect
-            $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
-	                <div class="card border-0"> ' . $pastebin . '
+            $body[] = '<div class="' . $column_size . ' item' . $cls . '">
+                    <div class="card border-0"> ' . $pastebin . '
                         <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
                             <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
                         </div>
-	                	<' . $el . ' href="' . $link . '" target="_blank">
-	                		<img src="' . $d[3] . '" alt="Card Image" class="card-img-top">
+                        <' . $el . ' href="' . $link . '" target="_blank">
+                            <img src="' . $d[3] . '" alt="Card Image" class="card-img-top" loading="lazy">
                             <div class="hiddencorner ' . $cls . '">
                                 <img src="https://i.imgur.com/Q07cXb4.png">
                             </div>
-	                	</' . $el . '>
-	                    <div class="card-body">
-	                        <h6>'. $d[0] . '</h6>
-	                        <p class="text-muted card-text">' . $d[1] . '</p>
+                        </' . $el . '>
+                        <div class="card-body">
+                            <h6>'. $d[0] . '</h6>
+                            <p class="text-muted card-text">' . $d[1] . '</p>
                           ' . $rx_menu_html . '
-	                    </div>
-	                </div>
+                        </div>
+                    </div>
                 </div>';
         }
         $html['body'] = $body;
         $sequence = ['begin', 'body', 'end'];
         $res = '';
-        foreach ($sequence as $key)
-        {
+        foreach ($sequence as $key) {
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
@@ -145,8 +137,8 @@ class gallery
 <link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/grid/base.css">
 <div class="twbs">
 <section class="gallery-block grid-gallery">
-	<div class="container">
-		<div class="row">
+    <div class="container">
+        <div class="row">
 ';
         $html['end'][] = '
     </div>
@@ -156,31 +148,27 @@ class gallery
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ['', ' hi'];
         $elem = ['a', 'span'];
-        foreach($data as $d)
-        {
+        foreach ($data as $d) {
             $link = strip_tags($d[2]);
             $choice = 0;
             preg_match($ptn, $d[2], $match);
-            if (count($match)>0)
-            {
-                if($match[1]=='hi')
-                {
+            if (count($match)>0) {
+                if ($match[1]=='hi') {
                     $choice = 1;
                 }
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
-            $body[] = '<div class="' . $column_size . ' item' . $cls . '"> 
+            $body[] = '<div class="' . $column_size . ' item' . $cls . '">
                            <' . $el . ' href="' . $link . '" target="_blank">
-                               <img class="img-fluid image scale-on-hover" src="' . $d[3] . '">
+                               <img class="img-fluid image scale-on-hover" src="' . $d[3] . '" loading="lazy">
                            </' . $el . '>
                        </div>';
         }
         $html['body'] = $body;
         $sequence = ['begin', 'body', 'end'];
         $res = '';
-        foreach ($sequence as $key)
-        {
+        foreach ($sequence as $key) {
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
@@ -204,22 +192,18 @@ class gallery
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ['', ' hi'];
         $elem = ['a', 'span'];
-        foreach($data as $d)
-        {
+        foreach ($data as $d) {
             $link = strip_tags($d[2]);
             $choice = 0;
             preg_match($ptn, $d[2], $match);
-            if (count($match)>0)
-            {
-                if($match[1]=='hi')
-                {
+            if (count($match)>0) {
+                if ($match[1]=='hi') {
                     $choice = 1;
                 }
             }
             $pastebin = '';
-            if (isset($d[4]))
-            {
-                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>'; 
+            if (isset($d[4])) {
+                $pastebin = '<div class="pastebin"><a href="' . $d[4] . '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>';
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
@@ -230,7 +214,7 @@ class gallery
                     <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
                 </div>
                 <' . $el . ' href="' . $link . '" target="_blank">
-                  <img class="img-fluid image" src="' . $d[3] . '">
+                  <img class="img-fluid image" src="' . $d[3] . '" loading="lazy">
                   <div class="hiddencorner ' . $cls . '">
                       <img src="https://i.imgur.com/Q07cXb4.png">
                   </div>
@@ -244,11 +228,9 @@ class gallery
         $html['body'] = $body;
         $sequence = ['begin', 'body', 'end'];
         $res = '';
-        foreach ($sequence as $key)
-        {
+        foreach ($sequence as $key) {
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
     }/*}}}*/
-
 }
