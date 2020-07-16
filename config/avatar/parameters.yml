@@ -70,6 +70,12 @@ parameters:
         anime_pack:
           title: 'Regional Director of the International Bureau for Preservation and Dissemination of Animated Art'
           url: '/viewtopic.php?f=56&t=5174'
+    3257: #GrandSlam4Par
+      queue:
+        - 'attenborough'
+      data:
+        attenborough:
+          url: '/viewtopic.php?f=33&t=225505'
     5495: #Fantompoke
       queue:
         - 'encoder'
@@ -133,6 +139,12 @@ parameters:
           title: 'Perpetual Energy Machine, Model 101'
           url: '/search.php?keywords=UPDATING&terms=all&author_id=37031&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search'
           img_url: 'https://i.imgur.com/LBcQOv1.png'
+    44500: #mikraphne
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'MRMR'
     49485: #bonesandbillyclubs
       queue:
         - 'anime_pack'
@@ -285,7 +297,7 @@ parameters:
         - 'gundam'
       data:
         gundam:
-          url: 
+          url:
             - '/viewtopic.php?f=13&t=230707'
             - '/viewtopic.php?f=13&t=230707'
             - '/viewtopic.php?f=13&t=230707'
@@ -301,6 +313,12 @@ parameters:
       data:
         encoder:
           tagname: 'DSG'
+    156706: #pikey
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'PKY'
     161958: #eserafinojr
       queue:
         - 'encoder'
@@ -315,12 +333,27 @@ parameters:
       data:
         encoder:
           tagname: 'MaG'
+    162397: #prof
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          tagname: 'prof'
     162444: #DamonSchultz
       queue:
         - 'wwe'
       data:
         wwe:
           url: '/viewtopic.php?f=61&t=188333'
+    162519: #r0b0t
+      queue:
+        - 'encoder'
+      data:
+        encoder:
+          template_type: 'internal'
+          internal: 'TAoE'
+          group_title: 'The Alliance of Encoders'
+          tagname: 'r0b0t'
 
 
   # PROCESSOR DEFINITIONS
