@@ -6,19 +6,9 @@
       <strong>
         Reputation:
         <span>
-          {% if postrow.REPUTATION['gold'] %}
+          {% if postrow.REPUTATION['count'] %}
             <span class="text_secondary reputation_badge_text">
-              <img class="reputation_badge" src="https://i.imgur.com/vPA1QDP.png" />{{ postrow.REPUTATION['gold'] }}
-            </span>
-          {% endif %}
-          {% if postrow.REPUTATION['silver'] %}
-            <span class="text_secondary reputation_badge_text">
-              <img class="reputation_badge" src="https://i.imgur.com/UV7YWIu.png" />{{ postrow.REPUTATION['silver'] }}
-            </span>
-          {% endif %}
-          {% if postrow.REPUTATION['bronze'] %}
-            <span class="text_secondary reputation_badge_text">
-              <img class="reputation_badge" src="https://i.imgur.com/KwyX1RR.png" />{{ postrow.REPUTATION['bronze'] }}
+              {{ postrow.REPUTATION['count'] }}
             </span>
           {% endif %}
           {% if postrow.REPUTATION['private'] %}

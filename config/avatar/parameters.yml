@@ -169,6 +169,14 @@ parameters:
       data:
         adobe_infinity:
           url: '/search.php?keywords=adobe&terms=any&author_id=61485&fid[]=9&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search'
+    64058: #911
+      queue:
+        - 'wwe'
+      data:
+        wwe:
+          url:
+            - '/viewtopic.php?f=61&t=200560'
+            - '/viewtopic.php?f=61&t=201235'
     71633: #Stroopwafelandcoffee
       queue:
         - 'marvel'
@@ -272,6 +280,21 @@ parameters:
           internal: 'LoE'
           group_title: 'League of Encoders'
           tagname: 'BAJ'
+    154243: #rainydays1971
+      queue:
+        - 'gundam'
+      data:
+        gundam:
+          url: 
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - '/viewtopic.php?f=13&t=230707'
+            - 'https://youtu.be/ob7pebouMmk?t=217'
     154540: #DASTEREOGURU
       queue:
         - 'encoder'
@@ -480,6 +503,18 @@ parameters:
             - 'img_url'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge game_machine"></img></a></span>'
+    gundam:
+      description: 'Mobile Suit Gundam'
+      data:
+        title: 'The White Reflection'
+        img_url: 'https://i.imgur.com/4ksu7n6.png'
+      template:
+        basic:
+          fields:
+            - 'title'
+            - 'img_url'
+            - 'url'
+          html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
     hidden_dragon:
       description: 'Hidden Dragon'
       override:
