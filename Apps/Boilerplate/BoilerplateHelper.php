@@ -24,6 +24,6 @@ class BoilerplateHelper
         $this->tbl = $tbl;
         $this->rxnTbl = $tbl['Boilerplate'];
         $this->sauth = $sauth;
-        $this->user_id = $this->user->data['user_id'];
+        $this->userId = $sauth->userId;
     }/*}}}*/
 }
