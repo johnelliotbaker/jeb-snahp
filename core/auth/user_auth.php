@@ -22,7 +22,7 @@ class user_auth
         $this->auth = $auth;
         $this->container = $container;
         $this->this_user_id = $this->user->data['user_id'];
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->userId = $this->user->data['user_id'];
         $this->phpbb_root_path = $container->getParameter('core.root_path');
     }
 
@@ -191,7 +191,7 @@ class user_auth
     public function reject_non_group($group_id, $perm_name)/*{{{*/
     {
         $sql = 'SELECT 1 FROM ' . GROUPS_TABLE . '
-            WHERE group_id=' . $group_id . ' AND 
+            WHERE group_id=' . $group_id . ' AND
             ' . $perm_name . '=1';
         $result = $this->db->sql_query($sql, 1);
         $row = $this->db->sql_fetchrow($result);
