@@ -1,0 +1,19 @@
+services:
+    jeb.snahp.Apps.MysqlSearch.MysqlSearchController:
+        class: jeb\snahp\Apps\MysqlSearch\MysqlSearchController
+        arguments:
+            - '@request'
+            - '@template'
+            - '@controller.helper'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.Apps.MysqlSearch.MysqlSearchHelper'
+            - '@jeb.snahp.FormHelper'
+    jeb.snahp.Apps.MysqlSearch.MysqlSearchHelper: # HELPER
+        class: jeb\snahp\Apps\MysqlSearch\MysqlSearchHelper
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '%jeb.snahp.tables%'
+            - '%jeb.snahp.groups%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.ForumStructureHelper'

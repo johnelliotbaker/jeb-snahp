@@ -30,6 +30,7 @@ imports:
     - { resource: ../Apps/ThanksResetCycle/service.yml }
     - { resource: ../Apps/MassTagger/service.yml }
     - { resource: ../Apps/MiniBoard/service.yml }
+    - { resource: ../Apps/MysqlSearch/service.yml }
 
 services:
     jeb.snahp.core:

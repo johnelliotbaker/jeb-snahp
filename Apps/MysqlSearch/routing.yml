@@ -1,0 +1,3 @@
+jeb_snahp_routing.mysql_search.main:
+    path: /snahp/mysql-search
+    defaults: { _controller: jeb.snahp.Apps.MysqlSearch.MysqlSearchController:respond}

@@ -1,0 +1,90 @@
+<!-- INCLUDE overall_header.html -->
+<script>
+  {% include '@jeb_snahp/mysql_search/base.js' %}
+</script>
+<style>
+  {% include '@jeb_snahp/mysql_search/base.css' %}
+</style>
+
+<div class="twbs">
+  <div class="card">
+    <div class="card-body">
+      <form id="form_mysql_search" method="GET" action="{U_ACTION}">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Search</span>
+          </div>
+          <input
+            value="{WORD_TO_SEARCH}"
+            type="text"
+            class="form-control"
+            id="word_to_search"
+            name="word_to_search"
+          />
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div
+            class="action-bar bar-top"
+            style="font-size: 14px; margin-left: 2px;"
+          >
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="forum_type"
+              id="inlineRadio1" value="all" {% if FORUM_TYPE=='all' %}checked{%
+              endif %} />
+              <label class="form-check-label" for="inlineRadio1">Both</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="forum_type"
+              id="inlineRadio2" value="listings" {% if FORUM_TYPE=='listings'
+              %}checked{% endif %} />
+              <label class="form-check-label" for="inlineRadio2"
+                >Listings</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="forum_type"
+              id="inlineRadio3" value="requests" {% if FORUM_TYPE=='requests'
+              %}checked{% endif %} />
+              <label class="form-check-label" for="inlineRadio3"
+                >Requests</label
+              >
+            </div>
+          </div>
+          <div><button onclick="MysqlSearch.exportBBCode(event)" class="button" type="button">Copy BBCode to Clipboard</button></div>
+          <div>
+            {PAGINATION}
+          </div>
+        </div>
+      </form>
+      <table
+        class="table table-sm table-dark table-striped"
+        style="margin-bottom: 5px;"
+      >
+        <thead>
+          <tr>
+            <th style="min-width: 80px;">#</th>
+            <th style="width: 100%">Topic</th>
+          </tr>
+        </thead>
+        <tbody id="mysql_search_table_body">
+          <!-- BEGIN postrow -->
+          <tr>
+            <td>{postrow.ID}</td>
+            <td data-topicid="{postrow.TOPIC_ID}">
+              <a
+                href="/viewtopic.php?t={postrow.TOPIC_ID}{postrow.POST_ID}"
+                target="_blank"
+                >{postrow.TOPIC_TITLE}</a
+              >
+            </td>
+          </tr>
+          <!-- END postrow -->
+        </tbody>
+      </table>
+      <div class="action-bar bar-top" s>
+        {PAGINATION}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->
