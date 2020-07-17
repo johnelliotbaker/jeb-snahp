@@ -350,9 +350,14 @@ parameters:
     162444: #DamonSchultz
       queue:
         - 'wwe'
+        - 'anime_pack'
       data:
         wwe:
           url: '/viewtopic.php?f=61&t=188333'
+        anime_pack:
+          title: 'International Bureau for Preservation and Dissemination of Animated Art, Order of the Fallen Disciple'
+          url: '/viewtopic.php?f=13&t=199648'
+          img_url: 'https://i.imgur.com/xO0WOZy.png'
     162519: #r0b0t
       queue:
         - 'encoder'
