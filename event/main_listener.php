@@ -376,7 +376,8 @@ class main_listener extends base implements EventSubscriberInterface
                 $value = $product_class_data['value'];
                 $interval_reduction = abs($value * $multiplier);
                 $new_interval = $interval - $interval_reduction;
-                $interval = $new_interval < 5 ? 5 : $new_interval;
+                // controller/economy/economy_user_dashboard.php line 326
+                $interval = $new_interval < 4 ? 4 : $new_interval;
             }
         }
         $event['interval'] = $interval;

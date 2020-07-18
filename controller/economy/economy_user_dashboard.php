@@ -322,6 +322,7 @@ class economy_user_dashboard
         $baseSearchInterval = $this->sauth->getMinFromGroupMemberships(
             $userId, 'snp_search_interval'
         );
-        return max($baseSearchInterval - 5, 0);
+        // event/main_listener.php line 379
+        return max($baseSearchInterval - 4, 0);
     }
 }
