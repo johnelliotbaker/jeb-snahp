@@ -94,7 +94,7 @@ class v_0_38_0 extends container_aware_migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_rxn_b_master', 1]],
+            ['config.add', ['snp_miniboard_b_master', 1]],
             ['custom', [[$this, 'install_bbcodes']]],
             ['custom', [[$this, 'set_utf8mb4']]],
         ];
