@@ -51,8 +51,13 @@ class Model
         foreach ($data as $name => $value) {
             $instance->$name = $value;
         }
+        $this->performPreUpdate($instance);
         \R::store($instance);
         return $instance;
+    }/*}}}*/
+
+    public function performPreUpdate($instance)/*{{{*/
+    {
     }/*}}}*/
 
     public function appendExtra($instance, $extra)/*{{{*/
