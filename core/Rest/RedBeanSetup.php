@@ -12,7 +12,7 @@ use \R as R;
 
 trait RedBeanSetup
 {
-    public function connectDatabase($frozen=true)
+    public function connectDatabase($frozen=false)
     {
         global $phpbb_root_path, $phpEx;
         include $phpbb_root_path . 'config.' . $phpEx;
@@ -21,7 +21,7 @@ trait RedBeanSetup
             $dbuser,
             $dbpasswd
         );
-        R::freeze(true);
+        R::freeze($frozen);
         // if ($frozen) {
         //     R::freeze(true);
         // }
