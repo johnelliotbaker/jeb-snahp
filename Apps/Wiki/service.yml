@@ -1,0 +1,80 @@
+imports:
+    # - { resource: 'mute_user/parameters.yml' }
+services:
+
+    jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\HistoryListCreateAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+
+    jeb.snahp.Apps.Wiki.EntryListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\EntryListCreateAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.Apps.Wiki.EntryInGroupListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\EntryInGroupListCreateAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.EntryRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Wiki\EntryRetrieveUpdateDestroyAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+
+    jeb.snahp.Apps.Wiki.GroupListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\GroupListCreateAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.GroupRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Wiki\GroupRetrieveUpdateDestroyAPIView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+
+
+    jeb.snahp.Apps.Wiki.NavigationView:
+        class: jeb\snahp\Apps\Wiki\NavigationView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+    jeb.snahp.Apps.Wiki.ArticleView:
+        class: jeb\snahp\Apps\Wiki\ArticleView
+        arguments:
+            - '@request'
+            - '@jeb.snahp.auth.user_auth'
+
+
+    jeb.snahp.Apps.Wiki.WikiController:
+        class: jeb\snahp\Apps\Wiki\WikiController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            # - '@jeb.snahp.Apps.Wiki.WikiHelper'
+    # jeb.snahp.Apps.Wiki.WikiHelper: # HELPER
+    #     class: jeb\snahp\Apps\Wiki\WikiHelper
+    #     arguments:
+    #         - '@dbal.conn'
+    #         - '@user'
+    #         - '@template'
+    #         - '%jeb.snahp.tables%'
+    #         - '@jeb.snahp.auth.user_auth'
+    # jeb.snahp.Apps.Wiki.WikiEventListener:
+    #     class: jeb\snahp\Apps\Wiki\WikiEventListener
+    #     arguments:
+    #         - '@user'
+    #         - '@config'
+    #         - '@jeb.snahp.auth.user_auth'
+    #         - '@jeb.snahp.WikiHelper'
+    #     tags:
+    #         - { name: event.listener }

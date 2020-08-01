@@ -1,0 +1,59 @@
+jeb.snahp.routing.wiki.article_view:
+    path: /snahp/wiki/article/{groupName}/{articleName}
+    defaults: { _controller: jeb.snahp.apps.Wiki.ArticleView:view}
+    # requirements:
+    #     group: \s+
+    #     articleName: \s+
+
+jeb.snahp.routing.wiki.navigation_view:
+    path: /snahp/wiki/nav
+    defaults: { _controller: jeb.snahp.apps.Wiki.NavigationView:view}
+
+jeb.snahp.routing.wiki.app:
+    path: /snahp/wiki/app/article/{groupName}/{articleName}
+    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:test}
+jeb.snahp.routing.wiki.test:
+    path: /snahp/wiki/test
+    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:test}
+    # requirements:
+    #     mode: \s+
+# jeb.snahp.routing.wiki.list:
+#     path: /snahp/wiki
+#     defaults: { _controller: jeb.snahp.WikiController:createListView}
+
+jeb.snahp.routing.wiki.list_entry:
+    path: /snahp/wiki/entry
+    defaults: { _controller: jeb.snahp.Apps.Wiki.EntryListCreateAPIView:dispatch}
+jeb.snahp.routing.wiki.list_group_entry:
+    path: /snahp/wiki/group/{id}/entry
+    defaults: { _controller: jeb.snahp.Apps.Wiki.EntryInGroupListCreateAPIView:view}
+    requirements:
+        id: \d+
+jeb_snahp_routing.wiki.retrieve_entry:
+    path: /snahp/wiki/entry/{id}
+    defaults: { _controller: jeb.snahp.EntryRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.wiki.list_group:
+    path: /snahp/wiki/group
+    defaults: { _controller: jeb.snahp.Apps.Wiki.GroupListCreateAPIView:dispatch}
+jeb_snahp_routing.wiki.retrieve_group:
+    path: /snahp/wiki/group/{id}
+    defaults: { _controller: jeb.snahp.GroupRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+
+
+# jeb.snahp.routing.wiki.list_history0:
+#     path: /snahp/wiki/history
+#     defaults: { _controller: jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:dispatch}
+#     requirements:
+#         id: \d+
+jeb.snahp.routing.wiki.list_history:
+    path: /snahp/wiki/entry/{id}/history
+    defaults:
+        _controller: jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:view
+    requirements:
+        id: \d+
