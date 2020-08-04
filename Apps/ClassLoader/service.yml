@@ -1,0 +1,5 @@
+services:
+    jeb.snahp.Apps.ClassLoader.ClassLoaderEventListener:
+        class: jeb\snahp\Apps\ClassLoader\ClassLoaderEventListener
+        tags:
+            - { name: event.listener }

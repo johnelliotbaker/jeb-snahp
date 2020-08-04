@@ -734,7 +734,7 @@ parameters:
             - 'title'
             - 'url'
             - 'img_url'
-          html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_24"></img></a></span>'
+          html: '<span title="{title}"><a href="{url}" target="_blank"><img src="{img_url}" class="avatar_badge maxh_36"></img></a></span>'
     upscale:
       description: 'The Upscale Project'
       data:

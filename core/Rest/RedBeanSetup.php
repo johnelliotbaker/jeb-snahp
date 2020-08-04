@@ -21,10 +21,7 @@ trait RedBeanSetup
             $dbuser,
             $dbpasswd
         );
-        R::freeze(true);
-        // if ($frozen) {
-        //     R::freeze(true);
-        // }
+        R::freeze($frozen);
         R::ext(
             'xdispense',
             function ($type) {

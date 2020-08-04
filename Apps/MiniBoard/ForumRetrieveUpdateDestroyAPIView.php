@@ -27,7 +27,6 @@ class ForumRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
         $this->request = $request;
         $this->sauth = $sauth;
         $sauth->reject_anon('Error Code: d861e86e82');
-        $this->connectDatabase();
         $this->model = new Forum();
     }
 

@@ -26,6 +26,16 @@ class Model
         return \R::findAll($this::TABLE_NAME, 'LIMIT 500');
     }/*}}}*/
 
+    public function getObject($statement='', $data=[])/*{{{*/
+    {
+        return \R::findOne($this::TABLE_NAME, $statement, $data);
+    }/*}}}*/
+
+    public function getQueryset($statement='', $data=[])/*{{{*/
+    {
+        return \R::find($this::TABLE_NAME, $statement, $data);
+    }/*}}}*/
+
     public function create($data)/*{{{*/
     {
         foreach ($this->requiredFields as $field) {
@@ -104,6 +114,6 @@ class Model
 }
 
 
-class MissingRequiredField extends \Exception/*{{{*/
+class MissingRequiredField extends \Exception /*{{{*/
 {
 }/*}}}*/
