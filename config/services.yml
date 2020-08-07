@@ -31,6 +31,8 @@ imports:
     - { resource: ../Apps/MassTagger/service.yml }
     - { resource: ../Apps/MiniBoard/service.yml }
     - { resource: ../Apps/MysqlSearch/service.yml }
+    - { resource: ../Apps/UserFlair/service.yml }
+    - { resource: ../Apps/ClassLoader/service.yml }
 
 services:
     jeb.snahp.core:
