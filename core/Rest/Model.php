@@ -118,7 +118,6 @@ class Model
     {
         R::wipe($this::TABLE_NAME);
     }
-    
 }
 
 
