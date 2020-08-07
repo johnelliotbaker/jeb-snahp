@@ -2,7 +2,7 @@
 namespace jeb\snahp\Apps\ClassLoader;
 
 try {
-    include_once 'ext/jeb/snahp/core/Rest/RedBeanSetup.php';
+    include_once '/var/www/forum/ext/jeb/snahp/core/Rest/RedBeanSetup.php';
 } catch (Exception $e) {
 }
 
@@ -31,6 +31,6 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 
     public function loadClasses($event)
     {
-        include_once 'ext/jeb/snahp/Apps/ClassLoader/functions.php';
+        include_once '/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php';
     }
 }

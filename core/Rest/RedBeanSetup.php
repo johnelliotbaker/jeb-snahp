@@ -6,7 +6,7 @@ define('REDBEAN_MODEL_PREFIX', 'jeb\\snahp\\Apps\\MiniBoard\\Models\\');
 
 // require_once 'ext/jeb/snahp/core/RedBean/rb.php';
 try {
-    include_once 'ext/jeb/snahp/core/RedBean/rb.php';
+    include_once '/var/www/forum/ext/jeb/snahp/core/RedBean/rb.php';
 } catch (Exception $e) {
 }
 
