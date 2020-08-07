@@ -1,13 +1,15 @@
 <?php
 namespace jeb\snahp\Apps\ClassLoader;
 
-require 'ext/jeb/snahp/core/Rest/RedBeanSetup.php';
+try {
+    include_once 'ext/jeb/snahp/core/Rest/RedBeanSetup.php';
+} catch (Exception $e) {
+}
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use jeb\snahp\core\Rest\RedBeanSetup;
-use \R as R;
 
 class ClassLoaderEventListener implements EventSubscriberInterface
 {
@@ -29,5 +31,6 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 
     public function loadClasses($event)
     {
+        include_once 'ext/jeb/snahp/Apps/ClassLoader/functions.php';
     }
 }
