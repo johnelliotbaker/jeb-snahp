@@ -4,6 +4,8 @@ namespace jeb\snahp\core\Rest;
 
 require_once 'ext/jeb/snahp/core/Rest/Fields/All.php';
 
+use \R as R;
+
 class Model
 {
     protected const FIELDS_NAMESPACE = 'jeb\\snahp\\core\\Rest\\Fields\\';
@@ -111,6 +113,12 @@ class Model
     public function getForeignName()/*{{{*/
     {
     }/*}}}*/
+
+    public function wipe()
+    {
+        R::wipe($this::TABLE_NAME);
+    }
+    
 }
 
 
