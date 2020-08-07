@@ -4,6 +4,8 @@ namespace jeb\snahp\core\Rest;
 
 require_once 'ext/jeb/snahp/core/Rest/Fields/All.php';
 
+use \R as R;
+
 class Model
 {
     protected const FIELDS_NAMESPACE = 'jeb\\snahp\\core\\Rest\\Fields\\';
@@ -24,6 +26,16 @@ class Model
     public function all()/*{{{*/
     {
         return \R::findAll($this::TABLE_NAME, 'LIMIT 500');
+    }/*}}}*/
+
+    public function getObject($statement='', $data=[])/*{{{*/
+    {
+        return \R::findOne($this::TABLE_NAME, $statement, $data);
+    }/*}}}*/
+
+    public function getQueryset($statement='', $data=[])/*{{{*/
+    {
+        return \R::find($this::TABLE_NAME, $statement, $data);
     }/*}}}*/
 
     public function create($data)/*{{{*/
@@ -106,9 +118,14 @@ class Model
     public function getForeignName()/*{{{*/
     {
     }/*}}}*/
+
+    public function wipe()
+    {
+        R::wipe($this::TABLE_NAME);
+    }
 }
 
 
-class MissingRequiredField extends \Exception/*{{{*/
+class MissingRequiredField extends \Exception /*{{{*/
 {
 }/*}}}*/

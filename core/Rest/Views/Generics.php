@@ -7,14 +7,9 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 require_once 'ext/jeb/snahp/core/Rest/Serializers.php';
 require_once 'ext/jeb/snahp/core/Rest/Utils.php';
-require_once 'ext/jeb/snahp/core/Rest/RedBeanSetup.php';
-
-use jeb\snahp\core\Rest\RedBeanSetup;
 
 class GenericAPIView
 {
-    use RedBeanSetup;
-
     protected $queryset;
     protected $serializerClass;
     protected $paginationClass;
@@ -33,8 +28,18 @@ class GenericAPIView
 
     public function getQueryset()/*{{{*/
     {
-        $queryset = $this->queryset;
-        return $queryset;
+        $data = getRequestData($this->request);
+        if (!$data) {
+            return array_values(\R::find($this->model::TABLE_NAME));
+        }
+        foreach ($data as $varname => $value) {
+            $sqlAry[] = "${varname}='${value}'";
+        }
+        $where = implode(' AND ', $sqlAry);
+        return array_values(\R::find($this->model::TABLE_NAME, $where));
+
+        // $queryset = $this->queryset;
+        // return $queryset;
     }/*}}}*/
 
     public function filterQueryset($queryset)/*{{{*/

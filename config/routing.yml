@@ -1,5 +1,7 @@
 routing_wiki:
     resource: '../Apps/Wiki/routing.yml'
+routing_user_flair:
+    resource: '../Apps/UserFlair/routing.yml'
 routing_mysql_search:
     resource: '../Apps/MysqlSearch/routing.yml'
 routing_mini_board:

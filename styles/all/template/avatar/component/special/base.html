@@ -1,14 +1,25 @@
-{% if postrow.S_BADGE %}
 <!-- IF not $varset_99028487a4 -->
 <!-- DEFINE $varset_99028487a4 = true -->
 <!-- INCLUDECSS @jeb_snahp/avatar/component/special/base.css -->
-{% if STYLE_NAME in ['acieeed', 'hexagon'] %}
-<!-- INCLUDECSS @jeb_snahp/avatar/component/special/dark.css -->
-{% else %}
-<!-- INCLUDECSS @jeb_snahp/avatar/component/special/light.css -->
-{% endif %}
 <!-- ENDIF -->
-<dd class="avatar_special">
-  {postrow.S_BADGE}
+{% if postrow.USER_FLAIR %}
+<dd style="margin-top: 0px; margin-bottom: 2px;">
+  {postrow.USER_FLAIR}
 </dd>
-{% endif %}
+{% endif %} {# {% if postrow.S_BADGE %} #} {#
+<!-- IF not $varset_99028487a4 -->
+#} {#
+<!-- DEFINE $varset_99028487a4 = true -->
+#} {#
+<!-- INCLUDECSS @jeb_snahp/avatar/component/special/base.css -->
+#} {# {% if STYLE_NAME in ['acieeed', 'hexagon'] %} #} {#
+<!-- INCLUDECSS @jeb_snahp/avatar/component/special/dark.css -->
+#} {# {% else %} #} {#
+<!-- INCLUDECSS @jeb_snahp/avatar/component/special/light.css -->
+#} {# {% endif %} #} {#
+<!-- ENDIF -->
+#} {#
+<dd class="avatar_special" style="margin-bottom: 4px;">
+  #} {# {postrow.S_BADGE} #} {#
+</dd>
+#} {# {% endif %} #}

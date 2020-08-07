@@ -1,25 +1,25 @@
 <?php
 
-namespace jeb\snahp\Apps\MiniBoard;
+namespace jeb\snahp\Apps\UserFlair;
 
 require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/Apps/MiniBoard/Models/Forum.php';
+require_once 'ext/jeb/snahp/Apps/UserFlair/Models/Type.php';
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Serializers\Serializer;
-use jeb\snahp\Apps\MiniBoard\Models\Forum;
+use jeb\snahp\Apps\UserFlair\Models\Type;
 
 class MySerializer extends Serializer
 {
     public function __construct($instance=null, $data=null, $kwargs=[])
     {
         parent::__construct($instance, $data, $kwargs);
-        $this->model = new Forum();
+        $this->model = new Type();
     }
 }
 
 
-class ForumListCreateAPIView extends ListCreateAPIView
+class TypeListCreateAPIView extends ListCreateAPIView
 {
     protected $serializerClass = __NAMESPACE__ . '\MySerializer';
     protected $request;
@@ -29,9 +29,15 @@ class ForumListCreateAPIView extends ListCreateAPIView
     {
         $this->request = $request;
         $this->sauth = $sauth;
-        $sauth->reject_anon('Error Code: d861e86e82');
-        $this->model = new Forum();
+        $sauth->reject_non_dev('Error Code: 729077e8ca');
+        $this->model = new Type();
     }
+
+    public function view()
+    {
+        return parent::dispatch();
+    }
+
 
     public function getQueryset()/*{{{*/
     {
@@ -48,7 +54,7 @@ class ForumListCreateAPIView extends ListCreateAPIView
 
     public function create($request)/*{{{*/
     {
-        $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
+        // $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
         return parent::create($request);
     }/*}}}*/
 }

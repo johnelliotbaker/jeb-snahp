@@ -8,3 +8,8 @@ jeb_snahp_routing.mass_indexer.topic:
     defaults: { _controller: jeb.snahp.MassIndexerController:unindexTopic}
     requirements:
         topidIc: \d+
+jeb.snahp.routing.mass_indexer.forum:
+    path: /snahp/mass-indexer/unindex-forum/{forumId}
+    defaults: { _controller: jeb.snahp.MassIndexerController:unindexForum}
+    requirements:
+        topidIc: \d+

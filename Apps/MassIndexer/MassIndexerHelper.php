@@ -161,4 +161,43 @@ class MassIndexerHelper
         $this->db->sql_freeresult($result);
         return $rowset;
     }/*}}}*/
+
+    public function unindexAllPostsByForum($forumId)/*{{{*/
+    {
+        $search = $this->getSearchInstance();
+        $rowset = $this->getPostsRelatedToForum($forumId);
+        $postIds = array_map(
+            function ($row) {
+                return $row['post_id'];
+            },
+            $rowset
+        );
+        $total = count($postIds);
+        $chunks = array_chunk($postIds, $this::CHUNK_SIZE);
+        foreach ($chunks as $chunk) {
+            $search->index_remove($chunk, [], []);
+        }
+        return $total;
+    }/*}}}*/
+
+    private function getPostsRelatedToForum($forumId)/*{{{*/
+    {
+        $where[] = "a.forum_id={$forumId}";
+        $sql_ary = [
+            'SELECT'   => 'b.post_id',
+            'FROM'     => [FORUMS_TABLE => 'a'],
+            'LEFT_JOIN' => [
+                [
+                    'FROM'  => [POSTS_TABLE => 'b'],
+                    'ON'    => 'a.forum_id=b.forum_id',
+                ],
+            ],
+            'WHERE'    => $where,
+        ];
+        $sql    = $this->db->sql_build_query('SELECT', $sql_ary);
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        return $rowset;
+    }/*}}}*/
 }

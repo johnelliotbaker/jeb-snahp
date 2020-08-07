@@ -30,7 +30,6 @@ class TopicRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
         $this->request = $request;
         $this->sauth = $sauth;
         $sauth->reject_anon('Error Code: b28a40899f');
-        $this->connectDatabase();
         $this->model = new Topic();
     }/*}}}*/
 

@@ -121,7 +121,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['show_thanks_for_op', 2],
                 ['show_achievements_in_avatar', 2],
                 ['show_reputation_in_avatar', 2],
-                ['show_badges_in_avatar', 2],
+                // ['show_badges_in_avatar', 2],
             ],
             'core.notification_manager_add_notifications' => 'notify_op_on_report',
             'core.modify_submit_post_data'                => [
@@ -345,10 +345,10 @@ class main_listener extends base implements EventSubscriberInterface
             if ($inv_data) {
                 [$rank_title, $rank_img] = $this->get_custom_rank($poster_id);
                 if ($rank_img) {
-                    $post_row['RANK_IMG'] = '<img style="margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
+                    $post_row['RANK_IMG'] = '<img style="display: block; margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
                 }
                 if ($rank_title) {
-                    $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em;'>$rank_title</span>";
+                    $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em; display: inline-block; margin-top: 4px;'>$rank_title</span>";
                 }
             }
         }
@@ -521,22 +521,22 @@ class main_listener extends base implements EventSubscriberInterface
         $event['user_cache_data'] = $user_cache_data;
     }/*}}}*/
 
-    public function show_badges_in_avatar($event)/*{{{*/
-    {
-        $poster_data = $this->poster_data;
-        if (!$poster_data) {
-            return false;
-        }
-        $post_row = $event['post_row'];
-        $poster_id = $post_row['POSTER_ID'];
-        if (!isset($this->badges_helper)) {
-            $this->badges_helper = $this->container->get('jeb.snahp.avatar.badges_helper');
-        }
-        $options = [ 'style_type' => $this->style_type, 'style_name' => $this->style_name ];
-        $html = $this->badges_helper->process_badges($poster_data, $options);
-        $post_row['S_BADGE'] = $html;
-        $event['post_row'] = $post_row;
-    }/*}}}*/
+    // public function show_badges_in_avatar($event)/*{{{*/
+    // {
+    //     $poster_data = $this->poster_data;
+    //     if (!$poster_data) {
+    //         return false;
+    //     }
+    //     $post_row = $event['post_row'];
+    //     $poster_id = $post_row['POSTER_ID'];
+    //     if (!isset($this->badges_helper)) {
+    //         $this->badges_helper = $this->container->get('jeb.snahp.avatar.badges_helper');
+    //     }
+    //     $options = [ 'style_type' => $this->style_type, 'style_name' => $this->style_name ];
+    //     $html = $this->badges_helper->process_badges($poster_data, $options);
+    //     $post_row['S_BADGE'] = $html;
+    //     $event['post_row'] = $post_row;
+    // }/*}}}*/
 
     public function show_reputation_in_avatar($event)/*{{{*/
     {

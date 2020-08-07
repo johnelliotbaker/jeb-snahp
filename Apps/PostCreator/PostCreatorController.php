@@ -46,6 +46,8 @@ class PostCreatorController
 
     public function respondCreate($forumId, $total)/*{{{*/
     {
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
         include_once 'includes/functions_posting.php';
         $mode = 'post';
         $username = "admin";
@@ -54,7 +56,7 @@ class PostCreatorController
         $data_ary = [
             'topic_title' => 'TOPIC TITLE',
             'topic_id' => 0,
-            'forum_id' => 13,
+            'forum_id' => (int) $forumId,
             'icon_id' => 0,
             'poster_id' => 2,
             'enable_sig' => 1,
@@ -72,15 +74,32 @@ class PostCreatorController
         ];
         [$start, $end] = [0, $start+$total];
         for ($i = $start; $i < $end; $i++) {
-            $subject = "[TAG] ${i} ";
+            $subject = "[TAoE] ${i} ";
             $data_ary['topic_title'] = $subject;
             submit_post(
                 $mode, $subject, $username, $topic_type,
                 $poll_ary, $data_ary, $update_message = true,
                 $update_search_index = true
             );
+            if ($i % 10 == 0) {
+                $data = [
+                    'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
+                    'message' => "$i of $total",
+                    'error_message' => 'No Errors',
+                    'sqlmsg' => 'insert post',
+                ];
+                sendMessage($data);
+            }
         }
         return new JsonResponse(["method"=>$subject]);
     }/*}}}*/
 
+}
+
+function sendMessage($data)
+{
+    echo "data: " . json_encode($data) . PHP_EOL;
+    echo PHP_EOL;
+    ob_flush();
+    flush();
 }

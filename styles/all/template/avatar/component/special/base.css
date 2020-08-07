@@ -24,26 +24,6 @@ div.avatar_special {
   max-height: 44px;
 }
 
-.the_oracle {
-  max-height: 46px;
-  margin: 3px 0px;
-}
-
-.adobe_infinity {
-  max-height: 40px;
-  margin: 3px 1px;
-}
-
-.game_machine {
-  max-height: 28px;
-  margin: 3px 1px;
-}
-
-.trekki {
-  max-height: 40px;
-  margin: 3px 1px;
-}
-
 dd.avatar_special img.avatar_badge {
   margin-left: 2px;
   padding-top: 2px;
@@ -61,34 +41,31 @@ div.avatar_special p {
 }
 
 .audio_expert {
-  width: 27px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   background-size: cover;
 }
 
-.tidal {
-  height: 40px;
-  margin: 3px 1px;
-}
-
-.formula_one {
-  height: 30px;
-  margin: 3px 1px;
-}
-
+.adobe_infinity,
+.dj,
+.drunken_master,
+.gundam,
+.one_piece,
+.the_oracle,
+.trekki,
+.updater,
+.wwe,
+.game_machine,
+.tidal,
 .marvel {
-  height: 40px;
-  margin: 3px 1px;
+  height: 36px;
 }
 
-.attenborough {
-  height: 30px;
-  margin: 3px 1px;
-}
-
-.dj {
-  height: 40px;
-  margin: 3px 1px;
+.james_bond,
+.formula_one,
+.attenborough,
+.upscale {
+  height: 32px;
 }
 
 .crouching_tiger {
@@ -109,17 +86,7 @@ div.avatar_special p {
   z-index: 0;
 }
 
-.one_piece {
-  height: 40px;
-  margin: 3px 1px;
-}
-
-.upscale {
-  height: 30px;
-  margin: 3px 1px;
-}
-
 a.encoder_tag,
-a.encoder_tag:hover{
-    text-decoration: none;
+a.encoder_tag:hover {
+  text-decoration: none;
 }

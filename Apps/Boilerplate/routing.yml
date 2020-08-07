@@ -1,8 +1,8 @@
-jeb_snahp_routing.boilerplate.retrieve:
+jeb.snahp.routing.boilerplate.retrieve:
     path: /snahp/boilerplate/{id}
-    defaults: { _controller: jeb.snahp.BoilerplateController:retrieveView}
+    defaults: { _controller: jeb.snahp.Apps.Boilerplate.BoilerplateController:retrieveView}
     requirements:
         id: \d+
-jeb_snahp_routing.boilerplate.list:
+jeb.snahp.routing.boilerplate.list:
     path: /snahp/boilerplate
-    defaults: { _controller: jeb.snahp.BoilerplateController:createListView}
+    defaults: { _controller: jeb.snahp.Apps.Boilerplate.BoilerplateController:createListView}
