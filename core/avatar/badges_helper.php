@@ -8,8 +8,7 @@ class badges_helper
     protected $post_data = [];
     public function __construct(
         $container
-    )
-    {/*{{{*/
+    ) {/*{{{*/
         $this->container  = $container;
         $this->p['users'] = $container->getParameter('jeb.snahp.avatar.badge.users');
         $this->p['items'] = $container->getParameter('jeb.snahp.avatar.badge.items');
@@ -21,12 +20,10 @@ class badges_helper
 
     private function setup_style_info($options)/*{{{*/
     {
-        if (isset($options['style_type']))
-        {
+        if (isset($options['style_type'])) {
             $this->style_type = $options['style_type'];
         }
-        if (isset($options['style_name']))
-        {
+        if (isset($options['style_name'])) {
             $this->style_name = $options['style_name'];
         }
     }/*}}}*/
@@ -56,8 +53,7 @@ class badges_helper
     private function process_jobs($jobs, $post_data, $user_params)/*{{{*/
     {
         $res = [];
-        foreach($jobs as $name)
-        {
+        foreach ($jobs as $name) {
             $item_params = $this->p['items'][$name];
             $res[] = $this->process_job($name, $post_data, $user_params, $item_params);
         }
@@ -71,21 +67,18 @@ class badges_helper
 
     private function override_item_params($item_params)/*{{{*/
     {
-        if (!isset($item_params['override'])) return $item_params;
+        if (!isset($item_params['override'])) {
+            return $item_params;
+        }
         $style_info = null;
         $overrides = $item_params['override'];
-        if (isset($overrides['style_name']))
-        {
+        if (isset($overrides['style_name'])) {
             $style_info = $overrides['style_name'][$this->style_name];
-        }
-        elseif (isset($overrides['style_type']))
-        {
+        } elseif (isset($overrides['style_type'])) {
             $style_info = $overrides['style_type'][$this->style_type];
         }
-        if ($style_info)
-        {
-            foreach($style_info as $key=>$val)
-            {
+        if ($style_info) {
+            foreach ($style_info as $key=>$val) {
                 $item_params['data'][$key] = $val;
             }
         }
@@ -106,8 +99,7 @@ class badges_helper
 
     private function select_random($item)/*{{{*/
     {
-        if (is_array($item))
-        {
+        if (is_array($item)) {
             return $item[array_rand($item)];
         }
         return $item;
@@ -115,23 +107,19 @@ class badges_helper
 
     private function get_required_vars($varnames, $post_data, $job_data, $item_data)/*{{{*/
     {
+        if (!$varnames) {
+            return [];
+        }
+
         $res = [];
-        foreach ($varnames as $varname)
-        {
-            if (array_key_exists($varname, $post_data))
-            {
+        foreach ($varnames as $varname) {
+            if (array_key_exists($varname, $post_data)) {
                 $res[$varname] = $post_data[$varname];
-            }
-            elseif (isset($job_data[$varname]))
-            {
+            } elseif (isset($job_data[$varname])) {
                 $res[$varname] = $this->select_random($job_data[$varname]);
-            }
-            elseif (isset($item_data[$varname]))
-            {
+            } elseif (isset($item_data[$varname])) {
                 $res[$varname] = $this->select_random($item_data[$varname]);
-            }
-            else
-            {
+            } else {
                 $res[$varname] = '';
             }
         }
@@ -141,11 +129,12 @@ class badges_helper
     private function replace_template($strn, $vars)/*{{{*/
     {
         // https://stackoverflow.com/questions/7980741/efficient-way-to-replace-placeholders-with-variables
-        $strn = preg_replace_callback('/\{([\.\w]+)}/', function ($match) use($vars){
-            list ($_, $name) = $match;
-            if (isset($vars[$name])) return $vars[$name];
+        $strn = preg_replace_callback('/\{([\.\w]+)}/', function ($match) use ($vars) {
+            list($_, $name) = $match;
+            if (isset($vars[$name])) {
+                return $vars[$name];
+            }
         }, $strn);
         return $strn;
     }/*}}}*/
-
 }
