@@ -1,23 +1,20 @@
 <!-- /var/www/forum/ext/jeb/snahp/styles/all/template/event/viewtopic_body_postrow_custom_fields_after.html -->
 {% if postrow.REPUTATION %}
-  <dd class="profile-posts">
-  <div style="margin-bottom: 8px;">
-    <div style="margin-bottom: 8px;">
+<dd>
+  <br />
+  <div style="margin-bottom: 0px;">
+    <div style="margin-bottom: 0px;">
       <strong>
         Reputation:
         <span>
           {% if postrow.REPUTATION['count'] %}
-            <span class="text_secondary reputation_badge_text">
-              {{ postrow.REPUTATION['count'] }}
-            </span>
-          {% endif %}
-          {% if postrow.REPUTATION['private'] %}
-            p
-          {% endif %}
+          <span class="text_secondary reputation_badge_text">
+            {{ postrow.REPUTATION['count'] }}
+          </span>
+          {% endif %} {% if postrow.REPUTATION['private'] %} p {% endif %}
         </span>
       </strong>
     </div>
-    <hr />
   </div>
-  </dd>
+</dd>
 {% endif %}
