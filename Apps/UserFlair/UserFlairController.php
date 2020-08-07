@@ -41,7 +41,7 @@ class UserFlairController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth->reject_non_dev('Error Code: 298bc72da9');
     }/*}}}*/
 
     public function resetFlair()/*{{{*/

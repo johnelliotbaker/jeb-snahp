@@ -29,7 +29,7 @@ class TypeListCreateAPIView extends ListCreateAPIView
     {
         $this->request = $request;
         $this->sauth = $sauth;
-        // $sauth->reject_anon('Error Code: d861e86e82');
+        $sauth->reject_non_dev('Error Code: 729077e8ca');
         $this->model = new Type();
     }
 

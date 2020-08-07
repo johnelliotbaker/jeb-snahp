@@ -29,7 +29,7 @@ class FlairListCreateAPIView extends ListCreateAPIView
     {
         $this->request = $request;
         $this->sauth = $sauth;
-        // $sauth->reject_anon('Error Code: d861e86e82');
+        $sauth->reject_non_dev('Error Code: bb3484c715');
         $this->model = new Flair();
     }
 
