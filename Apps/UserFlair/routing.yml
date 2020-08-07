@@ -1,0 +1,15 @@
+jeb.snahp.routing.user_flair.reset_flair:
+    path: /snahp/user-flair/reset-flair
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairController:resetFlair}
+
+jeb.snahp.routing.user_flair.reset_type:
+    path: /snahp/user-flair/reset-type
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairController:resetType}
+
+jeb.snahp.routing.user_flair.flair_list:
+    path: /snahp/user-flair/flair
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.FlairListCreateAPIView:view}
+
+jeb.snahp.routing.user_flair.type_list:
+    path: /snahp/user-flair/type
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.TypeListCreateAPIView:view}
