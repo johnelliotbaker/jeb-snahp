@@ -345,10 +345,10 @@ class main_listener extends base implements EventSubscriberInterface
             if ($inv_data) {
                 [$rank_title, $rank_img] = $this->get_custom_rank($poster_id);
                 if ($rank_img) {
-                    $post_row['RANK_IMG'] = '<img style="margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
+                    $post_row['RANK_IMG'] = '<img style="display: block; margin-top: 4px; max-height: 40px; max-width: 160px;" src="' . $rank_img .'"/>';
                 }
                 if ($rank_title) {
-                    $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em;'>$rank_title</span>";
+                    $post_row['RANK_TITLE'] = "<span style='font-size: 1.1em; display: inline-block; margin-top: 4px;'>$rank_title</span>";
                 }
             }
         }
