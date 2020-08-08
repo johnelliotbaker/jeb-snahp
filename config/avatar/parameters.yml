@@ -351,7 +351,8 @@ parameters:
         - 'anime_pack'
       data:
         wwe:
-          url: '/viewtopic.php?f=61&t=188333'
+            - /viewtopic.php?f=61&t=188333
+            - /viewtopic.php?f=61&t=235687
         anime_pack:
           title: 'International Bureau for Preservation and Dissemination of Animated Art, Order of the Fallen Disciple'
           url: '/viewtopic.php?f=13&t=199648'
