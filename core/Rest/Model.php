@@ -118,6 +118,18 @@ class Model
     {
         R::wipe($this::TABLE_NAME);
     }
+
+    public function addUniqueIndex($columns)
+    {
+        R::getWriter()->addUniqueIndex($this::TABLE_NAME, $columns);
+    }
+    
+    public function addIndex($name, $column)
+    {
+        prn("adding index for $name and $column");
+        R::getWriter()->addIndex($this::TABLE_NAME, $name, $column);
+    }
+    
 }
 
 
