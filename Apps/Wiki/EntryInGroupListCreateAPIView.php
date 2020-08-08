@@ -31,7 +31,7 @@ class EntryInGroupListCreateAPIView extends ListCreateAPIView
         $this->request = $request;
         $this->sauth = $sauth;
         // $sauth->reject_anon('Error Code: d861e86e82');
-        $this->connectDatabase(false);
+        // $this->connectDatabase(false);
         $this->model = new Entry();
     }
 

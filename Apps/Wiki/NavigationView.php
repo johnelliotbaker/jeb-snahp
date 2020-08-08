@@ -17,7 +17,7 @@ class NavigationView
     {
         $this->request = $request;
         $this->sauth = $sauth;
-        $this->connectDatabase(false);
+        // $this->connectDatabase(false);
         // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
