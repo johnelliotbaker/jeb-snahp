@@ -14,6 +14,7 @@ const FIELDS = [
     "GAME_MACHINE" =>  ['title', 'imgURL', 'link'],
     "GUNDAM" =>  ['title', 'imgURL', 'link'],
     "JAMES_BOND" =>  ['title', 'imgURL', 'link'],
+    "KOREAN_PACK" =>  ['title', 'imgURL', 'link'],
     "MARVEL" =>  ['title', 'imgURL', 'link'],
     "ONE_PIECE" =>  ['title', 'imgURL', 'link'],
     "THE_ORACLE" =>  ['title', 'imgURL', 'link'],
