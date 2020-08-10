@@ -265,12 +265,15 @@ parameters:
     136682: #AlecHex
       queue:
         - 'encoder'
+        - korean_pack
       data:
         encoder:
           template_type: 'internal'
           internal: 'TAoE'
           group_title: 'The Alliance of Encoders'
           tagname: 'HxD'
+        korean_pack:
+          url: /viewtopic.php?f=75&t=191404
     142388: #theweasley
       queue:
         - 'encoder'
@@ -351,7 +354,8 @@ parameters:
         - 'anime_pack'
       data:
         wwe:
-          url: '/viewtopic.php?f=61&t=188333'
+            - /viewtopic.php?f=61&t=188333
+            - /viewtopic.php?f=61&t=235687
         anime_pack:
           title: 'International Bureau for Preservation and Dissemination of Animated Art, Order of the Fallen Disciple'
           url: '/viewtopic.php?f=13&t=199648'
@@ -515,6 +519,9 @@ parameters:
             - 'username'
             - 'user_colour'
           html: '<div title="{title}" style="margin-top: 1px; margin-bottom: 1px;"><a class="encoder_tag" href="/search.php?keywords={tagname}&terms=all&author_id={user_id}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank"><span style="color:#{user_colour} !important;">{tagname}</span></a> <div class="encoder_group rh_tag" title="{group_title}"><a href="/app.php/tag/{internal}" target="_blank">{internal}</a></div></div>'
+    encoder_two:
+      description: 'encoder_two'
+      data:
     formula_one:
       description: 'Formula 1 Racing'
       data:
@@ -604,6 +611,11 @@ parameters:
             - 'img_url'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge adobe_infinity"></img></a></span>'
+    korean_pack:
+      description: "K-Drama"
+      data:
+        title: The Cinema of Korean Persuasion
+        img_url: https://i.imgur.com/YvZMjWP.png
     marvel:
       description: 'Marvel'
       data:
@@ -756,9 +768,6 @@ parameters:
             - 'class'
             - 'url'
           html: '<span title="{title}"><a href="{url}"><img src="{img_url}" class="avatar_badge {class}"></img></a></span>'
-    encoder_two:
-      description: 'encoder_two'
-      data:
     wwe:
       description: 'WWE'
       data:

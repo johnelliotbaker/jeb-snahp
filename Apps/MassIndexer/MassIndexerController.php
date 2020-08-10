@@ -68,6 +68,13 @@ class MassIndexerController
         return $this->standardJsonResponse($total);
     }/*}}}*/
 
+    public function unindexGraveyard()/*{{{*/
+    {
+        $forumId = 23;
+        $total = $this->myHelper->unindexAllPostsByForum($forumId);
+        return $this->standardJsonResponse($total);
+    }/*}}}*/
+
     private function standardJsonResponse($total)/*{{{*/
     {
         return new JsonResponse(

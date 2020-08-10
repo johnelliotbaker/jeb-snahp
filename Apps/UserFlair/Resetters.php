@@ -2,55 +2,56 @@
 
 namespace jeb\snahp\Apps\UserFlair;
 
-// const FIELDS = [
-//     "ADOBE_INFINITY" =>  ['title', 'imgURL', 'link'],
-//     "ANIME_PACK" =>  ['title', 'imgURL', 'link'],
-//     "ATTENBOROUGH" =>  ['title', 'imgURL', 'link'],
-//     "AUDIO_EXPERT" =>  ['title', 'imgURL'],
-//     "DJ" =>  ['title', 'imgURL', 'link'],
-//     "DRUNKEN_MASTER" =>  ['title', 'imgURL', 'link'],
-//     "ENCODER" =>  ['title', 'tag'],
-//     "FORMULA_ONE" =>  ['title', 'imgURL', 'link'],
-//     "GAME_MACHINE" =>  ['title', 'imgURL', 'link'],
-//     "GUNDAM" =>  ['title', 'imgURL', 'link'],
-//     "JAMES_BOND" =>  ['title', 'imgURL', 'link'],
-//     "MARVEL" =>  ['title', 'imgURL', 'link'],
-//     "ONE_PIECE" =>  ['title', 'imgURL', 'link'],
-//     "THE_ORACLE" =>  ['title', 'imgURL', 'link'],
-//     "TIDAL" =>  ['title', 'imgURL', 'link'],
-//     "TREKKI" =>  ['title', 'imgURL', 'link'],
-//     "UPDATER" =>  ['title', 'imgURL', 'link'],
-//     "UPSCALE" =>  ['title', 'imgURL', 'link'],
-//     "WILDCAT" =>  ['tag'],
-//     "WWE" =>  ['title', 'imgURL', 'link'],
+const FIELDS = [
+    "ADOBE_INFINITY" =>  ['title', 'imgURL', 'link'],
+    "ANIME_PACK" =>  ['title', 'imgURL', 'link'],
+    "ATTENBOROUGH" =>  ['title', 'imgURL', 'link'],
+    "AUDIO_EXPERT" =>  ['title', 'imgURL'],
+    "DJ" =>  ['title', 'imgURL'],
+    "DRUNKEN_MASTER" =>  ['title', 'imgURL', 'link'],
+    "ENCODER" =>  ['tag'],
+    "FORMULA_ONE" =>  ['title', 'imgURL', 'link'],
+    "GAME_MACHINE" =>  ['title', 'imgURL', 'link'],
+    "GUNDAM" =>  ['title', 'imgURL', 'link'],
+    "JAMES_BOND" =>  ['title', 'imgURL', 'link'],
+    "KOREAN_PACK" =>  ['title', 'imgURL', 'link'],
+    "MARVEL" =>  ['title', 'imgURL', 'link'],
+    "ONE_PIECE" =>  ['title', 'imgURL', 'link'],
+    "THE_ORACLE" =>  ['title', 'imgURL', 'link'],
+    "TIDAL" =>  ['title', 'imgURL', 'link'],
+    "TREKKI" =>  ['title', 'imgURL', 'link'],
+    "UPDATER" =>  ['title', 'imgURL', 'link'],
+    "UPSCALE" =>  ['title', 'imgURL', 'link'],
+    "ENCODER_TWO" =>  ['tag', 'tagTwo', 'imgURL' ],
+    "WWE" =>  ['title', 'imgURL', 'link'],
 //     // "CROUCHING_TIGER" =>  ['title', 'imgURL', 'link'],
 //     // "HIDDEN_DRAGON" =>  ['title', 'imgURL'],
-// ];
-
-const FIELDS = [
-    "ADOBE_INFINITY" =>  [],
-    "ANIME_PACK" =>  [],
-    "ATTENBOROUGH" =>  [],
-    "AUDIO_EXPERT" =>  [],
-    "DJ" =>  [],
-    "DRUNKEN_MASTER" =>  [],
-    "ENCODER" =>  [],
-    "FORMULA_ONE" =>  [],
-    "GAME_MACHINE" =>  [],
-    "GUNDAM" =>  [],
-    "JAMES_BOND" =>  [],
-    "MARVEL" =>  [],
-    "ONE_PIECE" =>  [],
-    "THE_ORACLE" =>  [],
-    "TIDAL" =>  [],
-    "TREKKI" =>  [],
-    "UPDATER" =>  [],
-    "UPSCALE" =>  [],
-    "ENCODER_TWO" =>  [],
-    "WWE" =>  [],
-    // "CROUCHING_TIGER" =>  [],
-    // "HIDDEN_DRAGON" =>  [],
 ];
+
+// const FIELDS = [
+//     "ADOBE_INFINITY" =>  [],
+//     "ANIME_PACK" =>  [],
+//     "ATTENBOROUGH" =>  [],
+//     "AUDIO_EXPERT" =>  [],
+//     "DJ" =>  [],
+//     "DRUNKEN_MASTER" =>  [],
+//     "ENCODER" =>  [],
+//     "FORMULA_ONE" =>  [],
+//     "GAME_MACHINE" =>  [],
+//     "GUNDAM" =>  [],
+//     "JAMES_BOND" =>  [],
+//     "MARVEL" =>  [],
+//     "ONE_PIECE" =>  [],
+//     "THE_ORACLE" =>  [],
+//     "TIDAL" =>  [],
+//     "TREKKI" =>  [],
+//     "UPDATER" =>  [],
+//     "UPSCALE" =>  [],
+//     "ENCODER_TWO" =>  [],
+//     "WWE" =>  [],
+//     // "CROUCHING_TIGER" =>  [],
+//     // "HIDDEN_DRAGON" =>  [],
+// ];
 
 class TypeResetter /*{{{*/
 {
@@ -62,6 +63,7 @@ class TypeResetter /*{{{*/
 
     public function reset()/*{{{*/
     {
+        \R::freeze(false);
         $this->typeModel->wipe();
         $itemdata = $this->itemdata;
         $names = $this->getNames();
@@ -121,6 +123,7 @@ class FlairResetter /*{{{*/
 
     public function reset()/*{{{*/
     {
+        \R::freeze(false);
         $this->flairModel->wipe();
         $userdatas = $this->userdata;
         $itemdata = $this->itemdata;
@@ -139,6 +142,7 @@ class FlairResetter /*{{{*/
                 $this->flairModel->create($inputdata);
             }
         }
+        $this->flairModel->addIndex('user', 'user');
     }/*}}}*/
 }/*}}}*/
 

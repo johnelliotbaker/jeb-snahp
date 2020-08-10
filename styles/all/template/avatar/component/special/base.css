@@ -51,7 +51,6 @@ div.avatar_special p {
 .drunken_master,
 .gundam,
 .one_piece,
-.the_oracle,
 .trekki,
 .updater,
 .wwe,
@@ -66,6 +65,11 @@ div.avatar_special p {
 .attenborough,
 .upscale {
   height: 32px;
+}
+
+.the_oracle {
+  height: 38px;
+  max-height: 38px;
 }
 
 .crouching_tiger {

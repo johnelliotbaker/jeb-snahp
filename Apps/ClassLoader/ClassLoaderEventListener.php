@@ -17,7 +17,7 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 
     public function __construct(/*{{{*/
     ) {
-        $this->connectDatabase(false);
+        $this->connectDatabase(true);
     }/*}}}*/
 
     public static function getSubscribedEvents()/*{{{*/

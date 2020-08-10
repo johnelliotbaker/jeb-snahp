@@ -13,3 +13,6 @@ jeb.snahp.routing.mass_indexer.forum:
     defaults: { _controller: jeb.snahp.MassIndexerController:unindexForum}
     requirements:
         topidIc: \d+
+jeb.snahp.routing.mass_indexer.graveyard:
+    path: /snahp/mass-indexer/unindex-graveyard
+    defaults: { _controller: jeb.snahp.MassIndexerController:unindexGraveyard}
