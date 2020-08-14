@@ -1,20 +1,18 @@
-{% if B_SHOW_THANKS_AVATAR and postrow.THANKS_GIVEN %}
-
+{% if false and B_SHOW_THANKS_AVATAR and postrow.THANKS_GIVEN %}
 <!-- IF not $varset_0db99683f1 -->
   <!-- DEFINE $varset_0db99683f1 = true -->
   <!-- INCLUDECSS @jeb_snahp/avatar/component/thanks/base.css -->
 <!-- ENDIF -->
-
-{# <dd class="profile-posts"> #}
-{#   <strong>Has thanked:  #}
-{#     <span class="text_secondary"> #}
-{#       {postrow.THANKS_GIVEN} {% if postrow.THANKS_GIVEN==1 %}time{% else %}times{% endif %} #}
-{#     </span> #}
-{#   </strong> #}
-{# </dd> #}
+<dd class="profile-posts">
+  <strong>Has thanked:
+    <span class="text_secondary">
+      {postrow.THANKS_GIVEN} {% if postrow.THANKS_GIVEN==1 %}time{% else %}times{% endif %}
+    </span>
+  </strong>
+</dd>
 {% endif %}
 {% if B_SHOW_THANKS_AVATAR and postrow.THANKS_RECEIVED %}
-<dd>
+<dd class="profile-posts snahp">
   <strong>Thanks:
     <span class="text_secondary">
       {postrow.THANKS_RECEIVED}
@@ -24,13 +22,12 @@
 </dd>
 {% endif %}
 {% if B_SHOW_REQUESTS_SOLVED and postrow.REQUESTS_SOLVED %}
-<dd>
+<dd class="profile-posts snahp">
   <strong>Requests solved:
     <span class="text_secondary">
       {postrow.REQUESTS_SOLVED}
     </span>
     {% include '@jeb_snahp/avatar/component/request_solved_image/base.html' %}
   </strong>
-  <br />
 </dd>
 {% endif %}

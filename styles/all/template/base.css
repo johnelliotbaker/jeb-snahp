@@ -343,3 +343,7 @@ img.emotes_default.discord_44 {
 .postprofile dd.profile-posts {
   margin-top: 6px;
 }
+
+.postprofile dd.profile-posts.snahp {
+  margin-top: 0px;
+}
