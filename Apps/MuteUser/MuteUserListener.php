@@ -34,7 +34,5 @@ class MuteUserListener implements EventSubscriberInterface
     {
         $mode = $event["mode"];
         $this->sauth->reject_muted_user($this->user_id, $mode);
-        prn($user->data["snp_mute_reply"]);
-        prn($user->data["snp_mute_topic"]);
     }/*}}}*/
 }
