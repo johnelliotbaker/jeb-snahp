@@ -1,12 +1,9 @@
 <!-- INCLUDE @jeb_snahp/_overrides/overall_header.html -->
-
-<!-- IF not $rx_wiki -->
-<!-- DEFINE $rx_wiki = true -->
 <!-- INCLUDEJS @jeb_snahp/wiki/rx_wiki/bundle.js -->
-<!-- INCLUDECSS @jeb_snahp/wiki/rx_wiki/bundle.css -->
-<!-- INCLUDECSS @jeb_snahp/markdown.css -->
-<!-- ENDIF -->
-
+{USER_GROUP_MEMBERSHIP}
+<style type="text/css">
+{% include '@jeb_snahp/wiki/' ~ STYLE_NAME ~ '.css' %}
+{% include '@jeb_snahp/wiki/rx_wiki/bundle.css' %}
+</style>
 <div class="rx_wiki" data-data="{}"></div>
-
 <!-- INCLUDE @jeb_snahp/_overrides/overall_footer.html -->

@@ -1,0 +1,14 @@
+.icon, .button .icon, blockquote cite:before, .uncited:before {
+    display: inline-block;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-family: FontAwesome;
+    font-size: 14px;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+a { color: #176093; }
+a:hover { color: #e68c17; }
