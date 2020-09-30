@@ -215,6 +215,20 @@ parameters:
             title: 'Make it so'
             link: 'https://www.youtube.com/watch?v=sZt6eU5REN8'
 
+        # Necroposting
+        e_nc000: &e_nc000
+            url: https://i.imgur.com/vY9NTvl.png
+            url: https://i.imgur.com/kcMaK5H.png
+            url: https://i.imgur.com/y7ou8Rg.png
+            url: https://i.imgur.com/48jaPGK.png
+            url: https://i.imgur.com/zFA0yRm.jpg
+            url: https://i.imgur.com/SJZJyWq.png
+            # url: https://i.imgur.com/kcMaK5H.png
+            url: https://i.imgur.com/GmuPH1P.png
+            type: 0
+            css: discord_44
+            title: The foulest stench is in the air&#x0a;The funk of forty thousand years&#x0a;And grizzly ghouls from every tomb&#x0a;Are closing in to seal your doom&#x0a;And though you fight to stay alive&#x0a;Your body starts to shiver&#x0a;For no mere mortal can resist&#x0a;The evil of the Necropost&#x0a;
+            link: https://youtu.be/sOnqjkJTMaA?t=445
         # common alias
         e_comfy: *e_ds000
         e_inspect: *e_ds001
@@ -223,6 +237,7 @@ parameters:
         e_nom: *e_ds004
         e_cry: *e_tw003
         e_angry: *e_ds005
+        e_necro: *e_nc000
 
         # Anchors
         e_nq000: # Apps
