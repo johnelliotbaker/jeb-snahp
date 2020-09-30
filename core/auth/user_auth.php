@@ -263,6 +263,11 @@ class user_auth
         return isset($row['min']) ? $row['min'] : 0;
     }/*}}}*/
 
+    public function getUserGroups($user_id)
+    {
+        return $this->get_user_groups($user_id);
+    }
+
     public function get_user_groups($user_id)/*{{{*/
     {
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
