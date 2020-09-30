@@ -5,6 +5,22 @@ namespace jeb\snahp\core\Rest\Serializers;
 require_once 'ext/jeb/snahp/core/Rest/Utils.php';
 
 
+class ModelSerializer extends Serializer
+{
+    public function __construct($instance, $data, $kwargs=[])
+    {
+        if (!isset($kwargs['model'])) {
+            throw new \Exception('Model serializer expects a valid model instance in $kwargs. Error Code: 132e157142');
+        }
+        parent::__construct($instance, $data, $kwargs);
+        $this->model = $kwargs['model'];
+    }
+
+    public function getFields()
+    {
+        return $this->model->getFields();
+    }
+}
 
 class Serializer
 {
@@ -21,12 +37,25 @@ class Serializer
         }
     }
 
+    public function fillInitialDataWithDefaultValues()
+    {
+        $fields = $this->getFields();
+        if (!$this->initialData) {
+            $this->initialData = [];
+        }
+        foreach ($fields as $key => $field) {
+            if (!array_key_exists($key, $this->initialData)) {
+                $this->initialData[$key] = $field->default;
+            }
+        }
+    }
+
     public function isValid()
     {
         if (!property_exists($this, 'initialData')) {
             trigger_error(
                 'Cannot call isValid() as no data= keyword argument ' .
-                ' was passed when instantialing the serializer instance.'
+                ' was passed when instantiating the serializer instance.'
             );
         }
 
@@ -52,7 +81,7 @@ class Serializer
 
     public function validate($initialData)
     {
-        $fields = $this->model->getFields();
+        $fields = $this->getFields();
         $keys = array_filter(
             array_keys($initialData),
             function ($key) use ($fields) {
@@ -70,7 +99,7 @@ class Serializer
     {
         $validatedData = $this->validatedData();
         $serializedData = [];
-        foreach ($this->model->getFields() as $name => $klassname) {
+        foreach ($this->getFields() as $name => $klassname) {
             $serializedData[$name] = $klassname::serialize($validatedData[$name]);
         }
         $this->serializedData = $serializedData;
@@ -119,5 +148,10 @@ class Serializer
     public function data()
     {
         return $this->instance;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
     }
 }
