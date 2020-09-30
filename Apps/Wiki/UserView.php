@@ -19,7 +19,7 @@ class UserView
     {
         $userId = $this->sauth->userId;
         $isDev = $this->sauth->is_dev();
-        $isDev = true;
+        // $isDev = true;
         $isKeeper = $isDev || $this->sauth->user_belongs_to_groupset($userId, 'Keepers');
         $data = [
             'userId' => (int) $userId,
