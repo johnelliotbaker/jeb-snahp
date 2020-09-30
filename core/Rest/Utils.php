@@ -12,8 +12,9 @@ function getRequestData($request)
         $params = file_get_contents('php://input');
         return json_decode($params, true);
     }
+    $data = [];
     foreach ($request->variable_names() as $varname) {
-        $data[$varname] = $request->variable($varname, '', true);
+        $data[$varname] = htmlspecialchars_decode($request->variable($varname, '', true));
     }
     return $data;
 }
@@ -32,3 +33,7 @@ function buildAbsoluteUri($request, $data=[])
     return $url;
 }
 
+function getOwnList($bean, $tableName)
+{
+    return $bean->{'own' . ucfirst($tableName) . 'List'};
+}
