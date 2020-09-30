@@ -10,12 +10,17 @@ class Model
 {
     protected const FIELDS_NAMESPACE = 'jeb\\snahp\\core\\Rest\\Fields\\';
     protected $requiredFields = [];
+    protected $query = [];
 
     public function __construct()
     {
         global $db, $user;
         $this->db = $db;
         $this->userId = $user->data['user_id'];
+        $this->query = [
+            'statement' => '1=1',
+            'data' => [],
+        ];
     }
 
     public function getFields()/*{{{*/
@@ -25,17 +30,26 @@ class Model
 
     public function all()/*{{{*/
     {
-        return \R::findAll($this::TABLE_NAME, 'LIMIT 500');
+        return R::findAll($this::TABLE_NAME, 'LIMIT 500');
     }/*}}}*/
 
     public function getObject($statement='', $data=[])/*{{{*/
     {
-        return \R::findOne($this::TABLE_NAME, $statement, $data);
+        return R::findOne($this::TABLE_NAME, $statement, $data);
     }/*}}}*/
 
     public function getQueryset($statement='', $data=[])/*{{{*/
     {
-        return \R::find($this::TABLE_NAME, $statement, $data);
+        return R::find($this::TABLE_NAME, $statement, $data);
+    }/*}}}*/
+
+    public function createDummy($data)/*{{{*/
+    {
+        $object = R::xdispense($this::TABLE_NAME);
+        foreach ($data as $k => $v) {
+            $object->{$k} = $v;
+        }
+        return $object;
     }/*}}}*/
 
     public function create($data)/*{{{*/
@@ -45,12 +59,12 @@ class Model
                 throw new MissingRequiredField("${field} is missing. Error Code: 9d2e4f02b5");
             }
         }
-        $instance = \R::xdispense($this::TABLE_NAME);
+        $instance = R::xdispense($this::TABLE_NAME);
         foreach ($data as $name => $value) {
             $instance->$name = $value;
         }
         $this->performPreCreate($instance);
-        \R::store($instance);
+        R::store($instance);
         return $instance;
     }/*}}}*/
 
@@ -64,7 +78,7 @@ class Model
             $instance->$name = $value;
         }
         $this->performPreUpdate($instance);
-        \R::store($instance);
+        R::store($instance);
         return $instance;
     }/*}}}*/
 
