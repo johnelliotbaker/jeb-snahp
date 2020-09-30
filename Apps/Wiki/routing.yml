@@ -1,59 +1,68 @@
-jeb.snahp.routing.wiki.article_view:
-    path: /snahp/wiki/article/{groupName}/{articleName}
-    defaults: { _controller: jeb.snahp.apps.Wiki.ArticleView:view}
-    # requirements:
-    #     group: \s+
-    #     articleName: \s+
-
 jeb.snahp.routing.wiki.navigation_view:
     path: /snahp/wiki/nav
-    defaults: { _controller: jeb.snahp.apps.Wiki.NavigationView:view}
+    defaults: { _controller: jeb.snahp.Apps.Wiki.NavigationView:view}
 
 jeb.snahp.routing.wiki.app:
-    path: /snahp/wiki/app/article/{groupName}/{articleName}
-    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:test}
-jeb.snahp.routing.wiki.test:
-    path: /snahp/wiki/test
-    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:test}
-    # requirements:
-    #     mode: \s+
-# jeb.snahp.routing.wiki.list:
-#     path: /snahp/wiki
-#     defaults: { _controller: jeb.snahp.WikiController:createListView}
+    path: /wiki-app/{action}/{articleName}
+    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:view}
 
-jeb.snahp.routing.wiki.list_entry:
-    path: /snahp/wiki/entry
-    defaults: { _controller: jeb.snahp.Apps.Wiki.EntryListCreateAPIView:dispatch}
-jeb.snahp.routing.wiki.list_group_entry:
-    path: /snahp/wiki/group/{id}/entry
-    defaults: { _controller: jeb.snahp.Apps.Wiki.EntryInGroupListCreateAPIView:view}
+jeb.snahp.routing.wiki.app_passthrough:
+    path: /wiki-app/{action}
+    defaults: { _controller: jeb.snahp.apps.Wiki.WikiController:view}
+
+
+jeb.snahp.routing.wiki.user_view:
+    path: /snahp/wiki/user
+    defaults: { _controller: jeb.snahp.apps.Wiki.UserView:view}
+
+jeb.snahp.routing.wiki.user_groups_view:
+    path: /snahp/wiki/user-groups
+    defaults: { _controller: jeb.snahp.apps.Wiki.UserGroupsView:view}
+
+jeb.snahp.routing.wiki.setup_database:
+    path: /snahp/wiki/init
+    defaults: { _controller: jeb.snahp.apps.Wiki.SetupDatabaseView:view}
+
+
+#########
+#  API  #
+#########
+
+jeb.snahp.routing.wiki.retrieve_article:
+    path: /w/{articleName}
+    defaults: { _controller: jeb.snahp.Apps.Wiki.WikiController:view}
+
+jeb.snahp.routing.wiki.list_article_group:
+    path: /snahp/wiki/article-group
+    defaults: { _controller: jeb.snahp.Apps.Wiki.ArticleGroupListCreateAPIView:dispatch}
+jeb_snahp_routing.wiki.retrieve_article_group:
+    path: /snahp/wiki/article-group/{id}
+    defaults: { _controller: jeb.snahp.Apps.Wiki.ArticleGroupRetrieveUpdateDestroyAPIView:dispatch}
     requirements:
         id: \d+
-jeb_snahp_routing.wiki.retrieve_entry:
-    path: /snahp/wiki/entry/{id}
-    defaults: { _controller: jeb.snahp.EntryRetrieveUpdateDestroyAPIView:dispatch}
+
+jeb.snahp.routing.wiki.list_article_entry:
+    path: /snahp/wiki/article-entry
+    defaults: { _controller: jeb.snahp.Apps.Wiki.ArticleEntryListCreateAPIView:dispatch}
+jeb_snahp_routing.wiki.retrieve_article_entry:
+    path: /snahp/wiki/article-entry/{id}
+    defaults: { _controller: jeb.snahp.Apps.Wiki.ArticleEntryRetrieveUpdateDestroyAPIView:dispatch}
     requirements:
         id: \d+
-
-jeb.snahp.routing.wiki.list_group:
-    path: /snahp/wiki/group
-    defaults: { _controller: jeb.snahp.Apps.Wiki.GroupListCreateAPIView:dispatch}
-jeb_snahp_routing.wiki.retrieve_group:
-    path: /snahp/wiki/group/{id}
-    defaults: { _controller: jeb.snahp.GroupRetrieveUpdateDestroyAPIView:dispatch}
+jeb_snahp_routing.wiki.retrieve_article_entry_by_name:
+    path: /snahp/wiki/article/{articleName}
+    defaults: { _controller: jeb.snahp.Apps.Wiki.ArticleEntryRetrieveUpdateDestroyAPIView:viewByName}
     requirements:
-        id: \d+
+        articleName: "[ a-zA-Z0-9\-]+"
 
-
-
-# jeb.snahp.routing.wiki.list_history0:
-#     path: /snahp/wiki/history
-#     defaults: { _controller: jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:dispatch}
-#     requirements:
-#         id: \d+
-jeb.snahp.routing.wiki.list_history:
-    path: /snahp/wiki/entry/{id}/history
-    defaults:
-        _controller: jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:view
+jeb.snahp.routing.wiki.create_many_group_permission:
+    path: /snahp/wiki/group-permission-create-many
+    defaults: { _controller: jeb.snahp.apps.Wiki.GroupPermissionListCreateAPIView:createMany}
+jeb.snahp.routing.wiki.list_group_permission:
+    path: /snahp/wiki/group-permission
+    defaults: { _controller: jeb.snahp.apps.Wiki.GroupPermissionListCreateAPIView:dispatch}
+jeb_snahp_routing.wiki.retrieve_group_permission:
+    path: /snahp/wiki/group-permission/{id}
+    defaults: { _controller: jeb.snahp.apps.Wiki.GroupPermissionRetrieveUpdateDestroyAPIView:dispatch}
     requirements:
         id: \d+

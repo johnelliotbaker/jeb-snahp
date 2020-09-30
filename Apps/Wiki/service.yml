@@ -2,79 +2,123 @@ imports:
     # - { resource: 'mute_user/parameters.yml' }
 services:
 
-    jeb.snahp.Apps.Wiki.HistoryListCreateAPIView:
-        class: jeb\snahp\Apps\Wiki\HistoryListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
 
-    jeb.snahp.Apps.Wiki.EntryListCreateAPIView:
-        class: jeb\snahp\Apps\Wiki\EntryListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.Apps.Wiki.EntryInGroupListCreateAPIView:
-        class: jeb\snahp\Apps\Wiki\EntryInGroupListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.EntryRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\Wiki\EntryRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-
-    jeb.snahp.Apps.Wiki.GroupListCreateAPIView:
-        class: jeb\snahp\Apps\Wiki\GroupListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.GroupRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\Wiki\GroupRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
+    ###########
+    #  VIEWS  #
+    ###########
 
 
     jeb.snahp.Apps.Wiki.NavigationView:
         class: jeb\snahp\Apps\Wiki\NavigationView
         arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.Apps.Wiki.ArticleView:
-        class: jeb\snahp\Apps\Wiki\ArticleView
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleGroup
+            - @jeb.snahp.Apps.Wiki.Models.GroupPermission
+
+    jeb.snahp.Apps.Wiki.UserView:
+        class: jeb\snahp\Apps\Wiki\UserView
         arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
+            - @request
+            - @jeb.snahp.auth.user_auth
+
+    jeb.snahp.Apps.Wiki.UserGroupsView:
+        class: jeb\snahp\Apps\Wiki\UserGroupsView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+
+
+    ###############
+    #  API VIEWS  #
+    ###############
+
+
+    jeb.snahp.Apps.Wiki.ArticleGroupListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\ArticleGroupListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleGroup
+    jeb.snahp.Apps.Wiki.ArticleGroupRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Wiki\ArticleGroupRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleGroup
+
+    jeb.snahp.Apps.Wiki.GroupPermissionListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\GroupPermissionListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.GroupPermission
+    jeb.snahp.Apps.Wiki.GroupPermissionRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Wiki\GroupPermissionRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.GroupPermission
+
+    jeb.snahp.Apps.Wiki.ArticleEntryListCreateAPIView:
+        class: jeb\snahp\Apps\Wiki\ArticleEntryListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleEntry
+    jeb.snahp.Apps.Wiki.ArticleEntryRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Wiki\ArticleEntryRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleEntry
+
+
+    ############
+    #  MODELS  #
+    ############
+
+
+    jeb.snahp.Apps.Wiki.Models.GroupPermission:
+        class: jeb\snahp\Apps\Wiki\Models\GroupPermission
+        arguments:
+            - @dbal.conn
+
+    jeb.snahp.Apps.Wiki.Models.ArticleGroup:
+        class: jeb\snahp\Apps\Wiki\Models\ArticleGroup
+
+    jeb.snahp.Apps.Wiki.Models.History:
+        class: jeb\snahp\Apps\Wiki\Models\History
+
+    jeb.snahp.Apps.Wiki.Models.ArticleEntry:
+        class: jeb\snahp\Apps\Wiki\Models\ArticleEntry
+        arguments:
+            - @jeb.snahp.Apps.Wiki.Models.History
+
 
 
     jeb.snahp.Apps.Wiki.WikiController:
         class: jeb\snahp\Apps\Wiki\WikiController
         arguments:
-            - '@dbal.conn'
-            - '@user'
-            - '@config'
-            - '@request'
-            - '@template'
-            - '@service_container'
-            - '@controller.helper'
-            - '%jeb.snahp.tables%'
-            - '@jeb.snahp.auth.user_auth'
-            # - '@jeb.snahp.Apps.Wiki.WikiHelper'
-    # jeb.snahp.Apps.Wiki.WikiHelper: # HELPER
-    #     class: jeb\snahp\Apps\Wiki\WikiHelper
-    #     arguments:
-    #         - '@dbal.conn'
-    #         - '@user'
-    #         - '@template'
-    #         - '%jeb.snahp.tables%'
-    #         - '@jeb.snahp.auth.user_auth'
-    # jeb.snahp.Apps.Wiki.WikiEventListener:
-    #     class: jeb\snahp\Apps\Wiki\WikiEventListener
-    #     arguments:
-    #         - '@user'
-    #         - '@config'
-    #         - '@jeb.snahp.auth.user_auth'
-    #         - '@jeb.snahp.WikiHelper'
-    #     tags:
-    #         - { name: event.listener }
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+
+    jeb.snahp.Apps.Wiki.SetupDatabaseView:
+        class: jeb\snahp\Apps\Wiki\SetupDatabaseView
+        arguments:
+            - @dbal.conn
+            - @user
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Wiki.Models.ArticleEntry
+            - @jeb.snahp.Apps.Wiki.Models.History
+            - @jeb.snahp.Apps.Wiki.Models.ArticleGroup
+            - @jeb.snahp.Apps.Wiki.Models.GroupPermission

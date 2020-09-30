@@ -4,6 +4,8 @@ namespace jeb\snahp\Apps\Wiki;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
+use \R as R;
+
 class WikiController
 {
     protected $db;/*{{{*/
@@ -42,15 +44,29 @@ class WikiController
         // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
-    public function test()
+    public function view()/*{{{*/
     {
         $cfg['tpl_name'] = '@jeb_snahp/wiki/rx_wiki.html';
         $cfg['title'] = 'Mass Mover V3';
         $this->table_prefix = 'phpbb_';
         $this->setupCustomCss();
+        $this->embedGroup();
         return $this->phpHelper->render($cfg['tpl_name'], $cfg['title']);
-        // return new JsonResponse(['results'=>$results, 'patch'=> $patch]);
-    }
+    }/*}}}*/
+
+    public function embedGroup()/*{{{*/
+    {
+        $groups = $this->sauth->get_user_groups($this->sauth->userId);
+        $hidden_fields = [
+            'userGroups' => implode(',', $groups),
+        ];
+        $s_hidden_fields = build_hidden_fields($hidden_fields);
+        $this->template->assign_vars(
+            [
+            'USER_GROUP_MEMBERSHIP' => $s_hidden_fields,
+            ]
+        );
+    }/*}}}*/
 
     public function testDiff()/*{{{*/
     {
@@ -126,5 +142,4 @@ class WikiController
             ]
         );
     }/*}}}*/
-
 }
