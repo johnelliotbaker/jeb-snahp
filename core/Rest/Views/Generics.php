@@ -8,38 +8,114 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 require_once 'ext/jeb/snahp/core/Rest/Serializers.php';
 require_once 'ext/jeb/snahp/core/Rest/Utils.php';
 
+use \R as R;
+
+trait View
+{
+    protected $permissionClasses = [];
+
+    public function getPermissions()
+    {
+        $perms = [];
+        foreach ($this->permissionClasses as $k => $v) {
+            $perms[] = $v;
+        }
+        return $perms;
+    }
+
+    public function checkPermissions($request, $userId, $kwargs=[])
+    {
+        if (!$perms = $this->getPermissions()) {
+            return;
+        }
+        foreach ($perms as $perm) {
+            if ($perm->hasPermission($request, $userId, $kwargs)) {
+                return;
+            }
+        }
+        throw new \Exception('You do not have the permission to view this resource. Error Code: afb80c4efc');
+    }
+
+    public function checkObjectPermissions($request, $userId, $object, $kwargs=[])
+    {
+        if (!$perms = $this->getPermissions()) {
+            return;
+        }
+        foreach ($perms as $perm) {
+            if ($perm->hasObjectPermission($request, $userId, $object, $kwargs)) {
+                return;
+            }
+        }
+        throw new \Exception('You do not have the permission to view this resource. Error Code: 17f3c0bc47');
+    }
+}
+
+trait ModelSerializerMixin
+{
+    public function getSerializer($instance=null, $data=null, $kwargs=[])/*{{{*/
+    {
+        if ($this->model) {
+            $kwargs['model'] = $this->model;
+        }
+        return new $this->serializerClass($instance, $data, $kwargs);
+    }/*}}}*/
+}
+
+trait SortByPriorityMixin
+{
+    public function getQueryset()/*{{{*/
+    {
+        $data = getRequestData($this->request);
+        if (!$data) {
+            return array_values(R::find($this->model::TABLE_NAME, 'ORDER BY priority DESC'));
+        }
+        $sqlAry = [];
+        foreach ($data as $varname => $value) {
+            $sqlAry[] = "${varname}='${value}'";
+        }
+        $sqlAry[] = 'ORDER BY priority DESC';
+        $where = implode(' AND ', $sqlAry);
+        return array_values(R::find($this->model::TABLE_NAME, $where));
+    }/*}}}*/
+}
+
 class GenericAPIView
 {
+    use View;
+    use ModelSerializerMixin;
+
     protected $queryset;
     protected $serializerClass;
     protected $paginationClass;
 
 
-    public function getSerializer($instance=null, $data=null, $kwargs=[])/*{{{*/
-    {
-        return new $this->serializerClass($instance, $data, $kwargs);
-    }/*}}}*/
+    // public function getSerializer($instance=null, $data=null, $kwargs=[])/*{{{*/
+    // {
+    //     return new $this->serializerClass($instance, $data, $kwargs);
+    // }/*}}}*/
 
     public function getObject()/*{{{*/
     {
         $pk = (int) $this->params['pk'];
-        return \R::findOneForUpdate($this->model::TABLE_NAME, 'id=?', [$pk]);
+        $object = R::findOne($this->model::TABLE_NAME, 'id=?', [$pk]);
+        if (!$object) {
+            throw new \Exception('Request resource was not found. Error Code: 3807589034');
+        }
+        $this->checkObjectPermissions($this->request, $this->sauth->userId, $object);
+        return $object;
     }/*}}}*/
 
     public function getQueryset()/*{{{*/
     {
         $data = getRequestData($this->request);
         if (!$data) {
-            return array_values(\R::find($this->model::TABLE_NAME));
+            return array_values(R::find($this->model::TABLE_NAME));
         }
         foreach ($data as $varname => $value) {
             $sqlAry[] = "${varname}='${value}'";
         }
         $where = implode(' AND ', $sqlAry);
-        return array_values(\R::find($this->model::TABLE_NAME, $where));
-
-        // $queryset = $this->queryset;
-        // return $queryset;
+        return array_values(R::find($this->model::TABLE_NAME, $where));
     }/*}}}*/
 
     public function filterQueryset($queryset)/*{{{*/
@@ -58,6 +134,11 @@ class GenericAPIView
     public function getPaginatedResponse($data)/*{{{*/
     {
         return $this->paginator->getPaginatedResponse($data);
+    }/*}}}*/
+
+    public function getForeignPk($default='')/*{{{*/
+    {
+        return $this->request->variable($this->foreignNameParam, $default);
     }/*}}}*/
 }
 
@@ -173,9 +254,15 @@ trait RetrieveModelMixin
     public function retrieve($request)/*{{{*/
     {
         $instance = $this->getObject();
-        return new JsonResponse($instance);
-        // $serializer = $this->getSerializer($instance);
-        // return new JsonResponse($serializer->initialData);
+        if (!$instance) {
+            return new JsonResponse([], 404);
+        }
+        $serializer = $this->getSerializer($instance, $instance->export());
+        $serializer->fillInitialDataWithDefaultValues();
+        $serializer->isValid();
+        $serializedData = $serializer->serialize();
+        $serializedData['id'] = $instance->id;
+        return new JsonResponse($serializedData);
     }/*}}}*/
 }
 
@@ -183,12 +270,12 @@ trait ListModelMixin
 {
     public function list($request)/*{{{*/
     {
+        $this->checkPermissions($request, $this->sauth->userId);
         $queryset = $this->filterQueryset($this->getQueryset());
         $page = $this->paginateQueryset($queryset);
         if ($page) {
             $serializer = $this->getSerializer($page->objectList);
             return $this->getPaginatedResponse($serializer->data());
-            // return new JsonResponse($serializer->data());
         }
         $serializer = $this->getSerializer($queryset);
         return new JsonResponse($serializer->data());
@@ -199,7 +286,9 @@ trait CreateModelMixin
 {
     public function create($request)/*{{{*/
     {
+        $this->checkPermissions($request, $this->sauth->userId);
         $serializer = $this->getSerializer(null, getRequestData($request));
+        $serializer->fillInitialDataWithDefaultValues();
         if ($serializer->isValid()) {
             $instance = $this->performCreate($serializer);
             return new JsonResponse($instance, 201);
@@ -225,7 +314,7 @@ trait CreateModelMixin
         $selfName = $this->model::TABLE_NAME;
         $ownlistname = 'own' . ucfirst($selfName) . 'List';
         $foreignInstance->$ownlistname[] = $instance;
-        \R::store($foreignInstance);
+        R::store($foreignInstance);
         return $instance;
     }/*}}}*/
 
@@ -233,7 +322,7 @@ trait CreateModelMixin
     {
         $foreignName = $this->model::FOREIGN_NAME;
         $foreignPk = $this->getForeignPk(0);
-        $foreignInstance = \R::findOneForUpdate($foreignName, 'id=?', [$foreignPk]);
+        $foreignInstance = R::findOne($foreignName, 'id=?', [$foreignPk]);
         if (!$foreignInstance) {
             http_response_code(404);
             $selfName = $this->model::TABLE_NAME;
@@ -258,6 +347,6 @@ trait DestroyModelMixin
 
     public function performDestroy($instance)/*{{{*/
     {
-        \R::trash($instance);
+        R::trash($instance);
     }/*}}}*/
 }
