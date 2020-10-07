@@ -232,8 +232,8 @@ parameters:
         e_nc001:
             type: 0
             url: https://i.imgur.com/sHtZWky.png
-            title: Double, double toil and trouble. Fire burn and caldron bubble.
-            link: https://youtu.be/BUixJdzxfCA?t=7
+            title: Double, double toil and trouble&#x0a;Fire burn and caldron bubble
+            link: https://youtu.be/AOIVPqDm06g?t=17
         # common alias
         e_comfy: *e_ds000
         e_inspect: *e_ds001
