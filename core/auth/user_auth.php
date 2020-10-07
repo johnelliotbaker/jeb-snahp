@@ -65,6 +65,15 @@ class user_auth
         }
     }/*}}}*/
 
+    public function reject_new_users($suffix='')/*{{{*/
+    {
+        $groups = [1, 7]; // GUESTS=1, NEWLY_REGISTERED=7
+        if (in_array((int) $this->user->data['group_id'], $groups)) {
+            throw new \Exception("You do not have the permission to access this page. $suffix");
+        }
+    }/*}}}*/
+
+
     public function is_valid_user_id($user_id)/*{{{*/
     {
         $user_id = (int) $user_id;
