@@ -2,9 +2,9 @@
 
 namespace jeb\snahp\Apps\MiniBoard;
 
-require_once 'ext/jeb/snahp/core/Rest/Paginations/PageNumberPagination.php';
-require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/Apps/MiniBoard/Models/Topic.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/PageNumberPagination.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
+require_once '/var/www/forum/ext/jeb/snahp/Apps/MiniBoard/Models/Topic.php';
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Serializers\Serializer;

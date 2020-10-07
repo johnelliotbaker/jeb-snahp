@@ -2,10 +2,10 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php';
-require_once 'ext/jeb/snahp/Apps/Wiki/Models/GroupPermission.php';
-require_once 'ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
+require_once '/var/www/forum/ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php';
+require_once '/var/www/forum/ext/jeb/snahp/Apps/Wiki/Models/GroupPermission.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\Apps\Wiki\Models\ArticleGroup;

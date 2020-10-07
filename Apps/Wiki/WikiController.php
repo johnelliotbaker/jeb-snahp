@@ -28,7 +28,6 @@ class WikiController
         $phpHelper,
         $tbl,
         $sauth
-        // $helper
     ) {
         $this->db = $db;
         $this->user = $user;
@@ -39,9 +38,8 @@ class WikiController
         $this->phpHelper = $phpHelper;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-        // $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
-        // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth->reject_anon('Error Code: d77a3c5231');
     }/*}}}*/
 
     public function view()/*{{{*/

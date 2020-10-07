@@ -2,8 +2,8 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
 
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;

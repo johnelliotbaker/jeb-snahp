@@ -2,9 +2,9 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php';
-require_once 'ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
+require_once '/var/www/forum/ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
 
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
@@ -34,20 +34,21 @@ class NavigationView extends ListCreateAPIView
         $this->model = $model;
         $this->permissionClasses = [new AllowNonePermission()];
         $this->permission = new NavPermission($permissionModel, $sauth);
+        $this->sauth->reject_anon('Error Code: db7f8ce167');
     }
 
-    public function view()
+    public function view()/*{{{*/
     {
         return parent::dispatch();
-    }
+    }/*}}}*/
 
-    public function filterQueryset($queryset)
+    public function filterQueryset($queryset)/*{{{*/
     {
         $serializer = $this->getSerializer($queryset);
         return $this->permission->filter($this->request, $serializer->data());
-    }
+    }/*}}}*/
 
-    public function list($request)
+    public function list($request)/*{{{*/
     {
         // checkPermissions is not called in navigation view
         // Instead, filterQueryset filters for permitted article groups
@@ -60,9 +61,9 @@ class NavigationView extends ListCreateAPIView
             }
         }
         return new JsonResponse($data);
-    }
+    }/*}}}*/
 
-    public function makeGroup($group)
+    public function makeGroup($group)/*{{{*/
     {
         $name = $group->name;
         $id = $group->id;
@@ -78,7 +79,7 @@ class NavigationView extends ListCreateAPIView
             $entries
         );
         return array_values($entries);
-    }
+    }/*}}}*/
 }
 
 
@@ -90,7 +91,7 @@ class NavPermission extends UserPermission
         parent::__construct($permissionModel, $sauth->userId);
     }
 
-    public function filter($request, $articleGroups)
+    public function filter($request, $articleGroups)/*{{{*/
     {
         if ($this->sauth->is_dev()) {
             return $articleGroups;
@@ -112,5 +113,5 @@ class NavPermission extends UserPermission
                 }
             }
         );
-    }
+    }/*}}}*/
 }

@@ -2,8 +2,8 @@
 
 namespace jeb\snahp\Apps\UserFlair;
 
-require_once 'ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once 'ext/jeb/snahp/Apps/UserFlair/Models/Type.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
+require_once '/var/www/forum/ext/jeb/snahp/Apps/UserFlair/Models/Type.php';
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Serializers\Serializer;

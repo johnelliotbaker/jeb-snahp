@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\core\Rest;
 
-require_once 'ext/jeb/snahp/core/Rest/Fields/All.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Fields/All.php';
 
 use \R as R;
 
@@ -54,6 +54,7 @@ class Model
 
     public function create($data)/*{{{*/
     {
+        $this->performPreCreate($data);
         foreach ($this->requiredFields as $field) {
             if (!in_array($field, array_keys($data))) {
                 throw new MissingRequiredField("${field} is missing. Error Code: 9d2e4f02b5");
@@ -63,12 +64,16 @@ class Model
         foreach ($data as $name => $value) {
             $instance->$name = $value;
         }
-        $this->performPreCreate($instance);
         R::store($instance);
+        $this->performPostCreate($instance);
         return $instance;
     }/*}}}*/
 
     public function performPreCreate($instance)/*{{{*/
+    {
+    }/*}}}*/
+
+    public function performPostCreate($instance)/*{{{*/
     {
     }/*}}}*/
 
@@ -79,10 +84,15 @@ class Model
         }
         $this->performPreUpdate($instance);
         R::store($instance);
+        $this->performPostUpdate($instance);
         return $instance;
     }/*}}}*/
 
     public function performPreUpdate($instance)/*{{{*/
+    {
+    }/*}}}*/
+
+    public function performPostUpdate($instance)/*{{{*/
     {
     }/*}}}*/
 
@@ -122,7 +132,7 @@ class Model
     public function getUserInfo($userId)/*{{{*/
     {
         global $db;
-        $sql = 'SELECT user_avatar, username, user_colour from ' . USERS_TABLE . " WHERE user_id=$userId";
+        $sql = 'SELECT user_id, user_avatar, username, user_colour from ' . USERS_TABLE . " WHERE user_id=$userId";
         $result = $db->sql_query($sql, 60);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
@@ -133,20 +143,25 @@ class Model
     {
     }/*}}}*/
 
-    public function wipe()
+    public function getForeignObject($pk)/*{{{*/
+    {
+        return R::load($this::FOREIGN_NAME, $pk);
+    }/*}}}*/
+
+    public function wipe()/*{{{*/
     {
         R::wipe($this::TABLE_NAME);
-    }
+    }/*}}}*/
 
-    public function addUniqueIndex($columns)
+    public function addUniqueIndex($columns)/*{{{*/
     {
         R::getWriter()->addUniqueIndex($this::TABLE_NAME, $columns);
-    }
+    }/*}}}*/
 
-    public function addIndex($name, $column)
+    public function addIndex($name, $column)/*{{{*/
     {
         R::getWriter()->addIndex($this::TABLE_NAME, $name, $column);
-    }
+    }/*}}}*/
 }
 
 

@@ -13,6 +13,7 @@ class UserView
     {
         $this->request = $request;
         $this->sauth = $sauth;
+        $this->sauth->reject_anon('Error Code: cee5910f65');
     }/*}}}*/
 
     public function view()/*{{{*/

@@ -5,8 +5,8 @@ namespace jeb\snahp\core\Rest\Views;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
-require_once 'ext/jeb/snahp/core/Rest/Serializers.php';
-require_once 'ext/jeb/snahp/core/Rest/Utils.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Serializers.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php';
 
 use \R as R;
 
@@ -304,7 +304,13 @@ trait CreateModelMixin
         } else {
             $instance = $serializer->save();
         }
+        $instance = $this->performPostCreate($instance);
         return $instance;
+    }/*}}}*/
+
+    public function performPostCreate($object)/*{{{*/
+    {
+        return $object;
     }/*}}}*/
 
     public function performCreateWithForeignKey($serializer)/*{{{*/

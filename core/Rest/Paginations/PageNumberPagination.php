@@ -4,9 +4,9 @@ namespace jeb\snahp\core\Rest\Paginations;
 
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
-require_once 'ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php';
-require_once 'ext/jeb/snahp/core/Rest/Paginations/Page.php';
-require_once 'ext/jeb/snahp/core/Rest/Utils.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/Page.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php';
 
 use jeb\snahp\core\Rest\Paginations\InvalidPage;
 

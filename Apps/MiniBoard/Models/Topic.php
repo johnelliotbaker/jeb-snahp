@@ -3,7 +3,7 @@
 /*{{{*/
 namespace jeb\snahp\Apps\MiniBoard\Models;
 
-require_once 'ext/jeb/snahp/core/Rest/Model.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
 
 use jeb\snahp\core\Rest\Model;
 use jeb\snahp\core\Rest\Fields\StringField;

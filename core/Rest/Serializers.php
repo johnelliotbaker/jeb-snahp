@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\core\Rest\Serializers;
 
-require_once 'ext/jeb/snahp/core/Rest/Utils.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php';
 
 
 class ModelSerializer extends Serializer

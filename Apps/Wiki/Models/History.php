@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\Apps\Wiki\Models;
 
-require_once 'ext/jeb/snahp/core/Rest/Model.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
 
 use jeb\snahp\core\Rest\Model;
 use jeb\snahp\core\Rest\Fields\IntegerField;

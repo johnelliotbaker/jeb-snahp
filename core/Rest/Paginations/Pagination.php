@@ -2,8 +2,8 @@
 
 namespace jeb\snahp\core\Rest\Paginations;
 
-require_once 'ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php';
-require_once 'ext/jeb/snahp/core/Rest/Paginations/Page.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php';
+require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/Page.php';
 
 use jeb\snahp\core\Rest\Paginations\InvalidPage;
 
