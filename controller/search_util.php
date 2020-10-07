@@ -1,13 +1,12 @@
-<?php 
+<?php
 namespace jeb\snahp\controller;
 
 use jeb\snahp\core\base;
 use Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse; 
+use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class search_util extends base
 {
-
     protected $table_prefix;
 
     public function __construct($table_prefix)/*{{{*/
@@ -17,17 +16,15 @@ class search_util extends base
         $this->STBB = 'st'; // [st]
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
+    public function handle($mode)/*{{{*/
     {
         include_once('ext/jeb/snahp/core/functions_utility.php');
         include_once('includes/functions_content.php');
-        if (!$this->config['snp_inv_b_master'])
-        {
+        if (!$this->config['snp_inv_b_master']) {
             trigger_error('Custom search system is disabled by the administrator. Error Code: ce6517a9ac');
         }
         $this->reject_anon();
-        switch ($mode)
-        {
+        switch ($mode) {
             case 'index_topic': // To solve request
                 $cfg = [];
                 $this->index_topic($cfg);
@@ -75,30 +72,24 @@ class search_util extends base
     private function handle_common_words($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             add_form_key('jeb_snp');
             // IF SUBMITTED
-            if ($this->request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $word_to_search = $this->request->variable('word_to_search', '');
                 $word_to_remove = $this->request->variable('word_to_remove', '');
-                if ($word_to_remove)
-                {
+                if ($word_to_remove) {
                     $this->remove_common_word($word_to_remove);
                 }
-                if ($word_to_search)
-                {
+                if ($word_to_search) {
                     $this->add_common_word($word_to_search);
                 }
             }
             $data = $this->select_common_words();
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $group = array(
                     'WORD_ID'    => $row['word_id'],
                     'WORD_TEXT'    => $row['word_text'],
@@ -115,8 +106,7 @@ class search_util extends base
     private function handle_mysql_search($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $time = microtime(true);
             add_form_key('jeb_snp');
             // IF SUBMITTED
@@ -136,8 +126,7 @@ class search_util extends base
                 'PAGINATION' => $pagination,
             ]);
             $count = $start+1;
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $group = array(
                     'TOPIC_TITLE' => $row['topic_title'],
                     'TOPIC_ID'    => $row['topic_id'],
@@ -161,8 +150,7 @@ class search_util extends base
     private function mysql_search($strn, $per_page=10, $start=0, $b_posts=true)/*{{{*/
     {
         $strn = $this->db->sql_escape($strn);
-        if ($b_posts)
-        {
+        if ($b_posts) {
             $sql_ary = [
                 'SELECT'   => 'COUNT(*) as count',
                 // 'SELECT'   => 'COUNT(*) as count t.topic_title, t.topic_id',
@@ -179,9 +167,7 @@ class search_util extends base
             $sql_count = $this->db->sql_build_query('SELECT', $sql_ary);
             $sql_ary['SELECT'] =  't.topic_title, t.topic_id, p.post_id';
             $sql = $this->db->sql_build_query('SELECT', $sql_ary);
-        }
-        else
-        {
+        } else {
             $sql_count = 'SELECT COUNT(*) as count from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%'";
             $sql = 'SELECT * from ' . TOPICS_TABLE . ' WHERE topic_title LIKE ' . "'%{$strn}%' ORDER BY topic_id DESC";
         }
@@ -217,25 +203,21 @@ class search_util extends base
         global $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher;
         // Set indexing parameters
         $tid = $this->request->variable('t', 0);
-        if (!$tid)
-        {
+        if (!$tid) {
             trigger_error('You must provide topic id. Error Code: 245903c3ce');
         }
         // Select the search method and do some additional checks to ensure it can actually be utilised
         $search_type = $config['search_type'];
-        if (!class_exists($search_type))
-        {
+        if (!class_exists($search_type)) {
             trigger_error('NO_SUCH_SEARCH_MODULE. Error Code: 7ad6fd4492');
         }
         // Check topic exists
         $topic_data = $this->select_topic($tid);
-        if (!$topic_data)
-        {
+        if (!$topic_data) {
             trigger_error('That topic does not exist. Error Code: 8d394ff0fd');
         }
         // Check if search enhancer is allowed
-        if (!$this->is_search_enhancer_allowed($topic_data))
-        {
+        if (!$this->is_search_enhancer_allowed($topic_data)) {
             meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
             trigger_error('Your group does not have the permission to index a topic. Error Code: 8a856e72a8');
         }
@@ -262,8 +244,16 @@ class search_util extends base
         $user_id = $user->data['user_id'];
         $username_clean = $user->data['username_clean'];
         $this->insert_manual_search_post($post_id, $user_id, $username_clean);
+        $this->markTopicAsSearchEnhance($tid);
         meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
         trigger_error('The selected topic was indexed with enhanced options.');
+    }/*}}}*/
+
+    private function markTopicAsSearchEnhance($topicId)/*{{{*/
+    {
+        $topicId = (int) $topicId;
+        $sql = 'UPDATE ' . TOPICS_TABLE . " SET snp_search_enhance=1 WHERE topic_id=${topicId}";
+        $result = $this->db->sql_query($sql);
     }/*}}}*/
 
     private function insert_manual_search_post($post_id, $user_id, $username_clean)/*{{{*/
@@ -291,15 +281,17 @@ class search_util extends base
 
     private function collect_STBB_content($text)/*{{{*/
     {
-        $uid = ''; $flags = 0;
+        $uid = '';
+        $flags = 0;
         $text = generate_text_for_edit($text, $uid, $flags)['text'];
         $ptn = "#\[{$this->STBB}](.{1,120}?)\[/{$this->STBB}]#uis";
         $b_match = preg_match_all($ptn, $text, $match_all);
-        if (!$b_match) return '';
+        if (!$b_match) {
+            return '';
+        }
         $match_all = $match_all[1];
         $text = join(' ', $match_all);
         $text = $this->snp_strip_bbcode($text);
         return $text;
     }/*}}}*/
-
 }
