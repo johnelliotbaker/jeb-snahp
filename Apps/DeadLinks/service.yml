@@ -1,0 +1,99 @@
+services:
+    ###########
+    #  VIEWS  #
+    ###########
+
+    jeb.snahp.Apps.DeadLinks.DeadLinksController:
+        class: jeb\snahp\Apps\DeadLinks\DeadLinksController
+        arguments:
+            - @controller.helper
+            - @jeb.snahp.auth.user_auth
+
+    jeb.snahp.Apps.DeadLinks.AuthorView:
+        class: jeb\snahp\Apps\DeadLinks\AuthorView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+
+    jeb.snahp.Apps.DeadLinks.ModeratorView:
+        class: jeb\snahp\Apps\DeadLinks\ModeratorView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+
+    jeb.snahp.Apps.DeadLinks.TopicView:
+        class: jeb\snahp\Apps\DeadLinks\TopicView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+
+    jeb.snahp.Apps.DeadLinks.ReportStatusView:
+        class: jeb\snahp\Apps\DeadLinks\ReportStatusView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+
+
+
+
+    ###############
+    #  API VIEWS  #
+    ###############
+
+
+    jeb.snahp.Apps.DeadLinks.EntryListCreateAPIView:
+        class: jeb\snahp\Apps\DeadLinks\EntryListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+
+
+    ############
+    #  MODELS  #
+    ############
+
+
+    jeb.snahp.Apps.DeadLinks.Models.Entry:
+        class: jeb\snahp\Apps\DeadLinks\Models\Entry
+        arguments:
+            - @dbal.conn
+            - @notification_manager
+            - @jeb.snahp.auth.user_auth
+
+
+    ####################
+    #  Event Listener  #
+    ####################
+
+
+    jeb.snahp.Apps.DeadLinks.DeadLinksEventListener:
+        class: jeb\snahp\Apps\DeadLinks\DeadLinksEventListener
+        arguments:
+            - @template
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+        tags:
+            - { name: event.listener }
+
+
+    ####################
+    #  Setup Database  #
+    ####################
+
+
+    jeb.snahp.Apps.DeadLinks.SetupDatabaseView:
+        class: jeb\snahp\Apps\DeadLinks\SetupDatabaseView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.DeadLinks.Models.Entry

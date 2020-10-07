@@ -1,0 +1,44 @@
+{% if N_OPEN_REPORTS %}
+  {% if STYLE_NAME in ['acieeed', 'prosilver', 'hexagon'] %}
+    <li id="deadlinks-notification" data-last-responsive="true" data-skip-responsive="true" class="tab dropdown-container non-zero rightside">
+      <a href="/deadlinks/manager" title="Deadlinks ({N_OPEN_REPORTS})" class="nav-link" style="padding: 0px 5px 0px 8px;">
+        <i class="icon fa fa-bug" aria-hidden="true" style="font-weight:700;"></i>
+        <span>
+          <strong class="navbar_counter badge">{N_OPEN_REPORTS}</strong>
+        </span>
+      </a>
+    </li>
+  {% else %}
+    <li data-last-responsive="true" class="tab dropdown-container non-zero rightside">
+      <a href="/deadlinks/manager" title="Deadlinks ({N_OPEN_REPORTS})" role="menuitem" class="nav-link" style="padding: 0px 5px 0px 8px;">
+        <i class="icon {% if STYLE_NAME == 'digi_orange' %}fa{% else  %}fa-fw{% endif %} fa-bug" aria-hidden="true" style="font-weight:700;"></i>
+      </a>
+      <strong>
+        <span class="counter">{N_OPEN_REPORTS}</span>
+        <span class="arrow"></span>
+      </strong>
+    </li>
+  {% endif %}
+{% endif %}
+{% if N_OPEN_REQUESTS %}
+  {% if STYLE_NAME in ['acieeed', 'prosilver', 'hexagon'] %}
+    <li id="deadlinks-notification" data-last-responsive="true" data-skip-responsive="true" class="tab dropdown-container non-zero rightside">
+      <a href="/deadlinks/moderator" title="Deadlinks ({N_OPEN_REQUESTS})" class="nav-link" style="padding: 0px 5px 0px 8px;">
+        <i class="icon fa fa-bug" aria-hidden="true" style="font-weight:700; color: #C33;"></i>
+        <span>
+          <strong class="navbar_counter badge">{N_OPEN_REQUESTS}</strong>
+        </span>
+      </a>
+    </li>
+  {% else %}
+    <li data-last-responsive="true" class="tab dropdown-container non-zero rightside">
+      <a href="/deadlinks/moderator" title="Deadlinks ({N_OPEN_REQUESTS})" class="nav-link" style="padding: 0px 5px 0px 8px;">
+        <i class="icon {% if STYLE_NAME == 'digi_orange' %}fa{% else  %}fa-fw{% endif %} fa-bug" aria-hidden="true" style="font-weight:700; color: #C33;"></i>
+      </a>
+      <strong>
+        <span class="counter">{N_OPEN_REQUESTS}</span>
+        <span class="arrow"></span>
+      </strong>
+    </li>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,59 @@
+jeb.snahp.routing.deadlinks.author_view:
+    path: /snahp/deadlinks/author-manager
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.AuthorView:view}
+
+jeb.snahp.routing.deadlinks.moderator_view:
+    path: /snahp/deadlinks/moderator-manager
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.ModeratorView:view}
+
+jeb.snahp.routing.deadlinks.topic_view:
+    path: /snahp/deadlinks/topic/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.TopicView:view}
+    requirements:
+        topicId: \d+
+
+jeb.snahp.routing.deadlinks.report_status_view:
+    path: /snahp/deadlinks/report-status/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.ReportStatusView:view}
+    requirements:
+        topicId: \d+
+
+jeb.snahp.routing.deadlinks.moderator_app:
+    path: /deadlinks/moderator
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.DeadLinksController:view}
+
+jeb.snahp.routing.deadlinks.author_app:
+    path: /deadlinks/manager
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.DeadLinksController:view}
+
+jeb.snahp.routing.deadlinks.app:
+    path: /deadlinks/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.DeadLinksController:view}
+    requirements:
+        topicId: \d+
+
+# #########
+# #  API  #
+# #########
+
+jeb.snahp.routing.deadlinks.list_entry:
+    path: /snahp/deadlinks/entry
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.EntryListCreateAPIView:dispatch}
+    requirements:
+        topicId: \d+
+
+jeb.snahp.routing.deadlinks.retrieve_entry_by_topic_id:
+    path: /snahp/deadlinks/entry/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.EntryListCreateAPIView:viewByTopicId}
+    requirements:
+        topicId: \d+
+
+
+####################
+#  Setup Database  #
+####################
+
+
+jeb.snahp.routing.deadlinks.setup_database:
+    path: /snahp/deadlinks/init
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.SetupDatabaseView:view}
