@@ -53,6 +53,8 @@ class main_listener extends base implements EventSubscriberInterface
     protected $product_class;
     protected $sauth;
     protected $data;
+    protected $cache = [];
+
     public function __construct(
         $table_prefix0,
         $table_prefix,
@@ -142,6 +144,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['insert_new_topic_button',0],
                 ['mark_topic_read',0],
                 ['show_search_index_btn',0],
+                ['set_is_listings',2],
             ],
             'core.modify_posting_auth'                    => [
                 ['block_zebra_foe_quote', 0],
@@ -921,6 +924,15 @@ class main_listener extends base implements EventSubscriberInterface
         $post_row['N_REP'] = $rep_total;
         $post_row['N_THANKS'] = $thanks_total;
         $event['post_row'] = $post_row;
+    }/*}}}*/
+
+    public function set_is_listings($event)/*{{{*/
+    {
+        $topic_data = $event['topic_data'];
+        if (!array_key_exists('isListings', $this->cache)) {
+            $this->cache['isListings'] = $this->is_listing($topic_data, 'topic_data');
+        }
+        $this->template->assign_var('B_LISTINGS', $this->cache['isListings']);
     }/*}}}*/
 
     public function show_search_index_btn($event)/*{{{*/
