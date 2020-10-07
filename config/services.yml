@@ -34,6 +34,7 @@ imports:
     - { resource: ../Apps/Wiki/service.yml }
     - { resource: ../Apps/UserFlair/service.yml }
     - { resource: ../Apps/ClassLoader/service.yml }
+    - { resource: ../Apps/DeadLinks/service.yml }
 
 services:
     jeb.snahp.core:

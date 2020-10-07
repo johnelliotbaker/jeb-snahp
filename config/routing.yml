@@ -1,3 +1,5 @@
+routing_dead_links:
+    resource: '../Apps/DeadLinks/routing.yml'
 routing_wiki:
     resource: '../Apps/Wiki/routing.yml'
 routing_user_flair:

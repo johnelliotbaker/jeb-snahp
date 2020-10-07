@@ -32,6 +32,7 @@ parameters:
             mac: 13
             updating: &updating 14
             ongoing: *updating
+            deadlinks: 15
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -48,6 +49,7 @@ parameters:
                 win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win">'
                 updating: &updating '<img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating">'
                 ongoing: *updating
+                deadlinks: '🐞'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -63,6 +65,7 @@ parameters:
                 win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
                 updating: &updating '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating"></span>'
                 ongoing: *updating
+                deadlinks: '🐞'
 
     jeb.snahp.req:
         def:

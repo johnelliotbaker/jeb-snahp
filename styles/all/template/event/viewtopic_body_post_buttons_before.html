@@ -1,49 +1,56 @@
 {% if S_USER_LOGGED_IN && CURRENT_PAGE==1 && postrow.S_FIRST_ROW %}
-{% if B_SHOW_BUMP_ENABLER %}
-<li>
-  <a href="./app.php/snahp/userscript/bump_topic/?action=enable&t={S_TOPIC_ID}" title="Enable Bump" class="button button-icon-only">
-    <i class="icon fa-arrow-circle-up fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Enable Bump</span>
-  </a>
-</li>
-{% elseif B_SHOW_BUMP_DISABLER %}
-<li>
-  <a href="./app.php/snahp/userscript/bump_topic/?action=disable&t={S_TOPIC_ID}" title="Disable Bump" class="button button-icon-only">
-    <i class="icon fa-arrow-circle-down fa-fw" style="color:#600" aria-hidden="true"></i><span class="sr-only">Disable Bump</span>
-  </a>
-</li>
-{% endif %}
-{% if B_SHOW_BUMP %}
-<li>
-  <a href="./app.php/snahp/userscript/bump_topic/?action=bump&t={S_TOPIC_ID}" title="Bump Topic" class="button button-icon-only">
-    <i class="icon fa-arrow-up fa-fw" style="color:black" aria-hidden="true"></i><span class="sr-only">Bump Topic</span>
-  </a>
-</li>
-{% endif %}
-{% if B_SHOW_SOLVE_BTN %}
-<li>
-  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Solved" class="button button-icon-only">
-    <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Solved</span>
-  </a>
-</li>
-{% elseif B_SHOW_FULFILL_BTN %}
-<li>
-  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/4/" title="Mark Fulfilled" class="button button-icon-only">
-    <i class="icon fa-gift fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Fulfilled</span>
-  </a>
-</li>
-{% elseif B_SHOW_DIBS_BTN %}
-<li>
-  <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/3/" title="Call dibs" class="button button-icon-only">
-    <i class="icon fa-flag fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Call dibs</span>
-  </a>
-</li>
-{% endif %}
+  {% if B_LISTINGS %}
+    <li>
+      <a href="/deadlinks/{S_TOPIC_ID}" title="Report Deadlinks" class="button button-icon-only">
+        <i class="icon fa-fw fa-bug" aria-hidden="true"></i><span class="sr-only">Report Deadlinks</span>
+      </a>
+    </li>
+  {% endif %}
+  {% if B_SHOW_BUMP_ENABLER %}
+    <li>
+      <a href="./app.php/snahp/userscript/bump_topic/?action=enable&t={S_TOPIC_ID}" title="Enable Bump" class="button button-icon-only">
+        <i class="icon fa-arrow-circle-up fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Enable Bump</span>
+      </a>
+    </li>
+  {% elseif B_SHOW_BUMP_DISABLER %}
+    <li>
+      <a href="./app.php/snahp/userscript/bump_topic/?action=disable&t={S_TOPIC_ID}" title="Disable Bump" class="button button-icon-only">
+        <i class="icon fa-arrow-circle-down fa-fw" style="color:#600" aria-hidden="true"></i><span class="sr-only">Disable Bump</span>
+      </a>
+    </li>
+  {% endif %}
+  {% if B_SHOW_BUMP %}
+    <li>
+      <a href="./app.php/snahp/userscript/bump_topic/?action=bump&t={S_TOPIC_ID}" title="Bump Topic" class="button button-icon-only">
+        <i class="icon fa-arrow-up fa-fw" style="color:black" aria-hidden="true"></i><span class="sr-only">Bump Topic</span>
+      </a>
+    </li>
+  {% endif %}
+  {% if B_SHOW_SOLVE_BTN %}
+    <li>
+      <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Solved" class="button button-icon-only">
+        <i class="icon fa-check-square fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Solved</span>
+      </a>
+    </li>
+  {% elseif B_SHOW_FULFILL_BTN %}
+    <li>
+      <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/4/" title="Mark Fulfilled" class="button button-icon-only">
+        <i class="icon fa-gift fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Mark Fulfilled</span>
+      </a>
+    </li>
+  {% elseif B_SHOW_DIBS_BTN %}
+    <li>
+      <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/3/" title="Call dibs" class="button button-icon-only">
+        <i class="icon fa-flag fa-fw" style="color:#383" aria-hidden="true"></i><span class="sr-only">Call dibs</span>
+      </a>
+    </li>
+  {% endif %}
 {% endif %}
 {% if postrow.SHOW_REPUTATION_BTN %}
-<li>
-  <a href="./app.php/snahp/reputation/add/?p={postrow.POST_ID}" title="Give Reputation ({N_REP_AVAILABLE} Available | Reset on: {T_REP_NEXT})" class="button button-icon-only">
-    <i class="icon fa-trophy fa-fw" aria-hidden="true"></i><span class="sr-only">Give Reputation</span>
-  </a>
-</li>
+  <li>
+    <a href="./app.php/snahp/reputation/add/?p={postrow.POST_ID}" title="Give Reputation ({N_REP_AVAILABLE} Available | Reset on: {T_REP_NEXT})" class="button button-icon-only">
+      <i class="icon fa-trophy fa-fw" aria-hidden="true"></i><span class="sr-only">Give Reputation</span>
+    </a>
+  </li>
 {% endif %}
 

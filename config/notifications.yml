@@ -1,4 +1,19 @@
 services:
+    jeb.snahp.notification.type.deadlinks:
+        class: jeb\snahp\notification\deadlinks
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.user_notifications%'
+            - '%tables.notifications%'
+            - '@user_loader'
+        tags:
+            - { name: notification.type }
     jeb.snahp.notification.type.staff_notification:
         class: jeb\snahp\notification\staff_notification
         scope: prototype # scope MUST be prototype for this to work!
