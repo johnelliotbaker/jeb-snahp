@@ -4,30 +4,30 @@ services:
     jeb.snahp.Apps.Boilerplate.BoilerplateController:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateController
         arguments:
-            - '@dbal.conn'
-            - '@user'
-            - '@config'
-            - '@request'
-            - '@template'
-            - '@service_container'
-            - '@controller.helper'
-            - '%jeb.snahp.tables%'
-            - '@jeb.snahp.auth.user_auth'
-            - '@jeb.snahp.Apps.Boilerplate.BoilerplateHelper'
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Boilerplate.BoilerplateHelper
     jeb.snahp.Apps.Boilerplate.BoilerplateHelper: # HELPER
         class: jeb\snahp\Apps\Boilerplate\BoilerplateHelper
         arguments:
-            - '@dbal.conn'
-            - '@user'
-            - '@template'
-            - '%jeb.snahp.tables%'
-            - '@jeb.snahp.auth.user_auth'
+            - @dbal.conn
+            - @user
+            - @template
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
     jeb.snahp.Apps.Boilerplate.BoilerplateEventListener:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateEventListener
         arguments:
-            - '@user'
-            - '@config'
-            - '@jeb.snahp.auth.user_auth'
-            - '@jeb.snahp.BoilerplateHelper'
+            - @user
+            - @config
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Boilerplate.BoilerplateHelper
         tags:
             - { name: event.listener }
