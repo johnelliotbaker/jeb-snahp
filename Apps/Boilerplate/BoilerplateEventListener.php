@@ -9,17 +9,17 @@ class BoilerplateEventListener implements EventSubscriberInterface
     protected $user;
     protected $config;
     protected $sauth;
-    protected $myHelper;
+    protected $helper;
     public function __construct(/*{{{*/
         $user,
         $config,
         $sauth,
-        $myHelper
+        $helper
     ) {
         $this->user = $user;
         $this->config = $config;
         $this->sauth = $sauth;
-        $this->myHelper = $myHelper;
+        $this->helper = $helper;
         $this->user_id = $this->user->data['user_id'];
     }/*}}}*/
 
