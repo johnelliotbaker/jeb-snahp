@@ -65,8 +65,8 @@ Anilist.makeAnilistTemplate = function(data)
     var votes         = Anilist.getEntryOrEmpty(`[color=#FF8000][b]Votes[/b][/color]: {text}\n`, numberWithCommas(data['popularity']));
     var links         = `[color=#FF8000][b]Links[/b][/color]: [b]`;
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
-    var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
-[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
+    var dlink         = `[hide][b]
+
 [/b][/hide]\n`
     var text = '' + 
         bannerImage + '' + 
