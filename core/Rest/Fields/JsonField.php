@@ -16,7 +16,7 @@ class JsonField
 
     public function serialize($validData)
     {
-        return json_encode($validData);
+        return $validData;
     }
 }
 

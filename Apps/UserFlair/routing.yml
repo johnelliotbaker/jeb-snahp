@@ -1,3 +1,17 @@
+jeb.snahp.routing.user_flair.fix_type_data_names_with_underscore:
+    path: /snahp/user-flair/fix-type-data-underscore
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairManagerController:fixTypedataUnderscores}
+
+jeb.snahp.routing.user_flair.manager_app:
+    path: /user-flair-manager
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairManagerController:manager}
+jeb.snahp.routing.user_flair.manager_app_2:
+    path: /user-flair-manager/{action}
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairManagerController:manager}
+jeb.snahp.routing.user_flair.manager_app_3:
+    path: /user-flair-manager/{action}/{id}
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairManagerController:manager}
+
 jeb.snahp.routing.user_flair.reset_flair:
     path: /snahp/user-flair/reset-flair
     defaults: { _controller: jeb.snahp.Apps.UserFlair.UserFlairController:resetFlair}
@@ -9,7 +23,17 @@ jeb.snahp.routing.user_flair.reset_type:
 jeb.snahp.routing.user_flair.flair_list:
     path: /snahp/user-flair/flair
     defaults: { _controller: jeb.snahp.Apps.UserFlair.FlairListCreateAPIView:view}
+jeb.snahp.routing.user_flair.retrieve_flair:
+    path: /snahp/user-flair/flair/{id}
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.FlairRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
 
 jeb.snahp.routing.user_flair.type_list:
     path: /snahp/user-flair/type
     defaults: { _controller: jeb.snahp.Apps.UserFlair.TypeListCreateAPIView:view}
+jeb.snahp.routing.user_flair.retrieve_type:
+    path: /snahp/user-flair/type/{id}
+    defaults: { _controller: jeb.snahp.Apps.UserFlair.TypeRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

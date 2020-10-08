@@ -1,56 +1,117 @@
 # imports:
     # - { resource: 'mute_user/parameters.yml' }
 services:
-    jeb.snahp.Apps.UserFlair.Models.Type:
-        class: jeb\snahp\Apps\UserFlair\Models\Type
+###########
+#  VIEWS  #
+###########
 
-    jeb.snahp.Apps.UserFlair.Models.User:
-        class: jeb\snahp\Apps\UserFlair\Models\User
 
-    jeb.snahp.Apps.UserFlair.Models.Flair:
-        class: jeb\snahp\Apps\UserFlair\Models\Flair
+    jeb.snahp.Apps.UserFlair.UserFlairManagerController:
+        class: jeb\snahp\Apps\UserFlair\UserFlairManagerController
+        arguments:
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.UserFlairManagerHelper
+
+    jeb.snahp.Apps.UserFlair.UserFlairController:
+        class: jeb\snahp\Apps\UserFlair\UserFlairController
+        arguments:
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.UserFlairHelper
+
+
+###############
+#  API VIEWS  #
+###############
 
 
     jeb.snahp.Apps.UserFlair.FlairListCreateAPIView:
         class: jeb\snahp\Apps\UserFlair\FlairListCreateAPIView
         arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Flair
+    jeb.snahp.Apps.UserFlair.FlairRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\UserFlair\FlairRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Flair
 
     jeb.snahp.Apps.UserFlair.TypeListCreateAPIView:
         class: jeb\snahp\Apps\UserFlair\TypeListCreateAPIView
         arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-
-    jeb.snahp.Apps.UserFlair.UserFlairController:
-        class: jeb\snahp\Apps\UserFlair\UserFlairController
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Type
+    jeb.snahp.Apps.UserFlair.TypeRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\UserFlair\TypeRetrieveUpdateDestroyAPIView
         arguments:
-            - '@dbal.conn'
-            - '@user'
-            - '@config'
-            - '@request'
-            - '@template'
-            - '@service_container'
-            - '@controller.helper'
-            - '%jeb.snahp.tables%'
-            - '@jeb.snahp.auth.user_auth'
-            - '@jeb.snahp.Apps.UserFlair.UserFlairHelper'
-    jeb.snahp.Apps.UserFlair.UserFlairHelper: # HELPER
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Type
+
+
+############
+#  MODELS  #
+############
+
+
+    jeb.snahp.Apps.UserFlair.Models.Type:
+        class: jeb\snahp\Apps\UserFlair\Models\Type
+
+    jeb.snahp.Apps.UserFlair.Models.Flair:
+        class: jeb\snahp\Apps\UserFlair\Models\Flair
+
+
+#############
+#  Helpers  #
+#############
+
+
+    jeb.snahp.Apps.UserFlair.UserFlairHelper:
         class: jeb\snahp\Apps\UserFlair\UserFlairHelper
         arguments:
-            - '@dbal.conn'
-            - '@user'
-            - '@template'
-            - '%jeb.snahp.tables%'
-            - '@jeb.snahp.auth.user_auth'
-            - '@jeb.snahp.Apps.UserFlair.Models.Type'
-            - '@jeb.snahp.Apps.UserFlair.Models.Flair'
+            - @dbal.conn
+            - @user
+            - @template
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Type
+            - @jeb.snahp.Apps.UserFlair.Models.Flair
+
+    jeb.snahp.Apps.UserFlair.UserFlairManagerHelper:
+        class: jeb\snahp\Apps\UserFlair\UserFlairManagerHelper
+        arguments:
+            - @dbal.conn
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserFlair.Models.Type
+            - @jeb.snahp.Apps.UserFlair.Models.Flair
+
+
+####################
+#  Event Listener  #
+####################
 
 
     jeb.snahp.Apps.UserFlair.UserFlairEventListener:
         class: jeb\snahp\Apps\UserFlair\UserFlairEventListener
         arguments:
-            - '@jeb.snahp.Apps.UserFlair.UserFlairHelper'
+            - @jeb.snahp.Apps.UserFlair.UserFlairHelper
         tags:
             - { name: event.listener }

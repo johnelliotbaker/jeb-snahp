@@ -54,6 +54,17 @@ class UserFlairHelper
         return json_decode(($bean->data), true);
     }/*}}}*/
 
+    public function getTypeData($bean)/*{{{*/
+    {
+        // Not sure why flair type has two levels of "data"
+        $data = $this->getData($bean);
+        if (isset($data['data'])) {
+            $datadata = $data['data'];
+            unset($data['data']);
+        }
+        return array_merge($data, $datadata);
+    }/*}}}*/
+
     public function wipeFlairTable()/*{{{*/
     {
         $this->flairModel->wipe();
@@ -80,10 +91,9 @@ class UserFlairHelper
                 continue;
             }
             $flairData = $this->getData($flair);
-            $flairTypeData = $this->getData($flairTypes[$flairType]);
+            $flairTypeData = $this->getTypeData($flairTypes[$flairType]);
             $flairData = array_merge($flairTypeData, $flairData);
 
-            unset($fieldData);
             $fields = $flairData['fields']['required'];
             if (!hasRequiredFields($flairData, $fields)) {
                 continue;
@@ -106,7 +116,7 @@ class UserFlairHelper
         return $html;
     }/*}}}*/
 
-    public function chooseStyleData($data)
+    public function chooseStyleData($data)/*{{{*/
     {
         // Every style is guaranteed to include this style
         $FIXED_STYLE_NAME = 'prosilver';
@@ -116,7 +126,7 @@ class UserFlairHelper
             }
         }
         return $data;
-    }
+    }/*}}}*/
 
     public function setupStyleInfo()/*{{{*/
     {
@@ -148,17 +158,21 @@ class UserFlairHelper
     }/*}}}*/
 }
 
-function hasRequiredFields($data, $fields)
+function hasRequiredFields($data, $fields)/*{{{*/
 {
+    if (!$fields) {
+        return true;
+    }
     foreach ($fields as $field) {
         if (!isset($data[$field])) {
+            print_r($field);
             return false;
         }
     }
     return true;
-}
+}/*}}}*/
 
-function chooseRandomData($data)
+function chooseRandomData($data)/*{{{*/
 {
     // If field is array, choose random element
     foreach ($data as $key => $value) {
@@ -167,12 +181,12 @@ function chooseRandomData($data)
         }
     }
     return $data;
-}
+}/*}}}*/
 
-function removeFields($data, $fields)
+function removeFields($data, $fields)/*{{{*/
 {
     foreach ($fields as $field) {
         unset($data[$field]);
     }
     return $data;
-}
+}/*}}}*/
