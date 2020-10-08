@@ -1,0 +1,12 @@
+services:
+    jeb.snahp.Apps.BBCodeBanner.BBCodeBannerHelper: # HELPER
+        class: jeb\snahp\Apps\BBCodeBanner\BBCodeBannerHelper
+        arguments:
+            - @dbal.conn
+            - @template
+    jeb.snahp.Apps.BBCodeBanner.BBCodeBannerEventListener:
+        class: jeb\snahp\Apps\BBCodeBanner\BBCodeBannerEventListener
+        arguments:
+            - @jeb.snahp.Apps.BBCodeBanner.BBCodeBannerHelper
+        tags:
+            - { name: event.listener }

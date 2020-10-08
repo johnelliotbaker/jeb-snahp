@@ -46,7 +46,7 @@ Anilist.makeAnilistTemplate = function(data)
     var id            = data['id'];
     var url           = data['siteUrl'];
     var img           = Anilist.getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['coverImage']['large']);
-    var bannerImage   = data['bannerImage'] ? Anilist.getEntryOrEmpty(`[center][img width="300"]{text}[/img][/center]\n`, data['bannerImage']) : "";
+    var bannerImage   = data['bannerImage'] ? Anilist.getEntryOrEmpty(`[banner]{text}[/banner]\n`, data['bannerImage']) : "";
     var year          = data['startDate']['year'] ? ' (' + data['startDate']['year'] + ')' : "";
     var titleNative   = Anilist.getEntryOrEmpty(`[center][size=200][b][url={url}]{text}${year}[/url][/b][/size][/center]\n`, data['title']['native'], url);
     var titleRomaji   = Anilist.getEntryOrEmpty(`[center][size=100][b]{text}[/b][/size][/center]\n`, data['title']['romaji']);
@@ -69,7 +69,7 @@ Anilist.makeAnilistTemplate = function(data)
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
 [/b][/hide]\n`
     var text = '' + 
-        bannerImage + '\n\n\n' + 
+        bannerImage + '' + 
         img + '\n\n\n';
         if (titleNative && titleNative != 'null') text += titleNative + '\n';
         if (titleRomaji && titleRomaji != 'null') text += titleRomaji + '\n';

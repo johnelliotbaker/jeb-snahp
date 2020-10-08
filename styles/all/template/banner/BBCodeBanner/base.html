@@ -1,0 +1,18 @@
+{% if BANNER_IMG_URL %}
+<script>
+    const headerbars = document.getElementsByClassName('headerbar');
+    const header = headerbars[0];
+    if (header) {
+        header.style.background = "url('{BANNER_IMG_URL}') repeat-x";
+        header.style.backgroundPosition = "center";
+        header.style.cursor = "pointer";
+        // header.style.backgroundSize = "auto 100%";
+        header.addEventListener("click", function() {
+            window.location.replace('/');
+        })
+        header.style.height = "240px";
+        const logo = document.getElementById('logo');
+        logo.remove();
+    }
+</script>
+{% endif %}
