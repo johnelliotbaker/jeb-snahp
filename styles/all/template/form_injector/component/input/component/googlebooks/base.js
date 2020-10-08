@@ -38,9 +38,9 @@ Googlebooks.makeTemplate = function(data)
     var previewLink   = getEntryOrEmpty(`[color=#FF8000][b]Preview[/b][/color]: [url={url}]{text}[/url]\n`, "Google Books", previewLink);
     var ratingsCount  = getEntryOrEmpty(`[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`, ratingsCount);
     var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
-    var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
-[url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
-[/b][/hide]\n`
+    var dlink         = `[hide]
+
+[/hide]\n`
     var text = '' + 
         thumbnail + '\n\n\n' +
         title + subtitle +'\n\n\n' +
