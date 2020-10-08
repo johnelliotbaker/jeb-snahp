@@ -29,8 +29,6 @@ class FlairRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
         $this->model = $model;
 
         $this->permissionClasses = [
-            // TODO: Remove after testing
-            new AllowAnyPermission($sauth),
             new AllowDevPermission($sauth),
         ];
     }
