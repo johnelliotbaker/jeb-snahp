@@ -2,24 +2,31 @@ parameters:
     jeb.snahp.styles.banners:
         light: &light
             default: &default
-                - https://i.imgur.com/sqWHc2h.png
-                # - https://i.imgur.com/FIcm4d7.png
+                - https://i.imgur.com/Sg9lMpz.jpg
+                - https://i.imgur.com/suBiXhh.jpg
+                - https://i.imgur.com/AP2HCuV.jpg
+                - https://i.imgur.com/fhIfMiB.jpg
             afternoon: *default
             evening:
-                - https://i.imgur.com/SxCc3z9.jpg
-                # - https://i.imgur.com/Fuum0fj.png
-                # - https://i.imgur.com/ybtvdxb.png
+                - https://i.imgur.com/8zrbBlY.jpg
+                - https://i.imgur.com/LtW26ML.jpg
+                - https://i.imgur.com/0qnRYwd.jpg
+                - https://i.imgur.com/ImDrHDT.jpg
             latenight:
-                - https://i.imgur.com/aw2s9vT.jpg
-                # - https://i.imgur.com/47konmN.jpg
-                # - https://i.imgur.com/6Pk55So.jpg
+                - https://i.imgur.com/8guFD6o.jpg
+                - https://i.imgur.com/lO859Bz.jpg
+                - https://i.imgur.com/hq9VB9J.jpg
+                - https://i.imgur.com/NkUPBcx.jpg
             twilight:
-                - https://i.imgur.com/35Jo4B4.png
-                # - https://i.imgur.com/4gJp2uo.png
-                # - https://i.imgur.com/hOGLP3F.jpg
+                - https://i.imgur.com/clN8dbq.jpg
+                - https://i.imgur.com/OezJUxT.jpg
+                - https://i.imgur.com/O2Ueo6L.jpg
+                - https://i.imgur.com/MNzGLNi.jpg
             morning:
-                - https://i.imgur.com/rzWMxJ6.jpg
-                # - https://i.imgur.com/59rc8Ah.jpg
+                - https://i.imgur.com/IeCiqNt.jpg
+                - https://i.imgur.com/V3AKglj.jpg
+                - https://i.imgur.com/dVne4LQ.jpg
+                - https://i.imgur.com/MtzvvnJ.jpg
         dark: *light
         time_of_day:
             0: &zero 'latenight'

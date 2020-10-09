@@ -1,0 +1,14 @@
+services:
+    jeb.snahp.Apps.CustomBanner.CustomBannerHelper: # HELPER
+        class: jeb\snahp\Apps\CustomBanner\CustomBannerHelper
+        arguments:
+            - @dbal.conn
+            - @user
+            - @template
+            - %jeb.snahp.styles.banners%
+    jeb.snahp.Apps.CustomBanner.CustomBannerEventListener:
+        class: jeb\snahp\Apps\CustomBanner\CustomBannerEventListener
+        arguments:
+            - @jeb.snahp.Apps.CustomBanner.CustomBannerHelper
+        tags:
+            - { name: event.listener }

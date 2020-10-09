@@ -36,6 +36,7 @@ imports:
     - { resource: ../Apps/ClassLoader/service.yml }
     - { resource: ../Apps/DeadLinks/service.yml }
     - { resource: ../Apps/BBCodeBanner/service.yml }
+    - { resource: ../Apps/CustomBanner/service.yml }
 
 services:
     jeb.snahp.core:

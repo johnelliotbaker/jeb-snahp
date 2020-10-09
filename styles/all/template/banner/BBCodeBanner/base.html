@@ -1,18 +1,25 @@
 {% if BANNER_IMG_URL %}
-<script>
-    const headerbars = document.getElementsByClassName('headerbar');
-    const header = headerbars[0];
-    if (header) {
-        header.style.background = "url('{BANNER_IMG_URL}') repeat-x";
-        header.style.backgroundPosition = "center";
-        header.style.cursor = "pointer";
-        // header.style.backgroundSize = "auto 100%";
-        header.addEventListener("click", function() {
-            window.location.replace('/');
-        })
-        header.style.height = "240px";
-        document.getElementById('logo').remove();
-        document.getElementById('site-description').remove();
+  <style>
+    @media(min-width:700px){
+      .headerbar {
+        background: url({BANNER_IMG_URL}) repeat-x;
+        background-position: center;
+        background-size: cover;
+        cursor: pointer;
+        height: 240px;
+      }
+      #logo, #site-description {
+        display: none;
+      }
     }
+  </style>
+<script>
+  const headerbars = document.getElementsByClassName('headerbar');
+  const header = headerbars[0];
+  if (header) {
+    header.addEventListener("click", function() {
+      window.location.href = '/';
+    })
+  }
 </script>
 {% endif %}
