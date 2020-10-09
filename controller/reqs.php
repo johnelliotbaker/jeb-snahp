@@ -8,6 +8,7 @@ use jeb\snahp\core\base;
 
 class reqs extends base
 {
+    const SEASONED_SOLVER_THRESHOLD = 300;
     public function __construct()/*{{{*/
     {
         $this->ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
@@ -63,11 +64,11 @@ class reqs extends base
         }
         switch ($mode) {
         case $def['solve']: // To solve request
-            $this->reject_invalid_users($reqdata);
+            $this->rejectInvalidSolver($reqdata);
             $this->solve_request($fid, $tid, $pid, $def['solve'], $reqdata);
             break;
         case $def['terminate']: // To terminate request
-            $this->reject_invalid_users($reqdata);
+            $this->rejectInvalidTerminator($reqdata);
             if ($reqdata['status']==$def['fulfill'] || $reqdata['status']==$def['dib']) {
                 $cfg['tpl_name'] = '@jeb_snahp/requests/component/terminate_confirm/base.html';
                 $cfg['base_url'] = "/viewtopic.php?f={$fid}&t={$tid}#p{$pid}";
@@ -83,7 +84,12 @@ class reqs extends base
             $this->undib_request($fid, $tid, $pid);
             break;
         case $def['fulfill']:
-            $this->fulfill_request($fid, $tid, $pid);
+            if ((int) $this->user->data['snp_req_n_solve'] >= $this::SEASONED_SOLVER_THRESHOLD) {
+                $this->fulfill_request($fid, $tid, $pid, $finishExecution = false);
+                $this->handle($fid, $tid, $pid, $def['solve']);
+            } else {
+                $this->fulfill_request($fid, $tid, $pid, $finishExecution = true);
+            }
             break;
         }
     }/*}}}*/
@@ -229,22 +235,23 @@ class reqs extends base
             trigger_error('You can only solve request that has been fulfilled. Error Code: e4917d39fd');
         }
         $user_id = $this->user_id;
-        $b_op = $user_id == $req['requester_uid'];
-        $b_mod = $this->auth->acl_gets('a_', 'm_');
-        $gid = $this->user->data['group_id'];
-        $group_data = $this->select_group($gid);
-        $b_group = $group_data['snp_req_b_solve'];
-        if (!$b_op && !$b_mod && !$b_group) {
-            //TODO: Send notification to user if closed by mod
-            meta_refresh(2, $this->u_action);
-            trigger_error('Only the requester and the moderators are allowed to close this request. Error Code: 585e9279e0');
-        }
         $time = time();
         $data = [
             'status' => $new_status,
             'solved_time' => $time,
         ];
+        // $b_op = $user_id == $req['requester_uid'];
+        // $b_mod = $this->auth->acl_gets('a_', 'm_');
+        // $gid = $this->user->data['group_id'];
+        // $group_data = $this->select_group($gid);
+        // $b_group = $group_data['snp_req_b_solve'];
+        // if (!$b_op && !$b_mod && !$b_group) {
         if ($new_status == $def['terminate']) {
+            if (!$this->isTrustedTerminator($req)) {
+                //TODO: Send notification to user if closed by mod
+                meta_refresh(2, $this->u_action);
+                trigger_error('Only the requester and the moderators are allowed to close this request. Error Code: 585e9279e0');
+            }
             $data['termination_reason'] = $termination_reason;
             $data['terminator_uid'] = $this->user_id;
         }
@@ -283,25 +290,53 @@ class reqs extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function reject_invalid_users($reqdata)/*{{{*/
+    public function rejectInvalidTerminator($reqdata)/*{{{*/
     {
-        $myuid = $this->user_id;
-        $requester_uid = $reqdata['requester_uid'];
-        $gid = $this->user->data['group_id'];
-        $group_data = $this->select_group($gid);
-        $b_group = $group_data['snp_req_b_solve'];
-        if ($myuid == $requester_uid) {
-            return 1;
-        } elseif ($this->auth->acl_gets('a_', 'm_')) {
-            return 2;
-        } elseif ($b_group) {
-            return 3;
-        } else {
-            trigger_error('Only the requester and the moderators have access to this page.');
+        if (!$this->isTrustedTerminator()) {
+            trigger_error('Only the requester and the moderators have access to this page. Error Code: da49eb0a81');
         }
     }/*}}}*/
 
-    public function fulfill_request($fid, $tid, $pid)/*{{{*/
+    public function isTrustedTerminator($reqdata)/*{{{*/
+    {
+        // This user is the original requester
+        if ($this->user_id == $reqdata['requester_uid']) {
+            return true;
+        }
+        if ($this->auth->acl_gets('a_', 'm_')) {
+            return true;
+        }
+        // Belongs to solver group
+        $gid = $this->user->data['group_id'];
+        $group_data = $this->select_group($gid);
+        if ($group_data['snp_req_b_solve']) {
+            return true;
+        }
+        return false;
+    }/*}}}*/
+
+    public function rejectInvalidSolver($reqdata)/*{{{*/
+    {
+        if (!$this->isTrustedSolver($reqdata)) {
+            trigger_error('Only the requester and the moderators have access to this page. Error Code: bfb6ca2540');
+        }
+    }/*}}}*/
+
+    public function isTrustedSolver($reqdata)/*{{{*/
+    {
+        return $this->isTrustedTerminator($reqdata) || $this->isSeasonedSolver();
+    }/*}}}*/
+
+    public function isSeasonedSolver()/*{{{*/
+    {
+        // Solved enough requests to be trusted
+        if ((int) $this->user->data['snp_req_n_solve'] >= $this::SEASONED_SOLVER_THRESHOLD) {
+            return true;
+        }
+        return false;
+    }/*}}}*/
+
+    public function fulfill_request($fid, $tid, $pid, $finishExecution=true)/*{{{*/
     {
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
@@ -347,9 +382,11 @@ class reqs extends base
             $this->notification->add_notifications(['jeb.snahp.notification.type.basic', ], $data);
         }
         $this->update_user($fuid, ['user_lastpost_time' => 0]);
-        meta_refresh(2, $this->u_action);
-        $message = 'Thank you for fulfilling this request!';
-        trigger_error($message);
+        if ($finishExecution) {
+            meta_refresh(2, $this->u_action);
+            $message = 'Thank you for fulfilling this request!';
+            trigger_error($message);
+        }
     }/*}}}*/
 
     public function undib_request($fid, $tid, $pid)/*{{{*/
