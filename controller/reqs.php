@@ -1,19 +1,19 @@
 <?php
 
 namespace jeb\snahp\controller;
+
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
 class reqs extends base
 {
-
     public function __construct()/*{{{*/
     {
         $this->ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
     }/*}}}*/
 
-	public function handle_mcp($mode, $uid)/*{{{*/
+    public function handle_mcp($mode, $uid)/*{{{*/
     {
         $this->user_id = $this->user->data['user_id'];
         $this->reject_non_moderator();
@@ -21,8 +21,7 @@ class reqs extends base
         $this->def = $this->container->getParameter('jeb.snahp.reqsmcp')['def'];
         $def = $this->def;
         // $this->u_action = "viewtopic.php?f=$fid&t=$tid&p=$pid";
-        switch ($mode)
-        {
+        switch ($mode) {
             case $def['enable']: // Disallow user from dib
                 $this->enable_dibber($uid, true);
                 meta_refresh(2, '/');
@@ -48,7 +47,7 @@ class reqs extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-	public function handle($fid, $tid, $pid, $mode)/*{{{*/
+    public function handle($fid, $tid, $pid, $mode)/*{{{*/
     {
         $this->user_id = $this->user->data['user_id'];
         $this->b_mod = $this->is_mod();
@@ -58,57 +57,50 @@ class reqs extends base
         $def = $this->def;
         $this->u_action = "viewtopic.php?f=$fid&t=$tid&p=$pid";
         $reqdata = $this->select_request($tid);
-        if (!$reqdata)
-        {
-			meta_refresh(2, $this->u_action);
+        if (!$reqdata) {
+            meta_refresh(2, $this->u_action);
             trigger_error('That request does not exist.');
         }
-        switch ($mode)
-        {
-            case $def['solve']: // To solve request
-                $this->reject_invalid_users($reqdata);
-                $this->solve_request($fid, $tid, $pid, $def['solve'], $reqdata);
-                break;
-            case $def['terminate']: // To terminate request
-                $this->reject_invalid_users($reqdata);
-                if ($reqdata['status']==$def['fulfill'] || $reqdata['status']==$def['dib'])
-                {
-                    $cfg['tpl_name'] = '@jeb_snahp/requests/component/terminate_confirm/base.html';
-                    $cfg['base_url'] = "/viewtopic.php?f={$fid}&t={$tid}#p{$pid}";
-                    $cfg['title'] = 'Confirm Request Termination';
-                    return $this->handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg);
-                }
-                $this->solve_request($fid, $tid, $pid, $def['terminate'], $reqdata);
-                break;
-            case $def['dib']:
-                $this->dib_request($fid, $tid, $pid);
-                break;
-            case $def['undib']:
-                $this->undib_request($fid, $tid, $pid);
-                break;
-            case $def['fulfill']:
-                $this->fulfill_request($fid, $tid, $pid);
-                break;
+        switch ($mode) {
+        case $def['solve']: // To solve request
+            $this->reject_invalid_users($reqdata);
+            $this->solve_request($fid, $tid, $pid, $def['solve'], $reqdata);
+            break;
+        case $def['terminate']: // To terminate request
+            $this->reject_invalid_users($reqdata);
+            if ($reqdata['status']==$def['fulfill'] || $reqdata['status']==$def['dib']) {
+                $cfg['tpl_name'] = '@jeb_snahp/requests/component/terminate_confirm/base.html';
+                $cfg['base_url'] = "/viewtopic.php?f={$fid}&t={$tid}#p{$pid}";
+                $cfg['title'] = 'Confirm Request Termination';
+                return $this->handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg);
+            }
+            $this->solve_request($fid, $tid, $pid, $def['terminate'], $reqdata);
+            break;
+        case $def['dib']:
+            $this->dib_request($fid, $tid, $pid);
+            break;
+        case $def['undib']:
+            $this->undib_request($fid, $tid, $pid);
+            break;
+        case $def['fulfill']:
+            $this->fulfill_request($fid, $tid, $pid);
+            break;
         }
     }/*}}}*/
 
     public function handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg)/*{{{*/
     {
         $confirm = (int) $this->request->variable('confirm', 0);
-        if ($confirm)
-        {
+        if ($confirm) {
             $termination_reason = $this->request->variable('termination_reasons', '');
-            if (!$termination_reason)
-            {
+            if (!$termination_reason) {
                 trigger_error('You must provide a reason for termination. Error Code: 2a9d306c8a');
             }
             $this->solve_request($fid, $tid, $pid, $this->def['terminate'], $reqdata, $termination_reason);
         }
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
-            switch($reqdata['status'])
-            {
+        if ($tpl_name) {
+            switch ($reqdata['status']) {
             case $this->def['dib']:
                 $status_strn = 'Accepted';
                 break;
@@ -120,7 +112,8 @@ class reqs extends base
             }
             $topic_data = $this->select_topic($tid);
             $username = '<span style="color: #' . $reqdata['fulfiller_colour'] . '; font-weight: 900;">' . $reqdata['fulfiller_username'] . '</span>';
-            $this->template->assign_vars([
+            $this->template->assign_vars(
+                [
                 'FORUM_ID' => $fid,
                 'TOPIC_ID' => $tid,
                 'POST_ID' => $pid,
@@ -129,7 +122,8 @@ class reqs extends base
                 'FULFILLER_USERNAME' => $username,
                 'S_TOPIC_TITLE' => $topic_data['topic_title'],
                 'S_STATUS' => $status_strn,
-            ]);
+                ]
+            );
             return $this->helper->render($tpl_name, $cfg['title']);
         }
     }/*}}}*/
@@ -187,19 +181,19 @@ class reqs extends base
     {
         $ru   = $this->select_request_users($uid);
         $udata = $this->select_user($ru['user_id']);
-        if (!$ru || !$udata) { return; }
+        if (!$ru || !$udata) {
+            return;
+        }
         $gdata = $this->select_group($udata['group_id']);
         $nu   = $ru['n_use'];
         $nb   = $gdata['snp_req_n_base'];
         $no   = $ru['n_offset'];
         $nu  -= $slot;
-        if ($nu > $nb)
-        {
+        if ($nu > $nb) {
             $no -= $nu - $nb;
             $nu = $nb;
         }
-        if ($nu < 0)
-        {
+        if ($nu < 0) {
             $no -= $nu;
             $nu = 0;
         }
@@ -212,7 +206,7 @@ class reqs extends base
     public function remove_request($tid)/*{{{*/
     {
         $data = ['tid' => $tid];
-        $sql = 'DELETE FROM ' . $this->tbl['req'] . $this->db->sql_build_array('DELETE', $data); 
+        $sql = 'DELETE FROM ' . $this->tbl['req'] . $this->db->sql_build_array('DELETE', $data);
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
     }/*}}}*/
@@ -222,29 +216,25 @@ class reqs extends base
         // Set confirmed_time
         $def = $this->def;
         $resolvedStatus = [$def['solve'], $def['terminate']];
-        if (!$req)
-        {
-			meta_refresh(2, $this->u_action);
-			trigger_error('That request does not exist. Error Code: d57e5d63b7');
-		}
-        if (in_array($req['status'], $resolvedStatus))
-		{
-			meta_refresh(2, $this->u_action);
-			trigger_error('That request had already been terminated.');
-		}
-        if ($new_status == $def['solve'] && $req['status'] != $def['fulfill'])
-		{
-			meta_refresh(2, $this->u_action);
-			trigger_error('You can only solve request that has been fulfilled. Error Code: e4917d39fd');
-		}
+        if (!$req) {
+            meta_refresh(2, $this->u_action);
+            trigger_error('That request does not exist. Error Code: d57e5d63b7');
+        }
+        if (in_array($req['status'], $resolvedStatus)) {
+            meta_refresh(2, $this->u_action);
+            trigger_error('That request had already been terminated.');
+        }
+        if ($new_status == $def['solve'] && $req['status'] != $def['fulfill']) {
+            meta_refresh(2, $this->u_action);
+            trigger_error('You can only solve request that has been fulfilled. Error Code: e4917d39fd');
+        }
         $user_id = $this->user_id;
         $b_op = $user_id == $req['requester_uid'];
         $b_mod = $this->auth->acl_gets('a_', 'm_');
         $gid = $this->user->data['group_id'];
         $group_data = $this->select_group($gid);
         $b_group = $group_data['snp_req_b_solve'];
-        if (!$b_op && !$b_mod && !$b_group)
-        {
+        if (!$b_op && !$b_mod && !$b_group) {
             //TODO: Send notification to user if closed by mod
             meta_refresh(2, $this->u_action);
             trigger_error('Only the requester and the moderators are allowed to close this request. Error Code: 585e9279e0');
@@ -254,8 +244,7 @@ class reqs extends base
             'status' => $new_status,
             'solved_time' => $time,
         ];
-        if ($new_status == $def['terminate'])
-        {
+        if ($new_status == $def['terminate']) {
             $data['termination_reason'] = $termination_reason;
             $data['terminator_uid'] = $this->user_id;
         }
@@ -263,28 +252,21 @@ class reqs extends base
         $this->increment_request_users_slot($req['requester_uid'], 1);
         $ptn = $this->ptn;
         $repl = '';
-        if ($new_status == $def['solve'])
-        {
+        if ($new_status == $def['solve']) {
             $repl = '[Solved]';
             $this->increment_user_request_solved($req);
-        }
-        elseif ($new_status == $def['terminate'])
-        {
+        } elseif ($new_status == $def['terminate']) {
             $repl = '[Closed]';
         }
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
-        if ($status)
-        {
+        if ($status) {
             meta_refresh(2, $this->u_action);
             trigger_error($status);
         }
         meta_refresh(2, $this->u_action);
-        if ($new_status == $def['solve'])
-        {
+        if ($new_status == $def['solve']) {
             trigger_error('This request was solved.');
-        }
-        elseif ($new_status == $def['terminate'])
-        {
+        } elseif ($new_status == $def['terminate']) {
             $sql = 'UPDATE ' . $this->tbl['requsr'] . ' SET n_use_this_cycle=n_use_this_cycle+1 ' .
                 " WHERE user_id={$user_id}";
             $this->db->sql_query($sql);
@@ -308,24 +290,24 @@ class reqs extends base
         $gid = $this->user->data['group_id'];
         $group_data = $this->select_group($gid);
         $b_group = $group_data['snp_req_b_solve'];
-        if ($myuid == $requester_uid)
+        if ($myuid == $requester_uid) {
             return 1;
-        elseif ($this->auth->acl_gets('a_', 'm_'))
+        } elseif ($this->auth->acl_gets('a_', 'm_')) {
             return 2;
-        elseif ($b_group)
+        } elseif ($b_group) {
             return 3;
-        else
+        } else {
             trigger_error('Only the requester and the moderators have access to this page.');
+        }
     }/*}}}*/
 
-	public function fulfill_request($fid, $tid, $pid)/*{{{*/
+    public function fulfill_request($fid, $tid, $pid)/*{{{*/
     {
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
         $repl = '[Fulfilled]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
-        if ($status)
-        {
+        if ($status) {
             meta_refresh(2, $this->u_action);
             trigger_error($status);
         }
@@ -340,8 +322,7 @@ class reqs extends base
         $fuid = $requestdata['fulfiller_uid'];
         $requesterdata = $this->select_user($ruid);
         // If user doesn't want to receive notify skip this user
-        if ($requesterdata['snp_enable_at_notify'])
-        {
+        if ($requesterdata['snp_enable_at_notify']) {
             $requester_id     = $requestdata['requester_uid'];
             $requester_name   = $requestdata['requester_username'];
             $requester_color  = $requestdata['requester_colour'];
@@ -363,9 +344,7 @@ class reqs extends base
                 'post_subject' => $text,
                 'type'         => $type,
             );
-            $this->notification->add_notifications(array(
-                'jeb.snahp.notification.type.basic',
-            ), $data);
+            $this->notification->add_notifications(['jeb.snahp.notification.type.basic', ], $data);
         }
         $this->update_user($fuid, ['user_lastpost_time' => 0]);
         meta_refresh(2, $this->u_action);
@@ -373,22 +352,23 @@ class reqs extends base
         trigger_error($message);
     }/*}}}*/
 
-	public function undib_request($fid, $tid, $pid)/*{{{*/
+    public function undib_request($fid, $tid, $pid)/*{{{*/
     {
         $dibdata = $this->select_dibs($tid);
         $def = $this->def;
-        if (!$dibdata || !$dibdata['status']==$def['dib'])
+        if (!$dibdata || !$dibdata['status']==$def['dib']) {
             trigger_error('No open dibs found.');
+        }
         $b_dibber = $this->is_dibber($dibdata);
         $b_mod = $this->is_mod();
-        if (!$b_dibber && !$b_mod)
+        if (!$b_dibber && !$b_mod) {
             trigger_error('Only dibber or moderators may undib.');
+        }
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
         $repl = '[Request]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
-        if ($status)
-        {
+        if ($status) {
             meta_refresh(2, $this->u_action);
             trigger_error($status);
         }
@@ -412,10 +392,9 @@ class reqs extends base
         trigger_error($message);
     }/*}}}*/
 
-	public function dib_request($fid, $tid, $pid)/*{{{*/
+    public function dib_request($fid, $tid, $pid)/*{{{*/
     {
-        if (!$this->user->data['snp_req_dib_enable'])
-        {
+        if (!$this->user->data['snp_req_dib_enable']) {
             meta_refresh(2, $this->u_action);
             trigger_error('You are not allowed to dib requests.');
         }
@@ -423,23 +402,20 @@ class reqs extends base
         $def = $this->def;
         $time = time();
         $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
-        if ($dibdata)
-        {
-            if ($dibdata['status'] == $def['dib'])
-            {
+        if ($dibdata) {
+            if ($dibdata['status'] == $def['dib']) {
                 trigger_error('Someone already dibbed this request.');
-            }
-            else
-            {
+            } else {
                 // Must have been undibbed
                 $b_dibber = $this->is_dibber($dibdata);
-                if ($b_dibber && !$this->b_mod)
-                {
+                if ($b_dibber && !$this->b_mod) {
                     $redib_time = $dibdata['undib_time'] + $undib_cooldown;
-                    if ($time < $redib_time)
-                    {
-                        trigger_error('Cannot dib so soon after undibbing a request.<br>
-                            You can dib this request again on ' . $this->get_dt($redib_time));
+                    if ($time < $redib_time) {
+                        trigger_error(
+                            'Cannot dib so soon after undibbing a request.<br>
+                            You can dib this request again on '
+                            . $this->get_dt($redib_time)
+                        );
                     }
                 }
             }
@@ -448,8 +424,7 @@ class reqs extends base
         $ptn = $this->ptn;
         $repl = '[Accepted]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
-        if ($status)
-        {
+        if ($status) {
             meta_refresh(2, $this->u_action);
             trigger_error($status);
         }
@@ -486,29 +461,23 @@ class reqs extends base
     public function get_requests_as_json($username='')/*{{{*/
     {
         $this->reject_anon();
-        if (!$username)
-        {
+        if (!$username) {
             $user_id = $this->user->data['user_id'];
-        }
-        else
-        {
+        } else {
             $this->reject_non_moderator();
             $userdata = $this->select_user_by_username($username);
-            if (!$userdata)
-            {
+            if (!$userdata) {
                 return new JsonResponse([]);
             }
             $user_id = $userdata['user_id'];
         }
         $reqdata = $this->select_request_open_by_uid($user_id);
         $data = [];
-        foreach ($reqdata as $entry)
-        {
+        foreach ($reqdata as $entry) {
             $tid = $entry['tid'];
             $status = $entry['status'];
             $date = $this->user->format_date($entry['created_time']);
-            switch ($status)
-            {
+            switch ($status) {
             case 1:
                 $status = 'Open';
                 break;
@@ -535,5 +504,4 @@ class reqs extends base
         $json = new JsonResponse($data);
         return $json;
     }/*}}}*/
-
 }
