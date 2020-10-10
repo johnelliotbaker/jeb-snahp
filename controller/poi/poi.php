@@ -146,6 +146,7 @@ class poi
                     'userColour' => $flair['user_colour'],
                     'link' => "/search.php?keywords=${tagname}&terms=all&author_id=${userId}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search",
                 ];
+                $items[$typeName]['users'][] = $user;
                 break;
             case 'CROUCHING_TIGER':
             case 'HIDDEN_DRAGON':
@@ -157,8 +158,8 @@ class poi
                     'userColour' => $flair['user_colour'],
                     'link' => $link,
                 ];
+                $items[$typeName]['users'][] = $user;
             }
-            $items[$typeName]['users'][] = $user;
         }
         $this->template->assign_var('ITEMS', $items);
         $tags = $this->get_tags();

@@ -38,6 +38,7 @@ imports:
     - { resource: ../Apps/BBCodeBanner/service.yml }
     - { resource: ../Apps/CustomBanner/service.yml }
     - { resource: ../Apps/PHPInfo/service.yml }
+    - { resource: ../Apps/RequestManager/service.yml }
 
 services:
     jeb.snahp.core:

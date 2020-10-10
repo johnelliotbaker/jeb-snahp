@@ -1,0 +1,6 @@
+jeb.snahp.routing.request_manager.change_solver:
+    path: /snahp/request-manager/change-solver/topic/{topicId}/solver/{solverId}
+    defaults: { _controller: jeb.snahp.Apps.RequestManager.RequestManagerController:changeSolver}
+    requirements:
+        topicId: \d+
+        solverId: \d+

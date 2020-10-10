@@ -1,0 +1,12 @@
+services:
+    jeb.snahp.Apps.RequestManager.RequestManagerController:
+        class: jeb\snahp\Apps\RequestManager\RequestManagerController
+        arguments:
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.RequestManager.RequestManagerHelper
+    jeb.snahp.Apps.RequestManager.RequestManagerHelper:
+        class: jeb\snahp\Apps\RequestManager\RequestManagerHelper
+        arguments:
+            - @dbal.conn
+            - %jeb.snahp.tables%
+            - %jeb.snahp.req%

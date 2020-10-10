@@ -1,3 +1,5 @@
+routing_request_manager:
+    resource: '../Apps/RequestManager/routing.yml'
 routing_php_info:
     resource: '../Apps/PHPInfo/routing.yml'
 routing_dead_links:
