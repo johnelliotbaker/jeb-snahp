@@ -1,6 +1,11 @@
-imports:
-    # - { resource: 'mute_user/parameters.yml' }
+# imports:
+#     - { resource: 'dir/parameters.yml' }
 services:
+
+##########
+#  View  #
+##########
+
     jeb.snahp.Apps.Boilerplate.BoilerplateController:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateController
         arguments:
@@ -14,7 +19,31 @@ services:
             - %jeb.snahp.tables%
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.Boilerplate.BoilerplateHelper
-    jeb.snahp.Apps.Boilerplate.BoilerplateHelper: # HELPER
+
+##############
+#  API VIEW  #
+##############
+
+    jeb.snahp.Apps.Boilerplate.ModelNameListCreateAPIView:
+        class: jeb\snahp\Apps\Boilerplate\ModelNameListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Boilerplate.Models.ModelName
+    jeb.snahp.Apps.Boilerplate.ModelNameRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Boilerplate\ModelNameRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Boilerplate.Models.ModelName
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Boilerplate.BoilerplateHelper:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateHelper
         arguments:
             - @dbal.conn
@@ -22,6 +51,22 @@ services:
             - @template
             - %jeb.snahp.tables%
             - @jeb.snahp.auth.user_auth
+
+
+###########
+#  MODEL  #
+###########
+
+
+    jeb.snahp.Apps.Boilerplate.Models.ArticleGroup:
+        class: jeb\snahp\Apps\Boilerplate\Models\ArticleGroup
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
     jeb.snahp.Apps.Boilerplate.BoilerplateEventListener:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateEventListener
         arguments:
