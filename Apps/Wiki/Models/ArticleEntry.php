@@ -1,5 +1,4 @@
 <?php
-
 namespace jeb\snahp\Apps\Wiki\Models;
 
 require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
@@ -30,7 +29,7 @@ class ArticleEntry extends Model
     ];
     protected $foreignNameParam = 'group';
 
-    public function __construct($History)
+    public function __construct($History)/*{{{*/
     {
         $this->history = $History;
         parent::__construct();
@@ -44,9 +43,9 @@ class ArticleEntry extends Model
             'priority'  => new IntegerField(['default' => 500]),
             'hash'  => new StringField(['default' => uuid4()]),
         ];
-    }
+    }/*}}}*/
 
-    public function getDiff($instance)
+    public function getDiff($instance)/*{{{*/
     {
         $orig = $instance->getMeta('sys.orig');
         $diffText = xdiff_string_diff($orig['text'], $instance->text);
@@ -55,7 +54,7 @@ class ArticleEntry extends Model
             return ['text' => $diffText, 'subject' => $diffSubject];
         }
         return null;
-    }
+    }/*}}}*/
 
     public function performPreUpdate($instance)/*{{{*/
     {
@@ -134,8 +133,8 @@ class ArticleEntry extends Model
         $instance->author = $this->userId;
     }/*}}}*/
 
-    public function getObjectFromSubject($subject)
+    public function getObjectFromSubject($subject)/*{{{*/
     {
         return R::findOne($this::TABLE_NAME, 'subject=?', [$subject]);
-    }
+    }/*}}}*/
 }

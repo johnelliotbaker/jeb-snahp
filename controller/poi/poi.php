@@ -46,7 +46,7 @@ class poi
         case 'poi':
             $cfg['tpl_name'] = '@jeb_snahp/poi/base.html';
             $cfg['title'] = 'Points of Interest';
-            return $this->respond_poi($cfg);
+            return $this->respondPOI($cfg);
         default:
             break;
         }
@@ -84,7 +84,90 @@ class poi
         return $rowset;
     }/*}}}*/
 
-    public function respond_poi($cfg)/*{{{*/
+    public function respondPOI($cfg)/*{{{*/
+    {
+        $exclude = ['ENCODER_TWO', 'CROUCHING_TIGER', 'HIDDEN_DRAGON'];
+        // Make sure "type handler" below handles excluded types properly
+        $items = [];
+
+        $sql = 'SELECT * FROM ' . 'phpbb_snahp_flr_type';
+        $result = $this->db->sql_query($sql);
+        $types = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+
+        $sql_array = [
+            'SELECT' => 'a.*, b.username, b.user_colour',
+            'FROM'  => [ 'phpbb_snahp_flr_flair' => 'a', ],
+            'LEFT_JOIN' => [
+                [
+                    'FROM' => [USERS_TABLE => 'b'],
+                    'ON' => 'a.user=b.user_id',
+                ],
+            ],
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sql_array);
+        $result = $this->db->sql_query($sql);
+        $flairs = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        [$styleNameOfficial, $styleName] = getStyleName();
+        foreach ($types as $type) {
+            $typeName = $type['name'];
+            if (in_array($typeName, $exclude)) {
+                continue;
+            }
+            $typeData = json_decode($type['data'], true);
+            $typeDetailedData = $typeData['data'];
+            $imgURL = $typeDetailedData['imgURL'] ? $typeDetailedData['imgURL'] : '';
+            if (!is_string($imgURL)) {
+                $imgURL = $imgURL[$styleName];
+            }
+            $items[$typeName] = [
+                'type' =>  $typeData['description'],
+                'imgURL' => $imgURL,
+                'users' => [],
+            ];
+        }
+        foreach ($flairs as $flair) {
+            $typeName = $flair['type'];
+            if (!$flair['username']) {
+                continue;
+            }
+            $flairData = json_decode($flair['data'], true);
+            // type handler
+            switch ($typeName) {
+            case 'ENCODER':
+            case 'ENCODER_TWO':
+                $typeName = 'ENCODER';
+                $link = $flairData['link'];
+                $tagname = $flairData['tag'];
+                $userId = $flair['user'];
+                $user = [
+                    'userName' => $flair['username'],
+                    'userColour' => $flair['user_colour'],
+                    'link' => "/search.php?keywords=${tagname}&terms=all&author_id=${userId}&sc=1&sf=titleonly&sr=topics&sk=x&sd=d&st=0&ch=300&t=0&submit=Search",
+                ];
+                break;
+            case 'CROUCHING_TIGER':
+            case 'HIDDEN_DRAGON':
+                continue;
+            default:
+                $link = $flairData['link'];
+                $user = [
+                    'userName' => $flair['username'],
+                    'userColour' => $flair['user_colour'],
+                    'link' => $link,
+                ];
+            }
+            $items[$typeName]['users'][] = $user;
+        }
+        $this->template->assign_var('ITEMS', $items);
+        $tags = $this->get_tags();
+        $this->template->assign_var('TAGS', $tags);
+
+        return $this->helper->render($cfg['tpl_name'], $cfg['title']);
+    }/*}}}*/
+
+    public function respond_poi1($cfg)/*{{{*/
     {
         $excluded_items = ['encoder_group', 'crouching_tiger', 'hidden_dragon', 'encoder_two'];
         $users_raw = $this->container->getParameter('jeb.snahp.avatar.badge.users');
@@ -136,7 +219,7 @@ class poi
     }/*}}}*/
 }
 
-function getAttribute($var, $attrName)
+function getAttribute($var, $attrName)/*{{{*/
 {
     if (!isset($var[$attrName])) {
         return '';
@@ -146,4 +229,4 @@ function getAttribute($var, $attrName)
         return $item[array_rand($item)];
     }
     return $item;
-}
+}/*}}}*/

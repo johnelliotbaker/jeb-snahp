@@ -165,7 +165,6 @@ function hasRequiredFields($data, $fields)/*{{{*/
     }
     foreach ($fields as $field) {
         if (!isset($data[$field])) {
-            print_r($field);
             return false;
         }
     }

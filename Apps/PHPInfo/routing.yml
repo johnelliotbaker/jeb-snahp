@@ -1,0 +1,3 @@
+jeb.snahp.routing.php_info.main:
+    path: /snahp/php-info
+    defaults: { _controller: jeb.snahp.Apps.PHPInfo.PHPInfoController:view}

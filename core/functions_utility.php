@@ -76,7 +76,8 @@ function uuid4()
     return sprintf(
         '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
         // 32 bits for "time_low"
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
         // 16 bits for "time_mid"
         mt_rand(0, 0xffff),
         // 16 bits for "time_hi_and_version",
@@ -87,6 +88,31 @@ function uuid4()
         // two most significant bits holds zero and one for variant DCE1.1
         mt_rand(0, 0x3fff) | 0x8000,
         // 48 bits for "node"
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff)
     );
+}
+
+function getStyleName()
+{
+    global $db, $user;
+    $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
+        WHERE style_id=' . (int) $user->data['user_style'];
+    $result = $db->sql_query($sql, 3600);
+    $row = $db->sql_fetchrow($result);
+    $db->sql_freeresult($result);
+    switch ($row['style_name']) {
+    case 'Hexagon':
+        return [$row['style_name'], 'hexagon'];
+    case 'Acieeed!':
+        return [$row['style_name'], 'acieeed!'];
+    case 'prosilver':
+        return [$row['style_name'], 'prosilver'];
+    case 'Basic':
+        return [$row['style_name'], 'basic'];
+    case 'Digi Orange':
+    default:
+        return [$row['style_name'], 'digi_orange'];
+    }
 }

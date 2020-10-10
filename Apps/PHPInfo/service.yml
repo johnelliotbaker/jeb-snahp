@@ -1,0 +1,5 @@
+services:
+    jeb.snahp.Apps.PHPInfo.PHPInfoController:
+        class: jeb\snahp\Apps\PHPInfo\PHPInfoController
+        arguments:
+            - @jeb.snahp.auth.user_auth

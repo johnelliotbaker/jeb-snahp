@@ -1,3 +1,5 @@
+routing_php_info:
+    resource: '../Apps/PHPInfo/routing.yml'
 routing_dead_links:
     resource: '../Apps/DeadLinks/routing.yml'
 routing_wiki:
