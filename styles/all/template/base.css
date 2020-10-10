@@ -214,12 +214,20 @@ img.emotes_small {
   max-height: 50px;
 }
 
-img.emotes_default.twitch_50 {
+img.emotes_default.height_45 {
+  max-height: 44px;
+}
+
+img.emotes_default.height_50 {
   max-height: 50px;
 }
 
-img.emotes_default.discord_44 {
-  max-height: 44px;
+img.emotes_default.height_60 {
+  max-height: 60px;
+}
+
+img.emotes_default.height_70 {
+  max-height: 70px;
 }
 
 /* mediainfo */

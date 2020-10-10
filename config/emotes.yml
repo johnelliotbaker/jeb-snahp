@@ -2,238 +2,234 @@ parameters:
     jeb.snahp.emotes:
         # yuta1
         e_aa000:
-            url: 'https://i.imgur.com/SWuKC6Z.gif'
+            url: https://i.imgur.com/SWuKC6Z.gif
             type: 0
         e_aa001:
-            url: 'https://i.imgur.com/I1bQd6m.gif'
+            url: https://i.imgur.com/I1bQd6m.gif
             type: 0
         e_aa002:
-            url: 'https://i.imgur.com/4oshMlG.gif'
+            url: https://i.imgur.com/4oshMlG.gif
             type: 0
         e_aa003:
-            url: 'https://i.imgur.com/pqiVOzx.gif'
+            url: https://i.imgur.com/pqiVOzx.gif
             type: 0
         e_aa004:
-            url: 'https://i.imgur.com/tD0i6t8.gif'
+            url: https://i.imgur.com/tD0i6t8.gif
             type: 0
         e_aa005:
-            url: 'https://i.imgur.com/fRGuJEH.gif'
+            url: https://i.imgur.com/fRGuJEH.gif
             type: 0
         e_aa006:
-            url: 'https://i.imgur.com/8miVRVN.gif'
+            url: https://i.imgur.com/8miVRVN.gif
             type: 0
         e_aa007:
-            url: 'https://i.imgur.com/L8rAjGl.gif'
+            url: https://i.imgur.com/L8rAjGl.gif
             type: 0
         e_aa008:
-            url: 'https://i.imgur.com/FfnfqFL.gif'
+            url: https://i.imgur.com/FfnfqFL.gif
             type: 0
 
         # yuta2
         e_aa100:
-            url: 'https://i.imgur.com/85va7sR.gif'
+            url: https://i.imgur.com/85va7sR.gif
             type: 0
         e_aa101:
-            url: 'https://i.imgur.com/TIf8IJF.gif'
+            url: https://i.imgur.com/TIf8IJF.gif
             type: 0
         e_aa102:
-            url: 'https://i.imgur.com/tYfczLA.gif'
+            url: https://i.imgur.com/tYfczLA.gif
             type: 0
         e_aa103:
-            url: 'https://i.imgur.com/H0v81pR.gif'
+            url: https://i.imgur.com/H0v81pR.gif
             type: 0
         e_aa104:
-            url: 'https://i.imgur.com/nuTSN3E.gif'
+            url: https://i.imgur.com/nuTSN3E.gif
             type: 0
         e_aa105:
-            url: 'https://i.imgur.com/vsDN0EB.gif'
+            url: https://i.imgur.com/vsDN0EB.gif
             type: 0
         e_aa106:
-            url: 'https://i.imgur.com/JnbUH2a.gif'
+            url: https://i.imgur.com/JnbUH2a.gif
             type: 1
         e_aa107:
-            url: 'https://i.imgur.com/mEhJWhi.gif'
+            url: https://i.imgur.com/mEhJWhi.gif
             type: 1
         e_aa108:
-            url: 'https://i.imgur.com/rdwYBjo.gif'
+            url: https://i.imgur.com/rdwYBjo.gif
             type: 1
         e_aa109:
-            url: 'https://i.imgur.com/KxSjcUi.gif'
+            url: https://i.imgur.com/KxSjcUi.gif
             type: 1
         e_aa110:
-            url: 'https://i.imgur.com/8uPlzce.gif'
+            url: https://i.imgur.com/8uPlzce.gif
             type: 1
 
         # tobi1
         e_ab000:
-            url: 'https://i.imgur.com/tGdABP9.gif'
+            url: https://i.imgur.com/tGdABP9.gif
             type: 0
         e_ab001:
-            url: 'https://i.imgur.com/GjM7IKA.gif'
+            url: https://i.imgur.com/GjM7IKA.gif
             type: 0
         e_ab002:
-            url: 'https://i.imgur.com/UEGW8LB.gif'
+            url: https://i.imgur.com/UEGW8LB.gif
             type: 0
         e_ab003:
-            url: 'https://i.imgur.com/IQZJcjp.gif'
+            url: https://i.imgur.com/IQZJcjp.gif
             type: 0
         e_ab004:
-            url: 'https://i.imgur.com/DPJiOka.gif'
+            url: https://i.imgur.com/DPJiOka.gif
             type: 0
         e_ab005:
-            url: 'https://i.imgur.com/hTf3WvO.gif'
+            url: https://i.imgur.com/hTf3WvO.gif
             type: 0
         e_ab006:
-            url: 'https://i.imgur.com/SSPg3uP.gif'
+            url: https://i.imgur.com/SSPg3uP.gif
             type: 0
         e_ab007:
-            url: 'https://i.imgur.com/Mf6rHVR.gif'
+            url: https://i.imgur.com/Mf6rHVR.gif
             type: 0
         e_ab008:
-            url: 'https://i.imgur.com/oPkXrde.gif'
+            url: https://i.imgur.com/oPkXrde.gif
             type: 0
 
         # tobi2
         e_ab100:
-            url: 'https://i.imgur.com/ja3dMi7.gif'
+            url: https://i.imgur.com/ja3dMi7.gif
             type: 0
         e_ab101:
-            url: 'https://i.imgur.com/eitYFXF.gif'
+            url: https://i.imgur.com/eitYFXF.gif
             type: 0
         e_ab102:
-            url: 'https://i.imgur.com/3NMuuJu.gif'
+            url: https://i.imgur.com/3NMuuJu.gif
             type: 0
         e_ab103:
-            url: 'https://i.imgur.com/CMLlN5O.gif'
+            url: https://i.imgur.com/CMLlN5O.gif
             type: 1
         e_ab104:
-            url: 'https://i.imgur.com/Nmv839o.gif'
+            url: https://i.imgur.com/Nmv839o.gif
             type: 1
         e_ab105:
-            url: 'https://i.imgur.com/6WxPJJB.gif'
+            url: https://i.imgur.com/6WxPJJB.gif
             type: 1
         e_ab106:
-            url: 'https://i.imgur.com/OWD0Inh.gif'
+            url: https://i.imgur.com/OWD0Inh.gif
             type: 1
         e_ab107:
-            url: 'https://i.imgur.com/wJpv1yL.gif'
+            url: https://i.imgur.com/wJpv1yL.gif
             type: 1
 
         # friends1
         e_ac000:
-            url: 'https://i.imgur.com/V9urSJI.gif'
+            url: https://i.imgur.com/V9urSJI.gif
             type: 0
         e_ac001:
-            url: 'https://i.imgur.com/T0EYtQX.gif'
+            url: https://i.imgur.com/T0EYtQX.gif
             type: 0
         e_ac002:
-            url: 'https://i.imgur.com/Qvt9QLo.gif'
+            url: https://i.imgur.com/Qvt9QLo.gif
             type: 0
         e_ac003:
-            url: 'https://i.imgur.com/Ryr6G5F.gif'
+            url: https://i.imgur.com/Ryr6G5F.gif
             type: 0
         e_ac004:
-            url: 'https://i.imgur.com/HAbrkRf.gif'
+            url: https://i.imgur.com/HAbrkRf.gif
             type: 0
         e_ac005:
-            url: 'https://i.imgur.com/U3P59Mv.gif'
+            url: https://i.imgur.com/U3P59Mv.gif
             type: 0
         e_ac006:
-            url: 'https://i.imgur.com/hVcMylU.gif'
+            url: https://i.imgur.com/hVcMylU.gif
             type: 0
         e_ac007:
-            url: 'https://i.imgur.com/WZIdxc0.gif'
+            url: https://i.imgur.com/WZIdxc0.gif
             type: 0
 
         # twitch1
         e_tw000:
-            url: 'https://i.imgur.com/IHmm9Qs.png'
+            url: https://i.imgur.com/IHmm9Qs.png
             type: 0
-            css: 'twitch_50'
+            css: height_50
         e_tw001:
-            url: 'https://i.imgur.com/nAqPDjL.png'
+            url: https://i.imgur.com/nAqPDjL.png
             type: 0
-            css: 'twitch_50'
+            css: height_50
         e_tw002:
-            url: 'https://i.imgur.com/ClWGLwV.png'
+            url: https://i.imgur.com/ClWGLwV.png
             type: 0
-            css: 'twitch_50'
+            css: height_50
         e_tw003: &e_tw003
-            url: 'https://i.imgur.com/1Ol0hmq.png'
+            url: https://i.imgur.com/1Ol0hmq.png
             type: 0
-            css: 'discord_44'
-            title: 'cry'
+            css: height_45
+            title: cry
 
         # discord
         e_ds000: &e_ds000
-            url: 'https://i.imgur.com/uENhb6d.png'
+            url: https://i.imgur.com/uENhb6d.png
             type: 0
-            css: 'discord_44'
-            title: 'comfy'
+            css: height_45
+            title: comfy
         e_ds001: &e_ds001
-            url: 'https://i.imgur.com/AdWBoza.png'
+            url: https://i.imgur.com/AdWBoza.png
             type: 0
-            css: 'discord_44'
-            title: 'inspect'
+            css: height_45
+            title: inspect
         e_ds002: &e_ds002
-            url: 'https://i.imgur.com/SlwxIdn.png'
+            url: https://i.imgur.com/SlwxIdn.png
             type: 0
-            css: 'discord_44'
-            title: 'smug'
+            css: height_45
+            title: smug
         e_ds003: &e_ds003
-            url: 'https://i.imgur.com/5bXpTQD.png'
+            url: https://i.imgur.com/5bXpTQD.png
             type: 0
-            css: 'discord_44'
-            title: 'lol'
+            css: height_45
+            title: lol
         e_ds005: &e_ds005
-            url: 'https://discordemoji.com/assets/emoji/6727_JigglyAngry.png'
-            url: 'https://i.imgur.com/yyfBusD.png'
+            url: https://discordemoji.com/assets/emoji/6727_JigglyAngry.png
+            url: https://i.imgur.com/yyfBusD.png
             type: 0
-            css: 'discord_44'
-            title: 'angry'
+            css: height_45
+            title: angry
         e_ds004: &e_ds004
-            url: 'https://i.imgur.com/96mAOWK.gif'
+            url: https://i.imgur.com/96mAOWK.gif
             type: 0
-            css: 'discord_44'
-            title: 'nom'
-
-        # Seasonals: Thanksgiving
-        e_th001:
-            url: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/223/turkey_1f983.png'
-            type: 9
-            title: 'Turkey Day!'
-        e_xm001:
-            url: 'https://i.imgur.com/LvWC2Ey.png'
-            type: 0
-            title: 'One Shatner'
-
+            css: height_45
+            title: nom
+            #
         # Star Trek
         e_tr000: # picard
-            url: 'https://i.imgur.com/AT3Tgdd.png'
+            url: https://i.imgur.com/AT3Tgdd.png
             type: 0
-            css: 'discord_44'
-            title: 'Make it so'
-            link: 'https://www.youtube.com/watch?v=sZt6eU5REN8'
+            css: height_45
+            title: Make it so
+            link: https://www.youtube.com/watch?v=sZt6eU5REN8
+
+        # Seasonals
+        e_th001: # Thanksgiving
+            url: https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/223/turkey_1f983.png
+            type: 9
+            title: Turkey Day!
+        e_xm001:
+            url: https://i.imgur.com/LvWC2Ey.png
+            type: 0
+            title: One Shatner
+            css: height_45
+        e_ha001: # Halloween
+            type: 0
+            url: https://i.imgur.com/sHtZWky.png
+            title: Double, double toil and trouble&#x0a;Fire burn and caldron bubble
+            link: https://youtu.be/AOIVPqDm06g?t=17
+
 
         # Necroposting
         e_nc000: &e_nc000
             url: https://i.imgur.com/vY9NTvl.png
             url: https://i.imgur.com/kcMaK5H.png
-            url: https://i.imgur.com/y7ou8Rg.png
-            url: https://i.imgur.com/48jaPGK.png
-            url: https://i.imgur.com/zFA0yRm.jpg
-            url: https://i.imgur.com/SJZJyWq.png
-            url: https://i.imgur.com/kcMaK5H.png
-            url: https://i.imgur.com/GmuPH1P.png
             type: 0
-            css: discord_44
+            css: height_70
             title: The foulest stench is in the air&#x0a;The funk of forty thousand years&#x0a;And grizzly ghouls from every tomb&#x0a;Are closing in to seal your doom&#x0a;And though you fight to stay alive&#x0a;Your body starts to shiver&#x0a;For no mere mortal can resist&#x0a;The evil of the Necropost&#x0a;
             link: https://youtu.be/sOnqjkJTMaA?t=445
-        e_nc001:
-            type: 0
-            url: https://i.imgur.com/sHtZWky.png
-            title: Double, double toil and trouble&#x0a;Fire burn and caldron bubble
-            link: https://youtu.be/AOIVPqDm06g?t=17
         # common alias
         e_comfy: *e_ds000
         e_inspect: *e_ds001
@@ -246,28 +242,28 @@ parameters:
 
         # Anchors
         e_nq000: # Apps
-            url: 'https://i.imgur.com/6Vje5na.png'
+            url: https://i.imgur.com/6Vje5na.png
             type: 0
-            link: '/viewforum.php?f=16'
+            link: /viewforum.php?f=16
         e_nq001: # Games
-            url: 'https://i.imgur.com/sPioGIm.png'
+            url: https://i.imgur.com/sPioGIm.png
             type: 0
-            link: '/viewforum.php?f=67'
+            link: /viewforum.php?f=67
         e_nq002: # Movie
-            url: 'https://i.imgur.com/rJhNuBZ.png'
+            url: https://i.imgur.com/rJhNuBZ.png
             type: 0
-            link: '/viewforum.php?f=17'
+            link: /viewforum.php?f=17
         e_nq003: # TV
-            url: 'https://i.imgur.com/18xEqwv.png'
+            url: https://i.imgur.com/18xEqwv.png
             type: 0
-            link: '/viewforum.php?f=68'
+            link: /viewforum.php?f=68
         e_nq004: # Music
-            url: 'https://i.imgur.com/6BCLOfI.png'
+            url: https://i.imgur.com/6BCLOfI.png
             type: 0
-            link: '/viewforum.php?f=69'
+            link: /viewforum.php?f=69
         e_nq005: # Other
-            url: 'https://i.imgur.com/Nns3rEB.png'
+            url: https://i.imgur.com/Nns3rEB.png
             type: 0
-            link: '/viewforum.php?f=18'
+            link: /viewforum.php?f=18
 
 
