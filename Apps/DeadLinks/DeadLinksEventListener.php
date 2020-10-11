@@ -36,12 +36,12 @@ class DeadlinksEventListener implements EventSubscriberInterface
     public function showDeadlinks($event)/*{{{*/
     {
         // TODO: UNCOMMENT AFTER INIT
-        // $openReports = count($this->Entry->getOpenReports($this->sauth->userId));
-        // $this->template->assign_var('N_OPEN_REPORTS', $openReports);
-        // if ($this->sauth->is_dev()) {
-        //     $openRequests = count($this->Entry->getOpenRequests());
-        //     $this->template->assign_var('N_OPEN_REQUESTS', $openRequests);
-        // }
+        $openReports = count($this->Entry->getOpenReports($this->sauth->userId));
+        $this->template->assign_var('N_OPEN_REPORTS', $openReports);
+        if ($this->sauth->is_dev()) {
+            $openRequests = count($this->Entry->getOpenRequests());
+            $this->template->assign_var('N_OPEN_REQUESTS', $openRequests);
+        }
     }/*}}}*/
 
     public function setDeadlinkTagInTitle($event)/*{{{*/
