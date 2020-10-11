@@ -43,11 +43,14 @@
 ></script>
 <!-- preload -->
 
-<!-- volatile  -->
+<!-- volatile -->
 {# While in development, add scripts here. When stable, move to either preload or lastload #}
 <!-- volatile -->
 
 
+
+<!-- INCLUDECSS @jeb_snahp/base.css -->
+{# Style Css has to come after base.css to override #}
 {% if STYLE_NAME %}
 <style>
   {% include '@jeb_snahp/customcss/nocache/' ~ STYLE_NAME ~ '.css' %}
@@ -59,7 +62,6 @@
 
 <!-- loadlast -->
 
-<!-- INCLUDECSS @jeb_snahp/base.css -->
 <!-- INCLUDECSS @jeb_snahp/giftbox/base.css -->
 <!-- INCLUDECSS @jeb_snahp/twbs.css -->
 <!-- INCLUDECSS @jeb_snahp/form_injector/pg-modal.css -->

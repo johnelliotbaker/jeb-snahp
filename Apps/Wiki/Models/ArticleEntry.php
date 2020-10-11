@@ -47,6 +47,7 @@ class ArticleEntry extends Model
 
     public function getDiff($instance)/*{{{*/
     {
+        return null;
         $orig = $instance->getMeta('sys.orig');
         $diffText = xdiff_string_diff($orig['text'], $instance->text);
         $diffSubject = $orig['subject'] === $instance->subject ? null : $orig['subject'];
