@@ -1,0 +1,28 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.topic_update_ticker.main:
+    path: /snahp/topic-update-ticker
+    defaults: { _controller: jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerController:view}
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.topic_update_ticker.list_entry_by_topic_id:
+    path: /snahp/topic-update-ticker/entry/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.TopicUpdateTicker.EntryListCreateAPIView:viewByTopicId}
+    requirements:
+        topicId: \d+
+jeb.snahp.routing.topic_update_ticker.list_entry:
+    path: /snahp/topic-update-ticker/entry
+    defaults: { _controller: jeb.snahp.Apps.TopicUpdateTicker.EntryListCreateAPIView:dispatch}
+jeb.snahp.routing.topic_update_ticker.retrieve_entry:
+    path: /snahp/topic-update-ticker/entry/{id}
+    defaults: { _controller: jeb.snahp.Apps.TopicUpdateTicker.EntryRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
