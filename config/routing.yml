@@ -1,3 +1,5 @@
+routing_topic_update_picker:
+    resource: '../Apps/TopicUpdateTicker/routing.yml'
 routing_request_manager:
     resource: '../Apps/RequestManager/routing.yml'
 routing_php_info:
