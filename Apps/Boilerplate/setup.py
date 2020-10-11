@@ -2,11 +2,19 @@ from pathlib import Path
 from functools import wraps
 import os
 
-TARGET_CLASSNAME = "NewClassName"
-TARGET_VARNAME = "new_var_name"
+TARGET_CLASSNAMES = [
+    "NewClassName",
+    "NewModelName",
+]
+TARGET_VARNAMES = [
+    "new_var_name",
+    "new-var-name",
+    "model_name",
+    "model-name",
+]
 
-PLACEHOLDER_CLASSNAME = "Boilerplate"
-PLACEHOLDER_VARNAME = "boilerplate"
+PLACEHOLDER_CLASSNAMES = ["Boilerplate", "ModelName"]
+PLACEHOLDER_VARNAMES = ["boilerplate_", "boilerplate-", "modelname_", "modelname-"]
 
 
 SCRIPT_CWD = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -47,9 +55,14 @@ def rename_variables(placeholder, new_name):
 
 @cd
 def main():
-    rename_modules(PLACEHOLDER_CLASSNAME, TARGET_CLASSNAME)
-    rename_variables(PLACEHOLDER_CLASSNAME, TARGET_CLASSNAME)
-    rename_variables(PLACEHOLDER_VARNAME, TARGET_VARNAME)
+    for (index, placeholder) in enumerate(PLACEHOLDER_CLASSNAMES):
+        target_name = TARGET_CLASSNAMES[index]
+        rename_modules(placeholder, target_name)
+        rename_variables(placeholder, target_name)
+
+    for (index, placeholder) in enumerate(PLACEHOLDER_VARNAMES):
+        target_name = TARGET_VARNAMES[index]
+        rename_variables(placeholder, target_name)
 
 
 if __name__ == "__main__":

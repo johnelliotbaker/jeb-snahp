@@ -3,8 +3,8 @@
 ##########
 
 
-jeb.snahp.routing.boilerplate.main:
-    path: /snahp/boilerplate
+jeb.snahp.routing.boilerplate_.main:
+    path: /snahp/boilerplate-
     defaults: { _controller: jeb.snahp.Apps.Boilerplate.BoilerplateController:view}
 
 
@@ -13,11 +13,11 @@ jeb.snahp.routing.boilerplate.main:
 ##############
 
 
-jeb.snahp.routing.boilerplate.list_model_name:
-    path: /snahp/boilerplate/model-name
+jeb.snahp.routing.boilerplate_.list_modelname_:
+    path: /snahp/boilerplate-/modelname-
     defaults: { _controller: jeb.snahp.Apps.Boilerplate.ModelNameListCreateAPIView:dispatch}
-jeb.snahp.routing.boilerplate.retrieve_model_name:
-    path: /snahp/boilerplate/model-name/{id}
+jeb.snahp.routing.boilerplate_.retrieve_modelname_:
+    path: /snahp/boilerplate-/modelname-/{id}
     defaults: { _controller: jeb.snahp.Apps.Boilerplate.ModelNameRetrieveUpdateDestroyAPIView:dispatch}
     requirements:
         id: \d+

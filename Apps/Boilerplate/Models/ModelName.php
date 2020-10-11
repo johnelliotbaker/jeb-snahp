@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\Apps\Wiki\Models;
+namespace jeb\snahp\Apps\Boilerplate\Models;
 
 require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
 
@@ -10,6 +10,7 @@ use jeb\snahp\core\Rest\Fields\StringField;
 
 use \R as R;
 
+// R::freeze(false);
 class ModelName extends Model
 {
     const TABLE_NAME = 'phpbb_snahp_';

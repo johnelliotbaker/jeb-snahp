@@ -58,8 +58,8 @@ services:
 ###########
 
 
-    jeb.snahp.Apps.Boilerplate.Models.ArticleGroup:
-        class: jeb\snahp\Apps\Boilerplate\Models\ArticleGroup
+    jeb.snahp.Apps.Boilerplate.Models.ModelName:
+        class: jeb\snahp\Apps\Boilerplate\Models\ModelName
 
 
 ####################

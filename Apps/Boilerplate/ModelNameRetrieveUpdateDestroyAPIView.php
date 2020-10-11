@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\Apps\Wiki;
+namespace jeb\snahp\Apps\Boilerplate;
 
 require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
 require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
