@@ -17,20 +17,20 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 
     public function __construct(/*{{{*/
     ) {
-        $this->connectDatabase(true);
     }/*}}}*/
 
     public static function getSubscribedEvents()/*{{{*/
     {
         return [
             'core.common' => [
-                ['loadClasses', 100],
+                ['loadClasses', 1],
             ],
         ];
     }/*}}}*/
 
     public function loadClasses($event)
     {
+        $this->connectDatabase(true);
         include_once '/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php';
     }
 }
