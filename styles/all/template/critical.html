@@ -1,4 +1,12 @@
 {S_HIDDEN_FIELDS_ALT} {S_STYLE_INFO} {S_REQ_HIDDEN_FIELDS}
+{% if S_VIEWTOPIC %}
+<input type="hidden" name="snp_topic_id" value="{TOPIC_ID}" />
+<input type="hidden" name="snp_topic_poster" value="{TOPIC_POSTER}" />
+{% if S_USER_ID == TOPIC_POSTER  %}
+<input type="hidden" name="snp_is_author" value="1" />
+{% endif %}
+{% endif %}
+
 
 {# When javascript contains curly braces, including with twig will have erratic behavior. #}
 {# So include using INCLUDEJS directive. #}
