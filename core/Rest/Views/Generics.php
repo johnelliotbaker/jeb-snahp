@@ -107,14 +107,17 @@ class GenericAPIView
 
     public function getQueryset()/*{{{*/
     {
+        $sqlAry = [];
         if ($data = getRequestData($this->request)) {
             foreach ($data as $varname => $value) {
                 $sqlAry[] = "${varname}='${value}'";
             }
         }
         // Must be the last one
-        $sqlAry = $this->orderBySqlStatement ? [$this->orderBySqlStatement] : [];
         $where = implode(' AND ', $sqlAry);
+        if (isset($this->orderBySqlStatement)) {
+            $where .= ' ' . $this->orderBySqlStatement;
+        }
         return array_values(R::find($this->model::TABLE_NAME, $where));
 
         // $data = getRequestData($this->request);
