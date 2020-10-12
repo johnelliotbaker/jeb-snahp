@@ -7,6 +7,10 @@
 {% endif %}
 {% endif %}
 
+{% if S_DISPLAY_PREVIEW %}
+<input type="hidden" name="snp_preview" value="1" />
+{% endif %}
+
 
 {# When javascript contains curly braces, including with twig will have erratic behavior. #}
 {# So include using INCLUDEJS directive. #}
