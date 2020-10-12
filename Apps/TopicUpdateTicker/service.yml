@@ -6,19 +6,6 @@ services:
 #  View  #
 ##########
 
-    jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerController:
-        class: jeb\snahp\Apps\TopicUpdateTicker\TopicUpdateTickerController
-        arguments:
-            - @dbal.conn
-            - @user
-            - @config
-            - @request
-            - @template
-            - @service_container
-            - @controller.helper
-            - %jeb.snahp.tables%
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerHelper
 
 ##############
 #  API VIEW  #
@@ -30,27 +17,19 @@ services:
             - @request
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.TopicUpdateTicker.Models.Entry
+            - @jeb.snahp.Apps.TopicUpdateTicker.EntryPermission
     jeb.snahp.Apps.TopicUpdateTicker.EntryRetrieveUpdateDestroyAPIView:
         class: jeb\snahp\Apps\TopicUpdateTicker\EntryRetrieveUpdateDestroyAPIView
         arguments:
             - @request
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.TopicUpdateTicker.Models.Entry
+            - @jeb.snahp.Apps.TopicUpdateTicker.EntryPermission
 
 
 ############
 #  HELPER  #
 ############
-
-
-    jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerHelper:
-        class: jeb\snahp\Apps\TopicUpdateTicker\TopicUpdateTickerHelper
-        arguments:
-            - @dbal.conn
-            - @user
-            - @template
-            - %jeb.snahp.tables%
-            - @jeb.snahp.auth.user_auth
 
 
 ###########
@@ -62,17 +41,18 @@ services:
         class: jeb\snahp\Apps\TopicUpdateTicker\Models\Entry
 
 
+################
+#  PERMISSION  #
+################
+
+
+    jeb.snahp.Apps.TopicUpdateTicker.EntryPermission:
+        class: jeb\snahp\Apps\TopicUpdateTicker\EntryPermission
+        arguments:
+            - @dbal.conn
+            - @jeb.snahp.auth.user_auth
+
+
 ####################
 #  EVENT LISTENER  #
 ####################
-
-
-    jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerEventListener:
-        class: jeb\snahp\Apps\TopicUpdateTicker\TopicUpdateTickerEventListener
-        arguments:
-            - @user
-            - @config
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.TopicUpdateTicker.TopicUpdateTickerHelper
-        tags:
-            - { name: event.listener }

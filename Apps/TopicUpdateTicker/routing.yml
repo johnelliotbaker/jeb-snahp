@@ -14,7 +14,7 @@ jeb.snahp.routing.topic_update_ticker.main:
 
 
 jeb.snahp.routing.topic_update_ticker.list_entry_by_topic_id:
-    path: /snahp/topic-update-ticker/entry/{topicId}
+    path: /snahp/topic-update-ticker/entries/{topicId}
     defaults: { _controller: jeb.snahp.Apps.TopicUpdateTicker.EntryListCreateAPIView:viewByTopicId}
     requirements:
         topicId: \d+
