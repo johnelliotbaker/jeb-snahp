@@ -1,8 +1,10 @@
 <?php
 /*{{{*/
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
+
 /*}}}*/
 
 class favorite extends base
@@ -12,14 +14,14 @@ class favorite extends base
     public function __construct($prefix)/*{{{*/
     {
         $this->prefix = $prefix;
+        $this->perPage = 30;
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
     {
         $this->reject_anon();
         $this->reject_bots();
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'oneday':
             $cfg['tpl_name'] = '@jeb_snahp/favorite/favorite_oneday.html';
             $cfg['sort_mode'] = 'id';
@@ -68,28 +70,27 @@ class favorite extends base
     public function handle_accepted_requests($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $type = $this->request->variable('type', 'all');
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
-            $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
-            if ($type=='dib')
-            {
+            if ($type=='dib') {
                 $cfg['title'] = 'Accepted Requests (Dibs)';
-                [$data, $total] = $this->select_accepted_requests($per_page, $start, 'dib');
+                [$data, $total] = $this->select_accepted_requests($this->perPage, $start, 'dib');
                 $base_url .= "?type=dib";
-            }
-            else
-            {
-                [$data, $total] = $this->select_accepted_requests($per_page, $start);
+            } else {
+                [$data, $total] = $this->select_accepted_requests($this->perPage, $start);
             }
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $this->perPage,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['tid'];
                 $pid = $row['pid'];
                 $created_time = $this->user->format_date($row['created_time']);
@@ -109,28 +110,27 @@ class favorite extends base
     public function handle_open_requests($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $type = $this->request->variable('type', 'all');
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
-            $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
-            if ($type=='fulfill')
-            {
+            if ($type=='fulfill') {
                 $cfg['title'] = 'Fulfilled Requests';
-                [$data, $total] = $this->select_fulfilled_requests($per_page, $start);
+                [$data, $total] = $this->select_fulfilled_requests($this->perPage, $start);
                 $base_url .= "?type=fulfill";
-            }
-            else
-            {
-                [$data, $total] = $this->select_open_requests($per_page, $start);
+            } else {
+                [$data, $total] = $this->select_open_requests($this->perPage, $start);
             }
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $this->perPage,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['tid'];
                 $pid = $row['pid'];
                 $created_time = $this->user->format_date($row['created_time']);
@@ -150,18 +150,20 @@ class favorite extends base
     public function handle_thanks_given($cfg)/*{{{*/
     {
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
-            $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
-            [$data, $total] = $this->select_thanks_given($per_page, $start);
+            [$data, $total] = $this->select_thanks_given($this->perPage, $start);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $this->perPage,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['topic_id'];
                 $pid = $row['post_id'];
                 $post_time = $this->user->format_date($row['post_time']);
@@ -193,39 +195,31 @@ class favorite extends base
     {
         $cooldown = 20; // Sql query cache cooldown
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             // FAVORITE FILTER START //
             $b_dev = $this->is_dev_server();
-            if ($b_dev)
-            {
+            if ($b_dev) {
                 $a_img_url = $this->container->getParameter('jeb.snahp.fav')['dev']['img'];
-            }
-            else
-            {
+            } else {
                 $a_img_url = $this->container->getParameter('jeb.snahp.fav')['production']['img'];
             }
             $fid_listings = $this->config['snp_fid_listings'];
             // Process submitted form /*{{{*/
-            if ($this->request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $a_target_forum_full_depth = $this->select_subforum($fid_listings, $cooldown);
                 $exclude = [];
-                foreach($a_target_forum_full_depth as $fid)
-                {
+                foreach ($a_target_forum_full_depth as $fid) {
                     $b_exclude = !$this->request->variable('fav_filter_fid_' . $fid, false);
-                    if ($b_exclude)
-                    {
+                    if ($b_exclude) {
                         $exclude[] = $fid;
                     }
                 }
                 $exclude = serialize($exclude);
                 $data = [ 'snp_fav_fid_exclude' => $exclude, ];
-                $this->update_user($this->user->data['user_id'] , $data);
+                $this->update_user($this->user->data['user_id'], $data);
                 meta_refresh(2.5, $cfg['base_url']);
                 trigger_error('Setting your filter preferences ...');
             }/*}}}*/
@@ -234,27 +228,19 @@ class favorite extends base
             $exclude = unserialize($this->user->data['snp_fav_fid_exclude']);
             $exclude = is_array($exclude) ? $exclude : [];
             $image_lookup = []; // Piggy back this loop to fil image urls
-            foreach ($a_listings_forum_parent as $forum)
-            {
+            foreach ($a_listings_forum_parent as $forum) {
                 // Iterate through parents and get the children
                 $parent_id = $forum['forum_id'];
                 $rowset = $this->select_subforum_with_name($parent_id, $cooldown);
-                if ($rowset)
-                {
+                if ($rowset) {
                     $a_forum[$parent_id]['children'] = [];
-                    foreach ($rowset as $row)
-                    {
+                    foreach ($rowset as $row) {
                         $forum_id = $row['forum_id'];
-                        if (array_key_exists($forum_id, $a_img_url))
-                        {
+                        if (array_key_exists($forum_id, $a_img_url)) {
                             $image_lookup[$forum_id] = $a_img_url[$forum_id];
-                        }
-                        elseif(array_key_exists($parent_id, $a_img_url))
-                        {
+                        } elseif (array_key_exists($parent_id, $a_img_url)) {
                             $image_lookup[$forum_id] = $a_img_url[$parent_id];
-                        }
-                        else
-                        {
+                        } else {
                             $image_lookup[$forum_id] = '';
                         }
                         $a_forum[$parent_id]['children'][] = [
@@ -266,11 +252,9 @@ class favorite extends base
                     }
                 }
             }
-            foreach ($a_forum as $key=>$forum)
-            {
+            foreach ($a_forum as $key=>$forum) {
                 $this->template->assign_block_vars('forum', []);
-                foreach ($a_forum[$key]['children'] as $child)
-                {
+                foreach ($a_forum[$key]['children'] as $child) {
                     $this->template->assign_block_vars('forum.subforum', $child);
                 }
             }
@@ -279,15 +263,18 @@ class favorite extends base
             $base_url = $cfg['base_url'];
             $fid_listings = $this->config['snp_fid_listings'];
             $pagination = $this->container->get('pagination');
-            $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
             $sort_mode = $cfg['sort_mode'];
-            [$data, $total] = $this->select_one_day($fid_listings, $per_page, $start, $sort_mode, $exclude, $cooldown);
+            [$data, $total] = $this->select_one_day($fid_listings, $this->perPage, $start, $sort_mode, $exclude, $cooldown);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $this->perPage,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $forum_id = $row['forum_id'];
                 $img_url = $image_lookup[$forum_id];
                 $tid = $row['topic_id'];
@@ -330,5 +317,4 @@ class favorite extends base
             return $this->helper->render($tpl_name, $cfg['title']);
         }
     }/*}}}*/
-
 }
