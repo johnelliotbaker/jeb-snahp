@@ -292,7 +292,7 @@ class reqs extends base
 
     public function rejectInvalidTerminator($reqdata)/*{{{*/
     {
-        if (!$this->isTrustedTerminator()) {
+        if (!$this->isTrustedTerminator($reqdata)) {
             trigger_error('Only the requester and the moderators have access to this page. Error Code: da49eb0a81');
         }
     }/*}}}*/
