@@ -12,6 +12,14 @@ div.avatar_special {
   max-height: 24px;
 }
 
+.maxh_30 {
+  max-height: 30px;
+}
+
+.maxh_32 {
+  max-height: 32px;
+}
+
 .maxh_36 {
   max-height: 36px;
 }
