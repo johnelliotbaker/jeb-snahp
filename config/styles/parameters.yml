@@ -17,66 +17,16 @@ parameters:
         14: https://i.imgur.com/C3vCd0g.jpg
         15: https://i.imgur.com/TDHvjSY.jpg
         16: https://i.imgur.com/aCIphGp.jpg
-        17: https://i.imgur.com/TvNIf7v.png
+        17: 
+            -
+                url: https://i.imgur.com/TvNIf7v.png
+                p: 999999
+            -
+                url: https://i.imgur.com/HkK8wO7.png
+                p: 1
         18: https://i.imgur.com/UV94Wzb.jpg
         19: https://i.imgur.com/XRIRlHP.jpg
         20: https://i.imgur.com/W3RxbHt.jpg
         21: https://i.imgur.com/ZaRxs1G.jpg
         22: https://i.imgur.com/fWq0jtu.jpg
         23: https://i.imgur.com/8wIq8Xc.jpg
-
-    # jeb.snahp.styles.banners:
-    #     light: &light
-    #         default: &default
-    #             - https://i.imgur.com/Sg9lMpz.jpg
-    #             - https://i.imgur.com/suBiXhh.jpg
-    #             - https://i.imgur.com/AP2HCuV.jpg
-    #             - https://i.imgur.com/fhIfMiB.jpg
-    #         afternoon: *default
-    #         evening:
-    #             - https://i.imgur.com/8zrbBlY.jpg
-    #             - https://i.imgur.com/LtW26ML.jpg
-    #             - https://i.imgur.com/0qnRYwd.jpg
-    #             - https://i.imgur.com/ImDrHDT.jpg
-    #         latenight:
-    #             - https://i.imgur.com/8guFD6o.jpg
-    #             - https://i.imgur.com/lO859Bz.jpg
-    #             - https://i.imgur.com/hq9VB9J.jpg
-    #             - https://i.imgur.com/NkUPBcx.jpg
-    #         twilight:
-    #             - https://i.imgur.com/clN8dbq.jpg
-    #             - https://i.imgur.com/OezJUxT.jpg
-    #             - https://i.imgur.com/O2Ueo6L.jpg
-    #             - https://i.imgur.com/MNzGLNi.jpg
-    #         morning:
-    #             - https://i.imgur.com/IeCiqNt.jpg
-    #             - https://i.imgur.com/V3AKglj.jpg
-    #             - https://i.imgur.com/dVne4LQ.jpg
-    #             - https://i.imgur.com/MtzvvnJ.jpg
-    #     dark: *light
-    #     time_of_day:
-    #         0: &zero 'latenight'
-    #         1: 'twilight'
-    #         2: 'twilight'
-    #         3: 'twilight'
-    #         4: 'twilight'
-    #         5: 'twilight'
-    #         6: 'morning'
-    #         7: 'morning'
-    #         8: 'morning'
-    #         9: 'morning'
-    #         10: 'morning'
-    #         11: 'morning'
-    #         12: 'afternoon'
-    #         13: 'afternoon'
-    #         14: 'afternoon'
-    #         15: 'afternoon'
-    #         16: 'afternoon'
-    #         17: 'evening'
-    #         18: 'evening'
-    #         19: 'evening'
-    #         20: 'evening'
-    #         21: 'latenight'
-    #         22: 'latenight'
-    #         23: 'latenight'
-    #         24: *zero

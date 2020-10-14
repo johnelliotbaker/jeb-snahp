@@ -23,7 +23,8 @@ class CustomBannerHelper
     public function selectBannerImage()
     {
         $hour = (int) $this->user->format_date(time(), 'H');
-        $bannerURL = getDefault($this->bannerConfig, $hour, 'https://i.imgur.com/C3vCd0g.jpg');
+        $banner = getDefault($this->bannerConfig, $hour, 'https://i.imgur.com/C3vCd0g.jpg');
+        $bannerURL = weightedArrayRand($banner, 1000000, 'url', 'p');
         $this->template->assign_vars(
             [
             'BANNER_IMG_URL' => $bannerURL,
@@ -49,3 +50,19 @@ class CustomBannerHelper
         return $row ? $row['post_text'] : '';
     }/*}}}*/
 }
+
+function weightedArrayRand($entry, $max=1000000, $valueKey=0, $probabilityKey=1)/*{{{*/
+{
+    if (!is_array($entry)) {
+        return $entry;
+    }
+    $count = 0;
+    // count really should grow like N
+    while ($count++ < 10) {
+        $item = $entry[array_rand($entry)];
+        if (rand(0, $max) <= (int) $item[$probabilityKey]) {
+            return $item[$valueKey];
+        }
+    }
+    return $entry[0][$valueKey];
+}/*}}}*/
