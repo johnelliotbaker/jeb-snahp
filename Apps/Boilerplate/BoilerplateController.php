@@ -42,34 +42,8 @@ class BoilerplateController
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
-    public function retrieveView($id)/*{{{*/
+    public function view()/*{{{*/
     {
-        $methodName = $this->request->server('REQUEST_METHOD', 'GET');
-        if ($methodName != 'GET') {
-            return new JsonResponse([]);
-        }
-        return $this->respondRetrieveAsJson($id);
-    }/*}}}*/
-
-    public function respondRetrieveAsJson($id)/*{{{*/
-    {
-        if ($id===0) {
-            return new JsonResponse([]);
-        }
-        $row = $this->helper->getBoilerplateById($id);
-        return $row ? new JsonResponse($row) : new JsonResponse([]);
-    }/*}}}*/
-
-    public function createListView()/*{{{*/
-    {
-        $methodName = $this->request->server('REQUEST_METHOD', 'GET');
-        switch ($methodName) {
-        case 'POST':
-        case 'PATCH':
-        case 'PUT':
-            return new JsonResponse(["method"=>$methodName]);
-        default:
-            return new JsonResponse(["method"=>$methodName]);
-        }
+        return new Resposne('Hello World');
     }/*}}}*/
 }
