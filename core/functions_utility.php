@@ -1,6 +1,6 @@
 <?php
 
-function prn($var, $b_html=false, $depth=0)
+function prn($var, $b_html=false, $depth=0)/*{{{*/
 {
     $nl = $b_html ? '<br>' : PHP_EOL;
     $nbsp = $b_html ? '&nbsp;' : ' ';
@@ -34,43 +34,17 @@ function prn($var, $b_html=false, $depth=0)
     if ($depth===0) {
         echo $nl;
     }
-}
+}/*}}}*/
 
-function fclear($filename='/home/ubm/a.txt', $depth=0, $b_new=true)
-{
-    file_put_contents($filename, '');
-}
-
-function fw($var, $filename='/home/ubm/a.txt', $depth=0)
-{
-    if ($depth>10) {
-        return false;
-    }
-    $indent = [];
-    for ($i=0; $i<$depth; $i++) {
-        $indent[] = '.....';
-    }
-    $indent = join('', $indent);
-    if (is_array($var)) {
-        foreach ($var as $k => $v) {
-            $t = PHP_EOL . "$indent$k => ";
-            file_put_contents($filename, $t, FILE_APPEND);
-            fw($v, $filename, $depth+1);
-        }
-    } else {
-        file_put_contents($filename, $var, FILE_APPEND);
-    }
-}
-
-function getDefault($dict, $key, $defualt=null)
+function getDefault($dict, $key, $defualt=null)/*{{{*/
 {
     if (!array_key_exists($key, $dict)) {
         return $defualt;
     }
     return $dict[$key];
-}
+}/*}}}*/
 
-function uuid4()
+function uuid4()/*{{{*/
 {
     // https://www.php.net/manual/en/function.uniqid.php
     return sprintf(
@@ -92,9 +66,9 @@ function uuid4()
         mt_rand(0, 0xffff),
         mt_rand(0, 0xffff)
     );
-}
+}/*}}}*/
 
-function getStyleName()
+function getStyleName()/*{{{*/
 {
     global $db, $user;
     $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
@@ -115,4 +89,71 @@ function getStyleName()
     default:
         return [$row['style_name'], 'digi_orange'];
     }
-}
+}/*}}}*/
+
+function getRequestMethod($request)/*{{{*/
+{
+    return $request->server('REQUEST_METHOD', 'GET');
+}/*}}}*/
+
+function getRequestData($request)/*{{{*/
+{
+    $method = getRequestMethod($request);
+    if (in_array($method, ['PUT', 'PATCH'])) {
+        $params = file_get_contents('php://input');
+        return json_decode($params, true);
+    }
+    $data = [];
+    foreach ($request->variable_names() as $varname) {
+        $data[$varname] = htmlspecialchars_decode($request->variable($varname, '', true));
+    }
+    return $data;
+}/*}}}*/
+
+function getRequestFormData($rootName)/*{{{*/
+{
+    global $request;
+    $request->enable_super_globals();
+    $data = getDefault($_REQUEST, $rootName);
+    $request->disable_super_globals();
+    $res = [];
+    $collect = function ($arr, &$res, $names=[]) use (&$collect) {
+        foreach ($arr as $key => $value) {
+            $newNames = array_merge($names, [$key]);
+            if (!is_array($value)) {
+                $res[implode('__', $newNames)] = $value;
+            } else {
+                $collect($value, $res, $newNames);
+            }
+        }
+    };
+    $collect($data, $res);
+    return $res;
+}/*}}}*/
+
+function getTwigRenderer($templateDirs=[], $extensions=[])/*{{{*/
+{
+    $templateDir = '/var/www/forum/ext/jeb/snahp/styles/all/template';
+    $defaultTemplateDir = [
+        ''
+    ];
+    $twig = new \Twig\Environment(
+        new \Twig\Loader\FilesystemLoader($templateDirs)
+    );
+    // $defaultTheme = 'form_div_layout.html.twig';
+    // $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine([$defaultTheme], $twig);
+    $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine([], $twig);
+    $twig->addRuntimeLoader(
+        new \Twig\RuntimeLoader\FactoryRuntimeLoader(
+            [
+                \Symfony\Component\Form\FormRenderer::class => function () use ($formEngine, $csrfManager) {
+                    return new \Symfony\Component\Form\FormRenderer($formEngine, $csrfManager);
+                },
+            ]
+        )
+    );
+    foreach ($extensions as $extension) {
+        $twig->addExtension($extension);
+    }
+    return $twig;
+}/*}}}*/

@@ -1,25 +1,9 @@
 <?php
 
 namespace jeb\snahp\cron;
+
 use jeb\snahp\core\topic_mover;
 use phpbb\db\driver\driver_interface;
-
-function fw($filepath, $var, $bNew=true)
-{
-    if ($bNew) file_put_contents($filepath, '');
-    if (is_array($var))
-    {
-        foreach ($var as $k => $v)
-        {
-            file_put_contents($filepath, "$k => ", FILE_APPEND);
-            fw($filepath, $v, false);
-        }
-    }
-    else
-    {
-        file_put_contents($filepath, "$var\n", FILE_APPEND);
-    }
-}
 
 class graveyard_request extends \phpbb\cron\task\base
 {
@@ -32,8 +16,7 @@ class graveyard_request extends \phpbb\cron\task\base
         topic_mover $topic_mover,
         $db,
         $container
-    )
-    {
+    ) {
         $this->config      = $config;
         $this->topic_mover = $topic_mover;
         $this->db          = $db;
@@ -42,8 +25,7 @@ class graveyard_request extends \phpbb\cron\task\base
 
     protected function get_topic_data(array $topic_ids)
     {
-        if (!function_exists('phpbb_get_topic_data'))
-        {
+        if (!function_exists('phpbb_get_topic_data')) {
             include('includes/functions_mcp.php');
         }
         return phpbb_get_topic_data($topic_ids);
@@ -59,8 +41,9 @@ class graveyard_request extends \phpbb\cron\task\base
             ' AND b_graveyard = 0';
         $result = $this->db->sql_query_limit($sql, $limit);
         $data = [];
-        while ($row = $this->db->sql_fetchrow($result))
+        while ($row = $this->db->sql_fetchrow($result)) {
             $data[] = $row;
+        }
         $this->db->sql_freeresult($result);
         return $data;
     }
@@ -70,9 +53,12 @@ class graveyard_request extends \phpbb\cron\task\base
         $batch_limit = 100;
         $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
-        foreach ($requestdata as $req)
+        foreach ($requestdata as $req) {
             $a_tid[] = $req['tid'];
-        if (!$a_tid) return false;
+        }
+        if (!$a_tid) {
+            return false;
+        }
         $td = $this->get_topic_data($a_tid);
         $graveyard_fid = unserialize($this->config['snp_cron_graveyard_fid'])['default'];
         $this->topic_mover->move_topics($td, $graveyard_fid);
