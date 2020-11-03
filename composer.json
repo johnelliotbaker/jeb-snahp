@@ -2,21 +2,23 @@
     "name": "jeb/snahp",
     "type": "phpbb-extension",
     "description": "Snahp Extension",
-    "homepage": "",
     "version": "0.38.2",
     "time": "2020-10-09",
     "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "jeb",
-            "email": "",
-            "homepage": "",
             "role": ""
         }
     ],
     "require": {
         "php": ">=5.3.3",
-        "composer/installers": "~1.0"
+        "composer/installers": "~1.0",
+        "symfony/form": "^4.4",
+        "symfony/twig-bridge": "^4.4",
+        "twig/twig": "1.41.0",
+        "symfony/security-csrf": "^4.4",
+        "symfony/validator": "^4.4"
     },
     "extra": {
         "version": "de917351a24476613523133456b4f2118e6efa02",
