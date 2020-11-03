@@ -1,0 +1,30 @@
+services:
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.RequestForm.RequestFormHelper:
+        class: jeb\snahp\Apps\RequestForm\RequestFormHelper
+        arguments:
+            - @request
+            - @template
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.RequestForm.RequestFormEventListener:
+        class: jeb\snahp\Apps\RequestForm\RequestFormEventListener
+        arguments:
+            # - @user
+            # - @config
+            # - @cache.driver
+            # - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.RequestForm.RequestFormHelper
+        tags:
+            - { name: event.listener }

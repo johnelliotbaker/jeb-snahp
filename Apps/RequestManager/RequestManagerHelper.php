@@ -20,7 +20,7 @@ class RequestManagerHelper
     {
         $topicId = (int) $topicId;
         $solverId = (int) $solverId;
-        $rd = $this->getRequestData($topicId);
+        $rd = $this->getReqData($topicId);
         if ((int) $rd['status'] === (int) $this->def['solve']) {
             // If already solved, reduce the previous solver's solved amount
             $prevSolverId = $rd['fulfiller_uid'];
@@ -51,7 +51,7 @@ class RequestManagerHelper
         ];
     }/*}}}*/
 
-    public function getRequestData($topicId)/*{{{*/
+    public function getReqData($topicId)/*{{{*/
     {
         $topicId = (int) $topicId;
         $sql = 'SELECT * FROM ' . $this->tbl['req'] . " WHERE tid=${topicId}";

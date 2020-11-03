@@ -1,0 +1,40 @@
+{% block compoundBlock  %}
+  {% for leaf in elem %}
+    {% if not leaf.vars.compound %}
+    {{ block('leafBlock') }}
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+
+{% block filehost %}
+  {{ block('compoundBlock') }}
+{% endblock %}
+
+{% block subtitle %}
+  {{ block('compoundBlock') }}
+{% endblock %}
+
+{% block videoResolution %}
+  {{ block('compoundBlock') }}
+{% endblock %}
+
+{% block videoCodec %}
+  {{ block('compoundBlock') }}
+{% endblock %}
+
+{% block leafBlock %}
+  <dl>
+    <dt> {{ form_label(leaf) }} </dt>
+    <dd>
+    {{ form_widget(leaf) }}
+    {{ form_help(leaf) }}
+    </dd>
+    <dt></dt>
+    {% if leaf.vars.errors|length > 0 %}
+    <dd class="error" style="padding-left: 1rem; padding-bottom: 0.5em">
+    {{ form_errors(leaf) }}
+    </dd>
+    {% endif %}
+  </dl>
+{% endblock %}
+

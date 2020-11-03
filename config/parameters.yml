@@ -33,6 +33,8 @@ parameters:
             updating: &updating 14
             ongoing: *updating
             deadlinks: 15
+            ps: 16
+            xbox: 17
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -46,10 +48,13 @@ parameters:
                 android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android">'
                 ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios">'
                 mac:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac">'
+                pc:        '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
                 win:       '<img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win">'
                 updating: &updating '<img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating">'
                 ongoing: *updating
                 deadlinks: '🐞'
+                ps: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg">'
+                xbox: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg">'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -62,10 +67,13 @@ parameters:
                 android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android"></span>'
                 ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios"></span>'
                 mac:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="mac"></span>'
+                pc:        '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
                 win:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/6DQqf6m.png" title="win"></span>'
                 updating: &updating '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating"></span>'
                 ongoing: *updating
                 deadlinks: '🐞'
+                ps: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg"></span>'
+                xbox: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg"></span>'
 
     jeb.snahp.req:
         def:

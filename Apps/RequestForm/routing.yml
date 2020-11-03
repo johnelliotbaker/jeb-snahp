@@ -1,0 +1,8 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.request_form.main:
+    path: /snahp/request-form
+    defaults: { _controller: jeb.snahp.Apps.RequestForm.RequestFormController:view}

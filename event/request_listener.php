@@ -64,7 +64,7 @@ class request_listener extends base implements EventSubscriberInterface
             'core.posting_modify_submit_post_after' => 'create_request',
             'core.viewforum_modify_topics_data' => 'modify_request_tags',
             'core.posting_modify_message_text' => [
-                ['compose_request_form', 0],
+                ['compose_request_form', 2],
                 ['add_fulfillment_widget', 0],
             ],
             'core.modify_posting_parameters' => 'show_request_post_form',

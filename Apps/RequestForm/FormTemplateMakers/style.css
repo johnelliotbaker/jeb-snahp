@@ -1,0 +1,95 @@
+.dont-break-out {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.twbs .requestcard .box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: #ddd;
+  font-size: 1.3em;
+  font-family: "Architects Daughter";
+  font-weight: 700;
+}
+
+.twbs .requestcard .card-title h5 {
+  font-family: Special Elite;
+  font-style: normal;
+  font-size: 2.6em;
+  color: #ffb52e;
+}
+
+.twbs .requestcard .card-title {
+  padding-top: 20px;
+}
+
+.twbs .requestcard .table.table-borderless td {
+  border-top: none !important;
+}
+
+.twbs .requestcard .table tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+
+.twbs .requestcard .table tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.twbs .requestcard .card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: none !important;
+  padding: 16px;
+}
+
+.twbs .requestcard .link {
+  font-size: 0.75em;
+  font-weight: 100;
+}
+
+.twbs .requestcard .box1 {
+  padding-right: 8px;
+  max-width: 200px;
+  justify-content: flex-end;
+  border-right: 1px solid rgba(99, 99, 99, 0.1);
+  color: rgba(200, 200, 200, 0.65);
+}
+
+.twbs .requestcard .box2 {
+  padding-left: 8px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  color: #f1f6e0;
+}
+
+.twbs .requestcard .t-row {
+  display: grid;
+  grid-template-columns: auto 5fr;
+  align-items: center;
+}
+
+.twbs .requestcard.container .card {
+  background: #403d43 url(https://i.imgur.com/JYKhCtN.jpg) repeat center;
+}
+
+.twbs .requestcard .divider {
+  height: 14px;
+  width: 100%;
+  background: url(https://i.imgur.com/1DHv0g6.png) no-repeat center;
+}
+
+.twbs .requestcard .card-image img {
+  width: 330px;
+}
+
+.twbs .requestcard .card-image {
+  padding-top: 12px;
+}

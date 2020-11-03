@@ -1,24 +1,5 @@
 <?php
 
-function getRequestMethod($request)
-{
-    return $request->server('REQUEST_METHOD', 'GET');
-}
-
-function getRequestData($request)
-{
-    $method = getRequestMethod($request);
-    if (in_array($method, ['PUT', 'PATCH'])) {
-        $params = file_get_contents('php://input');
-        return json_decode($params, true);
-    }
-    $data = [];
-    foreach ($request->variable_names() as $varname) {
-        $data[$varname] = htmlspecialchars_decode($request->variable($varname, '', true));
-    }
-    return $data;
-}
-
 function buildAbsoluteUri($request, $data=[])
 {
     $host = $request->server('HTTP_HOST');

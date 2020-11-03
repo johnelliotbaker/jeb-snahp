@@ -7,6 +7,7 @@ class Field
     public function __construct($options = [])
     {
         $this->default = array_key_exists('default', $options) ? $options['default'] : null;
+        $this->_options = $options;
     }
 
     public function validate($data)
