@@ -69,7 +69,7 @@ class FormFieldParser
         if (!is_numeric($isbn)) {
             return;
         }
-        return "<a href=\"https://catalog.loc.gov/vwebv/search?searchArg=$isbn&searchCode=GKEY%5E*&searchType=1\" target=\"_blank\">$isbn</a>";
+        return "<a href=\"https://catalog.loc.gov/vwebv/search?searchArg=$isbn&searchCode=GKEY%5E*&searchType=1\" class=\"isbn\" target=\"_blank\">$isbn</a>";
     }/*}}}*/
 
     public function linkParser($link)/*{{{*/

@@ -2,7 +2,7 @@
 <div class="twbs">
   <h5>Points of Interest</h5>
   <table
-    class="table table-sm table-dark table-striped table-borderless table-poi"
+    class="table table-sm table-{{ STYLE_TYPE }} table-striped table-borderless table-poi"
     style="vertical-align: middle;"
   >
     <tbody>
@@ -14,7 +14,7 @@
         >
           <img style="height: 30px;" src="{{item['imgURL']}}" alt="{key}" />
         </th>
-        <td style="vertical-align: middle">{{item['type']}}</td>
+        <td style="vertical-align: middle; color: {% if STYLE_TYPE == "light" %}black{% else %}inherit{% endif %} !important;">{{item['type']}}</td>
         <td style="vertical-align: middle; font-weight: 700; margin-right: 0.3em;">
           {% for user in item['users']|sort %}
           <span style="color:#{{user['userColour']}};">

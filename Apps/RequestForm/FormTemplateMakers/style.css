@@ -51,7 +51,11 @@
   padding: 16px;
 }
 
-.twbs .requestcard .link {
+.twbs .requestcard a {
+    color: #98bc76 !important;
+}
+
+.twbs .requestcard .box .link {
   font-size: 0.75em;
   font-weight: 100;
 }
