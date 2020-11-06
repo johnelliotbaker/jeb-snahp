@@ -6,6 +6,8 @@ use \Symfony\Component\Form\Extension\Core\Type as Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use jeb\snahp\Apps\RequestForm\Models\Ebook;
 
+use \Symfony\Component\Validator\Constraints as Assert;
+
 class EbookType extends AbstractType
 {
     public static $alias = 'ebook';
@@ -21,18 +23,61 @@ class EbookType extends AbstractType
                 [
                     'attr' => ['tabindex' => 2],
                     'choices' => [
-                        'PDF or EPUB' => 'PDF or EPUB',
-                        'PDF' => 'PDF',
+                        'EPUB or PDF or MOBI' => 'EPUB or PDF or MOBI',
                         'EPUB' => 'EPUB',
+                        'PDF' => 'PDF',
+                        'MOBI' => 'MOBI',
                     ]
+                ]
+            )
+            ->add(
+                'authors',
+                Type\TextType::class,
+                [
+                    'attr' => [
+                        'tabindex' => 2,
+                        'class' => 'inputbox autowidth',
+                        'size' => 30
+                    ],
+                    'required' => false,
+                ]
+            )
+            ->add('isbn', ISBNType::class)
+            ->add(
+                'edition',
+                Type\TextType::class,
+                [
+                    'attr' => [
+                        'tabindex' => 2,
+                        'class' => 'inputbox autowidth',
+                        'size' => 30
+                    ],
+                    'required' => false,
+                    'help' => 'US version, 3rd edition'
                 ]
             )
             ->add(
                 'language',
                 Type\TextType::class,
                 [
-                    'attr' => ['tabindex' => 2],
+                    'attr' => [
+                        'tabindex' => 2,
+                        'class' => 'inputbox autowidth',
+                        'size' => 30
+                    ],
                     'data' => 'English',
+                ]
+            )
+            ->add(
+                'link',
+                Type\TextType::class,
+                [
+                    'attr' => [
+                        'tabindex' => 2,
+                        'class' => 'inputbox autowidth',
+                        'size' => 45
+                    ],
+                    'required' => false,
                 ]
             )
             ->add(

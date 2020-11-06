@@ -6,6 +6,10 @@
   {% endfor %}
 {% endblock %}
 
+{% block isbn %}
+  {{ block('compoundBlock') }}
+{% endblock %}
+
 {% block filehost %}
   {{ block('compoundBlock') }}
 {% endblock %}

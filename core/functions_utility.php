@@ -157,3 +157,22 @@ function getTwigRenderer($templateDirs=[], $extensions=[])/*{{{*/
     }
     return $twig;
 }/*}}}*/
+
+function flattenArray($arr)
+{
+    if (!is_array($arr)) {
+        return $arr;
+    }
+    $res = [];
+    $flatten = function ($arr, &$res) {
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                flatten($value, $res);
+            } else {
+                $res[$key] = $value;
+            }
+        }
+    };
+    $flatten($arr, $res);
+    return $res;
+}

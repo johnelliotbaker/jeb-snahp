@@ -3,6 +3,7 @@ namespace jeb\snahp\Apps\RequestForm\FormTemplateMakers;
 
 const TYPE_TO_LABEL = [
     'filehost' => 'File Host',
+    'isbn' => 'ISBN',
     'videoResolution' => 'Resolution',
 ];
 
@@ -11,32 +12,35 @@ class FormFieldParser
     const _PARSERS = [
         'filehost' => 'filehostParser',
         'link' => 'linkParser',
-        'videoCodec' => 'genericCompoundParser',
-        'videoResolution' => 'genericCompoundParser',
-        'subtitle' => 'genericCompoundParser',
+        'isbn' => 'isbnParser',
     ];
 
     const ALLOWED_FILEHOSTS = ['mega', 'zippy'];
-
 
     public function getParser($type)/*{{{*/
     {
         return getDefault(self::_PARSERS, $type, 'stringParser');
     }/*}}}*/
 
-    public function genericCompoundParser($arr)
+    public function genericCompoundParser($arr)/*{{{*/
     {
+        if (!is_array($arr)) {
+            return;
+        }
         $res = [];
         foreach ($arr as $value) {
             $res[] = (string) $value;
         }
         return implode(', ', $res);
-    }
+    }/*}}}*/
 
     public function filehostParser($value)/*{{{*/
     {
+        if (!is_string($value)) {
+            return;
+        }
         $res = [];
-        $filehosts = preg_split('#,\s*#s', $value['filehost']);
+        $filehosts = preg_split('#,\s*#s', $value);
         $filehosts = array_unique($filehosts);
         $filehosts = array_filter(
             $filehosts,
@@ -58,6 +62,14 @@ class FormFieldParser
             $res[] = $partial;
         }
         return implode('<span style="margin-left:8px;margin-right:8px;">or</span>', $res);
+    }/*}}}*/
+
+    public function isbnParser($isbn)/*{{{*/
+    {
+        if (!is_numeric($isbn)) {
+            return;
+        }
+        return "<a href=\"https://catalog.loc.gov/vwebv/search?searchArg=$isbn&searchCode=GKEY%5E*&searchType=1\" target=\"_blank\">$isbn</a>";
     }/*}}}*/
 
     public function linkParser($link)/*{{{*/

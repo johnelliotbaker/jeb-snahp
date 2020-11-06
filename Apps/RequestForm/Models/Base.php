@@ -45,7 +45,16 @@ class Base
         foreach ($this->contentFields as $field) {
             $value = $this->{$field};
             if ($value !== null) {
-                $this->data['content'][$field] = $this->{$field};
+                if (is_array($value)) {
+                    $arr = flattenArray($value);
+                    foreach ($arr as $k => $v) {
+                        if ($v !== null) {
+                            $this->data['content'][$k] = $v;
+                        }
+                    }
+                } else {
+                    $this->data['content'][$field] = $this->{$field};
+                }
             }
         }
         return $this->data;
