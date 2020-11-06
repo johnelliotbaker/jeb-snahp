@@ -153,6 +153,9 @@ class poi
                 continue;
             default:
                 $link = $flairData['link'];
+                if (is_array($link)) {
+                    $link = $link[array_rand($link)];
+                }
                 $user = [
                     'userName' => $flair['username'],
                     'userColour' => $flair['user_colour'],
