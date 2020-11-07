@@ -174,8 +174,10 @@ function hasRequiredFields($data, $fields)/*{{{*/
 function chooseRandomData($data)/*{{{*/
 {
     // If field is array, choose random element
+    // But some fields like "style" should pass through
+    $_PASS_THROUGH = ['style'];
     foreach ($data as $key => $value) {
-        if (is_array($value)) {
+        if (is_array($value) && !in_array($key, $_PASS_THROUGH)) {
             $data[$key] = $value[array_rand($value)];
         }
     }

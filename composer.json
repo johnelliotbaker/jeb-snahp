@@ -2,8 +2,8 @@
     "name": "jeb/snahp",
     "type": "phpbb-extension",
     "description": "Snahp Extension",
-    "version": "0.38.2",
-    "time": "2020-10-09",
+    "version": "0.38.6",
+    "time": "2020-11-06",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -21,7 +21,7 @@
         "symfony/validator": "^4.4"
     },
     "extra": {
-        "version": "de917351a24476613523133456b4f2118e6efa02",
+        "version": "1478f6206521cdc6637541e666e3b6984ed3cc1c",
         "features": "Overhauls: Wiki/Deadlinks/POI/Flair",
         "display-name": "Snahp",
         "soft-require": {

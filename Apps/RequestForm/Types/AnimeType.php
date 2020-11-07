@@ -15,6 +15,16 @@ class AnimeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
     {
+        $js = '
+<script>
+const subject = $("#subject");
+const malLink = $("#mal-link");
+subject.keyup((e) => {
+    const request = subject.val();
+    malLink.attr("href", "https://myanimelist.net/search/all?cat=all&q=" + request);
+});
+</script>';
+
         $builder
             ->add('filehost', FileHostType::class)
             ->add('videoResolution', VideoResolutionType::class)
@@ -43,7 +53,9 @@ class AnimeType extends AbstractType
                         'class' => 'inputbox autowidth',
                         'size' => 45
                     ],
-                    'help' => 'Reference link is required. Try searching <a href="https://myanimelist.net/" target="_blank"><strong>myanimelist</strong></a>.',
+                    'help' => 'Reference link is required. '
+                    . 'Try searching <a id="mal-link" href="https://myanimelist.net/" target="_blank"><strong>myanimelist</strong></a>.'
+                    . $js,
                     'constraints' => [new Assert\Url([ 'relativeProtocol' => false, ])],
                     'help_html' => true,
                 ]
