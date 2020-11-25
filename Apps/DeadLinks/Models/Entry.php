@@ -72,6 +72,11 @@ class Entry extends Model
                 $this->closeTopicReports($object->topic);
                 $this->unmarkTopicWithDeadlink($object->topic);
                 break;
+            case 'Graveyard':
+                $this->sendGraveyardNotification($object);
+                $this->graveyardTopic($object->topic);
+                $this->closeTopic($object->topic);
+                break;
             }
             break;
         case 'Action':
