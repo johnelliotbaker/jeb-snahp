@@ -30,4 +30,9 @@
     {% include '@jeb_snahp/avatar/component/request_solved_image/base.html' %}
   </strong>
 </dd>
+{% if postrow.REQUESTS_SOLVED >= 300 %}
+<dd class="profile-posts snahp">
+  <img title="{postrow.POST_AUTHOR} has achieved the rank of Seasoned Solver" style="max-width:10px;" alt="Seasoned Solver" src="https://i.imgur.com/s267rNJ.png">
+</dd>
+{% endif %}
 {% endif %}
