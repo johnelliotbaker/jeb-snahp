@@ -43,7 +43,6 @@ class RequestFormEventListener implements EventSubscriberInterface
                 ['prependRequestBBCodeToPostData', 1],
             ],
             'core.posting_modify_submit_post_before' => [
-                ['disableMagicUrl', 1],
                 ['tagTopicTitle', 1],
             ],
         ];
@@ -53,17 +52,12 @@ class RequestFormEventListener implements EventSubscriberInterface
     {
         if ($this->form && $event['mode'] === 'post') {
             $postData = $event['post_data'];
+            // Also disable magic url
+            $postData['enable_urls'] = 0;
             $title = &$postData['post_subject'];
             $title = $this->helper->tagTopicTitle($title, $this->form);
             $event['post_data'] = $postData;
         }
-    }/*}}}*/
-
-    public function disableMagicUrl($event)/*{{{*/
-    {
-        $postData = $event['post_data'];
-        $postData['enable_urls'] = 0;
-        $event['post_data'] = $postData;
     }/*}}}*/
 
     public function setPostingVars($event)/*{{{*/
