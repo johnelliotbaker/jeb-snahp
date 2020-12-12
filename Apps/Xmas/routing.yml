@@ -1,0 +1,92 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.xmas.main:
+    path: /snahp/xmas
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:view}
+
+jeb.snahp.routing.xmas.get_vote:
+    path: /snahp/xmas/most-voted-tile
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:getMostVotedTile}
+
+jeb.snahp.routing.xmas.test:
+    path: /snahp/xmas/test
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:test}
+
+jeb.snahp.routing.xmas.summary:
+    path: /snahp/xmas/summary
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:summary}
+
+jeb.snahp.routing.xmas.create_boards:
+    # Simulate mass creation of board
+    path: /snahp/xmas/create-boards
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:simulateCreate}
+
+jeb.snahp.routing.xmas.simulate_votes:
+    # Simulate mass voting
+    path: /snahp/xmas/simulate-votes
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:simulateVotes}
+
+jeb.snahp.routing.xmas.simulate_votes_period:
+    # Simulate mass voting
+    path: /snahp/xmas/simulate-votes/{period}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:simulateVotesPeriod}
+    requirements:
+        period: \d+
+
+jeb.snahp.routing.xmas.score:
+    # Score All Boards
+    path: /snahp/xmas/score
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:score}
+
+jeb.snahp.routing.xmas.reset_timer:
+    # Score All Boards
+    path: /snahp/xmas/reset-timer/{mode}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:resetTimer}
+    requirements:
+        mode: \d+
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.xmas.list_board:
+    path: /snahp/xmas/board
+    defaults: { _controller: jeb.snahp.Apps.Xmas.BoardListCreateAPIView:dispatch}
+jeb.snahp.routing.xmas.retrieve_board:
+    path: /snahp/xmas/board/{id}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.BoardRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.xmas.list_vote:
+    path: /snahp/xmas/vote
+    defaults: { _controller: jeb.snahp.Apps.Xmas.VoteListCreateAPIView:dispatch}
+jeb.snahp.routing.xmas.retrieve_vote:
+    path: /snahp/xmas/vote/{id}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.VoteRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.xmas.list_tile:
+    path: /snahp/xmas/tile
+    defaults: { _controller: jeb.snahp.Apps.Xmas.TileListCreateAPIView:dispatch}
+jeb.snahp.routing.xmas.retrieve_tile:
+    path: /snahp/xmas/tile/{id}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.TileRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+
+####################
+#  Setup Database  #
+####################
+
+
+jeb.snahp.routing.Xmas.setup_database:
+    path: /snahp/xmas/init
+    defaults: { _controller: jeb.snahp.Apps.Xmas.SetupDatabaseView:view}

@@ -1,0 +1,132 @@
+# imports:
+#     - { resource: 'dir/parameters.yml' }
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Xmas.XmasController:
+        class: jeb\snahp\Apps\Xmas\XmasController
+        arguments:
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.XmasHelper
+
+##############
+#  API VIEW  #
+##############
+
+    jeb.snahp.Apps.Xmas.BoardListCreateAPIView:
+        class: jeb\snahp\Apps\Xmas\BoardListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Board
+    jeb.snahp.Apps.Xmas.BoardRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Xmas\BoardRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.XmasHelper
+            - @jeb.snahp.Apps.Xmas.Models.Board
+
+    jeb.snahp.Apps.Xmas.VoteListCreateAPIView:
+        class: jeb\snahp\Apps\Xmas\VoteListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Vote
+    jeb.snahp.Apps.Xmas.VoteRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Xmas\VoteRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Vote
+
+    jeb.snahp.Apps.Xmas.TileListCreateAPIView:
+        class: jeb\snahp\Apps\Xmas\TileListCreateAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Tile
+    jeb.snahp.Apps.Xmas.TileRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Xmas\TileRetrieveUpdateDestroyAPIView
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Tile
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Xmas.XmasHelper:
+        class: jeb\snahp\Apps\Xmas\XmasHelper
+        arguments:
+            - '@cache.driver'
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Board
+            - @jeb.snahp.Apps.Xmas.Models.Tile
+            - @jeb.snahp.Apps.Xmas.Models.Vote
+            - @jeb.snahp.Apps.Xmas.Models.Config
+
+
+###########
+#  MODEL  #
+###########
+
+
+    jeb.snahp.Apps.Xmas.Models.Board:
+        class: jeb\snahp\Apps\Xmas\Models\Board
+
+    jeb.snahp.Apps.Xmas.Models.Vote:
+        class: jeb\snahp\Apps\Xmas\Models\Vote
+
+    jeb.snahp.Apps.Xmas.Models.Tile:
+        class: jeb\snahp\Apps\Xmas\Models\Tile
+
+    jeb.snahp.Apps.Xmas.Models.Config:
+        class: jeb\snahp\Apps\Xmas\Models\Config
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Xmas.XmasEventListener:
+        class: jeb\snahp\Apps\Xmas\XmasEventListener
+        arguments:
+            - @user
+            - @config
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.XmasHelper
+        tags:
+            - { name: event.listener }
+
+
+    ####################
+    #  Setup Database  #
+    ####################
+
+
+    jeb.snahp.Apps.Xmas.SetupDatabaseView:
+        class: jeb\snahp\Apps\Xmas\SetupDatabaseView
+        arguments:
+            - @dbal.conn
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.Models.Board
+            - @jeb.snahp.Apps.Xmas.Models.Tile
+            - @jeb.snahp.Apps.Xmas.Models.Vote
+            - @jeb.snahp.Apps.Xmas.Models.Config

@@ -39,6 +39,9 @@
   href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,700&display=swap"
   rel="stylesheet"
 />
+<link href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf" rel="application/font-sfnt">
+<link href="./ext/jeb/snahp/styles/all/template/fonts/MerryChristmasFlake.ttf" rel="application/font-sfnt">
+
 
 <!-- preload -->
 <script
@@ -134,6 +137,12 @@
   <!-- DEFINE $rx_user_flair = true -->
   <!-- INCLUDEJS @jeb_snahp/user_flair/rx_user_flair/bundle.js -->
   <!-- INCLUDECSS @jeb_snahp/user_flair/rx_user_flair/bundle.css -->
+  <!-- ENDIF -->
+
+  <!-- IF not $rx_xmas -->
+  <!-- DEFINE $rx_xmas = true -->
+  <!-- INCLUDEJS @jeb_snahp/xmas/rx_xmas/bundle.js -->
+  <!-- INCLUDECSS @jeb_snahp/xmas/rx_xmas/bundle.css -->
   <!-- ENDIF -->
 
   <!-- IF not $rx_snahplyr -->

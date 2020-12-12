@@ -41,6 +41,7 @@ imports:
     - { resource: ../Apps/RequestManager/service.yml }
     - { resource: ../Apps/TopicUpdateTicker/service.yml }
     - { resource: ../Apps/RequestForm/service.yml }
+    - { resource: ../Apps/Xmas/service.yml }
 
 services:
     jeb.snahp.core:
