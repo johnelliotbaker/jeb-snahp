@@ -176,3 +176,15 @@ function flattenArray($arr)
     $flatten($arr, $res);
     return $res;
 }
+
+function asSet($array)
+{
+    if (is_array($array)) {
+        return array_flip($array);
+    }
+}
+
+function choice($array)
+{
+    return $array[array_rand($array, 1)];
+}
