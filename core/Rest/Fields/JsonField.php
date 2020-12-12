@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\core\Rest\Fields;
 
-class JsonField
+class JsonField extends Field
 {
     public function validate($data)
     {
