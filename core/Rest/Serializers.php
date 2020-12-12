@@ -44,7 +44,9 @@ class Serializer
             $this->initialData = [];
         }
         foreach ($fields as $key => $field) {
-            if (!array_key_exists($key, $this->initialData)) {
+            // TODO:: BUG:: See if this is a bug by adding "&& $field->default !== null"
+            // Original: if (!array_key_exists($key, $this->initialData)) {
+            if (!array_key_exists($key, $this->initialData) && $field->default !== null) {
                 $this->initialData[$key] = $field->default;
             }
         }
