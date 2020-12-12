@@ -38,11 +38,33 @@ function getAvailableVotes($time=null)/*{{{*/
     );
 }/*}}}*/
 
-function clearVotes()/*{{{*/
+function clearVoteCache()/*{{{*/
 {
     global $db;
     $sql = "UPDATE `phpbb_snahp_xmas_config` SET `data` = '[]' WHERE (`name` = 'votes');";
     $db->sql_query($sql);
+}/*}}}*/
+
+function getVoteDistribution($period=null)/*{{{*/
+{
+    global $db;
+    // TODO:: cache
+    $cache = 0;
+    if ($period === null) {
+        $period = getTimeIndexWithDefault();
+    }
+    $tbl = 'phpbb_snahp_xmas_vote';
+    $sql = "SELECT tile, count(*) as total FROM ${tbl} WHERE period=${period} GROUP BY tile;";
+    $result = $db->sql_query($sql, $cache);
+    $rowset = $db->sql_fetchrowset($result);
+    $db->sql_freeresult($result);
+    $res = [ 1=>0, 2=>0, 3=>0, 4=>0, 5=>0, 6=>0, 7=>0, 8=>0, 9=>0, 10=>0, 11=>0, 12=>0, 13=>0, ];
+    if ($rowset) {
+        foreach ($rowset as $row) {
+            $res[$row['tile']] = $row['total'];
+        }
+    }
+    return $res;
 }/*}}}*/
 
 function getVotes($time=null)/*{{{*/
