@@ -35,7 +35,7 @@ class Vote extends Model
     public function simulate($period)/*{{{*/
     {
         $this->wipe();
-        clearVotes();
+        clearVoteCache();
         $schedule = getXmasConfig('schedule', 0);
         $start    = $schedule['start'];
         $duration = $schedule['duration'];
@@ -44,8 +44,8 @@ class Vote extends Model
         if (!$period) {
             $period = $division;
         }
-        $end      = $start + $duration * $period / $division;
-        $users = 100;
+        $end = $start + $duration * $period / $division;
+        $users = 500;
         $interval = (int) $duration / $division;
         foreach (range($start, $end-$interval, $interval) as $time) {
             $availableVotes = getAvailableVotes($time);

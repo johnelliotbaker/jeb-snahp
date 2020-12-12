@@ -16,7 +16,6 @@ class XmasHelper
         $cache,
         $sauth,
         $Board,
-        $Tile,
         $Vote,
         $Config
     ) {
@@ -24,14 +23,10 @@ class XmasHelper
         $this->sauth = $sauth;
         $this->userId = $sauth->userId;
         $this->Board = $Board;
-        $this->Tile = $Tile;
         $this->Vote = $Vote;
         $this->Config = $Config;
         $this->period = null;
-    }/*}}}*/
-
-    public function test()/*{{{*/
-    {
+        $this->boardConfig = null;
     }/*}}}*/
 
     public function simulateVoting($period=0)/*{{{*/
@@ -48,9 +43,6 @@ class XmasHelper
         $votes = getVotes();
         $availableVotes = getAvailableVotes();
         $user = $this->sauth->userId;
-        // TODO::
-        // $user = rand(60, 6000);
-        // $user = 1;
         $board = $this->Board->getObject('user=?', [$user]);
         if (!$board) {
             $data = [
@@ -59,19 +51,24 @@ class XmasHelper
             ];
             $board = $this->Board->create($data);
         }
+        $period = $this->getPeriod();
+        $voteDistribution = getVoteDistribution($period);
         $score = $this->scoreUser($user);
         $totalPlayers = getBoardCount();
-        $distribution = $this->score();
-        $elapsed = microtime(true) - $startTime;
+        $distribution = $this->getScoreDistribution();
         krsort($distribution);
         $currentVote = $this->getCurrentUserVote($user);
-        $period = $this->getPeriod();
+        $nextPeriodStart = (int) $this->getNextPeriodStart();
+        $timeToNext = $nextPeriodStart - time();
+        $elapsed = microtime(true) - $startTime;
         $data = [
             'period' => (int) $period,
             'votes' => $votes,
             'availableVotes' => array_values($availableVotes),
             'score' => (int) $score,
-            'nextPeriodStart' => (int) $this->getNextPeriodStart(),
+            'voteDistribution' => $voteDistribution,
+            'nextPeriodStart' => $nextPeriodStart,
+            'timeToNext' => $timeToNext,
             'distribution' => $distribution,
             'totalPlayers' => (int) $totalPlayers,
             'currentVote' => (int) $currentVote,
@@ -100,11 +97,6 @@ class XmasHelper
         }
     }/*}}}*/
 
-    public function getMostVotedTile($period=null)/*{{{*/
-    {
-        return $this->Vote->getMostVotedTile($period);
-    }/*}}}*/
-
     public function createBoard($userId)/*{{{*/
     {
         $this->Board->create(
@@ -124,18 +116,19 @@ class XmasHelper
         return $this->schedule;
     }/*}}}*/
 
-    public function score()/*{{{*/
+    public function getScoreDistribution()/*{{{*/
     {
-        $cacheDuration = 20;
+        $cacheDuration = 2;
         $varname = 'snp_xmas_score_distribution';
         $distribution = $this->cache->get($varname);
         if (!$distribution) {
+            $distribution = [0=>0, 1=>0, 2=>0, 3=>0, 4=>0, 5=>0, 6=>0, 8=>0];
             $votes = getVotes();
             $boards = $this->Board->getQueryset();
-            $bingoBoard = new BingoBoard($this::ROWS, $this::COLUMNS, $this::POOL_SIZE);
+            $boardConfig = $this->getBoardConfig();
+            $bingoBoard = new BingoBoard($boardConfig['rows'], $boardConfig['columns'], $boardConfig['poolSize']);
             $scorer = new ScoreRule75();
             $scorer->sequence = $votes;
-            $distribution = [];
             foreach ($boards as $board) {
                 $bingoBoard->tiles = $board->tiles;
                 $score = $scorer->score($bingoBoard);
@@ -157,38 +150,12 @@ class XmasHelper
     {
         $votes = getVotes();
         $board = $this->Board->getObject('user=?', [$userId]);
-        $bingoBoard = new BingoBoard($this::ROWS, $this::COLUMNS, $this::POOL_SIZE);
+        $boardConfig = $this->getBoardConfig();
+        $bingoBoard = new BingoBoard($boardConfig['rows'], $boardConfig['columns'], $boardConfig['poolSize']);
         $bingoBoard->tiles = $board->tiles;
         $scorer = new ScoreRule75();
         $scorer->sequence = $votes;
         return $scorer->score($bingoBoard);
-    }/*}}}*/
-
-    public function testBingo()/*{{{*/
-    {
-        [$rows, $columns] = [3, 3];
-        $poolSize =  13; // $rows * $columns * 1.4
-        $draws = 10;
-        $simulations = 6000;
-        $dummyBoard = new BingoBoard($rows, $cols, $poolSize);
-        $simulator = new Simulator($dummyBoard, $draws);
-        $sequence = $simulator->sequence();
-        $scorer = new ScoreRule75();
-        $res = [];
-        foreach (range(0, $simulations) as $i) {
-            $board = new BingoBoard($rows, $columns, $poolSize);
-            $board->makeRandom();
-            $board->markSequence($sequence);
-            $score = $scorer->score($board);
-            $res[] = $score;
-        }
-
-        $total = [];
-        foreach ($res as $score) {
-            $total[$score] += 1;
-        }
-        ksort($total);
-        print_r($total);
     }/*}}}*/
 
     public function getPeriod()/*{{{*/
@@ -197,6 +164,14 @@ class XmasHelper
             $this->period = getTimeIndexWithDefault();
         }
         return $this->period;
+    }/*}}}*/
+
+    public function getBoardConfig()/*{{{*/
+    {
+        if ($this->boardConfig === null) {
+            $this->boardConfig = getXmasConfig('board');
+        }
+        return $this->boardConfig;
     }/*}}}*/
 
     public function resetTimer($mode=0)/*{{{*/
@@ -219,13 +194,20 @@ class XmasHelper
             ],
             // Short for checking progression
             2 => [
-                'start' => $now + 10,
+                'start' => $now + 5,
                 'duration' => 100,
                 'end' => $now + 10 + 100,
                 'division' => 10,
             ],
             // Short for checking progression
             3 => [
+                'start' => $now,
+                'duration' => 900,
+                'end' => $now + 900,
+                'division' => 10,
+            ],
+            // Beta Tester Run
+            4 => [
                 'start' => $now + 3600,
                 'duration' => 86400,
                 'end' => $now + 3600 + 86400,
