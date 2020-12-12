@@ -6,6 +6,8 @@ require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Fields/All.php';
 
 use \R as R;
 
+use \RedBeanPHP\RedException as RedException;
+
 class Model
 {
     protected const FIELDS_NAMESPACE = 'jeb\\snahp\\core\\Rest\\Fields\\';
@@ -54,7 +56,7 @@ class Model
 
     public function create($data)/*{{{*/
     {
-        $this->performPreCreate($data);
+        $data = $this->performPreCreate($data);
         foreach ($this->requiredFields as $field) {
             if (!in_array($field, array_keys($data))) {
                 throw new MissingRequiredField("${field} is missing. Error Code: 9d2e4f02b5");
@@ -64,17 +66,23 @@ class Model
         foreach ($data as $name => $value) {
             $instance->$name = $value;
         }
-        R::store($instance);
-        $this->performPostCreate($instance);
+        try {
+            R::store($instance);
+        } catch (RedException\SQL $e) {
+            throw new RedExceptionSQL($e->getMessage());
+        }
+        $instance = $this->performPostCreate($instance);
         return $instance;
     }/*}}}*/
 
-    public function performPreCreate($instance)/*{{{*/
+    public function performPreCreate($data)/*{{{*/
     {
+        return $data;
     }/*}}}*/
 
     public function performPostCreate($instance)/*{{{*/
     {
+        return $instance;
     }/*}}}*/
 
     public function update($instance, $data)/*{{{*/
@@ -168,3 +176,7 @@ class Model
 class MissingRequiredField extends \Exception /*{{{*/
 {
 }/*}}}*/
+
+class RedExceptionSQL extends \Exception
+{
+}
