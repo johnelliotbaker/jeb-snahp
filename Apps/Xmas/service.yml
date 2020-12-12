@@ -51,19 +51,6 @@ services:
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.Xmas.Models.Vote
 
-    jeb.snahp.Apps.Xmas.TileListCreateAPIView:
-        class: jeb\snahp\Apps\Xmas\TileListCreateAPIView
-        arguments:
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Xmas.Models.Tile
-    jeb.snahp.Apps.Xmas.TileRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\Xmas\TileRetrieveUpdateDestroyAPIView
-        arguments:
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Xmas.Models.Tile
-
 
 ############
 #  HELPER  #
@@ -76,7 +63,6 @@ services:
             - '@cache.driver'
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.Xmas.Models.Board
-            - @jeb.snahp.Apps.Xmas.Models.Tile
             - @jeb.snahp.Apps.Xmas.Models.Vote
             - @jeb.snahp.Apps.Xmas.Models.Config
 
@@ -91,9 +77,6 @@ services:
 
     jeb.snahp.Apps.Xmas.Models.Vote:
         class: jeb\snahp\Apps\Xmas\Models\Vote
-
-    jeb.snahp.Apps.Xmas.Models.Tile:
-        class: jeb\snahp\Apps\Xmas\Models\Tile
 
     jeb.snahp.Apps.Xmas.Models.Config:
         class: jeb\snahp\Apps\Xmas\Models\Config
@@ -127,6 +110,5 @@ services:
             - @request
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.Xmas.Models.Board
-            - @jeb.snahp.Apps.Xmas.Models.Tile
             - @jeb.snahp.Apps.Xmas.Models.Vote
             - @jeb.snahp.Apps.Xmas.Models.Config

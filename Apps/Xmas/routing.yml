@@ -3,18 +3,6 @@
 ##########
 
 
-jeb.snahp.routing.xmas.main:
-    path: /snahp/xmas
-    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:view}
-
-jeb.snahp.routing.xmas.get_vote:
-    path: /snahp/xmas/most-voted-tile
-    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:getMostVotedTile}
-
-jeb.snahp.routing.xmas.test:
-    path: /snahp/xmas/test
-    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:test}
-
 jeb.snahp.routing.xmas.summary:
     path: /snahp/xmas/summary
     defaults: { _controller: jeb.snahp.Apps.Xmas.XmasController:summary}
@@ -54,32 +42,23 @@ jeb.snahp.routing.xmas.reset_timer:
 ##############
 
 
-jeb.snahp.routing.xmas.list_board:
-    path: /snahp/xmas/board
-    defaults: { _controller: jeb.snahp.Apps.Xmas.BoardListCreateAPIView:dispatch}
-jeb.snahp.routing.xmas.retrieve_board:
-    path: /snahp/xmas/board/{id}
-    defaults: { _controller: jeb.snahp.Apps.Xmas.BoardRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
-
+# jeb.snahp.routing.xmas.list_board:
+#     path: /snahp/xmas/board
+#     defaults: { _controller: jeb.snahp.Apps.Xmas.BoardListCreateAPIView:dispatch}
+# jeb.snahp.routing.xmas.retrieve_board:
+#     path: /snahp/xmas/board/{id}
+#     defaults: { _controller: jeb.snahp.Apps.Xmas.BoardRetrieveUpdateDestroyAPIView:dispatch}
+#     requirements:
+#         id: \d+
+#
 jeb.snahp.routing.xmas.list_vote:
     path: /snahp/xmas/vote
     defaults: { _controller: jeb.snahp.Apps.Xmas.VoteListCreateAPIView:dispatch}
-jeb.snahp.routing.xmas.retrieve_vote:
-    path: /snahp/xmas/vote/{id}
-    defaults: { _controller: jeb.snahp.Apps.Xmas.VoteRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
-
-jeb.snahp.routing.xmas.list_tile:
-    path: /snahp/xmas/tile
-    defaults: { _controller: jeb.snahp.Apps.Xmas.TileListCreateAPIView:dispatch}
-jeb.snahp.routing.xmas.retrieve_tile:
-    path: /snahp/xmas/tile/{id}
-    defaults: { _controller: jeb.snahp.Apps.Xmas.TileRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
+# jeb.snahp.routing.xmas.retrieve_vote:
+#     path: /snahp/xmas/vote/{id}
+#     defaults: { _controller: jeb.snahp.Apps.Xmas.VoteRetrieveUpdateDestroyAPIView:dispatch}
+#     requirements:
+#         id: \d+
 
 
 ####################
