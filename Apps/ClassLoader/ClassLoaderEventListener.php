@@ -32,5 +32,6 @@ class ClassLoaderEventListener implements EventSubscriberInterface
     {
         $this->connectDatabase(true);
         include_once '/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php';
+        include_once '/var/www/forum/ext/jeb/snahp/core/errors.php';
     }
 }
