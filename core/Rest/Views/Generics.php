@@ -311,6 +311,7 @@ trait CreateModelMixin
 
     public function performCreate($serializer)/*{{{*/
     {
+        $serializer = $this->performPreCreate($serializer);
         $model = $this->model;
         if (defined(get_class($model).'::FOREIGN_NAME')) {
             $instance = $this->performCreateWithForeignKey($serializer);
@@ -319,6 +320,11 @@ trait CreateModelMixin
         }
         $instance = $this->performPostCreate($instance);
         return $instance;
+    }/*}}}*/
+
+    public function performPreCreate($serializer)/*{{{*/
+    {
+        return $serializer;
     }/*}}}*/
 
     public function performPostCreate($object)/*{{{*/
