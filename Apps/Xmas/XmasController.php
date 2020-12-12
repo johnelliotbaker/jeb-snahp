@@ -41,19 +41,15 @@ class XmasController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
+        // TODO:: enable this on install
         // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
     public function resetTimer($mode)/*{{{*/
     {
+        $this->sauth->reject_non_dev();
         $data = $this->helper->resetTimer($mode);
         return new Response(json_encode($data));
-    }/*}}}*/
-
-    public function view()/*{{{*/
-    {
-        $this->helper->testBingo();
-        return new Response('');
     }/*}}}*/
 
     public function summary()/*{{{*/
@@ -62,23 +58,17 @@ class XmasController
         return new JsonResponse($data);
     }/*}}}*/
 
-    public function test()/*{{{*/
-    {
-        return new Response('Init Success');
-    }/*}}}*/
-
-    public function testCreateBoard()/*{{{*/
-    {
-    }/*}}}*/
-
     public function score()/*{{{*/
     {
-        $this->helper->score();
+        $this->sauth->reject_non_dev();
+        $data = $this->helper->getScoreDistribution();
+        return new JsonResponse($data);
     }/*}}}*/
 
     public function simulateCreate()/*{{{*/
     {
-        $maxUser = 6000;
+        $this->sauth->reject_non_dev();
+        $maxUser = 10000;
         $startTime = microtime(true);
         $count = 0;
         [$start, $end] = [60, $maxUser];
@@ -93,21 +83,13 @@ class XmasController
 
     public function simulateVotes()/*{{{*/
     {
+        $this->sauth->reject_non_dev();
         $this->helper->simulateVoting();
     }/*}}}*/
 
     public function simulateVotesPeriod($period)/*{{{*/
     {
+        $this->sauth->reject_non_dev();
         $this->helper->simulateVoting($period);
-    }/*}}}*/
-
-    public function getMostVotedTile()/*{{{*/
-    {
-        // $this->helper->simulateVoting();
-        $startTime = microtime(true);
-        $tile = $this->helper->getMostVotedTile();
-        $elapsed = microtime(true) - $startTime;
-        prn($elapsed);
-        print_r($tile);
     }/*}}}*/
 }
