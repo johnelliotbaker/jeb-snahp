@@ -16,7 +16,6 @@ class SetupDatabaseView
         $request,
         $sauth,
         $Board,
-        $Tile,
         $Vote,
         $Config
     ) {
@@ -24,7 +23,6 @@ class SetupDatabaseView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->Board = $Board;
-        $this->Tile = $Tile;
         $this->Vote = $Vote;
         $this->Config = $Config;
         $this->shortString = str_repeat('x', 254);
@@ -49,28 +47,9 @@ class SetupDatabaseView
             'user' => 999,
             'tiles' => json_encode([]),
             'created' => time(),
-            'modified' => time(),
-            'score' => 999,
             ]
         );
         $res = R::getWriter()->addUniqueIndex($Model::TABLE_NAME, ['user']);
-        $res = R::getWriter()->addIndex($Model::TABLE_NAME, 'score', 'score');
-        $res = R::getWriter()->addIndex($Model::TABLE_NAME, 'modified', 'modified');
-        $Model->wipe();
-    }
-
-    public function setupTile()
-    {
-        $Model = $this->Tile;
-        $Model->wipe();
-        $Model->create(
-            [
-            'name' => $this->shortString,
-            'img_url' => $this->shortString,
-            'link' => $this->shortString,
-            ]
-        );
-        $res = R::getWriter()->addIndex($Model::TABLE_NAME, 'name', 'name');
         $Model->wipe();
     }
 
@@ -121,11 +100,9 @@ class SetupDatabaseView
         $Model->create(['name' => 'votes', 'data' => json_encode([])]);
     }
 
-
     public function setupEntry()/*{{{*/
     {
         $this->setupBoard();
-        $this->setupTile();
         $this->setupVote();
         $this->setupConfig();
     }/*}}}*/
