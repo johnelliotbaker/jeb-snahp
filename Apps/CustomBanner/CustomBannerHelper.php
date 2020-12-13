@@ -26,7 +26,7 @@ class CustomBannerHelper
         $this->bannerConfig = $bannerConfig;
     }/*}}}*/
 
-    public function setVisibility($value, $cache=3600)/*{{{*/
+    public function setVisibility($value, $cache=3600000)/*{{{*/
     {
         $cookieName = 'snp_custom_banner_enable';
         $this->user->set_cookie($cookieName, $value, time() + $cache);
@@ -36,7 +36,7 @@ class CustomBannerHelper
     {
         $cookieName = 'snp_custom_banner_enable';
         $cookieFullName = $this->config['cookie_name'] . '_' . $cookieName;
-        return $this->request->variable($cookieFullName, 0, false, \phpbb\request\request_interface::COOKIE);
+        return $this->request->variable($cookieFullName, 1, false, \phpbb\request\request_interface::COOKIE);
     }/*}}}*/
 
     public function selectBannerImage()/*{{{*/

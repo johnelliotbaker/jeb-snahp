@@ -32,7 +32,16 @@ class XmasEventListener implements EventSubscriberInterface
         ];
     }/*}}}*/
 
-    public function showXmass($event)
+    public function showXmass($event)/*{{{*/
     {
-    }
+        $poster_id = $event['poster_id'];
+        if ((int) $poster_id !== 2) {
+            print_r('not admin skipping');
+            return;
+        }
+        $post_row = $event['post_row'];
+        $message = &$post_row['MESSAGE'];
+        $message = preg_replace('#_xmas_#', '<div class="rx_xmas"></div>', $message, 1);
+        $event['post_row'] = $post_row;
+    }/*}}}*/
 }
