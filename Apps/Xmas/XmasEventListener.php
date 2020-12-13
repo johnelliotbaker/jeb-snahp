@@ -36,7 +36,6 @@ class XmasEventListener implements EventSubscriberInterface
     {
         $poster_id = (int) $event['poster_id'];
         if (!in_array($poster_id, [2, 10414])) {
-            print_r('not admin skipping');
             return;
         }
         $post_row = $event['post_row'];
