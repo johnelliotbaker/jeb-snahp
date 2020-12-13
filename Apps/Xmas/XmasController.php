@@ -41,8 +41,7 @@ class XmasController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
-        // TODO:: enable this on install
-        // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
     public function resetTimer($mode)/*{{{*/

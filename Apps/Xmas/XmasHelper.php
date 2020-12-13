@@ -7,10 +7,6 @@ require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/utility.php';
 
 class XmasHelper
 {
-    const ROWS = 3;
-    const COLUMNS = 3;
-    const POOL_SIZE = 13;
-
     protected $sauth;
     public function __construct(
         $cache,
@@ -118,7 +114,8 @@ class XmasHelper
 
     public function getScoreDistribution()/*{{{*/
     {
-        $cacheDuration = 2;
+        // TODO::
+        $cacheDuration = 0;
         $varname = 'snp_xmas_score_distribution';
         $distribution = $this->cache->get($varname);
         if (!$distribution) {
@@ -194,7 +191,7 @@ class XmasHelper
             ],
             // Short for checking progression
             2 => [
-                'start' => $now + 5,
+                'start' => $now + 10,
                 'duration' => 100,
                 'end' => $now + 10 + 100,
                 'division' => 10,

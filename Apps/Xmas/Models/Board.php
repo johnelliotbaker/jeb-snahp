@@ -29,13 +29,10 @@ class Board extends Model
     public function __construct()
     {
         parent::__construct();
-        // TODO:: REMOVE
-        R::freeze(false);
         $this->fields = [
             'user' => new IntegerField(),
             'tiles' => new JsonField(['default' => json_encode([])]),
             'created' => new IntegerField(['default' => time()]),
-            // 'score' => new IntegerField(['default' => 0]),
         ];
     }
 

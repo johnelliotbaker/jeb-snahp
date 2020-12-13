@@ -47,9 +47,7 @@ class VoteListCreateAPIView extends ListCreateAPIView
             die();
             throw new \Exception('Too late. Error Code: 68eec05f1d');
         }
-        // TODO::
         $serializer->_validatedData['user'] = $this->sauth->userId;
-        // $serializer->_validatedData['user'] = rand(60, 600);
         $serializer->_validatedData['period'] = $index;
         return $serializer;
     }/*}}}*/

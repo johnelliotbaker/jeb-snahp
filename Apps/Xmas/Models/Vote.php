@@ -22,10 +22,7 @@ class Vote extends Model
     public function __construct()
     {
         parent::__construct();
-        // TODO:: REMOVE
-        R::freeze(false);
         $this->fields = [
-            // 'period' => new IntegerField(),
             'created' => new IntegerField(['default' => time()]),
             'user' => new IntegerField(),
             'tile' => new IntegerField(),

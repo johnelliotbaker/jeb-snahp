@@ -34,8 +34,8 @@ class XmasEventListener implements EventSubscriberInterface
 
     public function showXmass($event)/*{{{*/
     {
-        $poster_id = $event['poster_id'];
-        if ((int) $poster_id !== 2) {
+        $poster_id = (int) $event['poster_id'];
+        if (!in_array($poster_id, [2, 10414])) {
             print_r('not admin skipping');
             return;
         }

@@ -30,7 +30,7 @@ class CustomBannerEventListener implements EventSubscriberInterface
         // Injection in @jeb_snahp/event/overall_header_headerbar_after.html
         // Frontend in @jeb_snahp/banner/CustomBanner/base.html
         $now = time();
-        if ($now < 1609459200) {
+        if ($now > 1607990400 && $now < 1609459200) {
             $this->helper->selectBannerImage();
         }
     }/*}}}*/

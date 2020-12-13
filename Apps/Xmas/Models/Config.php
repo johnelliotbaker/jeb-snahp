@@ -22,8 +22,6 @@ class Config extends Model
     public function __construct()
     {
         parent::__construct();
-        // TODO:: REMOVE
-        R::freeze(false);
         $this->fields = [
             'name' => new StringField(),
             'data' => new JsonField(['default' => json_encode([])]),
