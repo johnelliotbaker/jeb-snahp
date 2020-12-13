@@ -114,7 +114,7 @@ class XmasHelper
     public function getScoreDistribution()/*{{{*/
     {
         // TODO::
-        $cacheDuration = 0;
+        $cacheDuration = 600;
         $varname = 'snp_xmas_score_distribution';
         $distribution = $this->cache->get($varname);
         if (!$distribution) {
