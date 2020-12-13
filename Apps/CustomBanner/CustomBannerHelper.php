@@ -5,22 +5,41 @@ namespace jeb\snahp\Apps\CustomBanner;
 class CustomBannerHelper
 {
     protected $db;/*{{{*/
+    protected $config;
+    protected $request;
     protected $user;
     protected $template;
     protected $bannerConfig;
     public function __construct(
         $db,
+        $request,
+        $config,
         $user,
         $template,
         $bannerConfig
     ) {
         $this->db = $db;
+        $this->request = $request;
+        $this->config = $config;
         $this->user = $user;
         $this->template = $template;
         $this->bannerConfig = $bannerConfig;
     }/*}}}*/
 
-    public function selectBannerImage()
+    public function setVisibility($value, $cache=3600)/*{{{*/
+    {
+        $cookieName = 'snp_custom_banner_enable';
+        $this->user->set_cookie($cookieName, $value, time() + $cache);
+    }/*}}}*/
+
+    public function getVisibility()/*{{{*/
+    {
+        $cookieName = 'snp_custom_banner_enable';
+        $cookieFullName = $this->config['cookie_name'] . '_' . $cookieName;
+        return $this->request->variable($cookieFullName, 0, false, \phpbb\request\request_interface::COOKIE);
+    }/*}}}*/
+
+    public function selectBannerImage()/*{{{*/
     {
         $hour = (int) $this->user->format_date(time(), 'H');
         $banner = getDefault($this->bannerConfig, $hour, 'https://i.imgur.com/C3vCd0g.jpg');
@@ -31,7 +50,7 @@ class CustomBannerHelper
             // 'PRELOAD_BANNER_IMG_URLS' => $p_banners,
             ]
         );
-    }
+    }/*}}}*/
 
     public function embedBannerImageURL($topicData)/*{{{*/
     {
@@ -49,6 +68,13 @@ class CustomBannerHelper
         $this->db->sql_freeresult($result);
         return $row ? $row['post_text'] : '';
     }/*}}}*/
+
+    public function toggleVisibility()/*{{{*/
+    {
+        $newVisibility = $this->getVisibility() ? 0 : 1;
+        $this->setVisibility($newVisibility);
+    }/*}}}*/
+
 }
 
 function weightedArrayRand($entry, $max=1000000, $valueKey=0, $probabilityKey=1)/*{{{*/

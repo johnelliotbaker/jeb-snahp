@@ -1,0 +1,3 @@
+jeb.snahp.routing.custom_banner.toggle:
+    path: /snahp/custom-banner/toggle
+    defaults: { _controller: jeb.snahp.Apps.CustomBanner.CustomBannerController:toggle}

@@ -1,32 +1,59 @@
 parameters:
     jeb.snahp.styles.banners:
-        0: https://i.imgur.com/fn39qBA.jpg
-        1: https://i.imgur.com/JwoOaQy.jpg
-        2: https://i.imgur.com/ZUzGeZ2.jpg
-        3: https://i.imgur.com/FsDFIe0.jpg
-        4: https://i.imgur.com/jliKDp4.jpg
-        5: https://i.imgur.com/sLbRMG0.jpg
-        6: https://i.imgur.com/q5neIz9.jpg
-        7: https://i.imgur.com/wPDpKOH.jpg
-        8: https://i.imgur.com/rmlvECP.jpg
-        9: https://i.imgur.com/PTfloHd.jpg
-        10: https://i.imgur.com/hjCZpMA.jpg
-        11: https://i.imgur.com/WV7Mt1j.png
-        12: https://i.imgur.com/1YrNah1.jpg
-        13: https://i.imgur.com/3p9GvNM.jpg
-        14: https://i.imgur.com/C3vCd0g.jpg
-        15: https://i.imgur.com/TDHvjSY.jpg
-        16: https://i.imgur.com/aCIphGp.jpg
-        17: 
-            -
-                url: https://i.imgur.com/TvNIf7v.png
-                p: 999999
-            -
-                url: https://i.imgur.com/HkK8wO7.png
-                p: 1
-        18: https://i.imgur.com/UV94Wzb.jpg
-        19: https://i.imgur.com/XRIRlHP.jpg
-        20: https://i.imgur.com/W3RxbHt.jpg
-        21: https://i.imgur.com/ZaRxs1G.jpg
-        22: https://i.imgur.com/fWq0jtu.jpg
-        23: https://i.imgur.com/8wIq8Xc.jpg
+    # 2020 Christmas Banners
+        0: https://i.imgur.com/v0Y28L2.jpg
+        1: https://i.imgur.com/uB2OA6g.jpg
+        2: https://i.imgur.com/uGlPHHu.jpg
+        3: https://i.imgur.com/B9nC53w.jpg
+        4: https://i.imgur.com/d37SrZY.jpg
+        5: https://i.imgur.com/Rdwv1Gy.jpg
+        6: https://i.imgur.com/orhJ8c7.jpg
+        7: https://i.imgur.com/DXI7G80.jpg
+        8: https://i.imgur.com/wST5iKz.jpg
+        9: https://i.imgur.com/jw8y4Bo.jpg
+        10: https://i.imgur.com/QXpiKQf.jpg
+        11: https://i.imgur.com/VoY2Az4.jpg
+        12: https://i.imgur.com/p9xYVRp.jpg
+        13: https://i.imgur.com/ayL2cBU.jpg
+        14: https://i.imgur.com/hxqKTsA.jpg
+        15: https://i.imgur.com/OH6KoDA.jpg
+        16: https://i.imgur.com/ag1f6iy.jpg
+        17: https://i.imgur.com/rX90ZMU.jpg
+        18: https://i.imgur.com/eHbMiAq.jpg
+        19: https://i.imgur.com/S3JNPjW.jpg
+        20: https://i.imgur.com/Pp1QIYK.jpg
+        21: https://i.imgur.com/LKaCNHG.jpg
+        22: https://i.imgur.com/6KgwmIF.jpg
+        23: https://i.imgur.com/4TOB47G.jpg
+    # jeb.snahp.styles.banners:
+    # 2020 Halloween Banners
+    #     0: https://i.imgur.com/fn39qBA.jpg
+    #     1: https://i.imgur.com/JwoOaQy.jpg
+    #     2: https://i.imgur.com/ZUzGeZ2.jpg
+    #     3: https://i.imgur.com/FsDFIe0.jpg
+    #     4: https://i.imgur.com/jliKDp4.jpg
+    #     5: https://i.imgur.com/sLbRMG0.jpg
+    #     6: https://i.imgur.com/q5neIz9.jpg
+    #     7: https://i.imgur.com/wPDpKOH.jpg
+    #     8: https://i.imgur.com/rmlvECP.jpg
+    #     9: https://i.imgur.com/PTfloHd.jpg
+    #     10: https://i.imgur.com/hjCZpMA.jpg
+    #     11: https://i.imgur.com/WV7Mt1j.png
+    #     12: https://i.imgur.com/1YrNah1.jpg
+    #     13: https://i.imgur.com/3p9GvNM.jpg
+    #     14: https://i.imgur.com/C3vCd0g.jpg
+    #     15: https://i.imgur.com/TDHvjSY.jpg
+    #     16: https://i.imgur.com/aCIphGp.jpg
+    #     17:
+    #         -
+    #             url: https://i.imgur.com/TvNIf7v.png
+    #             p: 999999
+    #         -
+    #             url: https://i.imgur.com/HkK8wO7.png
+    #             p: 1
+    #     18: https://i.imgur.com/UV94Wzb.jpg
+    #     19: https://i.imgur.com/XRIRlHP.jpg
+    #     20: https://i.imgur.com/W3RxbHt.jpg
+    #     21: https://i.imgur.com/ZaRxs1G.jpg
+    #     22: https://i.imgur.com/fWq0jtu.jpg
+    #     23: https://i.imgur.com/8wIq8Xc.jpg

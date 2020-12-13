@@ -8,7 +8,7 @@ class user_auth
 
     protected $db;
     protected $auth;
-    protected $user;
+    public $user;
     protected $container;
     protected $this_user_id;
     public function __construct(

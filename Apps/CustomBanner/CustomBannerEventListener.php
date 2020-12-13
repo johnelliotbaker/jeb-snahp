@@ -24,10 +24,13 @@ class CustomBannerEventListener implements EventSubscriberInterface
 
     public function showCustomBanners($event)/*{{{*/
     {
+        if (!$this->helper->getVisibility()) {
+            return;
+        }
         // Injection in @jeb_snahp/event/overall_header_headerbar_after.html
         // Frontend in @jeb_snahp/banner/CustomBanner/base.html
         $now = time();
-        if ($now > 1603584000 && $now < 1604214000) {
+        if ($now < 1609459200) {
             $this->helper->selectBannerImage();
         }
     }/*}}}*/

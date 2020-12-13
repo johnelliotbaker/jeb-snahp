@@ -1,3 +1,5 @@
+routing_custom_banner:
+    resource: '../Apps/CustomBanner/routing.yml'
 routing_xmas:
     resource: '../Apps/Xmas/routing.yml'
 routing_request_form:

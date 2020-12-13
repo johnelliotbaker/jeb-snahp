@@ -1,8 +1,16 @@
 services:
+    jeb.snahp.Apps.CustomBanner.CustomBannerController:
+        class: jeb\snahp\Apps\CustomBanner\CustomBannerController
+        arguments:
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.CustomBanner.CustomBannerHelper
+
     jeb.snahp.Apps.CustomBanner.CustomBannerHelper: # HELPER
         class: jeb\snahp\Apps\CustomBanner\CustomBannerHelper
         arguments:
             - @dbal.conn
+            - @request
+            - @config
             - @user
             - @template
             - %jeb.snahp.styles.banners%
