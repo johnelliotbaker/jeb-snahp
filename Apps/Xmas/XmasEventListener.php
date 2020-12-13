@@ -34,10 +34,10 @@ class XmasEventListener implements EventSubscriberInterface
 
     public function showXmass($event)/*{{{*/
     {
-        $poster_id = (int) $event['poster_id'];
-        if (!in_array($poster_id, [2, 10414])) {
-            return;
-        }
+        // $poster_id = (int) $event['poster_id'];
+        // if (!in_array($poster_id, [2, 10414])) {
+        //     return;
+        // }
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
         $message = preg_replace('#_xmas_#', '<div class="rx_xmas"></div>', $message, 1);
