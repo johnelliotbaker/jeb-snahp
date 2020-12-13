@@ -99,7 +99,6 @@ class XmasHelper
             [
                 'user' => $userId,
                 'created' => time(),
-                'score' => 0
             ]
         );
     }/*}}}*/
