@@ -2,6 +2,16 @@
 #  VIEW  #
 ##########
 
+jeb.snahp.routing.xmas.distriutor.distribute:
+    path: /snahp/xmas/distributor/distribute/{start}
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasPrizeDistributorController:distribute}
+    requirements:
+        start: \d+
+
+jeb.snahp.routing.xmas.distriutor.distribute_quest_prizes:
+    path: /snahp/xmas/distributor/distribute-quest
+    defaults: { _controller: jeb.snahp.Apps.Xmas.XmasPrizeDistributorController:distributeQuestPrizes}
+
 
 jeb.snahp.routing.xmas.summary:
     path: /snahp/xmas/summary

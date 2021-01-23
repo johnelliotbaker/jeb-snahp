@@ -20,6 +20,13 @@ services:
             - @jeb.snahp.auth.user_auth
             - @jeb.snahp.Apps.Xmas.XmasHelper
 
+    jeb.snahp.Apps.Xmas.XmasPrizeDistributorController:
+        class: jeb\snahp\Apps\Xmas\XmasPrizeDistributorController
+        arguments:
+            - @request
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.Xmas.XmasPrizeDistributor
+
 ##############
 #  API VIEW  #
 ##############
@@ -65,6 +72,13 @@ services:
             - @jeb.snahp.Apps.Xmas.Models.Board
             - @jeb.snahp.Apps.Xmas.Models.Vote
             - @jeb.snahp.Apps.Xmas.Models.Config
+
+    jeb.snahp.Apps.Xmas.XmasPrizeDistributor:
+        class: jeb\snahp\Apps\Xmas\XmasPrizeDistributor
+        arguments:
+            - '@notification_manager'
+            - '@jeb.snahp.Apps.Xmas.Models.Board'
+            - '@jeb.snahp.bank.user_account'
 
 
 ###########

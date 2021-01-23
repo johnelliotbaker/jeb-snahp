@@ -114,7 +114,7 @@ class XmasHelper
     public function getScoreDistribution()/*{{{*/
     {
         // TODO::
-        $cacheDuration = 600;
+        $cacheDuration = 0;
         $varname = 'snp_xmas_score_distribution';
         $distribution = $this->cache->get($varname);
         if (!$distribution) {
@@ -207,6 +207,13 @@ class XmasHelper
                 'start' => $now + 3600,
                 'duration' => 86400,
                 'end' => $now + 3600 + 86400,
+                'division' => 10,
+            ],
+            // Beta Tester Run
+            5 => [
+                'start' => $now,
+                'duration' => 864000,
+                'end' => $now + 864000,
                 'division' => 10,
             ],
         ];

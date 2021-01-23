@@ -49,7 +49,7 @@ function getVoteDistribution($period=null)/*{{{*/
 {
     global $db;
     // TODO:: cache
-    $cache = 600;
+    $cache = 0;
     if ($period === null) {
         $period = getTimeIndexWithDefault();
     }

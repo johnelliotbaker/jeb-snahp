@@ -94,7 +94,7 @@ class SetupDatabaseView
             'start' => $start,
             'duration' => $duration,
             'end' => $start + $duration,
-            'division' => 10,
+            'division' => 9,
         ];
         $Model->create(['name' => 'schedule', 'data' => json_encode($data)]);
         $Model->create(['name' => 'votes', 'data' => json_encode([])]);
