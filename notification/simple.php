@@ -73,7 +73,11 @@ class simple extends \phpbb\notification\type\base
     public function find_users_for_notification($data, $options = array())
     {
         $options = array_merge(array('ignore_users' => array()), $options);
-        $users = array((int) $data['recipient_id']);
+        if (is_array($data['recipient_id'])) {
+            $users = $data['recipient_id'];
+        } else {
+            $users = array((int) $data['recipient_id']);
+        }
         $options =  $this->check_user_notification_options($users, $options);
         foreach ($options as $key => $entry)
         {
@@ -115,7 +119,7 @@ class simple extends \phpbb\notification\type\base
     public function create_insert_array($data, $pre_create_data = [])
     {
         $mr_robot_user_id = 54;
-        $this->set_data('recipient_id', $data['recipient_id']);
+        // $this->set_data('recipient_id', $data['recipient_id']);
         $this->set_data('sender_id', $mr_robot_user_id);
         $this->set_data('message', $data['message']);
         $this->set_data('type', $data['type']);

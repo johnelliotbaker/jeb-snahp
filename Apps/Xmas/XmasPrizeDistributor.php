@@ -5,10 +5,6 @@ require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/BingoBoard.php';
 require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/Scorers.php';
 require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/utility.php';
 require_once '/var/www/forum/ext/jeb/snahp/core/bank/bank_helper.php';
-// /var/www/forum/ext/jeb/snahp/core/bank/user_account.php // Bank User Account
-
-
-
 
 const QUEST_DEFINITIONS = [
     'vanguards' => [
@@ -57,21 +53,20 @@ class XmasPrizeDistributor
         8 => 100000,
     ];
 
-    public function __construct($Notification, $Board, $BankUserAccount)
+    public function __construct($Notification, $Board, $BankUserAccount)/*{{{*/
     {
         $this->Notification = $Notification;
         $this->Board = $Board;
         $this->BankUserAccount = $BankUserAccount;
-    }
+    }/*}}}*/
 
-
-    public function sendNotification($userId, $description='', $id=0)
+    public function sendNotification($userId, $title='2020 Christmas Event', $description='', $id=0)/*{{{*/
     {
         $notificationItemID = $id;
         $notification_data = [
             'recipient_id' => $userId,
-            'message'      => 'my good message',
-            'title'       => '2020 Christmas Event',
+            'message'      => '',
+            'title'       => $title,
             'description' => $description,
             'link'        => '/app.php/snahp/economy/dashboard/overview/',
             'item_id'     => $notificationItemID,
@@ -85,9 +80,9 @@ class XmasPrizeDistributor
             $time = time() * 2,
             $mark_read = false
         );
-    }
+    }/*}}}*/
 
-    public function processQuestPrize($data)
+    public function processQuestPrize($data)/*{{{*/
     {
         $users = $data['users'];
         $prize = $data['prize'];
@@ -95,13 +90,14 @@ class XmasPrizeDistributor
         $notificationItemID = $data['notificationItemID'];
         $prizeString = number_format($prize);
         $message =  "Received \${$prizeString} for 2020 Christmas Event ({$name})";
+        $title = "2020 Christmas Event<br/>${name}";
         foreach ($users as $userId) {
-            $this->sendNotification($userId, $message, $id = $notificationItemID);
+            $this->sendNotification($userId, $title, $message, $id = $notificationItemID);
             $this->BankUserAccount->create_transaction_and_deposit($prize, $userId, -1, $message);
         }
-    }
+    }/*}}}*/
 
-    public function processPrize($userId, $score)
+    public function processPrize($userId, $score)/*{{{*/
     {
         $prize = self::SCORE_TO_PRIZE[$score];
         $prizeString = number_format($prize);
@@ -123,13 +119,12 @@ class XmasPrizeDistributor
         } else {
             $message = "Received \${$prizeString} for scoring ${score} points";
         }
-        $this->sendNotification($userId, $message, $id = 0);
         return [$prize, $invite];
-    }
+    }/*}}}*/
 
-    public function distribute($start)
+    public function distribute($start)/*{{{*/
     {
-        $limit = 1000;
+        $limit = 10000;
         $start = $start * $limit;
         $end = $start + $limit - 1;
         header('Content-Type: text/event-stream');
@@ -143,6 +138,7 @@ class XmasPrizeDistributor
         $scorer = new ScoreRule75();
         $scorer->sequence = $votes;
         $stats = ['prize'=>0, 'invite'=>0];
+        $notificationData = [];
         foreach ($boards as $index => $board) {
             if ($index < $start) {
                 continue;
@@ -154,6 +150,7 @@ class XmasPrizeDistributor
             $bingoBoard->tiles = $board->tiles;
             $score = (int) $scorer->score($bingoBoard);
             [$prize, $invite] = $this->processPrize($userId, $score);
+            $notificationData[$score][] = $userId;
             $stats['prize'] += $prize;
             $stats['invite'] += $invite;
             if ($index % 100 === 0) {
@@ -161,12 +158,29 @@ class XmasPrizeDistributor
                 sendMessage($data);
             }
         }
+        $this->sendPrizeNotifications($notificationData);
         print_r($stats);
         $elapsed = microtime(true) - $startTime;
         print_r("Took ${elapsed} seconds.<br/>");
-    }
+    }/*}}}*/
 
-    public function distributeQuestPrizes()
+    public function sendPrizeNotifications($notificationData)/*{{{*/
+    {
+        foreach ($notificationData as $score => $ndata) {
+            $prize = self::SCORE_TO_PRIZE[$score];
+            $prizeString = number_format($prize);
+            $invite = $score === 0 || $score === 8 ? 1 : 0;
+            if ($invite) {
+                $message = "Received \${$prizeString} and 1 invitation point for scoring ${score} points";
+            } else {
+                $message = "Received \${$prizeString} for scoring ${score} points";
+            }
+            $userId = $ndata;
+            $this->sendNotification($userId, '2020 Christmas Event', $message, $id = 0);
+        }
+    }/*}}}*/
+
+    public function distributeQuestPrizes()/*{{{*/
     {
         print_r('Distributing Prizes for Quest Completion.');
         $startTime = microtime(true);
@@ -175,18 +189,12 @@ class XmasPrizeDistributor
         }
         $elapsed = microtime(true) - $startTime;
         print_r("Took ${elapsed} seconds.<br/>");
-    }
-
+    }/*}}}*/
 }
 
-function markUnread($userId, $itemID)
-{
-    $this->Notification->mark_notifications('jeb.snahp.notification.type.simple', $itemID, $userId, $time = true, $mark_read = false);
-}
-
-function sendMessage($data)
+function sendMessage($data)/*{{{*/
 {
     echo "data: " . json_encode($data) . PHP_EOL;
     ob_flush();
     flush();
-}
+}/*}}}*/
