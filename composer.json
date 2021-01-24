@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Snahp Extension",
     "version": "0.39.0 Snow Fall",
-    "time": "2020-11-06",
+    "time": "2021-01-23",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -21,7 +21,7 @@
         "symfony/validator": "^4.4"
     },
     "extra": {
-        "version": "1478f6206521cdc6637541e666e3b6984ed3cc1c",
+        "version": "17a4943b41a14684fa1c4c3806a0dc4652b82a9e",
         "features": "Overhauls: Wiki/Deadlinks/POI/Flair",
         "display-name": "Snahp",
         "soft-require": {
