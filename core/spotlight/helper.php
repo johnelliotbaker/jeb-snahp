@@ -60,7 +60,7 @@ class helper
     $order_by = 'topics.topic_time DESC';
     $sql_array = [
       'SELECT'	=> '
-      topics.topic_id, posts.post_text, topics.topic_poster,
+      topics.topic_id, topics.topic_title, posts.post_text, topics.topic_poster,
       topics.topic_first_poster_name, topics.topic_first_poster_colour
       ',
       'FROM'		=> [TOPICS_TABLE => 'topics'],
@@ -114,11 +114,19 @@ class helper
     return $this->config_text->get('snp_spotlight_cache');
   }/*}}}*/
 
+  public function isAcceptedHost($row)/*{{{*/
+  {
+      $title = $row['topic_title'];
+      preg_match('#\[mega]|\[zippy]#is', $title, $match);
+      return !!$match;
+  }/*}}}*/
+
   public function filter($rowset)/*{{{*/
   {
     $res = [];
     foreach ($rowset as $row)
     {
+      if (!$this->isAcceptedHost($row)) continue;
       $topic_poster = $row['topic_poster'];
       if (!isset($this->users[$topic_poster]))
       {
