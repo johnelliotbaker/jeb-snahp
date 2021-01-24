@@ -129,9 +129,10 @@ class ArticleEntry extends Model
         return $result;
     }/*}}}*/
 
-    public function performPreCreate($instance)/*{{{*/
+    public function performPreCreate($data)/*{{{*/
     {
-        $instance->author = $this->userId;
+        $data['author'] = $this->userId;
+        return $data;
     }/*}}}*/
 
     public function getObjectFromSubject($subject)/*{{{*/
