@@ -19,7 +19,16 @@ class BBCodeBannerEventListener implements EventSubscriberInterface
             'core.viewtopic_assign_template_vars_before' => [
                 ['showBBCodeBanners', 1],
             ],
+            'core.modify_format_display_text_before'       => [
+                ['processBannerInPreview', 2],
+            ],
         ];
+    }/*}}}*/
+
+    public function processBannerInPreview($event)/*{{{*/
+    {
+        $text = $event['text'];
+        $this->helper->embedBannerInPreview($text);
     }/*}}}*/
 
     public function showBBCodeBanners($event)/*{{{*/

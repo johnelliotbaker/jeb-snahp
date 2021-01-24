@@ -25,6 +25,15 @@ class BBCodeBannerHelper
         $this->template->assign_var('BANNER_IMG_URL', $match[1]);
     }/*}}}*/
 
+    public function embedBannerInPreview($text)/*{{{*/
+    {
+        preg_match('#\[banner]</s>(.*?)<e>\[/banner]#', $text, $match);
+        if (!$match) {
+            return;
+        }
+        $this->template->assign_var('BANNER_IMG_URL', $match[1]);
+    }/*}}}*/
+
     public function getPostText($postId)/*{{{*/
     {
         $postId = (int) $postId;
