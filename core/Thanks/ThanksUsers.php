@@ -5,7 +5,7 @@ class ThanksUsers
 {
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
-    const DEBUG = true;
+    const DEBUG = false;
 
     protected $db;/*{{{*/
     protected $user;
