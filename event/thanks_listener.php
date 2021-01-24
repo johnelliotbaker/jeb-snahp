@@ -51,6 +51,7 @@ class thanks_listener implements EventSubscriberInterface
         if (!$this->config['snp_thanks_b_enable']) {
             return false;
         }
+        $this->sauth->rejectRestrictedUser();
         $fromId = $event['from_id'];
         $toId = $event['to_id'];
         $topicId = $event['topic_id'];

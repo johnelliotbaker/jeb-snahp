@@ -73,6 +73,13 @@ class user_auth
         }
     }/*}}}*/
 
+    public function rejectRestrictedUser()/*{{{*/
+    {
+        if ($this->user->data['snp_restricted']) {
+            trigger_error("Your account has been restricted. Error Code: 4c8ad9def6");
+        }
+    }/*}}}*/
+
 
     public function is_valid_user_id($user_id)/*{{{*/
     {

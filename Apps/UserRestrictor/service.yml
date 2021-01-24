@@ -1,0 +1,53 @@
+# imports:
+#     - { resource: 'dir/parameters.yml' }
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.UserRestrictor.UserRestrictorController:
+        class: jeb\snahp\Apps\UserRestrictor\UserRestrictorController
+        arguments:
+            - @dbal.conn
+            - @user
+            - @config
+            - @request
+            - @template
+            - @service_container
+            - @controller.helper
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserRestrictor.UserRestrictorHelper
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.UserRestrictor.UserRestrictorHelper:
+        class: jeb\snahp\Apps\UserRestrictor\UserRestrictorHelper
+        arguments:
+            - @dbal.conn
+            - @user
+            - @template
+            - %jeb.snahp.tables%
+            - @jeb.snahp.auth.user_auth
+
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    # jeb.snahp.Apps.UserRestrictor.UserRestrictorEventListener:
+    #     class: jeb\snahp\Apps\UserRestrictor\UserRestrictorEventListener
+    #     arguments:
+    #         - @user
+    #         - @config
+    #         - @jeb.snahp.auth.user_auth
+    #         - @jeb.snahp.Apps.UserRestrictor.UserRestrictorHelper
+    #     tags:
+    #         - { name: event.listener }

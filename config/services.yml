@@ -43,6 +43,7 @@ imports:
     - { resource: ../Apps/RequestForm/service.yml }
     - { resource: ../Apps/Xmas/service.yml }
     - { resource: ../Apps/Snowfall/service.yml }
+    - { resource: ../Apps/UserRestrictor/service.yml }
 
 services:
     jeb.snahp.core:

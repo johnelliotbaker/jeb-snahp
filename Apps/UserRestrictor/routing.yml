@@ -1,0 +1,16 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.user_restrictor.restrict:
+    path: /snahp/user-restrictor/restrict/{userId}
+    defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:restrict}
+    requirements:
+        userId: \d+
+
+jeb.snahp.routing.user_restrictor.free:
+    path: /snahp/user-restrictor/free/{userId}
+    defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:free}
+    requirements:
+        userId: \d+

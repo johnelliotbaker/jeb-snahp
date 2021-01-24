@@ -1,3 +1,5 @@
+routing_user_restrictor:
+    resource: '../Apps/UserRestrictor/routing.yml'
 routing_snowfall:
     resource: '../Apps/Snowfall/routing.yml'
 routing_custom_banner:
