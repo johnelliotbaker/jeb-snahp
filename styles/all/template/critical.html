@@ -64,6 +64,7 @@
 <!-- INCLUDEJS @jeb_snahp/base.js -->
 <!-- INCLUDEJS @jeb_snahp/viewtopic.js -->
 
+
 <!-- IF not $rx_spotlight -->
 <!-- DEFINE $rx_spotlight = true -->
 <!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js -->
@@ -130,3 +131,14 @@
 {% endif %}
 
 <!-- loadlast -->
+
+{% if SNOWFALL_PROPS %}
+<div style="z-index: 1000">
+  <div id="rx_snowfall" {SNOWFALL_PROPS}></div>
+</div>
+<!-- IF not $rx_snowfall -->
+<!-- DEFINE $rx_snowfall = true -->
+<!-- INCLUDEJS @jeb_snahp/snowfall/rx_snowfall/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/snowfall/rx_snowfall/bundle.css -->
+<!-- ENDIF -->
+{% endif %}

@@ -1,0 +1,51 @@
+# imports:
+#     - { resource: 'dir/parameters.yml' }
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Snowfall.SnowfallController:
+        class: jeb\snahp\Apps\Snowfall\SnowfallController
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@request'
+            - '@template'
+            - '@service_container'
+            - '@controller.helper'
+            - '%jeb.snahp.tables%'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.Apps.Snowfall.SnowfallHelper'
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Snowfall.SnowfallHelper:
+        class: jeb\snahp\Apps\Snowfall\SnowfallHelper
+        arguments:
+            - '@dbal.conn'
+            - '@config_text'
+            - '@template'
+            - '@jeb.snahp.auth.user_auth'
+            - '@jeb.snahp.market.product_class'
+            - '@jeb.snahp.user.user_inventory'
+
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Snowfall.SnowfallEventListener:
+        class: jeb\snahp\Apps\Snowfall\SnowfallEventListener
+        arguments:
+            - '@jeb.snahp.Apps.Snowfall.SnowfallHelper'
+        tags:
+            - { name: event.listener }

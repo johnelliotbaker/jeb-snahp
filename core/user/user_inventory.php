@@ -11,7 +11,7 @@ class user_inventory
     protected $product_class;
 	public function __construct(
         $db, $user, $container,
-        $tbl, 
+        $tbl,
         $sauth, $market_transaction_logger, $product_class
 	)
 	{/*{{{*/
@@ -104,7 +104,7 @@ class user_inventory
         $row = $this->get_inventory_by_product_class($product_class_id, $user_id);
         if ($row)
         {
-            $sql = 'UPDATE ' . $this->tbl['user_inventory'] . " SET quantity=quantity+${quantity}" . 
+            $sql = 'UPDATE ' . $this->tbl['user_inventory'] . " SET quantity=quantity+${quantity}" .
                 " WHERE user_id=${user_id} AND product_class_id=${product_class_id}";
             $this->db->sql_query($sql);
             return $this->db->sql_affectedrows() > 0;

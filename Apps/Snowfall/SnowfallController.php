@@ -1,10 +1,10 @@
 <?php
-namespace jeb\snahp\Apps\Boilerplate;
+namespace jeb\snahp\Apps\Snowfall;
 
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
-class BoilerplateController
+class SnowfallController
 {
     protected $db;/*{{{*/
     protected $user;
@@ -42,8 +42,31 @@ class BoilerplateController
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 
-    public function view()/*{{{*/
+    public function reset()/*{{{*/
     {
-        return new Response('Hello World');
+        $this->sauth->reject_non_dev('Error Code: ada9625f21');
+        $this->helper->reset();
+        return new JsonResponse([]);
+    }/*}}}*/
+
+    public function activate()/*{{{*/
+    {
+        $this->helper->activate();
+        return new JsonResponse([]);
+    }/*}}}*/
+
+    public function changeText()/*{{{*/
+    {
+        $text = $this->request->variable('text', '');
+        $success = $this->helper->changeText($text);
+        $statusCode = $success ? 200 : 400;
+        return new JsonResponse(['text' => $text], $statusCode);
+    }/*}}}*/
+
+    public function changeColor($color)/*{{{*/
+    {
+        $success = $this->helper->changeColor($color);
+        $statusCode = $success ? 200 : 400;
+        return new JsonResponse($resp, $statusCode);
     }/*}}}*/
 }

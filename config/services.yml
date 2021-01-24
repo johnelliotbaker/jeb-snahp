@@ -42,6 +42,7 @@ imports:
     - { resource: ../Apps/TopicUpdateTicker/service.yml }
     - { resource: ../Apps/RequestForm/service.yml }
     - { resource: ../Apps/Xmas/service.yml }
+    - { resource: ../Apps/Snowfall/service.yml }
 
 services:
     jeb.snahp.core:

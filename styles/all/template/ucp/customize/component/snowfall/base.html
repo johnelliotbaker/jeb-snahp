@@ -1,0 +1,12 @@
+{% if SNOWFALL_CAN_ACTIVATE %}
+  <script>
+    const activate = async () => {
+      const response = await fetch('/snahp/snowfall/activate')
+      if (response.ok) {
+        window.location.href = "/";
+      }
+    }
+  </script>
+{% include '@jeb_snahp/ucp/customize/component/snowfall/content.html' %}
+{% endif %}
+

@@ -1,3 +1,5 @@
+routing_snowfall:
+    resource: '../Apps/Snowfall/routing.yml'
 routing_custom_banner:
     resource: '../Apps/CustomBanner/routing.yml'
 routing_xmas:

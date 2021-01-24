@@ -1,0 +1,22 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.snowfall.activate:
+    path: /snahp/snowfall/activate
+    defaults: { _controller: jeb.snahp.Apps.Snowfall.SnowfallController:activate}
+
+jeb.snahp.routing.snowfall.change_color:
+    path: /snahp/snowfall/change-color/{color}
+    defaults: { _controller: jeb.snahp.Apps.Snowfall.SnowfallController:changeColor}
+    requirements:
+        color: ^[0-9a-f]{6}
+
+jeb.snahp.routing.snowfall.change_text:
+    path: /snahp/snowfall/change-text
+    defaults: { _controller: jeb.snahp.Apps.Snowfall.SnowfallController:changeText}
+
+jeb.snahp.routing.snowfall.reset:
+    path: /snahp/snowfall/reset
+    defaults: { _controller: jeb.snahp.Apps.Snowfall.SnowfallController:reset}

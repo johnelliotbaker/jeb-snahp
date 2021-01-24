@@ -23,7 +23,7 @@ class user_account
         $this->sauth = $sauth;
         $this->bank_transaction_logger = $bank_transaction_logger;
         $this->exchange_rates = $exchange_rates;
-        
+
         // TODO: Injecte invite_helper
         global $auth, $config;
         $this->invite_helper = new invite_helper(
@@ -140,6 +140,20 @@ class user_account
         $this->deposit($balance_delta, $user_id);
         $this->decrease_invitation_points($amount, $user_id);
         return [1, 'Success'];
+    }/*}}}*/
+
+    public function giveInvitationPoints($amount, $user_id, $type='moderation', $comment='')/*{{{*/
+    {
+        $invite_user_data = $this->invite_helper->select_invite_user($user_id);
+        $this->invite_helper->increase_invite_points($user_id, $amount);
+        $logger = $this->bank_transaction_logger;
+        $amount_formatted = number_format($amount);
+        $data = [
+            'type' => $type,
+            'amount' => $amount,
+            'data' => serialize(['comment' => $comment]),
+        ];
+        $this->bank_transaction_logger->create_single_transaction($user_id, $broker_id, $data);
     }/*}}}*/
 
     public function withdraw($amount, $user_id, $broker_id=-1)/*{{{*/
