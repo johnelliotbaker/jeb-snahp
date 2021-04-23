@@ -26,23 +26,27 @@ class mediainfo
         );
         $this->data = [];
         $this->language_lut = [
-            'english'   => 'gb',
-            'korean'    => 'kr',
-            'japanese'  => 'jp',
-            'chinese'   => 'cn',
-            'french'    => 'fr',
-            'spanish'   => 'es',
-            'russian'   => 'ru',
-            'german'    => 'de',
-            'italian'   => 'it',
-            'thai'      => 'th',
-            'malaysian' => 'my',
-            'swedish'   => 'se',
-            // 'danish'    => 'dk',
-            'czech'     => 'cz',
-            'dutch'     => 'nl',
-            'finnish'   => 'fi',
+            'chinese'    => 'cn',
+            'czech'      => 'cz',
+            'dutch'      => 'nl',
+            'english'    => 'gb',
+            'filipino'   => 'ph',
+            'finnish'    => 'fi',
+            'french'     => 'fr',
+            'german'     => 'de',
+            'hindi'      => 'in',
+            'italian'    => 'it',
+            'japanese'   => 'jp',
+            'korean'     => 'kr',
+            'malaysian'  => 'my',
+            'polish'     => 'pl',
             'portuguese' => 'pt',
+            'russian'    => 'ru',
+            'spanish'    => 'es',
+            'swedish'    => 'se',
+            'tagalog'    => 'ph',
+            'thai'       => 'th',
+            // 'danish'     => 'dk',
         ];
 	}/*}}}*/
 
@@ -410,12 +414,16 @@ class mediainfo
         $ch = (string) $match[1];
         switch ($ch)
         {
+        case '1':
+            return '(Mono)';
         case '2':
-            return '2.0ch';
+            return '(Stereo)';
         case '6':
-            return '5.1ch';
+            return '(5.1)';
+        case '7':
+            return '(6.1)';
         case '8':
-            return '7.1ch';
+            return '(7.1)';
         default:
         }
         return '';
@@ -455,7 +463,7 @@ class mediainfo
         }
         return $first;
     }/*}}}*/
-    
+
     private function generate_audio_content($data, $extra = [])/*{{{*/
     {
         $max_audio_entry = 4;
@@ -492,13 +500,14 @@ class mediainfo
                     $language = "${lang['value']} ${separator}";
                 }
             }
-            if ($tmp['Channels']) $t[] = $tmp['Channels'];
             $format = $tmp['Format'];
             $bitrate = $tmp['Bit rate'];
             $specs = $this->join_or_first($format, $bitrate);
-            $entry['type'] = 'fullwidth';
-            $value = "$language $specs";
+            $row_data = [$language, $specs];
+            if ($tmp['Channels']) $row_data[] = $tmp['Channels'];
+            $value = implode(" ", $row_data);
             $html = '<div class="row"><div class="col-auto audio_key">#' . $i .  ':</div><div class="float-right audio_value col">' . $value . '</div></div>';
+            $entry['type'] = 'fullwidth';
             $entry['content'] = $html;
             $res[] = $entry;
             $i += 1;
