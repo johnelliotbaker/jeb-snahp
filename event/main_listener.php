@@ -1676,6 +1676,14 @@ class main_listener extends base implements EventSubscriberInterface
         if ($b_match) {
             $event['signature'] = '';
         } else {
+            // Deal with [center] exploit. Center creates new line.
+            $signature = preg_replace_callback(
+                '#\[/center](\s)*(\S)#i',
+                function ($match) {
+                    return '[/center]' . PHP_EOL . $match[2];
+                },
+                $signature
+            );
             $split = explode(PHP_EOL, $signature);
             $split = array_slice($split, 0, $nSignatureRow);
             $signature = implode(PHP_EOL, $split);
