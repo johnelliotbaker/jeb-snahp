@@ -78,8 +78,7 @@ class reqs extends base
             $this->solve_request($fid, $tid, $pid, $def['terminate'], $reqdata);
             break;
         case $def['dib']:
-            $this->dib_request($fid, $tid, $pid);
-            break;
+            return $this->dib_request($fid, $tid, $pid);
         case $def['undib']:
             $this->undib_request($fid, $tid, $pid);
             break;
@@ -442,7 +441,6 @@ class reqs extends base
         $dibdata = $this->select_dibs($tid);
         $def = $this->def;
         $time = time();
-        $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
         if ($dibdata) {
             if ($dibdata['status'] == $def['dib']) {
                 trigger_error('Someone already dibbed this request.');
@@ -450,6 +448,7 @@ class reqs extends base
                 // Must have been undibbed
                 $b_dibber = $this->is_dibber($dibdata);
                 if ($b_dibber && !$this->b_mod) {
+                    $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
                     $redib_time = $dibdata['undib_time'] + $undib_cooldown;
                     if ($time < $redib_time) {
                         trigger_error(
@@ -459,6 +458,27 @@ class reqs extends base
                         );
                     }
                 }
+            }
+        }
+        // Confirm self-db
+        $userId = $this->user->data['user_id'];
+        $topic_data = $this->select_topic($tid);
+        if ($userId == $topic_data['topic_poster']) {
+            $confirmation = $this->request->variable('confirm', '');
+            if ($confirmation !== 'true') {
+                $cfg = [
+                    'tpl_name' => '@jeb_snahp/confirmation/component/generic/base.html',
+                    'title' => 'Confirm Request Termination',
+                ];
+                $this->template->assign_vars(
+                    [
+                        'S_TITLE' => 'Are you sure?<br>You are about to call dibs on your OWN request',
+                        'S_MESSAGE' => "You should do this only when you have found a new resource to your own request and will be posting that resource to the forum.",
+                        'U_CONFIRM' => "/app.php/snahp/reqs/${fid}/${tid}/${pid}/{$this->def['dib']}/?confirm=true",
+                        'U_CANCEL' => "/viewtopic.php?f=${fid}&t=${tid}",
+                    ]
+                );
+                return $this->helper->render($cfg['tpl_name'], $cfg['title']);
             }
         }
         // Update titles on topic & posts also forum summary
