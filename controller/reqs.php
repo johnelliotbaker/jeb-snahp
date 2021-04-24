@@ -85,10 +85,10 @@ class reqs extends base
             break;
         case $def['fulfill']:
             if ((int) $this->user->data['snp_req_n_solve'] >= $this::SEASONED_SOLVER_THRESHOLD) {
-                $this->fulfill_request($fid, $tid, $pid, $finishExecution = false);
+                $this->fulfill_request($fid, $tid, $pid, $fulfilledBySeasonedSolver = true);
                 $this->handle($fid, $tid, $pid, $def['solve']);
             } else {
-                $this->fulfill_request($fid, $tid, $pid, $finishExecution = true);
+                $this->fulfill_request($fid, $tid, $pid, $fulfilledBySeasonedSolver = false);
             }
             break;
         }
@@ -336,7 +336,7 @@ class reqs extends base
         return false;
     }/*}}}*/
 
-    public function fulfill_request($fid, $tid, $pid, $finishExecution=true)/*{{{*/
+    public function fulfill_request($fid, $tid, $pid, $fulfilledBySeasonedSolver=false)/*{{{*/
     {
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
@@ -366,8 +366,12 @@ class reqs extends base
             $fulfiller_color  = $requestdata['fulfiller_colour'];
             $requester_string = get_username_string('no_profile', $requester_id, $requester_name, $requester_color);
             $fulfiller_string = get_username_string('no_profile', $fulfiller_id, $fulfiller_name, $fulfiller_color);
-            $text             = $fulfiller_string . ' fulfilled your request<br>Please confirm request resolution.';
-            $type            = 'request_fulfillment';
+            if ($fulfilledBySeasonedSolver) {
+                $text = $fulfiller_string . ' solved your request.';
+            } else {
+                $text = $fulfiller_string . ' fulfilled your request<br>Please confirm request resolution.';
+            }
+            $type = 'request_fulfillment';
             $data = array(
                 'user_id'      => $requester_id,
                 'username'     => $requester_name,
@@ -382,7 +386,7 @@ class reqs extends base
             $this->notification->add_notifications(['jeb.snahp.notification.type.basic', ], $data);
         }
         $this->update_user($fuid, ['user_lastpost_time' => 0]);
-        if ($finishExecution) {
+        if (!$fulfilledBySeasonedSolver) {
             meta_refresh(2, $this->u_action);
             $message = 'Thank you for fulfilling this request!';
             trigger_error($message);
