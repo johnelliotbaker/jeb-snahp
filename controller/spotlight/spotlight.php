@@ -16,9 +16,9 @@ class spotlight
     protected $sauth;
     protected $spotlight_helper;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth, $spotlight_helper
+        $db, $user, $config, $request, $template, $container, $helper,
+        $tbl,
+        $sauth, $spotlight_helper
     )/*{{{*/
     {
         $this->db = $db;
@@ -62,38 +62,37 @@ class spotlight
 
     private function respond_disable_as_json()/*{{{*/
     {
-      $this->config->set('snp_spot_b_master', 0);
-      return new JsonResponse(['status' => 'disable']);
+        $this->config->set('snp_spot_b_master', 0);
+        return new JsonResponse(['status' => 'disable']);
     }/*}}}*/
 
     private function respond_enable_as_json()/*{{{*/
     {
-      $this->config->set('snp_spot_b_master', 1);
-      return new JsonResponse(['status' => 'enable']);
+        $this->config->set('snp_spot_b_master', 1);
+        return new JsonResponse(['status' => 'enable']);
     }/*}}}*/
 
     private function respond_list_as_json()/*{{{*/
     {
-      if (!$this->config['snp_spot_b_master']) { return new JsonResponse([ 'status'=>'fail', 'reason' => 'Disabled. Error Code: 0659f95ce1' ]); }
-      return new JsonResponse(json_decode(
-        $this->spotlight_helper->get_cache_list(), true
-      ));
+        if (!$this->config['snp_spot_b_master']) { return new JsonResponse([ 'status'=>'fail', 'reason' => 'Disabled. Error Code: 0659f95ce1' ]); }
+        $data = htmlspecialchars_decode($this->spotlight_helper->get_cache_list());
+        return new JsonResponse(json_decode($data, true));
     }/*}}}*/
 
     private function respond_update_as_json()/*{{{*/
     {
-      $timeit0 = microtime(true);
-      $this->sauth->reject_non_dev('Error Code: 2f9763b310');
-      $this->spotlight_helper->update_list();
-      $duration = microtime(true) - $timeit0;
-      return new JsonResponse(['status' => 'update', 'duration' => $duration]);
+        $timeit0 = microtime(true);
+        $this->sauth->reject_non_dev('Error Code: 2f9763b310');
+        $this->spotlight_helper->update_list();
+        $duration = microtime(true) - $timeit0;
+        return new JsonResponse(['status' => 'update', 'duration' => $duration]);
     }/*}}}*/
 
     private function respond_clear_as_json()/*{{{*/
     {
-      $this->sauth->reject_non_dev('Error Code: b55ce5000b');
-      $this->spotlight_helper->clear_cache();
-      return new JsonResponse(['status' => 'cleared']);
+        $this->sauth->reject_non_dev('Error Code: b55ce5000b');
+        $this->spotlight_helper->clear_cache();
+        return new JsonResponse(['status' => 'cleared']);
     }/*}}}*/
 
 }
