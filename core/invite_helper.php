@@ -84,7 +84,9 @@ class invite_helper
     public function increase_invite_points($user_id, $amount)
     {
         $user_data = $this->select_invite_user($user_id);
-        if (!$user_data) return false;
+        if (!$user_data) {
+            return $this->insert_invite_users([$user_id], $n_available=$amount);
+        }
         $n_available = $user_data['n_available'];
         $amount = (int) $amount;
         $user_id = (int) $user_id;
