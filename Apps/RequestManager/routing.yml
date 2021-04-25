@@ -4,3 +4,9 @@ jeb.snahp.routing.request_manager.change_solver:
     requirements:
         topicId: \d+
         solverId: \d+
+jeb.snahp.routing.request_manager.change_solver_with_username:
+    path: /snahp/request-manager/change-solver/topic/{topicId}/solver-username/{solverUsername}
+    defaults: { _controller: jeb.snahp.Apps.RequestManager.RequestManagerController:changeSolverWithUsername}
+    requirements:
+        topicId: \d+
+        solverUsername: \w+

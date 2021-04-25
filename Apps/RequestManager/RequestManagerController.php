@@ -23,4 +23,18 @@ class RequestManagerController
         $this->helper->changeSolver($topicId, $solverId);
         return new Response('Changed solver');
     }/*}}}*/
+
+    public function changeSolverWithUsername($topicId, $solverUsername)/*{{{*/
+    {
+        if ($solverId = $this->sauth->userNameToUserId($solverUsername)) {
+            $this->helper->changeSolver($topicId, $solverId);
+            return new JsonResponse([ 'status' => 'success', ], 200);
+        }
+        return new JsonResponse(
+            [
+            'status' => 'FAILURE',
+            'reason' => 'Could not resolve username'
+            ], 404
+        );
+    }/*}}}*/
 }

@@ -311,7 +311,7 @@ class request_listener extends base implements EventSubscriberInterface
     public function select_open_request($uid)/*{{{*/
     {
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
-        $sql = 'SELECT * FROM ' . $this->req_tbl . 
+        $sql = 'SELECT * FROM ' . $this->req_tbl .
             " WHERE requester_uid=$uid AND " .
             $this->db->sql_in_set('status', $def['set']['open']);
         $result = $this->db->sql_query($sql);
@@ -337,7 +337,7 @@ class request_listener extends base implements EventSubscriberInterface
             'b_take'    => $gd['snp_req_b_take'],
             'b_active'  => $gd['snp_req_b_active'],
         ];
-        $sql = 'INSERT INTO ' . $this->req_users_tbl . $this->db->sql_build_array('INSERT', $data); 
+        $sql = 'INSERT INTO ' . $this->req_users_tbl . $this->db->sql_build_array('INSERT', $data);
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
         if ($b_return)
@@ -433,7 +433,7 @@ class request_listener extends base implements EventSubscriberInterface
         $grace_period = $this->config[$key]==null ? 604800 : (int) $this->config[$key];
         $time = time();
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
-        $sql = 'SELECT tid FROM ' . $this->req_tbl  . " 
+        $sql = 'SELECT tid FROM ' . $this->req_tbl  . "
             WHERE requester_uid={$user_id} AND status={$def['fulfill']}
             AND fulfilled_time+{$grace_period} < {$time}
 ";
@@ -493,7 +493,7 @@ class request_listener extends base implements EventSubscriberInterface
         else
         {
             if ($reqdata['n_use'] < $gdata['snp_req_n_base'])
-                $reqdata['n_use'] += 1; 
+                $reqdata['n_use'] += 1;
             else
                 $reqdata['n_offset'] -= 1;
             $data['n_use'] = $reqdata['n_use'];

@@ -32,6 +32,7 @@ class mod_listener extends base implements EventSubscriberInterface
             ],
             'core.viewtopic_assign_template_vars_before'  => array(
                 array('insert_move_topic_button', 0),
+                array('embed_request_forum_info', 0),
             ),
             'core.viewtopic_modify_post_row'  => array(
                 array('Show_report_details_in_post', 0),
@@ -135,13 +136,13 @@ class mod_listener extends base implements EventSubscriberInterface
   <div class="inner">
     <div class="postbody">
       <h3>Report reason: '.$reason_title.'</h3>
-      <p class="author">Reported by 
+      <p class="author">Reported by
         <a href="./memberlist.php?mode=viewprofile&amp;u='.$reporter_id.'"
            style="color: ' . $user_colour . '#AA0000;" class="username-coloured">' . $username . '</a>
         « ' . $report_time . '</p>
       <div class="content">' .
 "<label>Report Description:</label>" .
-"<p>$reason_description</p>" . 
+"<p>$reason_description</p>" .
 "<label>Message from the reporter:</label>" .
 "<p>$report_text</p>" .
       '</div>
@@ -175,6 +176,21 @@ class mod_listener extends base implements EventSubscriberInterface
             'S_FORUM_SELECT' => $forum_select,
             'B_MOD_MOVE_TOPIC' => true,
         ]);
+    }
+
+    public function embed_request_forum_info($event)
+    {
+        // For use with: viewtopic_dropdown_top_custom.html
+        if (!$this->is_dev()) return;
+        if (!$forum_id = $this->request->variable('f', '')) {
+            return;
+        }
+        $fid_requests = $this->config['snp_fid_requests'];
+        $a_fid = $this->select_subforum($fid_requests);
+        if (!in_array($forum_id, $a_fid)) {
+            return;
+        }
+        $this->template->assign_var('B_REQUEST_FORUM', true);
     }
 
 }
