@@ -44,7 +44,7 @@ class invite_helper
         $this->template = $template;
 	}
 
-    
+
     // DATABASE Functions
     // INVITE USERS
     public function select_invite_users($where, $order_by='')
@@ -174,7 +174,7 @@ class invite_helper
                 'ban_msg_private'  => '', // Unicode text needs manual init
                 'n_available' => $n_available,
             ];
-            $sql = 'INSERT INTO ' . $tbl['invite_users'] . 
+            $sql = 'INSERT INTO ' . $tbl['invite_users'] .
                 $this->db->sql_build_array('INSERT', $data);
             $this->db->sql_query($sql);
         }
@@ -199,7 +199,7 @@ class invite_helper
             'inviter_id'  => $inviter_id,
             'create_time' => time(),
         ];
-        $sql = 'INSERT INTO ' . $tbl['invite'] . 
+        $sql = 'INSERT INTO ' . $tbl['invite'] .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
 
@@ -283,7 +283,7 @@ class invite_helper
 
     function select_user($where)
     {
-        $sql = 'SELECT * FROM ' . USERS_TABLE . 
+        $sql = 'SELECT * FROM ' . USERS_TABLE .
             " WHERE $where";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
@@ -313,7 +313,7 @@ class invite_helper
             $redeemer = $this->make_username($row);
             $row['redeemer'] = $redeemer;
             $rowset[$k] = $row;
-        } 
+        }
         return $rowset;
     }
 

@@ -144,7 +144,7 @@ class helper
         $t0 = $this->tbl['notifications'];
         $t1 = $this->tbl['notification_types'];
         $time = time();
-        $sql = "UPDATE ${t0} a LEFT JOIN ${t1} b ON a.notification_type_id=b.notification_type_id 
+        $sql = "UPDATE ${t0} a LEFT JOIN ${t1} b ON a.notification_type_id=b.notification_type_id
             SET a.notification_read=0, a.notification_time=${time} WHERE
             user_id=${user_id} AND
             b.notification_type_name='jeb.snahp.notification.type.simple'";
