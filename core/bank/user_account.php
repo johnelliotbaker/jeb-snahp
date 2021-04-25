@@ -144,7 +144,6 @@ class user_account
 
     public function giveInvitationPoints($amount, $user_id, $type='moderation', $comment='')/*{{{*/
     {
-        $invite_user_data = $this->invite_helper->select_invite_user($user_id);
         $this->invite_helper->increase_invite_points($user_id, $amount);
         $logger = $this->bank_transaction_logger;
         $amount_formatted = number_format($amount);

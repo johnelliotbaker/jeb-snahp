@@ -109,17 +109,50 @@ class XmasPrizeDistributor
         );
         $invite = $score === 0 || $score === 8 ? 1 : 0;
         if ($invite) {
-            $message = "Received \${$prizeString} and 1 invitation point for scoring ${score} points";
             $this->BankUserAccount->giveInvitationPoints(
                 $amount = 1,
                 $userId,
                 $type = 'giveaway',
                 $comment = "Received 1 invitation point for 2020 Christmas Event Jackpot (Score of ${score})"
             );
-        } else {
-            $message = "Received \${$prizeString} for scoring ${score} points";
         }
         return [$prize, $invite];
+    }/*}}}*/
+
+    public function processInvites($userId, $score)/*{{{*/
+    {
+        $invite = $score === 0 || $score === 8 ? 1 : 0;
+        if ($invite) {
+            $this->BankUserAccount->giveInvitationPoints(
+                $amount = 1,
+                $userId,
+                $type = 'giveaway',
+                $comment = "Received 1 invitation point for 2020 Christmas Event Jackpot (Score of ${score})"
+            );
+        }
+        return $invite;
+    }/*}}}*/
+
+    public function distributeInvites($start)/*{{{*/
+    {
+        $startTime = microtime(true);
+        $votes = getVotes();
+        $boards = $this->Board->getQueryset();
+        $boardConfig = getXmasConfig('board');
+        $bingoBoard = new BingoBoard($boardConfig['rows'], $boardConfig['columns'], $boardConfig['poolSize']);
+        $scorer = new ScoreRule75();
+        $scorer->sequence = $votes;
+        $notificationData = [];
+        foreach ($boards as $index => $board) {
+            $userId = (int) $board->user;
+            $bingoBoard->tiles = $board->tiles;
+            $score = (int) $scorer->score($bingoBoard);
+            $this->processInvites($userId, $score);
+            $notificationData[$score][] = $userId;
+        }
+        $this->sendPrizeNotifications($notificationData);
+        $elapsed = (microtime(true) - $startTime);
+        print_r("Took ${elapsed} seconds.<br/>");
     }/*}}}*/
 
     public function distribute($start)/*{{{*/
