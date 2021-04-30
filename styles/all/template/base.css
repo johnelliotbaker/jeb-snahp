@@ -355,3 +355,11 @@ img.emotes_default.height_70 {
 .postprofile dd.profile-posts.snahp {
   margin-top: 0px;
 }
+
+.emoji.smilies {
+    height: 2.25em;
+    width: 2.25em;
+    margin-left: 2px;
+    margin-right: 2px;
+    display: inline-block;
+}
