@@ -1,0 +1,5 @@
+services:
+    jeb.snahp.Apps.Core.Db.QuerySetFactory:
+        class: jeb\snahp\Apps\Core\Db\QuerySetFactory
+        arguments:
+            - "@dbal.conn"

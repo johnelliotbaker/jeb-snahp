@@ -1,0 +1,5 @@
+services:
+    jeb.snahp.Apps.Core.Pagination.PageNumberPagination:
+        class: jeb\snahp\Apps\Core\Pagination\PageNumberPagination
+    jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination:
+        class: jeb\snahp\Apps\Core\Pagination\LimitOffsetPagination
