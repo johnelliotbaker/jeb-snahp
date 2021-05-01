@@ -245,12 +245,12 @@ class helper
     {
         $blocked_id = (int) $blocked_id;
         $blocker_id = (int) $blocker_id;
-        $mod_reason = $this->db->sql_escape((string) $mod_reason);
+        // $mod_reason = $this->db->sql_escape((string) $mod_reason);
         if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
         {
             return false;
         }
-        $data = [ 
+        $data = [
             'mod_reason' => $mod_reason,
             'mod_id' => $this->user_id,
         ];
