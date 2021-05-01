@@ -44,6 +44,9 @@ imports:
     - { resource: ../Apps/Xmas/service.yml }
     - { resource: ../Apps/Snowfall/service.yml }
     - { resource: ../Apps/UserRestrictor/service.yml }
+    - { resource: ../Apps/UserBlock/service.yml }
+    - { resource: ../Apps/Digg/service.yml }
+    - { resource: ../Apps/Core/service.yml }
 
 services:
     jeb.snahp.core:
