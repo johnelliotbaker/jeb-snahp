@@ -1,0 +1,27 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.UserBlock.UserBlockController:
+        class: jeb\snahp\Apps\UserBlock\UserBlockController
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.UserBlock.UserBlockHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.UserBlock.UserBlockHelper:
+        class: jeb\snahp\Apps\UserBlock\UserBlockHelper
+        arguments:
+            - "@request"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"

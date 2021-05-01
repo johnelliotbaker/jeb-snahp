@@ -1,0 +1,12 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.user_block.list_user_block:
+    path: /snahp/user-block/user-block
+    defaults: { _controller: jeb.snahp.Apps.UserBlock.UserBlockController:viewUserBlock}
+
+jeb.snahp.routing.user_block.list_user_block_log:
+    path: /snahp/user-block/user-block-log
+    defaults: { _controller: jeb.snahp.Apps.UserBlock.UserBlockController:viewUserBlockLog}
