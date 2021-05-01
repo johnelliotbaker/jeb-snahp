@@ -64,6 +64,14 @@
 <!-- INCLUDEJS @jeb_snahp/base.js -->
 <!-- INCLUDEJS @jeb_snahp/viewtopic.js -->
 
+{% if B_MOD %}
+<div id="rx_quick_mcp"></div>
+<!-- IF not $rx_quick_mcp -->
+<!-- DEFINE $rx_quick_mcp = true -->
+<!-- INCLUDEJS @jeb_snahp/quick_mcp/rx_quick_mcp/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/quick_mcp/rx_quick_mcp/bundle.css -->
+<!-- ENDIF -->
+{% endif %}
 
 <!-- IF not $rx_spotlight -->
 <!-- DEFINE $rx_spotlight = true -->
