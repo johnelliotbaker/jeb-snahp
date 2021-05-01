@@ -1,0 +1,29 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Digg.DiggController:
+        class: jeb\snahp\Apps\Digg\DiggController
+        arguments:
+            - "@request"
+            - "@template"
+            - "@controller.helper"
+            - "@pagination"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Digg.DiggHelper"
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Digg.DiggHelper:
+        class: jeb\snahp\Apps\Digg\DiggHelper
+        arguments:
+            - "@request"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
