@@ -38,7 +38,7 @@ class BoilerplateController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->userId = (int) $this->user->data['user_id'];
+        $this->userId = $sauth->userId;
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
     }/*}}}*/
 

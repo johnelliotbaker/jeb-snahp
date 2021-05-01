@@ -26,9 +26,9 @@ class BoilerplateEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()/*{{{*/
     {
         return [
-            'core.viewtopic_modify_post_row' => [
-                ['showBoilerplates', 1],
-            ],
+            // 'core.viewtopic_modify_post_row' => [
+            //     ['showBoilerplates', 1],
+            // ],
         ];
     }/*}}}*/
 

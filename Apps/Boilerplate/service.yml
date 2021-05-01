@@ -9,16 +9,16 @@ services:
     jeb.snahp.Apps.Boilerplate.BoilerplateController:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateController
         arguments:
-            - @dbal.conn
-            - @user
-            - @config
-            - @request
-            - @template
-            - @service_container
-            - @controller.helper
-            - %jeb.snahp.tables%
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Boilerplate.BoilerplateHelper
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Boilerplate.BoilerplateHelper"
 
 ##############
 #  API VIEW  #
@@ -27,15 +27,15 @@ services:
     jeb.snahp.Apps.Boilerplate.ModelNameListCreateAPIView:
         class: jeb\snahp\Apps\Boilerplate\ModelNameListCreateAPIView
         arguments:
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Boilerplate.Models.ModelName
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Boilerplate.Models.ModelName"
     jeb.snahp.Apps.Boilerplate.ModelNameRetrieveUpdateDestroyAPIView:
         class: jeb\snahp\Apps\Boilerplate\ModelNameRetrieveUpdateDestroyAPIView
         arguments:
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Boilerplate.Models.ModelName
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Boilerplate.Models.ModelName"
 
 
 ############
@@ -46,11 +46,11 @@ services:
     jeb.snahp.Apps.Boilerplate.BoilerplateHelper:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateHelper
         arguments:
-            - @dbal.conn
-            - @user
-            - @template
-            - %jeb.snahp.tables%
-            - @jeb.snahp.auth.user_auth
+            - "@dbal.conn"
+            - "@user"
+            - "@template"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
 
 
 ###########
@@ -70,9 +70,9 @@ services:
     jeb.snahp.Apps.Boilerplate.BoilerplateEventListener:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateEventListener
         arguments:
-            - @user
-            - @config
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.Boilerplate.BoilerplateHelper
+            - "@user"
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Boilerplate.BoilerplateHelper"
         tags:
             - { name: event.listener }
