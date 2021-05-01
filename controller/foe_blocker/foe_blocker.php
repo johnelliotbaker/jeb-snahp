@@ -127,7 +127,7 @@ class foe_blocker
     private function get_or_reject_post($post_id)/*{{{*/
     {
         $post_data = $this->select_post($post_id);
-        if (!$post_data) 
+        if (!$post_data)
         {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("That post does not exist. Error Code: 64dfda57e1. Redirecting in {$this->redirect_delay} seconds ...");
@@ -140,7 +140,7 @@ class foe_blocker
         $duration_strn = (string) $duration_strn;
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         $a_duration = $params['duration'];
-        if (!array_key_exists($duration_strn, $a_duration)) 
+        if (!array_key_exists($duration_strn, $a_duration))
         {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("Invalid duration. Error Code: a53f11de32. Redirecting in {$this->redirect_delay} seconds ...");
@@ -151,7 +151,7 @@ class foe_blocker
     private function validate_or_reject_block_reason($reason)/*{{{*/
     {
         $reason = (string) $reason;
-        if (!$reason) 
+        if (!$reason)
         {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("You must provide a reason for blocking a user. Error Code: 4816c4661f. Redirecting in {$this->redirect_delay} seconds ...");
@@ -197,7 +197,8 @@ class foe_blocker
             $allow_viewtopic = $this->request->variable('allow_viewtopic', 0);
             $allow_pm = $this->request->variable('allow_pm', 0);
             $allow_reply = $this->request->variable('allow_reply', 0);
-            $this->block_user($post_data, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm);
+            $allow_quote = $this->request->variable('allow_quote', 0);
+            $this->block_user($post_data, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm, $allow_quote);
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("<b>${post_data['username']}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
         }
@@ -227,8 +228,9 @@ class foe_blocker
         $allow_viewtopic = $this->request->variable('allow_viewtopic', 0);
         $allow_pm = $this->request->variable('allow_pm', 0);
         $allow_reply = $this->request->variable('allow_reply', 0);
+        $allow_quote = $this->request->variable('allow_quote', 0);
         $blocker_id = $this->user_id;
-        $this->emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm);
+        $this->emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id, $allow_viewtopic, $allow_reply, $allow_pm, $allow_quote);
         $u_action = $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'manage']);
         meta_refresh($this->redirect_delay, $u_action);
         trigger_error("<b>${blocked_id}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
@@ -303,7 +305,7 @@ class foe_blocker
         return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
     }/*}}}*/
 
-    private function block_user($post_data, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0)/*{{{*/
+    private function block_user($post_data, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)/*{{{*/
     {
         if (!$this->foe_helper->can_block($post_data['poster_id']))
         {
@@ -321,6 +323,7 @@ class foe_blocker
             'allow_viewtopic' => (int) $allow_viewtopic,
             'allow_reply' => (int) $allow_reply,
             'allow_pm' => (int) $allow_pm,
+            'allow_quote' => (int) $allow_quote,
             'post_id' => (int) $post_id,
             'block_reason' => (string) $block_reason,
             'created_time' => time(),
@@ -329,7 +332,7 @@ class foe_blocker
         $this->insert_or_update_foe($data);
     }/*}}}*/
 
-    private function emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0)/*{{{*/
+    private function emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)/*{{{*/
     {
         $blocked_id = (int) $blocked_id;
         if (!$this->sauth->is_valid_user_id($blocked_id))
@@ -351,6 +354,7 @@ class foe_blocker
             'allow_viewtopic' => (int) $allow_viewtopic,
             'allow_reply' => (int) $allow_reply,
             'allow_pm' => (int) $allow_pm,
+            'allow_quote' => (int) $allow_quote,
             'post_id' => (int) 0,
             'block_reason' => (string) $block_reason,
             'created_time' => time(),
@@ -374,7 +378,7 @@ class foe_blocker
         $blocker_id = $this->user_id;
         $this->reject_on_frozen($blocked_id, $blocker_id);
         $rowset = $this->select_blocked_users($this->user_id, $blocked_id);
-        if (!$rowset) 
+        if (!$rowset)
         {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("Invalid action. Error Code: 7447f12588. Redirecting in {$this->redirect_delay_long} seconds ...");

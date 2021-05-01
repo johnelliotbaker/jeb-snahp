@@ -156,10 +156,14 @@ class logger
         return $count;
     }/*}}}*/
 
-    public function select_foe_block($start=0, $per_page=50, $order_by='id DESC')/*{{{*/
+    public function select_foe_block($start=0, $per_page=50, $order_by='id DESC', $whereExtra='')/*{{{*/
     {
         $cooldown = 1;
-        $where = 'type="LOG_FOE_BLOCKER"';
+        $where = ['type="LOG_FOE_BLOCKER"'];
+        if ($whereExtra) {
+            $where[] = $this->db->sql_escape($whereExtra);
+        }
+        $where = implode(' AND ', $where);
         $sql_array = [
             'SELECT'	=> 'a.*,
             b.user_id as blocker_user_id, b.username as blocker_username, b.user_colour as blocker_user_colour,
