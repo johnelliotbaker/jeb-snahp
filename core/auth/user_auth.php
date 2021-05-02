@@ -21,8 +21,8 @@ class user_auth
         $this->user = $user;
         $this->auth = $auth;
         $this->container = $container;
-        $this->this_user_id = $this->user->data['user_id'];
-        $this->user_id = $this->userId = $this->user->data['user_id'];
+        $this->this_user_id = (int) $this->user->data['user_id'];
+        $this->user_id = $this->userId = (int) $this->user->data['user_id'];
         $this->phpbb_root_path = $container->getParameter('core.root_path');
     }
 
