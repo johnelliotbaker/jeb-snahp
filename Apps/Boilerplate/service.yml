@@ -47,10 +47,10 @@ services:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateHelper
         arguments:
             - "@dbal.conn"
-            - "@user"
-            - "@template"
             - "%jeb.snahp.tables%"
             - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
 
 
 ###########
