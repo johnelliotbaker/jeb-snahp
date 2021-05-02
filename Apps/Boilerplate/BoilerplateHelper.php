@@ -13,17 +13,16 @@ class BoilerplateHelper
     protected $sauth;
     public function __construct(
         $db,
-        $user,
-        $template,
         $tbl,
-        $sauth
+        $sauth,
+        $pageNumberPagination,
+        $QuerySetFactory
     ) {
         $this->db = $db;
-        $this->user = $user;
-        $this->template = $template;
         $this->tbl = $tbl;
-        $this->rxnTbl = $tbl['Boilerplate'];
         $this->sauth = $sauth;
+        $this->paginator = $pageNumberPagination;
+        $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
     }/*}}}*/
 }
