@@ -1,3 +1,5 @@
+routing_bookmark:
+    resource: '../Apps/Bookmark/routing.yml'
 routing_digg:
     resource: '../Apps/Digg/routing.yml'
 routing_user_block:

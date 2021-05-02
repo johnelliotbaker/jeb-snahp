@@ -1,0 +1,37 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Bookmark.BookmarkController:
+        class: jeb\snahp\Apps\Bookmark\BookmarkController
+        arguments:
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Bookmark.BookmarkHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Bookmark.BookmarkHelper:
+        class: jeb\snahp\Apps\Bookmark\BookmarkHelper
+        arguments:
+            - "@dbal.conn"
+            - "@request"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+

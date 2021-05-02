@@ -1,0 +1,16 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.bookmark.remove_my_bookmark:
+    path: /snahp/bookmark/mybookmark/delete/{id}
+    defaults: { _controller: jeb.snahp.Apps.Bookmark.BookmarkController:removeMyBookmark}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.bookmark.mybookmark:
+    path: /snahp/bookmark/mybookmark/{type}
+    defaults: { _controller: jeb.snahp.Apps.Bookmark.BookmarkController:mybookmark}
+    requirements:
+        id: \w+

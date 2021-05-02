@@ -47,6 +47,7 @@ imports:
     - { resource: ../Apps/UserBlock/service.yml }
     - { resource: ../Apps/Digg/service.yml }
     - { resource: ../Apps/Core/service.yml }
+    - { resource: ../Apps/Bookmark/service.yml }
 
 services:
     jeb.snahp.core:

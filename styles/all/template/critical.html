@@ -73,6 +73,13 @@
 <!-- ENDIF -->
 {% endif %}
 
+<div id="rx_quick_ucp"></div>
+<!-- IF not $rx_quick_ucp -->
+<!-- DEFINE $rx_quick_ucp = true -->
+<!-- INCLUDEJS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.css -->
+<!-- ENDIF -->
+
 <!-- IF not $rx_spotlight -->
 <!-- DEFINE $rx_spotlight = true -->
 <!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js -->
