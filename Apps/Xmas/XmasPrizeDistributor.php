@@ -123,6 +123,7 @@ class XmasPrizeDistributor
     {
         $invite = $score === 0 || $score === 8 ? 1 : 0;
         if ($invite) {
+            print_r("$userId scored $score and got $invite invite.<br>");
             $this->BankUserAccount->giveInvitationPoints(
                 $amount = 1,
                 $userId,
@@ -143,15 +144,20 @@ class XmasPrizeDistributor
         $scorer = new ScoreRule75();
         $scorer->sequence = $votes;
         $notificationData = [];
+        $count = 0;
         foreach ($boards as $index => $board) {
             $userId = (int) $board->user;
             $bingoBoard->tiles = $board->tiles;
             $score = (int) $scorer->score($bingoBoard);
-            $this->processInvites($userId, $score);
-            $notificationData[$score][] = $userId;
+            $gotInvite = $this->processInvites($userId, $score);
+            if ($gotInvite) {
+                $count += 1;
+                $notificationData[$score][] = $userId;
+            }
         }
         $this->sendPrizeNotifications($notificationData);
         $elapsed = (microtime(true) - $startTime);
+        print_r("Processed $count invites.<br/>");
         print_r("Took ${elapsed} seconds.<br/>");
     }/*}}}*/
 
