@@ -366,7 +366,7 @@ class reqs extends base
             $requester_string = get_username_string('no_profile', $requester_id, $requester_name, $requester_color);
             $fulfiller_string = get_username_string('no_profile', $fulfiller_id, $fulfiller_name, $fulfiller_color);
             if ($fulfilledBySeasonedSolver) {
-                $text = $fulfiller_string . ' solved your request.';
+                $text = $fulfiller_string . ' solved your request.<br>No further action is required.';
             } else {
                 $text = $fulfiller_string . ' fulfilled your request<br>Please confirm request resolution.';
             }
@@ -449,7 +449,7 @@ class reqs extends base
                 $b_dibber = $this->is_dibber($dibdata);
                 if ($b_dibber && !$this->b_mod) {
                     if ($this->isSeasonedSolver()) {
-                        $undib_cooldown = 86400;
+                        $undib_cooldown = 21600;
                     } else {
                         $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
                     }
