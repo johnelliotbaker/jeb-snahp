@@ -16,12 +16,13 @@ class cron extends base
     protected $reputation_helper;
     protected $spotlight_helper;
 
-    public function __construct($table_prefix, $var1, 
+    public function __construct($table_prefix, $var1,
         $db,
         $cron_helper,
         $feedpostbot,
         $reputation_helper,
-        $spotlight_helper
+        $spotlight_helper,
+        $jukeboxHelper
     )/*{{{*/
     {
         $this->table_prefix = $table_prefix;
@@ -30,6 +31,7 @@ class cron extends base
         $this->feedpostbot = $feedpostbot;
         $this->reputation_helper = $reputation_helper;
         $this->spotlight_helper = $spotlight_helper;
+        $this->jukeboxHelper = $jukeboxHelper;
     }/*}}}*/
 
     public function handle($mode)/*{{{*/
@@ -64,6 +66,7 @@ class cron extends base
         // Spotlight Updates
         $this->cron_helper->log('spotlight', 'hourly', 'before');
         $this->spotlight_helper->update_list();
+        $this->jukeboxHelper->updateList();
         $this->cron_helper->log('spotlight', 'hourly', 'after');
         // Giving reputation points
         if ($this->config['snp_rep_b_master'] && $this->config['snp_rep_b_cron_giveaway'])
@@ -78,10 +81,11 @@ class cron extends base
                 $this->cron_helper->log('reputation', 'hourly', 'after');
             }
         }
-        trigger_error('Following hourly task was performed. 
+        trigger_error('Following hourly task was performed.
                         <p>1) feedpostbot->fetch_all</p>
                         <p>2) spotlight->update_list</p>
-                        <p>3) reputation->set_min</p>
+                        <p>3) jukebox->updateList</p>
+                        <p>4) reputation->set_min</p>
                         ');
     }/*}}}*/
 

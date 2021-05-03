@@ -1,3 +1,5 @@
+routing_jukebox:
+    resource: '../Apps/Jukebox/routing.yml'
 routing_bookmark:
     resource: '../Apps/Bookmark/routing.yml'
 routing_digg:

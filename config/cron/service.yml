@@ -11,6 +11,7 @@ services:
             - '@ger.feedpostbot.classes.driver'
             - '@jeb.snahp.reputation_helper'
             - '@jeb.snahp.spotlight_helper'
+            - '@jeb.snahp.Apps.Jukebox.JukeboxHelper'
     jeb.snahp.cron_helper:
         class: jeb\snahp\core\cron\helper
         arguments:
