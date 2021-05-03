@@ -63,6 +63,9 @@ parameters:
         e_aa110:
             url: https://i.imgur.com/8uPlzce.gif
             type: 1
+        e_aa111:
+            url: https://i.imgur.com/UKBBkNK.gif
+            type: 0
 
         # tobi1
         e_ab000:
