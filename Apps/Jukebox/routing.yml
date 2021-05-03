@@ -1,0 +1,8 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.jukebox.main:
+    path: /snahp/jukebox/playlist
+    defaults: { _controller: jeb.snahp.Apps.Jukebox.JukeboxController:viewPlaylist}

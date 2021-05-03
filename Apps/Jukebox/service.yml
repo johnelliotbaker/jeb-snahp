@@ -1,0 +1,33 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Jukebox.JukeboxController:
+        class: jeb\snahp\Apps\Jukebox\JukeboxController
+        arguments:
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Jukebox.JukeboxHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Jukebox.JukeboxHelper:
+        class: jeb\snahp\Apps\Jukebox\JukeboxHelper
+        arguments:
+            - "@dbal.conn"
+            - "@config_text"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
