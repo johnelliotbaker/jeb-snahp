@@ -2,8 +2,8 @@
     "name": "jeb/snahp",
     "type": "phpbb-extension",
     "description": "Snahp Extension",
-    "version": "0.39.0 Snow Fall",
-    "time": "2021-01-23",
+    "version": "0.40.0 The Quickening",
+    "time": "2021-05-03",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -21,8 +21,8 @@
         "symfony/validator": "^4.4"
     },
     "extra": {
-        "version": "17a4943b41a14684fa1c4c3806a0dc4652b82a9e",
-        "features": "Overhauls: Wiki/Deadlinks/POI/Flair",
+        "version": "c17bd9d305d0eb293aa86cd60b88ff5315735516",
+        "features": "Quick UCP and Quick MCP",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"
