@@ -448,7 +448,11 @@ class reqs extends base
                 // Must have been undibbed
                 $b_dibber = $this->is_dibber($dibdata);
                 if ($b_dibber && !$this->b_mod) {
-                    $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
+                    if ($this->isSeasonedSolver()) {
+                        $undib_cooldown = 86400;
+                    } else {
+                        $undib_cooldown = $this->config['snp_req_redib_cooldown_time'];
+                    }
                     $redib_time = $dibdata['undib_time'] + $undib_cooldown;
                     if ($time < $redib_time) {
                         trigger_error(
