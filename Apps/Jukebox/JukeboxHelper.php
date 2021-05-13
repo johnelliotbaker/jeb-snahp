@@ -14,7 +14,7 @@ class JukeboxHelper
 
     public function selectCandidates($numPosts)/*{{{*/
     {
-        $topicId = 21121;
+        $topicId = ($this->sauth->is_dev_server()) ? 21121 : 218385;;
         $sqlArray = [
             'SELECT'    => 'a.post_text, b.username, b.user_colour, b.user_avatar',
             'FROM'      => [ POSTS_TABLE => 'a', ],
@@ -24,6 +24,7 @@ class JukeboxHelper
                     'ON' => 'a.poster_id=b.user_id'
                 ]
             ],
+            'WHERE' => "a.topic_id=${topicId}",
             'ORDER_BY'  => 'a.post_id DESC',
         ];
         $sql = $this->db->sql_build_query('SELECT', $sqlArray);
@@ -59,7 +60,9 @@ class JukeboxHelper
 
     public function process($rowset)/*{{{*/
     {
+        $limit = 100;
         $res = [];
+        $count = 0;
         foreach ($rowset as $row) {
             $postText = $row['post_text'];
             $data = $this->extractImdb($postText);
@@ -72,6 +75,10 @@ class JukeboxHelper
                         'avatar'=>$row['user_avatar']
                     ];
                     $res[] = $item;
+                    $count += 1;
+                    if ($count >= $limit) {
+                        return $res;
+                    }
                 }
             }
         }
