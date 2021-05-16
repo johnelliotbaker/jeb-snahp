@@ -25,9 +25,6 @@ class RequestsSolvedToplist extends BaseToplist/*{{{*/
 
 class ToplistHelper
 {
-    const CACHE_DURATION = 0;
-    const CACHE_DURATION_LONG = 0;
-
     protected $db;/*{{{*/
     protected $user;
     protected $template;
