@@ -279,10 +279,10 @@ class user_auth
         return isset($row['min']) ? $row['min'] : 0;
     }/*}}}*/
 
-    public function getUserGroups($user_id)
+    public function getUserGroups($user_id)/*{{{*/
     {
         return $this->get_user_groups($user_id);
-    }
+    }/*}}}*/
 
     public function get_user_groups($user_id)/*{{{*/
     {
@@ -309,4 +309,23 @@ class user_auth
         $this->db->sql_freeresult($result);
         return $row ? $row['user_id'] : null;
     }/*}}}*/
+
+    public function userId2ProfileLink($userId, $username=null, $userColor=null)/*{{{*/
+    {
+        $userId = (int) $userId;
+        if ($username === null || $userColor === null) {
+            print_r('doing db call');
+            $sql = 'SELECT username, user_colour FROM ' . USERS_TABLE . " WHERE user_id=${userId}";
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+            if (!$row) {
+                throw new \Exception("User ${userId} not found: Error Code: 3c4e5cf47e");
+            }
+            [$username, $userColor] = [$row['username'], $row['user_colour']];
+        }
+        $profileURL = "/memberlist.php?mode=viewprofile&u=";
+        return '<a href="' . $profileURL . '" style="color: ' . $userColor . ';" class="username-coloured">' . $username . '</a>';
+    }/*}}}*/
+
 }
