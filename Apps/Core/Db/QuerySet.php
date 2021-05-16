@@ -14,10 +14,10 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
         $this->sqlArray = $sqlArray;
     }/*}}}*/
 
-    public function slice($offset, $length, $many=true)/*{{{*/
+    public function slice($offset, $length, $many=true, $cacheTimeout=0)/*{{{*/
     {
         $sql = $this->buildSql();
-        $result = $this->db->sql_query_limit($sql, $length, $offset);
+        $result = $this->db->sql_query_limit($sql, $length, $offset, $cacheTimeout);
         if ($many) {
             $data = $this->db->sql_fetchrowset($result);
         } else {
