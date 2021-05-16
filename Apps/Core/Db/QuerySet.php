@@ -70,4 +70,16 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
         $this->db->sql_freeresult($result);
         return $row['total'];
     }/*}}}*/
+
+    public function filterInSet($column, $set, $negate=false)/*{{{*/
+    {
+        if (!$set) {
+            return;
+        }
+        $where = $this->sqlArray['WHERE'] ?? '1=1';
+        $where = [$where];
+        $where[] = $this->db->sql_in_set($column, $set, $negate);
+        $where = implode($where, ' AND ');
+        $this->sqlArray['WHERE'] = $where;
+    }/*}}}*/
 }
