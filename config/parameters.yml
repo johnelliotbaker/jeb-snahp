@@ -35,6 +35,7 @@ parameters:
             deadlinks: 15
             ps: 16
             xbox: 17
+            exclusive: 18
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -55,6 +56,7 @@ parameters:
                 deadlinks: '🐞'
                 ps: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg">'
                 xbox: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg">'
+                exclusive: '<img class="ios_icon" src="https://i.imgur.com/u6gOz1T.png" />'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -74,6 +76,7 @@ parameters:
                 deadlinks: '🐞'
                 ps: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg"></span>'
                 xbox: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg"></span>'
+                exclusive: '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/u6gOz1T.png" /></span>'
 
     jeb.snahp.req:
         def:
