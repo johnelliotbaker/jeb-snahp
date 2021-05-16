@@ -95,7 +95,7 @@ class main_listener extends base implements EventSubscriberInterface
             'core.text_formatter_s9e_parse_before'        => [
                 ['process_base64_bbcode', 10],
             ],
-            'core.display_forums_after'                   => 'show_thanks_top_list',
+            // 'core.display_forums_after'                   => 'show_thanks_top_list',
             'core.ucp_profile_modify_signature'           => 'modify_signature',
             'core.posting_modify_template_vars'           => 'include_assets_before_posting',
             'core.modify_format_display_text_after'       => [
