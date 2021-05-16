@@ -49,6 +49,7 @@ imports:
     - { resource: ../Apps/Core/service.yml }
     - { resource: ../Apps/Bookmark/service.yml }
     - { resource: ../Apps/Jukebox/service.yml }
+    - { resource: ../Apps/Toplist/service.yml }
 
 services:
     jeb.snahp.core:

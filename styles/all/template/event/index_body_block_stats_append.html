@@ -1,11 +1,27 @@
-{% if SNP_THANKS_B_TOPLIST %}
-<div class="stat-block thanks-list">
-	<h3>Thanks Toplist</h3>
-	<p>
-  <!-- BEGIN A_TOP_LIST -->
-  <a href="./memberlist.php?mode=viewprofile&amp;u={A_TOP_LIST.USER_ID}" style="color: #{A_TOP_LIST.USER_COLOUR};" class="username-coloured">{A_TOP_LIST.USERNAME}</a> ({A_TOP_LIST.SNP_THANKS_N_RECEIVED}){A_TOP_LIST.SNP_THANKS_DELIM}
-  <!-- END A_TOP_LIST -->
-  </p>
-</div>
+{% if B_SHOW_TOPLIST %}
+  <div class="stat-block thanks-list">
+    <h3>Thanks Toplist</h3>
+    <p>
+    {% for item in A_THANKS_TOP_LIST %}
+      <a href="./memberlist.php?mode=viewprofile&amp;u={item.USER_ID}" style="color: #{item.USER_COLOUR};" class="username-coloured">{item.USERNAME}</a> ({item.COUNT}){% if loop.last %}{% else  %}, {% endif %}
+    {% endfor %}
+    </p>
+  </div>
+  <div class="stat-block thanks-list">
+    <h3>Reputation Toplist</h3>
+    <p>
+    {% for item in A_REPUTATION_TOP_LIST %}
+      <a href="./memberlist.php?mode=viewprofile&amp;u={item.USER_ID}" style="color: #{item.USER_COLOUR};" class="username-coloured">{item.USERNAME}</a> ({item.COUNT}){% if loop.last %}{% else  %}, {% endif %}
+    {% endfor %}
+    </p>
+  </div>
+  <div class="stat-block thanks-list">
+    <h3>Requests Solved Toplist</h3>
+    <p>
+    {% for item in A_REQUEST_SOLVED_TOP_LIST %}
+      <a href="./memberlist.php?mode=viewprofile&amp;u={item.USER_ID}" style="color: #{item.USER_COLOUR};" class="username-coloured">{item.USERNAME}</a> ({item.COUNT}){% if loop.last %}{% else  %}, {% endif %}
+    {% endfor %}
+    </p>
+  </div>
 {% endif %}
 

@@ -1,0 +1,32 @@
+services:
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Toplist.ToplistHelper:
+        class: jeb\snahp\Apps\Toplist\ToplistHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Toplist.ToplistEventListener:
+        class: jeb\snahp\Apps\Toplist\ToplistEventListener
+        arguments:
+            - "@config"
+            - "@template"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Toplist.ToplistHelper"
+        tags:
+            - { name: event.listener }
