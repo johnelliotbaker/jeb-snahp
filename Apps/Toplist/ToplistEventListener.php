@@ -31,7 +31,7 @@ class ToplistEventListener implements EventSubscriberInterface
         ];
     }/*}}}*/
 
-    public function embedToplist($event)
+    public function embedToplist($event)/*{{{*/
     {
         if ($uid == ANONYMOUS) {
             return false;
@@ -73,5 +73,5 @@ class ToplistEventListener implements EventSubscriberInterface
             ];
             $this->template->assign_block_vars('A_REPUTATION_TOP_LIST', $data);
         }
-    }
+    }/*}}}*/
 }

@@ -1,0 +1,19 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.toplist.blacklist:
+    path: /snahp/toplist/blacklist/{name}/{userId}
+    defaults: { _controller: jeb.snahp.Apps.Toplist.ToplistController:blacklist}
+    requirements:
+        name: \w+
+        userId: \d+
+
+
+jeb.snahp.routing.toplist.api.whitelist:
+    path: /snahp/toplist/whitelist/{name}/{userId}
+    defaults: { _controller: jeb.snahp.Apps.Toplist.ToplistController:whitelist}
+    requirements:
+        name: \w+
+        userId: \d+

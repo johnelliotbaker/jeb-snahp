@@ -1,3 +1,5 @@
+routing_toplist:
+    resource: '../Apps/Toplist/routing.yml'
 routing_jukebox:
     resource: '../Apps/Jukebox/routing.yml'
 routing_bookmark:

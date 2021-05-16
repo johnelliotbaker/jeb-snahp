@@ -1,5 +1,15 @@
 services:
 
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Toplist.ToplistController:
+        class: jeb\snahp\Apps\Toplist\ToplistController
+        arguments:
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Toplist.ToplistHelper"
+
 
 ############
 #  HELPER  #
@@ -10,9 +20,8 @@ services:
         class: jeb\snahp\Apps\Toplist\ToplistHelper
         arguments:
             - "@dbal.conn"
-            - "%jeb.snahp.tables%"
+            - "@config_text"
             - "@jeb.snahp.auth.user_auth"
-            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
 
 
