@@ -29,13 +29,18 @@ class helper
                     $title = $json['title'];
                     $poster_url = $json['poster'];
                     if (!$poster_url || !$title) return;
-                    return [
+                    $res = [
                         'title' => $title,
                         'poster_url' => $poster_url,
                         'topic_id' => $row['topic_id'],
                         'poster' => $row['topic_first_poster_name'],
                         'colour' => $row['topic_first_poster_colour'],
                     ];
+                    $exclusive = $json['exclusive'];
+                    if ($exclusive = $json) {
+                        $res['exclusive'] = true;
+                    }
+                    return $res;
                 },
             ],
         ];
