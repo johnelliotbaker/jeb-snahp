@@ -2,9 +2,9 @@
   <span title="The Trifecta" class="avatar__achievements__icon">☘️</span>
 {% else  %}
   {% set keys = postrow.ACHIEVEMENTS|keys %}
-  {% if 'reputation' in keys %}<span title="#{value}" class="avatar__achievements__icon">🏆</span>{% endif %}
-  {% if 'requests_solved' in keys %}<span title="#{value}" class="avatar__achievements__icon">🎁</span>{% endif %}
-  {% if 'thanks' in keys %}<span title="#{value}" class="avatar__achievements__icon">👍</span>{% endif %}
+  {% if 'reputation' in keys %}<span title="#{postrow.ACHIEVEMENTS.reputation}" class="avatar__achievements__icon">🏆</span>{% endif %}
+  {% if 'requests_solved' in keys %}<span title="#{postrow.ACHIEVEMENTS.requests_solved}" class="avatar__achievements__icon">🎁</span>{% endif %}
+  {% if 'thanks' in keys %}<span title="#{postrow.ACHIEVEMENTS.thanks}" class="avatar__achievements__icon">👍</span>{% endif %}
 {% endif %}
 <style>
 .defs-only {
