@@ -363,3 +363,7 @@ img.emotes_default.height_70 {
     margin-right: 2px;
     display: inline-block;
 }
+
+.rx button {
+    outline: none;
+}
