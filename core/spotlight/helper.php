@@ -36,8 +36,7 @@ class helper
                         'poster' => $row['topic_first_poster_name'],
                         'colour' => $row['topic_first_poster_colour'],
                     ];
-                    $exclusive = $json['exclusive'];
-                    if ($exclusive = $json) {
+                    if ($exclusive = $json['exclusive']) {
                         $res['exclusive'] = true;
                     }
                     return $res;
