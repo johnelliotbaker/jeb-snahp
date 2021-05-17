@@ -21,6 +21,7 @@ services:
         arguments:
             - "@dbal.conn"
             - "@config_text"
+            - "@cache"
             - "@jeb.snahp.auth.user_auth"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
 

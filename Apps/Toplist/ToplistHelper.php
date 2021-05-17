@@ -1,6 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\Toplist;
 
+const CACHE_TIMEOUT = 3600;
+
 
 class ReputationToplist extends BaseToplist/*{{{*/
 {
@@ -33,32 +35,42 @@ class ToplistHelper
     public function __construct(
         $db,
         $configText,
+        $cache,
         $sauth,
         $QuerySetFactory
     ) {
         $this->db = $db;
         $this->configText = $configText;
+        $this->cache = $cache;
         $this->sauth = $sauth;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
     }/*}}}*/
 
+    public function getToplist($name)/*{{{*/
+    {
+        $tl = $this->toplistFactory($name);
+        $cacheName = "snp_${name}_toplist";
+        if (!$list = $this->cache->get($cacheName)) {
+            $list = $tl->getList();
+            $this->cache->put($cacheName, $list, CACHE_TIMEOUT);
+        }
+        return $list;
+    }/*}}}*/
+
     public function getThanksToplist()/*{{{*/
     {
-        $tl = $this->toplistFactory('thanks');
-        return $tl->getList();
+        return $this->getToplist('thanks');
     }/*}}}*/
 
     public function getRequestSolvedToplist()/*{{{*/
     {
-        $tl = $this->toplistFactory('requests_solved');
-        return $tl->getList();
+        return $this->getToplist('requests_solved');
     }/*}}}*/
 
     public function getReputationToplist()/*{{{*/
     {
-        $tl = $this->toplistFactory('reputation');
-        return $tl->getList();
+        return $this->getToplist('reputation');
     }/*}}}*/
 
     public function toplistFactory($name)/*{{{*/
