@@ -1,0 +1,13 @@
+{% if postrow.ACHIEVEMENTS.count === 3 %}
+  <span title="The Trifecta" class="avatar__achievements__icon">☘️</span>
+{% else  %}
+  {% set keys = postrow.ACHIEVEMENTS|keys %}
+  {% if 'reputation' in keys %}<span title="#{value}" class="avatar__achievements__icon">🏆</span>{% endif %}
+  {% if 'requests_solved' in keys %}<span title="#{value}" class="avatar__achievements__icon">🎁</span>{% endif %}
+  {% if 'thanks' in keys %}<span title="#{value}" class="avatar__achievements__icon">👍</span>{% endif %}
+{% endif %}
+<style>
+.defs-only {
+  display: none;
+}
+</style>

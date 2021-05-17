@@ -1,0 +1,34 @@
+services:
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Achievements.AchievementsHelper:
+        class: jeb\snahp\Apps\Achievements\AchievementsHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+            - "@jeb.snahp.Apps.Toplist.ToplistHelper"
+
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Achievements.AchievementsEventListener:
+        class: jeb\snahp\Apps\Achievements\AchievementsEventListener
+        arguments:
+            - "@user"
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Achievements.AchievementsHelper"
+        tags:
+            - { name: event.listener }

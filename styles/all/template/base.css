@@ -367,3 +367,9 @@ img.emotes_default.height_70 {
 .rx button {
     outline: none;
 }
+
+.avatar__achievements__icon {
+    font-size: 1.25em;
+    cursor: help;
+    letter-spacing: -0.3em
+}
