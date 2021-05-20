@@ -23,7 +23,8 @@ parameters:
             solved: 4
             closed: 5
             mega: 6
-            zippy: 7
+            zippy: &zippy 7
+            zippyshare: *zippy
             gdrive: 8
             android: 9
             ios: 10
@@ -44,7 +45,8 @@ parameters:
                 solved:    '<span class="btn solve">S</span>'
                 closed:    '<span class="btn terminate">C</span>'
                 mega:      '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png" title="mega">'
-                zippy:     '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy">'
+                zippy:     &zippy '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy">'
+                zippyshare:     *zippy
                 gdrive:    '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png" title="gdrive">'
                 android:   '<img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android">'
                 ios:       '<img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios">'
@@ -64,7 +66,8 @@ parameters:
                 fulfilled: '<span class="small_host_icon"><span class="btn fulfill">F</span></span>'
                 closed:    '<span class="small_host_icon"><span class="btn terminate">C</span></span>'
                 mega:      '<span class="small_host_icon"><img class="mega_icon" src="https://i.imgur.com/w5aP33F.png" title="mega"></span>'
-                zippy:     '<span class="small_host_icon"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy"></span>'
+                zippy:     &zippy '<span class="small_host_icon"><img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png" title="zippy"></span>'
+                zippyshare:     *zippy
                 gdrive:    '<span class="small_host_icon"><img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png" title="gdrive"></span>'
                 android:   '<span class="small_host_icon"><img class="android_icon" src="https://i.imgur.com/tDL6Rl5.png" title="android"></span>'
                 ios:       '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/kjBQJhi.png" title="ios"></span>'

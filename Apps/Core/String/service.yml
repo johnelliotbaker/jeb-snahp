@@ -1,0 +1,5 @@
+services:
+    jeb.snahp.Apps.Core.String.TagString:
+        class: jeb\snahp\Apps\Core\String\TagString
+        arguments:
+            - "%jeb.snahp.tags%"

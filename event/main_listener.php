@@ -893,10 +893,10 @@ class main_listener extends base implements EventSubscriberInterface
             return false;
         }
         foreach ($rowset as $key => $row) {
-            $tt = $row['topic_title'];
-            $tt = $this->encode_tags($tt);
-            $tt = $this->decode_tags($tt);
-            $row['topic_title'] = $this->add_host_icon($tt, 'open');
+            $row['topic_title'] = $this->encodeTags($row['topic_title']);
+            // $tt = $this->encode_tags($tt);
+            // $tt = $this->decode_tags($tt);
+            // $row['topic_title'] = $this->add_host_icon($tt, 'open');
             $rowset[$key] = $row;
         }
         $event['rowset'] = $rowset;

@@ -19,7 +19,7 @@ class ToplistEventListener implements EventSubscriberInterface
         $this->template = $template;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->user_id = $this->user->data['user_id'];
+        $this->userId = $this->sauth->userId;
     }/*}}}*/
 
     public static function getSubscribedEvents()/*{{{*/
@@ -33,7 +33,7 @@ class ToplistEventListener implements EventSubscriberInterface
 
     public function embedToplist($event)/*{{{*/
     {
-        if ($uid == ANONYMOUS) {
+        if ($this->userId == ANONYMOUS) {
             return false;
         }
         if (!$this->config['snp_thanks_b_enable']) {

@@ -373,7 +373,7 @@ abstract class base
 
     public function delete_thanks_notifications()/*{{{*/
     {
-        $sql = 'SELECT * FROM ' . 
+        $sql = 'SELECT * FROM ' .
             NOTIFICATION_TYPES_TABLE . '
             WHERE notification_type_name in ("gfksx.thanksforposts.notification.type.thanks", "gfksx.thanksforposts.notification.type.thanks_remove")';
         $result = $this->db->sql_query($sql);
@@ -552,13 +552,13 @@ abstract class base
             $status_condition = ' 1= 1 ';
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
-        $sql = 'SELECT 
+        $sql = 'SELECT
             r.tid, r.fid, r.pid, r.created_time,
             r.requester_uid, r.status,
             t.topic_title
             FROM
                 ('. $tbl['req'] . ' r)
-            LEFT JOIN ('. TOPICS_TABLE ." t) 
+            LEFT JOIN ('. TOPICS_TABLE ." t)
             ON (t.topic_id=r.tid)
             WHERE
                 r.fulfiller_uid={$user_id} AND {$status_condition} ORDER BY r.created_time DESC";
@@ -582,13 +582,13 @@ abstract class base
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $def_fulfill = $def['fulfill'];
-        $sql = 'SELECT 
+        $sql = 'SELECT
             r.tid, r.fid, r.pid, r.created_time,
             r.requester_uid, r.status,
             t.topic_title
             FROM
                 ('. $tbl['req'] . ' r)
-            LEFT JOIN ('. TOPICS_TABLE .' t) 
+            LEFT JOIN ('. TOPICS_TABLE .' t)
             ON (t.topic_id=r.tid)
             WHERE
                 r.requester_uid=' . $user_id . '
@@ -614,13 +614,13 @@ abstract class base
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $def_closed = $def['set']['closed'];
-        $sql = 'SELECT 
+        $sql = 'SELECT
             r.tid, r.fid, r.pid, r.created_time,
             r.requester_uid, r.status,
             t.topic_title
             FROM
                 ('. $tbl['req'] . ' r)
-            LEFT JOIN ('. TOPICS_TABLE .' t) 
+            LEFT JOIN ('. TOPICS_TABLE .' t)
             ON (t.topic_id=r.tid)
             WHERE
                 r.requester_uid=' . $user_id . '
@@ -644,7 +644,7 @@ abstract class base
             $user_id = $this->user->data['user_id'];
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
-        $sql = 'SELECT 
+        $sql = 'SELECT
             t.topic_id, t.post_id, t.poster_id, t.forum_id,
             t.thanks_time,
             u.username, u.user_colour,
@@ -700,7 +700,7 @@ abstract class base
         }
         $sql_array = [
             'SELECT'	=> '
-                    t.forum_id, topic_id, topic_title, topic_views, topic_time, 
+                    t.forum_id, topic_id, topic_title, topic_views, topic_time,
                     topic_visibility, topic_posts_approved,
                     topic_poster, topic_first_poster_name, topic_first_poster_colour,
                     topic_last_poster_id, topic_last_poster_name, topic_last_poster_colour,
@@ -1104,7 +1104,7 @@ abstract class base
     public function reject_non_group($group_id, $perm_name)/*{{{*/
     {
         $sql = 'SELECT 1 FROM ' . GROUPS_TABLE . '
-            WHERE group_id=' . $group_id . ' AND 
+            WHERE group_id=' . $group_id . ' AND
             ' . $perm_name . '=1';
         $result = $this->db->sql_query($sql, 1);
         $row = $this->db->sql_fetchrow($result);
@@ -1224,83 +1224,66 @@ abstract class base
 
     public function decode_tags($strn)/*{{{*/
     {
-        $data = array_shift($this->icon_stack);
-        $decoder_table = $this->container->getParameter('jeb.snahp.tags')['decode']['small'];
-        $prefix = '';
-        foreach($decoder_table as $key=>$entry)
-        {
-            if (in_array($key, $data))
-            {
-                $prefix .= $entry;
-            }
-        }
-        return $prefix . $strn;
+        $def = $this->container->getParameter('jeb.snahp.tags');
+        $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
+        return $ts->decodeTags($strn, array_shift($this->icon_stacks));
     }/*}}}*/
 
     public function encode_tags($strn)/*{{{*/
     {
-        // Why the complex encode_tags & decode_tags instead of one pass
-        // preg_replace? Because of the truncation.
-        // String truncation passes the string through a urlencoder that
-        // turns all <> into htmlencoded strings and breaks the html
-        // So we encode the necessary tags before the string truncate,
-        // then post-process it after string truncation.
-        $this->tmp = [];
-        $encoder_table = $this->container->getParameter('jeb.snahp.tags')['encode'];
-        foreach($encoder_table as $key => $entry)
-        {
-            $ptn = '#\s*((\(|\[|\{)(' . $key . ')(\)|\]|\}))\s*#is';
-            $strn = preg_replace_callback($ptn, function($match) {
-                $this->tmp[] = strtolower($match[3]);
-                return '';
-            }, $strn);
-        }
-        $this->icon_stack[] = $this->tmp;
+        $def = $this->container->getParameter('jeb.snahp.tags');
+        $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
+        [$strn, $this->icon_stacks[]] = $ts->stripTags($strn);
         return $strn;
     }/*}}}*/
 
-    public function add_host_icon($strn)/*{{{*/
+    public function encodeTags($strn)
     {
-        $b_order = true;
-        if ($b_order)
-        {
-            $encoder = $this->container->getParameter('jeb.snahp.tags')['encode'];
-            $decoder = $this->container->getParameter('jeb.snahp.tags')['decode']['default'];
-            $a_word = [ 'updating|ongoing' => 'ongoing', 'android' => 'android', 'mac|ios' => 'ios', 'mega' => 'mega', 'gdrive|gd' => 'gdrive', 'zippy|zs|zippyshare' => 'zippy', 'pc|win' => 'win'];
-            $this->icon_stack = [];
-            foreach ($a_word as $word=>$key)
-            {
-                $ptn = '#(\[(' . $word . ')\])#is';
-                $strn = preg_replace_callback($ptn, function($match) use($key) {
-                    $this->icon_stack[] = $key;
-                    return '';
-                }, $strn);
-            }
-            $prefix = '';
-            foreach ($decoder as $key => $entry)
-            {
-                if (in_array($key, $this->icon_stack))
-                {
-                    $prefix .= $entry;
-                }
-            }
-            $strn = $prefix . $strn;
-        }
-        else
-        {
-            $ptn = '#(\[(android)\])#is';
-            $strn = preg_replace($ptn, '<img class="android_icon" src="https://i.imgur.com/uBsdomR.png">', $strn);
-            $ptn = '#(\[(mac|ios)\])#is';
-            $strn = preg_replace($ptn, '<img class="ios_icon" src="https://i.imgur.com/mJ4Rmz1.png">', $strn);
-            $ptn = '#(\[(mega)\])#is';
-            $strn = preg_replace($ptn, '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">', $strn);
-            $ptn = '#(\[(gdrive|gd)\])#is';
-            $strn = preg_replace($ptn, '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">', $strn);
-            $ptn = '#(\[(zippy|zs|zippyshare)\])#is';
-            $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">', $strn);
-        }
-        return $strn;
-    }/*}}}*/
+        return $this->decode_tags($this->encode_tags($strn));
+    }
+
+    // public function add_host_icon($strn)/*{{{*/
+    // {
+    //     $b_order = true;
+    //     if ($b_order)
+    //     {
+    //         $encoder = $this->container->getParameter('jeb.snahp.tags')['encode'];
+    //         $decoder = $this->container->getParameter('jeb.snahp.tags')['decode']['default'];
+    //         $a_word = [ 'updating|ongoing' => 'ongoing', 'android' => 'android', 'mac|ios' => 'ios', 'mega' => 'mega', 'gdrive|gd' => 'gdrive', 'zippy|zs|zippyshare' => 'zippy', 'pc|win' => 'win'];
+    //         $this->icon_stack = [];
+    //         foreach ($a_word as $word=>$key)
+    //         {
+    //             $ptn = '#(\[(' . $word . ')\])#is';
+    //             $strn = preg_replace_callback($ptn, function($match) use($key) {
+    //                 $this->icon_stack[] = $key;
+    //                 return '';
+    //             }, $strn);
+    //         }
+    //         $prefix = '';
+    //         foreach ($decoder as $key => $entry)
+    //         {
+    //             if (in_array($key, $this->icon_stack))
+    //             {
+    //                 $prefix .= $entry;
+    //             }
+    //         }
+    //         $strn = $prefix . $strn;
+    //     }
+    //     else
+    //     {
+    //         $ptn = '#(\[(android)\])#is';
+    //         $strn = preg_replace($ptn, '<img class="android_icon" src="https://i.imgur.com/uBsdomR.png">', $strn);
+    //         $ptn = '#(\[(mac|ios)\])#is';
+    //         $strn = preg_replace($ptn, '<img class="ios_icon" src="https://i.imgur.com/mJ4Rmz1.png">', $strn);
+    //         $ptn = '#(\[(mega)\])#is';
+    //         $strn = preg_replace($ptn, '<img class="mega_icon" src="https://i.imgur.com/w5aP33F.png">', $strn);
+    //         $ptn = '#(\[(gdrive|gd)\])#is';
+    //         $strn = preg_replace($ptn, '<img class="gdrive_icon" src="https://i.imgur.com/VQv2dUm.png">', $strn);
+    //         $ptn = '#(\[(zippy|zs|zippyshare)\])#is';
+    //         $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">', $strn);
+    //     }
+    //     return $strn;
+    // }/*}}}*/
 
     public function add_tag($strn)/*{{{*/
     {
@@ -1452,7 +1435,7 @@ abstract class base
         // $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
         return $strn;
     }
-    
+
     public function interpolate_curly_tags($strn)
     {
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;

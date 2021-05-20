@@ -172,7 +172,8 @@ class favorite extends base
                 $poster_name = $row['username'];
                 $poster_colour = $row['user_colour'];
                 $thanks_time = $this->user->format_date($row['thanks_time']);
-                $post_subject = $this->add_host_icon($row['post_subject']);
+                // $post_subject = $this->add_host_icon($row['post_subject']);
+                $post_subject = $this->encodeTags($row['post_subject']);
                 $group = array(
                     'FORUM_ID'       => $row['forum_id'],
                     'TOPIC_ID'       => $row['topic_id'],
@@ -279,7 +280,8 @@ class favorite extends base
                 $img_url = $image_lookup[$forum_id];
                 $tid = $row['topic_id'];
                 $topic_time = $this->user->format_date($row['topic_time']);
-                $topic_title = $this->add_host_icon($row['topic_title']);
+                // $topic_title = $this->add_host_icon($row['topic_title']);
+                $topic_title = $this->encodeTags($row['topic_title']);
                 $u_details = '/viewtopic.php?t=' . $tid;
                 $poster_id = $row['topic_poster'];
                 $poster_name = $row['topic_first_poster_name'];
