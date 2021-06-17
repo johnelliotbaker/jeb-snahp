@@ -57,6 +57,18 @@ services:
             - @jeb.snahp.Apps.DeadLinks.Models.Entry
 
 
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.DeadLinks.DeadLinksHelper:
+        class: jeb\snahp\Apps\DeadLinks\DeadLinksHelper
+        arguments:
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+
+
     ############
     #  MODELS  #
     ############
@@ -78,9 +90,10 @@ services:
     jeb.snahp.Apps.DeadLinks.DeadLinksEventListener:
         class: jeb\snahp\Apps\DeadLinks\DeadLinksEventListener
         arguments:
-            - @template
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@template"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
+            - "@jeb.snahp.Apps.DeadLinks.DeadLinksHelper"
         tags:
             - { name: event.listener }
 

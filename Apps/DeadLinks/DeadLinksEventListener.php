@@ -14,11 +14,13 @@ class DeadlinksEventListener implements EventSubscriberInterface
     public function __construct(/*{{{*/
         $template,
         $sauth,
-        $Entry
+        $Entry,
+        $helper
     ) {
         $this->template = $template;
         $this->sauth = $sauth;
         $this->Entry = $Entry;
+        $this->helper = $helper;
     }/*}}}*/
 
     public static function getSubscribedEvents()/*{{{*/
@@ -30,7 +32,48 @@ class DeadlinksEventListener implements EventSubscriberInterface
             'core.viewtopic_assign_template_vars_before'  => [
                 ['setDeadlinkTagInTitle', 0],
             ],
+            'core.search_modify_param_before'  => [
+                ['setKeywordSearchFlag', 0],
+            ],
+            'core.search_modify_url_parameters'  => [
+                ['hideDeadlinksInSearch', 0],
+            ],
+            'core.viewforum_modify_topics_data'  => [
+                ['setDeadlinkTagInViewForum', 10],
+            ],
         ];
+    }/*}}}*/
+
+    public function setDeadlinkTagInViewForum($event)/*{{{*/
+    {
+        $rowset = $event['rowset'];
+        foreach ($rowset as $k => &$row) {
+            if ($row['snp_ded_b_dead'] == 1) {
+                $row['topic_title'] = '[Deadlinks]' . $row['topic_title'];
+            }
+        }
+        $event['rowset'] = $rowset;
+    }/*}}}*/
+
+    public function setKeywordSearchFlag($event)/*{{{*/
+    {
+        // Filters out graveyard
+        $event['ex_fid_ary'] = $this->helper->appendGraveyardToExFidAry($event['ex_fid_ary']);
+        // setup for hideDeadlinksInSearch
+        $this->searchKeywords = $event['keywords'];
+    }/*}}}*/
+
+    public function hideDeadlinksInSearch($event)/*{{{*/
+    {
+        // Search is used for other things like "your posts".
+        // Should only hide deadlinks for keywords search
+        if ($this->searchKeywords) {
+            $sql_where = $event['sql_where'];
+            if ($sql_where) {
+                $sql_where .= ' AND t.snp_ded_b_dead<>1';
+                $event['sql_where'] = $sql_where;
+            }
+        }
     }/*}}}*/
 
     public function showDeadlinks($event)/*{{{*/
