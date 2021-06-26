@@ -1,0 +1,52 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Throttle.ThrottleController:
+        class: jeb\snahp\Apps\Throttle\ThrottleController
+        arguments:
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Throttle.ThrottleHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Throttle.ThrottleHelper:
+        class: jeb\snahp\Apps\Throttle\ThrottleHelper
+        arguments:
+            - "@dbal.conn"
+            - "@request"
+            - "@config"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Throttle.ThrottleEventListener:
+        class: jeb\snahp\Apps\Throttle\ThrottleEventListener
+        arguments:
+            - "@user"
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Throttle.ThrottleHelper"
+        tags:
+            - { name: event.listener }

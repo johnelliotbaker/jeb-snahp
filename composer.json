@@ -2,8 +2,8 @@
     "name": "jeb/snahp",
     "type": "phpbb-extension",
     "description": "Snahp Extension",
-    "version": "0.40.0 The Quickening",
-    "time": "2021-05-03",
+    "version": "0.40.1 Fast and Furious",
+    "time": "2021-06-25",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -21,8 +21,8 @@
         "symfony/validator": "^4.4"
     },
     "extra": {
-        "version": "c17bd9d305d0eb293aa86cd60b88ff5315735516",
-        "features": "Quick UCP and Quick MCP",
+        "version": "06493c284ef94f4db00b8aacabaee6694ff00039",
+        "features": "Throttle",
         "display-name": "Snahp",
         "soft-require": {
             "phpbb/phpbb": ">=3.1.4,<3.2.2"

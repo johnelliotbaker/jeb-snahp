@@ -51,6 +51,7 @@ imports:
     - { resource: ../Apps/Jukebox/service.yml }
     - { resource: ../Apps/Toplist/service.yml }
     - { resource: ../Apps/Achievements/service.yml }
+    - { resource: ../Apps/Throttle/service.yml }
 
 services:
     jeb.snahp.core:

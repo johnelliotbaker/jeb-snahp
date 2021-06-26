@@ -36,3 +36,4 @@ parameters:
         giveaways: '%core.table_prefix%snahp_giveaways'
         cron_log: '%core.table_prefix%snahp_cron_log'
         reaction: '%core.table_prefix%snahp_reaction'
+        throttle: '%core.table_prefix%snahp_throttle'

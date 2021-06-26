@@ -1,0 +1,32 @@
+jeb.snahp.routing.throttle.settings:
+    path: /snahp/throttle/settings
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:settings}
+
+jeb.snahp.routing.throttle.toplist:
+    path: /snahp/throttle/toplist
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:toplist}
+
+jeb.snahp.routing.throttle.enableMaster:
+    path: /snahp/throttle/enable-master
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:enableMaster}
+
+jeb.snahp.routing.throttle.disableMaster:
+    path: /snahp/throttle/disable-master
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:disableMaster}
+
+jeb.snahp.routing.throttle.enableThrottle:
+    path: /snahp/throttle/enable-throttle
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:enableThrottle}
+
+jeb.snahp.routing.throttle.disableThrottle:
+    path: /snahp/throttle/disable-throttle
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:disableThrottle}
+
+jeb.snahp.routing.throttle.enableLogging:
+    path: /snahp/throttle/enable-logging
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:enableLogging}
+
+jeb.snahp.routing.throttle.disableLogging:
+    path: /snahp/throttle/disable-logging
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:disableLogging}
+
