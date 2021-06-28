@@ -53,6 +53,7 @@ imports:
     - { resource: ../Apps/Achievements/service.yml }
     - { resource: ../Apps/Throttle/service.yml }
     - { resource: ../Apps/PostingViolation/service.yml }
+    - { resource: ../Apps/ReportTool/service.yml }
 
 services:
     jeb.snahp.core:

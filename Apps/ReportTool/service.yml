@@ -1,0 +1,25 @@
+services:
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.ReportTool.ReportToolHelper:
+        class: jeb\snahp\Apps\ReportTool\ReportToolHelper
+        arguments:
+            - "@dbal.conn"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.ReportTool.ReportToolEventListener:
+        class: jeb\snahp\Apps\ReportTool\ReportToolEventListener
+        arguments:
+            - "@user"
+            - "@jeb.snahp.Apps.ReportTool.ReportToolHelper"
+        tags:
+            - { name: event.listener }

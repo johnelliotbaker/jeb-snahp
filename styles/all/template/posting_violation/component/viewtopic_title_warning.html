@@ -4,7 +4,11 @@
       <div class="alert alert-warning" role="alert">
         <h5>This topic has been marked for rule violation(s).</h5>
         {% if POSTING_VIOLATION_REASON %}
-          <h6>{POSTING_VIOLATION_REASON}</h6>
+          <h6>
+            <ul>
+              <li>{POSTING_VIOLATION_REASON}</li>
+            </ul>
+          </h6>
         {% endif %}
       </div>
     </div>

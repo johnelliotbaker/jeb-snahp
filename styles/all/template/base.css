@@ -373,3 +373,7 @@ img.emotes_default.height_70 {
     cursor: help;
     letter-spacing: -0.3em
 }
+
+.reported_post_info {
+    display: hidden;
+}

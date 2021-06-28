@@ -18,6 +18,7 @@
 {# So if javascript is needed in flow dependent location, use twig to embed the code. #}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 {# INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css #}
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap" rel="stylesheet" />
@@ -25,7 +26,7 @@
 <link href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf" rel="application/font-sfnt">
 <link href="./ext/jeb/snahp/styles/all/template/fonts/MerryChristmasFlake.ttf" rel="application/font-sfnt">
 <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 <!-- preload -->
 <script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/dereferrer.js?assets_version={ASSETS_VERSION}" ></script>
@@ -158,8 +159,7 @@
 <!-- ENDIF -->
 {% endif %}
 
-<!-- IF not $jquery_modal -->
-<!-- DEFINE $jquery_model = true -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-<!-- ENDIF -->
+{% if S_VIEWTOPIC %}
+  {# Deactivates report button when already reported and shows reported time #}
+  <!-- INCLUDEJS @jeb_snahp/report_tool/run_once.js -->
+{% endif %}
