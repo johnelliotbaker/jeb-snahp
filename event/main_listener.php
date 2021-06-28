@@ -114,6 +114,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['easter_cluck', 1],
                 ['block_zebra_foe_topicview', 1],
                 ['show_requests_solved_avatar', 1],
+                ['show_violations_avatar', 1],
                 ['show_thanks_avatar', 1],
                 ['show_bump_button', 1],
                 ['disable_signature', 1],
@@ -1072,6 +1073,14 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_THANKS_AVATAR' => true,
         ]);
+    }/*}}}*/
+
+    public function show_violations_avatar($event)/*{{{*/
+    {
+        $post_row = $event['post_row'];
+        $poster_data = $this->poster_data;
+        $post_row['USER_POSTING_VIOLATIONS'] = $poster_data['snp_violation_count'];
+        $event['post_row'] = $post_row;
     }/*}}}*/
 
     public function show_requests_solved_avatar($event)/*{{{*/

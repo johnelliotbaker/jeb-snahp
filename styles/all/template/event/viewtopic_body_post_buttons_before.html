@@ -31,6 +31,11 @@
       {% include '@jeb_snahp/requests/component/change_solver/topic_button.html' %}
     </li>
   {% endif %}
+  {% if B_MOD %}
+    <li>
+      {% include '@jeb_snahp/posting_violation/component/mark_button.html' %}
+    </li>
+  {% endif %}
   {% if B_SHOW_SOLVE_BTN %}
     <li>
       <a href="./app.php/snahp/reqs/{FORUM_ID}/{TOPIC_ID}/{postrow.POST_ID}/2/" title="Mark Solved" class="button button-icon-only">

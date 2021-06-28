@@ -1,0 +1,47 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.PostingViolation.PostingViolationController:
+        class: jeb\snahp\Apps\PostingViolation\PostingViolationController
+        arguments:
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.PostingViolation.PostingViolationHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.PostingViolation.PostingViolationHelper:
+        class: jeb\snahp\Apps\PostingViolation\PostingViolationHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.PostingViolation.PostingViolationEventListener:
+        class: jeb\snahp\Apps\PostingViolation\PostingViolationEventListener
+        arguments:
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.PostingViolation.PostingViolationHelper"
+        tags:
+            - { name: event.listener }

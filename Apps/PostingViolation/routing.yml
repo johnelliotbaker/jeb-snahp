@@ -1,0 +1,9 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.posting_violation.markTopicForViolation:
+    path: /snahp/posting-violation/mark-topic
+    defaults: { _controller: jeb.snahp.Apps.PostingViolation.PostingViolationController:markTopicForViolation}
+

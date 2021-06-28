@@ -1,0 +1,12 @@
+{% if TOPIC_IS_IN_POSTING_VIOLATION %}
+  <div class="twbs">
+    <div class="mt-4">
+      <div class="alert alert-warning" role="alert">
+        <h5>This topic has been marked for rule violation(s).</h5>
+        {% if POSTING_VIOLATION_REASON %}
+          <h6>{POSTING_VIOLATION_REASON}</h6>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

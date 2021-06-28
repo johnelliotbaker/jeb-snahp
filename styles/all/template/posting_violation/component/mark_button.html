@@ -1,0 +1,30 @@
+<!-- INCLUDEJS @jeb_snahp/posting_violation/component/mark_button.js -->
+<a href="#mark-posting-violation-modal" rel="modal:open" title="Mark Topic for Rule Violation" class="button button-icon-only">
+  <i class="icon fa-gavel fa-fw" style="color:#A00" aria-hidden="true"></i><span class="sr-only">Mark Topic for Rule Violation</span>
+</a>
+<div id="mark-posting-violation-modal" class="twbs modal" style="background: #666; color: #888; font-size: 1.3em; margin: 0; padding: 0;">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h5 class="card-title">Mark Topic for Rule Violation</h5>
+      <div class="form">
+        <div>
+          <div class="form-group mb-2">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input" id="mark-violation" name="mark-violation" value="1" checked>
+              <label for="mark-violation" class="form-check-label">Mark</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input" id="unmark-violation" value="0" name="mark-violation">
+              <label for="unmark-violation" class="form-check-label">Unmark</label>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <label for="violation-reason" class="sr-only">Violation Reason</label>
+            <input type="text" class="form-control" id="violation-reason" name="violation-reason" placeholder="Violation Reason">
+          </div>
+          <button onclick="markTopic({TOPIC_ID})" type="submit" class="btn btn-primary mb-2 pull-right">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

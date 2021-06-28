@@ -52,6 +52,7 @@ imports:
     - { resource: ../Apps/Toplist/service.yml }
     - { resource: ../Apps/Achievements/service.yml }
     - { resource: ../Apps/Throttle/service.yml }
+    - { resource: ../Apps/PostingViolation/service.yml }
 
 services:
     jeb.snahp.core:

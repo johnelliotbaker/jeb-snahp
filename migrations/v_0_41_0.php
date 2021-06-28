@@ -1,13 +1,13 @@
 <?php
 
-// The Quickening Update. Quick MCP and Quick UCP
+// User Throttling
 
 namespace jeb\snahp\migrations;
 
 use jeb\snahp\core\bbcodes_installer;
 use phpbb\db\migration\container_aware_migration;
 
-class v_0_40_1 extends container_aware_migration
+class v_0_41_0 extends container_aware_migration
 {
     public function effectively_installed()
     {
