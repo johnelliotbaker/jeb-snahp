@@ -3,9 +3,13 @@
 ##########
 
 
-jeb.snahp.routing.digg.mydigg:
-    path: /snahp/digg/mydigg
-    defaults: { _controller: jeb.snahp.Apps.Digg.DiggController:mydigg}
+jeb.snahp.routing.digg.viewBroadcasts:
+    path: /snahp/digg/broadcasts
+    defaults: { _controller: jeb.snahp.Apps.Digg.DiggController:viewBroadcasts}
+
+jeb.snahp.routing.digg.viewSubscriptions:
+    path: /snahp/digg/subscriptions
+    defaults: { _controller: jeb.snahp.Apps.Digg.DiggController:viewSubscriptions}
 
 jeb.snahp.routing.digg.api.mydigg:
     path: /snahp/digg/api/mydigg

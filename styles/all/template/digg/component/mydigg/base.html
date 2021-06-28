@@ -1,4 +1,11 @@
 <!-- INCLUDE overall_header.html -->
+{% if IS_BROADCAST_PAGE %}
+  <h2>My Broadcasts</h2>
+  <h4><a href="/snahp/digg/subscriptions"><strong>View subscriptions</strong></a></h4>
+{% elseif IS_SUBSCRIPTION_PAGE %}
+  <h2>My Subscriptions</h2>
+  <h4><a href="/snahp/digg/broadcasts"><strong>View broadcasts</strong></a></h4>
+{% endif %}
 <div class="action-bar bar-top">
   <div class="pagination">
     <!-- IF .pagination -->
