@@ -99,7 +99,7 @@ class main_module
         $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
         $user_id = $user->data['user_id'];
         $b_enable = $config['snp_foe_b_master'];
-        $b_permission = !$sauth->user_belongs_to_groupset($user_id, 'Basic');
+        $b_permission = $sauth->user_belongs_to_groupset($user_id, 'TU+');
         $template->assign_vars([
             'B_ENABLE' => $b_enable,
             'B_PERMISSION' => $b_permission,
@@ -115,7 +115,7 @@ class main_module
         $shouldShow = $tokens;
         $template->assign_var('B_THANKS_RESET', $shouldShow);
     }/*}}}*/
-    
+
     function handle_custom($cfg)/*{{{*/
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
