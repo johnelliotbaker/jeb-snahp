@@ -833,7 +833,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_inviter_in_profile($event)/*{{{*/
     {
-        if ($this->is_mod()) {
+        if ($this->is_dev()) {
             $member = $event['member'];
             $row = $this->select_invitee((int) $member['user_id']);
             if (!$row) {

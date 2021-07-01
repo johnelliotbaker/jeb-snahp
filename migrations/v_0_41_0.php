@@ -65,9 +65,9 @@ class v_0_41_0 extends container_aware_migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_throttle_enable_master', 1]],
-            ['config.add', ['snp_throttle_enable_logging', 1]],
-            ['config.add', ['snp_throttle_enable_throttle', 1]],
+            ['config.add', ['snp_throttle_enable_master', 0]],
+            ['config.add', ['snp_throttle_enable_logging', 0]],
+            ['config.add', ['snp_throttle_enable_throttle', 0]],
         ];
     }
 }

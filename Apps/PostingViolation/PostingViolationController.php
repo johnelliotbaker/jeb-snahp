@@ -24,7 +24,19 @@ class PostingViolationController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = $sauth->userId;
-        // $this->sauth->reject_non_dev('Error Code: a5e8ee80c7');
+        $this->sauth->reject_non_dev('Error Code: 0a92d2beaa');
+    }/*}}}*/
+
+    public function viewPostingViolationsUserToplist()/*{{{*/
+    {
+        $results = $this->helper->getPostingViolationsUserToplist($this->request);
+        return new JsonResponse($results);
+    }/*}}}*/
+
+    public function viewUserPostingViolations($username)/*{{{*/
+    {
+        $results = $this->helper->getUserPostingViolations($username, $this->request);
+        return new JsonResponse($results);
     }/*}}}*/
 
     public function markTopicForViolation()/*{{{*/

@@ -3,6 +3,19 @@
 ##########
 
 
+jeb.snahp.routing.posting_violation.viewPostingViolationsUserToplist:
+    path: /snahp/posting-violation/toplist/users
+    defaults: { _controller: jeb.snahp.Apps.PostingViolation.PostingViolationController:viewPostingViolationsUserToplist}
+    requirements:
+        username: \w+
+
+jeb.snahp.routing.posting_violation.viewUserPostingViolations:
+    path: /snahp/posting-violation/view-user-posting-violations/{username}
+    defaults: { _controller: jeb.snahp.Apps.PostingViolation.PostingViolationController:viewUserPostingViolations}
+    requirements:
+        username: \w+
+
+
 jeb.snahp.routing.posting_violation.markTopicForViolation:
     path: /snahp/posting-violation/mark-topic
     defaults: { _controller: jeb.snahp.Apps.PostingViolation.PostingViolationController:markTopicForViolation}

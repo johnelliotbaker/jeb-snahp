@@ -27,6 +27,7 @@ class helper
                     if (!$this->is_imdb($row)) return;
                     $json = $this->extract_imdb($row['post_text'], true);
                     $title = $json['title'];
+                    $year = (int) $json['year'];
                     $poster_url = $json['poster'];
                     if (!$poster_url || !$title) return;
                     $res = [
@@ -35,6 +36,7 @@ class helper
                         'topic_id' => $row['topic_id'],
                         'poster' => $row['topic_first_poster_name'],
                         'colour' => $row['topic_first_poster_colour'],
+                        'year' => $year,
                     ];
                     if ($exclusive = $json['exclusive']) {
                         $res['exclusive'] = true;

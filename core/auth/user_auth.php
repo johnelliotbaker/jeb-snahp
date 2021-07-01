@@ -314,7 +314,6 @@ class user_auth
     {
         $userId = (int) $userId;
         if ($username === null || $userColor === null) {
-            print_r('doing db call');
             $sql = 'SELECT username, user_colour FROM ' . USERS_TABLE . " WHERE user_id=${userId}";
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);

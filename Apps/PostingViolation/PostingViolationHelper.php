@@ -21,6 +21,47 @@ class PostingViolationHelper
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
+        $this->t = $tbl['posting_violation'];
+    }/*}}}*/
+
+    public function getPostingViolationsUserToplist($request)/*{{{*/
+    {
+        $whereArray = ['a.snp_violation_count > 0'];
+        $username = utf8_clean_string($request->variable('username', ''));
+        if ($username) {
+            $whereArray[] = "a.username_clean LIKE '${username}%'";
+        }
+        $where = implode(' AND ', $whereArray);
+        $sqlArray = [
+            'SELECT' => 'username, user_colour, user_id, snp_violation_count',
+            'FROM' => [ USERS_TABLE => 'a', ],
+            'WHERE' => $where,
+            'ORDER_BY' => 'a.snp_violation_count DESC',
+        ];
+        $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
+        $results = $this->paginator->paginateQueryset($queryset, $request);
+        return $this->paginator->getPaginatedResult($results);
+    }/*}}}*/
+
+    public function getUserPostingViolations($username, $request)/*{{{*/
+    {
+        $userId = $this->sauth->userNameToUserId($username);
+        $sqlArray = [
+            'SELECT' => 'a.*',
+            'FROM' => [ $this->t => 'a', ],
+            'WHERE' => "a.user_id=${userId}",
+        ];
+        $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
+        $results = $this->paginator->paginateQueryset($queryset, $request);
+        return $this->paginator->getPaginatedResult($results);
+    }/*}}}*/
+
+    public function addPostingViolationEntry($posterId, $postId, $postText)/*{{{*/
+    {
+        $data = ['post_id' => $postId, 'user_id' => $posterId, 'post_text' => $postText];
+        $data = $this->db->sql_build_array('INSERT', $data);
+        $sql = 'INSERT INTO ' . $this->t .  $data;
+        $this->db->sql_query($sql);
     }/*}}}*/
 
     public function markTopicForViolation($topicId, $mark, $reason)/*{{{*/

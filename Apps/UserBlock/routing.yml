@@ -3,6 +3,12 @@
 ##########
 
 
+jeb.snahp.routing.user_block.removeAllBlocksFromUserGroup:
+    path: /snahp/user-block/remove-all-blocks-from-user-group/{groupId}
+    defaults: { _controller: jeb.snahp.Apps.UserBlock.UserBlockController:removeAllBlocksFromUserGroup}
+    requirements:
+        groupId: \d+
+
 jeb.snahp.routing.user_block.list_user_block:
     path: /snahp/user-block/user-block
     defaults: { _controller: jeb.snahp.Apps.UserBlock.UserBlockController:viewUserBlock}

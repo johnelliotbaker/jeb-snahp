@@ -1,3 +1,6 @@
+{% if B_MOD %}
+  <input type="hidden" name="snp_mod" value="1" />
+{% endif %}
 {S_HIDDEN_FIELDS_ALT} {S_STYLE_INFO} {S_REQ_HIDDEN_FIELDS}
 {% if S_VIEWTOPIC %}
 <input type="hidden" name="snp_topic_id" value="{TOPIC_ID}" />

@@ -25,7 +25,7 @@ services:
             - "@dbal.conn"
             - "%jeb.snahp.tables%"
             - "@jeb.snahp.auth.user_auth"
-            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
 
 

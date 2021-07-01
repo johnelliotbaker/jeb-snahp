@@ -42,12 +42,12 @@ services:
 ####################
 
 
-    # jeb.snahp.Apps.UserRestrictor.UserRestrictorEventListener:
-    #     class: jeb\snahp\Apps\UserRestrictor\UserRestrictorEventListener
-    #     arguments:
-    #         - @user
-    #         - @config
-    #         - @jeb.snahp.auth.user_auth
-    #         - @jeb.snahp.Apps.UserRestrictor.UserRestrictorHelper
-    #     tags:
-    #         - { name: event.listener }
+    jeb.snahp.Apps.UserRestrictor.UserRestrictorEventListener:
+        class: jeb\snahp\Apps\UserRestrictor\UserRestrictorEventListener
+        arguments:
+            - @user
+            - @config
+            - @jeb.snahp.auth.user_auth
+            - @jeb.snahp.Apps.UserRestrictor.UserRestrictorHelper
+        tags:
+            - { name: event.listener }

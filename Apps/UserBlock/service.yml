@@ -20,6 +20,7 @@ services:
     jeb.snahp.Apps.UserBlock.UserBlockHelper:
         class: jeb\snahp\Apps\UserBlock\UserBlockHelper
         arguments:
+            - "@dbal.conn"
             - "@request"
             - "%jeb.snahp.tables%"
             - "@jeb.snahp.auth.user_auth"

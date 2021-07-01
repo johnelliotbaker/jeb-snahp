@@ -37,3 +37,4 @@ parameters:
         cron_log: '%core.table_prefix%snahp_cron_log'
         reaction: '%core.table_prefix%snahp_reaction'
         throttle: '%core.table_prefix%snahp_throttle'
+        posting_violation: '%core.table_prefix%snahp_posting_violation'

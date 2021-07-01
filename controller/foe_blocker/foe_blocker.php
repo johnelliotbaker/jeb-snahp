@@ -43,7 +43,7 @@ class foe_blocker
 
     public function handle($mode)/*{{{*/
     {
-        if ($this->sauth->user_belongs_to_groupset($this->user_id, 'Basic'))
+        if (!$this->sauth->user_belongs_to_groupset($this->user_id, 'TU+'))
         {
             meta_refresh($this->redirect_delay_long, '/');
             trigger_error("You do not have permission to view this page. Error Code: 805345a533. Redirecting in {$this->redirect_delay_long} seconds ...");

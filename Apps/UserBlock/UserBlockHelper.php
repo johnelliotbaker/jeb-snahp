@@ -4,18 +4,56 @@ namespace jeb\snahp\Apps\UserBlock;
 class UserBlockHelper
 {
     public function __construct(
+        $db,
         $request,
         $tbl,
         $sauth,
         $pageNumberPagination,
         $QuerySetFactory
     ) {
+        $this->db = $db;
         $this->request = $request;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
+    }/*}}}*/
+
+    public function getUserGroupData($groupId)/*{{{*/
+    {
+        $groupId = (int) $groupId;
+        $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${groupId}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function removeAllBlocksFromUserGroup($groupId)/*{{{*/
+    {
+        $sql = 'SELECT * FROM ' . $this->tbl['foe'];
+        $result = $this->db->sql_query($sql);
+        $rowset = $this->db->sql_fetchrowset($result);
+        $this->db->sql_freeresult($result);
+        $users = [];
+        $res = [];
+        foreach ($rowset as $k => $row) {
+            $blockerId = $row['blocker_id'];
+            if (!array_key_exists($blockerId, $users)) {
+                if ($this->sauth->user_belongs_to_group($blockerId, $groupId)) {
+                    $users[$blockerId] = true;
+                    $res[] = $this->sauth->userId2ProfileLink($blockerId);
+                }
+            }
+        }
+        unset($blockerId);
+        $users = array_keys($users);
+        foreach ($users as $blockerId) {
+            $sql = 'DELETE FROM ' . $this->tbl['foe'] . " WHERE blocker_id=${blockerId}";
+            $this->db->sql_query($sql);
+        }
+        return $res;
     }/*}}}*/
 
     public function getUserBlocksLog($username)/*{{{*/
@@ -28,7 +66,7 @@ class UserBlockHelper
             'SELECT' => 'a.*,
             b.user_id as blocker_user_id, b.username as blocker_username, b.user_colour as blocker_user_colour,
             c.user_id as blocked_user_id, c.username as blocked_username, c.user_colour as blocked_user_colour',
-            'FROM' => [$this->tbl['log']=> 'a'],
+        'FROM' => [$this->tbl['log']=> 'a'],
             'LEFT_JOIN' => [
                 [
                     'FROM' => [USERS_TABLE => 'b'],
