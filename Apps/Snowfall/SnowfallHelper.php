@@ -95,11 +95,14 @@ class SnowfallHelper
         $data['isOP'] = $this->isOP;
         $attributeData = convertArrayToHTMLAttribute($data);
         if ($this->isActive()) {
-            $this->template->assign_vars(
-                [
-                    'SNOWFALL_PROPS' => 'data-data="' . $attributeData . '"'
-                ]
-            );
+            $tplData = ['SNOWFALL_PROPS' => 'data-data="' . $attributeData . '"'];
+            if ($this->sauth->user_belongs_to_groupset((int) $data['user']['id'], 'Staff')) {
+                $data['fromStaff'] = true;
+            }
+            if (isset($data['text'])) {
+                $tplData['SNOWFALL_DATA'] = $data;
+            }
+            $this->template->assign_vars($tplData);
         } else {
             $this->template->assign_vars(
                 [

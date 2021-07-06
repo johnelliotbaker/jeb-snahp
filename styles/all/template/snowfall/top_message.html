@@ -1,0 +1,19 @@
+{% if SNOWFALL_DATA %}
+  {% set text = SNOWFALL_DATA.text %}
+  {% if text %}
+    {% set user = SNOWFALL_DATA.user %}
+    {% set fromStaff = SNOWFALL_DATA.fromStaff %}
+    <div class="twbs">
+      <div class="alert alert-warning mt-3">
+        {% if fromStaff %}
+          <p> From: Staff</p>
+        {% elseif user.color %}
+          <p> From: <span style="color: #{user.color}; font-weight: 700;">{user.username}</span></p>
+        {% endif %}
+        <p class="m-0">
+        {SNOWFALL_DATA.text}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
