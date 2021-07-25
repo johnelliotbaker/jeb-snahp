@@ -204,7 +204,7 @@ class curly_parser
     <i class="icon fa-trash fa-fw" style="color:#660000" aria-hidden="true"></i>
     <span class="">Click if the fulfillment did not meet your request specifications</span>
 </a>
-            
+
 </div>';
         return $strn;
     }/*}}}*/
