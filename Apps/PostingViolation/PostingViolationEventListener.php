@@ -62,7 +62,7 @@ class PostingViolationEventListener implements EventSubscriberInterface
             return;
         }
         $postData = $event['post_data'];
-        $posterId = (int) $postData['poster_id'];
+        $posterId = $this->sauth->userId;
         if ($posterId && (int) $postData['snp_violation'] === 1) {
             $this->helper->incrementUserViolation($posterId);
             $data = $event['data'];
