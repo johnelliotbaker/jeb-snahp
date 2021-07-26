@@ -1,0 +1,27 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.TopicBump.TopicBumpController:
+        class: jeb\snahp\Apps\TopicBump\TopicBumpController
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.TopicBump.TopicBumpHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.TopicBump.TopicBumpHelper:
+        class: jeb\snahp\Apps\TopicBump\TopicBumpHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"

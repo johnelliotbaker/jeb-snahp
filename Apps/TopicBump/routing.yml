@@ -1,0 +1,27 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.topic_bump.ban:
+    path: /snahp/topic-bump/ban/username/{username}/duration/{duration}
+    defaults: { _controller: jeb.snahp.Apps.TopicBump.TopicBumpController:ban}
+    requirements:
+        username: \w+
+        duration: \d+
+
+jeb.snahp.routing.topic_bump.unban:
+    path: /snahp/topic-bump/unban/username/{username}
+    defaults: { _controller: jeb.snahp.Apps.TopicBump.TopicBumpController:unban}
+    requirements:
+        username: \d+
+
+jeb.snahp.routing.topic_bump.edit_ban:
+    path: /snahp/topic-bump/edit-ban/username/{username}
+    defaults: { _controller: jeb.snahp.Apps.TopicBump.TopicBumpController:editBan}
+    requirements:
+        username: \d+
+
+jeb.snahp.routing.topic_bump.users:
+    path: /snahp/topic-bump/users
+    defaults: { _controller: jeb.snahp.Apps.TopicBump.TopicBumpController:viewBumpUsers}
