@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
@@ -8,9 +9,10 @@ class userscript extends base
 {
     protected $prefix;
 
-    public function __construct($prefix)
+    public function __construct($prefix, $topicBumpHelper)
     {
         $this->prefix = $prefix;
+        $this->topicBumpHelper = $topicBumpHelper;
     }
 
     public function handle($mode)
@@ -121,7 +123,7 @@ class userscript extends base
         $data = [];
         if ($partial and strlen($partial)>2)
         {
-            $sql = 'SELECT user_id, username_clean FROM ' . USERS_TABLE . 
+            $sql = 'SELECT user_id, username_clean FROM ' . USERS_TABLE .
                 " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
@@ -145,7 +147,7 @@ class userscript extends base
         $data = [];
         if ($partial and strlen($partial)>2)
         {
-            $sql = 'SELECT username_clean FROM ' . USERS_TABLE . 
+            $sql = 'SELECT username_clean FROM ' . USERS_TABLE .
                 " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
@@ -343,7 +345,7 @@ class userscript extends base
         $topic_id = $topic_data['topic_id'];
         $this->phpbb_bump_topic($forum_id, $topic_id, $topic_data);
         $bump_data = $this->select_bump_topic($tid);
-        $data = [ 
+        $data = [
             'topic_time' => $time,
             'n_bump' => $bump_data['n_bump'] + 1,
         ];
@@ -362,6 +364,20 @@ class userscript extends base
     public function handle_bump_topic($cfg)/*{{{*/
     {
         $this->reject_anon();
+        $userId = (int) $this->user->data['user_id'];
+        if ($this->topicBumpHelper->userIsBannedOrRemoveBumpUser($userId)) {
+            $bumpUser = $this->topicBumpHelper->getBumpUser($userId);
+            $end = $this->user->format_date($bumpUser['ban_end']);
+            $reason = $bumpUser['ban_reason'];
+            $message = [];
+            $message[] = "Your bump privileges have been suspended until ${end}.";
+            if ($reason) {
+                $message[] = "Reason: ${reason}";
+            }
+            $message[] = "Error Code: f5f39c3288";
+            $message = implode('<br/>', $message);
+            trigger_error($message);
+        }
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
         if (!$snp_bump_b_topic)
         {

@@ -54,6 +54,7 @@ imports:
     - { resource: ../Apps/Throttle/service.yml }
     - { resource: ../Apps/PostingViolation/service.yml }
     - { resource: ../Apps/ReportTool/service.yml }
+    - { resource: ../Apps/TopicBump/service.yml }
 
 services:
     jeb.snahp.core:
@@ -143,7 +144,7 @@ services:
         class: jeb\snahp\controller\userscript
         parent: jeb.snahp.base
         arguments:
-            - '%core.table_prefix%'
+            - "@jeb.snahp.Apps.TopicBump.TopicBumpHelper"
     jeb.snahp.template:
         class: jeb\snahp\controller\template
         parent: jeb.snahp.base

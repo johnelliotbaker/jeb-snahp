@@ -307,7 +307,7 @@ class user_auth
         $result = $this->db->sql_query($sql, $cache_duration);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        return $row ? $row['user_id'] : null;
+        return $row ? (int) $row['user_id'] : null;
     }/*}}}*/
 
     public function userId2ProfileLink($userId, $username=null, $userColor=null)/*{{{*/

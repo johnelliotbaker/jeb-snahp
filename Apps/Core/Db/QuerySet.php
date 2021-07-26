@@ -49,7 +49,7 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
 
     public function offsetGet($offset)/*{{{*/
     {
-        return $this->slice($offset, 1);
+        return $this->slice($offset, 1, false);
     }/*}}}*/
 
     public function offsetSet($offset, $value)/*{{{*/
