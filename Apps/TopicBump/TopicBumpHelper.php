@@ -11,25 +11,24 @@ const DEFAULT_BUMP_USER_DATA = [
 
 class TopicBumpHelper
 {
-    protected $db;/*{{{*/
-    protected $user;
-    protected $template;
-    protected $tbl;
-    protected $sauth;
     public function __construct(
         $db,
         $tbl,
         $sauth,
         $pageNumberPagination,
-        $QuerySetFactory
+        $QuerySetFactory,
+        $topicBumpParams
     ) {
         $this->db = $db;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
+        $this->definition = $topicBumpParams['def'];
         $this->userId = $sauth->userId;
     }/*}}}*/
+
+    // Moderation
 
     public function getBumpUser($userId)/*{{{*/
     {
@@ -187,5 +186,53 @@ class TopicBumpHelper
             }
         }
         $this->updateBumpUserData($userId, $data);
+    }/*}}}*/
+
+    // Client
+
+    public function getBumpContext($topicId)/*{{{*/
+    {
+        include_once '/var/www/forum/ext/jeb/snahp/core/functions_phpbb.php';
+        $def = $this->definition;
+        $topicData = getTopicData($topicId);
+        $bumpData = $this->getTopicBumpData($topicId);
+        $bGroupEnabled = $this->sauth->getMaxFromGroupMemberships($this->userId, 'snp_enable_bump');
+
+        $bMod = $this->sauth->is_dev();
+        $status = $bumpData ? $bumpData['status'] : null;
+        $bOp = $topicData && $topicData['topic_poster'] == $this->userId;
+        // Conditions
+        $bDisable = ($bMod && $status == $def['enable']);
+        $bEnable = $bMod && (!$bumpData || $status == $def['disable']);
+        $bEnable |= ($bOp && $bGroupEnabled && !$bumpData);
+        $bBump = ($bMod || $bOp) && ($bumpData && $status == $def['enable']);
+        $permissions = [
+            'enable' => (bool) $bEnable,
+            'disable' => (bool) $bDisable,
+            'bump' => (bool) $bBump,
+        ];
+        $data = [
+            'permissions' => $permissions,
+            'bumpData' => $bumpData,
+            'topicData' => $topicData,
+            'def' => $def,
+        ];
+        return $data;
+    }/*}}}*/
+
+    public function getTopicBumpData($topicId)/*{{{*/
+    {
+        $topicId = (int) $topicId;
+        $t = $this->tbl['bump_topic'];
+        $sql = "SELECT * FROM $t WHERE tid=$topicId";
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return $row;
+    }/*}}}*/
+
+    public function getBumpCooldown($userId)/*{{{*/
+    {
+        return (int) $this->sauth->getMinFromGroupMemberships($this->userId, 'snp_bump_cooldown');
     }/*}}}*/
 }

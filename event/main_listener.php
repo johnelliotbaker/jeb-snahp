@@ -1156,12 +1156,19 @@ class main_listener extends base implements EventSubscriberInterface
         if (!in_array($forum_id, $a_fid)) {
             return false;
         }
-        $user_bump_data = $this->get_bump_permission($tid);
-        $this->template->assign_vars([
-            'B_SHOW_BUMP_ENABLER' => $user_bump_data['b_enable'],
-            'B_SHOW_BUMP_DISABLER' => $user_bump_data['b_disable'],
-            'B_SHOW_BUMP' => $user_bump_data['b_bump'],
-        ]);
+        $tbh = $this->container->get('jeb.snahp.Apps.TopicBump.TopicBumpHelper');
+        $ctx = $tbh->getBumpContext($tid);
+        if (!$ctx) {
+            return false;
+        }
+        $perm = $ctx['permissions'];
+        $this->template->assign_vars(
+            [
+                'B_SHOW_BUMP_ENABLER' => $perm['enable'],
+                'B_SHOW_BUMP_DISABLER' => $perm['disable'],
+                'B_SHOW_BUMP' => $perm['bump'],
+            ]
+        );
         return false;
     }/*}}}*/
 

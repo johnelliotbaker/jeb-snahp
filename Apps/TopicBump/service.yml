@@ -25,3 +25,4 @@ services:
             - "@jeb.snahp.auth.user_auth"
             - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+            - "%jeb.snahp.bump_topic%"

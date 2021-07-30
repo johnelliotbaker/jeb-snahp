@@ -9,10 +9,12 @@ class userscript extends base
 {
     protected $prefix;
 
-    public function __construct($prefix, $topicBumpHelper)
+    public function __construct($prefix, $sauth, $topicBumpHelper)
     {
         $this->prefix = $prefix;
+        $this->sauth = $sauth;
         $this->topicBumpHelper = $topicBumpHelper;
+        $this->userId = $sauth->userId;
     }
 
     public function handle($mode)
@@ -175,34 +177,32 @@ class userscript extends base
         return $topicdata;
     }/*}}}*/
 
-    public function enable_bump_topic($b_enable=true, $perm=[])/*{{{*/
+    public function enable_bump_topic($bEnable=true)/*{{{*/
     {
         $time = time();
         $tid = $this->request->variable('t', '');
-        $def = $this->container->getParameter('jeb.snahp.bump_topic')['def'];
-        $script_status = [];
-        if (!$perm)
-        {
-            $perm = $this->get_bump_permission($tid);
-        }
-        $topic_data = $perm['topic_data'];
-        if (!$topic_data) trigger_error("Topic $tid does not exist.");
-        $forum_id = $topic_data['forum_id'];
-        $fid_listings = $this->config['snp_fid_listings'];
-        $a_fid = $this->select_subforum($fid_listings);
-        if (!in_array($forum_id, $a_fid))
+        $scriptStatus = [];
+        $ctx = $this->topicBumpHelper->getBumpContext($tid);
+        $perm = $ctx['permissions'];
+        $bumpData = $ctx['bumpData'];
+        $topicData = $ctx['topicData'];
+        $def = $ctx['def'];
+        if (!$topicData) trigger_error("Topic $tid does not exist.");
+        $forumId = $topicData['forum_id'];
+        $fidListings = $this->config['snp_fid_listings'];
+        $aFid = $this->select_subforum($fidListings);
+        if (!in_array($forumId, $aFid))
         {
             trigger_error('You can only bump topics in listings.');
         }
-        $bump_data = $perm['bump_data'];
-        if ($b_enable)
+        if ($bEnable)
         {
-            if ($perm['b_enable'])
+            if ($perm['enable'])
             {
-                if (!$bump_data)
+                if (!$bumpData)
                 { // If no bump data, create bump
-                    $this->create_bump_topic($topic_data);
-                    $script_status[] = 'You can now start bumping this topic.';
+                    $this->create_bump_topic($topicData);
+                    $scriptStatus[] = 'You can now start bumping this topic.';
                 }
                 else
                 {
@@ -212,7 +212,7 @@ class userscript extends base
                         'n_bump' => 0,
                     ];
                     $this->update_bump_topic($tid, $data);
-                    $script_status[] = 'Bumping has been enabled.';
+                    $scriptStatus[] = 'Bumping has been enabled.';
                 }
             }
             else
@@ -223,7 +223,7 @@ class userscript extends base
         }
         else
         {
-            if ($perm['b_disable'])
+            if ($perm['disable'])
             {
                 $data = [
                     'status' => $def['disable'],
@@ -231,20 +231,20 @@ class userscript extends base
                     'n_bump' => 0,
                 ];
                 $this->update_bump_topic($tid, $data);
-                $script_status[] = 'Bumping has been disabled.';
+                $scriptStatus[] = 'Bumping has been disabled.';
             }
             else
             {
                 trigger_error('You cannot disble bumping.');
             }
         }
-        $strn = implode('<br>', $script_status);
-        $return_url = '/viewtopic.php?t='.$tid;
-        if (array_key_exists('forum_id', $topic_data))
+        $strn = implode('<br>', $scriptStatus);
+        $returnUrl = '/viewtopic.php?t='.$tid;
+        if (array_key_exists('forum_id', $topicData))
         {
-            $return_url .= '&f='.$topic_data['forum_id'];
+            $returnUrl .= '&f='.$topicData['forum_id'];
         }
-        meta_refresh(2, $return_url);
+        meta_refresh(2, $returnUrl);
         trigger_error($strn);
     }/*}}}*/
 
@@ -306,58 +306,57 @@ class userscript extends base
     public function bump_topic()/*{{{*/
     {
         $tid = $this->request->variable('t', '');
-        $perm = $this->get_bump_permission($tid);
-        $b_bump = $perm['b_bump'];
-        if (!$b_bump)
+        $ctx = $this->topicBumpHelper->getBumpContext($tid);
+        $perm = $ctx['permissions'];
+        $bumpData = $ctx['bumpData'];
+        $topicData = $ctx['topicData'];
+        $def = $ctx['def'];
+        $bBump = $perm['bump'];
+        if (!$bBump)
         {
             trigger_error('You don\'t have the permission to bump this topic.');
         }
-        $b_mod = $this->is_dev();
-        $group_id = $this->user->data['group_id'];
-        $group_config = $this->select_bump_group_config($group_id);
-        $cooldown = $group_config['snp_bump_cooldown'];
+        $cooldown = $this->topicBumpHelper->getBumpCooldown($this->userId);
+        $bMod = $this->is_dev();
         $time = time();
-        $script_status = [];
-        $topic_data = $this->get_or_reject_topic_data($tid);
-        $bump_data = $this->select_bump_topic($tid);
-        if (!$bump_data)
+        $scriptStatus = [];
+        if (!$bumpData)
         {
-            $this->enable_bump_topic($b_enable=true, $perm=[]);
+            $this->enable_bump_topic($b_enable=true);
         }
-        $n_bump = $bump_data['n_bump'];
-        // cooldown rejection
-        if (!$b_mod && $n_bump > 0 && $time < $bump_data['topic_time'] + $cooldown)
+        $nBump = $bumpData['n_bump'];
+        if (!$bMod && $nBump > 0 && $time < ($bumpData['topic_time'] + $cooldown))
         {
-            $return_url = '/viewtopic.php?t='.$tid;
-            if (array_key_exists('forum_id', $topic_data))
+            $returnUrl = '/viewtopic.php?t='.$tid;
+            if (array_key_exists('forum_id', $topicData))
             {
-                $return_url .= '&f='.$topic_data['forum_id'];
+                $returnUrl .= '&f='.$topicData['forum_id'];
             }
-            meta_refresh(8, $return_url);
+            meta_refresh(8, $returnUrl);
             $status = [
-                'You cannot bump again until ' . $this->user->format_date($bump_data['topic_time'] + $cooldown) . '.',
+                'You cannot bump again until ' . $this->user->format_date($bumpData['topic_time'] + $cooldown) . '.',
                 'You may ask a moderator to bump this topic for you.',
             ];
             trigger_error(implode('<br>', $status));
         }
         $time = time();
-        $forum_id = $topic_data['forum_id'];
-        $topic_id = $topic_data['topic_id'];
-        $this->phpbb_bump_topic($forum_id, $topic_id, $topic_data);
-        $bump_data = $this->select_bump_topic($tid);
+        $forumId = $topicData['forum_id'];
+        $topicId = $topicData['topic_id'];
+        $this->phpbb_bump_topic($forumId, $topicId, $topicData);
+        $bumpData = $this->select_bump_topic($tid);
         $data = [
             'topic_time' => $time,
-            'n_bump' => $bump_data['n_bump'] + 1,
+            'n_bump' => $bumpData['n_bump'] + 1,
         ];
         $this->update_bump_topic($tid, $data);
-        $title = $topic_data['topic_title'];
+        $title = $topicData['topic_title'];
         $strn = "$title has been bumped on " . $this->user->format_date($time);
-        $return_url = '/viewtopic.php?t='.$tid;
-        if (array_key_exists('forum_id', $topic_data))
+        $returnUrl = '/viewtopic.php?t='.$tid;
+        if (array_key_exists('forum_id', $topicData))
         {
-            $return_url .= '&f='.$topic_data['forum_id'];
+            $returnUrl .= '&f='.$topicData['forum_id'];
         }
-        meta_refresh(2, $return_url);
+        meta_refresh(2, $returnUrl);
         trigger_error($strn);
     }/*}}}*/
 
@@ -506,5 +505,4 @@ class userscript extends base
             return $this->helper->render($tpl_name, $cfg['title']);
         }
     }/*}}}*/
-
 }

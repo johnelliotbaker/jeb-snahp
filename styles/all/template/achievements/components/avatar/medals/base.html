@@ -1,5 +1,5 @@
 {% if postrow.ACHIEVEMENTS.count === 3 %}
-  <span title="Triathlon" class="avatar__achievements__icon">☘️</span>
+  <span title="Triathlete" class="avatar__achievements__icon">☘️</span>
 {% else  %}
   {% set keys = postrow.ACHIEVEMENTS|keys %}
   {% if 'reputation' in keys %}<span title="#{postrow.ACHIEVEMENTS.reputation}" class="avatar__achievements__icon">🏆</span>{% endif %}

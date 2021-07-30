@@ -387,47 +387,6 @@ abstract class base
     }/*}}}*/
 
     // BUMP TOPIC
-    public function get_bump_permission($tid)/*{{{*/
-    {
-        // Init
-        $user_id = $this->user->data['user_id'];
-        $group_id = $this->user->data['group_id'];
-        $def = $this->container->getParameter('jeb.snahp.bump_topic')['def'];
-        // database
-        $topic_data = $this->select_topic($tid);
-        $bump_data = $this->select_bump_topic($tid);
-        $group_config = $this->select_bump_group_config($group_id);
-        // setup
-        // TODO: Remove dev permission after trial
-        $b_mod = $this->is_dev();
-        $status = $bump_data ? $bump_data['status'] : null;
-        $b_op = $topic_data && $topic_data['topic_poster']==$user_id;
-        $b_group_enabled = $group_config['snp_enable_bump'];
-        // Conditions
-        $b_disable = ($b_mod && $status==$def['enable']);
-        $b_enable = $b_mod && (!$bump_data || $status==$def['disable']);
-        $b_enable |= ($b_op && $b_group_enabled && !$bump_data);
-        $b_bump = ($b_mod || $b_op) && ($bump_data && $status==$def['enable']);
-        $data = [
-            'b_enable'  => (bool)$b_enable,
-            'b_disable' => (bool)$b_disable,
-            'b_bump'    => (bool)$b_bump,
-            'bump_data' => $bump_data,
-            'topic_data' => $topic_data,
-        ];
-        return $data;
-    }/*}}}*/
-
-    public function select_bump_group_config($group_id)/*{{{*/
-    {
-        $sql = 'SELECT group_id, snp_bump_cooldown, snp_enable_bump FROM ' . GROUPS_TABLE .'
-            WHERE group_id=' . $group_id;
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        return $row;
-    }/*}}}*/
-
     public function select_bump_topic($tid)/*{{{*/
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
