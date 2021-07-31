@@ -98,14 +98,15 @@ class PostingViolationHelper
         }
         $sHiddenFields = build_hidden_fields($postData);
         $warningArray = [
-            '<h1 style="color: #A00;">This topic has been marked for rule violation(s).',
+            '<h1 style="color: #A00; font-size: 5em;">This topic has been marked for rule violation(s).',
             '<br/><br/>',
         ];
         if ($violationReason) {
-            $warningArray[] = ">> $violationReason<br/><br/><br/>";
+            $warningArray[] = ">> $violationReason<br/><br/>";
         }
         $warningArray = array_merge(
             $warningArray, [
+            'You will receive a rule violation for replying to this topic.<br/><br/><br/>',
             '</h1>',
             '<p>',
             'It is your responsibility to know and follow the forum rules.<br/>',
