@@ -106,6 +106,7 @@ class thanks extends base
                 'POSTER_COLOUR'  => $poster_colour,
                 'THANKS_TIME'    => $thanks_time,
                 'U_VIEW_DETAILS' => $u_details,
+                'DEADLINK'       => $row['snp_ded_b_dead'] ? '[deadlink]' : '',
             );
             $this->template->assign_block_vars('postrow', $group);
         }

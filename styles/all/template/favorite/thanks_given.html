@@ -26,7 +26,7 @@
 				<dl>
 					<dt>
 						<div class="list-inner" style="width:100%;">
-							<a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.POST_SUBJECT}</a><br />
+              <a href="{postrow.U_VIEW_DETAILS}" class="topictitle"><span style="color: #a00;">{postrow.DEADLINK}</span>{postrow.POST_SUBJECT}</a><br />
               <span>{L_POSTED} {L_POST_BY_AUTHOR} <a href="/memberlist.php?mode=viewprofile&amp;u={postrow.POSTER_ID}" style="color: #{postrow.POSTER_COLOUR};" class="username-coloured">{postrow.POSTER_NAME}</a> &raquo; {postrow.POST_TIME}</span><br>
               <span>Thanked on {postrow.THANKS_TIME}</span>
 						</div>

@@ -603,20 +603,31 @@ abstract class base
             $user_id = $this->user->data['user_id'];
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
-        $sql = 'SELECT
+        $sqlArray = [
+            'SELECT'    => '
             t.topic_id, t.post_id, t.poster_id, t.forum_id,
             t.thanks_time,
             u.username, u.user_colour,
-            p.post_time, p.post_subject, p.post_time
-            FROM
-                ('. $tbl['thanks'] . ' t)
-                    LEFT JOIN ' .
-                POSTS_TABLE . ' p ON (p.post_id = t.post_id)
-                LEFT JOIN ' .
-                USERS_TABLE . ' u ON (u.user_id = t.poster_id)
-            WHERE
-                t.user_id = ' . $user_id . '
-            ORDER BY t.thanks_time DESC';
+            p.post_time, p.post_subject, p.post_time, o.snp_ded_b_dead',
+            'FROM'      => [ $tbl['thanks'] => 't', ],
+            'LEFT_JOIN' => [
+                [
+                    'FROM'  => [ POSTS_TABLE => 'p' ],
+                    'ON'    => 'p.post_id = t.post_id',
+                ],
+                [
+                    'FROM'  => [ USERS_TABLE => 'u' ],
+                    'ON'    => 'u.user_id = t.poster_id',
+                ],
+                [
+                    'FROM'  => [ TOPICS_TABLE => 'o' ],
+                    'ON'    => 't.topic_id = o.topic_id',
+                ],
+            ],
+            'WHERE'     => "t.user_id=$user_id",
+            'ORDER_BY' => 't.thanks_time DESC',
+        ];
+        $sql = $this->db->sql_build_query('SELECT', $sqlArray);
         $result = $this->db->sql_query_limit($sql, $maxi_query);
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);

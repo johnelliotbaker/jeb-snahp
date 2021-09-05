@@ -812,7 +812,7 @@ class main_listener extends base implements EventSubscriberInterface
 
     public function show_thanks_given_in_profile($event)/*{{{*/
     {
-        if ($this->is_mod()) {
+        if ($this->is_dev()) {
             $member = $event['member'];
             $profile_id = (int) $member['user_id'];
             $sql = 'SELECT snp_thanks_n_given FROM ' . USERS_TABLE . " WHERE user_id=${profile_id}";
