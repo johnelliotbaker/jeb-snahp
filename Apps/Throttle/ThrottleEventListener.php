@@ -38,7 +38,7 @@ class ThrottleEventListener implements EventSubscriberInterface
         if (!$enable_master) {
             return;
         }
-        if ($this->sauth->is_dev() || $this->userId === ANONYMOUS) {
+        if ($this->sauth->user_belongs_to_groupset($this->userId, 'TU+') || $this->sauth->is_dev() || $this->userId === ANONYMOUS) {
             return;
         }
         $enable_logging = $this->config['snp_throttle_enable_logging'] ?? 0;
