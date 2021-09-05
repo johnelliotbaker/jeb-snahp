@@ -8,5 +8,8 @@ services:
         class: jeb\snahp\Apps\RequestManager\RequestManagerHelper
         arguments:
             - @dbal.conn
+            - @jeb.snahp.Apps.Core.Db.query.Request
+            - @jeb.snahp.Apps.Core.Db.query.Topic
+            - @jeb.snahp.Apps.Core.Db.query.User
             - %jeb.snahp.tables%
             - %jeb.snahp.req%

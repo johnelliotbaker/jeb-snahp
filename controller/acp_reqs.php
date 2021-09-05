@@ -230,7 +230,7 @@ class acp_reqs extends base
 
     public function handle_reset_user($username)
     {
-        $this->reject_non_moderator();
+        $this->reject_non_dev();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->def = $this->container->getParameter('jeb.snahp.req')['def'];
         $data = $this->recalculate_request_users($username);
@@ -399,6 +399,9 @@ class acp_reqs extends base
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
+        if (!$rowset) {
+            return false;
+        }
         $a_tid_req = array_map(function($a) {return $a['tid'];}, $rowset);
         // Check against topics that exists
         $sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . ' WHERE ' .
@@ -422,7 +425,7 @@ class acp_reqs extends base
 
     public function recalculate_request_users($username)
     {
-        $this->reject_non_moderator();
+        $this->reject_non_dev();
         $userdata = $this->select_user_by_username($username);
         $data = [];
         if (!$userdata)
