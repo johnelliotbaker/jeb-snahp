@@ -48,38 +48,6 @@ div.avatar_special p {
   margin: 0;
 }
 
-.audio_expert {
-  width: 32px;
-  height: 32px;
-  background-size: cover;
-}
-
-.adobe_infinity,
-.dj,
-.drunken_master,
-.gundam,
-.one_piece,
-.trekki,
-.updater,
-.wwe,
-.game_machine,
-.tidal,
-.marvel {
-  height: 36px;
-}
-
-.james_bond,
-.formula_one,
-.attenborough,
-.upscale {
-  height: 32px;
-}
-
-.the_oracle {
-  height: 38px;
-  max-height: 38px;
-}
-
 .crouching_tiger {
   position: absolute;
   opacity: 0.8;
