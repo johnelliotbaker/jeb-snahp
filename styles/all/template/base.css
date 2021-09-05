@@ -1,3 +1,8 @@
+/* Override */
+li div.dropdown-extended {
+    z-index: 10;
+}
+
 /* Generic class */
 .pointer {
   cursor: pointer;
