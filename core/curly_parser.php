@@ -246,7 +246,7 @@ class curly_parser
         preg_match($ptn, $strn, $match);
         $content = $match[1];
         $imgcompare = new \jeb\snahp\core\template\imgcompare();
-        $strn = $imgcompare->to_html($content);
+        $strn = $imgcompare->toHtml($content);
         return $strn;
     }/*}}}*/
 

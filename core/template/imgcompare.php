@@ -1,12 +1,19 @@
 <?php
 namespace jeb\snahp\core\template;
 
+function extractURL($strn)
+{
+    $success = preg_match('#<a href="(.*?)"#', $strn, $matches);
+    return $success ? $matches[1] : $strn;
+}
+
 class imgcompare
 {
-    public function to_html($argsAll)/*{{{*/
+    public function toHtml($argsAll)/*{{{*/
     {
         $data = [];
         foreach (explode(PHP_EOL, $argsAll) as $k => $arg) {
+            $arg = str_replace('<br>', '', $arg);
             $args = explode('`', $arg);
             if (count($args) < 2) {
                 continue;
@@ -14,8 +21,8 @@ class imgcompare
             for ($i=count($args); $i<4; $i++) {
                 $args[$i] = '';
             }
-            $url1 = trim($args[0]);
-            $url2 = trim($args[1]);
+            $url1 = extractURL(trim($args[0]));
+            $url2 = extractURL(trim($args[1]));
             if (!filter_var($url1, FILTER_VALIDATE_URL) || !filter_var($url2, FILTER_VALIDATE_URL)) {
                 continue;
             }
