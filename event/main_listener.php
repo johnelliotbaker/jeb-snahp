@@ -122,7 +122,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['modify_user_rank', 2],
                 ['process_curly_tags', 2],
                 ['show_thanks_for_op', 2],
-                ['show_achievements_in_avatar', 2],
+                // ['show_achievements_in_avatar', 2],
                 ['show_reputation_in_avatar', 2],
                 // ['show_badges_in_avatar', 2],
             ],
@@ -917,7 +917,7 @@ class main_listener extends base implements EventSubscriberInterface
         $topic_id = $topic_data['topic_id'];
         $topic_poster = $topic_data['topic_poster'];
         $thanks_total = 0;
-        if ($this->poster_data['snp_thanks_b_topic'] || $this->is_op($topic_data) || $this->is_mod()) {
+        if ($this->poster_data['snp_thanks_b_topic'] || $this->is_op($topic_data) || $this->is_dev()) {
             $thanks_total = $this->select_thanks_for_op($topic_id, $cachetime);
         }
         if ($post_id != $topic_data['topic_first_post_id']) {
