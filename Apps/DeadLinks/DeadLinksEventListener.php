@@ -41,7 +41,23 @@ class DeadlinksEventListener implements EventSubscriberInterface
             'core.viewforum_modify_topics_data'  => [
                 ['setDeadlinkTagInViewForum', 10],
             ],
+            'core.search_modify_tpl_ary'  => [
+                ['setDeadlinksTagInSearch', 10],
+            ],
         ];
+    }/*}}}*/
+
+    public function setDeadlinksTagInSearch($event)/*{{{*/
+    {
+        $row = $event['row'];
+        $dead = $row['snp_ded_b_dead'];
+        if ($dead) {
+            $tpl_ary = $event['tpl_ary'];
+            $pre = '<span style="color:#900;opacity:0.7;">[Deadlinks] ';
+            $post = '</span>';
+            $tpl_ary['TOPIC_TITLE'] = $pre . $tpl_ary['TOPIC_TITLE'] . $post;
+            $event['tpl_ary'] = $tpl_ary;
+        }
     }/*}}}*/
 
     public function setDeadlinkTagInViewForum($event)/*{{{*/
