@@ -95,7 +95,7 @@ class SnowfallHelper
         $data['isOP'] = $this->isOP;
         $attributeData = convertArrayToHTMLAttribute($data);
         if ($this->isActive()) {
-            $tplData = ['SNOWFALL_PROPS' => 'data-data="' . $attributeData . '"'];
+            $tplData = ['SNOWFALL_PROPS' => "data-data=\"$attributeData\""];
             if ($this->sauth->user_belongs_to_groupset((int) $data['user']['id'], 'Staff')) {
                 $data['fromStaff'] = true;
             }
