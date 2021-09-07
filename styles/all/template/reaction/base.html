@@ -1,10 +1,10 @@
-{% if postrow.REACTIONS and TOPIC_ID in [1, 218385] %}
-<!-- IF not $rx_reaction -->
-<!-- DEFINE $rx_reaction = true -->
-<!-- INCLUDEJS @jeb_snahp/reaction/rx_reaction/bundle.js -->
-<!-- INCLUDECSS @jeb_snahp/reaction/rx_reaction/bundle.css -->
-<!-- ENDIF -->
-<div {% if not (postrow.N_THANKS or postrow.N_REP) %}class="notice"{% endif %}>
-<div class="rx_reaction" data-data="{{ postrow.REACTIONS|json_encode|escape }}"></div>
-</div>
-{% endif %}
+{# {% if postrow.REACTIONS and TOPIC_ID in [1, 218385] %} #}
+{# <!-- IF not $rx_reaction --> #}
+{# <!-- DEFINE $rx_reaction = true --> #}
+{# <!-- INCLUDEJS @jeb_snahp/reaction/rx_reaction/bundle.js --> #}
+{# <!-- INCLUDECSS @jeb_snahp/reaction/rx_reaction/bundle.css --> #}
+{# <!-- ENDIF --> #}
+{# <div {% if not (postrow.N_THANKS or postrow.N_REP) %}class="notice"{% endif %}> #}
+{# <div class="rx_reaction" data-data="{{ postrow.REACTIONS|json_encode|escape }}"></div> #}
+{# </div> #}
+{# {% endif %} #}
