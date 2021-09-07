@@ -1,0 +1,10 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.quick_ucp.generalSettings:
+    path: /snahp/quick-ucp/settings/general
+    defaults: { _controller: jeb.snahp.Apps.QuickUCP.QuickUCPController:generalSettings}
+
+

@@ -1,0 +1,44 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.QuickUCP.QuickUCPController:
+        class: jeb\snahp\Apps\QuickUCP\QuickUCPController
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.QuickUCP.QuickUCPHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.QuickUCP.QuickUCPHelper:
+        class: jeb\snahp\Apps\QuickUCP\QuickUCPHelper
+        arguments:
+            - "@dbal.conn"
+            - "@service_container"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            # - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            # - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    # jeb.snahp.Apps.QuickUCP.QuickUCPEventListener:
+    #     class: jeb\snahp\Apps\QuickUCP\QuickUCPEventListener
+    #     arguments:
+    #         - "@user"
+    #         - "@config"
+    #         - "@jeb.snahp.auth.user_auth"
+    #         - "@jeb.snahp.Apps.QuickUCP.QuickUCPHelper"
+    #     tags:
+    #         - { name: event.listener }
