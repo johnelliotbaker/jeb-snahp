@@ -15,9 +15,7 @@ class QuickUCPController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = $sauth->userId;
-        // $this->userId = 2;
-        // TODO: Fix below
-        // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth->reject_anon('Error Code: 87a88735d2');
     }
 
     public function generalSettings()/*{{{*/
