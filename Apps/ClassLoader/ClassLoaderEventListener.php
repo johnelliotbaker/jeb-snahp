@@ -24,6 +24,7 @@ class ClassLoaderEventListener implements EventSubscriberInterface
         return [
             'core.common' => [
                 ['loadClasses', 1],
+                ['setupErrorHandlers', 1000],
             ],
         ];
     }/*}}}*/
@@ -34,4 +35,10 @@ class ClassLoaderEventListener implements EventSubscriberInterface
         include_once '/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php';
         include_once '/var/www/forum/ext/jeb/snahp/core/errors.php';
     }
+
+    public function setupErrorHandlers()/*{{{*/
+    {
+        error_reporting(error_reporting() & ~E_USER_NOTICE);
+    }/*}}}*/
+
 }
