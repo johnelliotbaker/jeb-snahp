@@ -160,6 +160,10 @@ class ThrottleHelper
             $this->banUserUntil($userId, $cfg['ban_duration']);
         }
         if ($isThrottling && $banDuration=$this->getUserBanDuration($userId)) {
+            if ($this->request->is_ajax()) {
+                http_response_code(429);
+                exit();
+            }
             trigger_error("You cannot access the forum for ${banDuration} seconds. Error Code: e1003e6f6f");
         }
     }/*}}}*/

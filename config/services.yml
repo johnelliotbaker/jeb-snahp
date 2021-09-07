@@ -55,6 +55,7 @@ imports:
     - { resource: ../Apps/PostingViolation/service.yml }
     - { resource: ../Apps/ReportTool/service.yml }
     - { resource: ../Apps/TopicBump/service.yml }
+    - { resource: ../Apps/QuickUCP/service.yml }
 
 services:
     jeb.snahp.core:

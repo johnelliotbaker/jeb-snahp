@@ -1,3 +1,5 @@
+routing_quick_ucp:
+    resource: '../Apps/QuickUCP/routing.yml'
 routing_topic_bump:
     resource: '../Apps/TopicBump/routing.yml'
 routing_posting_violation:
