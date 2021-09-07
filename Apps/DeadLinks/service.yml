@@ -6,40 +6,41 @@ services:
     jeb.snahp.Apps.DeadLinks.DeadLinksController:
         class: jeb\snahp\Apps\DeadLinks\DeadLinksController
         arguments:
-            - @controller.helper
-            - @jeb.snahp.auth.user_auth
+            - "@controller.helper"
+            - "@jeb.snahp.Apps.DeadLinks.DeadLinksHelper"
+            - "@jeb.snahp.auth.user_auth"
 
     jeb.snahp.Apps.DeadLinks.AuthorView:
         class: jeb\snahp\Apps\DeadLinks\AuthorView
         arguments:
-            - @dbal.conn
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@dbal.conn"
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
 
     jeb.snahp.Apps.DeadLinks.ModeratorView:
         class: jeb\snahp\Apps\DeadLinks\ModeratorView
         arguments:
-            - @dbal.conn
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@dbal.conn"
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
 
     jeb.snahp.Apps.DeadLinks.TopicView:
         class: jeb\snahp\Apps\DeadLinks\TopicView
         arguments:
-            - @dbal.conn
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@dbal.conn"
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
 
     jeb.snahp.Apps.DeadLinks.ReportStatusView:
         class: jeb\snahp\Apps\DeadLinks\ReportStatusView
         arguments:
-            - @dbal.conn
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@dbal.conn"
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
 
 
 
@@ -52,9 +53,9 @@ services:
     jeb.snahp.Apps.DeadLinks.EntryListCreateAPIView:
         class: jeb\snahp\Apps\DeadLinks\EntryListCreateAPIView
         arguments:
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"
 
 
 ############
@@ -67,6 +68,7 @@ services:
         arguments:
             - "@config"
             - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Db.query.User"
 
 
     ############
@@ -77,9 +79,9 @@ services:
     jeb.snahp.Apps.DeadLinks.Models.Entry:
         class: jeb\snahp\Apps\DeadLinks\Models\Entry
         arguments:
-            - @dbal.conn
-            - @notification_manager
-            - @jeb.snahp.auth.user_auth
+            - "@dbal.conn"
+            - "@notification_manager"
+            - "@jeb.snahp.auth.user_auth"
 
 
     ####################
@@ -106,7 +108,7 @@ services:
     jeb.snahp.Apps.DeadLinks.SetupDatabaseView:
         class: jeb\snahp\Apps\DeadLinks\SetupDatabaseView
         arguments:
-            - @dbal.conn
-            - @request
-            - @jeb.snahp.auth.user_auth
-            - @jeb.snahp.Apps.DeadLinks.Models.Entry
+            - "@dbal.conn"
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.DeadLinks.Models.Entry"

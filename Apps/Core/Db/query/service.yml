@@ -1,13 +1,16 @@
 services:
+
     jeb.snahp.Apps.Core.Db.query.Request:
         class: jeb\snahp\Apps\Core\Db\query\Request
         arguments:
             - "@dbal.conn"
             - "%jeb.snahp.tables%"
+
     jeb.snahp.Apps.Core.Db.query.Topic:
         class: jeb\snahp\Apps\Core\Db\query\Topic
         arguments:
             - "@dbal.conn"
+
     jeb.snahp.Apps.Core.Db.query.User:
         class: jeb\snahp\Apps\Core\Db\query\User
         arguments:

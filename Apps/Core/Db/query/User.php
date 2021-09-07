@@ -1,26 +1,16 @@
 <?php
 namespace jeb\snahp\Apps\Core\Db\query;
 
+require_once '/var/www/forum/ext/jeb/snahp/Apps/Core/Db/query/Mixins.php';
+
 class User
 {
+    use BaseQueryMixin;
+
     public function __construct($db)
     {
         $this->db = $db;
+        $this->OWN_TABLE_NAME = USERS_TABLE;
+        $this->ID_STRING = 'user_id';
     }
-
-    public function get($userId, $options)/*{{{*/
-    {
-        $fields = $options['fields'] ?? '*';
-        $userId = (int) $userId;
-        $sqlArray = [
-            'SELECT' => $fields,
-            'FROM' => [USERS_TABLE => 'a'],
-            'WHERE' => "user_id=${userId}",
-        ];
-        $sql = $this->db->sql_build_query('SELECT', $sqlArray);
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-        return $row;
-    }/*}}}*/
 }

@@ -33,7 +33,7 @@ class DeadlinksEventListener implements EventSubscriberInterface
                 ['setDeadlinkTagInTitle', 0],
             ],
             'core.search_modify_param_before'  => [
-                ['setKeywordSearchFlag', 0],
+                ['setupSearchParams', 0],
             ],
             'core.search_modify_url_parameters'  => [
                 ['hideDeadlinksInSearch', 0],
@@ -49,13 +49,12 @@ class DeadlinksEventListener implements EventSubscriberInterface
 
     public function setDeadlinksTagInSearch($event)/*{{{*/
     {
-        $row = $event['row'];
-        $dead = $row['snp_ded_b_dead'];
-        if ($dead) {
+        if ($event['row']['snp_ded_b_dead']) {
             $tpl_ary = $event['tpl_ary'];
-            $pre = '<span style="color:#900;opacity:0.7;">[Deadlinks] ';
-            $post = '</span>';
+            $pre = '<s><span style="opacity:0.3;">[Deadlinks] ';
+            $post = '</span></s>';
             $tpl_ary['TOPIC_TITLE'] = $pre . $tpl_ary['TOPIC_TITLE'] . $post;
+            $tpl_ary['POST_SUBJECT'] = $pre . $tpl_ary['POST_SUBJECT'] . $post;
             $event['tpl_ary'] = $tpl_ary;
         }
     }/*}}}*/
@@ -71,12 +70,12 @@ class DeadlinksEventListener implements EventSubscriberInterface
         $event['rowset'] = $rowset;
     }/*}}}*/
 
-    public function setKeywordSearchFlag($event)/*{{{*/
+    public function setupSearchParams($event)/*{{{*/
     {
+        // Setup for hideDeadlinksInSearch
+        $this->searchKeywords = $event['keywords'];
         // Filters out graveyard
         $event['ex_fid_ary'] = $this->helper->appendGraveyardToExFidAry($event['ex_fid_ary']);
-        // setup for hideDeadlinksInSearch
-        $this->searchKeywords = $event['keywords'];
     }/*}}}*/
 
     public function hideDeadlinksInSearch($event)/*{{{*/
@@ -85,7 +84,7 @@ class DeadlinksEventListener implements EventSubscriberInterface
         // Should only hide deadlinks for keywords search
         if ($this->searchKeywords) {
             $sql_where = $event['sql_where'];
-            if ($sql_where) {
+            if ($sql_where && !$this->sauth->user->data['snp_ded_show_in_search']) {
                 $sql_where .= ' AND t.snp_ded_b_dead<>1';
                 $event['sql_where'] = $sql_where;
             }

@@ -32,6 +32,12 @@ jeb.snahp.routing.deadlinks.app:
     requirements:
         topicId: \d+
 
+jeb.snahp.routing.deadlinks.set_search_visibility:
+    path: /deadlinks/show-in-search/{value}
+    defaults: { _controller: jeb.snahp.Apps.DeadLinks.DeadLinksController:setDeadlinksVisibilityInSearch}
+    requirements:
+        value: ^[01]{1}
+
 # #########
 # #  API  #
 # #########
