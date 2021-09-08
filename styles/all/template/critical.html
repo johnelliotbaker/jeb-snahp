@@ -1,3 +1,9 @@
+<!-- IF not $rx_quick_ucp -->
+<!-- DEFINE $rx_quick_ucp = true -->
+<!-- INCLUDEJS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.js -->
+<!-- INCLUDECSS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.css -->
+<!-- ENDIF -->
+
 {% if B_MOD %}
   <input type="hidden" name="snp_mod" value="1" />
 {% endif %}
@@ -80,23 +86,12 @@
 {% endif %}
 
 <div id="rx_quick_ucp"></div>
-<!-- IF not $rx_quick_ucp -->
-<!-- DEFINE $rx_quick_ucp = true -->
-<!-- INCLUDEJS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.js -->
-<!-- INCLUDECSS @jeb_snahp/quick_ucp/rx_quick_ucp/bundle.css -->
-<!-- ENDIF -->
 
-<!-- IF not $rx_spotlight -->
-<!-- DEFINE $rx_spotlight = true -->
-<!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js -->
-<!-- INCLUDECSS @jeb_snahp/spotlight/rx_spotlight/bundle.css -->
-<!-- ENDIF -->
-
-<!-- IF not $rx_emote -->
-<!-- DEFINE $rx_emote = true -->
-<!-- INCLUDEJS @jeb_snahp/emotes/rx_emotes/bundle.js -->
-<!-- INCLUDECSS @jeb_snahp/emotes/rx_emotes/bundle.css -->
-<!-- ENDIF -->
+{# <!-- IF not $rx_spotlight --> #}
+{# <!-- DEFINE $rx_spotlight = true --> #}
+{# <!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js --> #}
+{# <!-- INCLUDECSS @jeb_snahp/spotlight/rx_spotlight/bundle.css --> #}
+{# <!-- ENDIF --> #}
 
 {% if S_VIEWTOPIC or S_DISPLAY_PREVIEW %}
   <!-- IF not $rx_menu -->
@@ -135,11 +130,11 @@
   {# <!-- INCLUDECSS @jeb_snahp/user_flair/rx_user_flair/bundle.css --> #}
   {# <!-- ENDIF --> #}
 
-  <!-- IF not $rx_xmas -->
-  <!-- DEFINE $rx_xmas = true -->
-  <!-- INCLUDEJS @jeb_snahp/xmas/rx_xmas/bundle.js -->
-  <!-- INCLUDECSS @jeb_snahp/xmas/rx_xmas/bundle.css -->
-  <!-- ENDIF -->
+  {# <!-- IF not $rx_xmas --> #}
+  {# <!-- DEFINE $rx_xmas = true --> #}
+  {# <!-- INCLUDEJS @jeb_snahp/xmas/rx_xmas/bundle.js --> #}
+  {# <!-- INCLUDECSS @jeb_snahp/xmas/rx_xmas/bundle.css --> #}
+  {# <!-- ENDIF --> #}
 
   <!-- IF not $rx_snahplyr -->
   <!-- DEFINE $rx_snahplyr = true -->

@@ -58,8 +58,6 @@ routing_theme_switch:
     resource: 'theme_switch/routing.yml'
 routing_poi:
     resource: 'poi/routing.yml'
-routing_spotlight:
-    resource: 'spotlight/routing.yml'
 routing_giftbox:
     resource: 'giftbox/routing.yml'
 routing_rh_tags:

@@ -17,7 +17,6 @@ imports:
     - { resource: invite/service.yml }
     - { resource: styles/service.yml }
     - { resource: handlebar/service.yml }
-    - { resource: spotlight/service.yml }
     - { resource: cron/service.yml }
     - { resource: reputation/service.yml }
     - { resource: poi/service.yml }
@@ -56,6 +55,8 @@ imports:
     - { resource: ../Apps/ReportTool/service.yml }
     - { resource: ../Apps/TopicBump/service.yml }
     - { resource: ../Apps/QuickUCP/service.yml }
+    - { resource: ../Apps/Emoticon/service.yml }
+    - { resource: ../Apps/Spotlight/service.yml }
 
 services:
     jeb.snahp.core:
