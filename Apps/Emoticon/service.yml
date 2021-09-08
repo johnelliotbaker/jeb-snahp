@@ -1,0 +1,21 @@
+imports:
+    - { resource: './constants/emotes.yml' }
+
+services:
+
+    jeb.snahp.Apps.Emoticon.EmoticonHelper:
+        class: jeb\snahp\Apps\Emoticon\EmoticonHelper
+        arguments:
+            - "@dbal.conn"
+            - "@template"
+            - "%jeb.snahp.tables%"
+            - "%jeb.snahp.App.Emoticon.constants.emotes%"
+            - "@jeb.snahp.auth.user_auth"
+
+    jeb.snahp.Apps.Emoticon.EmoticonEventListener:
+        class: jeb\snahp\Apps\Emoticon\EmoticonEventListener
+        arguments:
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Emoticon.EmoticonHelper"
+        tags:
+            - { name: event.listener }
