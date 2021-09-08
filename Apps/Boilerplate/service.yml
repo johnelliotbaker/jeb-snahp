@@ -70,7 +70,6 @@ services:
     jeb.snahp.Apps.Boilerplate.BoilerplateEventListener:
         class: jeb\snahp\Apps\Boilerplate\BoilerplateEventListener
         arguments:
-            - "@user"
             - "@config"
             - "@jeb.snahp.auth.user_auth"
             - "@jeb.snahp.Apps.Boilerplate.BoilerplateHelper"
