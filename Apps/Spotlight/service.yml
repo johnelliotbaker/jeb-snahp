@@ -1,0 +1,51 @@
+# imports:
+#     - { resource: 'dir/parameters.yml' }
+services:
+
+##########
+#  View  #
+##########
+
+    # jeb.snahp.Apps.Spotlight.SpotlightController:
+    #     class: jeb\snahp\Apps\Spotlight\SpotlightController
+    #     arguments:
+    #         - "@dbal.conn"
+    #         - "@user"
+    #         - "@config"
+    #         - "@request"
+    #         - "@template"
+    #         - "@service_container"
+    #         - "@controller.helper"
+    #         - "%jeb.snahp.tables%"
+    #         - "@jeb.snahp.auth.user_auth"
+    #         - "@jeb.snahp.Apps.Spotlight.SpotlightHelper"
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Spotlight.SpotlightHelper:
+        class: jeb\snahp\Apps\Spotlight\SpotlightHelper
+        arguments:
+            - "@dbal.conn"
+            - "@template"
+            - "@cache"
+            - "@config"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Spotlight.SpotlightEventListener:
+        class: jeb\snahp\Apps\Spotlight\SpotlightEventListener
+        arguments:
+            - "@user"
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Spotlight.SpotlightHelper"
+        tags:
+            - { name: event.listener }

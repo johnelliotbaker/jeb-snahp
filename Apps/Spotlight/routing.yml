@@ -1,0 +1,23 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.spotlight.main:
+    path: /snahp/spotlight
+    defaults: { _controller: jeb.snahp.Apps.Spotlight.SpotlightController:view}
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.spotlight.list_spotlight:
+    path: /snahp/spotlight/spotlight
+    defaults: { _controller: jeb.snahp.Apps.Spotlight.SpotlightListCreateAPIView:dispatch}
+jeb.snahp.routing.spotlight.retrieve_spotlight:
+    path: /snahp/spotlight/spotlight/{id}
+    defaults: { _controller: jeb.snahp.Apps.Spotlight.SpotlightRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

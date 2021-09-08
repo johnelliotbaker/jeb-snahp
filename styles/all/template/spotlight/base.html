@@ -1,5 +1,5 @@
-{% if S_USER_LOGGED_IN %}
-<div class="rx_spotlight"></div>
+{% if S_USER_LOGGED_IN && SPOTLIGHT_PROPS %}
+  <div id="rx_spotlight" class="rx_spotlight" {SPOTLIGHT_PROPS}></div>
 <style>
 {% if STYLE_TYPE=='dark' %}
 {% include '@jeb_snahp/spotlight/dark.css' %}

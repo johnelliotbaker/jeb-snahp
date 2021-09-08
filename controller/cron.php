@@ -14,14 +14,12 @@ class cron extends base
     protected $cron_helper;
     protected $feedpostbot;
     protected $reputation_helper;
-    protected $spotlight_helper;
 
     public function __construct($table_prefix, $var1,
         $db,
         $cron_helper,
         $feedpostbot,
         $reputation_helper,
-        $spotlight_helper,
         $jukeboxHelper
     )/*{{{*/
     {
@@ -30,7 +28,6 @@ class cron extends base
         $this->cron_helper = $cron_helper;
         $this->feedpostbot = $feedpostbot;
         $this->reputation_helper = $reputation_helper;
-        $this->spotlight_helper = $spotlight_helper;
         $this->jukeboxHelper = $jukeboxHelper;
     }/*}}}*/
 
@@ -63,11 +60,10 @@ class cron extends base
         $this->cron_helper->log('feedpostbot', 'hourly', 'before');
         $this->feedpostbot->fetch_all();
         $this->cron_helper->log('feedpostbot', 'hourly', 'after');
-        // Spotlight Updates
-        $this->cron_helper->log('spotlight', 'hourly', 'before');
-        $this->spotlight_helper->update_list();
+        // Jukebox Updates
+        // $this->cron_helper->log('jukebox', 'hourly', 'before');
         $this->jukeboxHelper->updateList();
-        $this->cron_helper->log('spotlight', 'hourly', 'after');
+        // $this->cron_helper->log('jukebox', 'hourly', 'after');
         // Giving reputation points
         if ($this->config['snp_rep_b_master'] && $this->config['snp_rep_b_cron_giveaway'])
         {
