@@ -13,7 +13,7 @@ use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\notification\manager;
 
-/*}}}*/
+
 
 global $phpbb_root_path;
 include_once($phpbb_root_path . '/ext/jeb/snahp/core/functions_utility.php');
@@ -36,7 +36,7 @@ abstract class base
     protected $allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
     protected $count = 0;
     protected $icon_stack = [];
-    protected $tmp;/*}}}*/
+    protected $tmp;
 
     public function set_template_context(context $ctx)
     {
@@ -90,7 +90,7 @@ abstract class base
     public function set_phpbb_root_path($phpbb_root_path)
     {
         $this->phpbb_root_path = $phpbb_root_path;
-    }/*}}}*/
+    }
 
     // SESSION MANAGEMENT
 
@@ -111,7 +111,7 @@ abstract class base
         $shadow = $data;
         $cookie = json_encode($cookie);
         $this->user->set_cookie($key, $cookie, 0, 0);
-    }/*}}}*/
+    }
 
     public function get_cookie_new($key, $path='')
     {
@@ -133,7 +133,7 @@ abstract class base
             }
         }
         return $cookie;
-    }/*}}}*/
+    }
 
     public function get_or_set_cookie_new($key)
     {
@@ -146,7 +146,7 @@ abstract class base
             $this->set_cookie($key, $cookie);
         }
         return $cookie;
-    }/*}}}*/
+    }
 
     public function set_cookie($key, $data)
     {
@@ -155,7 +155,7 @@ abstract class base
         // $last_visit = $this->user->data['user_lastvisit'];
         // $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
         // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
-    }/*}}}*/
+    }
 
     public function get_or_set_cookie($key, $data=[], $b_return_first=false)
     {
@@ -178,14 +178,14 @@ abstract class base
         // $last_visit = $this->user->data['user_lastvisit'];
         // $this->user->set_cookie($key, tracking_serialize($data), $last_visit + 31536000);
         // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
-    }/*}}}*/
+    }
 
     public function get_cookie($key)
     {
         $cookie = $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = ($cookie) ? tracking_unserialize($cookie) : [];
         return $cookie;
-    }/*}}}*/
+    }
 
     // DATABASE Functions
 
@@ -201,7 +201,7 @@ abstract class base
             return 0;
         }
         return (int) $row['count'];
-    }/*}}}*/
+    }
 
     // Achievements
     public function select_user_achievements($user_id, $cooldown=10)
@@ -217,7 +217,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     // digg
     public function select_digg_slave_count($topic_id, $cooldown=30)
@@ -233,7 +233,7 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_digg_slave($topic_id, $where='1=1')
     {
@@ -249,7 +249,7 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_digg_master($topic_id)
     {
@@ -264,7 +264,7 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     // Custom Templates
     public function upsert_tpl($user_id, $name, $text)
@@ -284,7 +284,7 @@ abstract class base
             ON DUPLICATE KEY UPDATE text='${escaped_text}'";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function update_tpl($user_id, $name, $text, $priority=0)
     {
@@ -300,7 +300,7 @@ abstract class base
             WHERE user_id={$user_id} AND name='{$name}'";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function delete_tpl($user_id, $name)
     {
@@ -313,7 +313,7 @@ abstract class base
             WHERE user_id={$user_id} AND " . $this->db->sql_in_set('name', $name);
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function select_tpl($user_id, $b_full=true, $name='')
     {
@@ -328,7 +328,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     // Invites
     public function select_invitee($invitee_id)
@@ -339,7 +339,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     // THANKS
     public function select_thanks_for_op($topic_id, $cachetime=0)
@@ -352,7 +352,7 @@ abstract class base
             return 0;
         }
         return (int) $row['count'];
-    }/*}}}*/
+    }
 
     public function delete_thanks_notifications()
     {
@@ -369,7 +369,7 @@ abstract class base
             WHERE user_id=' . $this->user->data['user_id'] . '
         AND ' . $this->db->sql_in_set('notification_type_id', $type_ids);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     // BUMP TOPIC
     public function select_bump_topic($tid)
@@ -381,7 +381,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_bump_topic($tid, $data)
     {
@@ -390,7 +390,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE tid=' . $tid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function delete_bump_topic($topic_data)
     {
@@ -399,7 +399,7 @@ abstract class base
         $sql = 'DELETE FROM ' . $tbl['bump_topic'] .'
             WHERE tid='. $tid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function create_bump_topic($topic_data)
     {
@@ -419,7 +419,7 @@ abstract class base
         $sql = 'INSERT INTO ' . $tbl['bump_topic'] .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     // GET STYLE INFORMATION
     public function select_style_name()
@@ -433,7 +433,7 @@ abstract class base
         $this->db->sql_freeresult($result);
         $style_name = $row['style_name'];
         return $style_name;
-    }/*}}}*/
+    }
 
     // ALL SUBFORUM ID
     public function select_subforum_with_name($parent_id, $cooldown=0, $b_immediate=false)
@@ -452,7 +452,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)
     {
@@ -474,7 +474,7 @@ abstract class base
         }, $this->db->sql_fetchrowset($result));
         $this->db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     // FAVORITE CONTENTS
     public function select_accepted_requests($per_page, $start, $status_type='all', $user_id=null)
@@ -512,7 +512,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function select_fulfilled_requests($per_page, $start, $user_id=null)
     {
@@ -543,7 +543,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function select_open_requests($per_page, $start, $user_id=null)
     {
@@ -574,7 +574,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function select_thanks_given($per_page, $start, $user_id=null)
     {
@@ -616,7 +616,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function select_one_day($parent_id, $per_page, $start, $sort_mode, $a_exclude=[], $cooldown=30)
     {
@@ -673,7 +673,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     // TOPIC
     public function select_topic($tid)
@@ -683,7 +683,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_topic($tid, $data)
     {
@@ -691,7 +691,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE topic_id=' . $tid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function update_topic_title($fid, $tid, $pid, $ptn, $repl)
     {
@@ -715,7 +715,7 @@ abstract class base
             $this->update_forum_last_post($fid);
         }
         return false;
-    }/*}}}*/
+    }
 
     // Forum
     public function select_forum($pid, $field='*')
@@ -725,7 +725,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_forum_last_post($fid)
     {
@@ -733,7 +733,7 @@ abstract class base
         $type = 'forum';
         $ids = [$fid];
         update_post_information($type, $ids, $return_update_sql = false);
-    }/*}}}*/
+    }
 
     // POST
     public function select_post($pid, $field='*')
@@ -743,7 +743,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_post($pid, $data)
     {
@@ -751,7 +751,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE ' . $this->db->sql_in_set('post_id', $pid);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     // USERS
     public function select_user_by_username($username)
@@ -761,7 +761,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_user($user_id, $data)
     {
@@ -769,7 +769,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE user_id=' . $user_id;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function select_user($user_id, $cooldown=0)
     {
@@ -778,7 +778,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     // GROUP
     public function select_groups()
@@ -788,7 +788,7 @@ abstract class base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     public function select_group($gid)
     {
@@ -797,7 +797,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     // REQUEST USERS
     public function select_request_users_by_username($username)
@@ -814,7 +814,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_request_users($user_id)
     {
@@ -824,7 +824,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_request_users($user_id, $data)
     {
@@ -833,7 +833,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE user_id = ' . $user_id;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     // REQUEST
     public function select_request_closed()
@@ -848,7 +848,7 @@ abstract class base
         $data = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     public function select_request_open_by_uid($uid)
     {
@@ -862,7 +862,7 @@ abstract class base
         $data = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     public function select_request($tid)
     {
@@ -872,7 +872,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function update_request($tid, $data)
     {
@@ -881,7 +881,7 @@ abstract class base
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE tid=' . $tid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     // Dibs
     public function insert_dibs($data)
@@ -890,7 +890,7 @@ abstract class base
         $sql = 'INSERT INTO ' . $tbl['dibs'] .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function update_dibs($tid, $data)
     {
@@ -900,7 +900,7 @@ abstract class base
             WHERE tid=' . $tid . '
             ORDER BY id DESC';
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function select_dibs($tid)
     {
@@ -916,7 +916,7 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_total($tbl, $condition)
     {
@@ -930,7 +930,7 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row['total'];
-    }/*}}}*/
+    }
 
     public function select_last_undib($undibber_uid, $tid)
     {
@@ -949,13 +949,13 @@ abstract class base
         $row    = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function is_dev_server()
     {
         $servername = $this->config['server_name'];
         return isset($servername) && $servername=='192.168.2.12';
-    }/*}}}*/
+    }
 
     public function reject_group($column, $group_id)
     {
@@ -968,7 +968,7 @@ abstract class base
             trigger_error('Permission Error. Error Code: ca546fad27');
         }
         return true;
-    }/*}}}*/
+    }
 
     public function reject_bots()
     {
@@ -978,7 +978,7 @@ abstract class base
         if (!$gid || $gid == $BOTS_GID) {
             trigger_error('Access to bots has been denied.');
         }
-    }/*}}}*/
+    }
 
     public function reject_anon()
     {
@@ -986,12 +986,12 @@ abstract class base
         if ($uid == ANONYMOUS) {
             trigger_error('You must login before venturing forth.');
         }
-    }/*}}}*/
+    }
 
     public function is_admin()
     {
         return $this->auth->acl_gets('a_');
-    }/*}}}*/
+    }
 
     public function is_only_dev()
     {
@@ -1002,7 +1002,7 @@ abstract class base
         $user_id = $this->user->data['user_id'];
         $b_dev = group_memberships($gid_developer, $user_id, true) && $user_id==$uid_developer;
         return $b_dev;
-    }/*}}}*/
+    }
 
     public function is_dev()
     {
@@ -1013,45 +1013,45 @@ abstract class base
         $user_id = $this->user->data['user_id'];
         $b_dev = group_memberships($gid_developer, $user_id, true) && $user_id==$uid_developer;
         return $this->auth->acl_gets('a_', 'm_') || $b_dev;
-    }/*}}}*/
+    }
 
     public function is_mod()
     {
         return $this->auth->acl_gets('a_', 'm_');
-    }/*}}}*/
+    }
 
     public function is_self($user_id)
     {
         return $user_id==$this->user->data['user_id'];
-    }/*}}}*/
+    }
 
     public function is_op($topic_data)
     {
         $poster_id = $topic_data['topic_poster'];
         $user_id = $this->user->data['user_id'];
         return $poster_id == $user_id;
-    }/*}}}*/
+    }
 
     public function reject_non_dev($append='')
     {
         if (!$this->is_dev()) {
             trigger_error('You don\'t have the permission to access this page. Error Code: d198252910' . $append);
         }
-    }/*}}}*/
+    }
 
     public function reject_non_admin($append='')
     {
         if (!$this->is_admin()) {
             trigger_error('Only administrator may access this page. ' . $append);
         }
-    }/*}}}*/
+    }
 
     public function reject_non_moderator($append='')
     {
         if (!$this->is_mod()) {
             trigger_error('Only moderators may access this page. ' . $append);
         }
-    }/*}}}*/
+    }
 
     public function reject_non_group($group_id, $perm_name)
     {
@@ -1064,7 +1064,7 @@ abstract class base
         if (!$row) {
             trigger_error('Your don\'t have the permission to access this page.');
         }
-    }/*}}}*/
+    }
 
     public function is_search_enhancer_allowed($topic_data)
     {
@@ -1092,7 +1092,7 @@ abstract class base
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
     public function is_listing($var, $mode='topic_data')
     {
@@ -1117,7 +1117,7 @@ abstract class base
         $topic_id = $topic_data['topic_id'];
         $res = in_array($forum_id, $sub) ? true : false;
         return $res;
-    }/*}}}*/
+    }
 
     public function is_request($var, $mode='request_data')
     {
@@ -1142,19 +1142,19 @@ abstract class base
         $topic_id = $topic_data['topic_id'];
         $res = in_array($forum_id, $sub) ? true : false;
         return $res;
-    }/*}}}*/
+    }
 
     public function get_dt($time)
     {
         return $this->user->format_date($time);
-    }/*}}}*/
+    }
 
     public function get_config_array($key)
     {
         $config_text = $this->container->get('config_text');
         $data = unserialize($config_text->get($key));
         return $data;
-    }/*}}}*/
+    }
 
     public function get_fid($name)
     {
@@ -1162,20 +1162,20 @@ abstract class base
         $snp_fid = unserialize($config_text->get('snp_fid'));
         $fid =  array_key_exists($name, $snp_fid) ? $snp_fid[$name] : 0;
         return (int) $fid;
-    }/*}}}*/
+    }
 
     public function make_username($row)
     {
         $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
         return $strn;
-    }/*}}}*/
+    }
 
     public function decode_tags($strn)
     {
         $def = $this->container->getParameter('jeb.snahp.tags');
         $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
         return $ts->decodeTags($strn, array_shift($this->icon_stacks));
-    }/*}}}*/
+    }
 
     public function encode_tags($strn)
     {
@@ -1183,7 +1183,7 @@ abstract class base
         $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
         [$strn, $this->icon_stacks[]] = $ts->stripTags($strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function encodeTags($strn)
     {
@@ -1231,7 +1231,7 @@ abstract class base
     //         $strn = preg_replace($ptn, '<img class="zippy_icon" src="https://i.imgur.com/qD95AzT.png">', $strn);
     //     }
     //     return $strn;
-    // }/*}}}*/
+    // }
 
     public function add_tag($strn)
     {
@@ -1246,14 +1246,14 @@ abstract class base
         $ptn = '#((\(|\[|\{)(closed)(\)|\]|\}))#is';
         $strn = preg_replace($ptn, '<span class="btn terminate">\1</span>', $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function remove_tag($strn)
     {
         $ptn = '#<span[^>]*"(btn){1}.*">([^<]*)</span>#is';
         $strn = preg_replace($ptn, '', $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function validate_curly_tags($html)
     {
@@ -1275,7 +1275,7 @@ abstract class base
             }
         }
         return true;
-    }/*}}}*/
+    }
 
     public function interpolate_curly_table_autofill($strn)
     {
@@ -1299,7 +1299,7 @@ abstract class base
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_curly_table($strn)
     {
@@ -1356,7 +1356,7 @@ abstract class base
             $strn .= $match[3];
         }
         return $strn;
-    }/*}}}*/
+    }
 
     public function replace_snahp($strn)
     {
@@ -1375,7 +1375,7 @@ abstract class base
         }
         $strn = $this->replace_snahp($strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_curly_tags_deprecated($strn)
     {
@@ -1396,14 +1396,14 @@ abstract class base
             $strn .= $match[3];
         }
         return $strn;
-    }/*}}}*/
+    }
 
     public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
         if (!$this->user_belongs_to_groupset($user_id, $groupset_name)) {
             trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
         }
-    }/*}}}*/
+    }
 
     public function user_belongs_to_groupset($user_id, $groupset_name)
     {
@@ -1420,7 +1420,7 @@ abstract class base
         $group_id_ary = $groupset[$groupset_name];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;
-    }/*}}}*/
+    }
 
     public function user_belongs_to_group($user_id, $group_id)
     {
@@ -1429,7 +1429,7 @@ abstract class base
         $group_id_ary = [$group_id];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;
-    }/*}}}*/
+    }
 
     public function get_custom_rank($user_id)
     {
@@ -1442,7 +1442,7 @@ abstract class base
             return [stripslashes($row['rank_title']), stripslashes($row['rank_img'])];
         }
         return false;
-    }/*}}}*/
+    }
 
     public function set_custom_rank($user_id, $rank_title='', $rank_img='')
     {
@@ -1457,7 +1457,7 @@ abstract class base
             ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $data);
         $this->db->sql_query($sql);
         return true;
-    }/*}}}*/
+    }
 
     public function trigger_dev_event($event_name)
     {
@@ -1465,5 +1465,5 @@ abstract class base
             $dispatcher = $this->container->get('dispatcher');
             extract($dispatcher->trigger_event($event_name));
         }
-    }/*}}}*/
+    }
 }

@@ -26,7 +26,7 @@ class api_proxy
         $helper,
         $tbl,
         $sauth
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -41,7 +41,7 @@ class api_proxy
         $this->key = 'KdAxWqOkdsboMf1Kc8A';
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         if ($this->sauth->user_belongs_to_groupset($this->user_id, 'Basic')) {
             trigger_error('You do not have permission to view this page. Error Code: 80d6d3faf5');

@@ -65,7 +65,7 @@ class economy_user_dashboard
         $this->sauth->reject_anon();
         // $allowed_groupset = 'Red Team';
         // $sauth->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -91,7 +91,7 @@ class economy_user_dashboard
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
     public function handle_overview($cfg)
     {
@@ -146,7 +146,7 @@ class economy_user_dashboard
             'N_INV_PTS' => $n_avail_inv_pts,
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
-    }/*}}}*/
+    }
 
     private function set_user_balance()
     {
@@ -161,7 +161,7 @@ class economy_user_dashboard
         $js = new \phpbb\json_response();
         $this->bank_user_account->set_balance($user_id, $balance);
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     private function reset_user()
     {
@@ -172,7 +172,7 @@ class economy_user_dashboard
         $js = new \phpbb\json_response();
         $this->bank_user_account->reset($user_id);
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     private function has_enough_balance($total_cost, $user_id)
     {
@@ -182,12 +182,12 @@ class economy_user_dashboard
             return [false, $err];
         }
         return [true, ''];
-    }/*}}}*/
+    }
 
     private function get_total_cost($quantity, $product_class_id)
     {
         return (int) $this->market->get_total_cost($product_class_id, $quantity);
-    }/*}}}*/
+    }
 
     private function can_buy($required_quantity, $product_class_id, $user_id)
     {
@@ -207,7 +207,7 @@ class economy_user_dashboard
         // Check if there is enough fund
         $total_cost = $this->get_total_cost($required_quantity, $product_class_id);
         return $this->has_enough_balance($total_cost, $user_id);
-    }/*}}}*/
+    }
 
     public function handle_buy_product($cfg)
     {
@@ -235,7 +235,7 @@ class economy_user_dashboard
             return $js->send(['status' => 0, 'reason'=> 'Could not add inventory to the user.']);
         }
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     public function handle_exchange($cfg)
     {
@@ -247,7 +247,7 @@ class economy_user_dashboard
         $data = ['status' => $b_success, 'reason' => $reason];
         $js = new \phpbb\json_response();
         return $js->send($data);
-    }/*}}}*/
+    }
 
     public function handle_user_manager($cfg)
     {
@@ -287,7 +287,7 @@ class economy_user_dashboard
             'BALANCE_FORMATTED' => number_format($balance),
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
-    }/*}}}*/
+    }
 
     private function get_available_invite_points($user_id)
     {
@@ -306,7 +306,7 @@ class economy_user_dashboard
             return 0;
         }
         return $invite_user_data['n_available'];
-    }/*}}}*/
+    }
 
     private function get_group_data()
     {
@@ -316,7 +316,7 @@ class economy_user_dashboard
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     private function getMaxSearchInterval($userId)
     {

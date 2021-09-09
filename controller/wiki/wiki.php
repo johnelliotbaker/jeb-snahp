@@ -48,7 +48,7 @@ class wiki
         $this->templatedir = '@jeb_snahp/wiki/';
         $this->editordir = '@jeb_snahp/wiki/component/editor/';
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -56,7 +56,7 @@ class wiki
         $cfg['tpl_name'] = $this->templatedir . 'base.html';
         $cfg['name'] = $mode;
         return $this->render($cfg);
-    }/*}}}*/
+    }
 
     public function handle_editor($mode)
     {
@@ -69,7 +69,7 @@ class wiki
         default:
         trigger_error('Invalid mode. Error Code: c20870b167');
         }
-    }/*}}}*/
+    }
 
     private function respond_delete_entry_as_json()
     {
@@ -79,7 +79,7 @@ class wiki
         }
         $b_success = $this->delete_entry($name) ? 1 : 0;
         return new JsonResponse(['status' => $b_success]);
-    }/*}}}*/
+    }
 
     private function get_list()
     {
@@ -89,7 +89,7 @@ class wiki
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     private function delete_entry($name)
     {
@@ -98,7 +98,7 @@ class wiki
         $sql = 'DELETE FROM ' . $tbl . " WHERE name='${name}'";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     private function respond_editor()
     {
@@ -164,7 +164,7 @@ class wiki
             $this->template->assign_block_vars('WIKI_NAMES', $name);
         }
         return $this->helper->render($tpl_name, 'Wikipedia Editor');
-    }/*}}}*/
+    }
 
     private function add_or_edit_entry($name, $text, $b_public=0)
     {
@@ -202,7 +202,7 @@ class wiki
             $this->db->sql_query($sql);
         }
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     private function select_entry($name)
     {
@@ -231,19 +231,19 @@ class wiki
         }
         $row['text'] = htmlspecialchars_decode($row['text']);
         return $row;
-    }/*}}}*/
+    }
 
     private function select_nav()
     {
         $navigation_name = 'snp_wiki_nav_json';
         return $this->select_entry($navigation_name);
-    }/*}}}*/
+    }
 
     private function get_nav_text()
     {
         $row = $this->select_nav();
         return isset($row['text']) ? $row['text'] : '';
-    }/*}}}*/
+    }
 
     private function make_nav_parent_elem_before($entry)
     {
@@ -251,19 +251,19 @@ class wiki
         return '<li>
               <a href="#' . $uuid .'" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">' . $entry . '</a>
               <ul class="collapse list-unstyled" id="' . $uuid . '">';
-    }/*}}}*/
+    }
 
     private function make_nav_parent_elem_after($entry)
     {
         return '</ul></li>';
-    }/*}}}*/
+    }
 
     private function make_nav_leaf_elem($entry)
     {
         $name = $entry['name'];
         $link = $entry['link'];
         return "<li><a href='${link}'>${name}</a></li>"  ;
-    }/*}}}*/
+    }
 
     private function make_nav_html()
     {
@@ -277,7 +277,7 @@ class wiki
             $res[] = $this->parse_navigation_entry($entry);
         }
         return implode(PHP_EOL, $res);
-    }/*}}}*/
+    }
 
     private function parse_navigation_entry($entry)
     {
@@ -297,7 +297,7 @@ class wiki
             $strn = $this->make_nav_leaf_elem($entry);
         }
         return $strn;
-    }/*}}}*/
+    }
 
     private function render($cfg)
     {
@@ -331,5 +331,5 @@ class wiki
             'EDIT_LOCAL_TIME' => $this->user->format_date($row['edited_time']),
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Wikipedia');
-    }/*}}}*/
+    }
 }

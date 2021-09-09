@@ -46,7 +46,7 @@ class giftbox
         $this->redirect_delay = 3;
         $this->redirect_delay_long = 6;
         $this->u_manage = $this->helper->route('jeb_snahp_routing.giftbox', ['mode'=>'manage']);
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -74,21 +74,21 @@ class giftbox
             return $this->respond_set_cycle_time_as_json();
         }
         trigger_error('Invalid mode. Error Code: 39319143d2');
-    }/*}}}*/
+    }
 
     private function respond_giveaway_as_stream()
     {
         $simulate = $this->request->variable('simulate', 1);
         $this->giftbox_helper->manual_giveaway($simulate);
         return new JsonResponse([]);
-    }/*}}}*/
+    }
 
     private function respond_simulate_as_stream()
     {
         $n = $this->request->variable('n', 100000);
         $item_def = $this->giftbox_helper->simulate($n);
         return new JsonResponse([]);
-    }/*}}}*/
+    }
 
     private function respond_history_as_json()
     {
@@ -102,7 +102,7 @@ class giftbox
             'history' => $history
         ];
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
     private function respond_unwrap_status_as_json()
     {
@@ -112,7 +112,7 @@ class giftbox
             'time_left' => $time_left
         ];
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
     private function respond_unwrap_as_json()
     {
@@ -122,7 +122,7 @@ class giftbox
             'item' => $item_def
         ];
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
     private function respond_set_cycle_time_as_json()
     {
@@ -130,5 +130,5 @@ class giftbox
         $this->giftbox_helper->set_cycle_time($cycle_time);
         $data = ['status' => 'success'];
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 }

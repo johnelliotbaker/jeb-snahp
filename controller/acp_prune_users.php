@@ -10,7 +10,7 @@ class acp_prune_users extends base
 
     public function __construct()
     {
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -39,7 +39,7 @@ class acp_prune_users extends base
             trigger_error('Invalid mode. Error Code: 5176d454eb');
             break;
         }
-    }/*}}}*/
+    }
 
     public function deactivate($cfg)
     {
@@ -142,7 +142,7 @@ class acp_prune_users extends base
         $this->send_message(['Processed' => "{$i}", 'Modified'=>"{$n_process}", 'Total Time' => "{$time_end}"]);
         $js = new \phpbb\json_response();
         $js->send();
-    }/*}}}*/
+    }
 
     public function prune($cfg)
     {
@@ -197,7 +197,7 @@ class acp_prune_users extends base
         $js->send();
         // meta_refresh(2, $this->base_url);
         // trigger_error('You are now subscribed to this topic.');
-    }/*}}}*/
+    }
 
     public function prune_users($cfg)
     {
@@ -234,7 +234,7 @@ class acp_prune_users extends base
             $i_loop += 1;
         }
         $this->send_message(['status'=>'SUCCESS']);
-    }/*}}}*/
+    }
 
     private function get_users_inactive_after_count($cfg)
     {
@@ -287,7 +287,7 @@ class acp_prune_users extends base
             $data[] = $row['user_id'];
         }
         return $data;
-    }/*}}}*/
+    }
 
     public function send_message($data)
     {
@@ -295,5 +295,5 @@ class acp_prune_users extends base
         echo PHP_EOL;
         ob_flush();
         flush();
-    }/*}}}*/
+    }
 }

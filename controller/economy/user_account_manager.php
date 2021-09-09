@@ -33,7 +33,7 @@ class user_account_manager
         $bank_user_account,
         $user_inventory,
         $product_class
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -50,7 +50,7 @@ class user_account_manager
         $sauth->reject_non_dev('Error Code: 8b16954df1');
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode) {
         case 'user_manager':
@@ -74,12 +74,12 @@ class user_account_manager
         trigger_error('Nothing to see here. Move along.');
     }
 
-    public function handle_user_manager($cfg)/*{{{*/
+    public function handle_user_manager($cfg)
     {
         return $this->helper->render($cfg['tpl_name'], 'Snahp Economy User Account Manager');
     }
 
-    private function handle_set_user_balance()/*{{{*/
+    private function handle_set_user_balance()
     {
         $js = new \phpbb\json_response();
         $user_id = $this->get_requested_user_id();
@@ -92,7 +92,7 @@ class user_account_manager
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }
 
-    private function respond_with_user_account_as_json()/*{{{*/
+    private function respond_with_user_account_as_json()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id) {
@@ -105,7 +105,7 @@ class user_account_manager
         return $js->send($res);
     }
 
-    private function get_user_inventory($user_id)/*{{{*/
+    private function get_user_inventory($user_id)
     {
         $user_id = (int) $user_id;
         if (!$user_id) {
@@ -129,14 +129,14 @@ class user_account_manager
         return $res;
     }
 
-    private function get_user_inventory_json($user_id)/*{{{*/
+    private function get_user_inventory_json($user_id)
     {
         $js = new \phpbb\json_response();
         $inventory = $this->get_user_inventory($user_id);
         return $js->send(['inventory'=> $res]);
     }
 
-    private function get_user_balance($user_id)/*{{{*/
+    private function get_user_balance($user_id)
     {
         $user_id = (int) $user_id;
         if (!$user_id) {
@@ -145,14 +145,14 @@ class user_account_manager
         return $this->bank_user_account->get_balance($user_id);
     }
 
-    private function get_user_balance_json($user_id)/*{{{*/
+    private function get_user_balance_json($user_id)
     {
         $js = new \phpbb\json_response();
         $balance = $this->get_user_balance($user_id);
         return $js->send(['balance'=> $balance]);
     }
 
-    private function get_requested_user_id()/*{{{*/
+    private function get_requested_user_id()
     {
         $user_id = $this->request->variable('u', 0);
         if ($user_id < 1) {
@@ -161,7 +161,7 @@ class user_account_manager
         return $user_id;
     }
 
-    private function get_requested_balance()/*{{{*/
+    private function get_requested_balance()
     {
         $balance = $this->request->variable('b', -1);
         if ($balance < 0) {
@@ -170,7 +170,7 @@ class user_account_manager
         return $balance;
     }
 
-    private function get_requested_product_class_id()/*{{{*/
+    private function get_requested_product_class_id()
     {
         $product_class_id = $this->request->variable('pcid', 0);
         if (!$product_class_id) {
@@ -179,7 +179,7 @@ class user_account_manager
         return $product_class_id;
     }
 
-    private function get_requested_quantity()/*{{{*/
+    private function get_requested_quantity()
     {
         $quantity = $this->request->variable('quantity', -1);
         if ($quantity < 0) {
@@ -188,12 +188,12 @@ class user_account_manager
         return $quantity;
     }
 
-    private function set_user_balance($user_id, $balance, $broker_id=-1)/*{{{*/
+    private function set_user_balance($user_id, $balance, $broker_id=-1)
     {
         return $this->bank_user_account->set_balance($user_id, $balance, $broker_id);
     }
 
-    private function handle_set_user_inventory_item()/*{{{*/
+    private function handle_set_user_inventory_item()
     {
         $user_id = $this->get_requested_user_id();
         $quantity = $this->get_requested_quantity();
@@ -211,7 +211,7 @@ class user_account_manager
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }
 
-    private function set_user_inventory_item()/*{{{*/
+    private function set_user_inventory_item()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id) {
@@ -231,7 +231,7 @@ class user_account_manager
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }
 
-    private function reset_user()/*{{{*/
+    private function reset_user()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id) {

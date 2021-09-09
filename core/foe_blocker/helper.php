@@ -40,7 +40,7 @@ class helper
             return $arg['blocked_id'];
         }, $rowset);
         $this->block_data[] = $user_id;
-    }/*}}}*/
+    }
 
     public function can_block($blocked_id, $blocker_id=null)
     {
@@ -52,7 +52,7 @@ class helper
         } else {
             return in_array($blocked_id, $this->block_data) ? false : true;
         }
-    }/*}}}*/
+    }
 
     public function is_blocked_with_blocker_id($blocked_id, $blocker_id)
     {
@@ -62,7 +62,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function is_blocked_with_blocker_username($blocked_id, $blocker_username)
     {
@@ -73,7 +73,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function select_blocked_data_by_username($username)
     {
@@ -104,7 +104,7 @@ class helper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     public function select_blocked_data($blocked_id, $blocker_id)
     {
@@ -114,7 +114,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function is_blocked_with_post_id($blocked_id, $post_id)
     {
@@ -135,7 +135,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function cannot_pm_with_blocker_id($blocked_id, $blocker_id)
     {
@@ -151,7 +151,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function cannot_pm_with_post_id($blocked_id, $post_id)
     {
@@ -172,7 +172,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function cannot_reply($blocked_id, $blocker_id)
     {
@@ -188,7 +188,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return !empty($row);
-    }/*}}}*/
+    }
 
     public function toggle_permission_type($blocked_id, $blocker_id, $permission_type)
     {
@@ -212,7 +212,7 @@ class helper
             " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function toggle_perma_block($blocked_id, $blocker_id)
     {
@@ -225,7 +225,7 @@ class helper
             " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function toggle_freeze($blocked_id, $blocker_id)
     {
@@ -238,7 +238,7 @@ class helper
             " WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function update_mod_reason($blocked_id, $blocker_id, $mod_reason)
     {
@@ -257,7 +257,7 @@ class helper
             WHERE blocked_id=${blocked_id} AND blocker_id=${blocker_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function username2userid($username)
     {
@@ -267,7 +267,7 @@ class helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row ? (int) $row['user_id'] : 0;
-    }/*}}}*/
+    }
 
     public function format_userlist($rowset)
     {
@@ -280,5 +280,5 @@ class helper
             $row['mod_reason'] = stripslashes($row['mod_reason']);
         }
         return $rowset;
-    }/*}}}*/
+    }
 }

@@ -12,7 +12,7 @@ class bank_helper
     protected $template;
     protected $user;
     protected $cache;
-    /*}}}*/
+    
 
     public function __construct(
         \phpbb\config\config $config,
@@ -36,7 +36,7 @@ class bank_helper
         $this->tbl_exchange_rates = $tbl['bank_exchange_rates'];
         $this->user_id = $user->data['user_id'];
         $this->success = [true, 'Success'];
-    }/*}}}*/
+    }
 
     public function get_account_balance($user_id=null)
     {
@@ -49,7 +49,7 @@ class bank_helper
             return false;
         }
         return $row['snp_bank_n_token'];
-    }/*}}}*/
+    }
 
     public function append_exchange_to_transaction($amount, $transaction_id, $comment='')
     {
@@ -65,7 +65,7 @@ class bank_helper
             return false;
         }
         $this->append_to_transaction($transaction_id, $data);
-    }/*}}}*/
+    }
 
     public function withdraw($amount, $transaction_id, $comment='')
     {
@@ -83,14 +83,14 @@ class bank_helper
         $user_id = $transaction_data['user_id'];
         $this->withdraw_token_from_user($user_id, $amount);
         $this->append_to_transaction($transaction_id, $data);
-    }/*}}}*/
+    }
 
     public function create_transaction_and_withdraw($amount, $user_id, $broker_id=-1, $comment='')
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
         $this->withdraw($amount, $transaction_id, $comment);
         return $transaction_id;
-    }/*}}}*/
+    }
 
     public function deposit($amount, $transaction_id, $comment='')
     {
@@ -108,14 +108,14 @@ class bank_helper
         $user_id = $transaction_data['user_id'];
         $this->deposit_token_to_user($user_id, $amount);
         $this->append_to_transaction($transaction_id, $data);
-    }/*}}}*/
+    }
 
     public function create_transaction_and_deposit($amount, $user_id, $broker_id=-1, $comment='')
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
         $this->deposit($amount, $transaction_id, $comment);
         return $transaction_id;
-    }/*}}}*/
+    }
 
     public function get_exchange_rates($where='1=1', $b_firstrow=false)
     {
@@ -127,13 +127,13 @@ class bank_helper
             return $rowset[0];
         }
         return $rowset;
-    }/*}}}*/
+    }
 
     private function get_exchange_rate($id)
     {
         $id = (int) $id;
         return $this->get_exchange_rates("id=${id}", $b_firstrow=true);
-    }/*}}}*/
+    }
 
     private function withdraw_token_from_user($user_id, $amount)
     {
@@ -141,7 +141,7 @@ class bank_helper
         $deposit_strn = "snp_bank_n_token=snp_bank_n_token-${amount}";
         $sql = 'Update ' . USERS_TABLE . " SET ${deposit_strn} WHERE user_id=${user_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function deposit_token_to_user($user_id, $amount)
     {
@@ -149,7 +149,7 @@ class bank_helper
         $deposit_strn = "snp_bank_n_token=snp_bank_n_token+${amount}";
         $sql = 'Update ' . USERS_TABLE . " SET ${deposit_strn} WHERE user_id=${user_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function perform_exchange($exchange_rate_id, $direction, $amount)
     {
@@ -174,7 +174,7 @@ class bank_helper
             return [0, 'Error Code: 2e1f685f1b'];
         }
         return $this->success;
-    }/*}}}*/
+    }
 
     private function exchange_invitation_points_for_tokens($amount, $user_id, $exchange_rate)
     {
@@ -208,7 +208,7 @@ class bank_helper
             $comment="Exchange invitation points for tokens @ ${rate}."
         );
         return $this->success;
-    }/*}}}*/
+    }
 
     public function decrease_invitation_points($amount, $user_id)
     {
@@ -223,19 +223,19 @@ class bank_helper
             null
         );
         $ih->decrease_invite_points($user_id, $amount);
-    }/*}}}*/
+    }
 
     public function exchange($type_name, $direction, $amount)
     {
         [$b, $status] = $this->perform_exchange($type_name, $direction, $amount);
-    }/*}}}*/
+    }
 
     private function append_to_transaction($transaction_id, $data)
     {
         $data['transaction_id'] = $transaction_id;
         $sql = 'INSERT INTO ' . $this->tbl_transaction_items . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function create_transaction($user_id, $broker_id=-1)
     {
@@ -252,7 +252,7 @@ class bank_helper
         $sql = 'INSERT INTO ' . $this->tbl_transactions . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return (int) $this->db->sql_nextid();
-    }/*}}}*/
+    }
 
     public function get_transaction_history($user_id)
     {
@@ -281,7 +281,7 @@ class bank_helper
             $row['created_time_strn'] = $this->user->format_date($row['created_time']);
         }
         return $rowset;
-    }/*}}}*/
+    }
 
     private function get_transaction($transaction_id)
     {
@@ -290,5 +290,5 @@ class bank_helper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 }

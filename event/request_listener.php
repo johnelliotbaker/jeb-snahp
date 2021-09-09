@@ -43,7 +43,7 @@ class request_listener extends base implements EventSubscriberInterface
         $this->req_users_tbl      = $table_prefix . 'snahp_request_users';
         $this->dibs_tbl           = $table_prefix . 'snahp_dibs';
         $this->dt_ptn             = 'D M d, Y  g:i a';
-    }/*}}}*/
+    }
 
     public static function getSubscribedEvents()
     {
@@ -75,7 +75,7 @@ class request_listener extends base implements EventSubscriberInterface
             'core.delete_topics_after_query' => 'update_request_user_after_topic_deletion',
             'core.viewforum_generate_page_after' => 'show_fulfillment_stats',
         );
-    }/*}}}*/
+    }
 
     public function add_fulfillment_widget($event)
     {
@@ -86,7 +86,7 @@ class request_listener extends base implements EventSubscriberInterface
         $a = '/#fulfill#/';
         $b = '{snahp}{fulfill}{/fulfill}{/snahp}';
         $message = preg_replace($a, $b, $message);
-    }/*}}}*/
+    }
 
     public function setup_fulfilled_vars($event)
     {
@@ -100,7 +100,7 @@ class request_listener extends base implements EventSubscriberInterface
                 return false;
             }
         }
-    }/*}}}*/
+    }
 
     public function setup_core_vars($event)
     {
@@ -109,7 +109,7 @@ class request_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'S_REQ_HIDDEN_FIELDS' => $s_hidden_fields,
         ]);
-    }/*}}}*/
+    }
 
     private function get_outstanding_fulfilled_count()
     {
@@ -120,7 +120,7 @@ class request_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row['count'];
-    }/*}}}*/
+    }
 
     public function include_reqs_forum_assets($event)
     {
@@ -132,7 +132,7 @@ class request_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_REQS_FORUM_SHOW_FILTER' => true,
         ]);
-    }/*}}}*/
+    }
 
     public function show_fulfillment_stats($event)
     {
@@ -203,7 +203,7 @@ class request_listener extends base implements EventSubscriberInterface
             'PERC_SOLVE'     => $perc_solve,
             'PERC_TERMINATE' => $perc_terminate,
         ]);
-    }/*}}}*/
+    }
 
     public function update_request_user_after_topic_deletion($event)
     {
@@ -234,7 +234,7 @@ class request_listener extends base implements EventSubscriberInterface
             }
             $this->update_request_users($requester_uid, $data);
         }
-    }/*}}}*/
+    }
 
     public function show_request_form_as_table($event)
     {
@@ -247,7 +247,7 @@ class request_listener extends base implements EventSubscriberInterface
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags_deprecated($message);
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function show_request_post_form($event)
     {
@@ -267,7 +267,7 @@ class request_listener extends base implements EventSubscriberInterface
             }
         }
         $this->template->assign_vars($data);
-    }/*}}}*/
+    }
 
     public function compose_request_form($event)
     {
@@ -292,7 +292,7 @@ class request_listener extends base implements EventSubscriberInterface
         $post_data['enable_magic_url'] = 0;
         $post_data['enable_urls'] = 0;
         $event['post_data'] = $post_data;
-    }/*}}}*/
+    }
 
     public function modify_request_tags($event)
     {
@@ -311,7 +311,7 @@ class request_listener extends base implements EventSubscriberInterface
             $rowset[$key] = $row;
         }
         $event['rowset'] = $rowset;
-    }/*}}}*/
+    }
 
     public function select_open_request($uid)
     {
@@ -326,7 +326,7 @@ class request_listener extends base implements EventSubscriberInterface
         }
         $this->db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     public function insert_request_users($user_id, $b_return=false)
     {
@@ -348,7 +348,7 @@ class request_listener extends base implements EventSubscriberInterface
             return $this->select_request_users($user_id);
         }
         return [];
-    }/*}}}*/
+    }
 
     public function reject_cycle($reqdata, $gdata)
     {
@@ -385,7 +385,7 @@ class request_listener extends base implements EventSubscriberInterface
             ];
             $this->update_request_users($user_id, $data);
         }
-    }/*}}}*/
+    }
 
     private function generate_topic_list($a_topic_id)
     {
@@ -425,7 +425,7 @@ class request_listener extends base implements EventSubscriberInterface
             $strn .= join(PHP_EOL, $html[$key]);
         }
         return $strn;
-    }/*}}}*/
+    }
 
     public function reject_user_with_fulfilled($user_id)
     {
@@ -448,7 +448,7 @@ class request_listener extends base implements EventSubscriberInterface
         }
         $strn = $this->generate_topic_list($a_topic_id);
         trigger_error($strn);
-    }/*}}}*/
+    }
 
     public function reject_request_disabled($reqdata, $gdata)
     {
@@ -464,7 +464,7 @@ class request_listener extends base implements EventSubscriberInterface
                 trigger_error("$groupname cannot make requests.");
             }
         }
-    }/*}}}*/
+    }
 
     public function create_request($event)
     {
@@ -523,7 +523,7 @@ class request_listener extends base implements EventSubscriberInterface
         $repl = '[Request]';
         $status = $this->update_topic_title($fid, $tid, $pid, $ptn, $repl);
         return true;
-    }/*}}}*/
+    }
 
     public function disable_user_posting($event)
     {
@@ -580,7 +580,7 @@ class request_listener extends base implements EventSubscriberInterface
             }
         }
         $this->template->assign_var('S_REQUEST_USER_INFO', $strn);
-    }/*}}}*/
+    }
 
     public function show_request_icons($event)
     {
@@ -615,7 +615,7 @@ class request_listener extends base implements EventSubscriberInterface
             }
         }
         $this->template->assign_vars($ctx);
-    }/*}}}*/
+    }
 
     public function show_dibs($event)
     {
@@ -679,5 +679,5 @@ class request_listener extends base implements EventSubscriberInterface
         } else {
             return false;
         }
-    }/*}}}*/
+    }
 }

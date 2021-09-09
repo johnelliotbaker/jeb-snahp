@@ -12,7 +12,7 @@ class ForumStructureHelper
     {
         $this->root_path = $root_path;
         $this->php_ext = $php_ext;
-    }/*}}}*/
+    }
 
     public function selectSubforum($parent_id, $cooldown=0, $b_immediate=false)
     {
@@ -24,7 +24,7 @@ class ForumStructureHelper
             },
             $fid
         );
-    }/*}}}*/
+    }
 
     public function makeSubforumSelectorHTML($selectId)
     {
@@ -38,5 +38,5 @@ class ForumStructureHelper
             $only_acl_post = false,
             $return_array = false
         );
-    }/*}}}*/
+    }
 }

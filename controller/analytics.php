@@ -43,7 +43,7 @@ class analytics extends base
         trigger_error('Nothing to see here. Move along.');
     }
 
-    public function handle_stats($cfg)/*{{{*/
+    public function handle_stats($cfg)
     {
         $this->reject_non_dev();
         $time = microtime(true);
@@ -60,7 +60,7 @@ class analytics extends base
         return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Statistics');
     }
 
-    public function get_or_reject_bump_data($tid)/*{{{*/
+    public function get_or_reject_bump_data($tid)
     {
         if (!$tid) {
             trigger_error('No topic_id was provided.');
@@ -72,7 +72,7 @@ class analytics extends base
         return $bump_data;
     }
 
-    public function get_or_reject_topic_data($tid)/*{{{*/
+    public function get_or_reject_topic_data($tid)
     {
         if (!$tid) {
             trigger_error('No topic_id was provided.');
@@ -84,7 +84,7 @@ class analytics extends base
         return $topicdata;
     }
 
-    public function deserialize_tid($strn)/*{{{*/
+    public function deserialize_tid($strn)
     {
         preg_match_all('#(\d+)#', $strn, $matches);
         $data = [];
@@ -94,7 +94,7 @@ class analytics extends base
         return $data;
     }
 
-    public function json_user_thanks($cfg)/*{{{*/
+    public function json_user_thanks($cfg)
     {
         $this->reject_anon();
         $group_id = $this->user->data['group_id'];
@@ -124,7 +124,7 @@ class analytics extends base
         $js->send($rowset);
     }
 
-    public function json_common_thanks($cfg)/*{{{*/
+    public function json_common_thanks($cfg)
     {
         $this->reject_anon();
         $group_id = $this->user->data['group_id'];
@@ -185,7 +185,7 @@ class analytics extends base
         $js->send($data);
     }
 
-    public function handle_common_thanks($cfg)/*{{{*/
+    public function handle_common_thanks($cfg)
     {
         $this->reject_anon();
         $group_id = $this->user->data['group_id'];
@@ -194,7 +194,7 @@ class analytics extends base
     }
 
 
-    private function select_monthly_stats()/*{{{*/
+    private function select_monthly_stats()
     {
         $n_unique_visitor = $this->get_monthly_unique_users();
         $data = [
@@ -205,7 +205,7 @@ class analytics extends base
         return $data;
     }
 
-    private function get_monthly_unique_users()/*{{{*/
+    private function get_monthly_unique_users()
     {
         $time = time();
         $since = (int) ($time - 2592000);

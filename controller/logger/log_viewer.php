@@ -44,7 +44,7 @@ class log_viewer
         $this->logger = $logger;
         $this->user_id = (int) $this->user->data['user_id'];
         $this->sauth->reject_non_dev('Error Code: 8a4bca81a2');
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -63,7 +63,7 @@ class log_viewer
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
     public function set_user_spam_config_as_json()
     {
@@ -76,7 +76,7 @@ class log_viewer
             $this->config->set('snp_log_user_spam_buffer_length', $buffer_length);
         }
         return new JsonResponse(['status' => 1]);
-    }/*}}}*/
+    }
 
     public function set_enable_as_json()
     {
@@ -96,7 +96,7 @@ class log_viewer
             $this->config->set('snp_log_b_user_spam', $b);
             return new JsonResponse(['status' => $this->config['snp_log_b_user_spam']]);
         }
-    }/*}}}*/
+    }
 
     public function respond_is_log_as_json()
     {
@@ -112,7 +112,7 @@ class log_viewer
             return new JsonResponse(['status' => $this->config['snp_log_b_user_spam']]);
         }
         return new JsonResponse(['status' => 0]);
-    }/*}}}*/
+    }
 
     public function respond_view($cfg)
     {
@@ -140,5 +140,5 @@ class log_viewer
             'TYPE' => $type,
         ]);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 }

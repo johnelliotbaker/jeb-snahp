@@ -48,7 +48,7 @@ class user_account
         $user_id = (int) $user_id;
         $this->set_balance($user_id, 0);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function get_balance($user_id)
     {
@@ -61,7 +61,7 @@ class user_account
             return $row['snp_bank_n_balance'];
         }
         return null;
-    }/*}}}*/
+    }
 
     public function set_balance($user_id, $value, $broker_id=-1)
     {
@@ -78,7 +78,7 @@ class user_account
         ];
         $b_log = $this->bank_transaction_logger->create_single_transaction($user_id, $broker_id, $data);
         return $b_log;
-    }/*}}}*/
+    }
 
     public function create_transaction_and_deposit($amount, $user_id, $broker_id=-1, $comment='')
     {
@@ -93,14 +93,14 @@ class user_account
         $this->deposit($amount, $user_id);
         // $b_success = $this->set_balance($user_id, 0);
         return $transaction_id;
-    }/*}}}*/
+    }
 
     public function create_transaction_and_withdraw($amount, $user_id, $broker_id=-1, $comment='')
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
         $this->withdraw($amount, $transaction_id, $comment);
         return $transaction_id;
-    }/*}}}*/
+    }
 
     public function do_exchange($exchange_rate_id, $direction, $amount, $user_id, $broker_id=-1)
     {
@@ -128,7 +128,7 @@ class user_account
             return [0, 'Error Code: 2e1f685f1b'];
         }
         return [1, 'Success'];
-    }/*}}}*/
+    }
 
     private function sell_invitation_points($amount, $user_id, $exchange_rate)
     {
@@ -144,7 +144,7 @@ class user_account
         $this->deposit($balance_delta, $user_id);
         $this->decrease_invitation_points($amount, $user_id);
         return [1, 'Success'];
-    }/*}}}*/
+    }
 
     public function giveInvitationPoints($amount, $user_id, $type='moderation', $comment='')
     {
@@ -157,7 +157,7 @@ class user_account
             'data' => serialize(['comment' => $comment]),
         ];
         $this->bank_transaction_logger->create_single_transaction($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
     public function withdraw($amount, $user_id, $broker_id=-1)
     {
@@ -167,7 +167,7 @@ class user_account
         $balance -= $amount;
         $b_success = $this->set_balance($user_id, $balance);
         return $b_success;
-    }/*}}}*/
+    }
 
     public function deposit($amount, $user_id)
     {
@@ -177,7 +177,7 @@ class user_account
         $balance += $amount;
         $b_success = $this->set_balance($user_id, $balance);
         return $b_success;
-    }/*}}}*/
+    }
 
     public function log_moderation($amount, $user_id, $broker_id)
     {
@@ -190,7 +190,7 @@ class user_account
             'data' => serialize(['comment' => $comment]),
         ];
         return $logger->create_single_transaction($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
     public function log_withdraw($amount, $user_id, $broker_id)
     {
@@ -203,7 +203,7 @@ class user_account
             'data' => serialize(['comment' => $comment]),
         ];
         return $logger->create_single_transaction($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
     private function log_exchange($amount, $user_id, $exchange_rate, $broker_id)
     {
@@ -233,10 +233,10 @@ class user_account
             'data' => serialize(['comment' => $comment]),
         ];
         return $logger->append_to_transaction($transaction_id, $data);
-    }/*}}}*/
+    }
 
     public function decrease_invitation_points($amount, $user_id)
     {
         $this->invite_helper->decrease_invite_points($user_id, $amount);
-    }/*}}}*/
+    }
 }

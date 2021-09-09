@@ -12,22 +12,22 @@ class form
         $this->db = $container->get('dbal.conn');
         $this->request = $container->get('request');
         $this->template = $container->get('template');
-    }/*}}}*/
+    }
 
     public function test()
     {
         prn($this->db->sql_escape('asdf'));
-    }/*}}}*/
+    }
 
     public function set_config_var($data)
     {
         $this->config->set($data['tpl_varname'], $data['value']);
-    }/*}}}*/
+    }
 
     public function get_config_var($data)
     {
         return $this->config[$data['tpl_varname']];
-    }/*}}}*/
+    }
 
     public function get_manifest()
     {
@@ -48,7 +48,7 @@ class form
             ],
         ];
         return $manifest;
-    }/*}}}*/
+    }
 
     public function process_manifest($manifest)
     {
@@ -59,7 +59,7 @@ class form
         }
         $data = [];
         return $data;
-    }/*}}}*/
+    }
 
     public function set_template_vars_from_manifest($manifest)
     {
@@ -70,5 +70,5 @@ class form
             $tpl_vars[$tpl_varname] = $stored_value;
         }
         $this->template->assign_vars($tpl_vars);
-    }/*}}}*/
+    }
 }

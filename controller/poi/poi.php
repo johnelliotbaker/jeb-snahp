@@ -26,7 +26,7 @@ class poi
         $helper,
         $tbl,
         $sauth
-    )/*{{{*/ {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -40,7 +40,7 @@ class poi
         $this->sauth->reject_anon('Error Code: 5954856517');
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode) {
         case 'poi':
@@ -53,7 +53,7 @@ class poi
         trigger_error('Nothing to see here. Move along.');
     }
 
-    private function get_user_data($user_ids)/*{{{*/
+    private function get_user_data($user_ids)
     {
         if (is_array($user_ids)) {
             $where = $this->db->sql_in_set('user_id', $user_ids);
@@ -75,7 +75,7 @@ class poi
         }
     }
 
-    private function get_tags()/*{{{*/
+    private function get_tags()
     {
         $sql = 'SELECT tag, tag_lowercase, count FROM ' . $this->tbl['topic_tags'] . ' order by count DESC';
         $result = $this->db->sql_query($sql, 600);
@@ -84,7 +84,7 @@ class poi
         return $rowset;
     }
 
-    public function respondPOI($cfg)/*{{{*/
+    public function respondPOI($cfg)
     {
         $exclude = ['ENCODER_TWO', 'CROUCHING_TIGER', 'HIDDEN_DRAGON'];
         // Make sure "type handler" below handles excluded types properly
@@ -171,7 +171,7 @@ class poi
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
     }
 
-    public function respond_poi1($cfg)/*{{{*/
+    public function respond_poi1($cfg)
     {
         $excluded_items = ['encoder_group', 'crouching_tiger', 'hidden_dragon', 'encoder_two'];
         $users_raw = $this->container->getParameter('jeb.snahp.avatar.badge.users');
@@ -223,7 +223,7 @@ class poi
     }
 }
 
-function getAttribute($var, $attrName)/*{{{*/
+function getAttribute($var, $attrName)
 {
     if (!isset($var[$attrName])) {
         return '';

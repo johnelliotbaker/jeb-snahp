@@ -16,7 +16,7 @@ class badges_helper
         $this->db = $container->get('dbal.conn');
         $this->style_type = 'light';
         $this->style_name = 'prosilver';
-    }/*}}}*/
+    }
 
     private function setup_style_info($options)
     {
@@ -26,7 +26,7 @@ class badges_helper
         if (isset($options['style_name'])) {
             $this->style_name = $options['style_name'];
         }
-    }/*}}}*/
+    }
 
     public function process_badges($post_data, $options=[])
     {
@@ -37,18 +37,18 @@ class badges_helper
         $queue = $this->make_jobs($user_params);
         $res = $this->process_jobs($queue, $post_data, $user_params);
         return $res;
-    }/*}}}*/
+    }
 
     public function setup_user($poster_id)
     {
         $this->user_data = isset($this->p['users'][$poster_id]) ? $this->p['users'][$poster_id] : [];
         return $this->user_data;
-    }/*}}}*/
+    }
 
     public function make_jobs($user_params)
     {
         return isset($user_params['queue']) ? $user_params['queue'] : [];
-    }/*}}}*/
+    }
 
     private function process_jobs($jobs, $post_data, $user_params)
     {
@@ -58,12 +58,12 @@ class badges_helper
             $res[] = $this->process_job($name, $post_data, $user_params, $item_params);
         }
         return implode('', $res);
-    }/*}}}*/
+    }
 
     private function process_job($jobname, $post_data, $user_params, $item_params)
     {
         return $this->generate_named_html($jobname, $post_data, $user_params, $item_params);
-    }/*}}}*/
+    }
 
     private function override_item_params($item_params)
     {
@@ -83,7 +83,7 @@ class badges_helper
             }
         }
         return $item_params;
-    }/*}}}*/
+    }
 
     private function generate_named_html($jobname, $post_data, $user_params, $item_params)
     {
@@ -95,7 +95,7 @@ class badges_helper
         $template_vars = $this->get_required_vars($required_vars, $post_data, $job_data, $item_params['data']);
         $html = $this->replace_template($template_html, $template_vars);
         return $html;
-    }/*}}}*/
+    }
 
     private function select_random($item)
     {
@@ -103,7 +103,7 @@ class badges_helper
             return $item[array_rand($item)];
         }
         return $item;
-    }/*}}}*/
+    }
 
     private function get_required_vars($varnames, $post_data, $job_data, $item_data)
     {
@@ -124,7 +124,7 @@ class badges_helper
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
     private function replace_template($strn, $vars)
     {
@@ -136,5 +136,5 @@ class badges_helper
             }
         }, $strn);
         return $strn;
-    }/*}}}*/
+    }
 }

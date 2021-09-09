@@ -23,7 +23,7 @@ class exchange_rates
     {
         $id = (int) $id;
         return $this->get_exchange_rates("id=${id}", $b_firstrow=true);
-    }/*}}}*/
+    }
 
     public function get_exchange_rates($where='1=1', $b_firstrow=false)
     {
@@ -35,5 +35,5 @@ class exchange_rates
             return $rowset[0];
         }
         return $rowset;
-    }/*}}}*/
+    }
 }

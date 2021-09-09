@@ -25,7 +25,7 @@ class bank_transaction_logger
         $sql = 'INSERT INTO ' . $this->tbl['bank_transaction_items'] . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function create_transaction($user_id, $broker_id=-1)
     {
@@ -42,7 +42,7 @@ class bank_transaction_logger
         $sql = 'INSERT INTO ' . $this->tbl['bank_transactions'] . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return (int) $this->db->sql_nextid();
-    }/*}}}*/
+    }
 
 
     public function get_user_bank_transactions($user_id)

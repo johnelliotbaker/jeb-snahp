@@ -31,7 +31,7 @@ class economy_dashboard
         $bank_user_account,
         $user_inventory,
         $product_class
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -49,7 +49,7 @@ class economy_dashboard
         $sauth->reject_non_dev('2cb063ea41');
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode) {
         case 'overview':
@@ -61,7 +61,7 @@ class economy_dashboard
         trigger_error('Nothing to see here. Move along.');
     }
 
-    private function get_bank_transaction_data_for_pagination($start, $per_page)/*{{{*/
+    private function get_bank_transaction_data_for_pagination($start, $per_page)
     {
         $tbl_main = $this->tbl['bank_transactions'];
         $tbl_items = $this->tbl['bank_transaction_items'];
@@ -102,7 +102,7 @@ class economy_dashboard
         return [$rowset, $total];
     }
 
-    private function get_market_invoice_data_for_pagination($start, $per_page)/*{{{*/
+    private function get_market_invoice_data_for_pagination($start, $per_page)
     {
         $tbl_main = $this->tbl['mrkt_invoices'];
         $tbl_items = $this->tbl['mrkt_invoice_items'];
@@ -143,7 +143,7 @@ class economy_dashboard
         return [$rowset, $total];
     }
 
-    public function handle_overview($cfg)/*{{{*/
+    public function handle_overview($cfg)
     {
         $type = $this->request->variable('t', 'bank');
         $start = $this->request->variable('start', 0);
@@ -176,7 +176,7 @@ class economy_dashboard
         return $this->helper->render($cfg['tpl_name'], 'Snahp Economy Dashboard');
     }
 
-    private function get_comment_or_empty($data)/*{{{*/
+    private function get_comment_or_empty($data)
     {
         $data = unserialize($data);
         $comment = isset($data['comment']) ? $data['comment'] : '';

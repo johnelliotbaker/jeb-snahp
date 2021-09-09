@@ -12,7 +12,7 @@ class digg extends base
 
     public function __construct()
     {
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -74,27 +74,27 @@ class digg extends base
             trigger_error('Invalid request category. Error Code: 57f43ea934');
             break;
         }
-    }/*}}}*/
+    }
 
     public function subscribe($cfg)
     {
         $this->subscribe_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('You are now subscribed to this topic.');
-    }/*}}}*/
+    }
 
     public function subscribe_digg($topic_id)
     {
         $user_id = $this->user->data['user_id'];
         $this->upsert_digg_slave($topic_id);
-    }/*}}}*/
+    }
 
     public function unsubscribe($cfg)
     {
         $this->unsubscribe_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('You have unsubscribed from this topic.');
-    }/*}}}*/
+    }
 
     public function unsubscribe_digg($topic_id)
     {
@@ -107,7 +107,7 @@ class digg extends base
             false,
             $user_id
         );
-    }/*}}}*/
+    }
 
     public function unregister($cfg)
     {
@@ -115,7 +115,7 @@ class digg extends base
         return $this->confirm_unregister_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was unregistered successfully.');
-    }/*}}}*/
+    }
 
     public function confirm_unregister_digg($topic_id)
     {
@@ -135,7 +135,7 @@ class digg extends base
             'TOPIC_TITLE' => $topic_data['topic_title'],
         ]);
         return $this->helper->render('@jeb_snahp/digg/component/confirm_unregister/base.html');
-    }/*}}}*/
+    }
 
     public function unregister_digg($topic_id)
     {
@@ -157,14 +157,14 @@ class digg extends base
             false,
             false
         );
-    }/*}}}*/
+    }
 
     public function register($cfg)
     {
         $this->register_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was registered successfully.');
-    }/*}}}*/
+    }
 
     public function register_digg($topic_id)
     {
@@ -179,14 +179,14 @@ class digg extends base
             trigger_error('You have already registered this digg. Error Code: 28c3e2247b');
         }
         $this->upsert_digg_master($topic_id);
-    }/*}}}*/
+    }
 
     public function broadcast($cfg)
     {
         $this->broadcast_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was broadcast successfully.');
-    }/*}}}*/
+    }
 
     public function broadcast_digg($topic_id)
     {
@@ -214,7 +214,7 @@ class digg extends base
             $this->topic_data
         );
         $this->update_notifications('jeb.snahp.notification.type.digg', $topic_id);
-    }/*}}}*/
+    }
 
     private function update_notifications($notification_type_name, $topic_id)
     {
@@ -225,7 +225,7 @@ class digg extends base
             SET notification_read=0, notification_time={$time}
             WHERE item_id={$topic_id} AND notification_type_id={$notification_type_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function delete_digg_slave($topic_id, $where='1=1')
     {
@@ -234,14 +234,14 @@ class digg extends base
         $sql = 'DELETE FROM ' . $tbl['digg_slave'] . "
             WHERE topic_id={$topic_id} AND $where";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function delete_digg_master($topic_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'DELETE FROM ' . $tbl['digg_master'] . ' WHERE topic_id=' . (int) $topic_id;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function upsert_digg_slave($topic_id)
     {
@@ -254,7 +254,7 @@ class digg extends base
         $sql = 'INSERT INTO ' . $tbl['digg_slave'] . $this->db->sql_build_array('INSERT', $data) . "
             ON DUPLICATE KEY UPDATE user_id={$user_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function upsert_digg_master($topic_id)
     {
@@ -269,7 +269,7 @@ class digg extends base
         $sql = 'INSERT INTO ' . $tbl['digg_master'] . $this->db->sql_build_array('INSERT', $data) . "
             ON DUPLICATE KEY UPDATE broadcast_time={$broadcast_time}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function send_message($data)
     {
@@ -277,5 +277,5 @@ class digg extends base
         echo PHP_EOL;
         ob_flush();
         flush();
-    }/*}}}*/
+    }
 }

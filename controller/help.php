@@ -10,7 +10,7 @@ class help extends base
 
     public function __construct()
     {
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -32,12 +32,12 @@ class help extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-    }/*}}}*/
+    }
 
     public function docs($cfg)
     {
         return $this->show_docs($cfg);
-    }/*}}}*/
+    }
 
     private function show_docs($cfg)
     {
@@ -50,5 +50,5 @@ class help extends base
         case 'digg_register':
             return $this->helper->render('@jeb_snahp/help/component/digg/component/register/base.html');
         }
-    }/*}}}*/
+    }
 }

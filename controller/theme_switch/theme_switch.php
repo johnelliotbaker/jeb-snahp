@@ -26,7 +26,7 @@ class theme_switch
       $helper,
       $tbl,
       $sauth
-  )/*{{{*/
+  )
   {
         $this->db = $db;
         $this->user = $user;
@@ -41,7 +41,7 @@ class theme_switch
         $this->sauth->reject_anon('Error Code: 5954856517');
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode) {
     case 'theme_switch':
@@ -78,7 +78,7 @@ class theme_switch
         return false;
     }
 
-    public function respond_theme_switch_as_json()/*{{{*/
+    public function respond_theme_switch_as_json()
     {
         $style_name = (string) $this->request->variable('style_name', 'prosilver');
         $success = $this->set_user_style($style_name);

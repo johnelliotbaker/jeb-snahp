@@ -31,7 +31,7 @@ class rh_tags_list
         $tbl,
         $sauth,
         $tags_helper
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -49,7 +49,7 @@ class rh_tags_list
         $this->whitelist_cfg_name = 'robertheim_topictags_whitelist';
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode) {
         case 'whitelist':
@@ -70,13 +70,13 @@ class rh_tags_list
         trigger_error('Nothing to see here. Move along.');
     }
 
-    private function comma_string_to_list($strn)/*{{{*/
+    private function comma_string_to_list($strn)
     {
         $strn = preg_replace('#\s+#', '', $strn);
         return explode(',', $strn);
     }
 
-    private function number_string_to_list($forum_id_strn)/*{{{*/
+    private function number_string_to_list($forum_id_strn)
     {
         $strn = preg_replace('#\s+#', '', $forum_id_strn);
         $strn = preg_replace('#\-+#', '-', $forum_id_strn);
@@ -92,7 +92,7 @@ class rh_tags_list
         }));
     }
 
-    public function respond_forum_map($cfg)/*{{{*/
+    public function respond_forum_map($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -136,7 +136,7 @@ class rh_tags_list
         }
     }
 
-    public function respond_group_map($cfg)/*{{{*/
+    public function respond_group_map($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -177,7 +177,7 @@ class rh_tags_list
         }
     }
 
-    private function convert_whitelist_for_config_text($whitelist)/*{{{*/
+    private function convert_whitelist_for_config_text($whitelist)
     {
         $whitelist = explode(',', $whitelist);
         $whitelist = array_map(function ($elem) {
@@ -192,7 +192,7 @@ class rh_tags_list
         return $whitelist;
     }
 
-    public function respond_whitelist($cfg)/*{{{*/
+    public function respond_whitelist($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -228,7 +228,7 @@ class rh_tags_list
         }
     }
 
-    private function make_tag_group_tree()/*{{{*/
+    private function make_tag_group_tree()
     {
         $cd = 3600;
         $sql_array = [
@@ -247,7 +247,7 @@ class rh_tags_list
         return $data;
     }
 
-    private function make_forum_tag_tree()/*{{{*/
+    private function make_forum_tag_tree()
     {
         $cd = 3600;
         $fid_listings = $this->config['snp_fid_listings'];
@@ -277,7 +277,7 @@ class rh_tags_list
         return $data;
     }
 
-    public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)
     {
         global $phpbb_root;
         include_once($phpbb_root . 'includes/functions_admin.php');
@@ -287,7 +287,7 @@ class rh_tags_list
         }, $fid);
     }
 
-    private function get_sub_forums()/*{{{*/
+    private function get_sub_forums()
     {
         $fid_listings = $this->config['snp_fid_listings'];
         $allowed_forum_ids = $this->select_subforum($fid_listings, $cd=60);

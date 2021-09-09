@@ -39,7 +39,7 @@ class database_manager
         $this->helper = $helper;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-    }/*}}}*/
+    }
 
     public function handle_commands()
     {
@@ -61,7 +61,7 @@ class database_manager
         }
         $cfg['tpl_name'] = '@jeb_snahp/database_manager/base.html';
         return $this->respond_query($cfg);
-    }/*}}}*/
+    }
 
 
     private function clear_log()
@@ -110,7 +110,7 @@ class database_manager
         }
         $cfg['tpl_name'] = '@jeb_snahp/database_manager/base.html';
         return $this->respond_query($cfg);
-    }/*}}}*/
+    }
 
     private function exec_sql($sql)
     {

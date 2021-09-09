@@ -5,7 +5,7 @@ namespace jeb\snahp\controller;
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 
-/*}}}*/
+
 
 class favorite extends base
 {
@@ -15,7 +15,7 @@ class favorite extends base
     {
         $this->prefix = $prefix;
         $this->perPage = 30;
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -65,7 +65,7 @@ class favorite extends base
             break;
         }
         trigger_error('showing favorite.');
-    }/*}}}*/
+    }
 
     public function handle_accepted_requests($cfg)
     {
@@ -105,7 +105,7 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function handle_open_requests($cfg)
     {
@@ -145,7 +145,7 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function handle_thanks_given($cfg)
     {
@@ -190,7 +190,7 @@ class favorite extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function handle_favorite($cfg)
     {
@@ -223,7 +223,7 @@ class favorite extends base
                 $this->update_user($this->user->data['user_id'], $data);
                 meta_refresh(2.5, $cfg['base_url']);
                 trigger_error('Setting your filter preferences ...');
-            }/*}}}*/
+            }
             $a_forum = [];
             $a_listings_forum_parent = $this->select_subforum_with_name($fid_listings, $cooldown, true);
             $exclude = unserialize($this->user->data['snp_fav_fid_exclude']);
@@ -318,5 +318,5 @@ class favorite extends base
             add_form_key('jeb_snp');
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 }

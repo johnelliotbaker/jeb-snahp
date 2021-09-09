@@ -30,7 +30,7 @@ class helper
         $user_inventory,
         $invite_helper,
         $market_transaction_logger
-    ) {/*{{{*/
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -56,21 +56,21 @@ class helper
     // Public Functions to be called
 
     public function send_message($data)
-    {/*{{{*/
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }
 
-    public function set_cycle_time($cycle_time)/*{{{*/
+    public function set_cycle_time($cycle_time)
     {
         $this->sauth->reject_non_dev();
         $this->config->set('snp_giv_cycle_time', (int) $cycle_time);
         return true;
     }
 
-    private function count_received_gift($user_id)/*{{{*/
+    private function count_received_gift($user_id)
     {
         $user_id = (int) $user_id;
         $sql = 'SELECT COUNT(*) as total FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id}";
@@ -80,12 +80,12 @@ class helper
         return isset($row['total']) ? $row['total'] : 0;
     }
 
-    private function is_gift_count_excess($user_id)/*{{{*/
+    private function is_gift_count_excess($user_id)
     {
         return $this->count_received_gift($user_id) >= $this->max_gift;
     }
 
-    private function time_to_next_interval($time, $start_time, $end_time, $latest_unwrap_time)/*{{{*/
+    private function time_to_next_interval($time, $start_time, $end_time, $latest_unwrap_time)
     {
         $interval = max($this->cycle_time, 1);
         $range = range($start_time, $end_time, $interval);
@@ -98,7 +98,7 @@ class helper
         return [true, 0];
     }
 
-    public function get_unwrap_status($user_id)/*{{{*/
+    public function get_unwrap_status($user_id)
     {
         $bin_type = 'from-last-prize';
         // if ($this->sauth->is_dev()) return ['ready', 0];
@@ -130,13 +130,13 @@ class helper
         return [$ready ? 'ready' : 'not_ready', $time_left];
     }
 
-    public function can_unwrap($user_id)/*{{{*/
+    public function can_unwrap($user_id)
     {
         [$status, $t] = $this->get_unwrap_status($user_id);
         return $status==='ready';
     }
 
-    private function isClaimed($user_id, $type_name, $item_name)/*{{{*/
+    private function isClaimed($user_id, $type_name, $item_name)
     {
         $sql = 'SELECT 1 FROM ' . $this->tbl['giveaways'] . "
             WHERE user_id=${user_id} AND type_name='${type_name}' AND item_name='${item_name}'";
@@ -146,7 +146,7 @@ class helper
         return !!$row;
     }
 
-    public function mark_unread($item_id, $user_id)/*{{{*/
+    public function mark_unread($item_id, $user_id)
     {
         $t0 = $this->tbl['notifications'];
         $t1 = $this->tbl['notification_types'];
@@ -158,7 +158,7 @@ class helper
         $this->db->sql_query($sql);
     }
 
-    public function manual_giveaway($simulate=true)/*{{{*/
+    public function manual_giveaway($simulate=true)
     {
         $js = new \phpbb\json_response();
         header('Content-Type: text/event-stream');
@@ -253,7 +253,7 @@ class helper
         }
     }
 
-    public function simulate($n=10000)/*{{{*/
+    public function simulate($n=10000)
     {
         return false;
         $user_id = $this->user_id;
@@ -273,7 +273,7 @@ class helper
         return $item_def;
     }
 
-    private function apply_streak($user_id, $item_def)/*{{{*/
+    private function apply_streak($user_id, $item_def)
     {
         $item_type = $item_def['type'];
         $job_queue = $item_def['job_queue'];
@@ -300,7 +300,7 @@ class helper
         return $job_queue;
     }
 
-    public function give_random_item()/*{{{*/
+    public function give_random_item()
     {
         $user_id = $this->user_id;
         $b_unwrap = $this->can_unwrap($user_id);
@@ -316,7 +316,7 @@ class helper
         return $item_def;
     }
 
-    private function is_after_double_time()/*{{{*/
+    private function is_after_double_time()
     {
         // Hardcode double time as 1 day before end time
         // see randomly_choose_item() for follow up
@@ -328,7 +328,7 @@ class helper
         return time() > $double_time;
     }
 
-    private function randomly_generate_item()/*{{{*/
+    private function randomly_generate_item()
     {
         $mode = 'normal';
         if ($this->is_after_double_time()) {
@@ -339,7 +339,7 @@ class helper
         return $item_def;
     }
 
-    public function get_user_history($user_id=null)/*{{{*/
+    public function get_user_history($user_id=null)
     {
         $user_id = $user_id===null ? $user_id=$this->user_id : (int) $user_id;
         ;
@@ -350,7 +350,7 @@ class helper
         return $rowset;
     }
 
-    private function insert_item($item_name, $user_id, $extra=[])/*{{{*/
+    private function insert_item($item_name, $user_id, $extra=[])
     {
         $data = [
             'user_id' => $user_id,
@@ -363,7 +363,7 @@ class helper
         $this->db->sql_query($sql);
     }
 
-    private function process_job_queue($job_queue, $user_id)/*{{{*/
+    private function process_job_queue($job_queue, $user_id)
     {
         foreach ($job_queue as $job_name => $job_data) {
             $callback_name = 'process_' . $job_name;
@@ -371,7 +371,7 @@ class helper
         }
     }
 
-    private function randomly_choose_item($mode='normal')/*{{{*/
+    private function randomly_choose_item($mode='normal')
     {
         foreach (array_reverse($this->item_defs) as $key => $item) {
             if ($mode==='double') {
@@ -385,12 +385,12 @@ class helper
         }
     }
 
-    private function deposit_fund($user_id, $amount, $comment)/*{{{*/
+    private function deposit_fund($user_id, $amount, $comment)
     {
         $this->bank_user_account->create_transaction_and_deposit($amount, $user_id, -1, $comment);
     }
 
-    private function process_giveaway_custom_rank($jobdata, $user_id)/*{{{*/
+    private function process_giveaway_custom_rank($jobdata, $user_id)
     {
         $comment = $this->event_display_name . " (${jobdata['display_name']})";
         $this->user_inventory->do_add_item_with_logging(
@@ -401,7 +401,7 @@ class helper
         );
     }
 
-    private function process_giveaway_shatners($jobdata, $user_id)/*{{{*/
+    private function process_giveaway_shatners($jobdata, $user_id)
     {
         $amount = $jobdata['amount'];
         $display_name = $jobdata['display_name'];
@@ -409,7 +409,7 @@ class helper
         $this->deposit_fund($user_id, $amount, $comment);
     }
 
-    private function process_giveaway_invites($jobdata, $user_id)/*{{{*/
+    private function process_giveaway_invites($jobdata, $user_id)
     {
         $logger = $this->market_transaction_logger;
         $amount = $jobdata['amount'];
@@ -427,7 +427,7 @@ class helper
         // $this->deposit_fund($user_id, $amount, $comment);
     }
 
-    private function process_giveaway_arcana($jobdata, $user_id)/*{{{*/
+    private function process_giveaway_arcana($jobdata, $user_id)
     {
         $logger = $this->market_transaction_logger;
         $comment = $this->event_display_name . " (${jobdata['display_name']})";
@@ -439,7 +439,7 @@ class helper
         // $this->deposit_fund($user_id, $amount, $comment);
     }
 
-    private function process_apply_streak_multiplier($jobdata, $user_id)/*{{{*/
+    private function process_apply_streak_multiplier($jobdata, $user_id)
     {
         $level = $jobdata['level'];
         $multiplier_def = [
@@ -461,7 +461,7 @@ class helper
         $this->deposit_fund($user_id, $amount, $comment);
     }
 
-    public function setup_block_data()/*{{{*/
+    public function setup_block_data()
     {
         $user_id = $this->user_id;
         $tbl = $this->tbl;

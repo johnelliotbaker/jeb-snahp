@@ -52,7 +52,7 @@ class PageNumberPagination
         // TODO: This is why we need to turn Page into iterator
         // return list($this->page);
         return $this->page;
-    }/*}}}*/
+    }
 
     public function getPageSize($request)
     {
@@ -63,7 +63,7 @@ class PageNumberPagination
             }
         }
         return $this->pageSize;
-    }/*}}}*/
+    }
 
     public function getNextLink()
     {
@@ -77,7 +77,7 @@ class PageNumberPagination
         }
         $data = ['page' => $pageNumber];
         return buildAbsoluteUri($this->request, $data);
-    }/*}}}*/
+    }
 
     public function getPreviousLink()
     {
@@ -91,7 +91,7 @@ class PageNumberPagination
         }
         $data = ['page' => $pageNumber];
         return buildAbsoluteUri($this->request, $data);
-    }/*}}}*/
+    }
 
     public function getPaginatedResponse($data)
     {
@@ -102,5 +102,5 @@ class PageNumberPagination
             'results' => $data,
         ];
         return new JsonResponse($data, 200);
-    }/*}}}*/
+    }
 }

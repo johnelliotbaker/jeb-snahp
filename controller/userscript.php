@@ -45,7 +45,7 @@ class userscript extends base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return isset($row['user_colour']) ? $row['user_colour'] : false;
-    }/*}}}*/
+    }
 
     private function is_valid_user($user_id)
     {
@@ -53,12 +53,12 @@ class userscript extends base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         return !!$row;
-    }/*}}}*/
+    }
 
     private function is_valid_user_colour($user_colour)
     {
         return ctype_xdigit($user_colour) && strlen($user_colour) == 6;
-    }/*}}}*/
+    }
 
     private function reset_user_colour($user_id)
     {
@@ -80,7 +80,7 @@ class userscript extends base
         $group_colour = $row['group_colour'];
         $this->set_user_colour($user_id, $group_colour);
         return true;
-    }/*}}}*/
+    }
 
     private function set_user_colour($user_id, $user_colour)
     {
@@ -90,7 +90,7 @@ class userscript extends base
             WHERE user_id=${user_id}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
     public function set_user_colour_as_json()
     {
@@ -110,7 +110,7 @@ class userscript extends base
         }
         $b_success = $this->set_user_colour($profile_id, $user_colour) ? 1 : 0;
         return new JsonResponse(['status' => $b_success]);
-    }/*}}}*/
+    }
 
     public function handle_userid()
     {
@@ -132,7 +132,7 @@ class userscript extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }/*}}}*/
+    }
 
     public function handle_username()
     {
@@ -151,7 +151,7 @@ class userscript extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }/*}}}*/
+    }
 
     public function get_or_reject_topic_data($tid)
     {
@@ -163,7 +163,7 @@ class userscript extends base
             trigger_error('That topic does not exist.');
         }
         return $topicdata;
-    }/*}}}*/
+    }
 
     public function enable_bump_topic($bEnable=true)
     {
@@ -222,7 +222,7 @@ class userscript extends base
         }
         meta_refresh(2, $returnUrl);
         trigger_error($strn);
-    }/*}}}*/
+    }
 
     public function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
     {
@@ -272,7 +272,7 @@ class userscript extends base
             $db->sql_freeresult($result);
             update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time, false);
         }
-    }/*}}}*/
+    }
 
     public function bump_topic()
     {
@@ -324,7 +324,7 @@ class userscript extends base
         }
         meta_refresh(2, $returnUrl);
         trigger_error($strn);
-    }/*}}}*/
+    }
 
     public function handle_bump_topic($cfg)
     {
@@ -370,7 +370,7 @@ class userscript extends base
         }
         meta_refresh(2, $return_url);
         trigger_error($strn);
-    }/*}}}*/
+    }
 
     public function handle_thanks_given($cfg)
     {
@@ -415,7 +415,7 @@ class userscript extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function handle_favorite($cfg)
     {
@@ -472,5 +472,5 @@ class userscript extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 }

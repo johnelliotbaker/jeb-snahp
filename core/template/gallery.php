@@ -22,7 +22,7 @@ class gallery
         $this->options['justify_content'] = array_key_exists('justify_content', $options) ? $options['justify_content'] : 'justify-content-left';
     }
 
-    public function handle($mode, $data, $options=[])/*{{{*/
+    public function handle($mode, $data, $options=[])
     {
         $this->set_default_options($options);
         switch ($mode) {
@@ -65,7 +65,7 @@ class gallery
         return '';
     }
 
-    private function handle_cards($data, $options=[])/*{{{*/
+    private function handle_cards($data, $options=[])
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
@@ -130,7 +130,7 @@ class gallery
         return $res;
     }
 
-    private function handle_grid($data, $options=[])/*{{{*/
+    private function handle_grid($data, $options=[])
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '
@@ -174,7 +174,7 @@ class gallery
         return $res;
     }
 
-    private function handle_compact($data, $options=[])/*{{{*/
+    private function handle_compact($data, $options=[])
     {
         $column_size = $this->def['column_sizes'][$options['size']];
         $html['begin'][] = '

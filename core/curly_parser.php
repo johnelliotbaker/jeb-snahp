@@ -12,14 +12,14 @@ class curly_parser
             'table', 'table_autofill',
         ];
         $this->allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
-    }/*}}}*/
+    }
 
     public function get_wrapper_pattern()
     {
         $w = $this->wrapper_tag;
         $ptn = '#{' . $w . '}(.*?){/' . $w . '}#is';
         return $ptn;
-    }/*}}}*/
+    }
 
     public function validate_curly_tags($html)
     {
@@ -41,13 +41,13 @@ class curly_parser
             }
         }
         return true;
-    }/*}}}*/
+    }
 
     public function return_malformed($strn)
     {
         $res = '***Malformed snahp tag.***';
         return $res . '<br>' . $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_curly_table($strn)
     {
@@ -81,7 +81,7 @@ class curly_parser
         }, $strn);
         $strn = str_replace('<br>', '', $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_table_search_master($strn, $tag_name)
     {
@@ -94,7 +94,7 @@ class curly_parser
         $res = implode(PHP_EOL, $res);
         $strn = preg_replace($ptn, $res, $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_gallery($strn, $tag_name, $type, $options=[])
     {
@@ -116,7 +116,7 @@ class curly_parser
         $gallery = new \jeb\snahp\core\template\gallery;
         $html = $gallery->handle($type, $data, $options);
         return $html;
-    }/*}}}*/
+    }
 
     public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)
     {
@@ -156,7 +156,7 @@ class curly_parser
         // instead of string literals.
         // $strn = preg_replace($ptn, $res, $strn);
         // return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_fulfill($strn, $tag_name)
     {
@@ -207,7 +207,7 @@ class curly_parser
 
 </div>';
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_mega_video($strn, $tag_name)
     {
@@ -238,7 +238,7 @@ class curly_parser
             }
         }
         return '';
-    }/*}}}*/
+    }
 
     public function interpolate_ab($strn, $tag_name)
     {
@@ -248,7 +248,7 @@ class curly_parser
         $imgcompare = new \jeb\snahp\core\template\imgcompare();
         $strn = $imgcompare->toHtml($content);
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_youtube($strn, $tag_name)
     {
@@ -259,7 +259,7 @@ class curly_parser
         $content = $match[1];
         $strn = '<div align="center"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/' . $content . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_gfycat($strn, $tag_name)
     {
@@ -270,7 +270,7 @@ class curly_parser
         $content = $match[1];
         $strn = "<div style='position:relative; padding-bottom:calc(75.00% + 44px)'><iframe src='https://gfycat.com/ifr/" . $content . "?&hd=1' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>";
         return $strn;
-    }/*}}}*/
+    }
 
     public function interpolate_img($strn, $tag_name)
     {
@@ -292,7 +292,7 @@ class curly_parser
         $content = preg_replace("#<br>#", PHP_EOL, $content);
         $strn = '<div align="'. $align . '"><img '. $content . '></img></div>';
         return $strn;
-    }/*}}}*/
+    }
 
     private function set_style_type()
     {
@@ -308,7 +308,7 @@ class curly_parser
             $this->style_name = $style_name;
             $this->style_type = in_array($style_name, ['Acieeed!', 'Hexagon']) ? 'dark' : 'light';
         }
-    }/*}}}*/
+    }
 
     public function interpolate_mediainfo($strn, $tag_name)
     {
@@ -322,11 +322,11 @@ class curly_parser
         # $content = preg_replace("#<br>#", PHP_EOL, $content);
         $strn = $content;
         return $strn;
-    }/*}}}*/
+    }
 
     private function parse_general($arr)
     {
-    }/*}}}*/
+    }
 
     public function parse_snahp($strn)
     {
@@ -426,7 +426,7 @@ class curly_parser
             default:
                 $res = 'default';
                 break;
-            }/*}}}*/
+            }
             return $res;
         }, $strn);
         // Stitch back the codebox
@@ -446,14 +446,14 @@ class curly_parser
             $new_strn .= substr($strn, $start);
         }
         return $new_strn;
-    }/*}}}*/
+    }
 
     public function parse($strn)
     {
         $ptn = '#.*#';
         $strn = preg_replace_callback($ptn, 'self::callback', $strn);
         return $strn;
-    }/*}}}*/
+    }
 
     public function is_request($forum_id)
     {
@@ -463,7 +463,7 @@ class curly_parser
         $sub = $this->select_subforum($fid_requests, $cache_time);
         $res = in_array($forum_id, $sub) ? true : false;
         return $res;
-    }/*}}}*/
+    }
 
     private function select_subforum($parent_id, $cooldown=0, $b_immediate=false)
     {
@@ -484,7 +484,7 @@ class curly_parser
         }, $db->sql_fetchrowset($result));
         $db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     private function select_request($tid)
     {
@@ -495,7 +495,7 @@ class curly_parser
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_post($pid, $field='*')
     {
@@ -505,5 +505,5 @@ class curly_parser
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 }

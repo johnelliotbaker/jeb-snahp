@@ -11,7 +11,7 @@
 namespace jeb\snahp\acp;
 
 function prn($var)
-{/*{{{*/
+{
     if (is_array($var)) {
         foreach ($var as $k => $v) {
             echo "$k => ";
@@ -22,7 +22,7 @@ function prn($var)
     }
 }
 
-function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
+function buildSqlSetCase($casename, $varname, $arr)
 {
     $strn = " SET $varname = CASE $casename ";
     foreach ($arr as $k => $v) {
@@ -32,7 +32,7 @@ function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
     return $strn;
 }
 
-function sanitize_fid($fid)/*{{{*/
+function sanitize_fid($fid)
 {
     $fid1 = explode(',', $fid);
     $fid_sane = [];
@@ -56,7 +56,7 @@ class main_module
     public $tpl_name;
     public $u_action;
 
-    public function main($id, $mode)/*{{{*/
+    public function main($id, $mode)
     {
         global $config, $request, $template, $user;
         $user->add_lang_ext('jeb/snahp', 'common');
@@ -139,7 +139,7 @@ class main_module
         }
     }
 
-    public function select_groups()/*{{{*/
+    public function select_groups()
     {
         global $db;
         $sql = 'SELECT * from ' . GROUPS_TABLE;
@@ -152,7 +152,7 @@ class main_module
         return $data;
     }
 
-    public function update_groups($casename, $varname, $arr)/*{{{*/
+    public function update_groups($casename, $varname, $arr)
     {
         global $db;
         $strn = " SET $varname = CASE $casename ";
@@ -164,7 +164,7 @@ class main_module
         $db->sql_query($sql);
     }
 
-    public function update_one_group($group_id, $data)/*{{{*/
+    public function update_one_group($group_id, $data)
     {
         global $db;
         $group_id = (int) $group_id;
@@ -173,7 +173,7 @@ class main_module
         $db->sql_query($sql);
     }
 
-    public function handle_default($cfg)/*{{{*/
+    public function handle_default($cfg)
     {
         global $config, $request, $template, $user, $db;
         // prn(array_keys($GLOBALS)); // Lists all available globals
@@ -193,7 +193,7 @@ class main_module
         }
     }
 
-    private function process_form_fields($a_field)/*{{{*/
+    private function process_form_fields($a_field)
     {
         global $config, $request;
         foreach ($a_field as $entry) {
@@ -204,7 +204,7 @@ class main_module
         }
     }
 
-    private function set_form_fields($a_field)/*{{{*/
+    private function set_form_fields($a_field)
     {
         global $template, $config;
         foreach ($a_field as $entry) {
@@ -219,7 +219,7 @@ class main_module
         }
     }
 
-    private function set_group_form_fields($a_field)/*{{{*/
+    private function set_group_form_fields($a_field)
     {
         global $config, $request, $template;
         $gd = $this->select_groups();
@@ -242,7 +242,7 @@ class main_module
         }
     }
 
-    private function process_group_form_fields($a_field)/*{{{*/
+    private function process_group_form_fields($a_field)
     {
         global $config, $request, $template;
         $gd = $this->select_groups();
@@ -273,7 +273,7 @@ class main_module
         }
     }
 
-    public function handle_thanks($cfg)/*{{{*/
+    public function handle_thanks($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -307,7 +307,7 @@ class main_module
         }
     }
 
-    public function handle_emotes($cfg)/*{{{*/
+    public function handle_emotes($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -339,7 +339,7 @@ class main_module
         }
     }
 
-    public function handle_invite($cfg)/*{{{*/
+    public function handle_invite($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -362,7 +362,7 @@ class main_module
         }
     }
 
-    public function handle_analytics($cfg)/*{{{*/
+    public function handle_analytics($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -410,7 +410,7 @@ class main_module
         }
     }
 
-    public function handle_group_based_search($cfg)/*{{{*/
+    public function handle_group_based_search($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -475,7 +475,7 @@ class main_module
         }
     }
 
-    public function handle_bump_topic($cfg)/*{{{*/
+    public function handle_bump_topic($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -533,7 +533,7 @@ class main_module
         }
     }
 
-    public function handle_request($cfg)/*{{{*/
+    public function handle_request($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -640,7 +640,7 @@ class main_module
         }
     }
 
-    public function handle_notification($cfg)/*{{{*/
+    public function handle_notification($cfg)
     {
         global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];
@@ -684,7 +684,7 @@ class main_module
         }
     }
 
-    public function handle_settings($cfg)/*{{{*/
+    public function handle_settings($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -803,7 +803,7 @@ class main_module
         }
     }
 
-    public function handle_signature($cfg)/*{{{*/
+    public function handle_signature($cfg)
     {
         global $config, $request, $template, $user, $db;
         $tpl_name = $cfg['tpl_name'];
@@ -858,7 +858,7 @@ class main_module
         }
     }
 
-    public function handle_pg($cfg)/*{{{*/
+    public function handle_pg($cfg)
     {
         global $config, $request, $template, $user, $db, $table_prefix;
         $tpl_name = $cfg['tpl_name'];
@@ -1096,7 +1096,7 @@ class main_module
         }
     }
 
-    public function handle_donation($cfg)/*{{{*/
+    public function handle_donation($cfg)
     {
         global $config, $request, $template, $user, $db, $phpbb_container;
         $tpl_name = $cfg['tpl_name'];

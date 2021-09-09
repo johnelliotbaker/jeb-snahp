@@ -42,7 +42,7 @@ class reputation
         $this->sauth = $sauth;
         $this->user_inventory = $user_inventory;
         $this->product_class = $product_class;
-    }/*}}}*/
+    }
 
     public function handle($mode)
     {
@@ -72,7 +72,7 @@ class reputation
             trigger_error('Error Code: 22b8e0e0a5');
             break;
         }
-    }/*}}}*/
+    }
 
     public function mcp_rep_giveaways($cfg)
     {
@@ -96,7 +96,7 @@ class reputation
             trigger_error('Error Code: f26eb5f90b');
         }
         return $this->helper->render($cfg['tpl_name']);
-    }/*}}}*/
+    }
 
     public function mcp_set($cfg)
     {
@@ -113,7 +113,7 @@ class reputation
         $time = sprintf('The procedure took %0.6f seconds.', $time);
         meta_refresh(3, $cfg['u_action']);
         trigger_error("All users' available reputation points were set to {$target}. {$time}");
-    }/*}}}*/
+    }
 
     private function add_user_reputation_pool($user_id, $quantity)
     {
@@ -138,7 +138,7 @@ class reputation
             $quantity = $row['quantity'] + $target;
             $this->add_user_reputation_pool($user_id, $quantity);
         }
-    }/*}}}*/
+    }
 
     public function mcp_set_min($cfg)
     {
@@ -158,12 +158,12 @@ class reputation
         $time = sprintf('The procedure took %0.6f seconds.', $time);
         meta_refresh(3, $cfg['u_action']);
         trigger_error("Users with available reputation points less than {$target} was set to {$target}. {$time}");
-    }/*}}}*/
+    }
 
     public function add($cfg)
     {
         return $this->confirm_add_reputation($cfg);
-    }/*}}}*/
+    }
 
     public function confirm_add_reputation($cfg)
     {
@@ -207,7 +207,7 @@ class reputation
             'N_REP_LEFT' => $n_rep,
         ]);
         return $this->helper->render('@jeb_snahp/reputation/component/confirm_add/base.html');
-    }/*}}}*/
+    }
 
     public function add_reputation($cfg)
     {
@@ -260,7 +260,7 @@ class reputation
         $n_avail -= 1;
         meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
         trigger_error("You now have {$n_avail} reputation points left.");
-    }/*}}}*/
+    }
 
     private function select_reputation($where)
     {
@@ -270,7 +270,7 @@ class reputation
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     private function select_reputation_count($type='post_id', $id)
     {
@@ -295,7 +295,7 @@ class reputation
             return 0;
         }
         return $row['count'];
-    }/*}}}*/
+    }
 
     private function insert_reputation($data)
     {
@@ -303,13 +303,13 @@ class reputation
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return true;
-    }/*}}}*/
+    }
 
     private function delete_reputation_table()
     {
         $sql = 'DELETE FROM ' . $this->tbl['reputation'] . ' WHERE 1=1';
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function update_giver_on_add($giver_id)
     {
@@ -318,7 +318,7 @@ class reputation
             $this->db->sql_escape($upd_strn) .
             " WHERE user_id={$giver_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function update_poster_on_add($poster_id)
     {
@@ -327,7 +327,7 @@ class reputation
             $this->db->sql_escape($upd_strn) .
             " WHERE user_id={$poster_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function update_notifications($notification_type_name, $post_id, $rep_total)
     {
@@ -345,14 +345,14 @@ class reputation
             SET notification_read=0, notification_time={$time}, notification_data='{$data}'
             WHERE item_id={$post_id} AND notification_type_id={$notification_type_id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function delete_reps_notifications()
     {
         $this->delete_reputation_notifications();
         $js = new \phpbb\json_response();
         $js->send(['status' => 'success']);
-    }/*}}}*/
+    }
 
     public function delete_reputation_notifications()
     {
@@ -367,7 +367,7 @@ class reputation
             WHERE user_id=' . $this->user->data['user_id'] . '
         AND ' . $this->db->sql_in_set('notification_type_id', $type_id);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     private function is_notify($poster_id)
     {
@@ -382,7 +382,7 @@ class reputation
             return false;
         }
         return true;
-    }/*}}}*/
+    }
 
     public function select_post($pid, $field='*')
     {
@@ -391,7 +391,7 @@ class reputation
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function select_user($user_id, $cooldown=0)
     {
@@ -400,13 +400,13 @@ class reputation
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function make_username($row)
     {
         $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
         return $strn;
-    }/*}}}*/
+    }
 
     public function select_rep_total_for_post($post_id, $cachetime=1)
     {
@@ -419,5 +419,5 @@ class reputation
             return 0;
         }
         return (int) $row['count'];
-    }/*}}}*/
+    }
 }

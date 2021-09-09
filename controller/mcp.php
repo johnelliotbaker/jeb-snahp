@@ -48,14 +48,14 @@ class mcp extends base
     }
 
     public function send_message($data)
-    {/*{{{*/
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }
 
-    public function select_topics_with_search($per_page, $start, $forum_id=0, $search='')/*{{{*/
+    public function select_topics_with_search($per_page, $start, $forum_id=0, $search='')
     {
         $cache_time = 1;
         $maxi_query = 3000;
@@ -78,7 +78,7 @@ class mcp extends base
         return [$rowset, $total];
     }
 
-    public function handle_mass_move_v2($cfg)/*{{{*/
+    public function handle_mass_move_v2($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -191,7 +191,7 @@ class mcp extends base
         }
     }
 
-    public function select_moderation_topics($per_page, $start, $forum_id=0, $options=[])/*{{{*/
+    public function select_moderation_topics($per_page, $start, $forum_id=0, $options=[])
     {
         $maxi_query = 3000;
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -236,7 +236,7 @@ class mcp extends base
         return [$rowset, $total];
     }
 
-    public function handle_mass_move($cfg)/*{{{*/
+    public function handle_mass_move($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -322,7 +322,7 @@ class mcp extends base
         }
     }
 
-    public function move_to($a_topic_id, $to_fid)/*{{{*/
+    public function move_to($a_topic_id, $to_fid)
     {
         $this->reject_non_moderator();
         include_once('includes/functions_admin.php');
@@ -332,7 +332,7 @@ class mcp extends base
         return false;
     }
 
-    public function move($a_topic_id)/*{{{*/
+    public function move($a_topic_id)
     {
         $this->reject_non_moderator();
         include_once('includes/functions_admin.php');

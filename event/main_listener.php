@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+
 /**
  *
  * snahp. An extension for the phpBB Forum Software package.
@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 function closetags($html)
-{/*{{{*/
+{
     preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
     $openedtags = $result[1];
     preg_match_all('#</([a-z]+)>#iU', $html, $result);
@@ -59,7 +59,7 @@ class main_listener extends base implements EventSubscriberInterface
         $user_inventory,
         $product_class,
         $sauth
-    ) {/*{{{*/
+    ) {
         $this->table_prefix = $table_prefix;
         $this->sql_limit          = 10;
         $this->notification_limit = 10;
@@ -71,7 +71,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->data = [];
     }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.user_setup'                             => [
@@ -185,7 +185,7 @@ class main_listener extends base implements EventSubscriberInterface
         ];
     }
 
-    public function extract_code_bbcode($text)/*{{{*/
+    public function extract_code_bbcode($text)
     {
         $ptn = '#\[code\](.*?)\[\/code\]#uis';
         preg_match_all($ptn, $text, $codebox_matches);
@@ -195,7 +195,7 @@ class main_listener extends base implements EventSubscriberInterface
         return [$text, $ptn_uuid, $codebox_matches];
     }
 
-    public function reinsert_code_bbcode($text, $ptn_uuid, $codebox_matches)/*{{{*/
+    public function reinsert_code_bbcode($text, $ptn_uuid, $codebox_matches)
     {
         $start = 0;
         $n = strlen($text);
@@ -215,7 +215,7 @@ class main_listener extends base implements EventSubscriberInterface
         return $new_text;
     }
 
-    public function process_base64_bbcode($event)/*{{{*/
+    public function process_base64_bbcode($event)
     {
         $text = $event['text'];
         $ptn = '#\[b64\](.*?)\[\/b64\]#uis';
@@ -234,12 +234,12 @@ class main_listener extends base implements EventSubscriberInterface
         $event['text'] = $text;
     }
 
-    public function set_pm_mode($event)/*{{{*/
+    public function set_pm_mode($event)
     {
         $this->data['mode'] = 'pm';
     }
 
-    public function censor_hide_in_pm($event)/*{{{*/
+    public function censor_hide_in_pm($event)
     {
         // Mode set in set_pm_mode()
         if (!isset($this->data['mode']) || $this->data['mode'] != 'pm') {
@@ -257,7 +257,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['message_text'] = $message_text;
     }
 
-    public function colorize_staff_notification($event)/*{{{*/
+    public function colorize_staff_notification($event)
     {
         if (!$this->is_dev()) {
             return false;
@@ -298,7 +298,7 @@ class main_listener extends base implements EventSubscriberInterface
         // Also temporarily saves the data to send as notification
     }
 
-    public function notify_staff_notification($event)/*{{{*/
+    public function notify_staff_notification($event)
     {
         // The data is fed from colorize_staff_notification
         if (!isset($this->data['staff_notification_group_data'])) {
@@ -334,7 +334,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function modify_user_rank($event)/*{{{*/
+    public function modify_user_rank($event)
     {
         // replace default rank with custom rank
         $post_row = $event['post_row'];
@@ -357,7 +357,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function modify_search_interval($event)/*{{{*/
+    public function modify_search_interval($event)
     {
         // Group Based Search
         $user_id = $this->user->data['user_id'];
@@ -385,7 +385,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['interval'] = $interval;
     }
 
-    public function setup_viewtopic_modify_post_row_data($event)/*{{{*/
+    public function setup_viewtopic_modify_post_row_data($event)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $post_row = $event['post_row'];
@@ -413,7 +413,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->b_rep_given = !!$row;
     }
 
-    public function setup_profile_variables($event)/*{{{*/
+    public function setup_profile_variables($event)
     {
         $visitor_id = (int) $this->user->data['user_id'];
         $data = $event['data'];
@@ -450,7 +450,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function get_user_contributions($user_id)/*{{{*/
+    public function get_user_contributions($user_id)
     {
         $sql = 'SELECT snp_rep_n_received, snp_thanks_n_received, snp_req_n_solve FROM ' . USERS_TABLE . " WHERE user_id={$user_id}";
         $result = $this->db->sql_query($sql, 30);
@@ -459,7 +459,7 @@ class main_listener extends base implements EventSubscriberInterface
         return $row;
     }
 
-    public function show_reputation_in_profile($event)/*{{{*/
+    public function show_reputation_in_profile($event)
     {
         if (!$this->config['snp_rep_b_master']) {
             return false;
@@ -515,7 +515,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function shorter_join_date($event)/*{{{*/
+    public function shorter_join_date($event)
     {
         $row = $event['row'];
         $user_cache_data = $event['user_cache_data'];
@@ -523,7 +523,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['user_cache_data'] = $user_cache_data;
     }
 
-    // public function show_badges_in_avatar($event)/*{{{*/
+    // public function show_badges_in_avatar($event)
     // {
     //     $poster_data = $this->poster_data;
     //     if (!$poster_data) {
@@ -540,7 +540,7 @@ class main_listener extends base implements EventSubscriberInterface
     //     $event['post_row'] = $post_row;
     // }
 
-    public function show_reputation_in_avatar($event)/*{{{*/
+    public function show_reputation_in_avatar($event)
     {
         if (!$this->config['snp_rep_b_master']) {
             return false;
@@ -573,7 +573,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function show_achievements_in_profile($event)/*{{{*/
+    public function show_achievements_in_profile($event)
     {
         if (!$this->config['snp_achi_b_master']) {
             return false;
@@ -614,7 +614,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function show_achievements_in_avatar($event)/*{{{*/
+    public function show_achievements_in_avatar($event)
     {
         if (!$this->config['snp_achi_b_master']) {
             return false;
@@ -659,7 +659,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function print_version_on_footer($event)/*{{{*/
+    public function print_version_on_footer($event)
     {
         $ext = $this->container->get('ext.manager');
         $md_manager = $ext->create_extension_metadata_manager('jeb/snahp');
@@ -671,7 +671,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function disable_email_notification($event)/*{{{*/
+    public function disable_email_notification($event)
     {
         $type = $event['notification_type_name'];
         if (substr($type, 0, 3) == 'jeb') {
@@ -688,7 +688,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['notify_users'] = $notify_users;
     }
 
-    public function embed_digg_controls_in_topic($event)/*{{{*/
+    public function embed_digg_controls_in_topic($event)
     {
         if (!$this->config['snp_b_snahp_notify'] || !$this->config['snp_digg_b_master'] || !$this->config['snp_digg_b_notify']) {
             return false;
@@ -758,7 +758,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function disable_magic_url_on_gallery($event)/*{{{*/
+    public function disable_magic_url_on_gallery($event)
     {
         $mp = $event['message_parser'];
         $message = $mp->message;
@@ -771,7 +771,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function encode_tags_on_display_forums($event)/*{{{*/
+    public function encode_tags_on_display_forums($event)
     {
         // For showing the minified tags on forum listings
         $forum_rows = $event['forum_rows'];
@@ -790,7 +790,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function decode_tags_on_display_forums($event)/*{{{*/
+    public function decode_tags_on_display_forums($event)
     {
         $forum_row = $event['forum_row'];
         if (is_array($forum_row)) {
@@ -801,14 +801,14 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function search_modify_param_before($event)/*{{{*/
+    public function search_modify_param_before($event)
     {
         $sort_by_sql = $event['sort_by_sql'];
         $sort_by_sql += ['x' => 't.topic_time'];
         $event['sort_by_sql'] = $sort_by_sql;
     }
 
-    public function show_thanks_given_in_profile($event)/*{{{*/
+    public function show_thanks_given_in_profile($event)
     {
         if ($this->is_dev()) {
             $member = $event['member'];
@@ -829,7 +829,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function show_inviter_in_profile($event)/*{{{*/
+    public function show_inviter_in_profile($event)
     {
         if ($this->is_dev()) {
             $member = $event['member'];
@@ -848,14 +848,14 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function remove_hide_in_pm_on_submit($event)/*{{{*/
+    public function remove_hide_in_pm_on_submit($event)
     {
         $mp = $event['message_parser'];
         $msg = &$mp->message;
         $msg = preg_replace('/(\[hide=?"?)([^\]"]*)("?\])([^\[]*)(\[\/hide\])/i', 'HIDDEN CONTENT WAS REMOVED', $msg);
     }
 
-    public function setup_core_vars($event)/*{{{*/
+    public function setup_core_vars($event)
     {
         $this->user_id = $this->user->data['user_id'];
         $n_rep = $this->user->data['snp_rep_n_available'];
@@ -878,7 +878,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function replace_with_host_icons_in_listings($event)/*{{{*/
+    public function replace_with_host_icons_in_listings($event)
     {
         $cache_time = 30;
         $fid = $event['forum_id'];
@@ -901,7 +901,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['rowset'] = $rowset;
     }
 
-    public function show_thanks_for_op($event)/*{{{*/
+    public function show_thanks_for_op($event)
     {
         $cachetime = 30;
         $b_master = $this->config['snp_thanks_b_enable'];
@@ -927,7 +927,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function set_is_listings($event)/*{{{*/
+    public function set_is_listings($event)
     {
         $topic_data = $event['topic_data'];
         if (!array_key_exists('isListings', $this->cache)) {
@@ -936,7 +936,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_var('B_LISTINGS', $this->cache['isListings']);
     }
 
-    public function show_search_index_btn($event)/*{{{*/
+    public function show_search_index_btn($event)
     {
         $topic_data = $event['topic_data'];
         if ($this->is_search_enhancer_allowed($topic_data)) {
@@ -944,7 +944,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function mark_topic_read($event)/*{{{*/
+    public function mark_topic_read($event)
     {
         // phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false);
         $forum_id = $event['forum_id'];
@@ -954,7 +954,7 @@ class main_listener extends base implements EventSubscriberInterface
         markread('topic', $forum_id, $topic_id, $time);
     }
 
-    public function block_zebra_foe_quote($event)/*{{{*/
+    public function block_zebra_foe_quote($event)
     {
         $snp_zebra_b_master = $this->config['snp_zebra_b_master'];
         if (!$snp_zebra_b_master) {
@@ -978,7 +978,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function block_zebra_foe_topicview($event)/*{{{*/
+    public function block_zebra_foe_topicview($event)
     {
         $i_row = $event['current_row_number'];
         if ($i_row > 0) {
@@ -1007,7 +1007,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function disable_quoting_blocker($event)/*{{{*/
+    public function disable_quoting_blocker($event)
     {
         preg_match('#\[quote=([^\]]*)\]#', $event['message_parser']->message, $match);
         if (!$match) {
@@ -1020,7 +1020,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function show_thanks_top_list($event)/*{{{*/
+    public function show_thanks_top_list($event)
     {
         $uid = $this->user->data['user_id'];
         if ($uid == ANONYMOUS) {
@@ -1055,7 +1055,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function show_thanks_avatar($event)/*{{{*/
+    public function show_thanks_avatar($event)
     {
         if (!$this->config['snp_thanks_b_enable']) {
             return false;
@@ -1073,7 +1073,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function show_violations_avatar($event)/*{{{*/
+    public function show_violations_avatar($event)
     {
         $post_row = $event['post_row'];
         $poster_data = $this->poster_data;
@@ -1081,7 +1081,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function show_requests_solved_avatar($event)/*{{{*/
+    public function show_requests_solved_avatar($event)
     {
         if (!$this->config['snp_req_b_avatar']) {
             return false;
@@ -1095,7 +1095,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function giftbox($event)/*{{{*/
+    public function giftbox($event)
     {
         global $phpbb_root_path;
         $ext_path = 'ext/jeb/snahp/styles/all/template/giftbox/';
@@ -1111,7 +1111,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function easter_cluck($event)/*{{{*/
+    public function easter_cluck($event)
     {
         $snp_easter_b_chicken = $this->config['snp_easter_b_chicken'];
         if (!$snp_easter_b_chicken) {
@@ -1136,7 +1136,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function show_bump_button($event)/*{{{*/
+    public function show_bump_button($event)
     {
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
         if (!$snp_bump_b_topic) {
@@ -1170,7 +1170,7 @@ class main_listener extends base implements EventSubscriberInterface
         return false;
     }
 
-    public function process_curly_tags_for_preview($event)/*{{{*/
+    public function process_curly_tags_for_preview($event)
     {
         // For properly rendering snahp tags in post previews
         include_once('includes/functions_content.php');
@@ -1179,7 +1179,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['text'] = $text;
     }
 
-    public function process_curly_tags_for_search($event)/*{{{*/
+    public function process_curly_tags_for_search($event)
     {
         // For properly rendering snahp tags for within topic search
         $tpl_ary = $event['tpl_ary'];
@@ -1188,7 +1188,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['tpl_ary'] = $tpl_ary;
     }
 
-    public function process_curly_tags($event)/*{{{*/
+    public function process_curly_tags($event)
     {
         $post_row = $event['post_row'];
         $message = &$post_row['MESSAGE'];
@@ -1196,7 +1196,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    private function preg_replace_emotes($message)/*{{{*/
+    private function preg_replace_emotes($message)
     {
         $emotes = $this->container->getParameter('jeb.snahp.emotes');
         $ptn = '/#(e_\w+)#/';
@@ -1221,14 +1221,14 @@ class main_listener extends base implements EventSubscriberInterface
         return $message;
     }
 
-    public function process_emotes_for_preview($event)/*{{{*/
+    public function process_emotes_for_preview($event)
     {
         $text = $event['text'];
         $text = $this->preg_replace_emotes($text);
         $event['text'] = $text;
     }
 
-    public function process_emotes($event)/*{{{*/
+    public function process_emotes($event)
     {
         $emotes = $this->container->getParameter('jeb.snahp.emotes');
         $post_row = $event['post_row'];
@@ -1237,7 +1237,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['post_row'] = $post_row;
     }
 
-    public function setup_custom_css($event)/*{{{*/
+    public function setup_custom_css($event)
     {
         $assets_version = $this->config['assets_version'];
         $user_style = $this->user->data['user_style'];
@@ -1291,7 +1291,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function setup_custom_css_after($event)/*{{{*/
+    public function setup_custom_css_after($event)
     {
         // SEASONAL BANNERS
         // $hour = (int) $this->user->format_date(time(), 'H');
@@ -1304,7 +1304,7 @@ class main_listener extends base implements EventSubscriberInterface
         // ]);
     }
 
-    public function modify_quickreply_signature($event)/*{{{*/
+    public function modify_quickreply_signature($event)
     {
         // quickreply adds hidden checkbox with name=attach_sig to always
         // enable signatures. To make this a choice
@@ -1326,7 +1326,7 @@ class main_listener extends base implements EventSubscriberInterface
         $event['data'] = $data;
     }
 
-    public function include_quick_link($event)/*{{{*/
+    public function include_quick_link($event)
     {
         $user_id = $this->config['snp_ql_your_topics'] ? $this->user->data['user_id'] : -1;
         $this->template->assign_vars([
@@ -1341,7 +1341,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function include_donation_navlink($event)/*{{{*/
+    public function include_donation_navlink($event)
     {
         $this->template->assign_vars([
             'B_SHOW_DONATION_NAVLINK' => $this->config['snp_don_b_show_navlink'],
@@ -1349,7 +1349,7 @@ class main_listener extends base implements EventSubscriberInterface
         ]);
     }
 
-    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)/*{{{*/
+    public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)
     {
         if (!$aUserdata) {
             return [];
@@ -1372,7 +1372,7 @@ class main_listener extends base implements EventSubscriberInterface
         return $a_user_string;
     }
 
-    public function get_user_data($aUsername)/*{{{*/
+    public function get_user_data($aUsername)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
             $this->db->sql_in_set('username_clean', $aUsername);
@@ -1384,7 +1384,7 @@ class main_listener extends base implements EventSubscriberInterface
         return $data;
     }
 
-    public function modify_dice_roll($event)/*{{{*/
+    public function modify_dice_roll($event)
     {
         $mp = $event['message_parser'];
         $message = &$mp->message;
@@ -1396,7 +1396,7 @@ class main_listener extends base implements EventSubscriberInterface
         $message = preg_replace($a, $b, $message);
     }
 
-    public function colorize_at($event)/*{{{*/
+    public function colorize_at($event)
     {
         if (!$this->config['snp_b_snahp_notify']) {
             return false;
@@ -1436,7 +1436,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function notify_on_poke($event)/*{{{*/
+    public function notify_on_poke($event)
     {
         if (!$this->config['snp_b_snahp_notify']) {
             return false;
@@ -1505,7 +1505,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->trigger_dev_event('jeb.snahp.notify_on_poke_after');
     }
 
-    public function notify_op_on_report($event)/*{{{*/
+    public function notify_op_on_report($event)
     {
         if (!$this->config['snp_b_snahp_notify']) {
             return false;
@@ -1574,7 +1574,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function include_assets_before_posting($event)/*{{{*/
+    public function include_assets_before_posting($event)
     {
         $mode = $event['mode'];
         $b_first_post = false;
@@ -1638,7 +1638,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function insert_new_topic_button($event)/*{{{*/
+    public function insert_new_topic_button($event)
     {
         $forum_id = $this->request->variable('f', '');
         // Note that this means user must properly walk their way into
@@ -1657,7 +1657,7 @@ class main_listener extends base implements EventSubscriberInterface
         // {% elseif T_THEME_NAME == 'basic' %}
     }
 
-    public function disable_signature($event)/*{{{*/
+    public function disable_signature($event)
     {
         $t = $this->template;
         $pr = $event['post_row'];
@@ -1674,7 +1674,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function modify_signature($event)/*{{{*/
+    public function modify_signature($event)
     {
         $disabled_bbcode = join('|', ['list', 'img', 'fimg']);
         $return_url = '/ucp.php?i=ucp_profile&mode=signature';
@@ -1707,7 +1707,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
     }
 
-    public function modify_signature_deprecated($event)/*{{{*/
+    public function modify_signature_deprecated($event)
     {
         // 'core.ucp_profile_modify_signature_sql_ary'   => 'modify_signature',
         $t = $this->template;

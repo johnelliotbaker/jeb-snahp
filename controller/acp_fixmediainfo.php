@@ -9,12 +9,12 @@ class acp_fixmediainfo extends base
 {
     protected $table_prefix;
 
-    public function __construct($table_prefix)/*{{{*/
+    public function __construct($table_prefix)
     {
         $this->table_prefix = $table_prefix;
     }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->reject_non_admin('Error Code: e7fbfe4e4c');
         switch ($mode) {
@@ -30,7 +30,7 @@ class acp_fixmediainfo extends base
         trigger_error('You must specify valid mode.');
     }
 
-    private function text_contains_mediainfo($text)/*{{{*/
+    private function text_contains_mediainfo($text)
     {
         $b_general = preg_match('#General\n#is', $text, $m);
         $b_video = preg_match('#Video\n#is', $text, $m);
@@ -38,25 +38,25 @@ class acp_fixmediainfo extends base
         return $b_general && $b_video && $b_audio;
     }
 
-    private function mediainfo_tag_exists($text)/*{{{*/
+    private function mediainfo_tag_exists($text)
     {
         return preg_match('#\[mediainfo\]#i', $text, $match);
     }
 
-    private function get_first_codebox_content($text)/*{{{*/
+    private function get_first_codebox_content($text)
     {
         $ptn_edit = '#\[code\](.*?)\[\/code\]#is';
         $b_match = preg_match($ptn_edit, $text, $match);
         return $b_match ? trim($match[1]) : null;
     }
 
-    private function replace_codebox_with_mediainfo($text)/*{{{*/
+    private function replace_codebox_with_mediainfo($text)
     {
         $ptn_storage = '#<CODE><s>\[code\]</s>(.*?)<e>\[\/code\]</e></CODE>#is';
         return preg_replace($ptn_storage, '<MEDIAINFO><s>[mediainfo]</s>$1<e>[/mediainfo]</e></MEDIAINFO>', $text, 1);
     }
 
-    public function modify_mediainfo($cfg)/*{{{*/
+    public function modify_mediainfo($cfg)
     {
         global $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher;
         $error = false;
@@ -122,7 +122,7 @@ class acp_fixmediainfo extends base
         $js->send([]);
     }
 
-    public function test($mode)/*{{{*/
+    public function test($mode)
     {
         $data = [];
         $js = new \phpbb\json_response();
@@ -130,7 +130,7 @@ class acp_fixmediainfo extends base
     }
 
     public function send_message($data)
-    {/*{{{*/
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();

@@ -58,7 +58,7 @@ trait ModelSerializerMixin
             $kwargs['model'] = $this->model;
         }
         return new $this->serializerClass($instance, $data, $kwargs);
-    }/*}}}*/
+    }
 }
 
 trait SortByPriorityMixin
@@ -76,7 +76,7 @@ trait SortByPriorityMixin
         $sqlAry[] = 'ORDER BY priority DESC';
         $where = implode(' AND ', $sqlAry);
         return array_values(R::find($this->model::TABLE_NAME, $where));
-    }/*}}}*/
+    }
 }
 
 class GenericAPIView
@@ -92,7 +92,7 @@ class GenericAPIView
     // public function getSerializer($instance=null, $data=null, $kwargs=[])
     // {
     //     return new $this->serializerClass($instance, $data, $kwargs);
-    // }/*}}}*/
+    // }
 
     public function getObject()
     {
@@ -103,7 +103,7 @@ class GenericAPIView
         }
         $this->checkObjectPermissions($this->request, $this->sauth->userId, $object);
         return $object;
-    }/*}}}*/
+    }
 
     public function getQueryset()
     {
@@ -129,12 +129,12 @@ class GenericAPIView
         // }
         // $where = implode(' AND ', $sqlAry);
         // return array_values(R::find($this->model::TABLE_NAME, $where));
-    }/*}}}*/
+    }
 
     public function filterQueryset($queryset)
     {
         return $queryset;
-    }/*}}}*/
+    }
 
     public function paginateQueryset($queryset)
     {
@@ -142,17 +142,17 @@ class GenericAPIView
             return;
         }
         return $this->paginator->paginateQueryset($queryset, $this->request);
-    }/*}}}*/
+    }
 
     public function getPaginatedResponse($data)
     {
         return $this->paginator->getPaginatedResponse($data);
-    }/*}}}*/
+    }
 
     public function getForeignPk($default='')
     {
         return $this->request->variable($this->foreignNameParam, $default);
-    }/*}}}*/
+    }
 }
 
 
@@ -180,27 +180,27 @@ class RetrieveUpdateDestroyAPIView extends GenericAPIView
         default:
             return new JsonResponse(["method"=>$methodName], 404);
         }
-    }/*}}}*/
+    }
 
     public function get($request)
     {
         return $this->retrieve($request);
-    }/*}}}*/
+    }
 
     public function put($request)
     {
         return $this->update($request);
-    }/*}}}*/
+    }
 
     public function patch($request)
     {
         return $this->partialUpdate($request);
-    }/*}}}*/
+    }
 
     public function delete($request)
     {
         return $this->destroy($request);
-    }/*}}}*/
+    }
 }
 
 class ListCreateAPIView extends GenericAPIView
@@ -221,17 +221,17 @@ class ListCreateAPIView extends GenericAPIView
         default:
             return new JsonResponse(["method"=>$methodName], 404);
         }
-    }/*}}}*/
+    }
 
     public function get($request)
     {
         return $this->list($request);
-    }/*}}}*/
+    }
 
     public function post($request)
     {
         return $this->create($request);
-    }/*}}}*/
+    }
 }
 
 trait UpdateModelMixin
@@ -248,18 +248,18 @@ trait UpdateModelMixin
             return new JsonResponse($data, 200);
         }
         return new JsonResponse([], 200);
-    }/*}}}*/
+    }
 
     public function performUpdate($serializer)
     {
         return $serializer->save();
-    }/*}}}*/
+    }
 
     public function partialUpdate($request)
     {
         $partial = true;
         return $this->update($request, $partial);
-    }/*}}}*/
+    }
 }
 
 trait RetrieveModelMixin
@@ -276,7 +276,7 @@ trait RetrieveModelMixin
         $serializedData = $serializer->serialize();
         $serializedData['id'] = $instance->id;
         return new JsonResponse($serializedData);
-    }/*}}}*/
+    }
 }
 
 trait ListModelMixin
@@ -292,7 +292,7 @@ trait ListModelMixin
         }
         $serializer = $this->getSerializer($queryset);
         return new JsonResponse($serializer->data());
-    }/*}}}*/
+    }
 }
 
 trait CreateModelMixin
@@ -307,7 +307,7 @@ trait CreateModelMixin
             return new JsonResponse($instance, 201);
         }
         return new Response('Could not create.', 400);
-    }/*}}}*/
+    }
 
     public function performCreate($serializer)
     {
@@ -320,17 +320,17 @@ trait CreateModelMixin
         }
         $instance = $this->performPostCreate($instance);
         return $instance;
-    }/*}}}*/
+    }
 
     public function performPreCreate($serializer)
     {
         return $serializer;
-    }/*}}}*/
+    }
 
     public function performPostCreate($object)
     {
         return $object;
-    }/*}}}*/
+    }
 
     public function performCreateWithForeignKey($serializer)
     {
@@ -341,7 +341,7 @@ trait CreateModelMixin
         $foreignInstance->$ownlistname[] = $instance;
         R::store($foreignInstance);
         return $instance;
-    }/*}}}*/
+    }
 
     public function getForeignObject()
     {
@@ -356,7 +356,7 @@ trait CreateModelMixin
             die();
         }
         return $foreignInstance;
-    }/*}}}*/
+    }
 }
 
 trait DestroyModelMixin
@@ -368,10 +368,10 @@ trait DestroyModelMixin
             $this->performDestroy($instance);
         }
         return new JsonResponse([], 200);
-    }/*}}}*/
+    }
 
     public function performDestroy($instance)
     {
         R::trash($instance);
-    }/*}}}*/
+    }
 }
