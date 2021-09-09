@@ -14,13 +14,13 @@ class economy_init
     public function __construct(
         $db,
         $tbl
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->tbl = $tbl;
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode)
         {
@@ -30,7 +30,7 @@ class economy_init
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
 
     private function check_row_exists($data, $id_name, $tbl_name)
@@ -57,7 +57,7 @@ class economy_init
         }
 
     }
-    private function init()/*{{{*/
+    private function init()
     {
 
         $data = [
@@ -113,6 +113,6 @@ class economy_init
         ];
         $this->make_row($data, 'name', $this->tbl['mrkt_product_classes']);
         trigger_error('Economy Initialized');
-    }/*}}}*/
+    }
 
 }

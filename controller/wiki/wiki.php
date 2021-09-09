@@ -25,7 +25,7 @@ class wiki
     $db, $user, $config, $request, $template, $container, $helper,
     $tbl,
     $sauth, $parsedown
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -44,7 +44,7 @@ class wiki
         $this->user_id = $this->user->data['user_id'];
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->sauth->reject_anon();
         $cfg['tpl_name'] = $this->templatedir . 'base.html';
@@ -52,7 +52,7 @@ class wiki
         return $this->render($cfg);
     }/*}}}*/
 
-    public function handle_editor($mode)/*{{{*/
+    public function handle_editor($mode)
     {
         $this->sauth->reject_user_not_in_groupset($this->user_id, 'Keepers');
         switch($mode)
@@ -66,7 +66,7 @@ class wiki
         }
     }/*}}}*/
 
-    private function respond_delete_entry_as_json()/*{{{*/
+    private function respond_delete_entry_as_json()
     {
         $name = $this->request->variable('name', '');
         if (!$name)
@@ -77,7 +77,7 @@ class wiki
         return new JsonResponse(['status' => $b_success]);
     }/*}}}*/
 
-    private function get_list()/*{{{*/
+    private function get_list()
     {
         $tbl = $this->tbl['wiki'];
         $sql = 'SELECT name FROM ' . $tbl;
@@ -87,7 +87,7 @@ class wiki
         return $rowset;
     }/*}}}*/
 
-    private function delete_entry($name)/*{{{*/
+    private function delete_entry($name)
     {
         $tbl = $this->tbl['wiki'];
         $name = $this->db->sql_escape($name);
@@ -96,7 +96,7 @@ class wiki
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    private function respond_editor()/*{{{*/
+    private function respond_editor()
     {
         $tbl = $this->tbl['wiki'];
         $tpl_name = $this->editordir . 'base.html';
@@ -178,7 +178,7 @@ class wiki
         return $this->helper->render($tpl_name, 'Wikipedia Editor');
     }/*}}}*/
 
-    private function add_or_edit_entry($name, $text, $b_public=0)/*{{{*/
+    private function add_or_edit_entry($name, $text, $b_public=0)
     {
         $time = time();
         $tbl = $this->tbl['wiki'];
@@ -222,7 +222,7 @@ class wiki
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    private function select_entry($name)/*{{{*/
+    private function select_entry($name)
     {
         $tbl = $this->tbl['wiki'];
         $name = $this->db->sql_escape($name);
@@ -252,19 +252,19 @@ class wiki
         return $row;
     }/*}}}*/
 
-    private function select_nav()/*{{{*/
+    private function select_nav()
     {
         $navigation_name = 'snp_wiki_nav_json';
         return $this->select_entry($navigation_name);
     }/*}}}*/
 
-    private function get_nav_text()/*{{{*/
+    private function get_nav_text()
     {
         $row = $this->select_nav();
         return isset($row['text']) ? $row['text'] : '';
     }/*}}}*/
 
-    private function make_nav_parent_elem_before($entry)/*{{{*/
+    private function make_nav_parent_elem_before($entry)
     {
         $uuid = uniqid('nav_');
         return '<li>
@@ -272,19 +272,19 @@ class wiki
               <ul class="collapse list-unstyled" id="' . $uuid . '">';
     }/*}}}*/
 
-    private function make_nav_parent_elem_after($entry)/*{{{*/
+    private function make_nav_parent_elem_after($entry)
     {
         return '</ul></li>';
     }/*}}}*/
 
-    private function make_nav_leaf_elem($entry)/*{{{*/
+    private function make_nav_leaf_elem($entry)
     {
         $name = $entry['name'];
         $link = $entry['link'];
         return "<li><a href='${link}'>${name}</a></li>"  ;
     }/*}}}*/
 
-    private function make_nav_html()/*{{{*/
+    private function make_nav_html()
     {
         $text = $this->get_nav_text();
         $res = json_decode($text, true);
@@ -300,7 +300,7 @@ class wiki
         return implode(PHP_EOL, $res);
     }/*}}}*/
 
-    private function parse_navigation_entry($entry)/*{{{*/
+    private function parse_navigation_entry($entry)
     {
         if (isset($entry['private']) && $entry['private'] && !$this->b_keepers)
         {
@@ -325,7 +325,7 @@ class wiki
         return $strn;
     }/*}}}*/
 
-    private function render($cfg)/*{{{*/
+    private function render($cfg)
     {
         $name = $cfg['name'];
         $row = $this->select_entry($name);

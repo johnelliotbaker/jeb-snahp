@@ -14,25 +14,25 @@ class MuteUserListener implements EventSubscriberInterface
         $config,
         $user,
         $sauth
-    )/*{{{*/ {
+    ) {
         $this->config = $config;
         $this->user = $user;
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.modify_posting_auth' => [
                 ['muteUser', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function muteUser($event, $event_name)/*{{{*/
+    public function muteUser($event, $event_name)
     {
         $mode = $event["mode"];
         $this->sauth->reject_muted_user($this->user_id, $mode);
-    }/*}}}*/
+    }
 }

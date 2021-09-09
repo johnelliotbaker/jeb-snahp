@@ -14,9 +14,9 @@ class UserView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->sauth->reject_anon('Error Code: cee5910f65');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         $userId = $this->sauth->userId;
         $isDev = $this->sauth->is_dev();
@@ -28,5 +28,5 @@ class UserView
             'isKeeper' => $isKeeper,
         ];
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 }

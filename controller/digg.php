@@ -11,11 +11,11 @@ class digg extends base
     protected $base_url = '';
     protected $topic_data = [];
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         if (!$this->config['snp_b_snahp_notify'])
@@ -84,27 +84,27 @@ class digg extends base
         }
 	}/*}}}*/
 
-    public function subscribe($cfg)/*{{{*/
+    public function subscribe($cfg)
     {
         $this->subscribe_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('You are now subscribed to this topic.');
     }/*}}}*/
 
-    public function subscribe_digg($topic_id)/*{{{*/
+    public function subscribe_digg($topic_id)
     {
         $user_id = $this->user->data['user_id'];
         $this->upsert_digg_slave($topic_id);
     }/*}}}*/
 
-    public function unsubscribe($cfg)/*{{{*/
+    public function unsubscribe($cfg)
     {
         $this->unsubscribe_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('You have unsubscribed from this topic.');
     }/*}}}*/
 
-    public function unsubscribe_digg($topic_id)/*{{{*/
+    public function unsubscribe_digg($topic_id)
     {
         $b_op = $this->is_op($this->topic_data);
         $user_id = $this->user->data['user_id'];
@@ -114,7 +114,7 @@ class digg extends base
         );
     }/*}}}*/
 
-    public function unregister($cfg)/*{{{*/
+    public function unregister($cfg)
     {
         // $this->unregister_digg($this->topic_id);
         return $this->confirm_unregister_digg($this->topic_id);
@@ -122,7 +122,7 @@ class digg extends base
         trigger_error('Your digg was unregistered successfully.');
     }/*}}}*/
 
-    public function confirm_unregister_digg($topic_id)/*{{{*/
+    public function confirm_unregister_digg($topic_id)
     {
         add_form_key('jeb_snp');
         if ($this->request->is_set_post('cancel'))
@@ -144,7 +144,7 @@ class digg extends base
         return $this->helper->render('@jeb_snahp/digg/component/confirm_unregister/base.html');
     }/*}}}*/
 
-    public function unregister_digg($topic_id)/*{{{*/
+    public function unregister_digg($topic_id)
     {
         $b_op = $this->is_op($this->topic_data);
         if (!$b_op)
@@ -165,14 +165,14 @@ class digg extends base
         );
     }/*}}}*/
 
-    public function register($cfg)/*{{{*/
+    public function register($cfg)
     {
         $this->register_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was registered successfully.');
     }/*}}}*/
 
-    public function register_digg($topic_id)/*{{{*/
+    public function register_digg($topic_id)
     {
         $b_op = $this->is_op($this->topic_data);
         if (!$b_op)
@@ -189,14 +189,14 @@ class digg extends base
         $this->upsert_digg_master($topic_id);
     }/*}}}*/
 
-    public function broadcast($cfg)/*{{{*/
+    public function broadcast($cfg)
     {
         $this->broadcast_digg($this->topic_id);
         meta_refresh(2, $this->base_url);
         trigger_error('Your digg was broadcast successfully.');
     }/*}}}*/
 
-    public function broadcast_digg($topic_id)/*{{{*/
+    public function broadcast_digg($topic_id)
     {
         $broadcast_delay = (int) $this->config['snp_digg_broadcast_cooldown'];
         $b_op = $this->is_op($this->topic_data);
@@ -226,7 +226,7 @@ class digg extends base
         $this->update_notifications('jeb.snahp.notification.type.digg', $topic_id);
     }/*}}}*/
 
-    private function update_notifications($notification_type_name, $topic_id)/*{{{*/
+    private function update_notifications($notification_type_name, $topic_id)
     {
         // Previous code used delete + insert. Use proper update instead.
         $notification_type_id = (int) $this->notification->get_notification_type_id($notification_type_name);
@@ -237,7 +237,7 @@ class digg extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function delete_digg_slave($topic_id, $where='1=1')/*{{{*/
+    private function delete_digg_slave($topic_id, $where='1=1')
     {
         $where = $this->db->sql_escape($where);
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -246,14 +246,14 @@ class digg extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function delete_digg_master($topic_id)/*{{{*/
+    private function delete_digg_master($topic_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'DELETE FROM ' . $tbl['digg_master'] . ' WHERE topic_id=' . (int) $topic_id;
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function upsert_digg_slave($topic_id)/*{{{*/
+    private function upsert_digg_slave($topic_id)
     {
         $user_id = $this->user->data['user_id'];
         $data = [
@@ -266,7 +266,7 @@ class digg extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function upsert_digg_master($topic_id)/*{{{*/
+    private function upsert_digg_master($topic_id)
     {
         $user_id = $this->user->data['user_id'];
         $data = [
@@ -281,7 +281,7 @@ class digg extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function send_message($data) {/*{{{*/
+    public function send_message($data) {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();

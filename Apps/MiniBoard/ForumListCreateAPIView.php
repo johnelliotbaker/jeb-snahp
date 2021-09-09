@@ -33,7 +33,7 @@ class ForumListCreateAPIView extends ListCreateAPIView
         $this->model = new Forum();
     }
 
-    public function getQueryset()/*{{{*/
+    public function getQueryset()
     {
         $data = getRequestData($this->request);
         if (!$data) {
@@ -44,11 +44,11 @@ class ForumListCreateAPIView extends ListCreateAPIView
         }
         $where = implode(' AND ', $sqlAry);
         return array_values(\R::find($this->model::TABLE_NAME, $where));
-    }/*}}}*/
+    }
 
-    public function create($request)/*{{{*/
+    public function create($request)
     {
         $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
         return parent::create($request);
-    }/*}}}*/
+    }
 }

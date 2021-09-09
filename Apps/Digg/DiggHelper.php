@@ -18,7 +18,7 @@ class DiggHelper
         $this->userId = $sauth->userId;
     }
 
-    public function getUserDiggSlave($userId)/*{{{*/
+    public function getUserDiggSlave($userId)
     {
         $userId = (int) $userId;
         $sqlArray = [
@@ -40,9 +40,9 @@ class DiggHelper
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $results = $this->paginator->paginateQueryset($queryset, $this->request);
         return $this->paginator->getPaginatedResult($results);
-    }/*}}}*/
+    }
 
-    public function getUserDiggMaster($userId)/*{{{*/
+    public function getUserDiggMaster($userId)
     {
         $userId = (int) $userId;
         $sqlArray = [
@@ -60,5 +60,5 @@ class DiggHelper
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $results = $this->paginator->paginateQueryset($queryset, $this->request);
         return $this->paginator->getPaginatedResult($results);
-    }/*}}}*/
+    }
 }

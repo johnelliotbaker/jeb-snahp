@@ -7,7 +7,7 @@ class MassIndexerHelper
     const CACHE_DURATION_LONG = 0;
     const CHUNK_SIZE = 50;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -29,9 +29,9 @@ class MassIndexerHelper
         $this->sauth = $sauth;
         $this->forumHelper = $forumHelper;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function unindexAllPostsByUsername($username, $rootForum=null)/*{{{*/
+    public function unindexAllPostsByUsername($username, $rootForum=null)
     {
         $userId = $this->sauth->userNameToUserId($username);
         $this->rejectInvalidUser($userId, $username);
@@ -50,9 +50,9 @@ class MassIndexerHelper
             $search->index_remove($chunk, [], []);
         }
         return $total;
-    }/*}}}*/
+    }
 
-    private function getPostsRelatedToUser($userId, $rootForum)/*{{{*/
+    private function getPostsRelatedToUser($userId, $rootForum)
     {
         $where[] = "a.topic_poster={$userId}";
         if ($rootForum) {
@@ -80,9 +80,9 @@ class MassIndexerHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    private function getSearchInstance()/*{{{*/
+    private function getSearchInstance()
     {
         global $phpbb_root_path, $phpEx, $auth, $config;
         global $db, $user, $phpbb_dispatcher;
@@ -101,9 +101,9 @@ class MassIndexerHelper
             $user,
             $phpbb_dispatcher
         );
-    }/*}}}*/
+    }
 
-    private function rejectInvalidForum($forumId)/*{{{*/
+    private function rejectInvalidForum($forumId)
     {
         if (!$forumId) {
             trigger_error(
@@ -111,9 +111,9 @@ class MassIndexerHelper
                 'Error Code: 96f0765076'
             );
         }
-    }/*}}}*/
+    }
 
-    private function rejectInvalidUser($userId, $username='')/*{{{*/
+    private function rejectInvalidUser($userId, $username='')
     {
         if (!$userId) {
             trigger_error(
@@ -121,9 +121,9 @@ class MassIndexerHelper
                 'Error Code: 4781f662d8'
             );
         }
-    }/*}}}*/
+    }
 
-    public function unindexAllPostsByTopic($topicId)/*{{{*/
+    public function unindexAllPostsByTopic($topicId)
     {
         $search = $this->getSearchInstance();
         $rowset = $this->getPostsRelatedToTopic($topicId);
@@ -139,9 +139,9 @@ class MassIndexerHelper
             $search->index_remove($chunk, [], []);
         }
         return $total;
-    }/*}}}*/
+    }
 
-    private function getPostsRelatedToTopic($topicId)/*{{{*/
+    private function getPostsRelatedToTopic($topicId)
     {
         $where[] = "a.topic_id={$topicId}";
         $sql_ary = [
@@ -160,9 +160,9 @@ class MassIndexerHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function unindexAllPostsByForum($forumId)/*{{{*/
+    public function unindexAllPostsByForum($forumId)
     {
         $search = $this->getSearchInstance();
         $rowset = $this->getPostsRelatedToForum($forumId);
@@ -178,9 +178,9 @@ class MassIndexerHelper
             $search->index_remove($chunk, [], []);
         }
         return $total;
-    }/*}}}*/
+    }
 
-    private function getPostsRelatedToForum($forumId)/*{{{*/
+    private function getPostsRelatedToForum($forumId)
     {
         $where[] = "a.forum_id={$forumId}";
         $sql_ary = [
@@ -199,5 +199,5 @@ class MassIndexerHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 }

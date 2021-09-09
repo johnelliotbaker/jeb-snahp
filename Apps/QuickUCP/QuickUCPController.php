@@ -18,7 +18,7 @@ class QuickUCPController
         $this->sauth->reject_anon('Error Code: 87a88735d2');
     }
 
-    public function generalSettings()/*{{{*/
+    public function generalSettings()
     {
         if (getRequestMethod($this->request) === 'POST') {
             $data = getRequestData($this->request);
@@ -39,5 +39,5 @@ class QuickUCPController
             }
         }
         return new JsonResponse($data, 400);
-    }/*}}}*/
+    }
 }

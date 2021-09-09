@@ -39,7 +39,7 @@ class staff_notification extends \phpbb\notification\type\base
         'group' => 'Notification From Snahp',
     );
 
-    private function get_users_in_group($group_id)/*{{{*/
+    private function get_users_in_group($group_id)
     {
         $group_id = (int) $group_id;
         $sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . " WHERE group_id=${group_id} AND user_pending=0";
@@ -47,31 +47,31 @@ class staff_notification extends \phpbb\notification\type\base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-	public function users_to_query()/*{{{*/
+	public function users_to_query()
 	{
         // This sets which users' data will be retrieved by user_loader
         // It can be used e.g. by user_loader->get_avatar() to load the avatar image
         return [(int) $this->get_data('staff_id')];
-	}/*}}}*/
+	}
 
-	public function get_url()/*{{{*/
+	public function get_url()
 	{
         $forum_id = $this->get_data('forum_id');
         $topic_id = $this->get_data('topic_id');
         $post_id  = $this->get_data('post_id');
         $url = "f=${forum_id}&t=${topic_id}&p=${post_id}#p${post_id}";
 		return append_sid($this->phpbb_root_path . 'viewtopic.' . $this->php_ext, "$url");
-	}/*}}}*/
+	}
 
-	public function get_avatar()/*{{{*/
+	public function get_avatar()
 	{
         $staff_id = $this->get_data('staff_id');
         return $this->user_loader->get_avatar($staff_id);
-	}/*}}}*/
+	}
 
-    public function get_title()/*{{{*/
+    public function get_title()
     {
         // This is what's shown on the notification title
         $staff_id = $this->get_data('staff_id');
@@ -79,20 +79,20 @@ class staff_notification extends \phpbb\notification\type\base
         $group_color = $this->get_data('group_color');
         $group_name = $this->get_data('group_name');
         return "{$username} to <span style='color:{$group_color}; font-weight:900;'>{$group_name}</span>";
-    }/*}}}*/
+    }
 
-    public function get_reference()/*{{{*/
+    public function get_reference()
     {
         // This is what's shown on the notification text
         return $this->get_data('topic_title');
-    }/*}}}*/
+    }
 
-	public function get_type()/*{{{*/
+	public function get_type()
 	{
 		return 'jeb.snahp.notification.type.staff_notification';
-	}/*}}}*/
+	}
 
-	public function find_users_for_notification($data, $options = array())/*{{{*/
+	public function find_users_for_notification($data, $options = array())
 	{
         $group_id = $data['group_id'];
         $rowset = $this->get_users_in_group($group_id);
@@ -119,41 +119,41 @@ class staff_notification extends \phpbb\notification\type\base
             }
         }
         return $options;
-	}/*}}}*/
+	}
 
-	public static function get_item_id($data)/*{{{*/
+	public static function get_item_id($data)
 	{
 		return (int) $data['post_id'];
-	}/*}}}*/
+	}
 
-	public function is_available()/*{{{*/
+	public function is_available()
 	{
 		return true;
-	}/*}}}*/
+	}
 
-	public static function get_item_parent_id($data)/*{{{*/
+	public static function get_item_parent_id($data)
 	{
 		return (int) $data['post_id'];
-	}/*}}}*/
+	}
 
-	public function get_redirect_url()/*{{{*/
+	public function get_redirect_url()
 	{
 		return $this->get_url();
-	}/*}}}*/
+	}
 
-	public function get_email_template()/*{{{*/
+	public function get_email_template()
 	{
         // jeb/snahp/language/en/email/digg_notification_email.txt
 		return '@jeb_snahp/staff_notification';
-	}/*}}}*/
+	}
 
-	public function get_email_template_variables()/*{{{*/
+	public function get_email_template_variables()
 	{
 		// $username = $this->user_loader->get_username($this->get_data('poster_id'), 'username');
 		return [];
-	}/*}}}*/
+	}
 
-    public function create_insert_array($data, $pre_create_data = array())/*{{{*/
+    public function create_insert_array($data, $pre_create_data = array())
 	{
         // This gets written in the "notification_data" column of the
         // notification table after serialization
@@ -168,6 +168,6 @@ class staff_notification extends \phpbb\notification\type\base
         $this->set_data('topic_title', $data['topic_title']);
         $this->set_data('post_time', $data['post_time']);
         return parent::create_insert_array($data, $pre_create_data);
-	}/*}}}*/
+	}
 
 }

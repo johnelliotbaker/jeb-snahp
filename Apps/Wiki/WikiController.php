@@ -8,7 +8,7 @@ use \R as R;
 
 class WikiController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,9 +40,9 @@ class WikiController
         $this->sauth = $sauth;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: d77a3c5231');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         $cfg['tpl_name'] = '@jeb_snahp/wiki/rx_wiki.html';
         $cfg['title'] = 'Mass Mover V3';
@@ -50,9 +50,9 @@ class WikiController
         $this->setupCustomCss();
         $this->embedGroup();
         return $this->phpHelper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    public function embedGroup()/*{{{*/
+    public function embedGroup()
     {
         $groups = $this->sauth->get_user_groups($this->sauth->userId);
         $hidden_fields = [
@@ -64,9 +64,9 @@ class WikiController
             'USER_GROUP_MEMBERSHIP' => $s_hidden_fields,
             ]
         );
-    }/*}}}*/
+    }
 
-    public function testDiff()/*{{{*/
+    public function testDiff()
     {
         $new = '<<<HTML
           PHP is a server-side scripting language designed for web development but also used as a general-purpose programming language.
@@ -83,9 +83,9 @@ class WikiController
         $results = xdiff_string_diff($old, $new);
         $patch = xdiff_string_patch($old, $results);
         return new JsonResponse(['results'=>$results, 'patch'=> $patch]);
-    }/*}}}*/
+    }
 
-    public function setupCustomCss()/*{{{*/
+    public function setupCustomCss()
     {
         $assets_version = $this->config['assets_version'];
         $user_style = $this->user->data['user_style'];
@@ -139,5 +139,5 @@ class WikiController
             'ASSETS_VERSION' => $assets_version,
             ]
         );
-    }/*}}}*/
+    }
 }

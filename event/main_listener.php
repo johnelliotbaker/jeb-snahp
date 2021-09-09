@@ -23,7 +23,7 @@ use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/*}}}*/
+
 
 function closetags($html)
 {/*{{{*/
@@ -44,7 +44,7 @@ function closetags($html)
         }
     }
     return $html;
-}/*}}}*/
+}
 
 class main_listener extends base implements EventSubscriberInterface
 {
@@ -71,7 +71,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->product_class = $product_class;
         $this->sauth = $sauth;
         $this->data = [];
-    }/*}}}*/
+    }
 
     public static function getSubscribedEvents()/*{{{*/
     {
@@ -185,7 +185,7 @@ class main_listener extends base implements EventSubscriberInterface
                 ['censor_hide_in_pm', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
     public function extract_code_bbcode($text)/*{{{*/
     {
@@ -195,7 +195,7 @@ class main_listener extends base implements EventSubscriberInterface
         $ptn_uuid = '#' . $uuid . '#s';
         $text = preg_replace($ptn, $uuid, $text);
         return [$text, $ptn_uuid, $codebox_matches];
-    }/*}}}*/
+    }
 
     public function reinsert_code_bbcode($text, $ptn_uuid, $codebox_matches)/*{{{*/
     {
@@ -215,7 +215,7 @@ class main_listener extends base implements EventSubscriberInterface
             $new_text .= substr($text, $start);
         }
         return $new_text;
-    }/*}}}*/
+    }
 
     public function process_base64_bbcode($event)/*{{{*/
     {
@@ -234,12 +234,12 @@ class main_listener extends base implements EventSubscriberInterface
             return ' *** You cannot use b64 encoder ***';
         }, $text);
         $event['text'] = $text;
-    }/*}}}*/
+    }
 
     public function set_pm_mode($event)/*{{{*/
     {
         $this->data['mode'] = 'pm';
-    }/*}}}*/
+    }
 
     public function censor_hide_in_pm($event)/*{{{*/
     {
@@ -257,7 +257,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $message_text = preg_replace('#\[hide\].+\[\/hide\]#is', '{{ HIDDEN CONTENT }}', $message_text);
         $event['message_text'] = $message_text;
-    }/*}}}*/
+    }
 
     public function colorize_staff_notification($event)/*{{{*/
     {
@@ -298,7 +298,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $this->data['staff_notification_group_data'] = $a_group;
         // Also temporarily saves the data to send as notification
-    }/*}}}*/
+    }
 
     public function notify_staff_notification($event)/*{{{*/
     {
@@ -334,7 +334,7 @@ class main_listener extends base implements EventSubscriberInterface
                 $notification_data
             );
         }
-    }/*}}}*/
+    }
 
     public function modify_user_rank($event)/*{{{*/
     {
@@ -357,7 +357,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
         }
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function modify_search_interval($event)/*{{{*/
     {
@@ -385,7 +385,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
         }
         $event['interval'] = $interval;
-    }/*}}}*/
+    }
 
     public function setup_viewtopic_modify_post_row_data($event)/*{{{*/
     {
@@ -413,7 +413,7 @@ class main_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $this->b_rep_given = !!$row;
-    }/*}}}*/
+    }
 
     public function setup_profile_variables($event)/*{{{*/
     {
@@ -450,7 +450,7 @@ class main_listener extends base implements EventSubscriberInterface
             'N_THANKS_RECEIVED' => $thanks_received,
             'N_REQUESTS_SOLVED' => $requests_solved,
         ]);
-    }/*}}}*/
+    }
 
     public function get_user_contributions($user_id)/*{{{*/
     {
@@ -459,7 +459,7 @@ class main_listener extends base implements EventSubscriberInterface
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function show_reputation_in_profile($event)/*{{{*/
     {
@@ -515,7 +515,7 @@ class main_listener extends base implements EventSubscriberInterface
             $this->template->assign_block_vars('reputation', $data);
             $i += 1;
         }
-    }/*}}}*/
+    }
 
     public function shorter_join_date($event)/*{{{*/
     {
@@ -523,7 +523,7 @@ class main_listener extends base implements EventSubscriberInterface
         $user_cache_data = $event['user_cache_data'];
         $user_cache_data['joined'] = $this->user->format_date($row['user_regdate'], 'M d, Y');
         $event['user_cache_data'] = $user_cache_data;
-    }/*}}}*/
+    }
 
     // public function show_badges_in_avatar($event)/*{{{*/
     // {
@@ -540,7 +540,7 @@ class main_listener extends base implements EventSubscriberInterface
     //     $html = $this->badges_helper->process_badges($poster_data, $options);
     //     $post_row['S_BADGE'] = $html;
     //     $event['post_row'] = $post_row;
-    // }/*}}}*/
+    // }
 
     public function show_reputation_in_avatar($event)/*{{{*/
     {
@@ -573,7 +573,7 @@ class main_listener extends base implements EventSubscriberInterface
             $post_row['SHOW_REPUTATION_BTN'] = $this->user->data['user_id'] == $poster_id ? false : true;
         }
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function show_achievements_in_profile($event)/*{{{*/
     {
@@ -614,7 +614,7 @@ class main_listener extends base implements EventSubscriberInterface
             $data['URL']     = $param['url'];
             $this->template->assign_block_vars('achievements', $data);
         }
-    }/*}}}*/
+    }
 
     public function show_achievements_in_avatar($event)/*{{{*/
     {
@@ -659,7 +659,7 @@ class main_listener extends base implements EventSubscriberInterface
         $post_row['S_AVATAR_ACHIEVEMENTS_TITLE'] = $title;
         $post_row['U_AVATAR_ACHIEVEMENTS'] =  $params[$type]['url'];
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function print_version_on_footer($event)/*{{{*/
     {
@@ -671,7 +671,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'S_SNAHP_VERSION' => "v{$version} [{$hash}]",
         ]);
-    }/*}}}*/
+    }
 
     public function disable_email_notification($event)/*{{{*/
     {
@@ -688,7 +688,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
         }
         $event['notify_users'] = $notify_users;
-    }/*}}}*/
+    }
 
     public function embed_digg_controls_in_topic($event)/*{{{*/
     {
@@ -758,7 +758,7 @@ class main_listener extends base implements EventSubscriberInterface
             'S_DIGG_URL_MODE' => $s_digg_url_mode,
             'B_DIGG_CAN_UNREGISTER' => $b_can_unregister,
         ]);
-    }/*}}}*/
+    }
 
     public function disable_magic_url_on_gallery($event)/*{{{*/
     {
@@ -771,7 +771,7 @@ class main_listener extends base implements EventSubscriberInterface
             $post_data['enable_urls'] = 0;
             $event['post_data'] = $post_data;
         }
-    }/*}}}*/
+    }
 
     public function encode_tags_on_display_forums($event)/*{{{*/
     {
@@ -790,7 +790,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
             $event['forum_rows'] = $forum_rows;
         }
-    }/*}}}*/
+    }
 
     public function decode_tags_on_display_forums($event)/*{{{*/
     {
@@ -801,14 +801,14 @@ class main_listener extends base implements EventSubscriberInterface
             $forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $tmp;
             $event['forum_row'] = $forum_row;
         }
-    }/*}}}*/
+    }
 
     public function search_modify_param_before($event)/*{{{*/
     {
         $sort_by_sql = $event['sort_by_sql'];
         $sort_by_sql += ['x' => 't.topic_time'];
         $event['sort_by_sql'] = $sort_by_sql;
-    }/*}}}*/
+    }
 
     public function show_thanks_given_in_profile($event)/*{{{*/
     {
@@ -829,7 +829,7 @@ class main_listener extends base implements EventSubscriberInterface
                 'PROFILE_ID' => $profile_id,
             ]);
         }
-    }/*}}}*/
+    }
 
     public function show_inviter_in_profile($event)/*{{{*/
     {
@@ -848,14 +848,14 @@ class main_listener extends base implements EventSubscriberInterface
                 'INVITER_STRN' => $inviter_strn,
             ]);
         }
-    }/*}}}*/
+    }
 
     public function remove_hide_in_pm_on_submit($event)/*{{{*/
     {
         $mp = $event['message_parser'];
         $msg = &$mp->message;
         $msg = preg_replace('/(\[hide=?"?)([^\]"]*)("?\])([^\[]*)(\[\/hide\])/i', 'HIDDEN CONTENT WAS REMOVED', $msg);
-    }/*}}}*/
+    }
 
     public function setup_core_vars($event)/*{{{*/
     {
@@ -878,7 +878,7 @@ class main_listener extends base implements EventSubscriberInterface
             'T_REP_NEXT' => $t_rep_next,
             'B_RED_TEAM' => $this->user_belongs_to_groupset($this->user_id, 'Red Team'),
         ]);
-    }/*}}}*/
+    }
 
     public function replace_with_host_icons_in_listings($event)/*{{{*/
     {
@@ -901,7 +901,7 @@ class main_listener extends base implements EventSubscriberInterface
             $rowset[$key] = $row;
         }
         $event['rowset'] = $rowset;
-    }/*}}}*/
+    }
 
     public function show_thanks_for_op($event)/*{{{*/
     {
@@ -927,7 +927,7 @@ class main_listener extends base implements EventSubscriberInterface
         $post_row['N_REP'] = $rep_total;
         $post_row['N_THANKS'] = $thanks_total;
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function set_is_listings($event)/*{{{*/
     {
@@ -936,7 +936,7 @@ class main_listener extends base implements EventSubscriberInterface
             $this->cache['isListings'] = $this->is_listing($topic_data, 'topic_data');
         }
         $this->template->assign_var('B_LISTINGS', $this->cache['isListings']);
-    }/*}}}*/
+    }
 
     public function show_search_index_btn($event)/*{{{*/
     {
@@ -944,7 +944,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($this->is_search_enhancer_allowed($topic_data)) {
             $this->template->assign_var('SNP_SEARCH_INDEX_B_ENABLE', true);
         }
-    }/*}}}*/
+    }
 
     public function mark_topic_read($event)/*{{{*/
     {
@@ -954,7 +954,7 @@ class main_listener extends base implements EventSubscriberInterface
         $time = time();
         markread('post', $forum_id, $topic_id, $time);
         markread('topic', $forum_id, $topic_id, $time);
-    }/*}}}*/
+    }
 
     public function block_zebra_foe_quote($event)/*{{{*/
     {
@@ -978,7 +978,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($row && $mode=='quote') {
             trigger_error('Sorry, quoting in this topic is currently disabled.');
         }
-    }/*}}}*/
+    }
 
     public function block_zebra_foe_topicview($event)/*{{{*/
     {
@@ -1007,7 +1007,7 @@ class main_listener extends base implements EventSubscriberInterface
             $post_row['MESSAGE'] = 'Sorry, this post is currently unavailable for viewing.';
             $event['post_row'] = $post_row;
         }
-    }/*}}}*/
+    }
 
     public function disable_quoting_blocker($event)/*{{{*/
     {
@@ -1020,7 +1020,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($foe_blocker_helper->is_blocked_with_blocker_username($this->user_id, $username)) {
             trigger_error("You have been blocked by <b>${username}</b> and cannot quote. Error Code: 299a70edf4");
         }
-    }/*}}}*/
+    }
 
     public function show_thanks_top_list($event)/*{{{*/
     {
@@ -1055,7 +1055,7 @@ class main_listener extends base implements EventSubscriberInterface
             'SNP_THANKS_B_TOPLIST' => true,
             'SNP_THANKS_N_TOTAL' => $n_row,
         ]);
-    }/*}}}*/
+    }
 
     public function show_thanks_avatar($event)/*{{{*/
     {
@@ -1073,7 +1073,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_THANKS_AVATAR' => true,
         ]);
-    }/*}}}*/
+    }
 
     public function show_violations_avatar($event)/*{{{*/
     {
@@ -1081,7 +1081,7 @@ class main_listener extends base implements EventSubscriberInterface
         $poster_data = $this->poster_data;
         $post_row['USER_POSTING_VIOLATIONS'] = $poster_data['snp_violation_count'];
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function show_requests_solved_avatar($event)/*{{{*/
     {
@@ -1095,7 +1095,7 @@ class main_listener extends base implements EventSubscriberInterface
         $this->template->assign_vars([
             'B_SHOW_REQUESTS_SOLVED' => true,
         ]);
-    }/*}}}*/
+    }
 
     public function giftbox($event)/*{{{*/
     {
@@ -1111,7 +1111,7 @@ class main_listener extends base implements EventSubscriberInterface
         $end_html = '';
         $post_row['MESSAGE'] = $start_html . $html . $end_html . $post_row['MESSAGE'];
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function easter_cluck($event)/*{{{*/
     {
@@ -1136,7 +1136,7 @@ class main_listener extends base implements EventSubscriberInterface
         $post_row['MESSAGE'] = $motd_message . $strn;
         $post_row['MESSAGE'] .= '<p style="font-size:.5em; text-align: center;">This is an easter egg</p>';
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function show_bump_button($event)/*{{{*/
     {
@@ -1170,7 +1170,7 @@ class main_listener extends base implements EventSubscriberInterface
             ]
         );
         return false;
-    }/*}}}*/
+    }
 
     public function process_curly_tags_for_preview($event)/*{{{*/
     {
@@ -1179,7 +1179,7 @@ class main_listener extends base implements EventSubscriberInterface
         $text = $event['text'];
         $text = $this->interpolate_curly_tags($text);
         $event['text'] = $text;
-    }/*}}}*/
+    }
 
     public function process_curly_tags_for_search($event)/*{{{*/
     {
@@ -1188,7 +1188,7 @@ class main_listener extends base implements EventSubscriberInterface
         $message = &$tpl_ary['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);
         $event['tpl_ary'] = $tpl_ary;
-    }/*}}}*/
+    }
 
     public function process_curly_tags($event)/*{{{*/
     {
@@ -1196,7 +1196,7 @@ class main_listener extends base implements EventSubscriberInterface
         $message = &$post_row['MESSAGE'];
         $message = $this->interpolate_curly_tags($message);
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     private function preg_replace_emotes($message)/*{{{*/
     {
@@ -1221,14 +1221,14 @@ class main_listener extends base implements EventSubscriberInterface
             }
         }
         return $message;
-    }/*}}}*/
+    }
 
     public function process_emotes_for_preview($event)/*{{{*/
     {
         $text = $event['text'];
         $text = $this->preg_replace_emotes($text);
         $event['text'] = $text;
-    }/*}}}*/
+    }
 
     public function process_emotes($event)/*{{{*/
     {
@@ -1237,7 +1237,7 @@ class main_listener extends base implements EventSubscriberInterface
         $message = &$post_row['MESSAGE'];
         $message = $this->preg_replace_emotes($message);
         $event['post_row'] = $post_row;
-    }/*}}}*/
+    }
 
     public function setup_custom_css($event)/*{{{*/
     {
@@ -1291,7 +1291,7 @@ class main_listener extends base implements EventSubscriberInterface
             'S_STYLE_INFO' => $s_hidden_fields,
             'ASSETS_VERSION' => $assets_version,
         ]);
-    }/*}}}*/
+    }
 
     public function setup_custom_css_after($event)/*{{{*/
     {
@@ -1304,7 +1304,7 @@ class main_listener extends base implements EventSubscriberInterface
         //     'BANNER_IMG_URL' => $banner_url,
         //     'PRELOAD_BANNER_IMG_URLS' => $p_banners,
         // ]);
-    }/*}}}*/
+    }
 
     public function modify_quickreply_signature($event)/*{{{*/
     {
@@ -1326,7 +1326,7 @@ class main_listener extends base implements EventSubscriberInterface
             $data['enable_sig'] = 0;
         }
         $event['data'] = $data;
-    }/*}}}*/
+    }
 
     public function include_quick_link($event)/*{{{*/
     {
@@ -1341,7 +1341,7 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_ACCEPTED_REQUESTS' => $this->config['snp_ql_req_accepted_requests'],
             'S_USER_ID' => $user_id,
         ]);
-    }/*}}}*/
+    }
 
     public function include_donation_navlink($event)/*{{{*/
     {
@@ -1349,7 +1349,7 @@ class main_listener extends base implements EventSubscriberInterface
             'B_SHOW_DONATION_NAVLINK' => $this->config['snp_don_b_show_navlink'],
             'DON_URL' => $this->config['snp_don_url'],
         ]);
-    }/*}}}*/
+    }
 
     public function get_user_string_from_usernames_sql($aUserdata, $prepend='', $bDullBlocked=false)/*{{{*/
     {
@@ -1372,7 +1372,7 @@ class main_listener extends base implements EventSubscriberInterface
             $a_user_string[$username_clean] = $username_string;
         }
         return $a_user_string;
-    }/*}}}*/
+    }
 
     public function get_user_data($aUsername)/*{{{*/
     {
@@ -1384,7 +1384,7 @@ class main_listener extends base implements EventSubscriberInterface
         }
         $this->db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     public function modify_dice_roll($event)/*{{{*/
     {
@@ -1396,7 +1396,7 @@ class main_listener extends base implements EventSubscriberInterface
         $a = '/#roll#/';
         $b = '[center][fimg=250,250]' . 'https://raw.githubusercontent.com/codexologist/img/master/img/roll/ishihara_' . $num . '.png' . '[/fimg][/center]';
         $message = preg_replace($a, $b, $message);
-    }/*}}}*/
+    }
 
     public function colorize_at($event)/*{{{*/
     {
@@ -1436,7 +1436,7 @@ class main_listener extends base implements EventSubscriberInterface
             $a = '#(?<!])'. $at_prefix . $username_clean . '#is';
             $message = preg_replace($a, $b, $message);
         }
-    }/*}}}*/
+    }
 
     public function notify_on_poke($event)/*{{{*/
     {
@@ -1505,7 +1505,7 @@ class main_listener extends base implements EventSubscriberInterface
             $this->trigger_dev_event('jeb.snahp.notify_on_poke_after_notification');
         }
         $this->trigger_dev_event('jeb.snahp.notify_on_poke_after');
-    }/*}}}*/
+    }
 
     public function notify_op_on_report($event)/*{{{*/
     {
@@ -1574,7 +1574,7 @@ class main_listener extends base implements EventSubscriberInterface
             }
             break;
         }
-    }/*}}}*/
+    }
 
     public function include_assets_before_posting($event)/*{{{*/
     {
@@ -1638,7 +1638,7 @@ class main_listener extends base implements EventSubscriberInterface
         if ($row['snp_customtemplate_enable']) {
             $this->template->assign_vars(['B_SHOW_CUSTOM_TPL' => true,]);
         }
-    }/*}}}*/
+    }
 
     public function insert_new_topic_button($event)/*{{{*/
     {
@@ -1657,7 +1657,7 @@ class main_listener extends base implements EventSubscriberInterface
         //   <span>New Topic</span> <i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
         // </a>
         // {% elseif T_THEME_NAME == 'basic' %}
-    }/*}}}*/
+    }
 
     public function disable_signature($event)/*{{{*/
     {
@@ -1674,7 +1674,7 @@ class main_listener extends base implements EventSubscriberInterface
             $pr['SIGNATURE'] = false;
             $event['post_row'] = $pr;
         }
-    }/*}}}*/
+    }
 
     public function modify_signature($event)/*{{{*/
     {
@@ -1707,7 +1707,7 @@ class main_listener extends base implements EventSubscriberInterface
             $signature = implode(PHP_EOL, $split);
             $event['signature'] = $signature;
         }
-    }/*}}}*/
+    }
 
     public function modify_signature_deprecated($event)/*{{{*/
     {
@@ -1729,5 +1729,5 @@ class main_listener extends base implements EventSubscriberInterface
         $user_sig = implode('\n', $split);
         $user_sig = closetags($user_sig);
         $event['sql_ary'] = $sql_ary;
-    }/*}}}*/
+    }
 }

@@ -6,7 +6,7 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class SnowfallController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,33 +40,33 @@ class SnowfallController
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function reset()/*{{{*/
+    public function reset()
     {
         $this->sauth->reject_non_dev('Error Code: ada9625f21');
         $this->helper->reset();
         return new JsonResponse([]);
-    }/*}}}*/
+    }
 
-    public function activate()/*{{{*/
+    public function activate()
     {
         $this->helper->activate();
         return new JsonResponse([]);
-    }/*}}}*/
+    }
 
-    public function changeText()/*{{{*/
+    public function changeText()
     {
         $text = $this->request->variable('text', '');
         $success = $this->helper->changeText($text);
         $statusCode = $success ? 200 : 400;
         return new JsonResponse(['text' => $text], $statusCode);
-    }/*}}}*/
+    }
 
-    public function changeColor($color)/*{{{*/
+    public function changeColor($color)
     {
         $success = $this->helper->changeColor($color);
         $statusCode = $success ? 200 : 400;
         return new JsonResponse($resp, $statusCode);
-    }/*}}}*/
+    }
 }

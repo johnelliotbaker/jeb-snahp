@@ -6,7 +6,7 @@ class curly_parser
     protected $allowed_directive;
 
     public function __construct(
-    ) {/*{{{*/
+    ) {
         $this->wrapper_tag = 'snahp';
         $this->allowed_major_tags = [
             'table', 'table_autofill',
@@ -14,14 +14,14 @@ class curly_parser
         $this->allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
     }/*}}}*/
 
-    public function get_wrapper_pattern()/*{{{*/
+    public function get_wrapper_pattern()
     {
         $w = $this->wrapper_tag;
         $ptn = '#{' . $w . '}(.*?){/' . $w . '}#is';
         return $ptn;
     }/*}}}*/
 
-    public function validate_curly_tags($html)/*{{{*/
+    public function validate_curly_tags($html)
     {
         preg_match_all('#{([a-z]+)(?: .*)?(?<![/|/ ])}#iU', $html, $result);
         $openedtags = $result[1];   #put all closed tags into an array
@@ -43,13 +43,13 @@ class curly_parser
         return true;
     }/*}}}*/
 
-    public function return_malformed($strn)/*{{{*/
+    public function return_malformed($strn)
     {
         $res = '***Malformed snahp tag.***';
         return $res . '<br>' . $strn;
     }/*}}}*/
 
-    public function interpolate_curly_table($strn)/*{{{*/
+    public function interpolate_curly_table($strn)
     {
         $ptn = '/{([^}]*)}/is';
         $strn = preg_replace_callback($ptn, function ($m) {
@@ -83,7 +83,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_table_search_master($strn, $tag_name)/*{{{*/
+    public function interpolate_table_search_master($strn, $tag_name)
     {
         $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
@@ -96,7 +96,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_gallery($strn, $tag_name, $type, $options=[])/*{{{*/
+    public function interpolate_gallery($strn, $tag_name, $type, $options=[])
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -118,7 +118,7 @@ class curly_parser
         return $html;
     }/*}}}*/
 
-    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)/*{{{*/
+    public function interpolate_curly_table_autofill($strn, $tag_name, $b_search=false)
     {
         $uuid = uniqid();
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
@@ -158,7 +158,7 @@ class curly_parser
         // return $strn;
     }/*}}}*/
 
-    public function interpolate_fulfill($strn, $tag_name)/*{{{*/
+    public function interpolate_fulfill($strn, $tag_name)
     {
         global $db, $request, $user, $phpbb_container;
         $def = $phpbb_container->getParameter('jeb.snahp.req')['def'];
@@ -209,7 +209,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_mega_video($strn, $tag_name)/*{{{*/
+    public function interpolate_mega_video($strn, $tag_name)
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -240,7 +240,7 @@ class curly_parser
         return '';
     }/*}}}*/
 
-    public function interpolate_ab($strn, $tag_name)/*{{{*/
+    public function interpolate_ab($strn, $tag_name)
     {
         $ptn = '#{' . $tag_name . '}(.*?){/'. $tag_name . '}#is';
         preg_match($ptn, $strn, $match);
@@ -250,7 +250,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_youtube($strn, $tag_name)/*{{{*/
+    public function interpolate_youtube($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -261,7 +261,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_gfycat($strn, $tag_name)/*{{{*/
+    public function interpolate_gfycat($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -272,7 +272,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    public function interpolate_img($strn, $tag_name)/*{{{*/
+    public function interpolate_img($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -294,7 +294,7 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    private function set_style_type()/*{{{*/
+    private function set_style_type()
     {
         if (!isset($this->style_type)) {
             global $user, $db, $table_prefix;
@@ -310,7 +310,7 @@ class curly_parser
         }
     }/*}}}*/
 
-    public function interpolate_mediainfo($strn, $tag_name)/*{{{*/
+    public function interpolate_mediainfo($strn, $tag_name)
     {
         $allowed_attr = ['style', 'class', 'src', 'align'];
         $uuid = uniqid();
@@ -324,11 +324,11 @@ class curly_parser
         return $strn;
     }/*}}}*/
 
-    private function parse_general($arr)/*{{{*/
+    private function parse_general($arr)
     {
     }/*}}}*/
 
-    public function parse_snahp($strn)/*{{{*/
+    public function parse_snahp($strn)
     {
         // Exclude codebox
         $p = '#<code>(.*?)<\/code>#s';
@@ -353,7 +353,7 @@ class curly_parser
                 return $this->return_malformed($match[0]);
             }
             $tag_type = $tag_type[1];
-            switch ($tag_type) /*{{{*/
+            switch ($tag_type) 
             {
             case 'mi':
                 $res = $this->interpolate_mediainfo($content, $tag_type);
@@ -449,14 +449,14 @@ class curly_parser
         return $new_strn;
     }/*}}}*/
 
-    public function parse($strn)/*{{{*/
+    public function parse($strn)
     {
         $ptn = '#.*#';
         $strn = preg_replace_callback($ptn, 'self::callback', $strn);
         return $strn;
     }/*}}}*/
 
-    public function is_request($forum_id)/*{{{*/
+    public function is_request($forum_id)
     {
         global $config;
         $cache_time = 5;
@@ -466,7 +466,7 @@ class curly_parser
         return $res;
     }/*}}}*/
 
-    private function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    private function select_subforum($parent_id, $cooldown=0, $b_immediate=false)
     {
         global $db;
         $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
@@ -487,7 +487,7 @@ class curly_parser
         return $data;
     }/*}}}*/
 
-    private function select_request($tid)/*{{{*/
+    private function select_request($tid)
     {
         global $phpbb_container, $db;
         $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
@@ -498,7 +498,7 @@ class curly_parser
         return $row;
     }/*}}}*/
 
-    public function select_post($pid, $field='*')/*{{{*/
+    public function select_post($pid, $field='*')
     {
         global $db;
         $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";

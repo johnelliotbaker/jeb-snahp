@@ -8,7 +8,7 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class VideoResolutionType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $defaultChoices = [
             'SD/480' => '480',
@@ -28,5 +28,5 @@ class VideoResolutionType extends AbstractType
                 ]
             );
         ;
-    }/*}}}*/
+    }
 }

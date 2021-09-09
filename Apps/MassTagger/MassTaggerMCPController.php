@@ -29,7 +29,7 @@ class MassTaggerMCPController
         $sauth,
         $myHelper,
         $formHelper
-    )/*{{{*/ {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -42,9 +42,9 @@ class MassTaggerMCPController
         $this->myHelper = $myHelper;
         $this->formHelper = $formHelper;
         $this->userId = (int) $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->sauth->reject_non_dev('Error Code: d5dc0f421a');
         switch ($mode) {
@@ -56,14 +56,14 @@ class MassTaggerMCPController
             break;
         }
         trigger_error('Nothing to see here. Move along. Error Code: c8e92b5051');
-    }/*}}}*/
+    }
 
-    public function setContext($varname, $var)/*{{{*/
+    public function setContext($varname, $var)
     {
         $this->template->assign_var($varname, $var);
-    }/*}}}*/
+    }
 
-    public function getSelectedTags()/*{{{*/
+    public function getSelectedTags()
     {
         $varNames = $this->request->variable_names();
         $checkboxNames = array_filter(
@@ -77,9 +77,9 @@ class MassTaggerMCPController
                 return preg_replace('#^cb-#', '', $arg);
             }, $checkboxNames
         );
-    }/*}}}*/
+    }
 
-    public function respondMassTagger($cfg)/*{{{*/
+    public function respondMassTagger($cfg)
     {
         $required = ['search_terms'=>'', 'topic_ids'=>'', 'forum_id'=>1];
         $rv = $this->formHelper->getRequestVars($required);
@@ -109,11 +109,11 @@ class MassTaggerMCPController
         $rv['topic_ids'] = implode(', ', $topicIds);
         $this->formHelper->setTemplateVars($rv);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    private function _embedSubforumSelector($varname, $selectId)/*{{{*/
+    private function _embedSubforumSelector($varname, $selectId)
     {
         $subforumSelectorHTML = $this->myHelper->makeSubforumSelectorHTML($selectId);
         $this->template->assign_var($varname, $subforumSelectorHTML);
-    }/*}}}*/
+    }
 }

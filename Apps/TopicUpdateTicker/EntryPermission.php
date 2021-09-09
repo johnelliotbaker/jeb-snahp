@@ -10,7 +10,7 @@ class EntryPermission
         $this->sauth = $sauth;
     }
 
-    public function hasPermission($request, $userId, $kwargs=[])/*{{{*/
+    public function hasPermission($request, $userId, $kwargs=[])
     {
         $data = getRequestData($request);
         $method = getRequestMethod($request);
@@ -21,14 +21,14 @@ class EntryPermission
             return $this->isAuthor($data['topic']);
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function hasObjectPermission($request, $userId, $object, $kwargs=[])/*{{{*/
+    public function hasObjectPermission($request, $userId, $object, $kwargs=[])
     {
         return $this->isAuthor($object->topic);
-    }/*}}}*/
+    }
 
-    public function isAuthor($topicId)/*{{{*/
+    public function isAuthor($topicId)
     {
         $topicId = (int) $topicId;
         $sql = 'SELECT topic_poster FROM ' . TOPICS_TABLE . " WHERE topic_id=${topicId}";
@@ -42,5 +42,5 @@ class EntryPermission
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 }

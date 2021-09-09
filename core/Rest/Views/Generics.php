@@ -52,7 +52,7 @@ trait View
 
 trait ModelSerializerMixin
 {
-    public function getSerializer($instance=null, $data=null, $kwargs=[])/*{{{*/
+    public function getSerializer($instance=null, $data=null, $kwargs=[])
     {
         if ($this->model) {
             $kwargs['model'] = $this->model;
@@ -63,7 +63,7 @@ trait ModelSerializerMixin
 
 trait SortByPriorityMixin
 {
-    public function getQueryset()/*{{{*/
+    public function getQueryset()
     {
         $data = getRequestData($this->request);
         if (!$data) {
@@ -89,12 +89,12 @@ class GenericAPIView
     protected $paginationClass;
 
 
-    // public function getSerializer($instance=null, $data=null, $kwargs=[])/*{{{*/
+    // public function getSerializer($instance=null, $data=null, $kwargs=[])
     // {
     //     return new $this->serializerClass($instance, $data, $kwargs);
     // }/*}}}*/
 
-    public function getObject()/*{{{*/
+    public function getObject()
     {
         $pk = (int) $this->params['pk'];
         $object = R::findOne($this->model::TABLE_NAME, 'id=?', [$pk]);
@@ -105,7 +105,7 @@ class GenericAPIView
         return $object;
     }/*}}}*/
 
-    public function getQueryset()/*{{{*/
+    public function getQueryset()
     {
         $sqlAry = [];
         if ($data = getRequestData($this->request)) {
@@ -131,12 +131,12 @@ class GenericAPIView
         // return array_values(R::find($this->model::TABLE_NAME, $where));
     }/*}}}*/
 
-    public function filterQueryset($queryset)/*{{{*/
+    public function filterQueryset($queryset)
     {
         return $queryset;
     }/*}}}*/
 
-    public function paginateQueryset($queryset)/*{{{*/
+    public function paginateQueryset($queryset)
     {
         if ($this->paginator === null) {
             return;
@@ -144,12 +144,12 @@ class GenericAPIView
         return $this->paginator->paginateQueryset($queryset, $this->request);
     }/*}}}*/
 
-    public function getPaginatedResponse($data)/*{{{*/
+    public function getPaginatedResponse($data)
     {
         return $this->paginator->getPaginatedResponse($data);
     }/*}}}*/
 
-    public function getForeignPk($default='')/*{{{*/
+    public function getForeignPk($default='')
     {
         return $this->request->variable($this->foreignNameParam, $default);
     }/*}}}*/
@@ -162,7 +162,7 @@ class RetrieveUpdateDestroyAPIView extends GenericAPIView
     use UpdateModelMixin;
     use DestroyModelMixin;
 
-    public function dispatch($id)/*{{{*/
+    public function dispatch($id)
     {
         $methodName = getRequestMethod($this->request);
         $this->params['pk'] = $id;
@@ -182,22 +182,22 @@ class RetrieveUpdateDestroyAPIView extends GenericAPIView
         }
     }/*}}}*/
 
-    public function get($request)/*{{{*/
+    public function get($request)
     {
         return $this->retrieve($request);
     }/*}}}*/
 
-    public function put($request)/*{{{*/
+    public function put($request)
     {
         return $this->update($request);
     }/*}}}*/
 
-    public function patch($request)/*{{{*/
+    public function patch($request)
     {
         return $this->partialUpdate($request);
     }/*}}}*/
 
-    public function delete($request)/*{{{*/
+    public function delete($request)
     {
         return $this->destroy($request);
     }/*}}}*/
@@ -208,7 +208,7 @@ class ListCreateAPIView extends GenericAPIView
     use ListModelMixin;
     use CreateModelMixin;
 
-    public function dispatch()/*{{{*/
+    public function dispatch()
     {
         $methodName = getRequestMethod($this->request);
         switch ($methodName) {
@@ -223,12 +223,12 @@ class ListCreateAPIView extends GenericAPIView
         }
     }/*}}}*/
 
-    public function get($request)/*{{{*/
+    public function get($request)
     {
         return $this->list($request);
     }/*}}}*/
 
-    public function post($request)/*{{{*/
+    public function post($request)
     {
         return $this->create($request);
     }/*}}}*/
@@ -236,7 +236,7 @@ class ListCreateAPIView extends GenericAPIView
 
 trait UpdateModelMixin
 {
-    public function update($request, $partial=false)/*{{{*/
+    public function update($request, $partial=false)
     {
         [$instance, $data] = [$this->getObject(), getRequestData($request)];
         if (!$instance) {
@@ -250,12 +250,12 @@ trait UpdateModelMixin
         return new JsonResponse([], 200);
     }/*}}}*/
 
-    public function performUpdate($serializer)/*{{{*/
+    public function performUpdate($serializer)
     {
         return $serializer->save();
     }/*}}}*/
 
-    public function partialUpdate($request)/*{{{*/
+    public function partialUpdate($request)
     {
         $partial = true;
         return $this->update($request, $partial);
@@ -264,7 +264,7 @@ trait UpdateModelMixin
 
 trait RetrieveModelMixin
 {
-    public function retrieve($request)/*{{{*/
+    public function retrieve($request)
     {
         $instance = $this->getObject();
         if (!$instance) {
@@ -281,7 +281,7 @@ trait RetrieveModelMixin
 
 trait ListModelMixin
 {
-    public function list($request)/*{{{*/
+    public function list($request)
     {
         $this->checkPermissions($request, $this->sauth->userId);
         $queryset = $this->filterQueryset($this->getQueryset());
@@ -297,7 +297,7 @@ trait ListModelMixin
 
 trait CreateModelMixin
 {
-    public function create($request)/*{{{*/
+    public function create($request)
     {
         $this->checkPermissions($request, $this->sauth->userId);
         $serializer = $this->getSerializer(null, getRequestData($request));
@@ -309,7 +309,7 @@ trait CreateModelMixin
         return new Response('Could not create.', 400);
     }/*}}}*/
 
-    public function performCreate($serializer)/*{{{*/
+    public function performCreate($serializer)
     {
         $serializer = $this->performPreCreate($serializer);
         $model = $this->model;
@@ -322,17 +322,17 @@ trait CreateModelMixin
         return $instance;
     }/*}}}*/
 
-    public function performPreCreate($serializer)/*{{{*/
+    public function performPreCreate($serializer)
     {
         return $serializer;
     }/*}}}*/
 
-    public function performPostCreate($object)/*{{{*/
+    public function performPostCreate($object)
     {
         return $object;
     }/*}}}*/
 
-    public function performCreateWithForeignKey($serializer)/*{{{*/
+    public function performCreateWithForeignKey($serializer)
     {
         $instance = $serializer->save();
         $foreignInstance = $this->getForeignObject();
@@ -343,7 +343,7 @@ trait CreateModelMixin
         return $instance;
     }/*}}}*/
 
-    public function getForeignObject()/*{{{*/
+    public function getForeignObject()
     {
         $foreignName = $this->model::FOREIGN_NAME;
         $foreignPk = $this->getForeignPk(0);
@@ -361,7 +361,7 @@ trait CreateModelMixin
 
 trait DestroyModelMixin
 {
-    public function destroy($request)/*{{{*/
+    public function destroy($request)
     {
         $instance = $this->getObject($request);
         if ($instance) {
@@ -370,7 +370,7 @@ trait DestroyModelMixin
         return new JsonResponse([], 200);
     }/*}}}*/
 
-    public function performDestroy($instance)/*{{{*/
+    public function performDestroy($instance)
     {
         R::trash($instance);
     }/*}}}*/

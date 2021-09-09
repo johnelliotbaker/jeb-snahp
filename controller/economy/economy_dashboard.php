@@ -37,7 +37,7 @@ class economy_dashboard
         $this->product_class = $product_class;
         $this->user_id = (int) $this->user->data['user_id'];
         $sauth->reject_non_dev('2cb063ea41');
-    }/*}}}*/
+    }
 
     public function handle($mode)/*{{{*/
     {
@@ -50,7 +50,7 @@ class economy_dashboard
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
     private function get_bank_transaction_data_for_pagination($start, $per_page)/*{{{*/
     {
@@ -92,7 +92,7 @@ class economy_dashboard
             $row['created_time'] = $this->user->format_date($row['created_time']);
         }
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     private function get_market_invoice_data_for_pagination($start, $per_page)/*{{{*/
     {
@@ -134,7 +134,7 @@ class economy_dashboard
             $row['comment'] = isset($data['comment']) ? $data['comment'] : '';
         }
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function handle_overview($cfg)/*{{{*/
     {
@@ -170,13 +170,13 @@ class economy_dashboard
             'PAGINATION' => $pagination,
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp Economy Dashboard');
-    }/*}}}*/
+    }
 
     private function get_comment_or_empty($data)/*{{{*/
     {
         $data = unserialize($data);
         $comment = isset($data['comment']) ? $data['comment'] : '';
         return $comment;
-    }/*}}}*/
+    }
 
 }

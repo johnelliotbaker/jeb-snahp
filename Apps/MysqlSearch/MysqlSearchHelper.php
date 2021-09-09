@@ -7,7 +7,7 @@ class MysqlSearchHelper
     const CACHE_DURATION_LONG = 0;
     const FLOODING_INTERVAL = 5;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $config;
     protected $template;
     protected $tbl;
@@ -30,9 +30,9 @@ class MysqlSearchHelper
         $this->userId = $sauth->userId;
         $this->rejectUnauthorizedAccess();
         $this->rejectFloodingRequests();
-    }/*}}}*/
+    }
 
-    public function userIsPermitted($userId)/*{{{*/
+    public function userIsPermitted($userId)
     {
         if ($this->sauth->is_dev_server()) {
             $groups = $this->groups['dev'];
@@ -41,16 +41,16 @@ class MysqlSearchHelper
         }
         return $this->sauth->user_belongs_to_groupset($userId, 'Staff')
             || $this->sauth->user_belongs_to_group($userId, $groups['Elite Users']['id']);
-    }/*}}}*/
+    }
 
-    public function rejectUnauthorizedAccess()/*{{{*/
+    public function rejectUnauthorizedAccess()
     {
         if (!$this->userIsPermitted($this->userId)) {
             throw new UserPermissionError('You are not allowed to access this feature. Error Code: 84ceefc58a');
         }
-    }/*}}}*/
+    }
 
-    public function search($strn, $perPage=10, $start=0, $forumType='listings')/*{{{*/
+    public function search($strn, $perPage=10, $start=0, $forumType='listings')
     {
         $strn = $this->db->sql_escape($strn);
 
@@ -75,9 +75,9 @@ class MysqlSearchHelper
 
         $this->updateUserLastSearchTime($this->userId);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
-    public function filterForums($sqlAry, $forumType)/*{{{*/
+    public function filterForums($sqlAry, $forumType)
     {
         $allowedTypes = $this->forumTypeToAllowedTypes($forumType);
         $where[] = $sqlAry['WHERE'];
@@ -92,9 +92,9 @@ class MysqlSearchHelper
         $where = implode(' AND ', $where);
         $sqlAry['WHERE'] = $where;
         return $sqlAry;
-    }/*}}}*/
+    }
 
-    public function forumTypeToAllowedTypes($forumType)/*{{{*/
+    public function forumTypeToAllowedTypes($forumType)
     {
         $allowedTypes = [];
         switch ($forumType) {
@@ -109,10 +109,10 @@ class MysqlSearchHelper
             break;
         }
         return $allowedTypes;
-    }/*}}}*/
+    }
 
 
-    public function getRootForumId($type)/*{{{*/
+    public function getRootForumId($type)
     {
         switch ($type) {
         case 'listings':
@@ -122,9 +122,9 @@ class MysqlSearchHelper
         default:
             throw new InvalidForumTypeError("$type is not supported. Error Code: c39f058c90");
         }
-    }/*}}}*/
+    }
 
-    public function rejectFloodingRequests()/*{{{*/
+    public function rejectFloodingRequests()
     {
         [$flooding, $left] = $this->userIsFlooding($this->userId);
         if ($flooding) {
@@ -133,9 +133,9 @@ class MysqlSearchHelper
             meta_refresh($left-0.5, $uri);
             throw new SearchFloodingError("You searching too quickly. Will automatically redirect in {$left} seconds. Error Code: 0c4b39d13a");
         }
-    }/*}}}*/
+    }
 
-    public function userIsFlooding($userId)/*{{{*/
+    public function userIsFlooding($userId)
     {
         $userId = (int) $userId;
         $sql = 'SELECT user_last_search FROM ' . USERS_TABLE
@@ -149,29 +149,29 @@ class MysqlSearchHelper
         $elapsed = time() - $row['user_last_search'];
         $left = $this::FLOODING_INTERVAL - $elapsed;
         return [$left > 0, $left];
-    }/*}}}*/
+    }
 
-    public function updateUserLastSearchTime($userId)/*{{{*/
+    public function updateUserLastSearchTime($userId)
     {
         $userId = (int) $userId;
         $time = time();
         $sql = 'UPDATE ' . USERS_TABLE . " SET user_last_search=${time} WHERE user_id=${userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 }
 
-class UserPermissionError extends \Exception /*{{{*/
+class UserPermissionError extends \Exception 
 {
-}/*}}}*/
+}
 
-class InvalidForumTypeError extends \Exception /*{{{*/
+class InvalidForumTypeError extends \Exception 
 {
-}/*}}}*/
+}
 
-class SearchFloodingError extends \Exception /*{{{*/
+class SearchFloodingError extends \Exception 
 {
-}/*}}}*/
+}
 
-class InvalidUser extends \Exception /*{{{*/
+class InvalidUser extends \Exception 
 {
-}/*}}}*/
+}

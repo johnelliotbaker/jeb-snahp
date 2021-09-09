@@ -18,7 +18,7 @@ class ReporterPermission
         $this->Entry = $Entry;
     }
 
-    public function hasPermission($request, $userId, $kwargs=[])/*{{{*/
+    public function hasPermission($request, $userId, $kwargs=[])
     {
         [$topicId, $topicData] = [$kwargs['topicId'], $kwargs['topicData']];
         $method = getRequestMethod($request);
@@ -37,9 +37,9 @@ class ReporterPermission
             return false;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function checkCreatePermission($topicId, $type)/*{{{*/
+    public function checkCreatePermission($topicId, $type)
     {
         $_REGISTRY = [
             'Request' => 'canCreateRequest',
@@ -47,17 +47,17 @@ class ReporterPermission
             'Action' => 'canCreateAction',
         ];
         $this->{$_REGISTRY[$type]}($topicId);
-    }/*}}}*/
+    }
 
-    public function canCreateReport($topicId)/*{{{*//*}}}*//*{{{*/
+    public function canCreateReport($topicId)
     {
         $entry = $this->Entry->activeEntry($topicId);
         if ($entry) {
             throw new PendingReportError();
         }
-    }/*}}}*/
+    }
 
-    public function canCreateRequest($topicId)/*{{{*/
+    public function canCreateRequest($topicId)
     {
         if (!$this->Entry->isAuthor($topicId, $this->sauth->userId)) {
             throw new \Exception('You do not have the permission to access this page. Error Code: 90d17e3c3f');
@@ -69,9 +69,9 @@ class ReporterPermission
         if ($entry->type !== 'Report') {
             throw new ReportDoesNotExist();
         }
-    }/*}}}*/
+    }
 
-    public function canCreateAction($topicId)/*{{{*/
+    public function canCreateAction($topicId)
     {
         if (!$this->sauth->is_dev()) {
             throw new \Exception('You do not have permission to view this page. Error Code: c203866c4f');
@@ -80,12 +80,12 @@ class ReporterPermission
         if ($entry->type !== 'Request') {
             throw new RequestDoesNotExist();
         }
-    }/*}}}*/
+    }
 
-    public function hasObjectPermission($request, $userId, $object, $kwargs=[])/*{{{*/
+    public function hasObjectPermission($request, $userId, $object, $kwargs=[])
     {
         return false;
-    }/*}}}*/
+    }
 }
 
 class EntryListCreateAPIView extends ListCreateAPIView
@@ -108,7 +108,7 @@ class EntryListCreateAPIView extends ListCreateAPIView
         $this->sauth->reject_new_users('Error Code: d5ab149440');
     }
 
-    public function checkPermissions($request, $userId, $kwargs=[])/*{{{*/
+    public function checkPermissions($request, $userId, $kwargs=[])
     {
         // To fill kwargs with needed info for POST
         if (!array_key_exists('topicId', $kwargs)) {
@@ -123,9 +123,9 @@ class EntryListCreateAPIView extends ListCreateAPIView
             ];
         }
         return parent::checkPermissions($request, $userId, $kwargs);
-    }/*}}}*/
+    }
 
-    public function viewByTopicId($topicId)/*{{{*/
+    public function viewByTopicId($topicId)
     {
         $topicId = (int) $topicId;
         $topicData = $this->model->getTopicData($topicId);
@@ -135,45 +135,45 @@ class EntryListCreateAPIView extends ListCreateAPIView
         $this->checkPermissions($this->request, $this->sauth, ['topicId' => $topicId, 'topicData' => $topicData]);
         $qs = $this->model->getQueryset('topic=? ORDER BY id DESC', [$topicId]);
         return new JsonResponse(array_values($qs));
-    }/*}}}*/
+    }
 }
 
-class RequestDoesNotExist extends \Exception /*{{{*/
+class RequestDoesNotExist extends \Exception 
 {
     public function __construct($strn='Request does not exist. Error Code: f52224f58d')
     {
         parent::__construct($strn);
     }
-}/*}}}*/
+}
 
-class ReportDoesNotExist extends \Exception /*{{{*/
+class ReportDoesNotExist extends \Exception 
 {
     public function __construct($strn='Report does not exist. Error Code: 1169cbc3e1')
     {
         parent::__construct($strn);
     }
-}/*}}}*/
+}
 
-class PendingActionError extends \Exception /*{{{*/
+class PendingActionError extends \Exception 
 {
     public function __construct($strn='This topic has a pending action. Error Code: 71426ecd63')
     {
         parent::__construct($strn);
     }
-}/*}}}*/
+}
 
-class PendingRequestError extends \Exception /*{{{*/
+class PendingRequestError extends \Exception 
 {
     public function __construct($strn='This topic has a pending request. Error Code: 05b7d48d54')
     {
         parent::__construct($strn);
     }
-}/*}}}*/
+}
 
-class PendingReportError extends \Exception /*{{{*/
+class PendingReportError extends \Exception 
 {
     public function __construct($strn='This topic has a pending report. Error Code: bf583cf637')
     {
         parent::__construct($strn);
     }
-}/*}}}*/
+}

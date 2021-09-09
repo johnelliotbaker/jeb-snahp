@@ -53,15 +53,15 @@ const FIELDS = [
 //     // "HIDDEN_DRAGON" =>  [],
 // ];
 
-class TypeResetter /*{{{*/
+class TypeResetter 
 {
-    public function __construct($itemdata, $typeModel)/*{{{*/
+    public function __construct($itemdata, $typeModel)
     {
         $this->itemdata = $itemdata;
         $this->typeModel = $typeModel;
-    }/*}}}*/
+    }
 
-    public function reset()/*{{{*/
+    public function reset()
     {
         \R::freeze(false);
         $this->typeModel->wipe();
@@ -74,9 +74,9 @@ class TypeResetter /*{{{*/
             ];
             $this->typeModel->create($inputdata);
         }
-    }/*}}}*/
+    }
 
-    // public function renameToNewStyle($data)/*{{{*/
+    // public function renameToNewStyle($data)
     // {
     //     // prefer camel case to snake case
     //     $renameMap = [
@@ -91,14 +91,14 @@ class TypeResetter /*{{{*/
     //         }
     //     }
     //     return $data;
-    // }/*}}}*/
+    // }
 
-    public function getNames()/*{{{*/
+    public function getNames()
     {
         return array_keys($this->itemdata);
-    }/*}}}*/
+    }
 
-    public function getData($type)/*{{{*/
+    public function getData($type)
     {
         $this->styleName = 'prosilver';
         $data = $this->itemdata[$type];
@@ -109,19 +109,19 @@ class TypeResetter /*{{{*/
             'required' => FIELDS[strtoupper($type)]
         ];
         return $data;
-    }/*}}}*/
-}/*}}}*/
+    }
+}
 
-class FlairResetter /*{{{*/
+class FlairResetter 
 {
-    public function __construct($userdata, $itemdata, $flairModel)/*{{{*/
+    public function __construct($userdata, $itemdata, $flairModel)
     {
         $this->itemdata = $itemdata;
         $this->userdata = $userdata;
         $this->flairModel = $flairModel;
-    }/*}}}*/
+    }
 
-    public function reset()/*{{{*/
+    public function reset()
     {
         \R::freeze(false);
         $this->flairModel->wipe();
@@ -143,8 +143,8 @@ class FlairResetter /*{{{*/
             }
         }
         $this->flairModel->addIndex('user', 'user');
-    }/*}}}*/
-}/*}}}*/
+    }
+}
 
 function overrideTypeData($typedata)
 {
@@ -159,7 +159,7 @@ function overrideTypeData($typedata)
     return $typedata;
 }
 
-function renameToNewStyle($data)/*{{{*/
+function renameToNewStyle($data)
 {
     // prefer camel case to snake case
     $renameMap = [
@@ -178,4 +178,4 @@ function renameToNewStyle($data)/*{{{*/
         }
     }
     return $data;
-}/*}}}*/
+}

@@ -8,7 +8,7 @@ use \R as R;
 
 class XmasController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -42,29 +42,29 @@ class XmasController
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function resetTimer($mode)/*{{{*/
+    public function resetTimer($mode)
     {
         $this->sauth->reject_non_dev();
         $data = $this->helper->resetTimer($mode);
         return new Response(json_encode($data));
-    }/*}}}*/
+    }
 
-    public function summary()/*{{{*/
+    public function summary()
     {
         $data = $this->helper->summary();
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
-    public function score()/*{{{*/
+    public function score()
     {
         $this->sauth->reject_non_dev();
         $data = $this->helper->getScoreDistribution();
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
-    public function simulateCreate()/*{{{*/
+    public function simulateCreate()
     {
         $this->sauth->reject_non_dev();
         $maxUser = 10000;
@@ -78,17 +78,17 @@ class XmasController
         }
         $elapsed = microtime(true) - $startTime;
         print_r("Created {$count} accounts in $elapsed seconds<br>");
-    }/*}}}*/
+    }
 
-    public function simulateVotes()/*{{{*/
+    public function simulateVotes()
     {
         $this->sauth->reject_non_dev();
         $this->helper->simulateVoting();
-    }/*}}}*/
+    }
 
-    public function simulateVotesPeriod($period)/*{{{*/
+    public function simulateVotesPeriod($period)
     {
         $this->sauth->reject_non_dev();
         $this->helper->simulateVoting($period);
-    }/*}}}*/
+    }
 }

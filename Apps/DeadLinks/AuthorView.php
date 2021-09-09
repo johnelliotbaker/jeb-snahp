@@ -21,13 +21,13 @@ class AuthorView
         $this->sauth = $sauth;
         $this->Entry = $Entry;
         $this->sauth->reject_new_users('Error Code: 090a034eab');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         $data = $this->getReports();
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
 
     public function getReports()

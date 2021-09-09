@@ -24,7 +24,7 @@ class switchboard
     $db, $user, $config, $request, $template, $container, $helper,
     $tbl,
     $sauth
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -35,9 +35,9 @@ class switchboard
         $this->helper = $helper;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-    }/*}}}*/
+    }
 
-    public function handle_commands()/*{{{*/
+    public function handle_commands()
     {
         $this->sauth->reject_non_dev('Error Code: f8c0b3bd3a');
         $command = $this->request->variable('command', '');
@@ -56,27 +56,27 @@ class switchboard
         }
         $cfg['tpl_name'] = '@jeb_snahp/switchboard/base.html';
         return $this->respond_query($cfg);
-    }/*}}}*/
+    }
 
-    private function set_config_var($data)/*{{{*/
+    private function set_config_var($data)
     {
         prn("Setting config ${data['tpl_varname']} = ${data['value']}");
         $this->config->set($data['tpl_varname'], $data['value']);
-    }/*}}}*/
+    }
 
-    private function get_config_var($data)/*{{{*/
+    private function get_config_var($data)
     {
         return $this->config[$data['tpl_varname']];
-    }/*}}}*/
+    }
 
-    public function handle()/*{{{*/
+    public function handle()
     {
         $this->sauth->reject_non_dev('Error Code: 381baba2ed');
         $cfg['tpl_name'] = '@jeb_snahp/switchboard/base.html';
         return $this->respond_query($cfg);
-    }/*}}}*/
+    }
 
-    private function get_manifest()/*{{{*/
+    private function get_manifest()
     {
         $manifest = [
             [
@@ -95,9 +95,9 @@ class switchboard
             ],
         ];
         return $manifest;
-    }/*}}}*/
+    }
 
-    private function set_form_checkboxes($a_checkbox_data)/*{{{*/
+    private function set_form_checkboxes($a_checkbox_data)
     {
         $data = [];
         foreach($a_checkbox_data as $key => $val)
@@ -105,9 +105,9 @@ class switchboard
             $data[strtoupper($key)] = $val;
         }
         $this->template->assign_vars($data);
-    }/*}}}*/
+    }
 
-    private function process_manifest($manifest)/*{{{*/
+    private function process_manifest($manifest)
     {
         foreach($manifest as $job)
         {
@@ -117,9 +117,9 @@ class switchboard
         }
         $data = [];
         return $data;
-    }/*}}}*/
+    }
 
-    private function set_template_vars_from_manifest($manifest)/*{{{*/
+    private function set_template_vars_from_manifest($manifest)
     {
         $tpl_vars = [];
         foreach ($manifest as $job)
@@ -130,9 +130,9 @@ class switchboard
             prn("Setting template ${tpl_varname} = ${stored_value}");
         }
         $this->template->assign_vars($tpl_vars);
-    }/*}}}*/
+    }
 
-    private function respond_query($cfg)/*{{{*/
+    private function respond_query($cfg)
     {
         $manifest = $this->get_manifest();
         $this->process_manifest($manifest);
@@ -151,6 +151,6 @@ class switchboard
             'SWITCHBOARD_STATEMENT' => 'asdf',
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Switchboard');
-    }/*}}}*/
+    }
 
 }

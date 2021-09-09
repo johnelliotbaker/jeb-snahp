@@ -8,7 +8,7 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class FileHostType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $defaultChoices = [
             'Mega or Zippy' => 'mega, zippy',
@@ -26,5 +26,5 @@ class FileHostType extends AbstractType
                 ]
             );
         ;
-    }/*}}}*/
+    }
 }

@@ -18,7 +18,7 @@ class helper
         $tbl,
         $sauth, $user_inventory, $product_class
     )
-    {/*{{{*/
+    {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -29,7 +29,7 @@ class helper
         $this->user_id = (int) $this->user->data['user_id'];
         $this->user_inventory = $user_inventory;
         $this->product_class = $product_class;
-    }/*}}}*/
+    }
 
     private function set_user_reputation_pool($user_id, $quantity)
     {
@@ -38,7 +38,7 @@ class helper
         $this->db->sql_query($sql);
     }
 
-    public function set_min_for_users_with_upgrades($target)/*{{{*/
+    public function set_min_for_users_with_upgrades($target)
     {
         // A cron script runs this method to replenish user rep points
         $name = 'larger_rep_pool';
@@ -55,9 +55,9 @@ class helper
             $quantity = $row['quantity'] + $target;
             $this->set_user_reputation_pool($user_id, $quantity);
         }
-    }/*}}}*/
+    }
 
-    public function set_min($target)/*{{{*/
+    public function set_min($target)
     {
         // A cron script runs this method to replenish user rep points
         $target = (int) $target;
@@ -67,6 +67,6 @@ class helper
         $this->db->sql_query($sql);
         $this->config->set('snp_rep_giveaway_last_time', time());
         $this->set_min_for_users_with_upgrades($target);
-    }/*}}}*/
+    }
 
 }

@@ -39,7 +39,7 @@ class user_account_manager
         $this->product_class = $product_class;
         $this->user_id = (int) $this->user->data['user_id'];
         $sauth->reject_non_dev('Error Code: 8b16954df1');
-    }/*}}}*/
+    }
 
     public function handle($mode)/*{{{*/
     {
@@ -64,12 +64,12 @@ class user_account_manager
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
     public function handle_user_manager($cfg)/*{{{*/
     {
         return $this->helper->render($cfg['tpl_name'], 'Snahp Economy User Account Manager');
-    }/*}}}*/
+    }
 
     private function handle_set_user_balance()/*{{{*/
     {
@@ -83,7 +83,7 @@ class user_account_manager
             $this->bank_user_account->log_moderation($balance, $user_id, $broker_id);
         }
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     private function respond_with_user_account_as_json()/*{{{*/
     {
@@ -97,7 +97,7 @@ class user_account_manager
         $res['balance'] = $this->get_user_balance($user_id);
         $res['inventory'] = $this->get_user_inventory($user_id);
         return $js->send($res);
-    }/*}}}*/
+    }
 
     private function get_user_inventory($user_id)/*{{{*/
     {
@@ -127,14 +127,14 @@ class user_account_manager
             $res[] = $pc;
         }
         return $res;
-    }/*}}}*/
+    }
 
     private function get_user_inventory_json($user_id)/*{{{*/
     {
         $js = new \phpbb\json_response();
         $inventory = $this->get_user_inventory($user_id);
         return $js->send(['inventory'=> $res]);
-    }/*}}}*/
+    }
 
     private function get_user_balance($user_id)/*{{{*/
     {
@@ -144,14 +144,14 @@ class user_account_manager
             return false;
         }
         return $this->bank_user_account->get_balance($user_id);
-    }/*}}}*/
+    }
 
     private function get_user_balance_json($user_id)/*{{{*/
     {
         $js = new \phpbb\json_response();
         $balance = $this->get_user_balance($user_id);
         return $js->send(['balance'=> $balance]);
-    }/*}}}*/
+    }
 
     private function get_requested_user_id()/*{{{*/
     {
@@ -161,7 +161,7 @@ class user_account_manager
             return false;
         }
         return $user_id;
-    }/*}}}*/
+    }
 
     private function get_requested_balance()/*{{{*/
     {
@@ -171,7 +171,7 @@ class user_account_manager
             return false;
         }
         return $balance;
-    }/*}}}*/
+    }
 
     private function get_requested_product_class_id()/*{{{*/
     {
@@ -181,7 +181,7 @@ class user_account_manager
             return false;
         }
         return $product_class_id;
-    }/*}}}*/
+    }
 
     private function get_requested_quantity()/*{{{*/
     {
@@ -191,12 +191,12 @@ class user_account_manager
             return false;
         }
         return $quantity;
-    }/*}}}*/
+    }
 
     private function set_user_balance($user_id, $balance, $broker_id=-1)/*{{{*/
     {
         return $this->bank_user_account->set_balance($user_id, $balance, $broker_id);
-    }/*}}}*/
+    }
 
     private function handle_set_user_inventory_item()/*{{{*/
     {
@@ -216,7 +216,7 @@ class user_account_manager
             $this->user_inventory->log_moderation($product_class_id, $quantity, $user_id, $broker_id, $comment);
         }
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     private function set_user_inventory_item()/*{{{*/
     {
@@ -239,7 +239,7 @@ class user_account_manager
         $broker_id = $this->user_id;
         $this->user_inventory->set_item_quantity($product_class_id, $quantity, $user_id, $broker_id);
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
     private function reset_user()/*{{{*/
     {
@@ -251,6 +251,6 @@ class user_account_manager
         $js = new \phpbb\json_response();
         $this->bank_user_account->reset($user_id);
         return $js->send(['status' => 1, 'reason'=> 'Success']);
-    }/*}}}*/
+    }
 
 }

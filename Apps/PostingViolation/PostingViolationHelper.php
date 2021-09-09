@@ -3,7 +3,7 @@ namespace jeb\snahp\Apps\PostingViolation;
 
 class PostingViolationHelper
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -22,9 +22,9 @@ class PostingViolationHelper
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
         $this->t = $tbl['posting_violation'];
-    }/*}}}*/
+    }
 
-    public function getPostingViolationsUserToplist($request)/*{{{*/
+    public function getPostingViolationsUserToplist($request)
     {
         $whereArray = ['a.snp_violation_count > 0'];
         $username = utf8_clean_string($request->variable('username', ''));
@@ -41,9 +41,9 @@ class PostingViolationHelper
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $results = $this->paginator->paginateQueryset($queryset, $request);
         return $this->paginator->getPaginatedResult($results);
-    }/*}}}*/
+    }
 
-    public function getUserPostingViolations($username, $request)/*{{{*/
+    public function getUserPostingViolations($username, $request)
     {
         $userId = $this->sauth->userNameToUserId($username);
         $sqlArray = [
@@ -54,17 +54,17 @@ class PostingViolationHelper
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $results = $this->paginator->paginateQueryset($queryset, $request);
         return $this->paginator->getPaginatedResult($results);
-    }/*}}}*/
+    }
 
-    public function addPostingViolationEntry($posterId, $postId, $postText)/*{{{*/
+    public function addPostingViolationEntry($posterId, $postId, $postText)
     {
         $data = ['post_id' => $postId, 'user_id' => $posterId, 'post_text' => $postText];
         $data = $this->db->sql_build_array('INSERT', $data);
         $sql = 'INSERT INTO ' . $this->t .  $data;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function markTopicForViolation($topicId, $mark, $reason)/*{{{*/
+    public function markTopicForViolation($topicId, $mark, $reason)
     {
         if (!$this->getTopicData($topicId)) {
             throw new \Exception('Topic not found. Error Code: 92f4e5113d');
@@ -74,21 +74,21 @@ class PostingViolationHelper
         $data = $this->db->sql_build_array('UPDATE', $data);
         $sql = 'UPDATE ' .TOPICS_TABLE. " SET ${data} WHERE topic_id=${topicId}" ;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function incrementUserViolation($userId)/*{{{*/
+    public function incrementUserViolation($userId)
     {
         $sql = 'UPDATE ' . USERS_TABLE . " SET snp_violation_count=snp_violation_count+1 WHERE user_id=${userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function isTopicInViolation($topicId)/*{{{*/
+    public function isTopicInViolation($topicId)
     {
         $td = $this->getTopicData($topicId);
         return $td['snp_violation'] ? true : false;
-    }/*}}}*/
+    }
 
-    public function submitPostWithConfirmation($violationReason)/*{{{*/
+    public function submitPostWithConfirmation($violationReason)
     {
         global $request, $template;
         $varnames = $request->variable_names();
@@ -120,9 +120,9 @@ class PostingViolationHelper
         );
         $warning = implode('', $warningArray);
         confirm_box(false, $warning, $sHiddenFields);
-    }/*}}}*/
+    }
 
-    public function getTopicData($topicId)/*{{{*/
+    public function getTopicData($topicId)
     {
         $topicId = (int) $topicId;
         $sql = 'SELECT * FROM ' . TOPICS_TABLE . " WHERE topic_id=${topicId}";
@@ -130,5 +130,5 @@ class PostingViolationHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 }

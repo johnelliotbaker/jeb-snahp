@@ -8,7 +8,7 @@ use \R as R;
 
 class UserFlairManagerController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -42,7 +42,7 @@ class UserFlairManagerController
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         // $this->sauth->reject_non_dev('Error Code: 298bc72da9');
-    }/*}}}*/
+    }
 
     public function view()
     {

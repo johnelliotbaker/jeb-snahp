@@ -8,7 +8,7 @@ class badges_helper
     protected $post_data = [];
     public function __construct(
         $container
-    ) {/*{{{*/
+    ) {
         $this->container  = $container;
         $this->p['users'] = $container->getParameter('jeb.snahp.avatar.badge.users');
         $this->p['items'] = $container->getParameter('jeb.snahp.avatar.badge.items');
@@ -18,7 +18,7 @@ class badges_helper
         $this->style_name = 'prosilver';
     }/*}}}*/
 
-    private function setup_style_info($options)/*{{{*/
+    private function setup_style_info($options)
     {
         if (isset($options['style_type'])) {
             $this->style_type = $options['style_type'];
@@ -28,7 +28,7 @@ class badges_helper
         }
     }/*}}}*/
 
-    public function process_badges($post_data, $options=[])/*{{{*/
+    public function process_badges($post_data, $options=[])
     {
         $this->options = $options;
         $this->setup_style_info($options);
@@ -39,18 +39,18 @@ class badges_helper
         return $res;
     }/*}}}*/
 
-    public function setup_user($poster_id)/*{{{*/
+    public function setup_user($poster_id)
     {
         $this->user_data = isset($this->p['users'][$poster_id]) ? $this->p['users'][$poster_id] : [];
         return $this->user_data;
     }/*}}}*/
 
-    public function make_jobs($user_params)/*{{{*/
+    public function make_jobs($user_params)
     {
         return isset($user_params['queue']) ? $user_params['queue'] : [];
     }/*}}}*/
 
-    private function process_jobs($jobs, $post_data, $user_params)/*{{{*/
+    private function process_jobs($jobs, $post_data, $user_params)
     {
         $res = [];
         foreach ($jobs as $name) {
@@ -60,12 +60,12 @@ class badges_helper
         return implode('', $res);
     }/*}}}*/
 
-    private function process_job($jobname, $post_data, $user_params, $item_params)/*{{{*/
+    private function process_job($jobname, $post_data, $user_params, $item_params)
     {
         return $this->generate_named_html($jobname, $post_data, $user_params, $item_params);
     }/*}}}*/
 
-    private function override_item_params($item_params)/*{{{*/
+    private function override_item_params($item_params)
     {
         if (!isset($item_params['override'])) {
             return $item_params;
@@ -85,7 +85,7 @@ class badges_helper
         return $item_params;
     }/*}}}*/
 
-    private function generate_named_html($jobname, $post_data, $user_params, $item_params)/*{{{*/
+    private function generate_named_html($jobname, $post_data, $user_params, $item_params)
     {
         $item_params = $this->override_item_params($item_params);
         $job_data = $user_params['data'][$jobname];
@@ -97,7 +97,7 @@ class badges_helper
         return $html;
     }/*}}}*/
 
-    private function select_random($item)/*{{{*/
+    private function select_random($item)
     {
         if (is_array($item)) {
             return $item[array_rand($item)];
@@ -105,7 +105,7 @@ class badges_helper
         return $item;
     }/*}}}*/
 
-    private function get_required_vars($varnames, $post_data, $job_data, $item_data)/*{{{*/
+    private function get_required_vars($varnames, $post_data, $job_data, $item_data)
     {
         if (!$varnames) {
             return [];
@@ -126,7 +126,7 @@ class badges_helper
         return $res;
     }/*}}}*/
 
-    private function replace_template($strn, $vars)/*{{{*/
+    private function replace_template($strn, $vars)
     {
         // https://stackoverflow.com/questions/7980741/efficient-way-to-replace-placeholders-with-variables
         $strn = preg_replace_callback('/\{([\.\w]+)}/', function ($match) use ($vars) {

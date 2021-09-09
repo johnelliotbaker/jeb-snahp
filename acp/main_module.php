@@ -20,7 +20,7 @@ function prn($var)
     } else {
         echo "$var<br>";
     }
-}/*}}}*/
+}
 
 function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
 {
@@ -30,7 +30,7 @@ function buildSqlSetCase($casename, $varname, $arr)/*{{{*/
     }
     $strn .= "ELSE $varname END ";
     return $strn;
-}/*}}}*/
+}
 
 function sanitize_fid($fid)/*{{{*/
 {
@@ -45,7 +45,7 @@ function sanitize_fid($fid)/*{{{*/
     sort($fid_sane);
     $fid_sane = implode(',', $fid_sane);
     return $fid_sane;
-}/*}}}*/
+}
 
 /**
  * snahp ACP module.
@@ -137,7 +137,7 @@ class main_module
         if (!empty($cfg)) {
             $this->handle_default($cfg);
         }
-    }/*}}}*/
+    }
 
     public function select_groups()/*{{{*/
     {
@@ -150,7 +150,7 @@ class main_module
         }
         $db->sql_freeresult($result);
         return $data;
-    }/*}}}*/
+    }
 
     public function update_groups($casename, $varname, $arr)/*{{{*/
     {
@@ -162,7 +162,7 @@ class main_module
         $strn .= "ELSE $varname END ";
         $sql = 'UPDATE ' . GROUPS_TABLE . $strn;
         $db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function update_one_group($group_id, $data)/*{{{*/
     {
@@ -171,7 +171,7 @@ class main_module
         $strn = $db->sql_build_array('UPDATE', $data);
         $sql = 'UPDATE ' . GROUPS_TABLE . ' SET ' . $strn . " WHERE group_id={$group_id}";
         $db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function handle_default($cfg)/*{{{*/
     {
@@ -191,7 +191,7 @@ class main_module
                 'U_ACTION'				=> $this->u_action,
             ));
         }
-    }/*}}}*/
+    }
 
     private function process_form_fields($a_field)/*{{{*/
     {
@@ -202,7 +202,7 @@ class main_module
                 $config->set($key, $val);
             }
         }
-    }/*}}}*/
+    }
 
     private function set_form_fields($a_field)/*{{{*/
     {
@@ -217,7 +217,7 @@ class main_module
                 $template->assign_var($upper, $val);
             }
         }
-    }/*}}}*/
+    }
 
     private function set_group_form_fields($a_field)/*{{{*/
     {
@@ -240,7 +240,7 @@ class main_module
             }
             $template->assign_block_vars('group', $data);
         }
-    }/*}}}*/
+    }
 
     private function process_group_form_fields($a_field)/*{{{*/
     {
@@ -271,7 +271,7 @@ class main_module
             }
             $this->update_one_group($group_id, $data);
         }
-    }/*}}}*/
+    }
 
     public function handle_thanks($cfg)/*{{{*/
     {
@@ -305,7 +305,7 @@ class main_module
             ];
             $this->set_group_form_fields($a_group_field_to_form);
         }
-    }/*}}}*/
+    }
 
     public function handle_emotes($cfg)/*{{{*/
     {
@@ -337,7 +337,7 @@ class main_module
             ];
             $this->set_group_form_fields($a_group_field_to_form);
         }
-    }/*}}}*/
+    }
 
     public function handle_invite($cfg)/*{{{*/
     {
@@ -360,7 +360,7 @@ class main_module
                 'SNP_INV_B_MASTER'      => $config['snp_inv_b_master'],
             ));
         }
-    }/*}}}*/
+    }
 
     public function handle_analytics($cfg)/*{{{*/
     {
@@ -408,7 +408,7 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }/*}}}*/
+    }
 
     public function handle_group_based_search($cfg)/*{{{*/
     {
@@ -473,7 +473,7 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }/*}}}*/
+    }
 
     public function handle_bump_topic($cfg)/*{{{*/
     {
@@ -531,7 +531,7 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }/*}}}*/
+    }
 
     public function handle_request($cfg)/*{{{*/
     {
@@ -638,7 +638,7 @@ class main_module
                 'U_ACTION'             => $this->u_action,
             ));
         }
-    }/*}}}*/
+    }
 
     public function handle_notification($cfg)/*{{{*/
     {
@@ -682,7 +682,7 @@ class main_module
                 'U_ACTION'                      => $this->u_action,
             ));
         }
-    }/*}}}*/
+    }
 
     public function handle_settings($cfg)/*{{{*/
     {
@@ -801,7 +801,7 @@ class main_module
                 'U_ACTION'                     => $this->u_action,
             ));
         }
-    }/*}}}*/
+    }
 
     public function handle_signature($cfg)/*{{{*/
     {
@@ -856,7 +856,7 @@ class main_module
             };
             $db->sql_freeresult($result);
         }
-    }/*}}}*/
+    }
 
     public function handle_pg($cfg)/*{{{*/
     {
@@ -1094,7 +1094,7 @@ class main_module
                 $template->assign_var($pg_name . '_fid', $fid);
             }
         }
-    }/*}}}*/
+    }
 
     public function handle_donation($cfg)/*{{{*/
     {
@@ -1121,5 +1121,5 @@ class main_module
                 'U_ACTION'                      => $this->u_action,
             ));
         }
-    }/*}}}*/
+    }
 }

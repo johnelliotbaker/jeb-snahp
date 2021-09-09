@@ -1,7 +1,7 @@
 <?php
 namespace jeb\snahp\Apps\Xmas;
 
-class BingoBoard /*{{{*/
+class BingoBoard 
 {
     public function __construct($rows, $columns, $poolSize)
     {
@@ -58,4 +58,4 @@ class BingoBoard /*{{{*/
             }
         }
     }
-}/*}}}*/
+}

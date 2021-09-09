@@ -6,7 +6,7 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class JukeboxController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,13 +40,13 @@ class JukeboxController
         $this->helper = $helper;
         $this->userId = $sauth->userId;
         // $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function viewPlaylist()/*{{{*/
+    public function viewPlaylist()
     {
         $data = $this->helper->load();
         $resp = new JsonResponse($data);
         $resp->setEncodingOptions(JSON_NUMERIC_CHECK);
         return $resp;
-    }/*}}}*/
+    }
 }

@@ -15,7 +15,7 @@ class DjangoPaginator
         $this->allowEmptyFirstPage = $allowEmptyFirstPage;
     }
 
-    public function validateNumber($number)/*{{{*/
+    public function validateNumber($number)
     {
         try {
             $number = (int)$number;
@@ -32,9 +32,9 @@ class DjangoPaginator
             }
         }
         return $number;
-    }/*}}}*/
+    }
 
-    public function getPage($number)/*{{{*/
+    public function getPage($number)
     {
         try {
             $number = $this->validateNumber($number);
@@ -44,49 +44,49 @@ class DjangoPaginator
             $number = $this->numPages();
         }
         return $this->page($number);
-    }/*}}}*/
+    }
 
-    public function page($number)/*{{{*/
+    public function page($number)
     {
         $number = $this->validateNumber($number);
         $bottom = ($number - 1) * $this->perPage;
         return $this->_getPage($this->objectList->slice($bottom, $this->perPage), $number, $this);
-    }/*}}}*/
+    }
 
-    private function _getPage(...$args)/*{{{*/
+    private function _getPage(...$args)
     {
         return new Page(...$args);
-    }/*}}}*/
+    }
 
-    public function count()/*{{{*/
+    public function count()
     {
         return count($this->objectList);
-    }/*}}}*/
+    }
 
-    public function numPages()/*{{{*/
+    public function numPages()
     {
         $hits = max(1, $this->count() - $this->orphans);
         return ceil($hits / $this->perPage);
-    }/*}}}*/
+    }
 
-    private function _checkObjectListIsOrdered()/*{{{*/
+    private function _checkObjectListIsOrdered()
     {
         return true;
         // $ordered =  isset($this->objectList['ordered']) ? $this->objectList['ordered'] : null;
         // if ($ordered !== null && !$ordered) {
         //     // Show some warnings
         // }
-    }/*}}}*/
+    }
 }
 
-class InvalidPage extends \Exception/*{{{*/
+class InvalidPage extends \Exception
 {
-}/*}}}*/
+}
 
-class PageNotAnInteger extends \Exception/*{{{*/
+class PageNotAnInteger extends \Exception
 {
-}/*}}}*/
+}
 
-class EmptyPage extends \Exception/*{{{*/
+class EmptyPage extends \Exception
 {
-}/*}}}*/
+}

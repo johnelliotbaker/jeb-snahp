@@ -19,7 +19,7 @@ class product_class_editor
         $db, $user, $config, $request, $template, $container, $helper,
         $tbl,
         $sauth, $product_class
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -33,9 +33,9 @@ class product_class_editor
         $this->product_class = $product_class;
         $this->user_id = (int) $this->user->data['user_id'];
         $sauth->reject_non_dev('f3a997395f');
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode)
         {
@@ -48,9 +48,9 @@ class product_class_editor
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
-    private function handle_save()/*{{{*/
+    private function handle_save()
     {
         $json = (string) htmlspecialchars_decode($this->request->variable('json', ''));
         $data = json_decode($json);
@@ -73,7 +73,7 @@ class product_class_editor
         $js->send($rdata);
     }
 
-    private function handle_edit($cfg)/*{{{*/
+    private function handle_edit($cfg)
     {
         $rowset = $this->product_class->get_product_classes();
         foreach ($rowset as $row)

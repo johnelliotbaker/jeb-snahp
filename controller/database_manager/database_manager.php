@@ -23,7 +23,7 @@ class database_manager
     $db, $user, $config, $request, $template, $container, $helper,
     $tbl,
     $sauth
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -36,7 +36,7 @@ class database_manager
         $this->sauth = $sauth;
     }/*}}}*/
 
-    public function handle_commands()/*{{{*/
+    public function handle_commands()
     {
         if (!$this->sauth->is_only_dev())
         {
@@ -103,7 +103,7 @@ class database_manager
         }
     }
 
-    public function handle()/*{{{*/
+    public function handle()
     {
         if (!$this->sauth->is_only_dev())
         {
@@ -129,7 +129,7 @@ class database_manager
         return $rowset;
     }
 
-    private function respond_query($cfg)/*{{{*/
+    private function respond_query($cfg)
     {
         $this->set_logging_status();
         add_form_key('jeb_snp');

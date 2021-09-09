@@ -53,14 +53,14 @@ class XmasPrizeDistributor
         8 => 100000,
     ];
 
-    public function __construct($Notification, $Board, $BankUserAccount)/*{{{*/
+    public function __construct($Notification, $Board, $BankUserAccount)
     {
         $this->Notification = $Notification;
         $this->Board = $Board;
         $this->BankUserAccount = $BankUserAccount;
-    }/*}}}*/
+    }
 
-    public function sendNotification($userId, $title='2020 Christmas Event', $description='', $id=0)/*{{{*/
+    public function sendNotification($userId, $title='2020 Christmas Event', $description='', $id=0)
     {
         $notificationItemID = $id;
         $notification_data = [
@@ -80,9 +80,9 @@ class XmasPrizeDistributor
             $time = time() * 2,
             $mark_read = false
         );
-    }/*}}}*/
+    }
 
-    public function processQuestPrize($data)/*{{{*/
+    public function processQuestPrize($data)
     {
         $users = $data['users'];
         $prize = $data['prize'];
@@ -95,9 +95,9 @@ class XmasPrizeDistributor
             $this->sendNotification($userId, $title, $message, $id = $notificationItemID);
             $this->BankUserAccount->create_transaction_and_deposit($prize, $userId, -1, $message);
         }
-    }/*}}}*/
+    }
 
-    public function processPrize($userId, $score)/*{{{*/
+    public function processPrize($userId, $score)
     {
         $prize = self::SCORE_TO_PRIZE[$score];
         $prizeString = number_format($prize);
@@ -117,9 +117,9 @@ class XmasPrizeDistributor
             );
         }
         return [$prize, $invite];
-    }/*}}}*/
+    }
 
-    public function processInvites($userId, $score)/*{{{*/
+    public function processInvites($userId, $score)
     {
         $invite = $score === 0 || $score === 8 ? 1 : 0;
         if ($invite) {
@@ -132,9 +132,9 @@ class XmasPrizeDistributor
             );
         }
         return $invite;
-    }/*}}}*/
+    }
 
-    public function distributeInvites($start)/*{{{*/
+    public function distributeInvites($start)
     {
         $startTime = microtime(true);
         $votes = getVotes();
@@ -159,9 +159,9 @@ class XmasPrizeDistributor
         $elapsed = (microtime(true) - $startTime);
         print_r("Processed $count invites.<br/>");
         print_r("Took ${elapsed} seconds.<br/>");
-    }/*}}}*/
+    }
 
-    public function distribute($start)/*{{{*/
+    public function distribute($start)
     {
         $limit = 10000;
         $start = $start * $limit;
@@ -201,9 +201,9 @@ class XmasPrizeDistributor
         print_r($stats);
         $elapsed = microtime(true) - $startTime;
         print_r("Took ${elapsed} seconds.<br/>");
-    }/*}}}*/
+    }
 
-    public function sendPrizeNotifications($notificationData)/*{{{*/
+    public function sendPrizeNotifications($notificationData)
     {
         foreach ($notificationData as $score => $ndata) {
             $prize = self::SCORE_TO_PRIZE[$score];
@@ -217,9 +217,9 @@ class XmasPrizeDistributor
             $userId = $ndata;
             $this->sendNotification($userId, '2020 Christmas Event', $message, $id = 0);
         }
-    }/*}}}*/
+    }
 
-    public function distributeQuestPrizes()/*{{{*/
+    public function distributeQuestPrizes()
     {
         print_r('Distributing Prizes for Quest Completion.');
         $startTime = microtime(true);
@@ -228,12 +228,12 @@ class XmasPrizeDistributor
         }
         $elapsed = microtime(true) - $startTime;
         print_r("Took ${elapsed} seconds.<br/>");
-    }/*}}}*/
+    }
 }
 
-function sendMessage($data)/*{{{*/
+function sendMessage($data)
 {
     echo "data: " . json_encode($data) . PHP_EOL;
     ob_flush();
     flush();
-}/*}}}*/
+}

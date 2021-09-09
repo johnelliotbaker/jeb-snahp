@@ -15,12 +15,12 @@ class MiniBoardMCP
         $sauth->reject_non_dev('Error Code: 6d14c8fe2c');
     }
 
-    public function manage()/*{{{*/
+    public function manage()
     {
         $cfg['tpl_name'] = '@jeb_snahp/mini_board/mcp/base.html';
         $cfg['title'] = 'Manage Mini Board';
         $miniforum = \R::find(MINIFORUMS_TABLE);
         $this->template->assign_var('data', $miniforum);
         return $this->phpHelper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 }

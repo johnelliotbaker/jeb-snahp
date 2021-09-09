@@ -17,11 +17,11 @@ class CustomBannerController
         $this->sauth->reject_anon('Error Code: 653e0a6cdc');
     }
 
-    public function toggle()/*{{{*/
+    public function toggle()
     {
         $action = $this->helper->getVisibility() ? "Disabled" : "Enabled";
         $this->helper->toggleVisibility();
         meta_refresh(1, '/');
         trigger_error("$action Seasonal Theme");
-    }/*}}}*/
+    }
 }

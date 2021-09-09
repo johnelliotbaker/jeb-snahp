@@ -7,11 +7,11 @@ use jeb\snahp\core\base;
 class custom_rank extends base
 {
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
-    }/*}}}*/
+    }
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         if (!$this->config['snp_ucp_custom_b_master'])
         {
@@ -33,17 +33,17 @@ class custom_rank extends base
             trigger_error('Invalid request category. Error Code: 57f43ea934');
             break;
         }
-	}/*}}}*/
+	}
 
-    public function respond_info_as_json()/*{{{*/
+    public function respond_info_as_json()
     {
         $js = new \phpbb\json_response();
         $user_id = $this->user->data['user_id'];
         $row = $this->get_custom_rank($user_id);
         return $js->send($row);
-    }/*}}}*/
+    }
 
-    private function truncate_string($strn, $available)/*{{{*/
+    private function truncate_string($strn, $available)
     {
         $array = str_split($strn);
         $count = 0;
@@ -64,9 +64,9 @@ class custom_rank extends base
             }
         }
         return mb_substr($strn, 0, $count);
-    }/*}}}*/
+    }
 
-    public function save($cfg)/*{{{*/
+    public function save($cfg)
     {
         $js = new \phpbb\json_response();
         $rank_title = $this->db->sql_escape($this->request->variable('rt', '', true));
@@ -79,6 +79,6 @@ class custom_rank extends base
             return $js->send(['status'=> 1, 'reason' => '']);
         }
         return $js->send(['status'=> 0, 'reason' => 'Error Code: fbe7eb9944']);
-    }/*}}}*/
+    }
 
 }

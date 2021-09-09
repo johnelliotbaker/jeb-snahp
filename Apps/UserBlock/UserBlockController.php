@@ -13,9 +13,9 @@ class UserBlockController
         $this->helper = $helper;
         $this->userId = (int) $sauth->userId;
         $this->sauth->reject_non_dev('Error Code: 33134748e4');
-    }/*}}}*/
+    }
 
-    public function removeAllBlocksFromUserGroup($groupId)/*{{{*/
+    public function removeAllBlocksFromUserGroup($groupId)
     {
         if (confirm_box(true)) {
             $users = $this->helper->removeAllBlocksFromUserGroup($groupId);
@@ -31,23 +31,23 @@ class UserBlockController
             confirm_box(false, "You are about to remove all blocks issued by ${groupName}");
         }
         return new Response('Reload');
-    }/*}}}*/
+    }
 
-    public function viewUserBlock()/*{{{*/
+    public function viewUserBlock()
     {
         $username = $this->request->variable('username', '');
         $resp = $this->helper->getUserBlocks($username);
         $resp = new JsonResponse($resp);
         $resp->setEncodingOptions(JSON_NUMERIC_CHECK);
         return $resp;
-    }/*}}}*/
+    }
 
-    public function viewUserBlockLog()/*{{{*/
+    public function viewUserBlockLog()
     {
         $username = $this->request->variable('username', '');
         $resp = $this->helper->getUserBlocksLog($username);
         $resp = new JsonResponse($resp);
         $resp->setEncodingOptions(JSON_NUMERIC_CHECK);
         return $resp;
-    }/*}}}*/
+    }
 }

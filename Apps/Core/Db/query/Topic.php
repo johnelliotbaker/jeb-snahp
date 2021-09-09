@@ -8,7 +8,7 @@ class Topic
         $this->db = $db;
     }
 
-    public function get($topicId)/*{{{*/
+    public function get($topicId)
     {
         $sqlArray = [
             'SELECT' => '*',
@@ -20,14 +20,14 @@ class Topic
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function update($id, $data)/*{{{*/
+    public function update($id, $data)
     {
         $id = (int) $id;
         $sql = 'UPDATE ' . TOPICS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE topic_id=${id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 }

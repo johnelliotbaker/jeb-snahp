@@ -9,7 +9,7 @@ class UserFlairManagerHelper
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $sauth;
     protected $Type;
     protected $Flair;
@@ -24,7 +24,7 @@ class UserFlairManagerHelper
         $this->Type = $Type;
         $this->Flair = $Flair;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
     public function getFlairs()
     {

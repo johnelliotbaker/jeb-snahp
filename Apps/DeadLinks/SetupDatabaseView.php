@@ -8,7 +8,7 @@ use \R as R;
 
 class SetupDatabaseView
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $request;
     protected $sauth;
     public function __construct(
@@ -24,7 +24,7 @@ class SetupDatabaseView
         $this->shortString = str_repeat('x', 254);
         $this->longString = str_repeat('x', 100000);
         $this->sauth->reject_non_dev('Error Code: a7d8c95d04');
-    }/*}}}*/
+    }
 
     public function view()
     {
@@ -34,7 +34,7 @@ class SetupDatabaseView
         return new Response('', 200);
     }
 
-    public function setupEntry()/*{{{*/
+    public function setupEntry()
     {
         $model = $this->Entry;
         $model->wipe();
@@ -55,5 +55,5 @@ class SetupDatabaseView
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'status', 'status');
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'type', 'type');
         $model->wipe();
-    }/*}}}*/
+    }
 }

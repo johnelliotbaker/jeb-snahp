@@ -30,7 +30,7 @@ class foe_listener implements EventSubscriberInterface
         $db, $config, $user, $template, $container,
         $tbl,
         $sauth, $foe_helper
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->config = $config;
@@ -43,9 +43,9 @@ class foe_listener implements EventSubscriberInterface
         $this->user_id = $this->user->data['user_id'];
         $this->time = 0;
         $this->status = [];
-    }/*}}}*/
+    }
 
-    static public function getSubscribedEvents()/*{{{*/
+    static public function getSubscribedEvents()
     {
         return [
             'core.viewtopic_modify_post_row' => [
@@ -64,9 +64,9 @@ class foe_listener implements EventSubscriberInterface
                 ['clear_quoted_message_on_blocked', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function setup_pm($event)/*{{{*/
+    public function setup_pm($event)
     {
         if (!$this->config['snp_foe_b_master']) return false;
         $post_id = (int) $event['msg_id'];
@@ -77,9 +77,9 @@ class foe_listener implements EventSubscriberInterface
             trigger_error('The recipient has chosen not to receive private messages from you. Error Code: 77d2a85f1e');
         }
         $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_post_id($blocked_id, $post_id);
-    }/*}}}*/
+    }
 
-    public function disable_blocked_user_on_pm_submit($event)/*{{{*/
+    public function disable_blocked_user_on_pm_submit($event)
     {
         if (!$this->config['snp_foe_b_master']) return false;
         $data = $event['data'];
@@ -93,9 +93,9 @@ class foe_listener implements EventSubscriberInterface
                 trigger_error('The recipient has chosen not to receive private messages from you. Error Code: 3a3abda323');
             }
         }
-    }/*}}}*/
+    }
 
-    public function clear_quoted_message_on_blocked($event)/*{{{*/
+    public function clear_quoted_message_on_blocked($event)
     {
         // TODO: This is run on every decode. Find a way to do this only on quotepost
         // This would probably require modifying includes/ucp/ucp_pm_compose.php
@@ -105,9 +105,9 @@ class foe_listener implements EventSubscriberInterface
             $message_text = '';
             $event['message_text'] = $message_text;
         }
-    }/*}}}*/
+    }
 
-    public function hide_from_blocked_user_on_reply($event)/*{{{*/
+    public function hide_from_blocked_user_on_reply($event)
     {
         if (!$this->config['snp_foe_b_master']) return false;
         $a_reply_mode = ['reply', 'quote', 'edit'];
@@ -120,9 +120,9 @@ class foe_listener implements EventSubscriberInterface
             trigger_error('You have been blocked by the topic starter and cannot create new posts in this topic. Error Code: cf82bd2706');
         }
         $this->status['user_blocked'] = $this->foe_helper->is_blocked_with_blocker_id($blocked_id, $blocker_id);
-    }/*}}}*/
+    }
 
-    public function hide_from_blocked_user_on_viewtopic($event)/*{{{*/
+    public function hide_from_blocked_user_on_viewtopic($event)
     {
         if (!$this->config['snp_foe_b_master']) return false;
         $post_row = $event['post_row'];
@@ -145,6 +145,6 @@ class foe_listener implements EventSubscriberInterface
                 ]);
             }
         }
-    }/*}}}*/
+    }
 
 }

@@ -21,11 +21,11 @@ class ModeratorView
         $this->sauth = $sauth;
         $this->Entry = $Entry;
         $this->sauth->reject_non_dev('Error Code: 137b8e6393');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         $data = $this->Entry->getOpenRequests();
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 }

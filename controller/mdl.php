@@ -9,11 +9,11 @@ class mdl extends base
 
     protected $base_url = '';
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
-    }/*}}}*/
+    }
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -34,14 +34,14 @@ class mdl extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-	}/*}}}*/
+	}
 
-    public function title($cfg)/*{{{*/
+    public function title($cfg)
     {
         $this->title_json($cfg);
-    }/*}}}*/
+    }
 
-    public function title_json($cfg)/*{{{*/
+    public function title_json($cfg)
     {
         $js = new \phpbb\json_response();
         $id = $this->request->variable('id', 0);
@@ -61,14 +61,14 @@ class mdl extends base
         $result = curl_exec($ch);
 		$js->send($result);
         trigger_error($result);
-    }/*}}}*/
+    }
 
-    public function search($cfg)/*{{{*/
+    public function search($cfg)
     {
         $this->search_json($cfg);
-    }/*}}}*/
+    }
 
-    public function search_json($cfg)/*{{{*/
+    public function search_json($cfg)
     {
         $js = new \phpbb\json_response();
         $title = $this->request->variable('title', '');
@@ -88,6 +88,6 @@ class mdl extends base
         $result = curl_exec($ch);
 		$js->send($result);
         trigger_error($result);
-    }/*}}}*/
+    }
 
 }

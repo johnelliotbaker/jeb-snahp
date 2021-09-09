@@ -26,7 +26,7 @@ class PageNumberPagination
     public $template = '';
     public $invalidPageMessage = 'Invalid Page. Error Code: 814b1ceeaf';
 
-    public function paginateQueryset($queryset, $request, $view=null)/*{{{*/
+    public function paginateQueryset($queryset, $request, $view=null)
     {
         $pageSize = $this->getPageSize($request);
         if (!$pageSize) {
@@ -54,7 +54,7 @@ class PageNumberPagination
         return $this->page;
     }/*}}}*/
 
-    public function getPageSize($request)/*{{{*/
+    public function getPageSize($request)
     {
         if ($this->pageSizeQueryParam) {
             try {
@@ -65,7 +65,7 @@ class PageNumberPagination
         return $this->pageSize;
     }/*}}}*/
 
-    public function getNextLink()/*{{{*/
+    public function getNextLink()
     {
         if (!$this->page->hasNext()) {
             return;
@@ -79,7 +79,7 @@ class PageNumberPagination
         return buildAbsoluteUri($this->request, $data);
     }/*}}}*/
 
-    public function getPreviousLink()/*{{{*/
+    public function getPreviousLink()
     {
         if (!$this->page->hasPrevious()) {
             return;
@@ -93,7 +93,7 @@ class PageNumberPagination
         return buildAbsoluteUri($this->request, $data);
     }/*}}}*/
 
-    public function getPaginatedResponse($data)/*{{{*/
+    public function getPaginatedResponse($data)
     {
         $data = [
             'count' => $this->page->paginator->count(),

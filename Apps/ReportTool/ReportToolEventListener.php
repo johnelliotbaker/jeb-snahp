@@ -10,18 +10,18 @@ class ReportToolEventListener implements EventSubscriberInterface
     {
         $this->user = $user;
         $this->helper = $helper;
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.viewtopic_modify_post_row' => [
                 ['embedReportTime', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function embedReportTime($event)/*{{{*/
+    public function embedReportTime($event)
     {
         $row = $event['row'];
         if ($row['post_reported']) {
@@ -33,5 +33,5 @@ class ReportToolEventListener implements EventSubscriberInterface
                 $event['post_row'] = $postRow;
             }
         }
-    }/*}}}*/
+    }
 }

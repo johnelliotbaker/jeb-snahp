@@ -14,7 +14,7 @@ class handlebar_listener implements EventSubscriberInterface
     public function __construct(
         $container, $config, $template,
         $helper
-    )/*{{{*/
+    )
     {
         $this->config = $config;
         $this->template = $template;
@@ -22,18 +22,18 @@ class handlebar_listener implements EventSubscriberInterface
         $this->helper = $helper;
         $this->topic_data = [];
         $this->state = [];
-    }/*}}}*/
+    }
 
-    static public function getSubscribedEvents()/*{{{*/
+    static public function getSubscribedEvents()
     {
         return [
             'core.text_formatter_s9e_render_after' => [
                 ['hide_spoiler', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function hide_spoiler($event)/*{{{*/
+    public function hide_spoiler($event)
     {
         // Logic for hiding
         $hide = function($html) 
@@ -45,6 +45,6 @@ class handlebar_listener implements EventSubscriberInterface
         // Decorator for ignoring code block
         $string_util = new \jeb\snahp\core\string_util();
         $event['html'] = $string_util->ignore_codeblock($hide)($event['html']);
-    }/*}}}*/
+    }
 
 }

@@ -7,32 +7,32 @@ use jeb\snahp\core\invite_helper;
 class market
 {
 
-/*{{{*/
+
     protected $db;
     protected $tbl;
-/*}}}*/
+
 
     public function __construct(
         $db,
         $tbl
-    ) /*{{{*/
+    ) 
     {
         $this->db = $db;
         $this->tbl_invoice_items = $tbl['mrkt_invoice_items'];
         $this->tbl_invoices = $tbl['mrkt_invoices'];
         $this->tbl_product_classes = $tbl['mrkt_product_classes'];
-    }/*}}}*/
+    }
 
-    public function get_product_classes()/*{{{*/
+    public function get_product_classes()
     {
         $sql = 'SELECT * FROM ' . $this->tbl_product_classes . ' WHERE enable=1';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function get_product_class_by_name($product_class_name)/*{{{*/
+    public function get_product_class_by_name($product_class_name)
     {
         $product_class_name = $this->db->sql_escape($product_class_name);
         $where = "name='${product_class_name}'";
@@ -41,25 +41,25 @@ class market
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function get_product_class($product_class_id)/*{{{*/
+    public function get_product_class($product_class_id)
     {
         $sql = 'SELECT * FROM ' . $this->tbl_product_classes . " WHERE id=${product_class_id}";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function append_to_invoice($invoice_id, $data)/*{{{*/
+    public function append_to_invoice($invoice_id, $data)
     {
         $data['invoice_id'] = $invoice_id;
         $sql = 'INSERT INTO ' . $this->tbl_invoice_items . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function create_invoice($user_id, $broker_id=-1)/*{{{*/
+    public function create_invoice($user_id, $broker_id=-1)
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
@@ -72,9 +72,9 @@ class market
         $sql = 'INSERT INTO ' . $this->tbl_invoices . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return (int) $this->db->sql_nextid();
-    }/*}}}*/
+    }
 
-    public function get_total_cost($product_class_id, $amount)/*{{{*/
+    public function get_total_cost($product_class_id, $amount)
     {
         $product_class_id = (int) $product_class_id;
         $amount = (int) $amount;
@@ -85,6 +85,6 @@ class market
         }
         $price = $product_class_data['price'];
         return abs($price * $amount);
-    }/*}}}*/
+    }
 
 }

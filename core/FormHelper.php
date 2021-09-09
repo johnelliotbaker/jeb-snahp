@@ -5,13 +5,13 @@ class FormHelper
 {
     protected $request;
     protected $template;
-    public function __construct(/*{{{*/
+    public function __construct(
         $request,
         $template
     ) {
         $this->request = $request;
         $this->template = $template;
-    }/*}}}*/
+    }
 
     public function getRequestVars($varDict)
     {

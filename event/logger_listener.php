@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+
 /**
  *
  * snahp. An extension for the phpBB Forum Software package.
@@ -25,7 +25,7 @@ class logger_listener implements EventSubscriberInterface
     public function __construct(
         $config, $user,
         $logger, $sauth
-    )/*{{{*/
+    )
     {
         $this->config = $config;
         $this->user = $user;
@@ -33,9 +33,9 @@ class logger_listener implements EventSubscriberInterface
         $this->sauth = $sauth;
         $this->b_ban = !$this->sauth->is_only_dev();
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    static public function getSubscribedEvents()/*{{{*/
+    static public function getSubscribedEvents()
     {
         return [
             'core.viewtopic_before_f_read_check' => [
@@ -145,9 +145,9 @@ class logger_listener implements EventSubscriberInterface
                 ['log_spam', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function log_spam($event, $event_name)/*{{{*/
+    public function log_spam($event, $event_name)
     {
         $b = $this->config['snp_log_b_user_spam'];
         if (!$b) { return false; }
@@ -169,9 +169,9 @@ class logger_listener implements EventSubscriberInterface
             trigger_error('Please do not spam the server!');
         }
         $b_success = $this->logger->log_user_visit($this->user_id);
-    }/*}}}*/
+    }
 
-    public function log_viewtopic($event, $event_name)/*{{{*/
+    public function log_viewtopic($event, $event_name)
     {
         if ($this->b_ban) { return false; }
         $event_name = (string) $event_name;
@@ -182,9 +182,9 @@ class logger_listener implements EventSubscriberInterface
             'created_time' => $time,
         ];
         $this->logger->log($data);
-    }/*}}}*/
+    }
 
-    public function log_posting($event, $event_name)/*{{{*/
+    public function log_posting($event, $event_name)
     {
         if ($this->b_ban) { return false; }
         $event_name = (string) $event_name;
@@ -195,6 +195,6 @@ class logger_listener implements EventSubscriberInterface
             'created_time' => $time,
         ];
         $this->logger->log($data);
-    }/*}}}*/
+    }
 
 }

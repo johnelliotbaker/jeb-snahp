@@ -28,30 +28,30 @@ class TopicListCreateAPIView extends ListCreateAPIView
 
     protected $foreignNameParam = 'miniforum';
 
-    public function __construct($request, $sauth)/*{{{*/
+    public function __construct($request, $sauth)
     {
         $this->request = $request;
         $this->sauth = $sauth;
         $sauth->reject_anon('Error Code: b28a40899f');
         $this->model = new Topic();
         $this->paginator = new $this->paginationClass();
-    }/*}}}*/
+    }
 
-    public function getQueryset()/*{{{*/
+    public function getQueryset()
     {
         $queryset = $this->model->filter($this->request);
         $queryset = $this->model->appendUserInfo($queryset);
         return $queryset;
-    }/*}}}*/
+    }
 
-    public function performCreate($serializer)/*{{{*/
+    public function performCreate($serializer)
     {
         $instance = parent::performCreate($serializer);
         return $this->model->appendUserInfo($instance);
-    }/*}}}*/
+    }
 
-    public function getForeignPk($default='')/*{{{*/
+    public function getForeignPk($default='')
     {
         return $this->request->variable($this->foreignNameParam, $default);
-    }/*}}}*/
+    }
 }

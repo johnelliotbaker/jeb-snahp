@@ -6,7 +6,7 @@ class ReactionHelper
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -26,18 +26,18 @@ class ReactionHelper
         $this->rxnTbl = $tbl['reaction'];
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function addOrUpdate($userId, $type, $postId, $message='')/*{{{*/
+    public function addOrUpdate($userId, $type, $postId, $message='')
     {
         if ($row = $this->getUserPostReaction($userId, $postId)) {
             $this->updateReaction($userId, $type, $postId, $message);
         } else {
             $this->addReaction($userId, $type, $postId, $message);
         }
-    }/*}}}*/
+    }
 
-    private function getUserPostReaction($userId, $postId)/*{{{*/
+    private function getUserPostReaction($userId, $postId)
     {
         $sql = "SELECT * FROM {$this->rxnTbl}" .
             " WHERE user_id=$userId AND post_id=$postId";
@@ -45,9 +45,9 @@ class ReactionHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function updateReaction($userId, $type, $postId, $message)/*{{{*/
+    public function updateReaction($userId, $type, $postId, $message)
     {
         [$userId, $type, $postId, $message] = [
             (int) $userId, (string) $type, (int) $postId, (string) $message];
@@ -62,9 +62,9 @@ class ReactionHelper
             . $this->db->sql_build_array('UPDATE', $data)
             . " WHERE user_id=$userId AND post_id=$postId";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function addReaction($userId, $type, $postId, $message)/*{{{*/
+    private function addReaction($userId, $type, $postId, $message)
     {
         [$userId, $type, $postId, $message] = [
             (int) $userId, (string) $type, (int) $postId, (string) $message];
@@ -78,9 +78,9 @@ class ReactionHelper
         $sql = "INSERT INTO {$this->rxnTbl} " .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function getReactionById($id)/*{{{*/
+    public function getReactionById($id)
     {
         $id = (int) $id;
         $where = "a.id={$id}";
@@ -104,9 +104,9 @@ class ReactionHelper
         }
         $row['created'] = $this->user->format_date($row['created'], 'M d, g:i a');
         return $row;
-    }/*}}}*/
+    }
 
-    public function getReactions($request, $limit=100)/*{{{*/
+    public function getReactions($request, $limit=100)
     {
         $where = $this->makeFilter($request);
         $sql = "SELECT * FROM {$this->rxnTbl} WHERE {$where}";
@@ -114,9 +114,9 @@ class ReactionHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    private function makeFilter($request)/*{{{*/
+    private function makeFilter($request)
     {
         $postId = $request->variable('p', 0);
         $where = ['1=1'];
@@ -124,9 +124,9 @@ class ReactionHelper
             $where[] = "post_id={$postId}";
         }
         return implode(' AND ', $where);
-    }/*}}}*/
+    }
 
-    public function getPostReactions($postId, $limit=100)/*{{{*/
+    public function getPostReactions($postId, $limit=100)
     {
         $where = "a.post_id={$postId}";
         $order_by = 'a.id ASC';
@@ -152,5 +152,5 @@ class ReactionHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 }

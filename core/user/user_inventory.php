@@ -14,7 +14,7 @@ class user_inventory
         $tbl,
         $sauth, $market_transaction_logger, $product_class
 	)
-	{/*{{{*/
+	{
         $this->db = $db;
         $this->user = $user;
         $this->container = $container;
@@ -23,16 +23,16 @@ class user_inventory
         $this->market_transaction_logger = $market_transaction_logger;
         $this->product_class = $product_class;
         $this->user_id = $this->user->data['user_id'];
-	}/*}}}*/
+	}
 
-    public function reset($user_id, $broker_id=-1)/*{{{*/
+    public function reset($user_id, $broker_id=-1)
     {
         $this->sauth->reject_non_dev('cec49a5984');
         $user_id = (int) $user_id;
         $this->set_balance($user_id, 0);
-    }/*}}}*/
+    }
 
-    public function get_single_inventory($where, $user_id=null)/*{{{*/
+    public function get_single_inventory($where, $user_id=null)
     {
         $user_id = $user_id===null ? $this->user_id : (int) $user_id;
         $sql = 'SELECT * FROM ' . $this->tbl['user_inventory'] . " WHERE user_id=${user_id} AND $where";
@@ -40,9 +40,9 @@ class user_inventory
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function get_inventory($user_id)/*{{{*/
+    public function get_inventory($user_id)
     {
         $user_id = (int) $user_id;
         $sql = 'SELECT * FROM ' . $this->tbl['user_inventory'] . " WHERE user_id=${user_id}";
@@ -50,9 +50,9 @@ class user_inventory
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function get_inventory_with_details($user_id)/*{{{*/
+    public function get_inventory_with_details($user_id)
     {
         $where = "user_id=${user_id}";
         $order_by = 'i.id DESC';
@@ -74,9 +74,9 @@ class user_inventory
         $total = count($rowset);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function get_inventory_by_product_class($product_class_id, $user_id=null)/*{{{*/
+    public function get_inventory_by_product_class($product_class_id, $user_id=null)
     {
         $user_id = $user_id===null ? $this->user_id : (int) $user_id;
         $product_class_id = (int) $product_class_id;
@@ -85,9 +85,9 @@ class user_inventory
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function get_inventory_count_by_product_class($user_id)/*{{{*/
+    public function get_inventory_count_by_product_class($user_id)
     {
         $rowset = $this->get_inventory((int)$user_id);
         if (!$rowset) return [];
@@ -97,9 +97,9 @@ class user_inventory
             $res[$row['product_class_id']] = (int) $row['quantity'];
         }
         return $res;
-    }/*}}}*/
+    }
 
-    public function add_item($product_class_id, $quantity, $user_id=null)/*{{{*/
+    public function add_item($product_class_id, $quantity, $user_id=null)
     {
         $row = $this->get_inventory_by_product_class($product_class_id, $user_id);
         if ($row)
@@ -122,9 +122,9 @@ class user_inventory
             return $this->db->sql_affectedrows() > 0;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function do_add_item_with_logging($product_class_id, $quantity, $user_id=null, $comment='')/*{{{*/
+    public function do_add_item_with_logging($product_class_id, $quantity, $user_id=null, $comment='')
     {
         $b_item_added = $this->do_add_item($product_class_id, $quantity, $user_id);
         $product_class = $this->product_class->get_product_class($product_class_id);
@@ -143,18 +143,18 @@ class user_inventory
         ];
         $this->market_transaction_logger->create_single_item_invoice($user_id, $broker_id=-1, $data);
         return $b_item_added;
-    }/*}}}*/
+    }
 
-    public function do_add_item($product_class_id, $quantity, $user_id=null)/*{{{*/
+    public function do_add_item($product_class_id, $quantity, $user_id=null)
     {
         $user_id = $user_id===null ? $this->user_id : (int) $user_id;
         $product_class_id = (int) $product_class_id;
         $quantity = abs((int) $quantity);
         $b_item_added = $this->add_item($product_class_id, $quantity, $user_id);
         return $b_item_added;
-    }/*}}}*/
+    }
 
-    public function doRemoveItemWithLogging($productClassId, $quantity, $userId, $comment='')/*{{{*/
+    public function doRemoveItemWithLogging($productClassId, $quantity, $userId, $comment='')
     {
         $this->doRemoveItem($productClassId, $quantity, $userId);
         $productClass = $this->product_class->get_product_class($productClassId);
@@ -173,9 +173,9 @@ class user_inventory
         $brokerId = -1;
         $this->market_transaction_logger
             ->create_single_item_invoice($userId, $brokerId, $data);
-    }/*}}}*/
+    }
 
-    public function doRemoveItem($productClassId, $quantity, $userId)/*{{{*/
+    public function doRemoveItem($productClassId, $quantity, $userId)
     {
         $quantity = (int) $quantity;
         if ($quantity < 0) {
@@ -183,9 +183,9 @@ class user_inventory
         }
         $productClassId = (int) $productClassId;
         $this->removeItem($productClassId, $quantity, $userId);
-    }/*}}}*/
+    }
 
-    public function removeItem($productClassId, $quantity, $userId)/*{{{*/
+    public function removeItem($productClassId, $quantity, $userId)
     {
         $quantity = (int) $quantity;
         $productClassId = (int) $productClassId;
@@ -198,9 +198,9 @@ class user_inventory
                 . " WHERE user_id=${userId} AND product_class_id=${productClassId}";
             $this->db->sql_query($sql);
         }
-    }/*}}}*/
+    }
 
-    public function set_item_quantity_public($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
+    public function set_item_quantity_public($product_class_id, $quantity, $user_id, $broker_id=-1)
     {
         $b_success = false;
         if ($quantity < 1)
@@ -216,9 +216,9 @@ class user_inventory
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function set_item_quantity($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
+    public function set_item_quantity($product_class_id, $quantity, $user_id, $broker_id=-1)
     {
         $this->sauth->reject_non_dev('Error Code: b48e5f2a69');
         $b_success = false;
@@ -235,9 +235,9 @@ class user_inventory
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    private function delete_item($product_class_id, $user_id, $broker_id=-1)/*{{{*/
+    private function delete_item($product_class_id, $user_id, $broker_id=-1)
     {
         $product_class_id = (int) $product_class_id;
         $user_id = (int) $user_id;
@@ -251,9 +251,9 @@ class user_inventory
         ];
         $b_logged = $this->log($user_id, $broker_id, $data);
         return $b_logged;
-    }/*}}}*/
+    }
 
-    private function upsert_inventory($product_class_id, $quantity, $user_id, $broker_id=-1)/*{{{*/
+    private function upsert_inventory($product_class_id, $quantity, $user_id, $broker_id=-1)
     {
         $data = [
             'user_id' => $user_id,
@@ -264,14 +264,14 @@ class user_inventory
             ON DUPLICATE KEY UPDATE quantity=${quantity}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
-    private function log_add_item($user_id, $broker_id, $data)/*{{{*/
+    private function log_add_item($user_id, $broker_id, $data)
     {
         return $this->log($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
-    public function log_moderation($product_class_id, $quantity, $user_id, $broker_id, $comment='')/*{{{*/
+    public function log_moderation($product_class_id, $quantity, $user_id, $broker_id, $comment='')
     {
         $data = [
             'product_class_id' => $product_class_id,
@@ -280,9 +280,9 @@ class user_inventory
             'data' => serialize(['comment'=> $comment]),
         ];
         $b_logged = $this->log($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
-    private function log($user_id, $broker_id, $data)/*{{{*/
+    private function log($user_id, $broker_id, $data)
     {
         if ($this->db->sql_affectedrows() < 1)
         {
@@ -293,6 +293,6 @@ class user_inventory
             return false;
         }
         return $this->market_transaction_logger->create_single_item_invoice($user_id, $broker_id, $data);
-    }/*}}}*/
+    }
 
 }

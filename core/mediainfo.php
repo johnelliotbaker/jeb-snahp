@@ -11,7 +11,7 @@ class mediainfo
     protected $data;
     protected $language_lut;
 
-	public function __construct(/*{{{*/
+	public function __construct(
 	)
 	{
         $this->general_category = ['General'];
@@ -48,15 +48,15 @@ class mediainfo
             'thai'       => 'th',
             // 'danish'     => 'dk',
         ];
-	}/*}}}*/
+	}
 
-    private function normalize_newline($strn)/*{{{*/
+    private function normalize_newline($strn)
     {
         $strn = preg_replace('#<br>#s', '', $strn);
         return $strn;
-    }/*}}}*/
+    }
 
-    private function string2dict($strn)/*{{{*/
+    private function string2dict($strn)
     {
         $arr = explode("\n", $strn);
         $allowed_category = $this->allowed_category;
@@ -102,9 +102,9 @@ class mediainfo
             }
         }
         return $aggro;
-    }/*}}}*/
+    }
 
-    private function collect_key_info($type, $key='Language')/*{{{*/
+    private function collect_key_info($type, $key='Language')
     {
         $collection = $this->data;
         switch ($type)
@@ -141,40 +141,40 @@ class mediainfo
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    private function get_val_or_null($keyword, $data)/*{{{*/
+    private function get_val_or_null($keyword, $data)
     {
         return array_key_exists($keyword, $data) ? $data[$keyword] : null;
-    }/*}}}*/
+    }
 
-    private function get_val_or_unknown($keyword, $data)/*{{{*/
+    private function get_val_or_unknown($keyword, $data)
     {
         return array_key_exists($keyword, $data) ? $data[$keyword] : '?';
-    }/*}}}*/
+    }
 
-    private function get_general_filesize($data)/*{{{*/
+    private function get_general_filesize($data)
     {
         return $this->get_val_or_null('File size', $data);
-    }/*}}}*/
+    }
 
-    private function get_general_duration($data)/*{{{*/
+    private function get_general_duration($data)
     {
         return $this->get_val_or_null('Duration', $data);
-    }/*}}}*/
+    }
 
-    private function get_general_bitrate($data)/*{{{*/
+    private function get_general_bitrate($data)
     {
         $strn = $this->get_val_or_null('Overall bit rate', $data);
         return $this->format_bitrate($strn);
-    }/*}}}*/
+    }
 
-    private function get_general_format($data)/*{{{*/
+    private function get_general_format($data)
     {
         return $this->get_val_or_null('Format', $data);
-    }/*}}}*/
+    }
 
-    private function generate_general_content($data, $extra = [])/*{{{*/
+    private function generate_general_content($data, $extra = [])
     {
         $res = [];
         $function_prefix = 'get_general_';
@@ -192,20 +192,20 @@ class mediainfo
             $res[$element['alias']] = $entry;
         }
         return array_merge($res, $extra);
-    }/*}}}*/
+    }
 
-    private function get_video_format($data)/*{{{*/
+    private function get_video_format($data)
     {
         $format = $this->get_val_or_null('Format', $data);
         return $format ? $format : '?';
-    }/*}}}*/
+    }
 
-    private function format_bitrate($strn)/*{{{*/
+    private function format_bitrate($strn)
     {
         return preg_replace('#(\d+)\s?(\d+)#', '\1\2', $strn);
-    }/*}}}*/
+    }
 
-    private function get_video_vres($data)/*{{{*/
+    private function get_video_vres($data)
     {
         $width = $this->get_val_or_null('Width', $data);
         $width = preg_replace('#(\d+)[\.\s]?(\d+)(.*)#s', '\1\2', $width);
@@ -215,34 +215,34 @@ class mediainfo
         $dimensions = $this->join_or_first($width, $height, 'x');
         $res = $this->join_or_first($dimensions, $ar);
         return $res ? $res : '?';
-    }/*}}}*/
+    }
 
-    private function get_video_framerate($data)/*{{{*/
+    private function get_video_framerate($data)
     {
         $v = $this->get_val_or_null('Frame rate', $data);
         $v = preg_replace('#(\d+\.?\d+)(.*)#s', '\1 fps', $v);
         return $v ? $v : '?';
-    }/*}}}*/
+    }
 
-    private function get_video_bitrate($data)/*{{{*/
+    private function get_video_bitrate($data)
     {
         $strn = $this->get_val_or_unknown('Bit rate', $data);
         return $this->format_bitrate($strn);
-    }/*}}}*/
+    }
 
-    private function get_video_bitdepth($data)/*{{{*/
+    private function get_video_bitdepth($data)
     {
         return $this->get_val_or_null('Bit depth', $data);
-    }/*}}}*/
+    }
 
-    private function get_video_format_with_bitdepth($data)/*{{{*/
+    private function get_video_format_with_bitdepth($data)
     {
         $format = $this->get_video_format($data);
         $bitdepth = $this->get_video_bitdepth($data);
         return $this->join_or_first($format, $bitdepth);
-    }/*}}}*/
+    }
 
-    private function generate_video_content($data, $extra = [])/*{{{*/
+    private function generate_video_content($data, $extra = [])
     {
         $cfg['css_prefix'] = 'video_';
         $res = [];
@@ -289,9 +289,9 @@ class mediainfo
             $tmp[$video_name] = $this->make_collapsable($b, $video_name);
         }
         return array_merge($tmp, $extra);
-    }/*}}}*/
+    }
 
-    private function aggregate_video_data($a_data)/*{{{*/
+    private function aggregate_video_data($a_data)
     {
         $res = [];
         $allowed = $this->video_category;
@@ -303,9 +303,9 @@ class mediainfo
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    private function aggregate_text_data($a_data)/*{{{*/
+    private function aggregate_text_data($a_data)
     {
         $res = [];
         $allowed = $this->subtitle_category;
@@ -317,19 +317,19 @@ class mediainfo
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    private function get_text_format($data)/*{{{*/
+    private function get_text_format($data)
     {
         return $this->get_val_or_null('Format', $data);
-    }/*}}}*/
+    }
 
-    private function get_text_subtitle($data)/*{{{*/
+    private function get_text_subtitle($data)
     {
         return $this->get_val_or_null('Language', $data);
-    }/*}}}*/
+    }
 
-    private function generate_subtitle_content($data, $extra = [])/*{{{*/
+    private function generate_subtitle_content($data, $extra = [])
     {
         $res = [];
         $function_prefix = 'get_text_';
@@ -360,9 +360,9 @@ class mediainfo
             $tmp['Subtitle'] = $this->make_collapsable($res, 'Subtitles');
         }
         return array_merge($tmp, $extra);
-    }/*}}}*/
+    }
 
-    private function aggregate_audio_data($a_data)/*{{{*/
+    private function aggregate_audio_data($a_data)
     {
         $res = [];
         $allowed = $this->audio_category;
@@ -374,40 +374,40 @@ class mediainfo
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    private function get_audio_format_profile($data)/*{{{*/
+    private function get_audio_format_profile($data)
     {
         return $this->get_val_or_null('Format', $data);
-    }/*}}}*/
+    }
 
-    private function get_audio_commercial_name($data)/*{{{*/
+    private function get_audio_commercial_name($data)
     {
         return $this->get_val_or_null('Format', $data);
-    }/*}}}*/
+    }
 
-    private function get_audio_format($data)/*{{{*/
+    private function get_audio_format($data)
     {
         return $this->get_val_or_null('Format', $data);
-    }/*}}}*/
+    }
 
-    private function get_audio_title($data)/*{{{*/
+    private function get_audio_title($data)
     {
         return $this->get_val_or_null('Title', $data);
-    }/*}}}*/
+    }
 
-    private function get_audio_language($data)/*{{{*/
+    private function get_audio_language($data)
     {
         return $this->get_val_or_null('Language', $data);
-    }/*}}}*/
+    }
 
-    private function get_audio_bitrate($data)/*{{{*/
+    private function get_audio_bitrate($data)
     {
         $strn = $this->get_val_or_null('Bit rate', $data);
         return $this->format_bitrate($strn);
-    }/*}}}*/
+    }
 
-    private function get_audio_channels($data)/*{{{*/
+    private function get_audio_channels($data)
     {
         $b = preg_match('#(\d+).*#is', $this->get_val_or_null('Channel(s)', $data), $match);
         if (!$b) { return ''; }
@@ -427,9 +427,9 @@ class mediainfo
         default:
         }
         return '';
-    }/*}}}*/
+    }
 
-    private function get_country_code_from_language($strn)/*{{{*/
+    private function get_country_code_from_language($strn)
     {
         if (!$strn) return null;
         $strn = strtolower($strn);
@@ -438,9 +438,9 @@ class mediainfo
             return $this->language_lut[$strn];
         }
         return null;
-    }/*}}}*/
+    }
 
-    private function get_language_image_or_strn($strn, $options=[])/*{{{*/
+    private function get_language_image_or_strn($strn, $options=[])
     {
         $country_code = $this->get_country_code_from_language($strn);
         if (!$country_code)
@@ -453,18 +453,18 @@ class mediainfo
             $img_html .= " $strn";
         }
         return ['type' => 'html', 'value' => $img_html];
-    }/*}}}*/
+    }
 
-    private function join_or_first($first, $second, $delimiter=' @ ')/*{{{*/
+    private function join_or_first($first, $second, $delimiter=' @ ')
     {
         if ($second)
         {
             return join($delimiter, [$first, $second]);
         }
         return $first;
-    }/*}}}*/
+    }
 
-    private function generate_audio_content($data, $extra = [])/*{{{*/
+    private function generate_audio_content($data, $extra = [])
     {
         $max_audio_entry = 4;
         // How many are listed int he audio column without creating the
@@ -519,17 +519,17 @@ class mediainfo
             $res[] = $this->make_collapsable($a_remain, 'Additional Audio');
         }
         return array_merge($res, $extra);
-    }/*}}}*/
+    }
 
-    private function validate_data($data)/*{{{*/
+    private function validate_data($data)
     {
         if (!array_key_exists('General', $this->data)) return false;
         if (!(array_key_exists('Video', $this->data) || array_key_exists('Video #1', $this->data))) return false;
         if (!(array_key_exists('Audio', $this->data) || array_key_exists('Audio #1', $this->data))) return false;
         return true;
-    }/*}}}*/
+    }
 
-    public function make_mediainfo($strn)/*{{{*/
+    public function make_mediainfo($strn)
     {
         $strn = $this->normalize_newline($strn);
         $original = trim($strn);
@@ -555,14 +555,14 @@ class mediainfo
         $res = join('', $res);
         $res .= '<div class="codebox" style="margin-top:0px; box-shadow: none; margin-left: 0px; margin-right: 0px;"><p style="border-bottom: none;">Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p><pre><code>' . $original . '</code></pre></div>';
         return $res;
-    }/*}}}*/
+    }
 
-    private function get_uuid_strn()/*{{{*/
+    private function get_uuid_strn()
     {
         return uniqid('mediainfo_collapsable_');
-    }/*}}}*/
+    }
 
-    private function make_collapsable($a_data, $title='')/*{{{*/
+    private function make_collapsable($a_data, $title='')
     {
         $uuid = $this->get_uuid_strn();
         $html = $this->auto_convert_to_html($a_data);
@@ -573,9 +573,9 @@ class mediainfo
         $entry['type'] = 'fullwidth';
         $entry['content'] = $html;
         return $entry;
-    }/*}}}*/
+    }
 
-    private function auto_convert_to_html($a_data, $cfg=[])/*{{{*/
+    private function auto_convert_to_html($a_data, $cfg=[])
     {
         $res = [];
         foreach ($a_data as $k=>$v)
@@ -592,17 +592,17 @@ class mediainfo
             }
         }
         return join("\n", $res);
-    }/*}}}*/
+    }
 
-    private function convert_to_fullwidth_html($v, $cfg=[])/*{{{*/
+    private function convert_to_fullwidth_html($v, $cfg=[])
     {
         $res[] = "<div class='row'>";
         $res[] = "<div class='col fullwidth'>${v}</div>";
         $res[] = "</div>";
         return join("\n", $res);
-    }/*}}}*/
+    }
 
-    private function convert_to_kv_html($k, $v, $cfg=[])/*{{{*/
+    private function convert_to_kv_html($k, $v, $cfg=[])
     {
         $css_prefix = array_key_exists('css_prefix', $cfg) ? $cfg['css_prefix'] : '';
         $k = "<div class='row m-0 p-0'><div class='${css_prefix}key col'>${k}:</div>";
@@ -611,9 +611,9 @@ class mediainfo
         $res[] = $k . $v;
         $res[] = "</div></div></div>";
         return join("\n", $res);
-    }/*}}}*/
+    }
 
-    private function make_bucket($data, $cfg=[])/*{{{*/
+    private function make_bucket($data, $cfg=[])
     {
         $temp = '<p class="m-0 p-0"><i class="icon fa-plus-square-o pointer noselect" aria-hidden="true" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Subtitles</i> </p>
       <div class="row"> <div class="col"> <div class="collapse" id="multiCollapseExample1">
@@ -634,6 +634,6 @@ class mediainfo
             }
         }
         return join("\n", $res);
-    }/*}}}*/
+    }
 
 }

@@ -36,12 +36,12 @@ class Board extends Model
         ];
     }
 
-    public function performPreCreate($data)/*{{{*/
+    public function performPreCreate($data)
     {
         // Generate random tiles on create
         $bingoBoard = new BingoBoard($this::ROWS, $this::COLUMNS, $this::POOL_SIZE);
         $bingoBoard->makeRandom();
         $data['tiles'] = json_encode($bingoBoard->tiles);
         return $data;
-    }/*}}}*/
+    }
 }

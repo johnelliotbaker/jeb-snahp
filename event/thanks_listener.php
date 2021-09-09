@@ -1,9 +1,9 @@
 <?php
 
-namespace jeb\snahp\event;/*{{{*/
+namespace jeb\snahp\event;
 
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;/*}}}*/
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class thanks_listener implements EventSubscriberInterface
 {
@@ -23,7 +23,7 @@ class thanks_listener implements EventSubscriberInterface
         $tbl,
         $sauth,
         $thanksUsers
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -36,17 +36,17 @@ class thanks_listener implements EventSubscriberInterface
         $this->cycle_in_seconds = (int) $config['snp_thanks_cycle_duration'];
         $this->data = [];
         $this->sql_cooldown = 0;
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'gfksx.thanksforposts.output_thanks_before'   => 'modify_avatar_thanks',
             'gfksx.thanksforposts.insert_thanks_before'   => 'insertThanks',
         ];
-    }/*}}}*/
+    }
 
-    public function insertThanks($event)/*{{{*/
+    public function insertThanks($event)
     {
         if (!$this->config['snp_thanks_b_enable']) {
             return false;
@@ -63,9 +63,9 @@ class thanks_listener implements EventSubscriberInterface
         $this->thanksUsers->addThanksGivenStatistics($fromId);
         $this->thanksUsers->addThanksReceivedStatistics($toId);
         $this->thanksUsers->insertTimestamp($fromId, $topicId);
-    }/*}}}*/
+    }
 
-    public function modify_avatar_thanks($event) /*{{{*/
+    public function modify_avatar_thanks($event) 
     {
         $poster_id = $event['poster_id'];
         $sql = 'SELECT snp_disable_avatar_thanks_link FROM ' . USERS_TABLE . ' WHERE user_id=' . $poster_id;
@@ -80,5 +80,5 @@ class thanks_listener implements EventSubscriberInterface
             $event['u_receive_count_url'] = false;
             $event['u_give_count_url'] = false;
         }
-    }/*}}}*/
+    }
 }

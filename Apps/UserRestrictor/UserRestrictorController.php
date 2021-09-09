@@ -6,7 +6,7 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserRestrictorController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,17 +40,17 @@ class UserRestrictorController
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function restrict($userId)/*{{{*/
+    public function restrict($userId)
     {
         $this->helper->restrictUser($userId);
         return new Response("Hello World, $userId");
-    }/*}}}*/
+    }
 
-    public function free($userId)/*{{{*/
+    public function free($userId)
     {
         $this->helper->freeUser($userId);
         return new Response("Hello World, $userId");
-    }/*}}}*/
+    }
 }

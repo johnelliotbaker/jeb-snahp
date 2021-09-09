@@ -19,7 +19,7 @@ class RequestManagerHelper
         $this->def = $requestConfig['def'];
     }
 
-    public function changeSolver($topicId, $solverId)/*{{{*/
+    public function changeSolver($topicId, $solverId)
     {
         $topicId = (int) $topicId;
         $solverId = (int) $solverId;
@@ -42,9 +42,9 @@ class RequestManagerHelper
             $acpReqs->handle_reset_user($username);
         }
         $this->setTopicRequestTag($topicId, 'solved');
-    }/*}}}*/
+    }
 
-    public function setTopicRequestTag($topicId, $tagName)/*{{{*/
+    public function setTopicRequestTag($topicId, $tagName)
     {
         $topicId = (int) $topicId;
         $topicData = $this->Topic->get($topicId);
@@ -52,20 +52,20 @@ class RequestManagerHelper
         $title = $this->removeRequestTags($title);
         $title = $this->prependRequestTag($title, ucfirst($tagName));
         $this->Topic->update($topicId, ['topic_title' => $title]);
-    }/*}}}*/
+    }
 
-    public function removeRequestTags($strn)/*{{{*/
+    public function removeRequestTags($strn)
     {
         $ptn = '#\s*((\(|\[|\{)(accepted|closed|fulfilled|request|solved)(\)|\]|\}))\s*#is';
         return preg_replace($ptn, '', $strn);
-    }/*}}}*/
+    }
 
-    public function prependRequestTag($strn, $tag)/*{{{*/
+    public function prependRequestTag($strn, $tag)
     {
         return "[$tag] " . $strn;
-    }/*}}}*/
+    }
 
-    public function makeForcedSolverData($userId)/*{{{*/
+    public function makeForcedSolverData($userId)
     {
         $userData = $this->getUserData($userId);
         if (!$userData) {
@@ -81,9 +81,9 @@ class RequestManagerHelper
             'solved_time' => $time,
             'status' => $this->def['solve']
         ];
-    }/*}}}*/
+    }
 
-    public function getUserData($userId)/*{{{*/
+    public function getUserData($userId)
     {
         $userId = (int) $userId;
         $sql = 'SELECT user_id, user_colour, username, snp_req_n_solve FROM '.USERS_TABLE." WHERE user_id=${userId}";
@@ -91,9 +91,9 @@ class RequestManagerHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function changeUserSolvedRequestCount($userId, $amount)/*{{{*/
+    public function changeUserSolvedRequestCount($userId, $amount)
     {
         $userId = (int) $userId;
         $amount = (int) $amount;
@@ -106,17 +106,17 @@ class RequestManagerHelper
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE user_id=${userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function incrementSolvedRequest($userId)/*{{{*/
+    public function incrementSolvedRequest($userId)
     {
         $this->changeUserSolvedRequestCount($userId, 1);
-    }/*}}}*/
+    }
 
-    public function decrementSolvedRequest($userId)/*{{{*/
+    public function decrementSolvedRequest($userId)
     {
         $this->changeUserSolvedRequestCount($userId, -1);
-    }/*}}}*/
+    }
 }
 
 class UserNotFoundError extends \Exception

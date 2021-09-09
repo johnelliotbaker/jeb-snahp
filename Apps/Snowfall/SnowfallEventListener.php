@@ -15,14 +15,14 @@ class SnowfallEventListener implements EventSubscriberInterface
         $this->helper = $helper;
     }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.user_setup' => [
                 ['embedData', 0],
             ],
         ];
-    }/*}}}*/
+    }
 
     public function embedData($event)
     {

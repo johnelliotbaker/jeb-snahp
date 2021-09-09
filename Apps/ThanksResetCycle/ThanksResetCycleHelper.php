@@ -7,7 +7,7 @@ class ThanksResetCycleHelper
     const CACHE_DURATION_LONG = 0;
     const THANKS_RESET_PRODUCT_CLASS_NAME = 'thanks_reset_token';
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -35,19 +35,19 @@ class ThanksResetCycleHelper
         $this->productClass = $productClass;
         $this->userInventory = $userInventory;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function hasGivenAllAvailableThanks($userId)/*{{{*/
+    public function hasGivenAllAvailableThanks($userId)
     {
         return $this->thanksUsers->hasGivenAllAvailableThanks($userId);
-    }/*}}}*/
+    }
 
-    public function getUserTimestamps($userId)/*{{{*/
+    public function getUserTimestamps($userId)
     {
         return $this->thanksUsers->getUserTimestamps($userId);
-    }/*}}}*/
+    }
 
-    public function getThanksResetTokenCount($userId)/*{{{*/
+    public function getThanksResetTokenCount($userId)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
         $productClassData = $this->productClass
@@ -61,14 +61,14 @@ class ThanksResetCycleHelper
             }
         }
         return 0;
-    }/*}}}*/
+    }
 
-    public function resetUserTimestamps($userId)/*{{{*/
+    public function resetUserTimestamps($userId)
     {
         return $this->thanksUsers->resetUserTimestamps($userId);
-    }/*}}}*/
+    }
 
-    public function reduceThanksToken($userId, $tokenCost)/*{{{*/
+    public function reduceThanksToken($userId, $tokenCost)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
         $productClassData = $this->productClass
@@ -81,9 +81,9 @@ class ThanksResetCycleHelper
         $pcid = (int) $productClassData['id'];
         $this->userInventory
             ->doRemoveItemWithLogging($pcid, $tokenCost, $userId);
-    }/*}}}*/
+    }
 
-    public function getUserThanksInventory($userId)/*{{{*/
+    public function getUserThanksInventory($userId)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
         $productClassData = $this->productClass
@@ -96,28 +96,28 @@ class ThanksResetCycleHelper
                 return $invData;
             }
         }
-    }/*}}}*/
+    }
 
-    public function getThanksResetTokens($userId)/*{{{*/
+    public function getThanksResetTokens($userId)
     {
         $data = $this->getUserThanksInventory($userId);
         if (!$data || !array_key_exists('quantity', $data)) {
             trigger_error("Invalid thanks user data. Error Code: 51d82c6242");
         }
         return (int) $data['quantity'];
-    }/*}}}*/
+    }
 
-    public function hasRequiredTokens($userId, $tokenCost=1)/*{{{*/
+    public function hasRequiredTokens($userId, $tokenCost=1)
     {
         $tokens = $this->getThanksResetTokens($userId);
         return $tokens >= $tokenCost;
-    }/*}}}*/
+    }
 
-    private function timeLeft($oldestTime, $cycleDuration)/*{{{*/
+    private function timeLeft($oldestTime, $cycleDuration)
     {
-    }/*}}}*/
+    }
 
-    public function getRecentThanks($userId)/*{{{*/
+    public function getRecentThanks($userId)
     {
         $userId = (int) $userId;
         $timestamps = $this->thanksUsers->getUserTimestamps($userId);
@@ -150,9 +150,9 @@ class ThanksResetCycleHelper
             $res
         );
         return $res;
-    }/*}}}*/
+    }
 
-    private function getTopicTitlesAsDict($timestamps)/*{{{*/
+    private function getTopicTitlesAsDict($timestamps)
     {
         if (!$timestamps) {
             return [];
@@ -179,5 +179,5 @@ class ThanksResetCycleHelper
             $res[$row['topic_id']] = $row['topic_title'];
         }
         return $res;
-    }/*}}}*/
+    }
 }

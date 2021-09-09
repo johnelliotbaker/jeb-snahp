@@ -29,7 +29,7 @@ class economy_user_dashboard
         $tbl,
         $sauth, $bank_user_account, $market, $user_inventory, $product_class,
         $exchange_rates, $bank_transaction_logger, $market_transaction_logger
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -54,7 +54,7 @@ class economy_user_dashboard
         // $sauth->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode)
         {
@@ -81,7 +81,7 @@ class economy_user_dashboard
         trigger_error('Nothing to see here. Move along.');
     }/*}}}*/
 
-    public function handle_overview($cfg)/*{{{*/
+    public function handle_overview($cfg)
     {
         $time = microtime(true);
         $user_id = $this->user_id;
@@ -141,7 +141,7 @@ class economy_user_dashboard
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
     }/*}}}*/
 
-    private function set_user_balance()/*{{{*/
+    private function set_user_balance()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id)
@@ -158,7 +158,7 @@ class economy_user_dashboard
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    private function reset_user()/*{{{*/
+    private function reset_user()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id)
@@ -170,7 +170,7 @@ class economy_user_dashboard
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    private function has_enough_balance($total_cost, $user_id)/*{{{*/
+    private function has_enough_balance($total_cost, $user_id)
     {
         $balance = (int) $this->bank_user_account->get_balance($user_id);
         if ((int) $total_cost > $balance)
@@ -181,12 +181,12 @@ class economy_user_dashboard
         return [true, ''];
     }/*}}}*/
 
-    private function get_total_cost($quantity, $product_class_id)/*{{{*/
+    private function get_total_cost($quantity, $product_class_id)
     {
         return (int) $this->market->get_total_cost($product_class_id, $quantity);
     }/*}}}*/
 
-    private function can_buy($required_quantity, $product_class_id, $user_id)/*{{{*/
+    private function can_buy($required_quantity, $product_class_id, $user_id)
     {
         $product_class_id = (int) $product_class_id;
         // Check if requested quantity doesn't violate max_per_user
@@ -202,7 +202,7 @@ class economy_user_dashboard
         return $this->has_enough_balance($total_cost, $user_id);
     }/*}}}*/
 
-    public function handle_buy_product($cfg)/*{{{*/
+    public function handle_buy_product($cfg)
     {
         $js = new \phpbb\json_response();
         $product_class_id = $this->request->variable('pcid', 0);
@@ -235,7 +235,7 @@ class economy_user_dashboard
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    public function handle_exchange($cfg)/*{{{*/
+    public function handle_exchange($cfg)
     {
         $user_id = $this->user_id;
         $amount = $this->request->variable('amount', 0);
@@ -247,7 +247,7 @@ class economy_user_dashboard
         return $js->send($data);
     }/*}}}*/
 
-    public function handle_user_manager($cfg)/*{{{*/
+    public function handle_user_manager($cfg)
     {
         $this->reject_non_dev();
         $time = microtime(true);
@@ -294,7 +294,7 @@ class economy_user_dashboard
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
     }/*}}}*/
 
-    private function get_available_invite_points($user_id)/*{{{*/
+    private function get_available_invite_points($user_id)
     {
         $ih = new invite_helper(
             $this->container, $this->user, $this->auth, null,
@@ -307,7 +307,7 @@ class economy_user_dashboard
         return $invite_user_data['n_available'];
     }/*}}}*/
 
-    private function get_group_data()/*{{{*/
+    private function get_group_data()
     {
         $group_id = $this->user->data['group_id'];
         $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${group_id}";

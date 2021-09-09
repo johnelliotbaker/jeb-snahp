@@ -7,7 +7,7 @@ use jeb\snahp\Apps\PostCreator\PostCreatorHelper;
 
 class PostCreatorController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -42,9 +42,9 @@ class PostCreatorController
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: 5a372f177a');
         trigger_error("DISABLED. Error Code: 9471592439");
-    }/*}}}*/
+    }
 
-    public function respondCreate($forumId, $total)/*{{{*/
+    public function respondCreate($forumId, $total)
     {
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
@@ -92,7 +92,7 @@ class PostCreatorController
             }
         }
         return new JsonResponse(["method"=>$subject]);
-    }/*}}}*/
+    }
 
 }
 

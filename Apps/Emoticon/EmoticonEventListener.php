@@ -15,7 +15,7 @@ class EmoticonEventListener implements EventSubscriberInterface
         $this->userId = $this->sauth->userId;
     }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.viewtopic_assign_template_vars_before' => [
@@ -25,7 +25,7 @@ class EmoticonEventListener implements EventSubscriberInterface
                 ['embedEmoticon', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
     public function embedEmoticon($event)
     {

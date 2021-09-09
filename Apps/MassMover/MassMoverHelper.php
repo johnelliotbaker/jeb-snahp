@@ -8,7 +8,7 @@ class MassMoverHelper
     protected $tbl;
     protected $sauth;
     protected $forumHelper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $db,
         $user,
         $tbl,
@@ -21,9 +21,9 @@ class MassMoverHelper
         $this->sauth = $sauth;
         $this->forumHelper = $forumHelper;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function getUserTopics($username, $rootForum=2, $start=0, $limit=10)/*{{{*/
+    public function getUserTopics($username, $rootForum=2, $start=0, $limit=10)
     {
         $topicPoster = (int) $this->sauth->userNameToUserId($username);
         $fields = [
@@ -44,9 +44,9 @@ class MassMoverHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function getUserTopicsCount($username)/*{{{*/
+    public function getUserTopicsCount($username)
     {
         $topicPoster = (int) $this->sauth->userNameToUserId($username);
         $sql = 'SELECT count(*) as total FROM ' . TOPICS_TABLE .
@@ -55,14 +55,14 @@ class MassMoverHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row ? $row['total'] : 0;
-    }/*}}}*/
+    }
 
     public function makeSubforumSelectorHTML($selectId)
     {
         return $this->forumHelper->makeSubforumSelectorHTML($selectId);
     }
 
-    public function moveTopics($topics, $toForum)/*{{{*/
+    public function moveTopics($topics, $toForum)
     {
         include_once 'includes/functions_admin.php';
         if (is_array($topics) && count($topics)>0) {
@@ -77,5 +77,5 @@ class MassMoverHelper
             move_topics($topics, (int) $toForum, $auto_sync = true);
         }
         return true;
-    }/*}}}*/
+    }
 }

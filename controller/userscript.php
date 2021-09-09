@@ -39,7 +39,7 @@ class userscript extends base
         trigger_error('Nothing to see here. Move along.');
     }
 
-    private function get_user_colour($user_id)/*{{{*/
+    private function get_user_colour($user_id)
     {
         $sql = 'SELECT user_colour FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
         $result = $this->db->sql_query($sql);
@@ -48,7 +48,7 @@ class userscript extends base
         return isset($row['user_colour']) ? $row['user_colour'] : false;
     }/*}}}*/
 
-    private function is_valid_user($user_id)/*{{{*/
+    private function is_valid_user($user_id)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
         $result = $this->db->sql_query($sql);
@@ -56,12 +56,12 @@ class userscript extends base
         return !!$row;
     }/*}}}*/
 
-    private function is_valid_user_colour($user_colour)/*{{{*/
+    private function is_valid_user_colour($user_colour)
     {
         return ctype_xdigit($user_colour) && strlen($user_colour) == 6;
     }/*}}}*/
 
-    private function reset_user_colour($user_id)/*{{{*/
+    private function reset_user_colour($user_id)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
         $result = $this->db->sql_query($sql);
@@ -85,7 +85,7 @@ class userscript extends base
         return true;
     }/*}}}*/
 
-    private function set_user_colour($user_id, $user_colour)/*{{{*/
+    private function set_user_colour($user_id, $user_colour)
     {
         $data = ['user_colour' => $user_colour];
         $sql = 'UPDATE ' . USERS_TABLE . '
@@ -95,7 +95,7 @@ class userscript extends base
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function set_user_colour_as_json()/*{{{*/
+    public function set_user_colour_as_json()
     {
         $this->reject_non_dev();
         $profile_id = $this->request->variable('p', 0);
@@ -118,7 +118,7 @@ class userscript extends base
         return new JsonResponse(['status' => $b_success]);
     }/*}}}*/
 
-    public function handle_userid()/*{{{*/
+    public function handle_userid()
     {
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
@@ -142,7 +142,7 @@ class userscript extends base
         $js->send($data);
     }/*}}}*/
 
-    public function handle_username()/*{{{*/
+    public function handle_username()
     {
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
@@ -163,7 +163,7 @@ class userscript extends base
         $js->send($data);
     }/*}}}*/
 
-    public function get_or_reject_topic_data($tid)/*{{{*/
+    public function get_or_reject_topic_data($tid)
     {
         if (!$tid)
         {
@@ -177,7 +177,7 @@ class userscript extends base
         return $topicdata;
     }/*}}}*/
 
-    public function enable_bump_topic($bEnable=true)/*{{{*/
+    public function enable_bump_topic($bEnable=true)
     {
         $time = time();
         $tid = $this->request->variable('t', '');
@@ -248,7 +248,7 @@ class userscript extends base
         trigger_error($strn);
     }/*}}}*/
 
-    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)/*{{{*/
+    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
     {
         // From includes/functions_posting.php
         global $config, $db, $user, $phpEx, $phpbb_root_path, $phpbb_log;
@@ -303,7 +303,7 @@ class userscript extends base
         }
     }/*}}}*/
 
-    public function bump_topic()/*{{{*/
+    public function bump_topic()
     {
         $tid = $this->request->variable('t', '');
         $ctx = $this->topicBumpHelper->getBumpContext($tid);
@@ -360,7 +360,7 @@ class userscript extends base
         trigger_error($strn);
     }/*}}}*/
 
-    public function handle_bump_topic($cfg)/*{{{*/
+    public function handle_bump_topic($cfg)
     {
         $this->reject_anon();
         $userId = (int) $this->user->data['user_id'];
@@ -410,7 +410,7 @@ class userscript extends base
         trigger_error($strn);
     }/*}}}*/
 
-    public function handle_thanks_given($cfg)/*{{{*/
+    public function handle_thanks_given($cfg)
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
@@ -452,7 +452,7 @@ class userscript extends base
         }
     }/*}}}*/
 
-    public function handle_favorite($cfg)/*{{{*/
+    public function handle_favorite($cfg)
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];

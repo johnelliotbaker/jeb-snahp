@@ -21,7 +21,7 @@ class cron extends base
         $feedpostbot,
         $reputation_helper,
         $jukeboxHelper
-    )/*{{{*/
+    )
     {
         $this->table_prefix = $table_prefix;
         $this->db = $db;
@@ -29,9 +29,9 @@ class cron extends base
         $this->feedpostbot = $feedpostbot;
         $this->reputation_helper = $reputation_helper;
         $this->jukeboxHelper = $jukeboxHelper;
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->reject_non_dev();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -52,9 +52,9 @@ class cron extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-    }/*}}}*/
+    }
 
-    private function hourly($cfg)/*{{{*/
+    private function hourly($cfg)
     {
         // Feedpostbot fetch
         $this->cron_helper->log('feedpostbot', 'hourly', 'before');
@@ -83,6 +83,6 @@ class cron extends base
                         <p>3) jukebox->updateList</p>
                         <p>4) reputation->set_min</p>
                         ');
-    }/*}}}*/
+    }
 
 }

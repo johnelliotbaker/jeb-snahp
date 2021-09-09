@@ -21,7 +21,7 @@ class LimitOffsetPagination
     public $maxLimit = 100;
     public $template = 'rest_framework/pagination/numbers.html';
 
-    public function paginateQueryset($queryset, $request, $view=null)/*{{{*/
+    public function paginateQueryset($queryset, $request, $view=null)
     {
         $this->limit = $this->getLimit($request);
         if ($this->limit === null) {
@@ -37,23 +37,23 @@ class LimitOffsetPagination
             return [];
         }
         return $queryset->slice($this->offset, $this->limit);
-    }/*}}}*/
+    }
 
-    public function getCount($queryset)/*{{{*/
+    public function getCount($queryset)
     {
         return count($queryset);
-    }/*}}}*/
+    }
 
-    public function getPaginatedResult($data)/*{{{*/
+    public function getPaginatedResult($data)
     {
         return [
             'count' => $this->count,
             'offset' => $this->offset,
             'results' => $data,
         ];
-    }/*}}}*/
+    }
 
-    public function getLimit($request)/*{{{*/
+    public function getLimit($request)
     {
         if ($this->limitQueryParam) {
             try {
@@ -66,19 +66,19 @@ class LimitOffsetPagination
             }
         }
         return $this->defaultLimit;
-    }/*}}}*/
+    }
 
-    public function getOffset($request)/*{{{*/
+    public function getOffset($request)
     {
         try {
             return _positiveInt($request->variable($this->offsetQueryParam, ''));
         } catch (KeyError | ValueError $e) {
             return 0;
         }
-    }/*}}}*/
+    }
 }
 
-function _positiveInt($integerString, $strict=false, $cutoff=null)/*{{{*/
+function _positiveInt($integerString, $strict=false, $cutoff=null)
 {
     $ret = (int) $integerString;
     if ($ret < 0 || ($ret === 0 && $strict)) {
@@ -88,12 +88,12 @@ function _positiveInt($integerString, $strict=false, $cutoff=null)/*{{{*/
         return min($ret, $cutoff);
     }
     return $ret;
-}/*}}}*/
+}
 
-class KeyError extends \Exception/*{{{*/
+class KeyError extends \Exception
 {
-}/*}}}*/
+}
 
-class ValueError extends \Exception/*{{{*/
+class ValueError extends \Exception
 {
-}/*}}}*/
+}

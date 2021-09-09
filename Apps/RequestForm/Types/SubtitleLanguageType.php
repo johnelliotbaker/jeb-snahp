@@ -8,7 +8,7 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class SubtitleLanguageType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
@@ -24,5 +24,5 @@ class SubtitleLanguageType extends AbstractType
                 ]
             );
         ;
-    }/*}}}*/
+    }
 }

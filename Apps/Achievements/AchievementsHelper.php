@@ -3,7 +3,7 @@ namespace jeb\snahp\Apps\Achievements;
 
 class AchievementsHelper
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -23,9 +23,9 @@ class AchievementsHelper
         $this->QuerySetFactory = $QuerySetFactory;
         $this->ToplistHelper = $ToplistHelper;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
-    public function getAchievements($userId)/*{{{*/
+    public function getAchievements($userId)
     {
         $res = [];
         $rep = $this->ToplistHelper->getReputationToplist();
@@ -57,5 +57,5 @@ class AchievementsHelper
             $res['count'] = $count;
         }
         return $res;
-    }/*}}}*/
+    }
 }

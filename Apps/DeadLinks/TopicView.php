@@ -20,13 +20,13 @@ class TopicView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->Entry = $Entry;
-    }/*}}}*/
+    }
 
-    public function view($topicId)/*{{{*/
+    public function view($topicId)
     {
         $data = $this->getTopicData($topicId);
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
 
     public function getTopicData($topicId)

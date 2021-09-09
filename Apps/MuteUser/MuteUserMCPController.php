@@ -27,7 +27,7 @@ class MuteUserMCPController
         $tbl,
         $sauth,
         $muteUserHelper
-    )/*{{{*/ {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -39,9 +39,9 @@ class MuteUserMCPController
         $this->sauth = $sauth;
         $this->muteUserHelper = $muteUserHelper;
         $this->userId = (int) $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->sauth->reject_non_dev('Error Code: 430236a547');
         switch ($mode) {
@@ -53,7 +53,7 @@ class MuteUserMCPController
             break;
         }
         trigger_error('Nothing to see here. Move along. Error Code: b586a44968');
-    }/*}}}*/
+    }
 
     private function _makePagination()
     {
@@ -91,7 +91,7 @@ class MuteUserMCPController
         }
     }
 
-    public function respondMuteUser($cfg)/*{{{*/
+    public function respondMuteUser($cfg)
     {
         add_form_key('jeb/snahp');
         if ($this->request->is_set_post('submit')) {
@@ -130,5 +130,5 @@ class MuteUserMCPController
         $this->_makePagination();
         $this->template->assign_vars([ 'ACTION' => $action, ]);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 }

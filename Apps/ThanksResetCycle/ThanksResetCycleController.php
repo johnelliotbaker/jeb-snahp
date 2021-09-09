@@ -13,7 +13,7 @@ class ThanksResetCycleController
     const STAFF_RESET_TOKEN_COST = 0;
     const DEBUG = true;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -47,18 +47,18 @@ class ThanksResetCycleController
         $this->myHelper = $myHelper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: 8efd88b110');
-    }/*}}}*/
+    }
 
-    public function overview()/*{{{*/
+    public function overview()
     {
         $cfg['tpl_name'] = '@jeb_snahp/thanks_reset_cycle/base.html';
         $cfg['title'] = 'Thanks Overview';
         $data = ['user_id' => $this->userId];
         $this->template->assign_var('DATA', $data);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    public function respondResetThanksCycle($userId)/*{{{*/
+    public function respondResetThanksCycle($userId)
     {
         $userId = (int) $userId;
         $isDev = $this->sauth->is_dev();
@@ -92,9 +92,9 @@ class ThanksResetCycleController
         }
         $success = (bool) $success ? $this::SUCCESS : $this::FAILURE;
         return new JsonResponse(['status' => $success, 'message' => $message,]);
-    }/*}}}*/
+    }
 
-    public function respondRecentThanksList($userId)/*{{{*/
+    public function respondRecentThanksList($userId)
     {
         $userId = (int) $userId;
         $isDev = $this->sauth->is_dev();
@@ -107,5 +107,5 @@ class ThanksResetCycleController
         return new JsonResponse(
             ['status' => $this::SUCCESS, 'thanks' => $thanks, 'tokens' => $tokens]
         );
-    }/*}}}*/
+    }
 }

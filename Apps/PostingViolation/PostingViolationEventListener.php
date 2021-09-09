@@ -10,7 +10,7 @@ class PostingViolationEventListener implements EventSubscriberInterface
     protected $config;
     protected $sauth;
     protected $helper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $user,
         $config,
         $request,
@@ -25,9 +25,9 @@ class PostingViolationEventListener implements EventSubscriberInterface
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.posting_modify_submit_post_before' => [
@@ -40,9 +40,9 @@ class PostingViolationEventListener implements EventSubscriberInterface
                 ['showViolationWarning', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function showViolationWarning($event)/*{{{*/
+    public function showViolationWarning($event)
     {
         $topicData = $event['topic_data'];
         if ($topicData['snp_violation']) {
@@ -54,9 +54,9 @@ class PostingViolationEventListener implements EventSubscriberInterface
             );
         }
 
-    }/*}}}*/
+    }
 
-    public function incrementUserViolation($event)/*{{{*/
+    public function incrementUserViolation($event)
     {
         if ($this->sauth->is_dev()) {
             return;
@@ -70,7 +70,7 @@ class PostingViolationEventListener implements EventSubscriberInterface
             $postText = $data['message'];
             $this->helper->addPostingViolationEntry($posterId, $postId, $postText);
         };
-    }/*}}}*/
+    }
 
     public function submitPostWithConfirmation($event)
     {

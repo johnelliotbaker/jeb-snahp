@@ -9,14 +9,14 @@ class search_util extends base
 {
     protected $table_prefix;
 
-    public function __construct($table_prefix)/*{{{*/
+    public function __construct($table_prefix)
     {
         $this->table_prefix = $table_prefix;
         // If a text in the message is inside [{$this->STBB}] mark it as title
         $this->STBB = 'st'; // [st]
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         include_once('ext/jeb/snahp/core/functions_utility.php');
         include_once('includes/functions_content.php');
@@ -49,27 +49,27 @@ class search_util extends base
                 break;
         }
         trigger_error('Error Code: 1fdd2c2b80');
-    }/*}}}*/
+    }
 
-    private function remove_common_word($word)/*{{{*/
+    private function remove_common_word($word)
     {
         $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
             VALUES ' . "('{$word}', 0, 0) " . '
             ON DUPLICATE KEY UPDATE
                 word_common=0';
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function add_common_word($word)/*{{{*/
+    private function add_common_word($word)
     {
         $sql = 'INSERT INTO ' . SEARCH_WORDLIST_TABLE . '(word_text, word_common, word_count)
             VALUES ' . "('{$word}', 1, 0) " . '
             ON DUPLICATE KEY UPDATE
                 word_common=1';
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function handle_common_words($cfg)/*{{{*/
+    private function handle_common_words($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -101,9 +101,9 @@ class search_util extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
-    private function handle_mysql_search($cfg)/*{{{*/
+    private function handle_mysql_search($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -145,9 +145,9 @@ class search_util extends base
             ]);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
-    private function mysql_search($strn, $per_page=10, $start=0, $b_posts=true)/*{{{*/
+    private function mysql_search($strn, $per_page=10, $start=0, $b_posts=true)
     {
         $strn = $this->db->sql_escape($strn);
         if ($b_posts) {
@@ -179,25 +179,25 @@ class search_util extends base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
-    private function select_common_words()/*{{{*/
+    private function select_common_words()
     {
         $sql = 'SELECT * from ' . SEARCH_WORDLIST_TABLE . ' WHERE word_common=1';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    private function normalize_topic($strn)/*{{{*/
+    private function normalize_topic($strn)
     {
         setlocale(LC_ALL, 'C.UTF-8');
         $new = iconv('UTF-8', 'ASCII//TRANSLIT', $strn);
         return $strn . ' ' . $new;
-    }/*}}}*/
+    }
 
-    public function index_topic($cfg)/*{{{*/
+    public function index_topic($cfg)
     {
         // From includes/functions_posting.php
         global $phpbb_root_path, $phpEx, $auth, $config, $db, $user, $phpbb_dispatcher;
@@ -247,16 +247,16 @@ class search_util extends base
         $this->markTopicAsSearchEnhance($tid);
         meta_refresh(2, '/viewtopic.php?t=' . (int)$tid);
         trigger_error('The selected topic was indexed with enhanced options.');
-    }/*}}}*/
+    }
 
-    private function markTopicAsSearchEnhance($topicId)/*{{{*/
+    private function markTopicAsSearchEnhance($topicId)
     {
         $topicId = (int) $topicId;
         $sql = 'UPDATE ' . TOPICS_TABLE . " SET snp_search_enhance=1 WHERE topic_id=${topicId}";
         $result = $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function insert_manual_search_post($post_id, $user_id, $username_clean)/*{{{*/
+    private function insert_manual_search_post($post_id, $user_id, $username_clean)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $data = [
@@ -268,18 +268,18 @@ class search_util extends base
         $sql = 'REPLACE INTO ' . $tbl['manual_search_posts'] .
             $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function snp_strip_bbcode($text)/*{{{*/
+    private function snp_strip_bbcode($text)
     {
         $uid = $bitfield = '';
         $flags = 0;
         generate_text_for_storage($text, $uid, $bitfield, $flags, true, true, true);
         strip_bbcode($text);
         return $text;
-    }/*}}}*/
+    }
 
-    private function collect_STBB_content($text)/*{{{*/
+    private function collect_STBB_content($text)
     {
         $uid = '';
         $flags = 0;
@@ -293,5 +293,5 @@ class search_util extends base
         $text = join(' ', $match_all);
         $text = $this->snp_strip_bbcode($text);
         return $text;
-    }/*}}}*/
+    }
 }

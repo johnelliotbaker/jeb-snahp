@@ -20,23 +20,23 @@ class XmasPrizeDistributorController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->sauth->reject_non_dev('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function distributeInvites()/*{{{*/
+    public function distributeInvites()
     {
         $this->helper->distributeInvites($start);
         return new Response('Success');
-    }/*}}}*/
+    }
 
-    public function distribute($start)/*{{{*/
+    public function distribute($start)
     {
         $this->helper->distribute($start);
         return new Response('Success');
-    }/*}}}*/
+    }
 
-    public function distributeQuestPrizes()/*{{{*/
+    public function distributeQuestPrizes()
     {
         $this->helper->distributeQuestPrizes();
         return new Response('Success');
-    }/*}}}*/
+    }
 }

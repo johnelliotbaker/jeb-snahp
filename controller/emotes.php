@@ -9,11 +9,11 @@ class emotes extends base
 
     protected $base_url = '';
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
-    }/*}}}*/
+    }
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -33,12 +33,12 @@ class emotes extends base
             trigger_error('Error Code: f8c1f1638f');
             break;
         }
-	}/*}}}*/
+	}
 
-    public function ls($cfg)/*{{{*/
+    public function ls($cfg)
     {
         return $this->listings_json($cfg);
-    }/*}}}*/
+    }
 
     private function respond_listings_as_json()
     {
@@ -61,7 +61,7 @@ class emotes extends base
         ]);
     }
 
-    private function get_emote_digest()/*{{{*/
+    private function get_emote_digest()
     {
         $lut = $this->lut;
         $data = [];
@@ -76,9 +76,9 @@ class emotes extends base
             }
         }
         return $data;
-    }/*}}}*/
+    }
 
-    private function listings_json($cfg)/*{{{*/
+    private function listings_json($cfg)
     {
         $js = new \phpbb\json_response();
         $data = $this->get_emote_digest();
@@ -91,7 +91,7 @@ class emotes extends base
             'status' => $status,
             'data' => $data,
         ]);
-    }/*}}}*/
+    }
 
 
 }

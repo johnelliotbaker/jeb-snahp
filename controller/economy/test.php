@@ -12,7 +12,7 @@ class test extends base
 
     public function __construct($prefix, $bank_helper, $market_helper, $user_inventory_helper,
         $bank_user_account, $user_inventory, $product_class
-    )/*{{{*/
+    )
     {
         $this->prefix = $prefix;
         $this->bank_helper = $bank_helper;
@@ -24,7 +24,7 @@ class test extends base
         $this->product_class = $product_class;
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
@@ -57,7 +57,7 @@ class test extends base
         trigger_error('Nothing to see here. Move along.');
     }/*}}}*/
 
-    private function set_user_balance()/*{{{*/
+    private function set_user_balance()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id)
@@ -74,7 +74,7 @@ class test extends base
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    private function reset_user()/*{{{*/
+    private function reset_user()
     {
         $user_id = $this->request->variable('u', 0);
         if (!$user_id)
@@ -86,7 +86,7 @@ class test extends base
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    private function has_enough_token($total_cost, $user_id)/*{{{*/
+    private function has_enough_token($total_cost, $user_id)
     {
         $n_token = (int) $this->bank_helper->get_account_balance($user_id);
         if ((int) $total_cost > $n_token)
@@ -96,12 +96,12 @@ class test extends base
         return true;
     }/*}}}*/
 
-    private function get_total_cost($quantity, $product_class_id)/*{{{*/
+    private function get_total_cost($quantity, $product_class_id)
     {
         return (int) $this->market_helper->get_total_cost($product_class_id, $quantity);
     }/*}}}*/
 
-    private function can_buy($required_quantity, $product_class_id, $user_id)/*{{{*/
+    private function can_buy($required_quantity, $product_class_id, $user_id)
     {
         $product_class_id = (int) $product_class_id;
         // Check if requested quantity doesn't violate max_per_user
@@ -118,7 +118,7 @@ class test extends base
         return [1, 'Success'];
     }/*}}}*/
 
-    public function handle_buy_product($cfg)/*{{{*/
+    public function handle_buy_product($cfg)
     {
         $js = new \phpbb\json_response();
         $uinv = $this->user_inventory_helper;
@@ -150,7 +150,7 @@ class test extends base
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }/*}}}*/
 
-    public function handle_exchange($cfg)/*{{{*/
+    public function handle_exchange($cfg)
     {
         $amount = $this->request->variable('amount', 0);
         $exchange_rate_id = $this->request->variable('id', 0);
@@ -161,7 +161,7 @@ class test extends base
         return $js->send($data);
     }/*}}}*/
 
-    public function handle_user_manager($cfg)/*{{{*/
+    public function handle_user_manager($cfg)
     {
         $this->reject_non_dev();
         $time = microtime(true);
@@ -208,7 +208,7 @@ class test extends base
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
     }/*}}}*/
 
-    public function handle_transactions($cfg)/*{{{*/
+    public function handle_transactions($cfg)
     {
         $this->reject_non_dev();
         $time = microtime(true);
@@ -227,7 +227,7 @@ class test extends base
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
     }/*}}}*/
 
-    public function handle_test($cfg)/*{{{*/
+    public function handle_test($cfg)
     {
         $this->reject_anon();
         $user_id = $this->user->data['user_id'];
@@ -290,7 +290,7 @@ class test extends base
         return $this->helper->render($cfg['tpl_name'], 'Snahp test - Statistics');
     }/*}}}*/
 
-    private function get_token($user_id)/*{{{*/
+    private function get_token($user_id)
     {
         $sql = 'SELECT snp_bank_n_token FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
         $result = $this->db->sql_query($sql);
@@ -303,7 +303,7 @@ class test extends base
         return 0;
     }/*}}}*/
 
-    private function get_available_invite_points($user_id)/*{{{*/
+    private function get_available_invite_points($user_id)
     {
         $ih = new invite_helper(
             $this->container, $this->user, $this->auth, null,

@@ -13,7 +13,7 @@ const PAGE_SIZE = 20;
 
 class PageNumberPagination extends BasePageNumberPagination
 {
-    public function paginateQueryset($queryset, $request, $view=null)/*{{{*/
+    public function paginateQueryset($queryset, $request, $view=null)
     {
         $pageSize = $this->getPageSize($request);
         if (!$pageSize) {
@@ -25,9 +25,9 @@ class PageNumberPagination extends BasePageNumberPagination
         $offset = $this->page->startIndex();
         $this->page->objectList;
         return $this->page->objectList;
-    }/*}}}*/
+    }
 
-    public function getPaginatedResult($data)/*{{{*/
+    public function getPaginatedResult($data)
     {
         return [
             'count' => $this->page->paginator->count(),
@@ -35,7 +35,7 @@ class PageNumberPagination extends BasePageNumberPagination
             'current' => $this->page->number,
             'results' => $data,
         ];
-    }/*}}}*/
+    }
 }
 
 class BasePageNumberPagination
@@ -51,7 +51,7 @@ class BasePageNumberPagination
     public $template = '';
     public $invalidPageMessage = 'Invalid Page. Error Code: 814b1ceeaf';
 
-    public function paginateQueryset($queryset, $request, $view=null)/*{{{*/
+    public function paginateQueryset($queryset, $request, $view=null)
     {
         $pageSize = $this->getPageSize($request);
         if (!$pageSize) {
@@ -74,9 +74,9 @@ class BasePageNumberPagination
         // TODO: This is why we need to turn Page into iterator
         // return list($this->page);
         return $this->page;
-    }/*}}}*/
+    }
 
-    public function getPageSize($request)/*{{{*/
+    public function getPageSize($request)
     {
         if ($this->pageSizeQueryParam) {
             try {
@@ -85,9 +85,9 @@ class BasePageNumberPagination
             }
         }
         return $this->pageSize;
-    }/*}}}*/
+    }
 
-    public function getNextLink()/*{{{*/
+    public function getNextLink()
     {
         if (!$this->page->hasNext()) {
             return;
@@ -99,9 +99,9 @@ class BasePageNumberPagination
         }
         $data = ['page' => $pageNumber];
         return buildAbsoluteUri($this->request, $data);
-    }/*}}}*/
+    }
 
-    public function getPreviousLink()/*{{{*/
+    public function getPreviousLink()
     {
         if (!$this->page->hasPrevious()) {
             return;
@@ -113,9 +113,9 @@ class BasePageNumberPagination
         }
         $data = ['page' => $pageNumber];
         return buildAbsoluteUri($this->request, $data);
-    }/*}}}*/
+    }
 
-    public function getPaginatedResponse($data)/*{{{*/
+    public function getPaginatedResponse($data)
     {
         $data = [
             'count' => $this->page->paginator->count(),
@@ -124,5 +124,5 @@ class BasePageNumberPagination
             'results' => $data,
         ];
         return new JsonResponse($data, 200);
-    }/*}}}*/
+    }
 }

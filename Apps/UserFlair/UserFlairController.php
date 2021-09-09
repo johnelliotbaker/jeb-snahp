@@ -8,7 +8,7 @@ use \R as R;
 
 class UserFlairController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -42,9 +42,9 @@ class UserFlairController
         $this->helper = $helper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_non_dev('Error Code: 298bc72da9');
-    }/*}}}*/
+    }
 
-    public function resetFlair()/*{{{*/
+    public function resetFlair()
     {
         include '/var/www/forum/ext/jeb/snahp/Apps/UserFlair/Resetters.php';
         $userdata = $this->container->getParameter('jeb.snahp.avatar.badge.users');
@@ -52,14 +52,14 @@ class UserFlairController
         $r = new FlairResetter($userdata, $itemdata, $this->helper->flairModel);
         $r->reset();
         return new Response('...');
-    }/*}}}*/
+    }
 
-    public function resetType()/*{{{*/
+    public function resetType()
     {
         include '/var/www/forum/ext/jeb/snahp/Apps/UserFlair/Resetters.php';
         $itemdata = $this->container->getParameter('jeb.snahp.avatar.badge.items');
         $r = new TypeResetter($itemdata, $this->helper->typeModel);
         $r->reset();
         return new Response('...');
-    }/*}}}*/
+    }
 }

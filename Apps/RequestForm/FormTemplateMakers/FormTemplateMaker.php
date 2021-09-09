@@ -17,12 +17,12 @@ class FormFieldParser
 
     const ALLOWED_FILEHOSTS = ['mega', 'zippy'];
 
-    public function getParser($type)/*{{{*/
+    public function getParser($type)
     {
         return getDefault(self::_PARSERS, $type, 'stringParser');
-    }/*}}}*/
+    }
 
-    public function genericCompoundParser($arr)/*{{{*/
+    public function genericCompoundParser($arr)
     {
         if (!is_array($arr)) {
             return;
@@ -32,9 +32,9 @@ class FormFieldParser
             $res[] = (string) $value;
         }
         return implode(', ', $res);
-    }/*}}}*/
+    }
 
-    public function filehostParser($value)/*{{{*/
+    public function filehostParser($value)
     {
         if (!is_string($value)) {
             return;
@@ -62,35 +62,35 @@ class FormFieldParser
             $res[] = $partial;
         }
         return implode('<span style="margin-left:8px;margin-right:8px;">or</span>', $res);
-    }/*}}}*/
+    }
 
-    public function isbnParser($isbn)/*{{{*/
+    public function isbnParser($isbn)
     {
         if (!is_numeric($isbn)) {
             return;
         }
         return "<a href=\"https://catalog.loc.gov/vwebv/search?searchArg=$isbn&searchCode=GKEY%5E*&searchType=1\" class=\"isbn\" target=\"_blank\">$isbn</a>";
-    }/*}}}*/
+    }
 
-    public function linkParser($link)/*{{{*/
+    public function linkParser($link)
     {
         return "<a href=\"$link\" target=\"_blank\" class=\"link\">$link</a>";
-    }/*}}}*/
+    }
 
-    public function nullParser($value)/*{{{*/
+    public function nullParser($value)
     {
-    }/*}}}*/
+    }
 
-    public function stringParser($value)/*{{{*/
+    public function stringParser($value)
     {
         return $value;
-    }/*}}}*/
+    }
 
-    public function parse($type, $value)/*{{{*/
+    public function parse($type, $value)
     {
         $parser = $this->getParser($type);
         return $this->{$parser}($value);
-    }/*}}}*/
+    }
 }
 
 class FormTemplateMaker
@@ -101,7 +101,7 @@ class FormTemplateMaker
         'ebook' => 'https://i.imgur.com/aARcbcT.png',
     ];
 
-    public function parseData($data)/*{{{*/
+    public function parseData($data)
     {
         $res = [];
         $formFieldParser = new FormFieldParser();
@@ -110,14 +110,14 @@ class FormTemplateMaker
             $res[$typeDisplayName] = $formFieldParser->parse($type, $value);
         }
         return $res;
-    }/*}}}*/
+    }
 
-    public function getBannerImage($type)/*{{{*/
+    public function getBannerImage($type)
     {
         return getDefault(self::_BANNERS, $type);
-    }/*}}}*/
+    }
 
-    public function makeRequestTemplateHTML($data)/*{{{*/
+    public function makeRequestTemplateHTML($data)
     {
         $type = getDefault($data, 'type', '');
         $title = getDefault($data, 'title', 'No Title');
@@ -134,5 +134,5 @@ class FormTemplateMaker
             ]
         );
         return $html;
-    }/*}}}*/
+    }
 }

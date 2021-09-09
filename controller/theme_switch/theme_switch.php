@@ -32,7 +32,7 @@ class theme_switch
     $this->sauth = $sauth;
     $this->user_id = (int) $this->user->data['user_id'];
     $this->sauth->reject_anon('Error Code: 5954856517');
-  }/*}}}*/
+  }
 
   public function handle($mode)/*{{{*/
   {
@@ -44,7 +44,7 @@ class theme_switch
       break;
     }
     trigger_error('Nothing to see here. Move along.');
-  }/*}}}*/
+  }
 
 
   private function set_user_style($style_name)
@@ -82,6 +82,6 @@ class theme_switch
       return new JsonResponse(['status' => 'success'], 200);
     }
     return new JsonResponse(['status' => 'failure'], 404);
-  }/*}}}*/
+  }
 
 }

@@ -13,7 +13,7 @@ class EbookType extends AbstractType
     public static $alias = 'ebook';
     const CLASSNAME = Ebook::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('filehost', FileHostType::class)
@@ -85,5 +85,5 @@ class EbookType extends AbstractType
                 Type\HiddenType::class,
                 [ 'attr' => ['value' => self::$alias] ]
             );
-    }/*}}}*/
+    }
 }

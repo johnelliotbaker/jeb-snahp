@@ -19,9 +19,9 @@ class DiggController
         $this->helper = $helper;
         $this->userId = (int) $this->sauth->userId;
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function viewSubscriptions()/*{{{*/
+    public function viewSubscriptions()
     {
         $userId = (int) $this->userId;
         $offset = $this->request->variable('offset', 0);
@@ -51,9 +51,9 @@ class DiggController
         $cfg['tpl_name'] = '@jeb_snahp/digg/component/mydigg/base.html';
         $cfg['title'] = 'My Diggs';
         return $this->phpbbHelper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    public function viewBroadcasts()/*{{{*/
+    public function viewBroadcasts()
     {
         $userId = (int) $this->userId;
         $offset = $this->request->variable('offset', 0);
@@ -83,14 +83,14 @@ class DiggController
         $cfg['tpl_name'] = '@jeb_snahp/digg/component/mydigg/base.html';
         $cfg['title'] = 'My Diggs';
         return $this->phpbbHelper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    public function apiMyDigg()/*{{{*/
+    public function apiMyDigg()
     {
         $userId = (int) $this->userId;
         $results = $this->helper->getUserDiggMaster($userId);
         $resp = new JsonResponse($results);
         $resp->setEncodingOptions(JSON_NUMERIC_CHECK);
         return $resp;
-    }/*}}}*/
+    }
 }

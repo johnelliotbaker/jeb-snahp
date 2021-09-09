@@ -4,7 +4,7 @@ namespace jeb\snahp\Apps\Core\Db\query;
 
 trait BaseQueryMixin
 {
-    public function update($id, $data)/*{{{*/
+    public function update($id, $data)
     {
         $id = (int) $id;
         $idString = $this->ID_STRING;
@@ -12,9 +12,9 @@ trait BaseQueryMixin
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE ${idString}=${id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function get($id, $options=null)/*{{{*/
+    public function get($id, $options=null)
     {
         $fields = $options['fields'] ?? ['*'];
 
@@ -29,9 +29,9 @@ trait BaseQueryMixin
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function makeFieldString($fields, $tablename=null)/*{{{*/
+    public function makeFieldString($fields, $tablename=null)
     {
         if (is_string($fields)) {
             $fields = explode(',', $fields);
@@ -45,6 +45,6 @@ trait BaseQueryMixin
             );
         }
         return implode(', ', $fields);
-    }/*}}}*/
+    }
 
 }

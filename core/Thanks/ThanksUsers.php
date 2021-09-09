@@ -7,7 +7,7 @@ class ThanksUsers
     const CACHE_DURATION_LONG = 0;
     const DEBUG = false;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $template;
@@ -33,9 +33,9 @@ class ThanksUsers
         $this->nAllowedPerCycle = 2;
         $this->cycleInSeconds = (int) $config['snp_thanks_cycle_duration'];
         $this->userId = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function hasGivenAllAvailableThanks($userId)/*{{{*/
+    public function hasGivenAllAvailableThanks($userId)
     {
         $exempted = $this->sauth->is_dev();
         if ($exempted) {
@@ -51,9 +51,9 @@ class ThanksUsers
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function setup($userId)/*{{{*/
+    public function setup($userId)
     {
         $this->nAllowedPerCycle = $this->getCycleLimit($userId);
         $row = $this->getOrCreateThanksUser($userId);
@@ -62,14 +62,14 @@ class ThanksUsers
         }
         $this->data = $row;
         return $row;
-    }/*}}}*/
+    }
 
-    public function getCycleLimit($userId)/*{{{*/
+    public function getCycleLimit($userId)
     {
         return $this->sauth->getMaxFromGroupMemberships($userId, 'tfp_n_per_cycle');
-    }/*}}}*/
+    }
 
-    private function getOrCreateThanksUser($userId)/*{{{*/
+    private function getOrCreateThanksUser($userId)
     {
         $row = $this->getThanksUser($userId);
         if (!$row) {
@@ -81,9 +81,9 @@ class ThanksUsers
             }
         }
         return $row;
-    }/*}}}*/
+    }
 
-    public function getThanksUser($userId)/*{{{*/
+    public function getThanksUser($userId)
     {
         $tbl = $this->tbl['thanks_users'];
         $sql = 'SELECT * FROM ' . $tbl . " WHERE user_id=${userId}";
@@ -91,9 +91,9 @@ class ThanksUsers
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    private function createThanksUser($userId)/*{{{*/
+    private function createThanksUser($userId)
     {
         $tbl = $this->tbl['thanks_users'];
         $data = [
@@ -105,26 +105,26 @@ class ThanksUsers
         $this->db->sql_query($sql);
         $this->resetUserTimestamps($userId);
         return $this->getThanksUser($userId);
-    }/*}}}*/
+    }
 
-    private function makeTimestamp($topicId, $time=null)/*{{{*/
+    private function makeTimestamp($topicId, $time=null)
     {
         return [
             't' => $time===null ? time() : (int) $time,
             'tid' => $topicId,
         ];
-    }/*}}}*/
+    }
 
-    private function makeNewTimestamps($nAllowed)/*{{{*/
+    private function makeNewTimestamps($nAllowed)
     {
         $data = [];
         for ($i = 0; $i < $nAllowed; $i++) {
             $data[] = $this->makeTimestamp(0, 0);
         }
         return $data;
-    }/*}}}*/
+    }
 
-    public function resetUserTimestamps($userId)/*{{{*/
+    public function resetUserTimestamps($userId)
     {
         $row = $this->getOrCreateThanksUser($userId);
         $timestamps = $row['timestamps'];
@@ -137,9 +137,9 @@ class ThanksUsers
             WHERE user_id=${userId}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
-    private function validateOrResetUserTimestamps($userId, $data=null)/*{{{*/
+    private function validateOrResetUserTimestamps($userId, $data=null)
     {
         if ($data===null) {
             $data = $this->getThanksUser($userId);
@@ -150,25 +150,25 @@ class ThanksUsers
             return false;
         }
         return true;
-    }/*}}}*/
+    }
 
-    private function getOldestTimestamp($thanks_user_data)/*{{{*/
+    private function getOldestTimestamp($thanks_user_data)
     {
         return unserialize($thanks_user_data['timestamps'])[0];
-    }/*}}}*/
+    }
 
-    public function getUserTimestamps($userId)/*{{{*/
+    public function getUserTimestamps($userId)
     {
         $data = $this->getThanksUser($userId);
         return unserialize($data['timestamps']);
-    }/*}}}*/
+    }
 
-    public function getCycleDuration()/*{{{*/
+    public function getCycleDuration()
     {
         return (int) $this->config['snp_thanks_cycle_duration'];
-    }/*}}}*/
+    }
 
-    public function rejectBannedUser($user_id)/*{{{*/
+    public function rejectBannedUser($user_id)
     {
         if ($this::DEBUG) return false;
         $permitted = $this->sauth->is_dev();
@@ -180,9 +180,9 @@ class ThanksUsers
                 'You are banned from using the thanks system. Error Code: 1c13b9cea3'
             );
         }
-    }/*}}}*/
+    }
 
-    public function rejectExcessiveThanksPerCycle($thanksUserData)/*{{{*/
+    public function rejectExcessiveThanksPerCycle($thanksUserData)
     {
         // TODO: is_dev_or_op
         $permitted = $this->sauth->is_dev();
@@ -199,27 +199,27 @@ class ThanksUsers
             $datestrn = $this->user->format_date($allowedAfter);
             trigger_error('You cannot give any more thanks until ' . $datestrn);
         }
-    }/*}}}*/
+    }
 
-    public function addThanksGivenStatistics($userId)/*{{{*/
+    public function addThanksGivenStatistics($userId)
     {
         $userId = (int) $userId;
         $sql = 'UPDATE ' . USERS_TABLE
             . ' SET snp_thanks_n_given=snp_thanks_n_given+1 WHERE user_id='
             . $userId;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function addThanksReceivedStatistics($userId)/*{{{*/
+    public function addThanksReceivedStatistics($userId)
     {
         $userId = (int) $userId;
         $sql = 'UPDATE ' . USERS_TABLE
             . ' SET snp_thanks_n_received=snp_thanks_n_received+1 WHERE user_id='
             . $userId;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function insertTimestamp($userId, $topicId)/*{{{*/
+    public function insertTimestamp($userId, $topicId)
     {
         $timestamps = array_slice(
             unserialize($this->data['timestamps']), 1, $this->nAllowedPerCycle-1
@@ -232,6 +232,6 @@ class ThanksUsers
             . " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
 }

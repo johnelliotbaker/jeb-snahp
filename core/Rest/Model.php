@@ -28,22 +28,22 @@ class Model
     public function getFields()/*{{{*/
     {
         return $this->fields;
-    }/*}}}*/
+    }
 
     public function all()/*{{{*/
     {
         return R::findAll($this::TABLE_NAME, 'LIMIT 500');
-    }/*}}}*/
+    }
 
     public function getObject($statement='', $data=[])/*{{{*/
     {
         return R::findOne($this::TABLE_NAME, $statement, $data);
-    }/*}}}*/
+    }
 
     public function getQueryset($statement='', $data=[])/*{{{*/
     {
         return R::find($this::TABLE_NAME, $statement, $data);
-    }/*}}}*/
+    }
 
     public function createDummy($data)/*{{{*/
     {
@@ -52,7 +52,7 @@ class Model
             $object->{$k} = $v;
         }
         return $object;
-    }/*}}}*/
+    }
 
     public function create($data)/*{{{*/
     {
@@ -73,17 +73,17 @@ class Model
         }
         $instance = $this->performPostCreate($instance);
         return $instance;
-    }/*}}}*/
+    }
 
     public function performPreCreate($data)/*{{{*/
     {
         return $data;
-    }/*}}}*/
+    }
 
     public function performPostCreate($instance)/*{{{*/
     {
         return $instance;
-    }/*}}}*/
+    }
 
     public function update($instance, $data)/*{{{*/
     {
@@ -94,15 +94,15 @@ class Model
         R::store($instance);
         $this->performPostUpdate($instance);
         return $instance;
-    }/*}}}*/
+    }
 
     public function performPreUpdate($instance)/*{{{*/
     {
-    }/*}}}*/
+    }
 
     public function performPostUpdate($instance)/*{{{*/
     {
-    }/*}}}*/
+    }
 
     public function appendExtra($instance, $extra)/*{{{*/
     {
@@ -110,7 +110,7 @@ class Model
             $instance->$key = $value;
         }
         return $instance;
-    }/*}}}*/
+    }
 
     public function appendUserInfo($queryset, $userIdFieldName='author')/*{{{*/
     {
@@ -135,7 +135,7 @@ class Model
             $queryset = $this->appendExtra($queryset, $this->getUserInfo($userId));
         }
         return $queryset;
-    }/*}}}*/
+    }
 
     public function getUserInfo($userId)/*{{{*/
     {
@@ -145,37 +145,37 @@ class Model
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
     public function getForeignName()/*{{{*/
     {
-    }/*}}}*/
+    }
 
     public function getForeignObject($pk)/*{{{*/
     {
         return R::load($this::FOREIGN_NAME, $pk);
-    }/*}}}*/
+    }
 
     public function wipe()/*{{{*/
     {
         R::wipe($this::TABLE_NAME);
-    }/*}}}*/
+    }
 
     public function addUniqueIndex($columns)/*{{{*/
     {
         R::getWriter()->addUniqueIndex($this::TABLE_NAME, $columns);
-    }/*}}}*/
+    }
 
     public function addIndex($name, $column)/*{{{*/
     {
         R::getWriter()->addIndex($this::TABLE_NAME, $name, $column);
-    }/*}}}*/
+    }
 }
 
 
 class MissingRequiredField extends \Exception /*{{{*/
 {
-}/*}}}*/
+}
 
 class RedExceptionSQL extends \Exception
 {

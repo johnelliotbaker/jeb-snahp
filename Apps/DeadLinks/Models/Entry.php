@@ -40,7 +40,7 @@ class Entry extends Model
         ];
     }
 
-    public function manage($object)/*{{{*/
+    public function manage($object)
     {
         // Main manager for reporting work flow
         // Triggered from performPostCreate
@@ -93,9 +93,9 @@ class Entry extends Model
             }
             $this->closeTopic($object->topic);
         }
-    }/*}}}*/
+    }
 
-    public function graveyardTopic($topicId)/*{{{*/
+    public function graveyardTopic($topicId)
     {
         global $config;
         $graveyard_fid = (int) unserialize($config['snp_cron_graveyard_fid'])['default'];
@@ -103,68 +103,68 @@ class Entry extends Model
         include_once 'includes/functions_admin.php';
         move_topics($topics, $graveyard_fid, $auto_sync = true);
         $this->unIndexTopic($topicId);
-    }/*}}}*/
+    }
 
-    public function performPostCreate($object)/*{{{*/
+    public function performPostCreate($object)
     {
         return $this->manage($object);
-    }/*}}}*/
+    }
 
-    public function markTopicWithDeadlink($topicId)/*{{{*/
+    public function markTopicWithDeadlink($topicId)
     {
         $sql = 'UPDATE ' . TOPICS_TABLE . " SET snp_ded_b_dead=1 WHERE topic_id=${topicId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function unmarkTopicWithDeadlink($topicId)/*{{{*/
+    public function unmarkTopicWithDeadlink($topicId)
     {
         $sql = 'UPDATE ' . TOPICS_TABLE . " SET snp_ded_b_dead=0 WHERE topic_id=${topicId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function closeTopicRequests($topicId)/*{{{*/
+    public function closeTopicRequests($topicId)
     {
         $entries = R::find($this::TABLE_NAME, 'topic=? AND type="Request"', [$topicId]);
         foreach ($entries as $entry) {
             $entry->status = 'Closed';
             R::store($entry);
         }
-    }/*}}}*/
+    }
 
-    public function closeTopicReports($topicId)/*{{{*/
+    public function closeTopicReports($topicId)
     {
         $entries = R::find($this::TABLE_NAME, 'topic=? AND type="Report"', [$topicId]);
         foreach ($entries as $entry) {
             $entry->status = 'Closed';
             R::store($entry);
         }
-    }/*}}}*/
+    }
 
-    public function closeTopic($topicId)/*{{{*/
+    public function closeTopic($topicId)
     {
         $entries = R::find($this::TABLE_NAME, 'topic=?', [$topicId]);
         foreach ($entries as $entry) {
             $entry->status = 'Closed';
             R::store($entry);
         }
-    }/*}}}*/
+    }
 
-    public function lastOpenRequest($topicId)/*{{{*/
+    public function lastOpenRequest($topicId)
     {
         return $this->getObject('topic=? AND type="Request" AND status=? ORDER BY id DESC', [$topicId, 'Open']);
-    }/*}}}*/
+    }
 
-    public function lastOpenAction($topicId)/*{{{*/
+    public function lastOpenAction($topicId)
     {
         return $this->getObject('topic=? AND type="Action" AND status=? ORDER BY id DESC', [$topicId, 'Open']);
-    }/*}}}*/
+    }
 
-    public function lastOpenReport($topicId)/*{{{*/
+    public function lastOpenReport($topicId)
     {
         return $this->getObject('topic=? AND type="Report" AND status=? ORDER BY id DESC', [$topicId, 'Open']);
-    }/*}}}*/
+    }
 
-    public function activeEntry($topicId)/*{{{*/
+    public function activeEntry($topicId)
     {
         if ($action = $this->lastOpenAction($topicId)) {
             return $action;
@@ -175,9 +175,9 @@ class Entry extends Model
         if ($report = $this->lastOpenReport($topicId)) {
             return $report;
         }
-    }/*}}}*/
+    }
 
-    public function getTopicData($topicId)/*{{{*/
+    public function getTopicData($topicId)
     {
         $topicId = (int) $topicId;
         $sql = 'SELECT topic_poster, topic_title FROM ' . TOPICS_TABLE . " WHERE topic_id=${topicId}";
@@ -185,9 +185,9 @@ class Entry extends Model
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function getOpenRequests()/*{{{*/
+    public function getOpenRequests()
     {
         [$maxi_query, $cooldown] = [200, 0];
         $sql_array = [
@@ -207,9 +207,9 @@ class Entry extends Model
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function getOpenReports($userId)/*{{{*/
+    public function getOpenReports($userId)
     {
         $userId = (int) $userId;
         [$maxi_query, $cooldown] = [200, 0];
@@ -230,34 +230,34 @@ class Entry extends Model
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function sendRemovedNotification($object)/*{{{*/
+    public function sendRemovedNotification($object)
     {
         $this->sendNotificationToReporter($object->topic, 'The reported link was removed');
-    }/*}}}*/
+    }
 
-    public function sendRefuteNotification($object)/*{{{*/
+    public function sendRefuteNotification($object)
     {
         $this->sendNotificationToReporter($object->topic, 'No deadlink was found on this thread');
-    }/*}}}*/
+    }
 
-    public function sendReUpNotification($object)/*{{{*/
+    public function sendReUpNotification($object)
     {
         $this->sendNotificationToReporter($object->topic, 'Link restored');
-    }/*}}}*/
+    }
 
-    public function sendGraveyardNotification($object)/*{{{*/
+    public function sendGraveyardNotification($object)
     {
         $this->sendNotificationToReporter($object->topic, 'The reported topic was moved to the graveyard');
-    }/*}}}*/
+    }
 
-    public function sendCloseNotification($object)/*{{{*/
+    public function sendCloseNotification($object)
     {
         $this->sendNotificationToReporter($object->topic, 'Moderator closed your deadlink report without further action');
-    }/*}}}*/
+    }
 
-    public function sendNotificationToReporter($topicId, $title)/*{{{*/
+    public function sendNotificationToReporter($topicId, $title)
     {
         $topicData = $this->getTopicData($topicId);
         if (!$topicData) {
@@ -276,18 +276,18 @@ class Entry extends Model
         $this->Notifier->add_notifications(array(
             'jeb.snahp.notification.type.deadlinks',
         ), $data);
-    }/*}}}*/
+    }
 
-    public function clearNotifications($topicId)/*{{{*/
+    public function clearNotifications($topicId)
     {
         $notificationTypeId = (int) $this->Notifier->get_notification_type_id('jeb.snahp.notification.type.deadlinks');
         $time = time();
         $sql = 'DELETE FROM ' . NOTIFICATIONS_TABLE . "
             WHERE item_id={$topicId} AND notification_type_id={$notificationTypeId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function unIndexTopic($topicId)/*{{{*/
+    public function unIndexTopic($topicId)
     {
         $CHUNK_SIZE = 50;
         $search = $this->getSearchInstance();
@@ -305,9 +305,9 @@ class Entry extends Model
         foreach ($chunks as $chunk) {
             $search->index_remove($chunk, [], []);
         }
-    }/*}}}*/
+    }
 
-    private function getSearchInstance()/*{{{*/
+    private function getSearchInstance()
     {
         global $phpbb_root_path, $phpEx, $auth, $config;
         global $db, $user, $phpbb_dispatcher;
@@ -326,11 +326,11 @@ class Entry extends Model
             $user,
             $phpbb_dispatcher
         );
-    }/*}}}*/
+    }
 
-    public function isAuthor($topicId, $userId)/*{{{*/
+    public function isAuthor($topicId, $userId)
     {
         $topicData = $this->getTopicData($topicId);
         return (int) $topicData['topic_poster'] === (int) $userId;
-    }/*}}}*/
+    }
 }

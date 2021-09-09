@@ -12,7 +12,7 @@ class JukeboxHelper
         $this->userId = $sauth->userId;
     }
 
-    public function selectCandidates($numPosts)/*{{{*/
+    public function selectCandidates($numPosts)
     {
         $topicId = ($this->sauth->is_dev_server()) ? 21121 : 218385;;
         $sqlArray = [
@@ -32,33 +32,33 @@ class JukeboxHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function save($data)/*{{{*/
+    public function save($data)
     {
         $this->configText->set('snp_jukebox_data', json_encode($data));
-    }/*}}}*/
+    }
 
-    public function load()/*{{{*/
+    public function load()
     {
         $data = htmlspecialchars_decode($this->configText->get('snp_jukebox_data'));
         $data = json_decode($data, true);
         return $data;
-    }/*}}}*/
+    }
 
-    public function getJukeboxData()/*{{{*/
+    public function getJukeboxData()
     {
         return $this->load();
-    }/*}}}*/
+    }
 
-    public function updateList($numPosts=2000)/*{{{*/
+    public function updateList($numPosts=2000)
     {
         $rowset = $this->selectCandidates($numPosts);
         $rowset = $this->process($rowset);
         $this->save($rowset);
-    }/*}}}*/
+    }
 
-    public function process($rowset)/*{{{*/
+    public function process($rowset)
     {
         $limit = 100;
         $res = [];
@@ -83,12 +83,12 @@ class JukeboxHelper
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    private function extractImdb($message)/*{{{*/
+    private function extractImdb($message)
     {
         preg_match('#\<s>\[tub]</s>(.*?)<e>\[/tub]</e>#s', $message, $match);
         return json_decode($match[1], true);
-    }/*}}}*/
+    }
 
 }

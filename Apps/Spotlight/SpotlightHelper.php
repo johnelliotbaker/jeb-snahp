@@ -22,9 +22,9 @@ class SpotlightHelper
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
-    public function getSpotlightData()/*{{{*/
+    public function getSpotlightData()
     {
         // $this->cache->purge();
         $name = 'spotlightData';
@@ -35,30 +35,30 @@ class SpotlightHelper
             $this->cache->put($name, $data, $cacheTimeout);
         }
         return $this->cache->get($name);
-    }/*}}}*/
+    }
 
-    public function embedSpotlight()/*{{{*/
+    public function embedSpotlight()
     {
         // /var/www/forum/ext/jeb/snahp/styles/all/template/spotlight/base.html
         $data = $this->getSpotlightData();
         $attributeData = convertArrayToHTMLAttribute($data);
         $tplData = ['SPOTLIGHT_PROPS' => "data-data=\"$attributeData\""];
         $this->template->assign_vars($tplData);
-    }/*}}}*/
+    }
 
-    private function isImdb($row)/*{{{*/
+    private function isImdb($row)
     {
         preg_match('#\<s>\[imdb]</s>(.*?)<e>\[/imdb]</e>#s', $row['post_text'], $match);
         return !!$match;
-    }/*}}}*/
+    }
 
-    private function extractImdb($message)/*{{{*/
+    private function extractImdb($message)
     {
         preg_match('#\<s>\[imdb]</s>(.*?)<e>\[/imdb]</e>#s', $message, $match);
         return json_decode($match[1], true);
-    }/*}}}*/
+    }
 
-    public function selectCandidates()/*{{{*/
+    public function selectCandidates()
     {
         $forumIds = explode(',', $this->config['snp_pg_fid_listing']);
         $where = $this->db->sql_in_set('t.forum_id', $forumIds);
@@ -81,16 +81,16 @@ class SpotlightHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function isAcceptedHost($row)/*{{{*/
+    public function isAcceptedHost($row)
     {
         $title = $row['topic_title'];
         preg_match('#\[mega]|\[zippy]#is', $title, $match);
         return !!$match;
-    }/*}}}*/
+    }
 
-    public function filter($rowset)/*{{{*/
+    public function filter($rowset)
     {
         $res = [];
         $jobQueue = $this->getJobQueue();
@@ -117,9 +117,9 @@ class SpotlightHelper
             }
         }
         return $res;
-    }/*}}}*/
+    }
 
-    public function getJobQueue()/*{{{*/
+    public function getJobQueue()
     {
         return [
             [
@@ -149,5 +149,5 @@ class SpotlightHelper
                 },
             ],
         ];
-    }/*}}}*/
+    }
 }

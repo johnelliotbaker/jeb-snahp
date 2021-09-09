@@ -8,20 +8,20 @@ class MysqlSearchController
 {
     const MAX_PER_PAGE = 100;
     const DEFAULT_PER_PAGE = 50;
-    protected $request;/*{{{*/
+    protected $request;
     protected $template;
     protected $phpHelper;
     protected $sauth;
     protected $helper;
     protected $formHelper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $request,
         $template,
         $phpHelper,
         $sauth,
         $helper,
         $formHelper
-    ) {/*}}}*/
+    ) {
         $this->request = $request;
         $this->template = $template;
         $this->phpHelper = $phpHelper;
@@ -29,9 +29,9 @@ class MysqlSearchController
         $this->helper = $helper;
         $this->formHelper = $formHelper;
         $this->userId = (int) $this->sauth->userId;
-    }/*}}}*/
+    }
 
-    public function respond()/*{{{*/
+    public function respond()
     {
         $methodName = $this->request->server('REQUEST_METHOD', 'GET');
         if ($methodName !== 'GET') {
@@ -40,9 +40,9 @@ class MysqlSearchController
         $cfg['tpl_name'] = '@jeb_snahp/mysql_search/base.html';
         $cfg['title'] = 'Elite Search';
         return $this->handleMysqlSearch($cfg);
-    }/*}}}*/
+    }
 
-    private function handleMysqlSearch($cfg)/*{{{*/
+    private function handleMysqlSearch($cfg)
     {
 
         $required = [ 'forum_type' => 'listings', 'word_to_search' => '' ];
@@ -86,7 +86,7 @@ class MysqlSearchController
             }
             return $this->phpHelper->render($tplName, $cfg['title']);
         }
-    }/*}}}*/
+    }
 }
 
 class QueryTooShortError extends \Exception

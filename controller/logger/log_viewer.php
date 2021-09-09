@@ -21,7 +21,7 @@ class log_viewer
         $db, $user, $config, $request, $template, $container, $helper, $config_text,
         $tbl,
         $sauth, $logger
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -38,7 +38,7 @@ class log_viewer
         $this->sauth->reject_non_dev('Error Code: 8a4bca81a2');
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode)
         {
@@ -58,7 +58,7 @@ class log_viewer
         trigger_error('Nothing to see here. Move along.');
     }/*}}}*/
 
-    public function set_user_spam_config_as_json()/*{{{*/
+    public function set_user_spam_config_as_json()
     {
         $interval = $this->request->variable('interval', -1);
         if ($interval >= 0)
@@ -73,7 +73,7 @@ class log_viewer
         return new JsonResponse(['status' => 1]);
     }/*}}}*/
 
-    public function set_enable_as_json()/*{{{*/
+    public function set_enable_as_json()
     {
         $type = $this->request->variable('type', '');
         $b = $this->request->variable('val', 0);
@@ -94,7 +94,7 @@ class log_viewer
         }
     }/*}}}*/
 
-    public function respond_is_log_as_json()/*{{{*/
+    public function respond_is_log_as_json()
     {
         $type = $this->request->variable('type', '');
         switch ($type)
@@ -111,7 +111,7 @@ class log_viewer
         return new JsonResponse(['status' => 0]);
     }/*}}}*/
 
-    public function respond_view($cfg)/*{{{*/
+    public function respond_view($cfg)
     {
         $type = $this->request->variable('type', 'posting');
         $data = $this->logger->get_log_by_type($type);

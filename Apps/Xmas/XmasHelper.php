@@ -23,17 +23,17 @@ class XmasHelper
         $this->Config = $Config;
         $this->period = null;
         $this->boardConfig = null;
-    }/*}}}*/
+    }
 
-    public function simulateVoting($period=0)/*{{{*/
+    public function simulateVoting($period=0)
     {
         $startTime = microtime(true);
         $this->Vote->simulate($period);
         $elapsed = microtime(true) - $startTime;
         prn($elapsed);
-    }/*}}}*/
+    }
 
-    public function summary()/*{{{*/
+    public function summary()
     {
         $startTime = microtime(true);
         $votes = getVotes();
@@ -74,26 +74,26 @@ class XmasHelper
             ],
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function getNextPeriodStart()/*{{{*/
+    public function getNextPeriodStart()
     {
         $period = $this->getPeriod();
         $schedule = $this->getSchedule();
         [$start, $interval] = [$schedule['start'], $schedule['duration'] / $schedule['division']];
         return $start + $interval * ($period + 1);
-    }/*}}}*/
+    }
 
-    public function getCurrentUserVote($userId)/*{{{*/
+    public function getCurrentUserVote($userId)
     {
         $index = $this->getPeriod();
         $instance = $this->Vote->getObject('user=? AND period=?', [$userId, $index]);
         if ($instance) {
             return $instance->tile;
         }
-    }/*}}}*/
+    }
 
-    public function createBoard($userId)/*{{{*/
+    public function createBoard($userId)
     {
         $this->Board->create(
             [
@@ -101,17 +101,17 @@ class XmasHelper
                 'created' => time(),
             ]
         );
-    }/*}}}*/
+    }
 
-    public function getSchedule()/*{{{*/
+    public function getSchedule()
     {
         if ($this->schedule === null) {
             $this->schedule = getXmasConfig('schedule', 0);
         }
         return $this->schedule;
-    }/*}}}*/
+    }
 
-    public function getScoreDistribution()/*{{{*/
+    public function getScoreDistribution()
     {
         // TODO::
         $cacheDuration = 0;
@@ -140,9 +140,9 @@ class XmasHelper
             $this->cache->save();
         }
         return json_decode($distribution, true);
-    }/*}}}*/
+    }
 
-    public function scoreUser($userId)/*{{{*/
+    public function scoreUser($userId)
     {
         $votes = getVotes();
         $board = $this->Board->getObject('user=?', [$userId]);
@@ -152,25 +152,25 @@ class XmasHelper
         $scorer = new ScoreRule75();
         $scorer->sequence = $votes;
         return $scorer->score($bingoBoard);
-    }/*}}}*/
+    }
 
-    public function getPeriod()/*{{{*/
+    public function getPeriod()
     {
         if ($this->period === null) {
             $this->period = getTimeIndexWithDefault();
         }
         return $this->period;
-    }/*}}}*/
+    }
 
-    public function getBoardConfig()/*{{{*/
+    public function getBoardConfig()
     {
         if ($this->boardConfig === null) {
             $this->boardConfig = getXmasConfig('board');
         }
         return $this->boardConfig;
-    }/*}}}*/
+    }
 
-    public function resetTimer($mode=0)/*{{{*/
+    public function resetTimer($mode=0)
     {
         $now = time();
         $cfg = [
@@ -225,11 +225,11 @@ class XmasHelper
         $Config->update($instance, ['data' => json_encode([])]);
         $this->Vote->wipe();
         return $data;
-    }/*}}}*/
+    }
 }
 
 
-class Simulator /*{{{*/
+class Simulator 
 {
     public function __construct($board, $draws)
     {
@@ -243,15 +243,15 @@ class Simulator /*{{{*/
         return array_slice($pool, 0, $this->draws);
     }
 
-}/*}}}*/
+}
 
 
-class AlreadyVotedError extends \jeb\snahp\core\errors\SnahpException/*{{{*/
+class AlreadyVotedError extends \jeb\snahp\core\errors\SnahpException
 {
     const MESSAGE_PREFIX = 'AlreadyVotedError';
-}/*}}}*/
+}
 
-class BoardDoesNotExistError extends \jeb\snahp\core\errors\SnahpException/*{{{*/
+class BoardDoesNotExistError extends \jeb\snahp\core\errors\SnahpException
 {
     const MESSAGE_PREFIX = 'BoardDoesNotExistError';
-}/*}}}*/
+}

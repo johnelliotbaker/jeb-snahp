@@ -54,7 +54,7 @@ class main_module
         }
     }
 
-    private function is_custom_rank_purchased($user_id)/*{{{*/
+    private function is_custom_rank_purchased($user_id)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $tbl = $phpbb_container->getParameter('jeb.snahp.tables');
@@ -70,9 +70,9 @@ class main_module
         $db->sql_freeresult($result);
         if (!$row) { return false; }
         return true ? $row['quantity'] > 0 : false;
-    }/*}}}*/
+    }
 
-    private function get_quick_search_upgrade_count($user_id)/*{{{*/
+    private function get_quick_search_upgrade_count($user_id)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $user_id = (int) $user_id;
@@ -91,9 +91,9 @@ class main_module
             return $row['quantity'];
         }
         return 0;
-    }/*}}}*/
+    }
 
-    function handle_block($cfg)/*{{{*/
+    function handle_block($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
@@ -104,9 +104,9 @@ class main_module
             'B_ENABLE' => $b_enable,
             'B_PERMISSION' => $b_permission,
         ]);
-    }/*}}}*/
+    }
 
-    private function showThanksResetter($userId)/*{{{*/
+    private function showThanksResetter($userId)
     {
         global $phpbb_container, $template;
         $helper = $phpbb_container->get('jeb.snahp.ThanksResetCycleHelper');
@@ -114,9 +114,9 @@ class main_module
         $gaveAllAvailableThanks = $helper->hasGivenAllAvailableThanks($userId);
         $shouldShow = $tokens;
         $template->assign_var('B_THANKS_RESET', $shouldShow);
-    }/*}}}*/
+    }
 
-    function handle_custom($cfg)/*{{{*/
+    function handle_custom($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if (!$config['snp_ucp_custom_b_master'])
@@ -139,9 +139,9 @@ class main_module
         ]);
         $this->showThanksResetter($user_id);
         // Using config custom master switch
-    }/*}}}*/
+    }
 
-    function handle_invite($cfg)/*{{{*/
+    function handle_invite($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if (!$config['snp_inv_b_master'])
@@ -195,9 +195,9 @@ class main_module
                 $template->assign_block_vars('A_INVITE', $row);
             }
         }
-    }/*}}}*/
+    }
 
-    function handle_visibility($cfg)/*{{{*/
+    function handle_visibility($cfg)
     {
         global $db, $request, $template, $user;
         $user_id = $user->data['user_id'];
@@ -242,9 +242,9 @@ class main_module
             'S_UCP_ACTION'  => $this->u_action,
         );
         $template->assign_vars($template_vars);
-    }/*}}}*/
+    }
 
-    function handle_mode($cfg)/*{{{*/
+    function handle_mode($cfg)
     {
         global $db, $request, $template, $user;
         $this->tpl_name = $cfg['tpl_name'];
@@ -264,17 +264,17 @@ class main_module
             }
         }
         $template->assign_vars([]);
-    }/*}}}*/
+    }
 
-    public function reject_user_not_in_groupset($user_id, $groupset_name)/*{{{*/
+    public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
         if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
         {
             trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
         }
-    }/*}}}*/
+    }
 
-    public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
+    public function user_belongs_to_groupset($user_id, $groupset_name)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         if ($this->is_dev_server())
@@ -294,16 +294,16 @@ class main_module
         $group_id_ary = $groupset[$groupset_name];
         $res = group_memberships($group_id_ary, $user_id_ary);
         return !!$res;
-    }/*}}}*/
+    }
 
-    public function is_dev_server()/*{{{*/
+    public function is_dev_server()
     {
         global $config;
         $servername = $config['server_name'];
         return isset($servername) && $servername=='192.168.2.12';
-    }/*}}}*/
+    }
 
-    private function select_group($group_id)/*{{{*/
+    private function select_group($group_id)
     {
         global $db;
         $group_id = (int) $group_id;
@@ -312,6 +312,6 @@ class main_module
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
 }

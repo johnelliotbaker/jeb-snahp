@@ -6,7 +6,7 @@ class PostCreatorHelper
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -25,5 +25,5 @@ class PostCreatorHelper
         $this->rxnTbl = $tbl['PostCreator'];
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 }

@@ -38,7 +38,7 @@ class poi
         $this->sauth = $sauth;
         $this->user_id = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: 5954856517');
-    }/*}}}*/
+    }
 
     public function handle($mode)/*{{{*/
     {
@@ -51,7 +51,7 @@ class poi
             break;
         }
         trigger_error('Nothing to see here. Move along.');
-    }/*}}}*/
+    }
 
     private function get_user_data($user_ids)/*{{{*/
     {
@@ -73,7 +73,7 @@ class poi
             $this->db->sql_freeresult($result);
             return $row;
         }
-    }/*}}}*/
+    }
 
     private function get_tags()/*{{{*/
     {
@@ -82,7 +82,7 @@ class poi
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
     public function respondPOI($cfg)/*{{{*/
     {
@@ -169,7 +169,7 @@ class poi
         $this->template->assign_var('TAGS', $tags);
 
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
     public function respond_poi1($cfg)/*{{{*/
     {
@@ -220,7 +220,7 @@ class poi
         $this->template->assign_var('TAGS', $tags);
 
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 }
 
 function getAttribute($var, $attrName)/*{{{*/
@@ -233,4 +233,4 @@ function getAttribute($var, $attrName)/*{{{*/
         return $item[array_rand($item)];
     }
     return $item;
-}/*}}}*/
+}

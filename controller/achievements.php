@@ -9,11 +9,11 @@ class achievements extends base
 
     protected $base_url = '';
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
-    }/*}}}*/
+    }
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         if (!$this->config['snp_achi_b_master'])
@@ -36,9 +36,9 @@ class achievements extends base
             trigger_error('Invalid update mode. Error Code: d3761802f0');
             break;
         }
-	}/*}}}*/
+	}
 
-    public function update($cfg)/*{{{*/
+    public function update($cfg)
     {
         $time = microtime(true);
         $type = $this->request->variable('type', '');
@@ -61,9 +61,9 @@ class achievements extends base
         trigger_error('The achievements were updated successfully.');
         // meta_refresh(2, $this->base_url);
         // trigger_error('You are now subscribed to this topic.');
-    }/*}}}*/
+    }
 
-    public function update_achievements($type)/*{{{*/
+    public function update_achievements($type)
     {
         $data = [];
         $data[] = $this->update_magnetic_personality();
@@ -96,9 +96,9 @@ class achievements extends base
             }
         }
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_magnetic_personality()/*{{{*/
+    public function update_magnetic_personality()
     {
         $sql_ary = [
             'SELECT' =>  'topic_poster, COUNT(*) as count',
@@ -124,9 +124,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_grave_digger()/*{{{*/
+    public function update_grave_digger()
     {
         $sql = 'SELECT user_id, COUNT(*) AS count FROM '. $this->tbl['digg_slave'] . '
                 GROUP BY user_id ORDER BY count DESC';
@@ -141,9 +141,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_computer_whiz()/*{{{*/
+    public function update_computer_whiz()
     {
         // TODO: Don't hard code this
         $root_fid = 9;
@@ -164,9 +164,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_thumb_raiser()/*{{{*/
+    public function update_thumb_raiser()
     {
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $sql = 'SELECT user_id, snp_thanks_n_received FROM ' . USERS_TABLE . ' ORDER BY snp_thanks_n_received DESC';
@@ -181,9 +181,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_life_giver()/*{{{*/
+    public function update_life_giver()
     {
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $sql = 'SELECT fulfiller_uid, COUNT(*) as count FROM ' . $this->tbl['req'] . 
@@ -199,9 +199,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_gambler()/*{{{*/
+    public function update_gambler()
     {
         $user_id = 49485;
         if ($this->is_dev_server())
@@ -216,9 +216,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_the_gourmet()/*{{{*/
+    public function update_the_gourmet()
     {
         $user_id = 5495;
         if ($this->is_dev_server())
@@ -233,9 +233,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_solar_powered()/*{{{*/
+    public function update_solar_powered()
     {
         $user_id = 0;
         if ($this->is_dev_server())
@@ -250,9 +250,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_intense_training()/*{{{*/
+    public function update_intense_training()
     {
         $user_id = 58626;
         if ($this->is_dev_server())
@@ -267,9 +267,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_bone_head()/*{{{*/
+    public function update_bone_head()
     {
         $user_id = 150397;
         if ($this->is_dev_server())
@@ -284,9 +284,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_size_matters()/*{{{*/
+    public function update_size_matters()
     {
         $user_id = 49485;
         if ($this->is_dev_server())
@@ -301,9 +301,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function update_child_at_heart()/*{{{*/
+    public function update_child_at_heart()
     {
         $user_id = 51956;
         if ($this->is_dev_server())
@@ -318,9 +318,9 @@ class achievements extends base
             'modified_time' => time(),
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function get_powerchart_json($cfg)/*{{{*/
+    public function get_powerchart_json($cfg)
     {
         $js = new \phpbb\json_response();
         $profile_id = $this->request->variable('u', 0);
@@ -359,9 +359,9 @@ class achievements extends base
         ];
         $js->send($data);
         return $data;
-    }/*}}}*/
+    }
 
-    private function normalize_achievements($data, $reference)/*{{{*/
+    private function normalize_achievements($data, $reference)
     {
         $max = log(100);
         $min = log(3.5);
@@ -370,9 +370,9 @@ class achievements extends base
             $data[$key] = min(max(($max * $data[$key] / $reference[$key]), $min), $max);
         }
         return $data;
-    }/*}}}*/
+    }
 
-    private function select_achievements($user_id)/*{{{*/
+    private function select_achievements($user_id)
     {
         $user_id = (int) $user_id;
         $sql = 'SELECT username, snp_req_n_solve, snp_thanks_n_received, snp_rep_n_received FROM ' . USERS_TABLE .
@@ -381,6 +381,6 @@ class achievements extends base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
 }

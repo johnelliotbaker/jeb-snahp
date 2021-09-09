@@ -14,21 +14,21 @@ class market_transaction_logger
         $this->tbl = $tbl;
 	}
 
-    public function create_single_item_invoice($user_id, $broker_id=-1, $data)/*{{{*/
+    public function create_single_item_invoice($user_id, $broker_id=-1, $data)
     {
         $invoice_id = $this->create_invoice($user_id, $broker_id);
         return $this->append_to_invoice($invoice_id, $data);
-    }/*}}}*/
+    }
 
-    public function append_to_invoice($invoice_id, $data)/*{{{*/
+    public function append_to_invoice($invoice_id, $data)
     {
         $data['invoice_id'] = $invoice_id;
         $sql = 'INSERT INTO ' . $this->tbl['mrkt_invoice_items'] . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
-    }/*}}}*/
+    }
 
-    public function create_invoice($user_id, $broker_id=-1)/*{{{*/
+    public function create_invoice($user_id, $broker_id=-1)
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
@@ -41,7 +41,7 @@ class market_transaction_logger
         $sql = 'INSERT INTO ' . $this->tbl['mrkt_invoices'] . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return (int) $this->db->sql_nextid();
-    }/*}}}*/
+    }
 
     public function get_user_market_transactions($user_id)
     {

@@ -26,9 +26,9 @@ class Forum extends Model
         ];
     }
 
-    // public function performPreCreate($instance)/*{{{*/
+    // public function performPreCreate($instance)
     // {
     //     // TODO: Remove after initial run
     //     // $res = \R::getWriter()->addUniqueIndex($this::TABLE_NAME, ['mainpost']);
-    // }/*}}}*/
+    // }
 }

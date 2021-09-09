@@ -21,7 +21,7 @@ class reputation
         $db, $user, $config, $request, $template, $container, $helper, $notification,
         $tbl,
         $sauth, $user_inventory, $product_class
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -37,7 +37,7 @@ class reputation
         $this->product_class = $product_class;
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->sauth->reject_anon();
         if (!$this->config['snp_rep_b_master'])
@@ -69,7 +69,7 @@ class reputation
         }
 	}/*}}}*/
 
-    public function mcp_rep_giveaways($cfg)/*{{{*/
+    public function mcp_rep_giveaways($cfg)
     {
         add_form_key('jeb_snp');
         if ($this->request->is_set_post('set_target'))
@@ -97,7 +97,7 @@ class reputation
         return $this->helper->render($cfg['tpl_name']);
     }/*}}}*/
 
-    public function mcp_set($cfg)/*{{{*/
+    public function mcp_set($cfg)
     {
         $target = $cfg['target'];
         if (!$target)
@@ -122,7 +122,7 @@ class reputation
         $this->db->sql_query($sql);
     }
 
-    public function mcp_set_min_for_users_with_upgrades($target)/*{{{*/
+    public function mcp_set_min_for_users_with_upgrades($target)
     {
         // A cron script runs this method to replenish user rep points
         $name = 'larger_rep_pool';
@@ -141,7 +141,7 @@ class reputation
         }
     }/*}}}*/
 
-    public function mcp_set_min($cfg)/*{{{*/
+    public function mcp_set_min($cfg)
     {
         // A cron script runs this method to replenish user rep points
         $target = $cfg['target'];
@@ -162,12 +162,12 @@ class reputation
         trigger_error("Users with available reputation points less than {$target} was set to {$target}. {$time}");
     }/*}}}*/
 
-    public function add($cfg)/*{{{*/
+    public function add($cfg)
     {
         return $this->confirm_add_reputation($cfg);
     }/*}}}*/
 
-    public function confirm_add_reputation($cfg)/*{{{*/
+    public function confirm_add_reputation($cfg)
     {
         $refresh = 2.5;
         $post_id = $this->request->variable('p', 0);
@@ -215,7 +215,7 @@ class reputation
         return $this->helper->render('@jeb_snahp/reputation/component/confirm_add/base.html');
     }/*}}}*/
 
-    public function add_reputation($cfg)/*{{{*/
+    public function add_reputation($cfg)
     {
         $refresh = 2.5;
         // $this->delete_reputation_table();
@@ -272,7 +272,7 @@ class reputation
         trigger_error("You now have {$n_avail} reputation points left." );
     }/*}}}*/
 
-    private function select_reputation($where)/*{{{*/
+    private function select_reputation($where)
     {
         $where = $this->db->sql_escape($where);
         $sql = 'SELECT * FROM ' . $this->tbl['reputation'] . " WHERE {$where}";
@@ -282,7 +282,7 @@ class reputation
         return $row;
     }/*}}}*/
 
-    private function select_reputation_count($type='post_id', $id)/*{{{*/
+    private function select_reputation_count($type='post_id', $id)
     {
         switch ($type)
         {
@@ -309,7 +309,7 @@ class reputation
         return $row['count'];
     }/*}}}*/
 
-    private function insert_reputation($data)/*{{{*/
+    private function insert_reputation($data)
     {
         $sql = 'INSERT INTO ' . $this->tbl['reputation'] .
             $this->db->sql_build_array('INSERT', $data);
@@ -317,13 +317,13 @@ class reputation
         return true;
     }/*}}}*/
 
-    private function delete_reputation_table()/*{{{*/
+    private function delete_reputation_table()
     {
         $sql = 'DELETE FROM ' . $this->tbl['reputation'] . ' WHERE 1=1';
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function update_giver_on_add($giver_id)/*{{{*/
+    private function update_giver_on_add($giver_id)
     {
         $upd_strn = 'snp_rep_n_given=snp_rep_n_given+1, snp_rep_n_available=snp_rep_n_available-1';
         $sql = 'UPDATE ' . USERS_TABLE . ' SET ' .
@@ -332,7 +332,7 @@ class reputation
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function update_poster_on_add($poster_id)/*{{{*/
+    private function update_poster_on_add($poster_id)
     {
         $upd_strn = 'snp_rep_n_received=snp_rep_n_received+1';
         $sql = 'UPDATE ' . USERS_TABLE . ' SET ' .
@@ -341,7 +341,7 @@ class reputation
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function update_notifications($notification_type_name, $post_id, $rep_total)/*{{{*/
+    private function update_notifications($notification_type_name, $post_id, $rep_total)
     {
         // Previous code used delete + insert. Use proper update instead.
         $notification_type_id = (int) $this->notification->get_notification_type_id($notification_type_name);
@@ -359,14 +359,14 @@ class reputation
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function delete_reps_notifications()/*{{{*/
+    private function delete_reps_notifications()
     {
         $this->delete_reputation_notifications();
         $js = new \phpbb\json_response();
         $js->send(['status' => 'success']);
     }/*}}}*/
 
-    public function delete_reputation_notifications()/*{{{*/
+    public function delete_reputation_notifications()
     {
         $sql = 'SELECT * FROM ' . 
             NOTIFICATION_TYPES_TABLE . '
@@ -381,7 +381,7 @@ class reputation
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function is_notify($poster_id)/*{{{*/
+    private function is_notify($poster_id)
     {
         $type_name = 'jeb.snahp.notification.type.reputation';
         $method = 'notification.method.board';
@@ -397,7 +397,7 @@ class reputation
         return true;
     }/*}}}*/
 
-    public function select_post($pid, $field='*')/*{{{*/
+    public function select_post($pid, $field='*')
     {
         $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";
         $result = $this->db->sql_query($sql);
@@ -406,7 +406,7 @@ class reputation
         return $row;
     }/*}}}*/
 
-    public function select_user($user_id, $cooldown=0)/*{{{*/
+    public function select_user($user_id, $cooldown=0)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
         $result = $this->db->sql_query($sql, $cooldown);
@@ -415,13 +415,13 @@ class reputation
         return $row;
     }/*}}}*/
 
-    public function make_username($row)/*{{{*/
+    public function make_username($row)
     {
         $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
         return $strn;
     }/*}}}*/
 
-    public function select_rep_total_for_post($post_id, $cachetime=1)/*{{{*/
+    public function select_rep_total_for_post($post_id, $cachetime=1)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";

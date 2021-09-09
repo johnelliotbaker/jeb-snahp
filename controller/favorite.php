@@ -1,5 +1,5 @@
 <?php
-/*{{{*/
+
 namespace jeb\snahp\controller;
 
 use \Symfony\Component\HttpFoundation\Response;
@@ -11,13 +11,13 @@ class favorite extends base
 {
     protected $prefix;
 
-    public function __construct($prefix)/*{{{*/
+    public function __construct($prefix)
     {
         $this->prefix = $prefix;
         $this->perPage = 30;
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->reject_anon();
         $this->reject_bots();
@@ -67,7 +67,7 @@ class favorite extends base
         trigger_error('showing favorite.');
     }/*}}}*/
 
-    public function handle_accepted_requests($cfg)/*{{{*/
+    public function handle_accepted_requests($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -107,7 +107,7 @@ class favorite extends base
         }
     }/*}}}*/
 
-    public function handle_open_requests($cfg)/*{{{*/
+    public function handle_open_requests($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -147,7 +147,7 @@ class favorite extends base
         }
     }/*}}}*/
 
-    public function handle_thanks_given($cfg)/*{{{*/
+    public function handle_thanks_given($cfg)
     {
         $tpl_name = $cfg['tpl_name'];
         if ($tpl_name) {
@@ -192,7 +192,7 @@ class favorite extends base
         }
     }/*}}}*/
 
-    public function handle_favorite($cfg)/*{{{*/
+    public function handle_favorite($cfg)
     {
         $cooldown = 20; // Sql query cache cooldown
         $tpl_name = $cfg['tpl_name'];
@@ -205,7 +205,7 @@ class favorite extends base
                 $a_img_url = $this->container->getParameter('jeb.snahp.fav')['production']['img'];
             }
             $fid_listings = $this->config['snp_fid_listings'];
-            // Process submitted form /*{{{*/
+            // Process submitted form 
             if ($this->request->is_set_post('submit')) {
                 if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);

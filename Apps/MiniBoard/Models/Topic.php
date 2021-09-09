@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+
 namespace jeb\snahp\Apps\MiniBoard\Models;
 
 require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
@@ -13,7 +13,7 @@ use jeb\snahp\core\Rest\Fields\FunctionField;
 
 use \R as R;
 
-/*}}}*/
+
 
 class Topic extends Model
 {
@@ -39,7 +39,7 @@ class Topic extends Model
         ];
     }
 
-    public function forum($request)/*{{{*/
+    public function forum($request)
     {
         $value = $request->variable('miniforum', 0);
         if ($value === 0) {
@@ -53,9 +53,9 @@ class Topic extends Model
             'statement' => "AND ${foreignPkName}=:miniforum",
             'data' => [ 'miniforum' => $value],
         ];
-    }/*}}}*/
+    }
 
-    public function search($request)/*{{{*/
+    public function search($request)
     {
         $value = $request->variable('search', '');
         if ($value === '') {
@@ -68,9 +68,9 @@ class Topic extends Model
             'statement' => 'AND subject LIKE :search',
             'data' => [ 'search' => '%' . $value . '%', ],
         ];
-    }/*}}}*/
+    }
 
-    public function status($request)/*{{{*/
+    public function status($request)
     {
         $value = $request->variable('status', '');
         if ($value === '') {
@@ -83,9 +83,9 @@ class Topic extends Model
             'statement' => 'AND status=:status',
             'data' => [ 'status' => $value],
         ];
-    }/*}}}*/
+    }
 
-    public function sort($request)/*{{{*/
+    public function sort($request)
     {
         $allowedSortKeys = ['id'];
         $sortBy = $request->variable('sortBy', '');
@@ -98,9 +98,9 @@ class Topic extends Model
             return '';
         }
         return "ORDER BY {$sortBy} {$sortOrder}";
-    }/*}}}*/
+    }
 
-    public function mergeQuery($newQuery)/*{{{*/
+    public function mergeQuery($newQuery)
     {
         if (!$newQuery['statement']) {
             return $this->query;
@@ -108,9 +108,9 @@ class Topic extends Model
         $this->query['statement'] .= ' ' . $newQuery['statement'];
         $this->query['data'] = array_merge($this->query['data'], $newQuery['data']);
         return $this->query;
-    }/*}}}*/
+    }
 
-    public function getName($n)/*{{{*/
+    public function getName($n)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
@@ -119,9 +119,9 @@ class Topic extends Model
             $randomString .= $characters[$index];
         }
         return $randomString;
-    }/*}}}*/
+    }
 
-    public function filter($request)/*{{{*/
+    public function filter($request)
     {
         $forumId = $request->variable('miniforum', 0);
         if (!$forumId) {
@@ -136,16 +136,16 @@ class Topic extends Model
         $sortSnippet = $this->sort($request);
         $result = R::find($this::TABLE_NAME, $this->query['statement'], $this->query['data'], $sortSnippet);
         return $result;
-    }/*}}}*/
+    }
 
-    public function performPreCreate($instance)/*{{{*/
+    public function performPreCreate($instance)
     {
         # in-place for performance
         global $user;
         $instance->author = $user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function makeDummyTopics($request)/*{{{*/
+    public function makeDummyTopics($request)
     {
         // for ($i = 0; $i < 1000; $i++) {
         //     $bean = R::xdispense($this::TABLE_NAME);
@@ -156,5 +156,5 @@ class Topic extends Model
         //     $bean->status = 'New';
         //     R::store($bean);
         // }
-    }/*}}}*/
+    }
 }

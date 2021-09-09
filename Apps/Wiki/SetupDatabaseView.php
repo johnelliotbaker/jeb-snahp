@@ -8,7 +8,7 @@ use \R as R;
 
 class SetupDatabaseView
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $request;
     protected $sauth;
@@ -34,7 +34,7 @@ class SetupDatabaseView
         $this->shortString = str_repeat('x', 190);
         $this->longString = str_repeat('x', 100000);
         $this->sauth->reject_non_dev('Error Code: ec13cb473a');
-    }/*}}}*/
+    }
 
     public function view()
     {
@@ -47,7 +47,7 @@ class SetupDatabaseView
         return new Response('', 200);
     }
 
-    public function setupArticleEntry()/*{{{*/
+    public function setupArticleEntry()
     {
         $model = $this->ArticleEntry;
         $model->wipe();
@@ -68,9 +68,9 @@ class SetupDatabaseView
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'priority', 'priority');
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'phpbb_snahp_wiki_article_group_id', 'phpbb_snahp_wiki_article_group_id');
         $model->wipe();
-    }/*}}}*/
+    }
 
-    public function setupHistory()/*{{{*/
+    public function setupHistory()
     {
         $model = $this->History;
         $model->wipe();
@@ -86,9 +86,9 @@ class SetupDatabaseView
         );
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'author', 'author');
         $model->wipe();
-    }/*}}}*/
+    }
 
-    public function setupArticleGroup()/*{{{*/
+    public function setupArticleGroup()
     {
         $model = $this->ArticleGroup;
         $model->wipe();
@@ -102,9 +102,9 @@ class SetupDatabaseView
         $res = R::getWriter()->addUniqueIndex($model::TABLE_NAME, ['name']);
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'priority', 'priority');
         $model->wipe();
-    }/*}}}*/
+    }
 
-    public function setupGroupPermission()/*{{{*/
+    public function setupGroupPermission()
     {
         $model = $this->GroupPermission;
         $model->wipe();
@@ -117,5 +117,5 @@ class SetupDatabaseView
         $res = R::getWriter()->addUniqueIndex($model::TABLE_NAME, ['codename', 'user_group']);
         $res = R::getWriter()->addIndex($model::TABLE_NAME, 'user_group', 'user_group');
         $model->wipe();
-    }/*}}}*/
+    }
 }

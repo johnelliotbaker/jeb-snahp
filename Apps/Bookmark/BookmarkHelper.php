@@ -21,7 +21,7 @@ class BookmarkHelper
         $this->MAX_BOOKMARKS = 50;
     }
 
-    public function removeUserBookmark($id)/*{{{*/
+    public function removeUserBookmark($id)
     {
         $bookmark = $this->getBookmark($id);
         $bookmarkOwner = $bookmark['user'];
@@ -31,9 +31,9 @@ class BookmarkHelper
         }
         $sql = "DELETE FROM phpbb_snahp_bookmark WHERE id=${id}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function getBookmark($id)/*{{{*/
+    public function getBookmark($id)
     {
         $id = (int) $id;
         $sqlArray = [
@@ -47,9 +47,9 @@ class BookmarkHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function saveUserBookmark($userId, $type, $url, $params, $hash, $name)/*{{{*/
+    public function saveUserBookmark($userId, $type, $url, $params, $hash, $name)
     {
         $count = $this->getUserBookmarksCount((int) $userId);
         if ($count >= $this->MAX_BOOKMARKS) {
@@ -118,9 +118,9 @@ class BookmarkHelper
         $sql = 'INSERT INTO phpbb_snahp_bookmark ' . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
         return $data;
-    }/*}}}*/
+    }
 
-    public function getUserBookmarks($userId, $type)/*{{{*/
+    public function getUserBookmarks($userId, $type)
     {
         $userId = (int) $userId;
         switch ($type) {
@@ -131,9 +131,9 @@ class BookmarkHelper
         default:
             throw new \Exception("Invalid type. Error Code: 091b85fe37");
         }
-    }/*}}}*/
+    }
 
-    public function getUserBookmarksCount($userId)/*{{{*/
+    public function getUserBookmarksCount($userId)
     {
         $sqlArray = [
             'SELECT' => "Count(*) as total",
@@ -146,9 +146,9 @@ class BookmarkHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return (int) ($row['total'] | 0);
-    }/*}}}*/
+    }
 
-    public function getViewtopicUserBookmarks($userId)/*{{{*/
+    public function getViewtopicUserBookmarks($userId)
     {
         $type = 'viewtopic';
         $sqlArray = [
@@ -176,9 +176,9 @@ class BookmarkHelper
             $row['topic_last_poster_colour'] = '#' . $row['topic_last_poster_colour'];
         }
         return $results;
-    }/*}}}*/
+    }
 
-    public function getBasicUserBookmarks($userId)/*{{{*/
+    public function getBasicUserBookmarks($userId)
     {
         $type = 'basic';
         $sqlArray = [
@@ -191,5 +191,5 @@ class BookmarkHelper
         $results = $this->paginator->paginateQueryset($queryset, $this->request);
         $results = $this->paginator->getPaginatedResult($results);
         return $results;
-    }/*}}}*/
+    }
 }

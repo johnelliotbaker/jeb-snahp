@@ -59,7 +59,7 @@ class analytics extends base
             'ELAPSED_TIME' => $elapsed_time,
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Statistics');
-    }/*}}}*/
+    }
 
     public function get_or_reject_bump_data($tid)/*{{{*/
     {
@@ -73,7 +73,7 @@ class analytics extends base
             trigger_error('Bump data does not exist.');
         }
         return $bump_data;
-    }/*}}}*/
+    }
 
     public function get_or_reject_topic_data($tid)/*{{{*/
     {
@@ -87,7 +87,7 @@ class analytics extends base
             trigger_error('That topic does not exist.');
         }
         return $topicdata;
-    }/*}}}*/
+    }
 
     public function deserialize_tid($strn)/*{{{*/
     {
@@ -98,7 +98,7 @@ class analytics extends base
             return array_unique($matches[1]);
         }
         return $data;
-    }/*}}}*/
+    }
 
     public function json_user_thanks($cfg)/*{{{*/
     {
@@ -129,7 +129,7 @@ class analytics extends base
         }
         $js = new \phpbb\json_response();
         $js->send($rowset);
-    }/*}}}*/
+    }
 
     public function json_common_thanks($cfg)/*{{{*/
     {
@@ -195,7 +195,7 @@ class analytics extends base
         }
         $js = new \phpbb\json_response();
         $js->send($data);
-    }/*}}}*/
+    }
 
     public function handle_common_thanks($cfg)/*{{{*/
     {
@@ -203,7 +203,7 @@ class analytics extends base
         $group_id = $this->user->data['group_id'];
         $this->reject_non_group($group_id, 'snp_ana_b_enable');
         return $this->helper->render($cfg['tpl_name'], 'Snahp Analytics - Common Thanks');
-    }/*}}}*/
+    }
 
 
     private function select_monthly_stats()/*{{{*/
@@ -215,7 +215,7 @@ class analytics extends base
             'VALUE' => $n_unique_visitor,
         ];
         return $data;
-    }/*}}}*/
+    }
 
     private function get_monthly_unique_users()/*{{{*/
     {
@@ -239,6 +239,6 @@ class analytics extends base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row['count'];
-    }/*}}}*/
+    }
 
 }

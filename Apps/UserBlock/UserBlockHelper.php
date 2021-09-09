@@ -18,9 +18,9 @@ class UserBlockHelper
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
-    public function getUserGroupData($groupId)/*{{{*/
+    public function getUserGroupData($groupId)
     {
         $groupId = (int) $groupId;
         $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=${groupId}";
@@ -28,9 +28,9 @@ class UserBlockHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function removeAllBlocksFromUserGroup($groupId)/*{{{*/
+    public function removeAllBlocksFromUserGroup($groupId)
     {
         $sql = 'SELECT * FROM ' . $this->tbl['foe'];
         $result = $this->db->sql_query($sql);
@@ -54,9 +54,9 @@ class UserBlockHelper
             $this->db->sql_query($sql);
         }
         return $res;
-    }/*}}}*/
+    }
 
-    public function getUserBlocksLog($username)/*{{{*/
+    public function getUserBlocksLog($username)
     {
         $whereArray = ['type="LOG_FOE_BLOCKER"'];
         if ($targetUserId = $this->sauth->userNameToUserId($username)) {
@@ -89,9 +89,9 @@ class UserBlockHelper
             $row['blocked_user_colour'] = '#' . $row['blocked_user_colour'];
         }
         return $results;
-    }/*}}}*/
+    }
 
-    public function getUserBlocks($username)/*{{{*/
+    public function getUserBlocks($username)
     {
         $sqlArray = [
             'SELECT'    => 'a.*, b.username as blocker_username, c.username as blocked_username',
@@ -115,5 +115,5 @@ class UserBlockHelper
         $results = $this->paginator->paginateQueryset($queryset, $this->request);
         $results = $this->paginator->getPaginatedResult($results);
         return $results;
-    }/*}}}*/
+    }
 }

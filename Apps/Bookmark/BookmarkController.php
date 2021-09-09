@@ -6,7 +6,7 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class BookmarkController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,14 +40,14 @@ class BookmarkController
         $this->helper = $helper;
         $this->userId = $sauth->userId;
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function removeMyBookmark($id)/*{{{*/
+    public function removeMyBookmark($id)
     {
         $this->helper->removeUserBookmark($id);
         return new JsonResponse([]);
     }
-    public function mybookmark($type)/*{{{*/
+    public function mybookmark($type)
     {
         $allowedTypes = ['viewtopic', 'basic'];
         if (!in_array($type, $allowedTypes)) {
@@ -78,5 +78,5 @@ class BookmarkController
             print_r('NOTHING');
             break;
         }
-    }/*}}}*/
+    }
 }

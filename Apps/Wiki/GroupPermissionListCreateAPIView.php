@@ -29,7 +29,7 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         ];
     }
 
-    public function createMany()/*{{{*/
+    public function createMany()
     {
         // Facilitate mass creation of permissions
         function makeCodenameList($data)
@@ -63,9 +63,9 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
             }
         }
         return new Response($instance, 201);
-    }/*}}}*/
+    }
 
-    public function list($request)/*{{{*/
+    public function list($request)
     {
         $this->checkPermissions($request, $this->sauth->userId);
         $queryset = $this->filterQueryset($this->getQueryset());
@@ -84,9 +84,9 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
             }
         );
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
-    public function appendUserGroupName($data)/*{{{*/
+    public function appendUserGroupName($data)
     {
         global $db;
         $sql = 'SELECT group_id, group_name from ' . GROUPS_TABLE . ' ORDER BY group_id ASC';
@@ -100,5 +100,5 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         foreach ($data as $entry) {
             $entry->user_group_name = getDefault($cache, $entry->user_group, 0);
         }
-    }/*}}}*/
+    }
 }

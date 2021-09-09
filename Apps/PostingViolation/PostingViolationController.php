@@ -25,21 +25,21 @@ class PostingViolationController
         $this->helper = $helper;
         $this->userId = $sauth->userId;
         $this->sauth->reject_non_dev('Error Code: 0a92d2beaa');
-    }/*}}}*/
+    }
 
-    public function viewPostingViolationsUserToplist()/*{{{*/
+    public function viewPostingViolationsUserToplist()
     {
         $results = $this->helper->getPostingViolationsUserToplist($this->request);
         return new JsonResponse($results);
-    }/*}}}*/
+    }
 
-    public function viewUserPostingViolations($username)/*{{{*/
+    public function viewUserPostingViolations($username)
     {
         $results = $this->helper->getUserPostingViolations($username, $this->request);
         return new JsonResponse($results);
-    }/*}}}*/
+    }
 
-    public function markTopicForViolation()/*{{{*/
+    public function markTopicForViolation()
     {
         if (!$this->request->is_set_post('submit')) {
             return Response('', 400);
@@ -49,5 +49,5 @@ class PostingViolationController
         $mark = $this->request->variable('mark', 0);
         $this->helper->markTopicForViolation($topicId, $mark, $reason);
         return new Response("Topic=${topicId} marked for violation.");
-    }/*}}}*/
+    }
 }

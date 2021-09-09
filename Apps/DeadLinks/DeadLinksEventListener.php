@@ -11,7 +11,7 @@ class DeadlinksEventListener implements EventSubscriberInterface
     protected $template;
     protected $sauth;
     protected $Entry;
-    public function __construct(/*{{{*/
+    public function __construct(
         $template,
         $sauth,
         $Entry,
@@ -21,9 +21,9 @@ class DeadlinksEventListener implements EventSubscriberInterface
         $this->sauth = $sauth;
         $this->Entry = $Entry;
         $this->helper = $helper;
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.user_setup_after' => [
@@ -45,9 +45,9 @@ class DeadlinksEventListener implements EventSubscriberInterface
                 ['setDeadlinksTagInSearch', 10],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function setDeadlinksTagInSearch($event)/*{{{*/
+    public function setDeadlinksTagInSearch($event)
     {
         if ($event['row']['snp_ded_b_dead']) {
             $tpl_ary = $event['tpl_ary'];
@@ -57,9 +57,9 @@ class DeadlinksEventListener implements EventSubscriberInterface
             $tpl_ary['POST_SUBJECT'] = $pre . $tpl_ary['POST_SUBJECT'] . $post;
             $event['tpl_ary'] = $tpl_ary;
         }
-    }/*}}}*/
+    }
 
-    public function setDeadlinkTagInViewForum($event)/*{{{*/
+    public function setDeadlinkTagInViewForum($event)
     {
         $rowset = $event['rowset'];
         foreach ($rowset as $k => &$row) {
@@ -68,17 +68,17 @@ class DeadlinksEventListener implements EventSubscriberInterface
             }
         }
         $event['rowset'] = $rowset;
-    }/*}}}*/
+    }
 
-    public function setupSearchParams($event)/*{{{*/
+    public function setupSearchParams($event)
     {
         // Setup for hideDeadlinksInSearch
         $this->searchKeywords = $event['keywords'];
         // Filters out graveyard
         $event['ex_fid_ary'] = $this->helper->appendGraveyardToExFidAry($event['ex_fid_ary']);
-    }/*}}}*/
+    }
 
-    public function hideDeadlinksInSearch($event)/*{{{*/
+    public function hideDeadlinksInSearch($event)
     {
         // Search is used for other things like "your posts".
         // Should only hide deadlinks for keywords search
@@ -89,9 +89,9 @@ class DeadlinksEventListener implements EventSubscriberInterface
                 $event['sql_where'] = $sql_where;
             }
         }
-    }/*}}}*/
+    }
 
-    public function showDeadlinks($event)/*{{{*/
+    public function showDeadlinks($event)
     {
         // TODO: UNCOMMENT AFTER INIT
         $openReports = count($this->Entry->getOpenReports($this->sauth->userId));
@@ -100,9 +100,9 @@ class DeadlinksEventListener implements EventSubscriberInterface
             $openRequests = count($this->Entry->getOpenRequests());
             $this->template->assign_var('N_OPEN_REQUESTS', $openRequests);
         }
-    }/*}}}*/
+    }
 
-    public function setDeadlinkTagInTitle($event)/*{{{*/
+    public function setDeadlinkTagInTitle($event)
     {
         $topic_data = $event['topic_data'];
         $isDeadlink = $topic_data['snp_ded_b_dead'];
@@ -110,5 +110,5 @@ class DeadlinksEventListener implements EventSubscriberInterface
             $topic_data['topic_title'] = '[Deadlinks] ' . $topic_data['topic_title'];
         }
         $event['topic_data'] = $topic_data;
-    }/*}}}*/
+    }
 }

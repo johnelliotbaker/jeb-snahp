@@ -15,11 +15,11 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 {
     use RedBeanSetup;
 
-    public function __construct(/*{{{*/
+    public function __construct(
     ) {
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.common' => [
@@ -27,7 +27,7 @@ class ClassLoaderEventListener implements EventSubscriberInterface
                 ['setupErrorHandlers', 1000],
             ],
         ];
-    }/*}}}*/
+    }
 
     public function loadClasses($event)
     {
@@ -36,9 +36,9 @@ class ClassLoaderEventListener implements EventSubscriberInterface
         include_once '/var/www/forum/ext/jeb/snahp/core/errors.php';
     }
 
-    public function setupErrorHandlers()/*{{{*/
+    public function setupErrorHandlers()
     {
         error_reporting(error_reporting() & ~E_USER_NOTICE);
-    }/*}}}*/
+    }
 
 }

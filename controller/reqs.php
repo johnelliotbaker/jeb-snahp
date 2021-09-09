@@ -9,12 +9,12 @@ use jeb\snahp\core\base;
 class reqs extends base
 {
     const SEASONED_SOLVER_THRESHOLD = 300;
-    public function __construct()/*{{{*/
+    public function __construct()
     {
         $this->ptn = '#(\(|\[|\{)(accepted|request|closed|fulfilled|solved)(\)|\]|\})\s*#is';
-    }/*}}}*/
+    }
 
-    public function handle_mcp($mode, $uid)/*{{{*/
+    public function handle_mcp($mode, $uid)
     {
         $this->user_id = $this->user->data['user_id'];
         $this->reject_non_moderator();
@@ -34,9 +34,9 @@ class reqs extends base
                 trigger_error('User is now banned from dibbing.');
                 break;
         }
-    }/*}}}*/
+    }
 
-    public function enable_dibber($uid, $b_enable=true)/*{{{*/
+    public function enable_dibber($uid, $b_enable=true)
     {
         $enable = $b_enable ? 1 : 0;
         $sql_arr = [
@@ -46,9 +46,9 @@ class reqs extends base
             ' . $this->db->sql_build_array('UPDATE', $sql_arr) .'
             WHERE user_id=' . $uid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function handle($fid, $tid, $pid, $mode)/*{{{*/
+    public function handle($fid, $tid, $pid, $mode)
     {
         $this->user_id = $this->user->data['user_id'];
         $this->b_mod = $this->is_mod();
@@ -91,9 +91,9 @@ class reqs extends base
             }
             break;
         }
-    }/*}}}*/
+    }
 
-    public function handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg)/*{{{*/
+    public function handle_terminate_confirm($fid, $tid, $pid, $reqdata, $cfg)
     {
         $confirm = (int) $this->request->variable('confirm', 0);
         if ($confirm) {
@@ -131,27 +131,27 @@ class reqs extends base
             );
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
-    public function select_request_users($uid)/*{{{*/
+    public function select_request_users($uid)
     {
         $sql = 'SELECT * FROM ' . $this->tbl['requsr'] ." WHERE user_id=$uid";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function update_request_users($uid, $data)/*{{{*/
+    public function update_request_users($uid, $data)
     {
         $sql = 'UPDATE ' . $this->tbl['requsr'] . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
             WHERE user_id=' . $uid;
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
-    }/*}}}*/
+    }
 
-    public function recalculate_request_users($uid)/*{{{*/
+    public function recalculate_request_users($uid)
     {
         $cdef = $this->def['set']['closed'];
         $gid = $this->user->data['group_id'];
@@ -180,9 +180,9 @@ class reqs extends base
         ];
         $this->update_request_users($uid, $data);
         return;
-    }/*}}}*/
+    }
 
-    public function increment_request_users_slot($uid, $slot=1)/*{{{*/
+    public function increment_request_users_slot($uid, $slot=1)
     {
         $ru   = $this->select_request_users($uid);
         $udata = $this->select_user($ru['user_id']);
@@ -206,17 +206,17 @@ class reqs extends base
             SET n_use=$nu, n_offset=$no " . '
             WHERE user_id=' . $uid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function remove_request($tid)/*{{{*/
+    public function remove_request($tid)
     {
         $data = ['tid' => $tid];
         $sql = 'DELETE FROM ' . $this->tbl['req'] . $this->db->sql_build_array('DELETE', $data);
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
-    }/*}}}*/
+    }
 
-    public function solve_request($fid, $tid, $pid, $new_status, $req, $termination_reason='')/*{{{*/
+    public function solve_request($fid, $tid, $pid, $new_status, $req, $termination_reason='')
     {
         // Set confirmed_time
         $def = $this->def;
@@ -278,25 +278,25 @@ class reqs extends base
             $this->db->sql_query($sql);
             trigger_error('This request was terminated.');
         }
-    }/*}}}*/
+    }
 
-    public function increment_user_request_solved($reqdata)/*{{{*/
+    public function increment_user_request_solved($reqdata)
     {
         $fulfiller_uid = $reqdata['fulfiller_uid'];
         $sql = 'UPDATE ' . USERS_TABLE . '
             SET snp_req_n_solve=snp_req_n_solve+1
             WHERE user_id=' . $fulfiller_uid;
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function rejectInvalidTerminator($reqdata)/*{{{*/
+    public function rejectInvalidTerminator($reqdata)
     {
         if (!$this->isTrustedTerminator($reqdata)) {
             trigger_error('Only the requester and the moderators have access to this page. Error Code: da49eb0a81');
         }
-    }/*}}}*/
+    }
 
-    public function isTrustedTerminator($reqdata)/*{{{*/
+    public function isTrustedTerminator($reqdata)
     {
         // This user is the original requester
         if ($this->user_id == $reqdata['requester_uid']) {
@@ -312,30 +312,30 @@ class reqs extends base
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function rejectInvalidSolver($reqdata)/*{{{*/
+    public function rejectInvalidSolver($reqdata)
     {
         if (!$this->isTrustedSolver($reqdata)) {
             trigger_error('Only the requester and the moderators have access to this page. Error Code: bfb6ca2540');
         }
-    }/*}}}*/
+    }
 
-    public function isTrustedSolver($reqdata)/*{{{*/
+    public function isTrustedSolver($reqdata)
     {
         return $this->isTrustedTerminator($reqdata) || $this->isSeasonedSolver();
-    }/*}}}*/
+    }
 
-    public function isSeasonedSolver()/*{{{*/
+    public function isSeasonedSolver()
     {
         // Solved enough requests to be trusted
         if ((int) $this->user->data['snp_req_n_solve'] >= $this::SEASONED_SOLVER_THRESHOLD) {
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function fulfill_request($fid, $tid, $pid, $fulfilledBySeasonedSolver=false)/*{{{*/
+    public function fulfill_request($fid, $tid, $pid, $fulfilledBySeasonedSolver=false)
     {
         // Update titles on topic & posts also forum summary
         $ptn = $this->ptn;
@@ -390,9 +390,9 @@ class reqs extends base
             $message = 'Thank you for fulfilling this request!';
             trigger_error($message);
         }
-    }/*}}}*/
+    }
 
-    public function undib_request($fid, $tid, $pid)/*{{{*/
+    public function undib_request($fid, $tid, $pid)
     {
         $dibdata = $this->select_dibs($tid);
         $def = $this->def;
@@ -430,9 +430,9 @@ class reqs extends base
         meta_refresh(2, $this->u_action);
         $message = 'You have undibbed this request.';
         trigger_error($message);
-    }/*}}}*/
+    }
 
-    public function dib_request($fid, $tid, $pid)/*{{{*/
+    public function dib_request($fid, $tid, $pid)
     {
         if (!$this->user->data['snp_req_dib_enable']) {
             meta_refresh(2, $this->u_action);
@@ -511,19 +511,19 @@ class reqs extends base
         meta_refresh(2, $this->u_action);
         $message = 'You called dibs on a request! Thanks a lot for your help.';
         trigger_error($message);
-    }/*}}}*/
+    }
 
-    public function is_dibber($dibdata)/*{{{*/
+    public function is_dibber($dibdata)
     {
         return $this->user_id == $dibdata['dibber_uid'];
-    }/*}}}*/
+    }
 
-    public function is_requester($reqdata)/*{{{*/
+    public function is_requester($reqdata)
     {
         return $this->user_id = $reqdata['requester_uid'];
-    }/*}}}*/
+    }
 
-    public function get_requests_as_json($username='')/*{{{*/
+    public function get_requests_as_json($username='')
     {
         $this->reject_anon();
         if (!$username) {
@@ -568,5 +568,5 @@ class reqs extends base
         }
         $json = new JsonResponse($data);
         return $json;
-    }/*}}}*/
+    }
 }

@@ -9,7 +9,7 @@ function extractURL($strn)
 
 class imgcompare
 {
-    public function toHtml($argsAll)/*{{{*/
+    public function toHtml($argsAll)
     {
         $data = [];
         foreach (explode(PHP_EOL, $argsAll) as $k => $arg) {
@@ -39,5 +39,5 @@ class imgcompare
         $data = convertArrayToHTMLAttribute($data);
         $html = '<span class="imagecompare" data-data="' . $data . '"></span>';
         return $html;
-    }/*}}}*/
+    }
 }

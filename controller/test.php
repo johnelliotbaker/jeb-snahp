@@ -23,7 +23,7 @@ class test
         $db, $user, $auth, $config, $request, $template, $container, $helper, $cache,
         $tbl,
         $sauth
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -37,9 +37,9 @@ class test
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->user_id = (int) $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         switch ($mode)
         {
@@ -68,18 +68,18 @@ class test
             break;
         }
         return $this->respond_test();
-    }/*}}}*/
+    }
 
-    public function respond_test()/*{{{*/
+    public function respond_test()
     {
         $tpl_name = '@jeb_snahp/test/base.html';
         return $this->helper->render($tpl_name, 'test');
-    }/*}}}*/
+    }
 
 
-    public function respond_imgcompare($cfg)/*{{{*/
+    public function respond_imgcompare($cfg)
     {
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
 }

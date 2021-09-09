@@ -9,7 +9,7 @@ class MassTaggerHelper
     protected $sauth;
     protected $forumHelper;
     protected $tagsHelper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $db,
         $user,
         $tbl,
@@ -24,9 +24,9 @@ class MassTaggerHelper
         $this->forumHelper = $forumHelper;
         $this->tagsHelper = $tagsHelper;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function getUserTopics($username, $rootForum=2, $start=0, $limit=10)/*{{{*/
+    public function getUserTopics($username, $rootForum=2, $start=0, $limit=10)
     {
         $topicPoster = (int) $this->sauth->userNameToUserId($username);
         $fields = [
@@ -47,9 +47,9 @@ class MassTaggerHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function getUserTopicsCount($username)/*{{{*/
+    public function getUserTopicsCount($username)
     {
         $topicPoster = (int) $this->sauth->userNameToUserId($username);
         $sql = 'SELECT count(*) as total FROM ' . TOPICS_TABLE .
@@ -58,9 +58,9 @@ class MassTaggerHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row ? $row['total'] : 0;
-    }/*}}}*/
+    }
 
-    public function topicsFromSearchTerms($searchTerms, $rootForum)/*{{{*/
+    public function topicsFromSearchTerms($searchTerms, $rootForum)
     {
         $rootForum = (int) $rootForum;
         $searchTerms = $this->db->sql_escape((string) $searchTerms);
@@ -78,9 +78,9 @@ class MassTaggerHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function topicIdsFromTopics($topics)/*{{{*/
+    public function topicIdsFromTopics($topics)
     {
         return array_map(
             function ($row) {
@@ -88,9 +88,9 @@ class MassTaggerHelper
             },
             $topics
         );
-    }/*}}}*/
+    }
 
-    public function topicIdsStringToList($strn)/*{{{*/
+    public function topicIdsStringToList($strn)
     {
         $list = explode(',', str_replace('#[,\s+]+#', ',', $strn));
         $list = array_map(
@@ -106,37 +106,37 @@ class MassTaggerHelper
             }
         );
         return $list;
-    }/*}}}*/
+    }
 
-    public function makeSubforumSelectorHTML($selectId)/*{{{*/
+    public function makeSubforumSelectorHTML($selectId)
     {
         return $this->forumHelper->makeSubforumSelectorHTML($selectId);
-    }/*}}}*/
+    }
 
-    public function removeTags($topicId, $newTags)/*{{{*/
+    public function removeTags($topicId, $newTags)
     {
         $existingTags = $this->tagsHelper->get_assigned_tags($topicId);
         $tags = array_diff($existingTags, $newTags);
         $allTags = $this->tagsHelper->split_valid_tags($tags);
         $validTags = $allTags['valid'];
         $this->tagsHelper->assign_tags_to_topic($topicId, $validTags);
-    }/*}}}*/
+    }
 
-    public function addTags($topicId, $newTags)/*{{{*/
+    public function addTags($topicId, $newTags)
     {
         $existingTags = $this->tagsHelper->get_assigned_tags($topicId);
         $tags = array_merge($existingTags, $newTags);
         $allTags = $this->tagsHelper->split_valid_tags($tags);
         $validTags = $allTags['valid'];
         $this->tagsHelper->assign_tags_to_topic($topicId, $validTags);
-    }/*}}}*/
+    }
 
-    public function getWhitelistTags()/*{{{*/
+    public function getWhitelistTags()
     {
         return $this->tagsHelper->get_whitelist_tags();
-    }/*}}}*/
+    }
 
-    public function getAllTags()/*{{{*/
+    public function getAllTags()
     {
         $allTags = $this->tagsHelper->get_all_tags(0, 100);
         return array_map(
@@ -145,5 +145,5 @@ class MassTaggerHelper
             },
             $allTags
         );
-    }/*}}}*/
+    }
 }

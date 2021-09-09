@@ -1,6 +1,6 @@
 <?php
 
-namespace jeb\snahp\core;/*{{{*/
+namespace jeb\snahp\core;
 use phpbb\template\context;
 use phpbb\user;
 use phpbb\auth\auth;
@@ -18,7 +18,7 @@ include_once($phpbb_root_path . '/ext/jeb/snahp/core/functions_utility.php');
 
 abstract class base
 {
-    protected $template_context;/*{{{*/
+    protected $template_context;
     protected $container;
     protected $user;
     protected $auth;
@@ -36,7 +36,7 @@ abstract class base
     protected $icon_stack = [];
     protected $tmp;/*}}}*/
 
-    public function set_template_context(context $ctx)/*{{{*/
+    public function set_template_context(context $ctx)
     {
         $this->template_context = $ctx;
     }
@@ -92,7 +92,7 @@ abstract class base
 
     // SESSION MANAGEMENT
 
-    public function set_cookie_new($key, $path, $data)/*{{{*/
+    public function set_cookie_new($key, $path, $data)
     {
         if (!$data && $data!=0)
         {
@@ -114,7 +114,7 @@ abstract class base
         $this->user->set_cookie($key, $cookie, 0, 0);
     }/*}}}*/
 
-    public function get_cookie_new($key, $path='')/*{{{*/
+    public function get_cookie_new($key, $path='')
     {
         $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = htmlspecialchars_decode($cookie);
@@ -142,7 +142,7 @@ abstract class base
         return $cookie;
     }/*}}}*/
 
-    public function get_or_set_cookie_new($key)/*{{{*/
+    public function get_or_set_cookie_new($key)
     {
         // NOT WORKING
         $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
@@ -156,7 +156,7 @@ abstract class base
         return $cookie;
     }/*}}}*/
 
-    public function set_cookie($key, $data)/*{{{*/
+    public function set_cookie($key, $data)
     {
         $this->user->set_cookie($key, tracking_serialize($data), 0, 0);
         // set_cookie($key, $data, 365, false);
@@ -165,7 +165,7 @@ abstract class base
         // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
     }/*}}}*/
 
-    public function get_or_set_cookie($key, $data=[], $b_return_first=false)/*{{{*/
+    public function get_or_set_cookie($key, $data=[], $b_return_first=false)
     {
         $cookie = $this->get_cookie($key);
         // If cookie exists
@@ -191,7 +191,7 @@ abstract class base
         // $this->request->overwrite($this->config['cookie_name'] . '_' . $key, tracking_serialize($data), \phpbb\request\request_interface::COOKIE);
     }/*}}}*/
 
-    public function get_cookie($key)/*{{{*/
+    public function get_cookie($key)
     {
         $cookie = $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = ($cookie) ? tracking_unserialize($cookie) : [];
@@ -201,7 +201,7 @@ abstract class base
     // DATABASE Functions
 
     // Reputation
-    public function select_rep_total_for_post($post_id, $cachetime=1)/*{{{*/
+    public function select_rep_total_for_post($post_id, $cachetime=1)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT COUNT(*) as count FROM ' . $tbl['reputation'] . " WHERE post_id={$post_id}";
@@ -216,7 +216,7 @@ abstract class base
     }/*}}}*/
 
     // Achievements
-    public function select_user_achievements($user_id, $cooldown=10)/*{{{*/
+    public function select_user_achievements($user_id, $cooldown=10)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql_ary = [
@@ -232,7 +232,7 @@ abstract class base
     }/*}}}*/
 
     // digg
-    public function select_digg_slave_count($topic_id, $cooldown=30)/*{{{*/
+    public function select_digg_slave_count($topic_id, $cooldown=30)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql_ary = [
@@ -247,7 +247,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function select_digg_slave($topic_id, $where='1=1')/*{{{*/
+    public function select_digg_slave($topic_id, $where='1=1')
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $where = $this->db->sql_escape($where);
@@ -263,7 +263,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function select_digg_master($topic_id)/*{{{*/
+    public function select_digg_master($topic_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql_ary = [
@@ -279,7 +279,7 @@ abstract class base
     }/*}}}*/
 
     // Custom Templates
-    public function upsert_tpl($user_id, $name, $text)/*{{{*/
+    public function upsert_tpl($user_id, $name, $text)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
@@ -299,7 +299,7 @@ abstract class base
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function update_tpl($user_id, $name, $text, $priority=0)/*{{{*/
+    public function update_tpl($user_id, $name, $text, $priority=0)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
@@ -316,7 +316,7 @@ abstract class base
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function delete_tpl($user_id, $name)/*{{{*/
+    public function delete_tpl($user_id, $name)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
@@ -330,7 +330,7 @@ abstract class base
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function select_tpl($user_id, $b_full=true, $name='')/*{{{*/
+    public function select_tpl($user_id, $b_full=true, $name='')
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $s_fields = $b_full ? '*' : 'id, name, priority';
@@ -347,7 +347,7 @@ abstract class base
     }/*}}}*/
 
     // Invites
-    public function select_invitee($invitee_id)/*{{{*/
+    public function select_invitee($invitee_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['invite'] . ' WHERE redeemer_id=' . (int)$invitee_id;
@@ -358,7 +358,7 @@ abstract class base
     }/*}}}*/
 
     // THANKS
-    public function select_thanks_for_op($topic_id, $cachetime=0)/*{{{*/
+    public function select_thanks_for_op($topic_id, $cachetime=0)
     {
         $sql = 'SELECT COUNT(*) as count FROM phpbb_thanks where topic_id=' . $topic_id;
         $result = $this->db->sql_query($sql, $cachetime);
@@ -371,7 +371,7 @@ abstract class base
         return (int) $row['count'];
     }/*}}}*/
 
-    public function delete_thanks_notifications()/*{{{*/
+    public function delete_thanks_notifications()
     {
         $sql = 'SELECT * FROM ' .
             NOTIFICATION_TYPES_TABLE . '
@@ -387,7 +387,7 @@ abstract class base
     }/*}}}*/
 
     // BUMP TOPIC
-    public function select_bump_topic($tid)/*{{{*/
+    public function select_bump_topic($tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['bump_topic'] . '
@@ -398,7 +398,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_bump_topic($tid, $data)/*{{{*/
+    public function update_bump_topic($tid, $data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['bump_topic'] . '
@@ -407,7 +407,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function delete_bump_topic($topic_data)/*{{{*/
+    public function delete_bump_topic($topic_data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $tid = $topic_data['topic_id'];
@@ -416,7 +416,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function create_bump_topic($topic_data)/*{{{*/
+    public function create_bump_topic($topic_data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $tid = $topic_data['topic_id'];
@@ -437,7 +437,7 @@ abstract class base
     }/*}}}*/
 
     // GET STYLE INFORMATION
-    public function select_style_name()/*{{{*/
+    public function select_style_name()
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_style = $this->user->data['user_style'];
@@ -451,7 +451,7 @@ abstract class base
     }/*}}}*/
 
     // ALL SUBFORUM ID
-    public function select_subforum_with_name($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    public function select_subforum_with_name($parent_id, $cooldown=0, $b_immediate=false)
     {
         $sql = 'SELECT left_id, right_id FROM ' . FORUMS_TABLE . ' WHERE forum_id=' . $parent_id;
         $result = $this->db->sql_query($sql, $cooldown);
@@ -470,7 +470,7 @@ abstract class base
         return $rowset;
     }/*}}}*/
 
-    public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)/*{{{*/
+    public function select_subforum($parent_id, $cooldown=0, $b_immediate=false)
     {
         // include_once($this->phpbb_root_path . 'includes/functions_admin.php');
         // $fid = get_forum_branch($fid_listings, 'children');
@@ -492,7 +492,7 @@ abstract class base
     }/*}}}*/
 
     // FAVORITE CONTENTS
-    public function select_accepted_requests($per_page, $start, $status_type='all', $user_id=null)/*{{{*/
+    public function select_accepted_requests($per_page, $start, $status_type='all', $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
@@ -531,7 +531,7 @@ abstract class base
         return [$rowset, $total];
     }/*}}}*/
 
-    public function select_fulfilled_requests($per_page, $start, $user_id=null)/*{{{*/
+    public function select_fulfilled_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
@@ -563,7 +563,7 @@ abstract class base
         return [$rowset, $total];
     }/*}}}*/
 
-    public function select_open_requests($per_page, $start, $user_id=null)/*{{{*/
+    public function select_open_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
@@ -595,7 +595,7 @@ abstract class base
         return [$rowset, $total];
     }/*}}}*/
 
-    public function select_thanks_given($per_page, $start, $user_id=null)/*{{{*/
+    public function select_thanks_given($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
         if ($user_id===null)
@@ -638,7 +638,7 @@ abstract class base
         return [$rowset, $total];
     }/*}}}*/
 
-    public function select_one_day($parent_id, $per_page, $start, $sort_mode, $a_exclude=[], $cooldown=30)/*{{{*/
+    public function select_one_day($parent_id, $per_page, $start, $sort_mode, $a_exclude=[], $cooldown=30)
     {
         // Note that cooldown isn't precise as it depends on $lastdt
         $a_fid = $this->select_subforum($parent_id);
@@ -698,7 +698,7 @@ abstract class base
     }/*}}}*/
 
     // TOPIC
-    public function select_topic($tid)/*{{{*/
+    public function select_topic($tid)
     {
         $sql = 'SELECT * FROM ' . TOPICS_TABLE ." WHERE topic_id=$tid";
         $result = $this->db->sql_query($sql);
@@ -707,7 +707,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_topic($tid, $data)/*{{{*/
+    public function update_topic($tid, $data)
     {
         $sql = 'UPDATE ' . TOPICS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
@@ -715,7 +715,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function update_topic_title($fid, $tid, $pid, $ptn, $repl)/*{{{*/
+    public function update_topic_title($fid, $tid, $pid, $ptn, $repl)
     {
         $topicdata = $this->select_topic($tid);
         if (!$topicdata)
@@ -742,7 +742,7 @@ abstract class base
     }/*}}}*/
 
     // Forum
-    public function select_forum($pid, $field='*')/*{{{*/
+    public function select_forum($pid, $field='*')
     {
         $sql = 'SELECT '. $field . ' FROM ' . FORUMS_TABLE ." WHERE forum_id=$pid";
         $result = $this->db->sql_query($sql);
@@ -751,7 +751,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_forum_last_post($fid)/*{{{*/
+    public function update_forum_last_post($fid)
     {
         include_once($this->phpbb_root_path . 'includes/functions_posting.php');
         $type = 'forum';
@@ -760,7 +760,7 @@ abstract class base
     }/*}}}*/
 
     // POST
-    public function select_post($pid, $field='*')/*{{{*/
+    public function select_post($pid, $field='*')
     {
         $sql = 'SELECT '. $field . ' FROM ' . POSTS_TABLE ." WHERE post_id=$pid";
         $result = $this->db->sql_query($sql);
@@ -769,7 +769,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_post($pid, $data)/*{{{*/
+    public function update_post($pid, $data)
     {
         $sql = 'UPDATE ' . POSTS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
@@ -778,7 +778,7 @@ abstract class base
     }/*}}}*/
 
     // USERS
-    public function select_user_by_username($username)/*{{{*/
+    public function select_user_by_username($username)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE username_clean='$username'";
         $result = $this->db->sql_query($sql);
@@ -787,7 +787,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_user($user_id, $data)/*{{{*/
+    public function update_user($user_id, $data)
     {
         $sql = 'UPDATE ' . USERS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . '
@@ -795,7 +795,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function select_user($user_id, $cooldown=0)/*{{{*/
+    public function select_user($user_id, $cooldown=0)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE ." WHERE user_id=$user_id";
         $result = $this->db->sql_query($sql, $cooldown);
@@ -805,7 +805,7 @@ abstract class base
     }/*}}}*/
 
     // GROUP
-    public function select_groups()/*{{{*/
+    public function select_groups()
     {
         $sql = 'SELECT * FROM ' . GROUPS_TABLE;
         $result = $this->db->sql_query($sql);
@@ -814,7 +814,7 @@ abstract class base
         return $rowset;
     }/*}}}*/
 
-    public function select_group($gid)/*{{{*/
+    public function select_group($gid)
     {
         $sql = 'SELECT * FROM ' . GROUPS_TABLE . " WHERE group_id=$gid";
         $result = $this->db->sql_query($sql);
@@ -824,7 +824,7 @@ abstract class base
     }/*}}}*/
 
     // REQUEST USERS
-    public function select_request_users_by_username($username)/*{{{*/
+    public function select_request_users_by_username($username)
     {
         $username = utf8_clean_string($username);
         $userdata = $this->select_user_by_username($username);
@@ -838,7 +838,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function select_request_users($user_id)/*{{{*/
+    public function select_request_users($user_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['requsr'] ." WHERE user_id=$user_id";
@@ -848,7 +848,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_request_users($user_id, $data)/*{{{*/
+    public function update_request_users($user_id, $data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['requsr'] . '
@@ -858,7 +858,7 @@ abstract class base
     }/*}}}*/
 
     // REQUEST
-    public function select_request_closed()/*{{{*/
+    public function select_request_closed()
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
@@ -872,7 +872,7 @@ abstract class base
         return $data;
     }/*}}}*/
 
-    public function select_request_open_by_uid($uid)/*{{{*/
+    public function select_request_open_by_uid($uid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
@@ -886,7 +886,7 @@ abstract class base
         return $data;
     }/*}}}*/
 
-    public function select_request($tid)/*{{{*/
+    public function select_request($tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['req'] . " WHERE tid=$tid";
@@ -896,7 +896,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function update_request($tid, $data)/*{{{*/
+    public function update_request($tid, $data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['req'] . '
@@ -906,7 +906,7 @@ abstract class base
     }/*}}}*/
 
     // Dibs
-    public function insert_dibs($data)/*{{{*/
+    public function insert_dibs($data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'INSERT INTO ' . $tbl['dibs'] .
@@ -914,7 +914,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function update_dibs($tid, $data)/*{{{*/
+    public function update_dibs($tid, $data)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'UPDATE ' . $tbl['dibs'] . '
@@ -924,7 +924,7 @@ abstract class base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function select_dibs($tid)/*{{{*/
+    public function select_dibs($tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql_ary = [
@@ -940,7 +940,7 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function select_total($tbl, $condition)/*{{{*/
+    public function select_total($tbl, $condition)
     {
         $sql_ary = [
             'SELECT'   => 'count(*) as total',
@@ -954,7 +954,7 @@ abstract class base
         return $row['total'];
     }/*}}}*/
 
-    public function select_last_undib($undibber_uid, $tid)/*{{{*/
+    public function select_last_undib($undibber_uid, $tid)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
@@ -973,13 +973,13 @@ abstract class base
         return $row;
     }/*}}}*/
 
-    public function is_dev_server()/*{{{*/
+    public function is_dev_server()
     {
         $servername = $this->config['server_name'];
         return isset($servername) && $servername=='192.168.2.12';
     }/*}}}*/
 
-    public function reject_group($column, $group_id)/*{{{*/
+    public function reject_group($column, $group_id)
     {
         $sql = 'SELECT COUNT(group_id) as count from ' . GROUPS_TABLE . " WHERE {$column}=1 AND group_id={$group_id}";
         $result = $this->db->sql_query($sql);
@@ -993,7 +993,7 @@ abstract class base
         return true;
     }/*}}}*/
 
-    public function reject_bots()/*{{{*/
+    public function reject_bots()
     {
         // $BOT_GID = 6
         $BOTS_GID = 6;
@@ -1002,19 +1002,19 @@ abstract class base
             trigger_error('Access to bots has been denied.');
     }/*}}}*/
 
-    public function reject_anon()/*{{{*/
+    public function reject_anon()
     {
         $uid = $this->user->data['user_id'];
         if ($uid == ANONYMOUS)
             trigger_error('You must login before venturing forth.');
     }/*}}}*/
 
-    public function is_admin()/*{{{*/
+    public function is_admin()
     {
         return $this->auth->acl_gets('a_');
     }/*}}}*/
 
-    public function is_only_dev()/*{{{*/
+    public function is_only_dev()
     {
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
@@ -1025,7 +1025,7 @@ abstract class base
         return $b_dev;
     }/*}}}*/
 
-    public function is_dev()/*{{{*/
+    public function is_dev()
     {
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
         // TODO Get better method for checking for developer roles
@@ -1036,42 +1036,42 @@ abstract class base
         return $this->auth->acl_gets('a_', 'm_') || $b_dev;
     }/*}}}*/
 
-    public function is_mod()/*{{{*/
+    public function is_mod()
     {
         return $this->auth->acl_gets('a_', 'm_');
     }/*}}}*/
 
-    public function is_self($user_id)/*{{{*/
+    public function is_self($user_id)
     {
         return $user_id==$this->user->data['user_id'];
     }/*}}}*/
 
-    public function is_op($topic_data)/*{{{*/
+    public function is_op($topic_data)
     {
         $poster_id = $topic_data['topic_poster'];
         $user_id = $this->user->data['user_id'];
         return $poster_id == $user_id;
     }/*}}}*/
 
-    public function reject_non_dev($append='')/*{{{*/
+    public function reject_non_dev($append='')
     {
         if (!$this->is_dev())
             trigger_error('You don\'t have the permission to access this page. Error Code: d198252910' . $append);
     }/*}}}*/
 
-    public function reject_non_admin($append='')/*{{{*/
+    public function reject_non_admin($append='')
     {
         if (!$this->is_admin())
             trigger_error('Only administrator may access this page. ' . $append);
     }/*}}}*/
 
-    public function reject_non_moderator($append='')/*{{{*/
+    public function reject_non_moderator($append='')
     {
         if (!$this->is_mod())
             trigger_error('Only moderators may access this page. ' . $append);
     }/*}}}*/
 
-    public function reject_non_group($group_id, $perm_name)/*{{{*/
+    public function reject_non_group($group_id, $perm_name)
     {
         $sql = 'SELECT 1 FROM ' . GROUPS_TABLE . '
             WHERE group_id=' . $group_id . ' AND
@@ -1083,7 +1083,7 @@ abstract class base
             trigger_error('Your don\'t have the permission to access this page.');
     }/*}}}*/
 
-    public function is_search_enhancer_allowed($topic_data)/*{{{*/
+    public function is_search_enhancer_allowed($topic_data)
     {
         // Search enhancer is allowed for:
         // 1) members in the allowed group (in any forum)
@@ -1112,7 +1112,7 @@ abstract class base
         return false;
     }/*}}}*/
 
-    public function is_listing($var, $mode='topic_data')/*{{{*/
+    public function is_listing($var, $mode='topic_data')
     {
         // To check if topic is in listings
         $cache_time = 5;
@@ -1139,7 +1139,7 @@ abstract class base
         return $res;
     }/*}}}*/
 
-    public function is_request($var, $mode='request_data')/*{{{*/
+    public function is_request($var, $mode='request_data')
     {
         // To check if topic is in requests
         $cache_time = 5;
@@ -1166,19 +1166,19 @@ abstract class base
         return $res;
     }/*}}}*/
 
-    public function get_dt($time)/*{{{*/
+    public function get_dt($time)
     {
         return $this->user->format_date($time);
     }/*}}}*/
 
-    public function get_config_array($key)/*{{{*/
+    public function get_config_array($key)
     {
         $config_text = $this->container->get('config_text');
         $data = unserialize($config_text->get($key));
         return $data;
     }/*}}}*/
 
-    public function get_fid($name)/*{{{*/
+    public function get_fid($name)
     {
         $config_text = $this->container->get('config_text');
         $snp_fid = unserialize($config_text->get('snp_fid'));
@@ -1186,20 +1186,20 @@ abstract class base
         return (int) $fid;
     }/*}}}*/
 
-    public function make_username($row)/*{{{*/
+    public function make_username($row)
     {
         $strn = '<a href="/memberlist.php?mode=viewprofile&u='. $row['user_id'] . '" style="color: #'. $row['user_colour'] .'">' . $row['username'] . '</a>';
         return $strn;
     }/*}}}*/
 
-    public function decode_tags($strn)/*{{{*/
+    public function decode_tags($strn)
     {
         $def = $this->container->getParameter('jeb.snahp.tags');
         $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
         return $ts->decodeTags($strn, array_shift($this->icon_stacks));
     }/*}}}*/
 
-    public function encode_tags($strn)/*{{{*/
+    public function encode_tags($strn)
     {
         $def = $this->container->getParameter('jeb.snahp.tags');
         $ts = new \jeb\snahp\Apps\Core\String\TagString($def);
@@ -1212,7 +1212,7 @@ abstract class base
         return $this->decode_tags($this->encode_tags($strn));
     }
 
-    // public function add_host_icon($strn)/*{{{*/
+    // public function add_host_icon($strn)
     // {
     //     $b_order = true;
     //     if ($b_order)
@@ -1255,7 +1255,7 @@ abstract class base
     //     return $strn;
     // }/*}}}*/
 
-    public function add_tag($strn)/*{{{*/
+    public function add_tag($strn)
     {
         $ptn = '#((\(|\[|\{)(request)(\)|\]|\}))#is';
         $strn = preg_replace($ptn, '<span class="btn open">\1</span>', $strn);
@@ -1270,14 +1270,14 @@ abstract class base
         return $strn;
     }/*}}}*/
 
-    public function remove_tag($strn)/*{{{*/
+    public function remove_tag($strn)
     {
         $ptn = '#<span[^>]*"(btn){1}.*">([^<]*)</span>#is';
         $strn = preg_replace($ptn, '', $strn);
         return $strn;
     }/*}}}*/
 
-    public function validate_curly_tags($html)/*{{{*/
+    public function validate_curly_tags($html)
     {
         preg_match_all('#{([a-z]+)(?: .*)?(?<![/|/ ])}#iU', $html, $result);
         $openedtags = $result[1];   #put all closed tags into an array
@@ -1303,7 +1303,7 @@ abstract class base
         return True;
     }/*}}}*/
 
-    public function interpolate_curly_table_autofill($strn)/*{{{*/
+    public function interpolate_curly_table_autofill($strn)
     {
         // $strn = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $strn);
         $ptn = '#{table_autofill}(.*?){/table_autofill}#is';
@@ -1329,7 +1329,7 @@ abstract class base
         return $strn;
     }/*}}}*/
 
-    public function interpolate_curly_table($strn)/*{{{*/
+    public function interpolate_curly_table($strn)
     {
         $ptn = '#{([^}]*)}#is';
         $strn = preg_replace_callback($ptn, function($m) {
@@ -1397,7 +1397,7 @@ abstract class base
         return $strn;
     }/*}}}*/
 
-    public function replace_snahp($strn)/*{{{*/
+    public function replace_snahp($strn)
     {
         $parser = new \jeb\snahp\core\curly_parser();
         $strn = $parser->parse_snahp($strn);
@@ -1414,7 +1414,7 @@ abstract class base
         return $strn;
     }/*}}}*/
 
-    public function interpolate_curly_tags_deprecated($strn)/*{{{*/
+    public function interpolate_curly_tags_deprecated($strn)
     {
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;
         if (!$valid) return $strn;
@@ -1434,7 +1434,7 @@ abstract class base
         return $strn;
     }/*}}}*/
 
-    public function reject_user_not_in_groupset($user_id, $groupset_name)/*{{{*/
+    public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
         if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
         {
@@ -1442,7 +1442,7 @@ abstract class base
         }
     }/*}}}*/
 
-    public function user_belongs_to_groupset($user_id, $groupset_name)/*{{{*/
+    public function user_belongs_to_groupset($user_id, $groupset_name)
     {
         if ($this->is_dev_server())
         {
@@ -1463,7 +1463,7 @@ abstract class base
         return !!$res;
     }/*}}}*/
 
-    public function user_belongs_to_group($user_id, $group_id)/*{{{*/
+    public function user_belongs_to_group($user_id, $group_id)
     {
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
@@ -1472,7 +1472,7 @@ abstract class base
         return !!$res;
     }/*}}}*/
 
-    public function get_custom_rank($user_id)/*{{{*/
+    public function get_custom_rank($user_id)
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT rank_title, rank_img FROM '. $tbl['custom_ranks'] . " WHERE user_id=${user_id}";
@@ -1486,7 +1486,7 @@ abstract class base
         return false;
     }/*}}}*/
 
-    public function set_custom_rank($user_id, $rank_title='', $rank_img='')/*{{{*/
+    public function set_custom_rank($user_id, $rank_title='', $rank_img='')
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $data = [
@@ -1501,7 +1501,7 @@ abstract class base
         return true;
     }/*}}}*/
 
-    public function trigger_dev_event($event_name)/*{{{*/
+    public function trigger_dev_event($event_name)
     {
         if ($this->is_only_dev())
         {

@@ -4,7 +4,7 @@ namespace jeb\snahp\core\form;
 class form
 {
     protected $container;
-    public function __construct(/*{{{*/
+    public function __construct(
         $container
     ) {
         $this->container = $container;
@@ -14,22 +14,22 @@ class form
         $this->template = $container->get('template');
     }/*}}}*/
 
-    public function test()/*{{{*/
+    public function test()
     {
         prn($this->db->sql_escape('asdf'));
     }/*}}}*/
 
-    public function set_config_var($data)/*{{{*/
+    public function set_config_var($data)
     {
         $this->config->set($data['tpl_varname'], $data['value']);
     }/*}}}*/
 
-    public function get_config_var($data)/*{{{*/
+    public function get_config_var($data)
     {
         return $this->config[$data['tpl_varname']];
     }/*}}}*/
 
-    public function get_manifest()/*{{{*/
+    public function get_manifest()
     {
         $manifest = [
             [
@@ -50,7 +50,7 @@ class form
         return $manifest;
     }/*}}}*/
 
-    public function process_manifest($manifest)/*{{{*/
+    public function process_manifest($manifest)
     {
         foreach ($manifest as $job) {
             $varname = $job['varname'];
@@ -61,7 +61,7 @@ class form
         return $data;
     }/*}}}*/
 
-    public function set_template_vars_from_manifest($manifest)/*{{{*/
+    public function set_template_vars_from_manifest($manifest)
     {
         $tpl_vars = [];
         foreach ($manifest as $job) {

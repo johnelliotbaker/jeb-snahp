@@ -1,5 +1,5 @@
 <?php
-/*{{{*/
+
 namespace jeb\snahp\Apps\RequestForm;
 
 require_once '/var/www/forum/ext/jeb/snahp/core/functions_forums.php';
@@ -17,7 +17,7 @@ use \Symfony\Component\Validator\Validation;
 use jeb\snahp\Apps\RequestForm\Types as Type;
 use \Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-/*}}}*/
+
 
 const FORM_TYPE_REGISTRY = [
     // form names & request forum names are used interchangeably
@@ -36,7 +36,7 @@ const NULL_TYPE_DEFINITION = ['classname' => Type\NullType::class, 'alias' => 'n
 
 class RequestFormHelper
 {
-    protected $request;/*{{{*/
+    protected $request;
     protected $template;
     public function __construct(
         $request,
@@ -44,9 +44,9 @@ class RequestFormHelper
     ) {
         $this->request = $request;
         $this->template = $template;
-    }/*}}}*/
+    }
 
-    public function makeRequestBBCode($form, $extra=[])/*{{{*/
+    public function makeRequestBBCode($form, $extra=[])
     {
         if (!$form) {
             return;
@@ -54,9 +54,9 @@ class RequestFormHelper
         $data = $form->getData();
         $data->data = array_merge($data->data, $extra);
         return $form->getData()->makeBBCode();
-    }/*}}}*/
+    }
 
-    public function embedCustomForm($forumId)/*{{{*/
+    public function embedCustomForm($forumId)
     {
         $form = $this->createFormByRequestForumId($forumId);
         $this->isValid($form);
@@ -66,21 +66,21 @@ class RequestFormHelper
             [ 'form' => $form->createView(), ]
         );
         $this->template->assign_var('CUSTOM_FORM_ELEMENTS', $html);
-    }/*}}}*/
+    }
 
-    public function createFormByRequestForumId($forumId)/*{{{*/
+    public function createFormByRequestForumId($forumId)
     {
         $requestForumName = getRequestForumName((int) $forumId);
         return $this->createFormByForumName($requestForumName);
-    }/*}}}*/
+    }
 
-    public function createFormByForumName($forumName)/*{{{*/
+    public function createFormByForumName($forumName)
     {
         $formTypeDef = getDefault(FORM_TYPE_REGISTRY, $forumName, NULL_TYPE_DEFINITION);
         return $this->createForm($formTypeDef);
-    }/*}}}*/
+    }
 
-    public function createForm($formTypeDef)/*{{{*/
+    public function createForm($formTypeDef)
     {
         $validator = Validation::createValidator();
         $validatorExtensions = [new ValidatorExtension($validator)];
@@ -96,18 +96,18 @@ class RequestFormHelper
                 $data = $data,
                 $options = ['allow_extra_fields' => true]
             );
-    }/*}}}*/
+    }
 
-    public function isValid($form)/*{{{*/
+    public function isValid($form)
     {
         $this->handleFormRequest($form);
         if ($form->isSubmitted() && $form->isValid()) {
             return true;
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function handleFormRequest($form)/*{{{*/
+    public function handleFormRequest($form)
     {
         // This function sets form flags for isSubmitted() and isValid()
         // $form->handleRequest uses the superglobal $_REQUEST
@@ -115,9 +115,9 @@ class RequestFormHelper
         $this->request->enable_super_globals();
         $form->handleRequest();
         $this->request->disable_super_globals();
-    }/*}}}*/
+    }
 
-    public function getRenderer()/*{{{*/
+    public function getRenderer()
     {
         // Renderer is what turns form object into html string
         $defaultFormTheme = 'form_div_layout.html.twig';
@@ -142,9 +142,9 @@ class RequestFormHelper
         );
         $twig->addExtension(new FormExtension());
         return $twig;
-    }/*}}}*/
+    }
 
-    public function collectErrors($form)/*{{{*/
+    public function collectErrors($form)
     {
         $errors = [];
         foreach ($form->getErrors() as $error) {
@@ -154,14 +154,14 @@ class RequestFormHelper
             $errors = array_merge($errors, $this->collectErrors($elem));
         }
         return $errors;
-    }/*}}}*/
+    }
 
-    public function removeRequestBBCode($text)/*{{{*/
+    public function removeRequestBBCode($text)
     {
         return preg_replace('#\[request](.*?)\[\/request]#s', '', $text);
-    }/*}}}*/
+    }
 
-    public function tagTopicTitle($title, $form)/*{{{*/
+    public function tagTopicTitle($title, $form)
     {
         include_once '/var/www/forum/ext/jeb/snahp/core/functions_string.php';
         $tagFields = array_reverse(['platform',]);
@@ -179,5 +179,5 @@ class RequestFormHelper
             }
         }
         return $title;
-    }/*}}}*/
+    }
 }

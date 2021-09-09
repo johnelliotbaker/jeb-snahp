@@ -26,11 +26,11 @@ class TopicBumpHelper
         $this->QuerySetFactory = $QuerySetFactory;
         $this->definition = $topicBumpParams['def'];
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
     // Moderation
 
-    public function getBumpUser($userId)/*{{{*/
+    public function getBumpUser($userId)
     {
         $sqlArray = [
             'SELECT'   => '*',
@@ -39,9 +39,9 @@ class TopicBumpHelper
         ];
         $qs = $this->QuerySetFactory->fromSqlArray($sqlArray);
         return $qs->offsetGet(0);
-    }/*}}}*/
+    }
 
-    public function createBumpUser($userId)/*{{{*/
+    public function createBumpUser($userId)
     {
         if ($this->getBumpUser($userId)) {
             return;
@@ -50,16 +50,16 @@ class TopicBumpHelper
         $data = [ 'user' => $userId, 'ban_reason' => '' ];
         $sql = "INSERT INTO $t" . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function removeBumpUser($userId)/*{{{*/
+    public function removeBumpUser($userId)
     {
         $t = $this->tbl['bump_user'];
         $sql = "DELETE FROM $t WHERE user={$userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function updateBumpUserData($userId, $data)/*{{{*/
+    public function updateBumpUserData($userId, $data)
     {
         $userId = (int) $userId;
         if (!$this->getBumpUser($userId)) {
@@ -70,9 +70,9 @@ class TopicBumpHelper
             . $this->db->sql_build_array('UPDATE', $data)
             . " WHERE user=$userId";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function banUserByUsername($username, $duration, $reason='')/*{{{*/
+    public function banUserByUsername($username, $duration, $reason='')
     {
         $userId = $this->sauth->userNameToUserId($username);
         if (!$userId) {
@@ -92,9 +92,9 @@ class TopicBumpHelper
             'ban_by' => $this->userId,
         ];
         $this->updateBumpUserData($userId, $data);
-    }/*}}}*/
+    }
 
-    public function banUser($userId, $duration, $reason='')/*{{{*/
+    public function banUser($userId, $duration, $reason='')
     {
         $this->createBumpUser($userId);
         $now = time();
@@ -107,40 +107,40 @@ class TopicBumpHelper
             'ban_by' => $this->userId,
         ];
         $this->updateBumpUserData($userId, $data);
-    }/*}}}*/
+    }
 
-    public function unBanUser($userId)/*{{{*/
+    public function unBanUser($userId)
     {
         if (!$this->getBumpUser($userId)) {
             return;
         }
         $this->removeBumpUser($userId);
-    }/*}}}*/
+    }
 
-    public function userIsBannedOrRemoveBumpUser($userId)/*{{{*/
+    public function userIsBannedOrRemoveBumpUser($userId)
     {
         $effectivelyBanned = $this->userIsEffectivelyBanned($userId);
         if (!$effectivelyBanned) {
             $this->removeBumpUser($userId);
         }
         return $effectivelyBanned;
-    }/*}}}*/
+    }
 
-    public function userIsEffectivelyBanned($userId)/*{{{*/
+    public function userIsEffectivelyBanned($userId)
     {
         $bumpUser = $this->getBumpUser($userId);
         if (!$bumpUser['banned'] || $this->userBanExpired($bumpUser)) {
             return false;
         }
         return true;
-    }/*}}}*/
+    }
 
-    public function userBanExpired($bumpUser)/*{{{*/
+    public function userBanExpired($bumpUser)
     {
         return $bumpUser['ban_end'] < time();
-    }/*}}}*/
+    }
 
-    public function getBumpUserToplist($request)/*{{{*/
+    public function getBumpUserToplist($request)
     {
         $t = $this->tbl['bump_user'];
         $username = utf8_clean_string($request->variable('username', ''));
@@ -165,15 +165,15 @@ class TopicBumpHelper
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $results = $this->paginator->paginateQueryset($queryset, $request);
         return $this->paginator->getPaginatedResult($results);
-    }/*}}}*/
+    }
 
-    public function resetBumpUser($userId)/*{{{*/
+    public function resetBumpUser($userId)
     {
         $data = DEFAULT_BUMP_USER_DATA;
         $this->updateBumpUserData($userId, $data);
-    }/*}}}*/
+    }
 
-    public function editBumpUser($userId, $requestData)/*{{{*/
+    public function editBumpUser($userId, $requestData)
     {
         if ($this->getBumpUser($userId)) {
             return;
@@ -186,11 +186,11 @@ class TopicBumpHelper
             }
         }
         $this->updateBumpUserData($userId, $data);
-    }/*}}}*/
+    }
 
     // Client
 
-    public function getBumpContext($topicId)/*{{{*/
+    public function getBumpContext($topicId)
     {
         include_once '/var/www/forum/ext/jeb/snahp/core/functions_phpbb.php';
         $def = $this->definition;
@@ -218,9 +218,9 @@ class TopicBumpHelper
             'def' => $def,
         ];
         return $data;
-    }/*}}}*/
+    }
 
-    public function getTopicBumpData($topicId)/*{{{*/
+    public function getTopicBumpData($topicId)
     {
         $topicId = (int) $topicId;
         $t = $this->tbl['bump_topic'];
@@ -229,10 +229,10 @@ class TopicBumpHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function getBumpCooldown($userId)/*{{{*/
+    public function getBumpCooldown($userId)
     {
         return (int) $this->sauth->getMinFromGroupMemberships($this->userId, 'snp_bump_cooldown');
-    }/*}}}*/
+    }
 }

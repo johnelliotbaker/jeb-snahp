@@ -11,49 +11,49 @@ class Page
         $this->paginator = $paginator;
     }
 
-    public function length()/*{{{*/
+    public function length()
     {
         return count($this->objectList);
-    }/*}}}*/
+    }
 
-    public function hasNext()/*{{{*/
+    public function hasNext()
     {
         return $this->number < $this->paginator->numPages();
-    }/*}}}*/
+    }
 
-    public function hasPrevious()/*{{{*/
+    public function hasPrevious()
     {
         return $this->number > 1;
-    }/*}}}*/
+    }
 
-    public function hasOtherPages()/*{{{*/
+    public function hasOtherPages()
     {
         return $this->hasPrevious() || $this->hasNext();
-    }/*}}}*/
+    }
 
-    public function nextPageNumber()/*{{{*/
+    public function nextPageNumber()
     {
         return $this->paginator->validateNumber($this->number + 1);
-    }/*}}}*/
+    }
 
-    public function previousPageNumber()/*{{{*/
+    public function previousPageNumber()
     {
         return $this->paginator->validateNumber($this->number - 1);
-    }/*}}}*/
+    }
 
-    public function startIndex()/*{{{*/
+    public function startIndex()
     {
         if ($this->paginator->count() === 0) {
             return 0;
         }
         return ($this->paginator->perPage * ($this->number-1)) +1;
-    }/*}}}*/
+    }
 
-    public function endIndex()/*{{{*/
+    public function endIndex()
     {
         if ($this->number == $this->paginator->numPages()) {
             return $this->paginator->count();
         }
         return $this->number * $this->paginator->perPage;
-    }/*}}}*/
+    }
 }

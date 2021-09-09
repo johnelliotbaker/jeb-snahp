@@ -10,15 +10,15 @@ class RequestFormEventListener implements EventSubscriberInterface
     protected $data;
     protected $form;
 
-    public function __construct(/*{{{*/
+    public function __construct(
         $helper
     ) {
         $this->helper = $helper;
         $this->data = [];
         $this->bbcodeAdded = false;
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.modify_format_display_text_after' => [
@@ -46,9 +46,9 @@ class RequestFormEventListener implements EventSubscriberInterface
                 ['tagTopicTitle', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function tagTopicTitle($event)/*{{{*/
+    public function tagTopicTitle($event)
     {
         if ($this->form && $event['mode'] === 'post') {
             $postData = $event['post_data'];
@@ -58,23 +58,23 @@ class RequestFormEventListener implements EventSubscriberInterface
             $title = $this->helper->tagTopicTitle($title, $this->form);
             $event['post_data'] = $postData;
         }
-    }/*}}}*/
+    }
 
-    public function setPostingVars($event)/*{{{*/
+    public function setPostingVars($event)
     {
         $forumId = $event['forum_id'];
         $this->data['posting']['isInRequestForum'] = forumIsRequest($forumId);
         $this->data['posting']['requestForumName'] = getRequestForumName($forumId);
-    }/*}}}*/
+    }
 
-    public function setTopicVars($event)/*{{{*/
+    public function setTopicVars($event)
     {
         $forumId = $event['forum_id'];
         $this->data['topic']['isInRequestForum'] = forumIsRequest($forumId);
         $this->data['topic']['requestForumName'] = getRequestForumName($forumId);
-    }/*}}}*/
+    }
 
-    public function embedRequestTemplateInPreview($event)/*{{{*/
+    public function embedRequestTemplateInPreview($event)
     {
         $preview = (isset($_POST['preview'])) ? true : false;
         $text = $event['text'];
@@ -97,9 +97,9 @@ class RequestFormEventListener implements EventSubscriberInterface
             );
             $event["text"] = $text;
         }
-    }/*}}}*/
+    }
 
-    public function embedRequestTemplate($event)/*{{{*/
+    public function embedRequestTemplate($event)
     {
         $isFirstPage = $event["current_row_number"] === 0;
         $isOpeningPost = $isFirstPage && (int) $event['start'] === 0;
@@ -123,18 +123,18 @@ class RequestFormEventListener implements EventSubscriberInterface
             );
             $event["post_row"] = $postRow;
         }
-    }/*}}}*/
+    }
 
-    public function embedCustomForm($event)/*{{{*/
+    public function embedCustomForm($event)
     {
         $isPost = $event['mode'] === 'post';
         $isRequest = $this->data['posting']['isInRequestForum'];
         if ($isPost && $isRequest) {
             $this->helper->embedCustomForm($event['forum_id']);
         }
-    }/*}}}*/
+    }
 
-    public function handleFormErrors($event)/*{{{*/
+    public function handleFormErrors($event)
     {
         if (!$this->data['posting']['isInRequestForum']) {
             return;
@@ -152,9 +152,9 @@ class RequestFormEventListener implements EventSubscriberInterface
                 $this->form = $form;
             }
         }
-    }/*}}}*/
+    }
 
-    public function prependRequestBBCodeToPostData($event)/*{{{*/
+    public function prependRequestBBCodeToPostData($event)
     {
         if ($event['mode'] !== 'post') {
             return;
@@ -169,5 +169,5 @@ class RequestFormEventListener implements EventSubscriberInterface
         $message = $this->helper->removeRequestBBCode($message);
         $message = $bbcode . PHP_EOL . $message;
         $this->bbcodeAdded = true;
-    }/*}}}*/
+    }
 }

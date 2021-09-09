@@ -1,6 +1,6 @@
 <?php
 
-function getXmasConfig($name, $cache=3600)/*{{{*/
+function getXmasConfig($name, $cache=3600)
 {
     global $db;
     $sql = "SELECT * FROM phpbb_snahp_xmas_config WHERE name='$name'";
@@ -11,18 +11,18 @@ function getXmasConfig($name, $cache=3600)/*{{{*/
         throw new ConfigNotFoundError('Error Code: e976c14df8');
     }
     return json_decode($row['data'], true);
-}/*}}}*/
+}
 
-function setVotes($votes)/*{{{*/
+function setVotes($votes)
 {
     global $db;
     $tbl = 'phpbb_snahp_xmas_vote';
     $votes = json_encode($votes);
     $sql = "UPDATE `phpbb_snahp_xmas_config` SET `data` = '{$votes}' WHERE (`name` = 'votes')";
     $db->sql_query($sql);
-}/*}}}*/
+}
 
-function getAvailableVotes($time=null)/*{{{*/
+function getAvailableVotes($time=null)
 {
     if ($time === null) {
         $time = time();
@@ -36,16 +36,16 @@ function getAvailableVotes($time=null)/*{{{*/
             return !isset($votes[$arg]);
         }
     );
-}/*}}}*/
+}
 
-function clearVoteCache()/*{{{*/
+function clearVoteCache()
 {
     global $db;
     $sql = "UPDATE `phpbb_snahp_xmas_config` SET `data` = '[]' WHERE (`name` = 'votes');";
     $db->sql_query($sql);
-}/*}}}*/
+}
 
-function getVoteDistribution($period=null)/*{{{*/
+function getVoteDistribution($period=null)
 {
     global $db;
     // TODO:: cache
@@ -65,9 +65,9 @@ function getVoteDistribution($period=null)/*{{{*/
         }
     }
     return $res;
-}/*}}}*/
+}
 
-function getVotes($time=null)/*{{{*/
+function getVotes($time=null)
 {
     // return [1,2,3,4,5,6,7,8,9,10,11,12,13];
     global $db;
@@ -105,9 +105,9 @@ function getVotes($time=null)/*{{{*/
     }
     setVotes($res);
     return $res;
-}/*}}}*/
+}
 
-function getTimeIndexWithDefault()/*{{{*/
+function getTimeIndexWithDefault()
 {
     $schedule = getXmasConfig('schedule', 0);
     return getTimeIndex(
@@ -116,9 +116,9 @@ function getTimeIndexWithDefault()/*{{{*/
         $schedule['duration'],
         $schedule['division']
     );
-}/*}}}*/
+}
 
-function getTimeIndex($time, $start, $duration, $division)/*{{{*/
+function getTimeIndex($time, $start, $duration, $division)
 {
     $fromStart = $time - $start;
     if ($fromStart < 0) {
@@ -126,14 +126,14 @@ function getTimeIndex($time, $start, $duration, $division)/*{{{*/
     }
     $interval = $duration / $division;
     return min((int) ($fromStart / $interval), $division);
-}/*}}}*/
+}
 
-class ConfigNotFoundError extends \jeb\snahp\core\errors\SnahpException/*{{{*/
+class ConfigNotFoundError extends \jeb\snahp\core\errors\SnahpException
 {
     const MESSAGE_PREFIX = 'ConfigNotFoundError';
-}/*}}}*/
+}
 
-function getBoardCount()/*{{{*/
+function getBoardCount()
 {
     global $db;
     $sql = 'SELECT count(*) as total FROM phpbb_snahp_xmas_board';
@@ -144,4 +144,4 @@ function getBoardCount()/*{{{*/
         return 0;
     }
     return $row['total'];
-}/*}}}*/
+}

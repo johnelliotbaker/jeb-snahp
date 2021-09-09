@@ -7,7 +7,7 @@ class SnowfallHelper
     const SNOWFALL_DURATION = 1800; // 30 minutes
     const SNOWFALL_PRODUCT_CLASS_NAME = 'snowfall';
 
-    protected $configText;/*{{{*/
+    protected $configText;
     protected $template;
     protected $sauth;
     protected $productClass;
@@ -29,15 +29,15 @@ class SnowfallHelper
         $this->userId = (int) $sauth->userId;
         $this->data = $this->getData();
         $this->isOP = (int) $this->data['user']['id'] === $this->userId;
-    }/*}}}*/
+    }
 
-    public function reset()/*{{{*/
+    public function reset()
     {
         $this->setData([]);
         return $success;
-    }/*}}}*/
+    }
 
-    public function changeColor($color)/*{{{*/
+    public function changeColor($color)
     {
         if (!$this->isOP) {
             throw new \Exception("You are not worthy.");
@@ -49,9 +49,9 @@ class SnowfallHelper
             $this->setData($data);
         }
         return $success;
-    }/*}}}*/
+    }
 
-    public function changeText($text)/*{{{*/
+    public function changeText($text)
     {
         if (!$this->isOP) {
             throw new \Exception("You are not worthy.");
@@ -60,9 +60,9 @@ class SnowfallHelper
         $data['text'] = $text;
         $this->setData($data);
         return true;
-    }/*}}}*/
+    }
 
-    public function activate()/*{{{*/
+    public function activate()
     {
         if ($this->isActive()) {
             throw new \Exception('Snowfall is active already.', 400);
@@ -87,9 +87,9 @@ class SnowfallHelper
         $pcdata = $this->getProductClassData();
         $pcid = (int) $pcdata['id'];
         $this->userInventory->doRemoveItemWithLogging($pcid, 1, $this->userId, 'Activated Snow Fall');
-    }/*}}}*/
+    }
 
-    public function setTemplateVars()/*{{{*/
+    public function setTemplateVars()
     {
         $data = $this->data;
         $data['isOP'] = $this->isOP;
@@ -110,19 +110,19 @@ class SnowfallHelper
                 ]
             );
         }
-    }/*}}}*/
+    }
 
-    public function setData($data)/*{{{*/
+    public function setData($data)
     {
         return $this->configText->set(self::CONFIG_NAME, serialize($data));
-    }/*}}}*/
+    }
 
-    public function getData()/*{{{*/
+    public function getData()
     {
         return unserialize($this->configText->get(self::CONFIG_NAME));
-    }/*}}}*/
+    }
 
-    public function getUserData($userId)/*{{{*/
+    public function getUserData($userId)
     {
         $userId = (int) $userId;
         $sql = "SELECT user_id, user_colour, username FROM phpbb_users WHERE user_id=${userId}";
@@ -130,9 +130,9 @@ class SnowfallHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function canActivate()/*{{{*/
+    public function canActivate()
     {
         if ($this->isActive()) {
             return false;
@@ -143,9 +143,9 @@ class SnowfallHelper
         if ($this->hasSnowfall()) {
             return true;
         }
-    }/*}}}*/
+    }
 
-    public function hasSnowfall()/*{{{*/
+    public function hasSnowfall()
     {
         if ($productClassData = $this->getProductClassData()) {
             $pcid = (int) $productClassData['id'];
@@ -156,9 +156,9 @@ class SnowfallHelper
             }
         }
         return false;
-    }/*}}}*/
+    }
 
-    public function isActive()/*{{{*/
+    public function isActive()
     {
         $data = $this->data;
         if (!isset($data['start']) || !isset($data['end'])) {
@@ -167,14 +167,14 @@ class SnowfallHelper
         [$start, $end] = [$data['start'], $data['end']];
         $time = time();
         return $time >= $start && $time <= $end;
-    }/*}}}*/
+    }
 
-    public function getProductClassData()/*{{{*/
+    public function getProductClassData()
     {
         if (!$this->productClassData) {
             $product_class_name = self::SNOWFALL_PRODUCT_CLASS_NAME;
             $this->productClassData = $this->productClass->get_product_class_by_name($product_class_name);
         }
         return $this->productClassData;
-    }/*}}}*/
+    }
 }

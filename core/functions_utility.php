@@ -1,6 +1,6 @@
 <?php
 
-function prn($var, $b_html=false, $depth=0)/*{{{*/
+function prn($var, $b_html=false, $depth=0)
 {
     $nl = $b_html ? '<br>' : PHP_EOL;
     $nbsp = $b_html ? '&nbsp;' : ' ';
@@ -34,17 +34,17 @@ function prn($var, $b_html=false, $depth=0)/*{{{*/
     if ($depth===0) {
         echo $nl;
     }
-}/*}}}*/
+}
 
-function getDefault($dict, $key, $defualt=null)/*{{{*/
+function getDefault($dict, $key, $defualt=null)
 {
     if (!array_key_exists($key, $dict)) {
         return $defualt;
     }
     return $dict[$key];
-}/*}}}*/
+}
 
-function uuid4()/*{{{*/
+function uuid4()
 {
     // https://www.php.net/manual/en/function.uniqid.php
     return sprintf(
@@ -66,9 +66,9 @@ function uuid4()/*{{{*/
         mt_rand(0, 0xffff),
         mt_rand(0, 0xffff)
     );
-}/*}}}*/
+}
 
-function getStyleName()/*{{{*/
+function getStyleName()
 {
     global $db, $user;
     $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
@@ -89,14 +89,14 @@ function getStyleName()/*{{{*/
     default:
         return [$row['style_name'], 'digi_orange'];
     }
-}/*}}}*/
+}
 
-function getRequestMethod($request)/*{{{*/
+function getRequestMethod($request)
 {
     return $request->server('REQUEST_METHOD', 'GET');
-}/*}}}*/
+}
 
-function getRequestData($request)/*{{{*/
+function getRequestData($request)
 {
     $method = getRequestMethod($request);
     if (in_array($method, ['PUT', 'PATCH'])) {
@@ -108,9 +108,9 @@ function getRequestData($request)/*{{{*/
         $data[$varname] = htmlspecialchars_decode($request->variable($varname, '', true));
     }
     return $data;
-}/*}}}*/
+}
 
-function getRequestFormData($rootName)/*{{{*/
+function getRequestFormData($rootName)
 {
     global $request;
     $request->enable_super_globals();
@@ -129,9 +129,9 @@ function getRequestFormData($rootName)/*{{{*/
     };
     $collect($data, $res);
     return $res;
-}/*}}}*/
+}
 
-function getTwigRenderer($templateDirs=[], $extensions=[])/*{{{*/
+function getTwigRenderer($templateDirs=[], $extensions=[])
 {
     $templateDir = '/var/www/forum/ext/jeb/snahp/styles/all/template';
     $defaultTemplateDir = [
@@ -156,7 +156,7 @@ function getTwigRenderer($templateDirs=[], $extensions=[])/*{{{*/
         $twig->addExtension($extension);
     }
     return $twig;
-}/*}}}*/
+}
 
 function flattenArray($arr)
 {

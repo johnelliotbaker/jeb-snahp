@@ -36,7 +36,7 @@ class gallery
             break;
         }
         return '';
-    }/*}}}*/
+    }
 
     private function is_json($strn)
     {
@@ -128,7 +128,7 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }/*}}}*/
+    }
 
     private function handle_grid($data, $options=[])/*{{{*/
     {
@@ -172,7 +172,7 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }/*}}}*/
+    }
 
     private function handle_compact($data, $options=[])/*{{{*/
     {
@@ -232,5 +232,5 @@ class gallery
             $res .= join(PHP_EOL, $html[$key]);
         }
         return $res;
-    }/*}}}*/
+    }
 }

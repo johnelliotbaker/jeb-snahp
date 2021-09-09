@@ -13,7 +13,7 @@ class AnimeType extends AbstractType
     public static $alias = 'anime';
     const CLASSNAME = Anime::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $js = '
 <script>
@@ -65,5 +65,5 @@ subject.keyup((e) => {
                 HiddenType::class,
                 [ 'attr' => ['value' => self::$alias] ]
             );
-    }/*}}}*/
+    }
 }

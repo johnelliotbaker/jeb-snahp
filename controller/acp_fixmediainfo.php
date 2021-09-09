@@ -12,7 +12,7 @@ class acp_fixmediainfo extends base
     public function __construct($table_prefix)/*{{{*/
     {
         $this->table_prefix = $table_prefix;
-    }/*}}}*/
+    }
 
     public function handle($mode)/*{{{*/
     {
@@ -29,7 +29,7 @@ class acp_fixmediainfo extends base
             break;
         }
         trigger_error('You must specify valid mode.');
-    }/*}}}*/
+    }
 
     private function text_contains_mediainfo($text)/*{{{*/
     {
@@ -37,25 +37,25 @@ class acp_fixmediainfo extends base
         $b_video = preg_match('#Video\n#is', $text, $m);
         $b_audio = preg_match('#Audio(\s\#\d)?\n#is', $text, $m);
         return $b_general && $b_video && $b_audio;
-    }/*}}}*/
+    }
 
     private function mediainfo_tag_exists($text)/*{{{*/
     {
         return preg_match('#\[mediainfo\]#i', $text, $match);
-    }/*}}}*/
+    }
 
     private function get_first_codebox_content($text)/*{{{*/
     {
 		$ptn_edit = '#\[code\](.*?)\[\/code\]#is';
         $b_match = preg_match($ptn_edit, $text, $match);
         return $b_match ? trim($match[1]) : null;
-    }/*}}}*/
+    }
 
     private function replace_codebox_with_mediainfo($text)/*{{{*/
     {
         $ptn_storage = '#<CODE><s>\[code\]</s>(.*?)<e>\[\/code\]</e></CODE>#is';
         return preg_replace($ptn_storage, '<MEDIAINFO><s>[mediainfo]</s>$1<e>[/mediainfo]</e></MEDIAINFO>', $text, 1);
-    }/*}}}*/
+    }
 
     public function modify_mediainfo($cfg)/*{{{*/
     {
@@ -119,20 +119,20 @@ class acp_fixmediainfo extends base
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
         $js = new \phpbb\json_response();
         $js->send([]);
-    }/*}}}*/
+    }
 
     public function test($mode)/*{{{*/
     {
         $data = [];
         $js = new \phpbb\json_response();
         $js->send($data);
-    }/*}}}*/
+    }
 
     public function send_message($data) {/*{{{*/
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
-    }/*}}}*/
+    }
 
 }

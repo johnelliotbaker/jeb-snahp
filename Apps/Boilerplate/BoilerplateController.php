@@ -6,7 +6,7 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class BoilerplateController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -40,10 +40,10 @@ class BoilerplateController
         $this->helper = $helper;
         $this->userId = $sauth->userId;
         $this->sauth->reject_anon('Error Code: a5e8ee80c7');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         return new Response('Hello World');
-    }/*}}}*/
+    }
 }

@@ -4,30 +4,30 @@ namespace jeb\snahp\Apps\Toplist;
 const CACHE_TIMEOUT = 3600;
 
 
-class ReputationToplist extends BaseToplist/*{{{*/
+class ReputationToplist extends BaseToplist
 {
     const NAME = 'reputation';
     const USER_COLUMN_TARGET_NAME = 'snp_rep_n_received';
     const CONFIG_TEXT_NAME = "snp_toplist_reputation_blacklist";
-}/*}}}*/
+}
 
-class ThanksToplist extends BaseToplist/*{{{*/
+class ThanksToplist extends BaseToplist
 {
     const NAME = 'thanks';
     const USER_COLUMN_TARGET_NAME = 'snp_thanks_n_received';
     const CONFIG_TEXT_NAME = "snp_toplist_thanks_blacklist";
-}/*}}}*/
+}
 
-class RequestsSolvedToplist extends BaseToplist/*{{{*/
+class RequestsSolvedToplist extends BaseToplist
 {
     const NAME = 'requests_solved';
     const USER_COLUMN_TARGET_NAME = 'snp_req_n_solve';
     const CONFIG_TEXT_NAME = "snp_toplist_requests_solved_blacklist";
-}/*}}}*/
+}
 
 class ToplistHelper
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -45,9 +45,9 @@ class ToplistHelper
         $this->sauth = $sauth;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 
-    public function getToplist($name)/*{{{*/
+    public function getToplist($name)
     {
         $tl = $this->toplistFactory($name);
         $cacheName = "snp_${name}_toplist";
@@ -56,24 +56,24 @@ class ToplistHelper
             $this->cache->put($cacheName, $list, CACHE_TIMEOUT);
         }
         return $list;
-    }/*}}}*/
+    }
 
-    public function getThanksToplist()/*{{{*/
+    public function getThanksToplist()
     {
         return $this->getToplist('thanks');
-    }/*}}}*/
+    }
 
-    public function getRequestSolvedToplist()/*{{{*/
+    public function getRequestSolvedToplist()
     {
         return $this->getToplist('requests_solved');
-    }/*}}}*/
+    }
 
-    public function getReputationToplist()/*{{{*/
+    public function getReputationToplist()
     {
         return $this->getToplist('reputation');
-    }/*}}}*/
+    }
 
-    public function toplistFactory($name)/*{{{*/
+    public function toplistFactory($name)
     {
         switch ($name) {
         case 'thanks':
@@ -85,30 +85,30 @@ class ToplistHelper
         default:
         }
         throw new \Exception("Invalid toplist name ${name}. Error Code: 154889db86");
-    }/*}}}*/
+    }
 
-    public function blacklist($name, $userId)/*{{{*/
+    public function blacklist($name, $userId)
     {
         $tl = $this->toplistFactory($name);
         $tl->blacklistUsers([$userId]);
-    }/*}}}*/
+    }
 
-    public function whitelist($name, $userId)/*{{{*/
+    public function whitelist($name, $userId)
     {
         $tl = $this->toplistFactory($name);
         $tl->whitelistUsers([$userId]);
-    }/*}}}*/
+    }
 }
 
 class BaseToplist
 {
-    public function __construct($QuerySetFactory, $configText)/*{{{*/
+    public function __construct($QuerySetFactory, $configText)
     {
         $this->QuerySetFactory = $QuerySetFactory;
         $this->configText = $configText;
-    }/*}}}*/
+    }
 
-    public function getList()/*{{{*/
+    public function getList()
     {
         $colName = $this::USER_COLUMN_TARGET_NAME;
         $blacklist = $this->getBlacklistedUsers();
@@ -120,9 +120,9 @@ class BaseToplist
         $queryset = $this->QuerySetFactory->fromSqlArray($sqlArray);
         $queryset->filterInSet('a.user_id', $blacklist, true);
         return $queryset->slice(0, 10, $many = true, $cacheTimeout = 3600);
-    }/*}}}*/
+    }
 
-    public function getBlacklistedUsers($asList=true)/*{{{*/
+    public function getBlacklistedUsers($asList=true)
     {
         $cfgName = $this::CONFIG_TEXT_NAME;
         if ($data = $this->configText->get($cfgName)) {
@@ -130,9 +130,9 @@ class BaseToplist
             return $asList ? array_keys($data) : $data;
         }
         return [];
-    }/*}}}*/
+    }
 
-    public function blacklistUsers($userIds)/*{{{*/
+    public function blacklistUsers($userIds)
     {
         $blacklist = $this->getBlacklistedUsers($asList = false);
         foreach ($userIds as $userId) {
@@ -144,9 +144,9 @@ class BaseToplist
             serialize($blacklist)
         );
         return [];
-    }/*}}}*/
+    }
 
-    public function whitelistUsers($userIds)/*{{{*/
+    public function whitelistUsers($userIds)
     {
         $blacklist = $this->getBlacklistedUsers($asList = false);
         foreach ($userIds as $userId) {
@@ -158,5 +158,5 @@ class BaseToplist
             serialize($blacklist)
         );
         return [];
-    }/*}}}*/
+    }
 }

@@ -17,9 +17,9 @@ class ReportStatusView
         $this->sauth = $sauth;
         $this->Entry = $model;
         $this->sauth->reject_new_users('Error Code: aa223b1e57');
-    }/*}}}*/
+    }
 
-    public function view($topicId)/*{{{*/
+    public function view($topicId)
     {
         $topicId = (int) $topicId;
         $Entry = $this->Entry;
@@ -31,5 +31,5 @@ class ReportStatusView
         }
         $report->reporter = $Entry->getUserInfo($report->user);
         return new JsonResponse($report);
-    }/*}}}*/
+    }
 }

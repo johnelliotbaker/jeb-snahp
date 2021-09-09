@@ -37,18 +37,18 @@ class NavigationView extends ListCreateAPIView
         $this->sauth->reject_anon('Error Code: db7f8ce167');
     }
 
-    public function view()/*{{{*/
+    public function view()
     {
         return parent::dispatch();
-    }/*}}}*/
+    }
 
-    public function filterQueryset($queryset)/*{{{*/
+    public function filterQueryset($queryset)
     {
         $serializer = $this->getSerializer($queryset);
         return $this->permission->filter($this->request, $serializer->data());
-    }/*}}}*/
+    }
 
-    public function list($request)/*{{{*/
+    public function list($request)
     {
         // checkPermissions is not called in navigation view
         // Instead, filterQueryset filters for permitted article groups
@@ -61,9 +61,9 @@ class NavigationView extends ListCreateAPIView
             }
         }
         return new JsonResponse($data);
-    }/*}}}*/
+    }
 
-    public function makeGroup($group)/*{{{*/
+    public function makeGroup($group)
     {
         $name = $group->name;
         $id = $group->id;
@@ -79,7 +79,7 @@ class NavigationView extends ListCreateAPIView
             $entries
         );
         return array_values($entries);
-    }/*}}}*/
+    }
 }
 
 
@@ -91,7 +91,7 @@ class NavPermission extends UserPermission
         parent::__construct($permissionModel, $sauth->userId);
     }
 
-    public function filter($request, $articleGroups)/*{{{*/
+    public function filter($request, $articleGroups)
     {
         if ($this->sauth->is_dev()) {
             return $articleGroups;
@@ -113,5 +113,5 @@ class NavPermission extends UserPermission
                 }
             }
         );
-    }/*}}}*/
+    }
 }

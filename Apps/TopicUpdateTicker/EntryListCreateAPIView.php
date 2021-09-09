@@ -26,10 +26,10 @@ class EntryListCreateAPIView extends ListCreateAPIView
         ];
     }
 
-    public function viewByTopicId($topicId)/*{{{*/
+    public function viewByTopicId($topicId)
     {
         $this->orderBySqlStatement = 'ORDER BY id DESC';
         $this->request->overwrite('topic', (int) $topicId);
         return parent::dispatch();
-    }/*}}}*/
+    }
 }

@@ -9,7 +9,7 @@ class ToplistEventListener implements EventSubscriberInterface
     protected $template;
     protected $sauth;
     protected $helper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $config,
         $template,
         $sauth,
@@ -20,18 +20,18 @@ class ToplistEventListener implements EventSubscriberInterface
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = $this->sauth->userId;
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.index_modify_page_title' => [
                 ['embedToplist', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function embedToplist($event)/*{{{*/
+    public function embedToplist($event)
     {
         if ($this->userId == ANONYMOUS) {
             return false;
@@ -73,5 +73,5 @@ class ToplistEventListener implements EventSubscriberInterface
             ];
             $this->template->assign_block_vars('A_REPUTATION_TOP_LIST', $data);
         }
-    }/*}}}*/
+    }
 }

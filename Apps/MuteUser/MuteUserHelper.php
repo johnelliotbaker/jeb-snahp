@@ -7,7 +7,7 @@ class MuteUserHelper
     protected $user;
     protected $tbl;
     protected $sauth;
-    public function __construct(/*{{{*/
+    public function __construct(
         $db,
         $user,
         $tbl,
@@ -18,9 +18,9 @@ class MuteUserHelper
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function getMutedUserList($start=0, $limit=10)/*{{{*/
+    public function getMutedUserList($start=0, $limit=10)
     {
         $fields = [
             'user_id', 'username', 'user_colour',
@@ -33,9 +33,9 @@ class MuteUserHelper
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return $rowset;
-    }/*}}}*/
+    }
 
-    public function getMutedUserCount()/*{{{*/
+    public function getMutedUserCount()
     {
         $sql = 'SELECT count(*) as total FROM ' . USERS_TABLE .
             " WHERE snp_mute_topic=1 OR snp_mute_reply=1";
@@ -43,9 +43,9 @@ class MuteUserHelper
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row ? $row['total'] : 0;
-    }/*}}}*/
+    }
 
-    private function _setNewTopicStatus($userId, $mute)/*{{{*/
+    private function _setNewTopicStatus($userId, $mute)
     {
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
@@ -54,9 +54,9 @@ class MuteUserHelper
             " SET snp_mute_topic=${status}, snp_mute_created=${created}" .
             " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    private function _setPostReplyStatus($userId, $mute)/*{{{*/
+    private function _setPostReplyStatus($userId, $mute)
     {
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
@@ -65,25 +65,25 @@ class MuteUserHelper
             " SET snp_mute_reply=${status}, snp_mute_created=${created}" .
             " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
-    public function muteUserNewTopic($user_id)/*{{{*/
+    public function muteUserNewTopic($user_id)
     {
         $this->_setNewTopicStatus($user_id, true);
-    }/*}}}*/
+    }
 
-    public function unmuteUserNewTopic($user_id)/*{{{*/
+    public function unmuteUserNewTopic($user_id)
     {
         $this->_setNewTopicStatus($user_id, false);
-    }/*}}}*/
+    }
 
-    public function muteUserPostReply($user_id)/*{{{*/
+    public function muteUserPostReply($user_id)
     {
         $this->_setPostReplyStatus($user_id, true);
-    }/*}}}*/
+    }
 
-    public function unmuteUserPostReply($user_id)/*{{{*/
+    public function unmuteUserPostReply($user_id)
     {
         $this->_setPostReplyStatus($user_id, false);
-    }/*}}}*/
+    }
 }

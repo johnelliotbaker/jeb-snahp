@@ -53,7 +53,7 @@ class mcp extends base
         echo PHP_EOL;
         ob_flush();
         flush();
-    }/*}}}*/
+    }
 
     public function select_topics_with_search($per_page, $start, $forum_id=0, $search='')/*{{{*/
     {
@@ -76,7 +76,7 @@ class mcp extends base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function handle_mass_move_v2($cfg)/*{{{*/
     {
@@ -189,7 +189,7 @@ class mcp extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function select_moderation_topics($per_page, $start, $forum_id=0, $options=[])/*{{{*/
     {
@@ -234,7 +234,7 @@ class mcp extends base
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
-    }/*}}}*/
+    }
 
     public function handle_mass_move($cfg)/*{{{*/
     {
@@ -320,7 +320,7 @@ class mcp extends base
             $this->template->assign_var('TITLE', $cfg['title']);
             return $this->helper->render($tpl_name, $cfg['title']);
         }
-    }/*}}}*/
+    }
 
     public function move_to($a_topic_id, $to_fid)/*{{{*/
     {
@@ -330,7 +330,7 @@ class mcp extends base
             move_topics($a_topic_id, (int) $to_fid, $auto_sync=true);
         }
         return false;
-    }/*}}}*/
+    }
 
     public function move($a_topic_id)/*{{{*/
     {
@@ -341,5 +341,5 @@ class mcp extends base
             move_topics($a_topic_id, $fid_graveyard, $auto_sync=true);
         }
         return false;
-    }/*}}}*/
+    }
 }

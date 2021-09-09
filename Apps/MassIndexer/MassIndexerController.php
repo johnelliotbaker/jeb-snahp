@@ -7,7 +7,7 @@ use jeb\snahp\Apps\MassIndexer\MassIndexerHelper;
 
 class MassIndexerController
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -41,9 +41,9 @@ class MassIndexerController
         $this->myHelper = $myHelper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_non_dev('Error Code: 75ae9f597c');
-    }/*}}}*/
+    }
 
-    public function unindexUser($username)/*{{{*/
+    public function unindexUser($username)
     {
         $username = (string) $username;
         $rootForum = $this->request->variable('f', 0);
@@ -52,30 +52,30 @@ class MassIndexerController
             $rootForum
         );
         return $this->standardJsonResponse($total);
-    }/*}}}*/
+    }
 
-    public function unindexTopic($topicId)/*{{{*/
+    public function unindexTopic($topicId)
     {
         $topicId = (int) $topicId;
         $total = $this->myHelper->unindexAllPostsByTopic($topicId);
         return $this->standardJsonResponse($total);
-    }/*}}}*/
+    }
 
-    public function unindexForum($forumId)/*{{{*/
+    public function unindexForum($forumId)
     {
         $forumId = (int) $forumId;
         $total = $this->myHelper->unindexAllPostsByForum($forumId);
         return $this->standardJsonResponse($total);
-    }/*}}}*/
+    }
 
-    public function unindexGraveyard()/*{{{*/
+    public function unindexGraveyard()
     {
         $forumId = 23;
         $total = $this->myHelper->unindexAllPostsByForum($forumId);
         return $this->standardJsonResponse($total);
-    }/*}}}*/
+    }
 
-    private function standardJsonResponse($total)/*{{{*/
+    private function standardJsonResponse($total)
     {
         return new JsonResponse(
             [
@@ -83,5 +83,5 @@ class MassIndexerController
                 "total_processed" => $total,
             ]
         );
-    }/*}}}*/
+    }
 }

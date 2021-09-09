@@ -10,7 +10,7 @@ class ReactionEventListener implements EventSubscriberInterface
     protected $config;
     protected $sauth;
     protected $myHelper;
-    public function __construct(/*{{{*/
+    public function __construct(
         $user,
         $config,
         $sauth,
@@ -21,16 +21,16 @@ class ReactionEventListener implements EventSubscriberInterface
         $this->sauth = $sauth;
         $this->myHelper = $myHelper;
         $this->user_id = $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.viewtopic_modify_post_row' => [
                 ['showReactions', 1],
             ],
         ];
-    }/*}}}*/
+    }
 
     public function showReactions($event)
     {

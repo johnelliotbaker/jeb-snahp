@@ -9,7 +9,7 @@ class Request
         $this->tbl = $tbl;
     }
 
-    public function getWithTopicId($topicId)/*{{{*/
+    public function getWithTopicId($topicId)
     {
         $topicId = (int) $topicId;
         $sqlArray = [
@@ -22,15 +22,15 @@ class Request
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
-    }/*}}}*/
+    }
 
-    public function updateWithTopicId($topicId, $data)/*{{{*/
+    public function updateWithTopicId($topicId, $data)
     {
         $topicId = (int) $topicId;
         $sql = 'UPDATE ' . $this->tbl['req'] . '
             SET ' . $this->db->sql_build_array('UPDATE', $data) . "
             WHERE tid=${topicId}";
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
 }

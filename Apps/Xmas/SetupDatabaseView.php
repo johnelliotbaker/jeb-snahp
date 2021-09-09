@@ -8,7 +8,7 @@ use \R as R;
 
 class SetupDatabaseView
 {
-    protected $db;/*{{{*/
+    protected $db;
     protected $request;
     protected $sauth;
     public function __construct(
@@ -28,7 +28,7 @@ class SetupDatabaseView
         $this->shortString = str_repeat('x', 254);
         $this->longString = str_repeat('x', 100000);
         $this->sauth->reject_non_dev('Error Code: a7d8c95d04');
-    }/*}}}*/
+    }
 
     public function view()
     {
@@ -100,10 +100,10 @@ class SetupDatabaseView
         $Model->create(['name' => 'votes', 'data' => json_encode([])]);
     }
 
-    public function setupEntry()/*{{{*/
+    public function setupEntry()
     {
         $this->setupBoard();
         $this->setupVote();
         $this->setupConfig();
-    }/*}}}*/
+    }
 }

@@ -19,7 +19,7 @@ class mcp
     protected $tbl;
     protected $sauth;
     protected $foe_helper;
-    public function __construct($db, $user, $config, $request, $template, $container, $helper, $tbl, $sauth, $foe_helper)/*{{{*/
+    public function __construct($db, $user, $config, $request, $template, $container, $helper, $tbl, $sauth, $foe_helper)
     {
         $this->db = $db;
         $this->user = $user;
@@ -34,9 +34,9 @@ class mcp
         $this->user_id = $this->user->data['user_id'];
         $this->redirect_delay = 3;
         $this->redirect_delay_long = 6;
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->sauth->reject_non_dev('Error Code: 46f92d0481');
         switch($mode)
@@ -54,9 +54,9 @@ class mcp
             return $this->respondToggleFreezeAsJson();
         }
         trigger_error('Invalid mode. Error Code: c4116c5568');
-    }/*}}}*/
+    }
 
-    private function respondSaveModReasonAsJson()/*{{{*/
+    private function respondSaveModReasonAsJson()
     {
         $blocker_id = $this->request->variable('blocker_id', 0);
         $blocked_id = $this->request->variable('blocked_id', 0);
@@ -68,9 +68,9 @@ class mcp
             return new JsonResponse(['status' => $b_success]);
         }
         return new JsonResponse(['status' => $b_success, 'reason' => 'Could not write to the database. Error Code: a63424124f']);
-    }/*}}}*/
+    }
 
-    private function respondTogglePermissionTypeAsJson()/*{{{*/
+    private function respondTogglePermissionTypeAsJson()
     {
         $blocker_id = $this->request->variable('blocker_id', 0);
         $blocked_id = $this->request->variable('blocked_id', 0);
@@ -82,9 +82,9 @@ class mcp
             return new JsonResponse(['status' => $b_success]);
         }
         return new JsonResponse(['status' => $b_success, 'reason' => 'Could not write to the database. Error Code: b0f81d6f84']);
-    }/*}}}*/
+    }
 
-    private function respondToggleFreezeAsJson()/*{{{*/
+    private function respondToggleFreezeAsJson()
     {
         $blocker_id = $this->request->variable('blocker_id', 0);
         $blocked_id = $this->request->variable('blocked_id', 0);
@@ -95,9 +95,9 @@ class mcp
             return new JsonResponse(['status' => $b_success], 200);
         }
         return new JsonResponse(['status' => $b_success, 'reason' => 'Could not write to the database. Error Code: ebbf27c64e'], 400);
-    }/*}}}*/
+    }
 
-    private function respondTogglePermaBlockAsJson()/*{{{*/
+    private function respondTogglePermaBlockAsJson()
     {
         $blocker_id = $this->request->variable('blocker_id', 0);
         $blocked_id = $this->request->variable('blocked_id', 0);
@@ -108,9 +108,9 @@ class mcp
             return new JsonResponse(['status' => $b_success]);
         }
         return new JsonResponse(['status' => $b_success, 'reason' => 'Could not write to the database. Error Code: ebbf27c64e']);
-    }/*}}}*/
+    }
 
-    private function respondManage($cfg)/*{{{*/
+    private function respondManage($cfg)
     {
         $target_username = $this->request->variable('username', '');
         if (!$target_username) {
@@ -126,5 +126,5 @@ class mcp
             ]
         );
         return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
-    }/*}}}*/
+    }
 }

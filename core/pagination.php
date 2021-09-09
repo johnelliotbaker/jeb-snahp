@@ -89,7 +89,7 @@ class pagination
         return $html;
     }
 
-    private function get_baseurl($a_exclude=[])/*{{{*/
+    private function get_baseurl($a_exclude=[])
     {
         global $request;
         $request->enable_super_globals();
@@ -102,7 +102,7 @@ class pagination
         }, ARRAY_FILTER_USE_KEY);
         $query = http_build_query($query);
         return $self . '?' . $query;
-    }/*}}}*/
+    }
 
     public function make($base_url=null, $total=0, $per_page=0, $start=0)
     {

@@ -32,7 +32,7 @@ class api_proxy
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
         $this->key = 'KdAxWqOkdsboMf1Kc8A';
-    }/*}}}*/
+    }
 
     public function handle($mode)/*{{{*/
     {
@@ -46,7 +46,7 @@ class api_proxy
             return $this->respond_goodreads_as_json();
         }
         trigger_error('Invalide mode. Error Code: 1c53aa401a');
-    }/*}}}*/
+    }
 
     // private function respond_goodreads_from_book_id_with_json($book_id)
     private function respond_goodreads_as_json()

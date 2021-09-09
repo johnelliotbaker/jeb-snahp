@@ -7,7 +7,7 @@ use jeb\snahp\core\invite_helper;
 class bank_helper
 {
 
-/*{{{*/
+
     protected $config;
     protected $db;
     protected $auth;
@@ -24,7 +24,7 @@ class bank_helper
         \phpbb\user $user,
         \phpbb\cache\driver\driver_interface $cache,
         $phpbb_container,
-        $tbl) /*{{{*/
+        $tbl) 
     {
         $this->config = $config;
         $this->db = $db;
@@ -40,7 +40,7 @@ class bank_helper
         $this->success = [true, 'Success'];
     }/*}}}*/
 
-    public function get_account_balance($user_id=null)/*{{{*/
+    public function get_account_balance($user_id=null)
     {
         $user_id = $user_id===null ? $this->user_id : $user_id;
         $sql = 'SELECT snp_bank_n_token FROM ' . USERS_TABLE . " WHERE user_id=${user_id}";
@@ -51,7 +51,7 @@ class bank_helper
         return $row['snp_bank_n_token'];
     }/*}}}*/
 
-    public function append_exchange_to_transaction($amount, $transaction_id, $comment='')/*{{{*/
+    public function append_exchange_to_transaction($amount, $transaction_id, $comment='')
     {
         $amount = (int) $amount;
         $amount = $amount >= 0 ? $amount : 0;
@@ -65,7 +65,7 @@ class bank_helper
         $this->append_to_transaction($transaction_id, $data);
     }/*}}}*/
 
-    public function withdraw($amount, $transaction_id, $comment='')/*{{{*/
+    public function withdraw($amount, $transaction_id, $comment='')
     {
         $amount = (int) $amount;
         $amount = $amount >= 0 ? $amount : 0;
@@ -81,14 +81,14 @@ class bank_helper
         $this->append_to_transaction($transaction_id, $data);
     }/*}}}*/
 
-    public function create_transaction_and_withdraw($amount, $user_id, $broker_id=-1, $comment='')/*{{{*/
+    public function create_transaction_and_withdraw($amount, $user_id, $broker_id=-1, $comment='')
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
         $this->withdraw($amount, $transaction_id, $comment);
         return $transaction_id;
     }/*}}}*/
 
-    public function deposit($amount, $transaction_id, $comment='')/*{{{*/
+    public function deposit($amount, $transaction_id, $comment='')
     {
         $amount = (int) $amount;
         $amount = $amount >= 0 ? $amount : 0;
@@ -104,14 +104,14 @@ class bank_helper
         $this->append_to_transaction($transaction_id, $data);
     }/*}}}*/
 
-    public function create_transaction_and_deposit($amount, $user_id, $broker_id=-1, $comment='')/*{{{*/
+    public function create_transaction_and_deposit($amount, $user_id, $broker_id=-1, $comment='')
     {
         $transaction_id = $this->create_transaction($user_id, $broker_id);
         $this->deposit($amount, $transaction_id, $comment);
         return $transaction_id;
     }/*}}}*/
 
-    public function get_exchange_rates($where='1=1', $b_firstrow=false)/*{{{*/
+    public function get_exchange_rates($where='1=1', $b_firstrow=false)
     {
         $sql = 'SELECT * FROM ' . $this->tbl_exchange_rates . " WHERE ${where}";
         $result = $this->db->sql_query($sql);
@@ -124,13 +124,13 @@ class bank_helper
         return $rowset;
     }/*}}}*/
 
-    private function get_exchange_rate($id)/*{{{*/
+    private function get_exchange_rate($id)
     {
         $id = (int) $id;
         return $this->get_exchange_rates("id=${id}", $b_firstrow=true);
     }/*}}}*/
 
-    private function withdraw_token_from_user($user_id, $amount)/*{{{*/
+    private function withdraw_token_from_user($user_id, $amount)
     {
         $amount = (int) $amount;
         $deposit_strn = "snp_bank_n_token=snp_bank_n_token-${amount}";
@@ -138,7 +138,7 @@ class bank_helper
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function deposit_token_to_user($user_id, $amount)/*{{{*/
+    private function deposit_token_to_user($user_id, $amount)
     {
         $amount = (int) $amount;
         $deposit_strn = "snp_bank_n_token=snp_bank_n_token+${amount}";
@@ -146,7 +146,7 @@ class bank_helper
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function perform_exchange($exchange_rate_id, $direction, $amount)/*{{{*/
+    public function perform_exchange($exchange_rate_id, $direction, $amount)
     {
         $user_id = $this->user_id;
         $exchange_rate_id = (int) $exchange_rate_id;
@@ -176,7 +176,7 @@ class bank_helper
         return $this->success;
     }/*}}}*/
 
-    private function exchange_invitation_points_for_tokens($amount, $user_id, $exchange_rate)/*{{{*/
+    private function exchange_invitation_points_for_tokens($amount, $user_id, $exchange_rate)
     {
         $ih = new invite_helper(
             $this->container, $this->user, $this->auth, null,
@@ -198,7 +198,7 @@ class bank_helper
         return $this->success;
     }/*}}}*/
 
-    public function decrease_invitation_points($amount, $user_id)/*{{{*/
+    public function decrease_invitation_points($amount, $user_id)
     {
         $ih = new invite_helper(
             $this->container, $this->user, $this->auth, null,
@@ -206,19 +206,19 @@ class bank_helper
         $ih->decrease_invite_points($user_id, $amount);
     }/*}}}*/
 
-    public function exchange($type_name, $direction, $amount)/*{{{*/
+    public function exchange($type_name, $direction, $amount)
     {
         [$b, $status] = $this->perform_exchange($type_name, $direction, $amount);
     }/*}}}*/
 
-    private function append_to_transaction($transaction_id, $data)/*{{{*/
+    private function append_to_transaction($transaction_id, $data)
     {
         $data['transaction_id'] = $transaction_id;
         $sql = 'INSERT INTO ' . $this->tbl_transaction_items . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    private function create_transaction($user_id, $broker_id=-1)/*{{{*/
+    private function create_transaction($user_id, $broker_id=-1)
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
@@ -233,7 +233,7 @@ class bank_helper
         return (int) $this->db->sql_nextid();
     }/*}}}*/
 
-    public function get_transaction_history($user_id)/*{{{*/
+    public function get_transaction_history($user_id)
     {
         $maxi_query = 10;
         $cooldown = 0;
@@ -263,7 +263,7 @@ class bank_helper
         return $rowset;
     }/*}}}*/
 
-    private function get_transaction($transaction_id)/*{{{*/
+    private function get_transaction($transaction_id)
     {
         $sql = 'SELECT * from ' . $this->tbl_transactions . " WHERE id={$transaction_id}";
         $result = $this->db->sql_query($sql);

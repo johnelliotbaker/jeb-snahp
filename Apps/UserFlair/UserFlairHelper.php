@@ -10,7 +10,7 @@ class UserFlairHelper
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -37,9 +37,9 @@ class UserFlairHelper
         $this->styleType = 'light';
         $this->cache = [];
         $this->setupStyleInfo();
-    }/*}}}*/
+    }
 
-    public function getFlairTypes()/*{{{*/
+    public function getFlairTypes()
     {
         if (!isset($this->flairTypes)) {
             foreach ($this->typeModel->getQueryset() as $type) {
@@ -47,14 +47,14 @@ class UserFlairHelper
             }
         }
         return $this->flairTypes ? $this->flairTypes : [];
-    }/*}}}*/
+    }
 
-    public function getData($bean)/*{{{*/
+    public function getData($bean)
     {
         return json_decode(($bean->data), true);
-    }/*}}}*/
+    }
 
-    public function getTypeData($bean)/*{{{*/
+    public function getTypeData($bean)
     {
         // Not sure why flair type has two levels of "data"
         $data = $this->getData($bean);
@@ -63,19 +63,19 @@ class UserFlairHelper
             unset($data['data']);
         }
         return array_merge($data, $datadata);
-    }/*}}}*/
+    }
 
-    public function wipeFlairTable()/*{{{*/
+    public function wipeFlairTable()
     {
         $this->flairModel->wipe();
-    }/*}}}*/
+    }
 
-    public function wipeTypeTable()/*{{{*/
+    public function wipeTypeTable()
     {
         $this->typeModel->wipe();
-    }/*}}}*/
+    }
 
-    public function makeHtml($user)/*{{{*/
+    public function makeHtml($user)
     {
         $userId = (int) $user['id'];
         if (isset($this->cache[$userId])) {
@@ -114,9 +114,9 @@ class UserFlairHelper
         $html = "<div class='rx_user_flair' data-data='${res}'></div>";
         $this->cache[$userId] = $html;
         return $html;
-    }/*}}}*/
+    }
 
-    public function chooseStyleData($data)/*{{{*/
+    public function chooseStyleData($data)
     {
         // Every style is guaranteed to include this style
         $FIXED_STYLE_NAME = 'prosilver';
@@ -126,9 +126,9 @@ class UserFlairHelper
             }
         }
         return $data;
-    }/*}}}*/
+    }
 
-    public function setupStyleInfo()/*{{{*/
+    public function setupStyleInfo()
     {
         $userStyle = $this->user->data['user_style'];
         $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
@@ -155,10 +155,10 @@ class UserFlairHelper
             $this->styleName = 'hexagon';
             break;
         }
-    }/*}}}*/
+    }
 }
 
-function hasRequiredFields($data, $fields)/*{{{*/
+function hasRequiredFields($data, $fields)
 {
     if (!$fields) {
         return true;
@@ -169,9 +169,9 @@ function hasRequiredFields($data, $fields)/*{{{*/
         }
     }
     return true;
-}/*}}}*/
+}
 
-function chooseRandomData($data)/*{{{*/
+function chooseRandomData($data)
 {
     // If field is array, choose random element
     // But some fields like "style" should pass through
@@ -182,12 +182,12 @@ function chooseRandomData($data)/*{{{*/
         }
     }
     return $data;
-}/*}}}*/
+}
 
-function removeFields($data, $fields)/*{{{*/
+function removeFields($data, $fields)
 {
     foreach ($fields as $field) {
         unset($data[$field]);
     }
     return $data;
-}/*}}}*/
+}

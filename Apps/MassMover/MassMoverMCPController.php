@@ -29,7 +29,7 @@ class MassMoverMCPController
         $sauth,
         $myHelper,
         $formHelper
-    )/*{{{*/ {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -42,9 +42,9 @@ class MassMoverMCPController
         $this->myHelper = $myHelper;
         $this->formHelper = $formHelper;
         $this->userId = (int) $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         $this->sauth->reject_non_dev('Error Code: 997d304b9d');
         switch ($mode) {
@@ -56,9 +56,9 @@ class MassMoverMCPController
             break;
         }
         trigger_error('Nothing to see here. Move along. Error Code: c8e92b5051');
-    }/*}}}*/
+    }
 
-    public function respondMassMover($cfg)/*{{{*/
+    public function respondMassMover($cfg)
     {
         $required = [
             'username'=>'', 'quantity'=>1, 'from_forum_id'=>4, 'to_forum_id'=>23,
@@ -89,11 +89,11 @@ class MassMoverMCPController
         $rv['topics_list'] = $userTopics;
         $this->formHelper->setTemplateVars($rv);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    private function _embedSubforumSelector($varname, $selectId)/*{{{*/
+    private function _embedSubforumSelector($varname, $selectId)
     {
         $subforumSelectorHTML = $this->myHelper->makeSubforumSelectorHTML($selectId);
         $this->template->assign_var($varname, $subforumSelectorHTML);
-    }/*}}}*/
+    }
 }

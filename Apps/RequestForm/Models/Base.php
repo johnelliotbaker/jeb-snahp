@@ -8,39 +8,39 @@ class Base
     public $data;
     public $contentFields = [];
 
-    public function __get($name)/*{{{*/
+    public function __get($name)
     {
-    }/*}}}*/
+    }
 
-    public function __set($name, $value)/*{{{*/
+    public function __set($name, $value)
     {
         $this->{$name} = $value;
-    }/*}}}*/
+    }
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
         $this->data = [
             'type' => strtolower($this::TYPE),
             'title' => 'No Title',
             'content' => [],
         ];
-    }/*}}}*/
+    }
 
-    public function makeBBCode()/*{{{*/
+    public function makeBBCode()
     {
         if ($this->canMakeBBCode()) {
             return '[request]'
                 . json_encode($this->makeData(), JSON_PRETTY_PRINT)
                 . '[/request]';
         }
-    }/*}}}*/
+    }
 
-    public function canMakeBBCode()/*{{{*/
+    public function canMakeBBCode()
     {
         return $this::TYPE !== 'NULL';
-    }/*}}}*/
+    }
 
-    public function makeData()/*{{{*/
+    public function makeData()
     {
         foreach ($this->contentFields as $field) {
             $value = $this->{$field};
@@ -58,5 +58,5 @@ class Base
             }
         }
         return $this->data;
-    }/*}}}*/
+    }
 }

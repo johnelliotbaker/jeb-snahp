@@ -6,7 +6,7 @@ class BoilerplateHelper
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $template;
     protected $tbl;
@@ -24,5 +24,5 @@ class BoilerplateHelper
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
-    }/*}}}*/
+    }
 }

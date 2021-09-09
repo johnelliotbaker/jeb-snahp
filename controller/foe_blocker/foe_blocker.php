@@ -23,7 +23,7 @@ class foe_blocker
     $db, $user, $config, $request, $template, $container, $helper,
     $tbl,
     $sauth, $foe_helper
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -41,7 +41,7 @@ class foe_blocker
         $this->u_manage = $this->helper->route('jeb_snahp_routing.foe_blocker', ['mode'=>'manage']);
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         if (!$this->sauth->user_belongs_to_groupset($this->user_id, 'TU+'))
         {
@@ -65,7 +65,7 @@ class foe_blocker
         trigger_error('Invalide mode. Error Code: 1ac9ef6655');
     }/*}}}*/
 
-    private function select_blocked_users($blocker_id=null, $blocked_id=null)/*{{{*/
+    private function select_blocked_users($blocker_id=null, $blocked_id=null)
     {
         $blocker_id = $blocker_id===null ? $this->user_id : (int) $blocker_id;
         $where = "a.blocker_id=${blocker_id}";
@@ -93,7 +93,7 @@ class foe_blocker
         return $rowset;
     }/*}}}*/
 
-    private function username2userid($username)/*{{{*/
+    private function username2userid($username)
     {
         $username_clean = utf8_clean_string($this->db->sql_escape($username));
         $sql = 'SELECT user_id from ' . USERS_TABLE . " WHERE username_clean='${username_clean}'";
@@ -103,7 +103,7 @@ class foe_blocker
         return $row ? (int) $row['user_id'] : 0;
     }/*}}}*/
 
-    private function select_post($post_id)/*{{{*/
+    private function select_post($post_id)
     {
         $post_id = (int) $post_id;
         $sql_array = [
@@ -124,7 +124,7 @@ class foe_blocker
         return $row;
     }/*}}}*/
 
-    private function get_or_reject_post($post_id)/*{{{*/
+    private function get_or_reject_post($post_id)
     {
         $post_data = $this->select_post($post_id);
         if (!$post_data)
@@ -135,7 +135,7 @@ class foe_blocker
         return $post_data;
     }/*}}}*/
 
-    private function validate_or_reject_duration($duration_strn)/*{{{*/
+    private function validate_or_reject_duration($duration_strn)
     {
         $duration_strn = (string) $duration_strn;
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
@@ -148,7 +148,7 @@ class foe_blocker
         return (int) $a_duration[$duration_strn];
     }/*}}}*/
 
-    private function validate_or_reject_block_reason($reason)/*{{{*/
+    private function validate_or_reject_block_reason($reason)
     {
         $reason = (string) $reason;
         if (!$reason)
@@ -159,7 +159,7 @@ class foe_blocker
         return $reason;
     }/*}}}*/
 
-    private function reject_on_frozen($blocked_id, $blocker_id)/*{{{*/
+    private function reject_on_frozen($blocked_id, $blocker_id)
     {
         $block_data = $this->foe_helper->select_blocked_data($blocked_id, $blocker_id);
         if ($block_data && $block_data['b_frozen'] && !$this->sauth->is_dev())
@@ -169,7 +169,7 @@ class foe_blocker
         }
     }/*}}}*/
 
-    private function respond_block()/*{{{*/
+    private function respond_block()
     {
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         if ($this->request->is_set_post('block'))
@@ -205,7 +205,7 @@ class foe_blocker
         trigger_error('Invalid Form. Error Code: 8f57c0072b');
     }/*}}}*/
 
-    private function get_or_reject_user_id_from_username($username)/*{{{*/
+    private function get_or_reject_user_id_from_username($username)
     {
         $blocked_id = $this->username2userid($username);
         if (!$blocked_id)
@@ -216,7 +216,7 @@ class foe_blocker
         return $blocked_id;
     }/*}}}*/
 
-    private function respond_triage_block()/*{{{*/
+    private function respond_triage_block()
     {
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         $triage_username = $this->request->variable('triage_username', '');
@@ -236,7 +236,7 @@ class foe_blocker
         trigger_error("<b>${blocked_id}</b> has been blocked. Redirecting in {$this->redirect_delay} seconds ...");
     }/*}}}*/
 
-    private function respond_manage($cfg)/*{{{*/
+    private function respond_manage($cfg)
     {
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         add_form_key('jeb_snp');
@@ -250,7 +250,7 @@ class foe_blocker
         return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
     }/*}}}*/
 
-    private function generate_order_by_strn($order_by, $order_dir)/*{{{*/
+    private function generate_order_by_strn($order_by, $order_dir)
     {
         switch($order_by)
         {
@@ -274,7 +274,7 @@ class foe_blocker
         return implode(' ', [$order_by, $order_dir]);
     }/*}}}*/
 
-    private function respond_mcp($cfg)/*{{{*/
+    private function respond_mcp($cfg)
     {
         $start = $this->request->variable('start', 0);
         $per_page = $this->request->variable('per_page', 25);
@@ -305,7 +305,7 @@ class foe_blocker
         return $this->helper->render($cfg['tpl_name'], 'Manage User Blocks');
     }/*}}}*/
 
-    private function block_user($post_data, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)/*{{{*/
+    private function block_user($post_data, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)
     {
         if (!$this->foe_helper->can_block($post_data['poster_id']))
         {
@@ -332,7 +332,7 @@ class foe_blocker
         $this->insert_or_update_foe($data);
     }/*}}}*/
 
-    private function emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)/*{{{*/
+    private function emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)
     {
         $blocked_id = (int) $blocked_id;
         if (!$this->sauth->is_valid_user_id($blocked_id))
@@ -363,7 +363,7 @@ class foe_blocker
         $this->insert_or_update_foe($data);
     }/*}}}*/
 
-    private function insert_or_update_foe($data)/*{{{*/
+    private function insert_or_update_foe($data)
     {
         $sql = 'INSERT INTO ' . $this->tbl['foe'] . $this->db->sql_build_array('INSERT', $data) . '
             ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $data);
@@ -372,7 +372,7 @@ class foe_blocker
         $log->log_foe_block($this->user_id, 'ADD_USER', false, $extra=$data);
     }/*}}}*/
 
-    private function respond_unblock()/*{{{*/
+    private function respond_unblock()
     {
         $blocked_id = $this->request->variable('u', 0);
         $blocker_id = $this->user_id;
@@ -389,13 +389,13 @@ class foe_blocker
         trigger_error("You have unblocked <b>${row['blocked_username']}</b>. Redirecting in {$this->redirect_delay} seconds ...");
     }/*}}}*/
 
-    private function unblock_user($blocked_id, $blocker_id=null)/*{{{*/
+    private function unblock_user($blocked_id, $blocker_id=null)
     {
         $blocker_id = $blocker_id===null ? $this->user_id : (int) $blocker_id;
         $this->remove_foe($blocked_id, $blocker_id);
     }/*}}}*/
 
-    private function remove_foe($blocked_id, $blocker_id)/*{{{*/
+    private function remove_foe($blocked_id, $blocker_id)
     {
         $data = [
             'blocker_id' => (int) $blocker_id,

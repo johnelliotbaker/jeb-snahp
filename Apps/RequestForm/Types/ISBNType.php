@@ -9,7 +9,7 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class ISBNType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
@@ -41,5 +41,5 @@ class ISBNType extends AbstractType
                 )
             );
         ;
-    }/*}}}*/
+    }
 }

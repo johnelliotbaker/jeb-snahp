@@ -29,7 +29,7 @@ class ArticleEntry extends Model
     ];
     protected $foreignNameParam = 'group';
 
-    public function __construct($History)/*{{{*/
+    public function __construct($History)
     {
         $this->history = $History;
         parent::__construct();
@@ -43,9 +43,9 @@ class ArticleEntry extends Model
             'priority'  => new IntegerField(['default' => 500]),
             'hash'  => new StringField(['default' => uuid4()]),
         ];
-    }/*}}}*/
+    }
 
-    public function getDiff($instance)/*{{{*/
+    public function getDiff($instance)
     {
         return null;
         $orig = $instance->getMeta('sys.orig');
@@ -55,9 +55,9 @@ class ArticleEntry extends Model
             return ['text' => $diffText, 'subject' => $diffSubject];
         }
         return null;
-    }/*}}}*/
+    }
 
-    public function performPreUpdate($instance)/*{{{*/
+    public function performPreUpdate($instance)
     {
         $instance->author = $this->userId;
         if ($diff = $this->getDiff($instance)) {
@@ -75,9 +75,9 @@ class ArticleEntry extends Model
             $instance->hash = uuid4();
             $instance->modifiedTime = $modifiedTime;
         }
-    }/*}}}*/
+    }
 
-    public function foreign($request)/*{{{*/
+    public function foreign($request)
     {
         $value = $request->variable($this->foreignNameParam, 0);
         if ($value < 1) {
@@ -91,9 +91,9 @@ class ArticleEntry extends Model
             'statement' => "AND ${foreignPkName}=:foreign",
             'data' => [ 'foreign' => $value],
         ];
-    }/*}}}*/
+    }
 
-    public function sort($request)/*{{{*/
+    public function sort($request)
     {
         $allowedSortKeys = ['id'];
         $sortBy = $request->variable('sortBy', '');
@@ -106,9 +106,9 @@ class ArticleEntry extends Model
             return '';
         }
         return "ORDER BY {$sortBy} {$sortOrder}";
-    }/*}}}*/
+    }
 
-    public function mergeQuery($newQuery)/*{{{*/
+    public function mergeQuery($newQuery)
     {
         if (!$newQuery['statement']) {
             return $this->query;
@@ -116,9 +116,9 @@ class ArticleEntry extends Model
         $this->query['statement'] .= ' ' . $newQuery['statement'];
         $this->query['data'] = array_merge($this->query['data'], $newQuery['data']);
         return $this->query;
-    }/*}}}*/
+    }
 
-    public function filter($request)/*{{{*/
+    public function filter($request)
     {
         $sqls[] = $this->foreign($request);
         foreach ($sqls as $sql) {
@@ -127,16 +127,16 @@ class ArticleEntry extends Model
         $sortSnippet = $this->sort($request);
         $result = R::find($this::TABLE_NAME, $this->query['statement'], $this->query['data'], $sortSnippet);
         return $result;
-    }/*}}}*/
+    }
 
-    public function performPreCreate($data)/*{{{*/
+    public function performPreCreate($data)
     {
         $data['author'] = $this->userId;
         return $data;
-    }/*}}}*/
+    }
 
-    public function getObjectFromSubject($subject)/*{{{*/
+    public function getObjectFromSubject($subject)
     {
         return R::findOne($this::TABLE_NAME, 'subject=?', [$subject]);
-    }/*}}}*/
+    }
 }

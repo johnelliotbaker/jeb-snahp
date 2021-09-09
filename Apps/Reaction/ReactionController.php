@@ -12,7 +12,7 @@ class ReactionController
     const POST_REACTION_LIMIT = 100;
     const TYPES = ['ack', 'music', 'more']; // Match vs rx:config/config.js
 
-    protected $db;/*{{{*/
+    protected $db;
     protected $user;
     protected $config;
     protected $request;
@@ -46,27 +46,27 @@ class ReactionController
         $this->myHelper = $myHelper;
         $this->userId = (int) $this->user->data['user_id'];
         $this->sauth->reject_anon('Error Code: 6572a0d111');
-    }/*}}}*/
+    }
 
-    public function retrieveView($id)/*{{{*/
+    public function retrieveView($id)
     {
         $methodName = $this->request->server('REQUEST_METHOD', 'GET');
         if ($methodName != 'GET') {
             return new JsonResponse([]);
         }
         return $this->respondRetrieveAsJson($id);
-    }/*}}}*/
+    }
 
-    public function respondRetrieveAsJson($id)/*{{{*/
+    public function respondRetrieveAsJson($id)
     {
         if ($id===0) {
             return new JsonResponse([]);
         }
         $row = $this->myHelper->getReactionById($id);
         return $row ? new JsonResponse($row) : new JsonResponse([]);
-    }/*}}}*/
+    }
 
-    public function createListView()/*{{{*/
+    public function createListView()
     {
         $methodName = $this->request->server('REQUEST_METHOD', 'GET');
         switch ($methodName) {
@@ -78,9 +78,9 @@ class ReactionController
             return $this->respondReactionsAsJson();
         }
         return new JsonResponse(["method"=>$methodName]);
-    }/*}}}*/
+    }
 
-    private function respondAddOrUpdateAsJson()/*{{{*/
+    private function respondAddOrUpdateAsJson()
     {
         $userId = (int) $this->userId;
         // $userId = rand(48, 73);
@@ -92,16 +92,16 @@ class ReactionController
         $this->validateAddReactionData($userId, $postId, $type);
         $this->myHelper->addOrUpdate($userId, $type, $postId, $message);
         return new JsonResponse(['status' => $this::SUCCESS]);
-    }/*}}}*/
+    }
 
-    private function validateAddReactionData($userId, $postId, $type)/*{{{*/
+    private function validateAddReactionData($userId, $postId, $type)
     {
         if (in_array(0, [$userId, $postId]) || !in_array($type, $this::TYPES)) {
             trigger_error("Invalid data. Error Code: c3d3f43902");
         }
-    }/*}}}*/
+    }
 
-    private function respondReactionsAsJson()/*{{{*/
+    private function respondReactionsAsJson()
     {
         $postId = $this->request->variable('p', 0);
         if (!$postId) {
@@ -112,5 +112,5 @@ class ReactionController
             $this::POST_REACTION_LIMIT
         );
         return new JsonResponse($rowset);
-    }/*}}}*/
+    }
 }

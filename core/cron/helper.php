@@ -16,7 +16,7 @@ class helper
         $tbl,
         $sauth
     )
-    {/*{{{*/
+    {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -25,13 +25,13 @@ class helper
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->user_id = (int) $this->user->data['user_id'];
-    }/*}}}*/
+    }
 
-    public function add_log_item($data)/*{{{*/
+    public function add_log_item($data)
     {
         $sql = 'INSERT INTO ' . $this->tbl['cron_log'] . ' ' . $this->db->sql_build_array('INSERT', $data);
         $this->db->sql_query($sql);
-    }/*}}}*/
+    }
 
     public function log($type_name='feedpostbot', $item_name='hourly', $status='log')
     {

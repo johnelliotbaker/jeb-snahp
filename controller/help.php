@@ -9,11 +9,11 @@ class help extends base
 
     protected $base_url = '';
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -36,12 +36,12 @@ class help extends base
         }
 	}/*}}}*/
 
-    public function docs($cfg)/*{{{*/
+    public function docs($cfg)
     {
         return $this->show_docs($cfg);
     }/*}}}*/
 
-    private function show_docs($cfg)/*{{{*/
+    private function show_docs($cfg)
     {
         $name = $this->request->variable('name', '');
         switch($name)

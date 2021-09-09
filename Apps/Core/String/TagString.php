@@ -3,10 +3,10 @@ namespace jeb\snahp\Apps\Core\String;
 
 class TagString
 {
-    public function __construct($tags)/*{{{*/
+    public function __construct($tags)
     {
         $this->def = $tags;
-    }/*}}}*/
+    }
 
     public function decodeTags($strn, $tags)
     {

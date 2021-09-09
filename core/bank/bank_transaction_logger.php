@@ -20,7 +20,7 @@ class bank_transaction_logger
         return $this->append_to_transaction($transaction_id, $data);
     }
 
-    public function append_to_transaction($transaction_id, $data)/*{{{*/
+    public function append_to_transaction($transaction_id, $data)
     {
         $data['transaction_id'] = $transaction_id;
         $sql = 'INSERT INTO ' . $this->tbl['bank_transaction_items'] . $this->db->sql_build_array('INSERT', $data);
@@ -28,7 +28,7 @@ class bank_transaction_logger
         return $this->db->sql_affectedrows() > 0;
     }/*}}}*/
 
-    public function create_transaction($user_id, $broker_id=-1)/*{{{*/
+    public function create_transaction($user_id, $broker_id=-1)
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;

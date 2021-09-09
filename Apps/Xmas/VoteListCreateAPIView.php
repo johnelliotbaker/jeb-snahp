@@ -30,7 +30,7 @@ class VoteListCreateAPIView extends ListCreateAPIView
         ];
     }
 
-    public function performPreCreate($serializer)/*{{{*/
+    public function performPreCreate($serializer)
     {
         $schedule = getXmasConfig('schedule', 0);
         $index = getTimeIndex(
@@ -50,9 +50,9 @@ class VoteListCreateAPIView extends ListCreateAPIView
         $serializer->_validatedData['user'] = $this->sauth->userId;
         $serializer->_validatedData['period'] = $index;
         return $serializer;
-    }/*}}}*/
+    }
 
-    public function create($request)/*{{{*/
+    public function create($request)
     {
         try {
             return parent::create($request);
@@ -63,6 +63,6 @@ class VoteListCreateAPIView extends ListCreateAPIView
             }
         }
         return new JsonResponse(['status'=>'ERROR', 'message'=>'Unknown Error.'], 400);
-    }/*}}}*/
+    }
 
 }

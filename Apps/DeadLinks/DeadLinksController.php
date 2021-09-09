@@ -20,17 +20,17 @@ class DeadLinksController
         $this->sauth->reject_new_users('Error Code: 0beb743101');
     }
 
-    public function view()/*{{{*/
+    public function view()
     {
         $cfg['tpl_name'] = '@jeb_snahp/deadlinks/rx_deadlinks.html';
         $cfg['title'] = 'Deadlinks Reporter';
         return $this->phpHelper->render($cfg['tpl_name'], $cfg['title']);
-    }/*}}}*/
+    }
 
-    public function setDeadlinksVisibilityInSearch($value)/*{{{*/
+    public function setDeadlinksVisibilityInSearch($value)
     {
         $this->helper->setDeadlinksVisibilityInSearch($this->userId, $value);
         $show = $this->helper->getDeadlinksVisibilityInSearch($this->userId);
         return new JsonResponse(['what' => $show]);
-    }/*}}}*/
+    }
 }

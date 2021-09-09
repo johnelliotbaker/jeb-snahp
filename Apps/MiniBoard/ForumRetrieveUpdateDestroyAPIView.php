@@ -30,15 +30,15 @@ class ForumRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
         $this->model = new Forum();
     }
 
-    public function update($request)/*{{{*/
+    public function update($request)
     {
         $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
         return parent::update($request);
-    }/*}}}*/
+    }
 
-    public function delete($request)/*{{{*/
+    public function delete($request)
     {
         $this->sauth->reject_non_dev('Error Code: 11e18d40f8');
         return parent::delete($request);
-    }/*}}}*/
+    }
 }

@@ -29,7 +29,7 @@ class Vote extends Model
         ];
     }
 
-    public function simulate($period)/*{{{*/
+    public function simulate($period)
     {
         $this->wipe();
         clearVoteCache();
@@ -61,5 +61,5 @@ class Vote extends Model
                 $this->create($data);
             }
         }
-    }/*}}}*/
+    }
 }

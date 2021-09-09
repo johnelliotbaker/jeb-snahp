@@ -9,11 +9,11 @@ class acp_prune_users extends base
 
     protected $base_url = '';
 
-    public function __construct()/*{{{*/
+    public function __construct()
     {
     }/*}}}*/
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         trigger_error('Pruning has been disabled. Error Code: 8b90a23b22');
         $this->reject_non_admin('Error Code: 10d3683c22');
@@ -43,7 +43,7 @@ class acp_prune_users extends base
         }
 	}/*}}}*/
 
-    public function deactivate($cfg)/*{{{*/
+    public function deactivate($cfg)
     {
         include_once('includes/acp/acp_prune.php');
         include_once('includes/functions_user.php');
@@ -163,7 +163,7 @@ class acp_prune_users extends base
         $js->send();
     }/*}}}*/
 
-    public function prune($cfg)/*{{{*/
+    public function prune($cfg)
     {
         include_once('includes/acp/acp_prune.php');
         include_once('includes/functions_user.php');
@@ -227,7 +227,7 @@ class acp_prune_users extends base
         // trigger_error('You are now subscribed to this topic.');
     }/*}}}*/
 
-    public function prune_users($cfg)/*{{{*/
+    public function prune_users($cfg)
     {
         $b_verbose = $cfg['b_verbose'];
         $n_loop = $cfg['n_loop'];
@@ -274,7 +274,7 @@ class acp_prune_users extends base
         $this->send_message(['status'=>'SUCCESS']);
     }/*}}}*/
 
-    private function get_users_inactive_after_count($cfg)/*{{{*/
+    private function get_users_inactive_after_count($cfg)
     {
         $time = $cfg['time'];
         $limit = $cfg['limit'];
@@ -304,7 +304,7 @@ class acp_prune_users extends base
         return 0;
     }
 
-    private function get_users_inactive_after($cfg)/*{{{*/
+    private function get_users_inactive_after($cfg)
     {
         $time = $cfg['time'];
         $limit = $cfg['limit'];
@@ -335,7 +335,7 @@ class acp_prune_users extends base
         return $data;
     }/*}}}*/
 
-    public function send_message($data) {/*{{{*/
+    public function send_message($data) {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();

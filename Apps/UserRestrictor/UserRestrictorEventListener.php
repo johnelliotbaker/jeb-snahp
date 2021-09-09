@@ -12,7 +12,7 @@ class UserRestrictorEventListener implements EventSubscriberInterface
     protected $sauth;
     protected $helper;
     const MSG_PREFIX = 'Your account has been restricted.';
-    public function __construct(/*{{{*/
+    public function __construct(
         $user,
         $config,
         $sauth,
@@ -24,9 +24,9 @@ class UserRestrictorEventListener implements EventSubscriberInterface
         $this->helper = $helper;
         $this->userId = $this->user->data['user_id'];
         $this->restricted = $this->user->data['snp_restricted'];
-    }/*}}}*/
+    }
 
-    public static function getSubscribedEvents()/*{{{*/
+    public static function getSubscribedEvents()
     {
         return [
             'core.posting_modify_submit_post_before' => [
@@ -36,9 +36,9 @@ class UserRestrictorEventListener implements EventSubscriberInterface
                 ['hidePostContent', 2],
             ],
         ];
-    }/*}}}*/
+    }
 
-    public function hidePostContent($event)/*{{{*/
+    public function hidePostContent($event)
     {
         if (!$this->restricted || $this->sauth->is_dev()) {
             return;
@@ -51,9 +51,9 @@ class UserRestrictorEventListener implements EventSubscriberInterface
             $message = 'Your account has been restricted. Error Code: c3ef2fc413';
             $event['post_row'] = $postRow;
         }
-    }/*}}}*/
+    }
 
-    public function restrictPost($event)/*{{{*/
+    public function restrictPost($event)
     {
         $mode = $event['mode'];
         if (!$this->restricted) {
@@ -73,18 +73,18 @@ class UserRestrictorEventListener implements EventSubscriberInterface
             $this->rejectLongPosts($message, 250);
             break;
         }
-    }/*}}}*/
+    }
 
-    public function rejectPostMode($mode)/*{{{*/
+    public function rejectPostMode($mode)
     {
         print_r($MSG_PREFIX);
         trigger_error(self::MSG_PREFIX . " You cannot $mode. Error Code: 6aa8e872ef");
-    }/*}}}*/
+    }
 
-    public function rejectLongPosts($message, $max)/*{{{*/
+    public function rejectLongPosts($message, $max)
     {
         if (strlen($message) > $max) {
             trigger_error(self::MSG_PREFIX . " You cannot make posts longer than ${max} characters. Error Code: fee369ce5a");
         }
-    }/*}}}*/
+    }
 }

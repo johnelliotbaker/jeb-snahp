@@ -23,7 +23,7 @@ class giftbox
     $db, $user, $config, $request, $template, $container, $helper,
     $tbl,
     $sauth, $giftbox_helper
-    )/*{{{*/
+    )
     {
         $this->db = $db;
         $this->user = $user;
@@ -41,7 +41,7 @@ class giftbox
         $this->u_manage = $this->helper->route('jeb_snahp_routing.giftbox', ['mode'=>'manage']);
     }/*}}}*/
 
-    public function handle($mode)/*{{{*/
+    public function handle($mode)
     {
         trigger_error('Event is over. Error Code: 539e6cd572');
         $this->sauth->reject_anon();
@@ -66,21 +66,21 @@ class giftbox
         trigger_error('Invalid mode. Error Code: 39319143d2');
     }/*}}}*/
 
-    private function respond_giveaway_as_stream()/*{{{*/
+    private function respond_giveaway_as_stream()
     {
         $simulate = $this->request->variable('simulate', 1);
         $this->giftbox_helper->manual_giveaway($simulate);
         return new JsonResponse([]);
     }/*}}}*/
 
-    private function respond_simulate_as_stream()/*{{{*/
+    private function respond_simulate_as_stream()
     {
         $n = $this->request->variable('n', 100000);
         $item_def = $this->giftbox_helper->simulate($n);
         return new JsonResponse([]);
     }/*}}}*/
 
-    private function respond_history_as_json()/*{{{*/
+    private function respond_history_as_json()
     {
         $user_id = (int) $this->user_id;
         if ($user_id < 1)
@@ -95,7 +95,7 @@ class giftbox
         return new JsonResponse($data);
     }/*}}}*/
 
-    private function respond_unwrap_status_as_json()/*{{{*/
+    private function respond_unwrap_status_as_json()
     {
         [$status, $time_left] = $this->giftbox_helper->get_unwrap_status($this->user_id);
         $data = [
@@ -105,7 +105,7 @@ class giftbox
         return new JsonResponse($data);
     }/*}}}*/
 
-    private function respond_unwrap_as_json()/*{{{*/
+    private function respond_unwrap_as_json()
     {
         $item_def = $this->giftbox_helper->give_random_item();
         $data = [
@@ -115,7 +115,7 @@ class giftbox
         return new JsonResponse($data);
     }/*}}}*/
 
-    private function respond_set_cycle_time_as_json()/*{{{*/
+    private function respond_set_cycle_time_as_json()
     {
         $cycle_time = $this->request->variable('cycle_time', 86400);
         $this->giftbox_helper->set_cycle_time($cycle_time);

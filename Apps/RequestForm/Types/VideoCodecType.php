@@ -8,7 +8,7 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class VideoCodecType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)/*{{{*/
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $defaultChoices = [
             '264' => '264',
@@ -26,5 +26,5 @@ class VideoCodecType extends AbstractType
                 ]
             );
         ;
-    }/*}}}*/
+    }
 }

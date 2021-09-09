@@ -12,13 +12,13 @@ class bank extends base
     protected $prefix;
     protected $bank_helper;
 
-    public function __construct($prefix, bank_helper $helper)/*{{{*/
+    public function __construct($prefix, bank_helper $helper)
     {
         $this->prefix = $prefix;
         $this->bank_helper = $helper;
-    }/*}}}*/
+    }
 
-	public function handle($mode)/*{{{*/
+	public function handle($mode)
 	{
         $this->reject_anon();
         switch ($mode)
@@ -37,15 +37,15 @@ class bank extends base
             trigger_error('Error Code: 85d7d3d7a2');
             break;
         }
-	}/*}}}*/
+	}
 
-    public function test($cfg)/*{{{*/
+    public function test($cfg)
     {
         $this->bank_helper->exchange('invitation_points', 'sell', 10);
         // $this->bank_helper->withdraw();
         // $this->bank_helper->exchange();
         $js = new \phpbb\json_response();
         return $js->send([]);
-    }/*}}}*/
+    }
 
 }

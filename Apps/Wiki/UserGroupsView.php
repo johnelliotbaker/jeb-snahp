@@ -15,9 +15,9 @@ class UserGroupsView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->sauth->reject_anon('Error Code: cee5910f65');
-    }/*}}}*/
+    }
 
-    public function view()/*{{{*/
+    public function view()
     {
         if (!$this->sauth->is_dev()) {
             throw new \Exception('You do not have the permission to access this page. Error Code: 08c20676d9');
@@ -28,5 +28,5 @@ class UserGroupsView
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         return new JsonResponse($rowset);
-    }/*}}}*/
+    }
 }

@@ -5,7 +5,7 @@ namespace jeb\snahp\core;
 class string_util
 
 {
-    public function ignore_pattern($f, $ptn)/*{{{*/
+    public function ignore_pattern($f, $ptn)
     {
         $encode = function ($ptn, $strn)
         {
@@ -32,13 +32,13 @@ class string_util
             return $strn;
         };
         return $wrapper;
-    }/*}}}*/
+    }
 
-    public function ignore_codeblock($f)/*{{{*/
+    public function ignore_codeblock($f)
     {
         $ptn_code = '#\<code\>(.*?)\<\/code\>#s';
         return $this->ignore_pattern($f, $ptn_code);
-    }/*}}}*/
+    }
 
 }
 
