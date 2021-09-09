@@ -15,13 +15,11 @@ class acp_invite extends base
 
     public function handle($mode)
     {
-        if (!$this->config['snp_inv_b_master'])
-        {
+        if (!$this->config['snp_inv_b_master']) {
             trigger_error('Invite system is disabled by the administrator.');
         }
         $this->invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'test':
             $this->reject_non_admin('Error Code: c279756d47');
             $cfg = [];
@@ -56,8 +54,7 @@ class acp_invite extends base
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $rowset = $this->select_groups();
             foreach ($rowset as $row) {
                 $this->template->assign_block_vars('A', $row);
@@ -72,8 +69,7 @@ class acp_invite extends base
         header('Cache-Control: no-cache');
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $gid = (int) $this->request->variable('gid', '0');
-        if (!$gid)
-        {
+        if (!$gid) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
             return $js->send([]);
         }
@@ -86,28 +82,25 @@ class acp_invite extends base
         $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE $where";
         $i = 0;
         $this->send_message(['status'=>'START', 'i' => $i, 'total' => $total]);
-        try
-        {
+        try {
             $result = $this->db->sql_query($sql);
-            while($row = $this->db->sql_fetchrow($result))
-            {
+            while ($row = $this->db->sql_fetchrow($result)) {
                 $i += 1;
                 $user_id = $row['user_id'];
                 $invite_user_data = $this->invite_helper->select_invite_users($where="i.user_id={$user_id}");
-                if (!$invite_user_data) continue;
+                if (!$invite_user_data) {
+                    continue;
+                }
                 $sql = 'UPDATE ' . $tbl['invite_users'] . ' SET ' .
                     'n_available=0 WHERE user_id=' . $user_id;
                 $this->db->sql_query($sql);
                 $this->invite_helper->delete_valid_invite_from_user($user_id);
-                if ($i % 10 == 0)
-                {
+                if ($i % 10 == 0) {
                     $this->send_message(['status' => 'PROGRESS', 'i' => $i, 'total' => $total]);
                 }
             }
             $this->db->sql_freeresult($result);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
         }
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
@@ -121,8 +114,7 @@ class acp_invite extends base
         header('Cache-Control: no-cache');
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $gid = (int) $this->request->variable('gid', '0');
-        if (!$gid)
-        {
+        if (!$gid) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
             return $js->send([]);
         }
@@ -136,27 +128,24 @@ class acp_invite extends base
         $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE $where";
         $i = 0;
         $this->send_message(['status'=>'START', 'i' => $i, 'total' => $total]);
-        try
-        {
+        try {
             $result = $this->db->sql_query($sql);
-            while($row = $this->db->sql_fetchrow($result))
-            {
+            while ($row = $this->db->sql_fetchrow($result)) {
                 $i += 1;
                 $user_id = $row['user_id'];
                 $invite_user_data = $this->invite_helper->select_invite_users($where="i.user_id={$user_id}");
-                if (!$invite_user_data) continue;
+                if (!$invite_user_data) {
+                    continue;
+                }
                 $sql = 'UPDATE ' . $tbl['invite_users'] . ' SET ' .
                     'n_available = n_available+' . $n_to_give . ' WHERE user_id=' . $user_id;
                 $this->db->sql_query($sql);
-                if ($i % 10 == 0)
-                {
+                if ($i % 10 == 0) {
                     $this->send_message(['status' => 'PROGRESS', 'i' => $i, 'total' => $total]);
                 }
             }
             $this->db->sql_freeresult($result);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
         }
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
@@ -169,7 +158,9 @@ class acp_invite extends base
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
         $gid = (int) $this->request->variable('gid', '0');
-        if (!$gid) return $js->send([]);
+        if (!$gid) {
+            return $js->send([]);
+        }
         $n_to_give = (int) $this->request->variable('n', 0);
         $where = "group_id={$gid}";
         $sql = 'SELECT COUNT(*) as total FROM ' . USERS_TABLE . " WHERE $where";
@@ -181,22 +172,17 @@ class acp_invite extends base
         $result = $this->db->sql_query($sql);
         $i = 0;
         $this->send_message(['status'=>'START', 'i' => $i, 'total' => $total]);
-        try
-        {
-            while($row = $this->db->sql_fetchrow($result))
-            {
+        try {
+            while ($row = $this->db->sql_fetchrow($result)) {
                 $i += 1;
                 $user_id = $row['user_id'];
                 $this->invite_helper->insert_invite_users([$user_id], $n_to_give);
-                if ($i % 10 == 0)
-                {
+                if ($i % 10 == 0) {
                     $this->send_message(['status' => 'PROGRESS', 'i' => $i, 'total' => $total]);
                 }
             }
             $this->db->sql_freeresult($result);
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
         }
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
@@ -211,19 +197,16 @@ class acp_invite extends base
         $js->send($data);
     }
 
-    function select_user($where, $b_list=false, $start=0, $limit=100)
+    public function select_user($where, $b_list=false, $start=0, $limit=100)
     {
-        $sql = 'SELECT * FROM ' . USERS_TABLE . 
+        $sql = 'SELECT * FROM ' . USERS_TABLE .
             " WHERE $where";
-        if ($b_list)
-        {
+        if ($b_list) {
             $result = $this->db->sql_query_limit($sql, $limit, $start);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
             return $rowset;
-        }
-        else
-        {
+        } else {
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
@@ -231,11 +214,11 @@ class acp_invite extends base
         }
     }
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }
-
 }

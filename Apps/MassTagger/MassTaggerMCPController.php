@@ -75,7 +75,8 @@ class MassTaggerMCPController
         return array_map(
             function ($arg) {
                 return preg_replace('#^cb-#', '', $arg);
-            }, $checkboxNames
+            },
+            $checkboxNames
         );
     }
 

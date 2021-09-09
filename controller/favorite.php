@@ -205,7 +205,7 @@ class favorite extends base
                 $a_img_url = $this->container->getParameter('jeb.snahp.fav')['production']['img'];
             }
             $fid_listings = $this->config['snp_fid_listings'];
-            // Process submitted form 
+            // Process submitted form
             if ($this->request->is_set_post('submit')) {
                 if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);

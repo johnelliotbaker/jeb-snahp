@@ -96,7 +96,7 @@ class ThrottleHelper
     {
         try {
             $row = $this->getUserVisitStatistics($userId);
-        }  catch (DBEntryDoesNotExist $e) {
+        } catch (DBEntryDoesNotExist $e) {
             $extraData = (new ExtraData());
             $stats = ['user_id' => (int) $userId, 'data' => (string) $extraData];
             $this->createUserVisitStatistics($userId, $stats);

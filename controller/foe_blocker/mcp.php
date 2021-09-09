@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\foe_blocker;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -39,8 +40,7 @@ class mcp
     public function handle($mode)
     {
         $this->sauth->reject_non_dev('Error Code: 46f92d0481');
-        switch($mode)
-        {
+        switch ($mode) {
         case 'manage':
             $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/component/mcp/manage.html';
             return $this->respondManage($cfg);

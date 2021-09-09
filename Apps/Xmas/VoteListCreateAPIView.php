@@ -64,5 +64,4 @@ class VoteListCreateAPIView extends ListCreateAPIView
         }
         return new JsonResponse(['status'=>'ERROR', 'message'=>'Unknown Error.'], 400);
     }
-
 }

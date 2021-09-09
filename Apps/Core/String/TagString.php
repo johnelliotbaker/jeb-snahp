@@ -33,7 +33,8 @@ class TagString
                     return '';
                 }
                 return $match[0];
-            }, $strn
+            },
+            $strn
         );
         $tags = array_unique($tags);
         return [$strn, $tags];
@@ -61,7 +62,4 @@ class TagString
     //     }
     //     return [$strn, $tags];
     // }
-
-
-
 }

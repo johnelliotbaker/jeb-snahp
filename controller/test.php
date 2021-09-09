@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
@@ -20,11 +21,18 @@ class test
     protected $sauth;
 
     public function __construct(
-        $db, $user, $auth, $config, $request, $template, $container, $helper, $cache,
+        $db,
+        $user,
+        $auth,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $cache,
         $tbl,
         $sauth
-    )
-    {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -41,8 +49,7 @@ class test
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'imgcompare':
             $cfg['tpl_name'] = '@jeb_snahp/imgcompare/base.html';
             $cfg['title'] = 'Test';
@@ -81,5 +88,4 @@ class test
     {
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
     }
-
 }

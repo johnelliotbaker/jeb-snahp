@@ -14,12 +14,18 @@ class logger
     protected $tbl;
     protected $sauth;
     protected $sql_limit;
-	public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper, $config_text,
+    public function __construct(
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $config_text,
         $tbl,
         $sauth
-	)
-	{
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -33,11 +39,13 @@ class logger
         $this->log_varname = 'devlog_posting';
         $this->sql_limit = 500;
         $this->user_id = $this->user->data['user_id'];
-	}
+    }
 
     private function is_type_allowed($data)
     {
-        if (!$data || !isset($data['type'])) { return false; }
+        if (!$data || !isset($data['type'])) {
+            return false;
+        }
         $type = $data['type'];
         return $this->config['snp_log_b_' . $type];
     }
@@ -51,7 +59,9 @@ class logger
 
     public function log($data)
     {
-        if (!$this->is_type_allowed($data)) { return false; }
+        if (!$this->is_type_allowed($data)) {
+            return false;
+        }
         $data['user_id'] = isset($data['user_id']) ? $data['user_id'] : $this->user_id;
         return $this->insert_log($data);
     }
@@ -62,11 +72,10 @@ class logger
         return $this->select_log($where);
     }
 
-    private function select_log($where='1=1', $order_by='id DESC', $b_single=False)
+    private function select_log($where='1=1', $order_by='id DESC', $b_single=false)
     {
         $sql = 'SELECT * FROM ' . $this->tbl['log'] . " WHERE ${where} ORDER BY ${order_by}";
-        if ($b_single)
-        {
+        if ($b_single) {
             $result = $this->db->sql_query($sql);
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
@@ -106,8 +115,7 @@ class logger
         $udata = $this->user->data;
         $timestrn = $udata['snp_log_visit_timestamps'];
         $a_time = explode(',', $timestrn);
-        if (count($a_time) != $n_buffer || !is_numeric($a_time[0]))
-        {
+        if (count($a_time) != $n_buffer || !is_numeric($a_time[0])) {
             $this->reset_user_visit_time($user_id);
             return false;
         }
@@ -146,13 +154,13 @@ class logger
 
     public function get_count($sql_array)
     {
-		$count_logs_sql_ary = $sql_array;
-		$count_logs_sql_ary['SELECT'] = 'COUNT(id) AS total_entries';
-		unset($count_logs_sql_ary['ORDER_BY']);
-		$sql = $this->db->sql_build_query('SELECT', $count_logs_sql_ary);
-		$result = $this->db->sql_query($sql);
-		$count = (int) $this->db->sql_fetchfield('total_entries');
-		$this->db->sql_freeresult($result);
+        $count_logs_sql_ary = $sql_array;
+        $count_logs_sql_ary['SELECT'] = 'COUNT(id) AS total_entries';
+        unset($count_logs_sql_ary['ORDER_BY']);
+        $sql = $this->db->sql_build_query('SELECT', $count_logs_sql_ary);
+        $result = $this->db->sql_query($sql);
+        $count = (int) $this->db->sql_fetchfield('total_entries');
+        $this->db->sql_freeresult($result);
         return $count;
     }
 
@@ -189,5 +197,4 @@ class logger
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
     }
-
 }

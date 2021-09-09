@@ -10,10 +10,14 @@ use phpbb\db\migration\container_aware_migration;
 class v_0_36_8 extends container_aware_migration
 {
     public function effectively_installed()
-    { return false; }
+    {
+        return false;
+    }
 
-    static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_36_7']; }
+    public static function depends_on()
+    {
+        return ['\jeb\snahp\migrations\v_0_36_7'];
+    }
 
     public function update_schema()
     {
@@ -40,7 +44,7 @@ class v_0_36_8 extends container_aware_migration
                 $this->table_prefix . 'users' => [
                     'snp_mute_topic', 'snp_mute_reply'
                 ],
-            ],              
+            ],
         ];
     }
 
@@ -50,5 +54,4 @@ class v_0_36_8 extends container_aware_migration
             ['config.add', ['snp_mute_b_master', 1]],
         ];
     }
-
 }

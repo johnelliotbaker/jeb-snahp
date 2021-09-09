@@ -17,7 +17,7 @@ class v_0_6_0 extends \phpbb\db\migration\migration
         return false;
     }
 
-    static public function depends_on()
+    public static function depends_on()
     {
         return array(
             '\jeb\snahp\migrations\v_0_5_0',
@@ -35,7 +35,7 @@ class v_0_6_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return array(
-			array('config.add', array('snp_b_notify_op_on_report', 1)),
+            array('config.add', array('snp_b_notify_op_on_report', 1)),
         );
     }
 }

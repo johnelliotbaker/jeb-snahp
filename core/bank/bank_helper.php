@@ -1,20 +1,18 @@
 <?php
 
 namespace jeb\snahp\core\bank;
-use jeb\snahp\core\invite_helper;
 
+use jeb\snahp\core\invite_helper;
 
 class bank_helper
 {
-
-
     protected $config;
     protected $db;
     protected $auth;
     protected $template;
     protected $user;
     protected $cache;
-/*}}}*/
+    /*}}}*/
 
     public function __construct(
         \phpbb\config\config $config,
@@ -24,8 +22,8 @@ class bank_helper
         \phpbb\user $user,
         \phpbb\cache\driver\driver_interface $cache,
         $phpbb_container,
-        $tbl) 
-    {
+        $tbl
+    ) {
         $this->config = $config;
         $this->db = $db;
         $this->auth = $auth;
@@ -47,7 +45,9 @@ class bank_helper
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row) return false;
+        if (!$row) {
+            return false;
+        }
         return $row['snp_bank_n_token'];
     }/*}}}*/
 
@@ -61,7 +61,9 @@ class bank_helper
             'data' => serialize(['comment' => $comment]),
         ];
         $transaction_data = $this->get_transaction($transaction_id);
-        if (!$transaction_data) return false;
+        if (!$transaction_data) {
+            return false;
+        }
         $this->append_to_transaction($transaction_id, $data);
     }/*}}}*/
 
@@ -75,7 +77,9 @@ class bank_helper
             'data' => serialize(['comment' => $comment]),
         ];
         $transaction_data = $this->get_transaction($transaction_id);
-        if (!$transaction_data) return false;
+        if (!$transaction_data) {
+            return false;
+        }
         $user_id = $transaction_data['user_id'];
         $this->withdraw_token_from_user($user_id, $amount);
         $this->append_to_transaction($transaction_id, $data);
@@ -98,7 +102,9 @@ class bank_helper
             'data' => serialize(['comment' => $comment]),
         ];
         $transaction_data = $this->get_transaction($transaction_id);
-        if (!$transaction_data) return false;
+        if (!$transaction_data) {
+            return false;
+        }
         $user_id = $transaction_data['user_id'];
         $this->deposit_token_to_user($user_id, $amount);
         $this->append_to_transaction($transaction_id, $data);
@@ -117,8 +123,7 @@ class bank_helper
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        if ($b_firstrow && count($rowset)>0)
-        {
+        if ($b_firstrow && count($rowset)>0) {
             return $rowset[0];
         }
         return $rowset;
@@ -153,24 +158,19 @@ class bank_helper
         $direction = $this->db->sql_escape($direction);
         $amount = (int) $amount;
         $exchange_rate = $this->get_exchange_rate($exchange_rate_id);
-        if (!$exchange_rate) return [0, 'Exchange rate does not exist.'];
-        if ($direction == 'buy')
-        {
-            $rate = $exchange_rate['buy_rate'];
+        if (!$exchange_rate) {
+            return [0, 'Exchange rate does not exist.'];
         }
-        elseif ($direction == 'sell')
-        {
-            if ($exchange_rate['type'] == 'invitation_points')
-            {
+        if ($direction == 'buy') {
+            $rate = $exchange_rate['buy_rate'];
+        } elseif ($direction == 'sell') {
+            if ($exchange_rate['type'] == 'invitation_points') {
                 [$b, $status] = $this->exchange_invitation_points_for_tokens($amount, $user_id, $exchange_rate);
-                if (!$b)
-                {
+                if (!$b) {
                     return [$b, $status];
                 }
             }
-        }
-        else
-        {
+        } else {
             return [0, 'Error Code: 2e1f685f1b'];
         }
         return $this->success;
@@ -179,30 +179,49 @@ class bank_helper
     private function exchange_invitation_points_for_tokens($amount, $user_id, $exchange_rate)
     {
         $ih = new invite_helper(
-            $this->container, $this->user, $this->auth, null,
-            $this->db, $this->config, null, null);
+            $this->container,
+            $this->user,
+            $this->auth,
+            null,
+            $this->db,
+            $this->config,
+            null,
+            null
+        );
         $invite_user_data = $ih->select_invite_user($user_id);
         $fund = $invite_user_data && $invite_user_data['n_available'] ? $invite_user_data['n_available'] : 0;
-        if (!$invite_user_data || $invite_user_data['n_available'] < $amount)
-        {
+        if (!$invite_user_data || $invite_user_data['n_available'] < $amount) {
             return [0, "Insufficient Invitation Points: ${fund} < ${amount}"];
         }
         $rate = $exchange_rate['sell_rate'];
         $token = $rate * $amount;
         $broker_id = -1;
         $transaction_id = $this->create_transaction_and_deposit(
-            $token, $user_id, $broker_id);
+            $token,
+            $user_id,
+            $broker_id
+        );
         $this->decrease_invitation_points($amount, $user_id);
         $this->append_exchange_to_transaction(
-            $amount, $transaction_id, $comment="Exchange invitation points for tokens @ ${rate}.");
+            $amount,
+            $transaction_id,
+            $comment="Exchange invitation points for tokens @ ${rate}."
+        );
         return $this->success;
     }/*}}}*/
 
     public function decrease_invitation_points($amount, $user_id)
     {
         $ih = new invite_helper(
-            $this->container, $this->user, $this->auth, null,
-            $this->db, $this->config, null, null);
+            $this->container,
+            $this->user,
+            $this->auth,
+            null,
+            $this->db,
+            $this->config,
+            null,
+            null
+        );
         $ih->decrease_invite_points($user_id, $amount);
     }/*}}}*/
 
@@ -222,7 +241,9 @@ class bank_helper
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
-        if ($user_id < 1) return false;
+        if ($user_id < 1) {
+            return false;
+        }
         $data = [
             'created_time' => time(),
             'user_id' => $user_id,
@@ -256,8 +277,7 @@ class bank_helper
         $rowset = $this->db->sql_fetchrowset($result);
         $total = count($rowset);
         $this->db->sql_freeresult($result);
-        foreach($rowset as &$row)
-        {
+        foreach ($rowset as &$row) {
             $row['created_time_strn'] = $this->user->format_date($row['created_time']);
         }
         return $rowset;
@@ -271,5 +291,4 @@ class bank_helper
         $this->db->sql_freeresult($result);
         return $row;
     }/*}}}*/
-
 }

@@ -10,7 +10,6 @@
 
 namespace jeb\snahp\event;
 
-
 use jeb\snahp\core\base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,12 +18,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class mod_listener extends base implements EventSubscriberInterface
 {
-
     public function __construct()
     {
     }
 
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             'core.user_setup' => [
@@ -51,16 +49,14 @@ class mod_listener extends base implements EventSubscriberInterface
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return false;
         }
         // Check mcp is moderating request forums
         $forum_id = $this->request->variable('f', '');
         $fid_requests = $this->config['snp_fid_requests'];
         $a_fid = $this->select_subforum($fid_requests);
-        if (!in_array($forum_id, $a_fid))
-        {
+        if (!in_array($forum_id, $a_fid)) {
             return false;
         }
         $this->template->assign_vars([
@@ -69,17 +65,14 @@ class mod_listener extends base implements EventSubscriberInterface
         // Check a valid request status filter paramter exists
         $status = $this->request->variable('reqStatus', '');
         $req = $this->container->getParameter('jeb.snahp.req')['def'];
-        if (key_exists($status, $req))
-        {
+        if (key_exists($status, $req)) {
             $status = $req[$status];
-        }
-        else
-        {
+        } else {
             return false;
         }
         $sql = $event['sql'];
-        $sql = preg_replace('#WHERE#is', " , $tbl r WHERE " , $sql);
-        $sql = preg_replace('#1 = 1#is', " t.topic_id = r.tid AND r.status = $status " , $sql);
+        $sql = preg_replace('#WHERE#is', " , $tbl r WHERE ", $sql);
+        $sql = preg_replace('#1 = 1#is', " t.topic_id = r.tid AND r.status = $status ", $sql);
         $event['sql'] = $sql;
     }
 
@@ -90,7 +83,9 @@ class mod_listener extends base implements EventSubscriberInterface
 
     public function setup_moderator($event)
     {
-        if (!$this->is_dev()) return false;
+        if (!$this->is_dev()) {
+            return false;
+        }
         $this->template->assign_vars([
             'B_MOD' => true,
         ]);
@@ -101,8 +96,7 @@ class mod_listener extends base implements EventSubscriberInterface
         $post_row = $event['post_row'];
         $message = $post_row['MESSAGE'];
         $b_report = $post_row['S_POST_REPORTED'];
-        if ($b_report)
-        {
+        if ($b_report) {
             $post_id = $post_row['POST_ID'];
             $report_id = 0;
             $sql_ary = array(
@@ -166,7 +160,9 @@ class mod_listener extends base implements EventSubscriberInterface
     public function insert_move_topic_button($event)
     {
         // For use with: viewtopic_dropdown_top_custom.html
-        if (!$this->is_mod()) return false;
+        if (!$this->is_mod()) {
+            return false;
+        }
         include_once('includes/functions_admin.php');
         // Set by mcp_move_topic/base.js
         $select_id = $this->get_cookie_new('mcp', 'move_topic.dest');
@@ -181,7 +177,9 @@ class mod_listener extends base implements EventSubscriberInterface
     public function embed_request_forum_info($event)
     {
         // For use with: viewtopic_dropdown_top_custom.html
-        if (!$this->is_dev()) return;
+        if (!$this->is_dev()) {
+            return;
+        }
         if (!$forum_id = $this->request->variable('f', '')) {
             return;
         }
@@ -192,5 +190,4 @@ class mod_listener extends base implements EventSubscriberInterface
         }
         $this->template->assign_var('B_REQUEST_FORUM', true);
     }
-
 }

@@ -46,42 +46,32 @@ function string2cluck($strn)
     $media = MOTD[$i_media];
     $n_chicken = count(CHICKEN_URL);
     $arg = [];
-    $strn = preg_replace_callback('#(\S)*#is', function($match) use ($arg) {
+    $strn = preg_replace_callback('#(\S)*#is', function ($match) use ($arg) {
         $word = $match[0];
         $len = strlen($word);
-        if (rand(0,10) < 2)
-        {
+        if (rand(0, 10) < 2) {
             $n_chicken = count(CHICKEN_URL);
             $i_chicken = rand(0, $n_chicken-1);
             $img = CHICKEN_URL[$i_chicken];
             $elem = ' <img style="width:24px;" src="' . $img['url'] . '"> ';
             return $elem;
-        }
-        elseif ($len < 3)
-        {
+        } elseif ($len < 3) {
             return 'bok ';
-        }
-        elseif ($len < 5)
-        {
+        } elseif ($len < 5) {
             return 'cluck ';
-        }
-        elseif ($len < 9)
-        {
-            if (rand(0,1) < 1) return 'caw-caw ';
+        } elseif ($len < 9) {
+            if (rand(0, 1) < 1) {
+                return 'caw-caw ';
+            }
             return 'bah-gawk ';
-        }
-        else
-        {
+        } else {
             return 'cock-a-doodle-doo!!! ';
         }
         return 'chirp';
     }, $strn);
-    if ($media['type']=='youtube')
-    {
+    if ($media['type']=='youtube') {
         $media_elem = '<div align="center"><iframe width="400" height="280" src="'. $media['url'] . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
-    }
-    elseif ($media['type']=='image')
-    {
+    } elseif ($media['type']=='image') {
         $media_elem = '<div align="center"><img style="max-width: 400px;" src="'.$media['url'].'"></img></div>';
     }
     $n_chicken = count(CHICKEN_URL);

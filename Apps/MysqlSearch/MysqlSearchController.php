@@ -44,7 +44,6 @@ class MysqlSearchController
 
     private function handleMysqlSearch($cfg)
     {
-
         $required = [ 'forum_type' => 'listings', 'word_to_search' => '' ];
         $rv = $this->formHelper->getRequestVars($required);
         $this->formHelper->setTemplateVars($rv);

@@ -5,14 +5,13 @@ class market_transaction_logger
 {
     protected $db;
     protected $tbl;
-	public function __construct(
+    public function __construct(
         $db,
         $tbl
-	)
-	{
+    ) {
         $this->db = $db;
         $this->tbl = $tbl;
-	}
+    }
 
     public function create_single_item_invoice($user_id, $broker_id=-1, $data)
     {
@@ -32,7 +31,9 @@ class market_transaction_logger
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
-        if ($user_id < 1) return false;
+        if ($user_id < 1) {
+            return false;
+        }
         $data = [
             'created_time' => time(),
             'user_id' => $user_id,
@@ -73,5 +74,4 @@ class market_transaction_logger
         $this->db->sql_freeresult($result);
         return [$rowset, $total];
     }
-
 }

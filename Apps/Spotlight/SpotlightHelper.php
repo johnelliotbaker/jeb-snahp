@@ -94,8 +94,7 @@ class SpotlightHelper
     {
         $res = [];
         $jobQueue = $this->getJobQueue();
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             if (!$this->isAcceptedHost($row)) {
                 continue;
             }
@@ -106,10 +105,10 @@ class SpotlightHelper
             if ($this->users[$topicPoster] > $this::MAX_PER_USER) {
                 continue;
             }
-            foreach($jobQueue as $job) {
+            foreach ($jobQueue as $job) {
                 if ($tmp = $job['processor']($row)) {
                     $res[] = $tmp;
-                    if (count($res) >= $this::MAX_LIST){
+                    if (count($res) >= $this::MAX_LIST) {
                         return $res;
                     }
                     $this->users[$topicPoster] += 1;
@@ -123,7 +122,7 @@ class SpotlightHelper
     {
         return [
             [
-                'processor' => function($row){
+                'processor' => function ($row) {
                     if (!$this->isImdb($row)) {
                         return;
                     }

@@ -353,8 +353,7 @@ class curly_parser
                 return $this->return_malformed($match[0]);
             }
             $tag_type = $tag_type[1];
-            switch ($tag_type) 
-            {
+            switch ($tag_type) {
             case 'mi':
                 $res = $this->interpolate_mediainfo($content, $tag_type);
                 break;

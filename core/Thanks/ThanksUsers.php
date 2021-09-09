@@ -170,7 +170,9 @@ class ThanksUsers
 
     public function rejectBannedUser($user_id)
     {
-        if ($this::DEBUG) return false;
+        if ($this::DEBUG) {
+            return false;
+        }
         $permitted = $this->sauth->is_dev();
         if ($permitted) {
             return false;
@@ -222,7 +224,9 @@ class ThanksUsers
     public function insertTimestamp($userId, $topicId)
     {
         $timestamps = array_slice(
-            unserialize($this->data['timestamps']), 1, $this->nAllowedPerCycle-1
+            unserialize($this->data['timestamps']),
+            1,
+            $this->nAllowedPerCycle-1
         );
         $timestamps[] = $this->makeTimestamp($topicId);
         $tbl = $this->tbl['thanks_users'];
@@ -233,5 +237,4 @@ class ThanksUsers
         $this->db->sql_query($sql);
         return $this->db->sql_affectedrows() > 0;
     }
-
 }

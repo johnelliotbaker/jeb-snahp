@@ -3,7 +3,6 @@ namespace jeb\snahp\notification;
 
 class simple extends \phpbb\notification\type\base
 {
-
     protected $notifications_table;
     protected $user_loader;
 
@@ -17,8 +16,7 @@ class simple extends \phpbb\notification\type\base
         $user_notifications_table,
         $notifications_table,
         \phpbb\user_loader $user_loader
-    )
-    {
+    ) {
         parent::__construct(
             $db,
             $language,
@@ -26,7 +24,8 @@ class simple extends \phpbb\notification\type\base
             $auth,
             $phpbb_root_path,
             $php_ext,
-            $user_notifications_table);
+            $user_notifications_table
+        );
         $this->notifications_table = $notifications_table;
         $this->user_loader = $user_loader;
     }
@@ -79,8 +78,7 @@ class simple extends \phpbb\notification\type\base
             $users = array((int) $data['recipient_id']);
         }
         $options =  $this->check_user_notification_options($users, $options);
-        foreach ($options as $key => $entry)
-        {
+        foreach ($options as $key => $entry) {
             $options[$key] = ['notification.method.board'];
         }
         return $options;
@@ -128,5 +126,4 @@ class simple extends \phpbb\notification\type\base
         $this->set_data('description', $data['description']);
         return parent::create_insert_array($data, $pre_create_data);
     }
-
 }

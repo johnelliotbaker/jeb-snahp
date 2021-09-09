@@ -9,7 +9,6 @@ use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
 use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 
-
 class GroupPermissionRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
 {
     protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';

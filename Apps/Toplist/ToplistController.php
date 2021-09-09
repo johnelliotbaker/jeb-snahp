@@ -28,6 +28,4 @@ class ToplistController
         $this->helper->whitelist($name, $userId);
         return new Response("${userId} whitelisted in ${name}");
     }
-
-
 }

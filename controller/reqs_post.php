@@ -16,18 +16,16 @@ include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
 class reqs_post extends base
 {
-
     public function __construct()
     {
     }
 
-	public function handle($mode, $fid)
-	{
-		$this->user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = $this->user->lang('Post Snahp Request');
+    public function handle($mode, $fid)
+    {
+        $this->user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = $this->user->lang('Post Snahp Request');
         $cfg = [];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'tvshows':
             $cfg['tpl_name'] = 'reqs_post_tvshows.html';
             $cfg['b_feedback'] = false;
@@ -56,9 +54,10 @@ class reqs_post extends base
             trigger_error('Invalid request category.');
             break;
         }
-	}
+    }
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
@@ -83,10 +82,8 @@ class reqs_post extends base
         $topic_id_0 = $row['topic_id'];
         $post_id_0 = $row['post_id'];
         $total = 200000;
-        while ($i < $total)
-        {
-            if ($i % 1000 == 0)
-            {
+        while ($i < $total) {
+            if ($i % 1000 == 0) {
                 $data0 = [
                     'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
                     'message' => "$i of $total",
@@ -95,7 +92,7 @@ class reqs_post extends base
                 ];
                 $this->send_message($data0);
             }
-            $data['user_id']     = [rand(48, 55), 2][rand(0,1)];
+            $data['user_id']     = [rand(48, 55), 2][rand(0, 1)];
             $data['poster_id'] = rand(48, 55);
             $data['post_id']     = $post_id_0 - $i;
             $data['topic_id']    = $topic_id_0 - $i;
@@ -155,12 +152,10 @@ class reqs_post extends base
         $i = 0;
         set_time_limit(0);
         $total = 200000;
-        while($i < $total)
-        {
+        while ($i < $total) {
             submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
             $i += 1;
-            if ($i % 1000 == 0)
-            {
+            if ($i % 1000 == 0) {
                 $data = [
                     'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
                     'message' => "$i of $total",
@@ -176,21 +171,19 @@ class reqs_post extends base
     {
         global $phpbb_dispatcher;
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $this->tpl_name = $tpl_name;
             add_form_key('jeb_snp');
-            if ($this->request->is_set_post('submit'))
-            {
-                if (!check_form_key('jeb_snp'))
-                {
+            if ($this->request->is_set_post('submit')) {
+                if (!check_form_key('jeb_snp')) {
                     trigger_error('FORM_INVALID', E_USER_WARNING);
                 }
                 $mode = 'post';
                 $message = $this->request->variable('message', '');
                 $subject = $this->request->variable('subject', '');
-                if (!$subject)
+                if (!$subject) {
                     trigger_error('Request entry cannot be empty.');
+                }
                 $username = '***Request Username***';
                 $topic_type = 0;
                 $data_ary = [];

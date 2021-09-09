@@ -7,18 +7,17 @@ class product_class
     protected $user;
     protected $container;
     protected $sauth;
-	public function __construct(
-        $db, $tbl
-	)
-	{
+    public function __construct(
+        $db,
+        $tbl
+    ) {
         $this->db = $db;
         $this->tbl = $tbl;
-	}
+    }
 
     public function update_product_class($id, $data)
     {
-        if (!$this->get_product_class($id))
-        {
+        if (!$this->get_product_class($id)) {
             return false;
         }
         $update_strn = $this->db->sql_build_array('UPDATE', $data);
@@ -55,5 +54,4 @@ class product_class
         $this->db->sql_freeresult($result);
         return $row;
     }
-
 }

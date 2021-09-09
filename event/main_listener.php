@@ -23,8 +23,6 @@ use phpbb\notification\manager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
-
 function closetags($html)
 {/*{{{*/
     preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);

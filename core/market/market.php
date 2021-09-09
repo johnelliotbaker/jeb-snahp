@@ -1,13 +1,11 @@
 <?php
 
 namespace jeb\snahp\core\market;
-use jeb\snahp\core\invite_helper;
 
+use jeb\snahp\core\invite_helper;
 
 class market
 {
-
-
     protected $db;
     protected $tbl;
 
@@ -15,8 +13,7 @@ class market
     public function __construct(
         $db,
         $tbl
-    ) 
-    {
+    ) {
         $this->db = $db;
         $this->tbl_invoice_items = $tbl['mrkt_invoice_items'];
         $this->tbl_invoices = $tbl['mrkt_invoices'];
@@ -63,7 +60,9 @@ class market
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
-        if ($user_id < 1) return false;
+        if ($user_id < 1) {
+            return false;
+        }
         $data = [
             'created_time' => time(),
             'user_id' => $user_id,
@@ -79,12 +78,10 @@ class market
         $product_class_id = (int) $product_class_id;
         $amount = (int) $amount;
         $product_class_data = $this->get_product_class($product_class_id);
-        if (!$product_class_data)
-        {
+        if (!$product_class_data) {
             return false;
         }
         $price = $product_class_data['price'];
         return abs($price * $amount);
     }
-
 }

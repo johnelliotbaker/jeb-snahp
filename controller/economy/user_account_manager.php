@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\economy;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -21,9 +22,17 @@ class user_account_manager
     protected $user_inventory;
     protected $product_class;
     public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper,
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
         $sauth,
-        $bank_user_account, $user_inventory, $product_class
+        $bank_user_account,
+        $user_inventory,
+        $product_class
     )/*{{{*/
     {
         $this->db = $db;
@@ -43,8 +52,7 @@ class user_account_manager
 
     public function handle($mode)/*{{{*/
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'user_manager':
             $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/user_manager/base.html';
             return $this->handle_user_manager($cfg);
@@ -78,8 +86,7 @@ class user_account_manager
         $balance = $this->get_requested_balance();
         $broker_id = $this->user_id;
         $b_success = $this->set_user_balance($user_id, $balance, $broker_id);
-        if ($b_success)
-        {
+        if ($b_success) {
             $this->bank_user_account->log_moderation($balance, $user_id, $broker_id);
         }
         return $js->send(['status' => 1, 'reason'=> 'Success']);
@@ -88,8 +95,7 @@ class user_account_manager
     private function respond_with_user_account_as_json()/*{{{*/
     {
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $js = new \phpbb\json_response();
@@ -102,26 +108,20 @@ class user_account_manager
     private function get_user_inventory($user_id)/*{{{*/
     {
         $user_id = (int) $user_id;
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $pclasses = $this->product_class->get_product_classes();
         $inventory = $this->user_inventory->get_inventory($user_id);
         $tmp = [];
-        foreach ($inventory as $inv)
-        {
+        foreach ($inventory as $inv) {
             $tmp[$inv['product_class_id']] = $inv;
         }
         $res = [];
-        foreach ($pclasses as $pc)
-        {
-            if (array_key_exists($pc['id'], $tmp))
-            {
+        foreach ($pclasses as $pc) {
+            if (array_key_exists($pc['id'], $tmp)) {
                 $pc['quantity'] = $tmp[$pc['id']]['quantity'];
-            }
-            else
-            {
+            } else {
                 $pc['quantity'] = 0;
             }
             $res[] = $pc;
@@ -139,8 +139,7 @@ class user_account_manager
     private function get_user_balance($user_id)/*{{{*/
     {
         $user_id = (int) $user_id;
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         return $this->bank_user_account->get_balance($user_id);
@@ -156,8 +155,7 @@ class user_account_manager
     private function get_requested_user_id()/*{{{*/
     {
         $user_id = $this->request->variable('u', 0);
-        if ($user_id < 1)
-        {
+        if ($user_id < 1) {
             return false;
         }
         return $user_id;
@@ -166,8 +164,7 @@ class user_account_manager
     private function get_requested_balance()/*{{{*/
     {
         $balance = $this->request->variable('b', -1);
-        if ($balance < 0)
-        {
+        if ($balance < 0) {
             return false;
         }
         return $balance;
@@ -176,8 +173,7 @@ class user_account_manager
     private function get_requested_product_class_id()/*{{{*/
     {
         $product_class_id = $this->request->variable('pcid', 0);
-        if (!$product_class_id)
-        {
+        if (!$product_class_id) {
             return false;
         }
         return $product_class_id;
@@ -186,8 +182,7 @@ class user_account_manager
     private function get_requested_quantity()/*{{{*/
     {
         $quantity = $this->request->variable('quantity', -1);
-        if ($quantity < 0)
-        {
+        if ($quantity < 0) {
             return false;
         }
         return $quantity;
@@ -203,15 +198,13 @@ class user_account_manager
         $user_id = $this->get_requested_user_id();
         $quantity = $this->get_requested_quantity();
         $product_class_id = $this->get_requested_product_class_id();
-        if ($user_id===false || $quantity===false || $product_class_id===false)
-        {
+        if ($user_id===false || $quantity===false || $product_class_id===false) {
             return false;
         }
         $js = new \phpbb\json_response();
         $broker_id = $this->user_id;
         $b_success = $this->user_inventory->set_item_quantity($product_class_id, $quantity, $user_id, $broker_id);
-        if ($b_success)
-        {
+        if ($b_success) {
             $comment = "Moderation: Set inventory item quantity to ${quantity}";
             $this->user_inventory->log_moderation($product_class_id, $quantity, $user_id, $broker_id, $comment);
         }
@@ -221,18 +214,15 @@ class user_account_manager
     private function set_user_inventory_item()/*{{{*/
     {
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $quantity = $this->request->variable('quantity', -1);
-        if ($quantity < 0)
-        {
+        if ($quantity < 0) {
             return false;
         }
         $product_class_id = $this->request->variable('pcid', 0);
-        if (!$product_class_id)
-        {
+        if (!$product_class_id) {
             return false;
         }
         $js = new \phpbb\json_response();
@@ -244,13 +234,11 @@ class user_account_manager
     private function reset_user()/*{{{*/
     {
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $js = new \phpbb\json_response();
         $this->bank_user_account->reset($user_id);
         return $js->send(['status' => 1, 'reason'=> 'Success']);
     }
-
 }

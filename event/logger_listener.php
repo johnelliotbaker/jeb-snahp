@@ -23,10 +23,11 @@ class logger_listener implements EventSubscriberInterface
     protected $logger;
     protected $sauth;
     public function __construct(
-        $config, $user,
-        $logger, $sauth
-    )
-    {
+        $config,
+        $user,
+        $logger,
+        $sauth
+    ) {
         $this->config = $config;
         $this->user = $user;
         $this->logger = $logger;
@@ -35,7 +36,7 @@ class logger_listener implements EventSubscriberInterface
         $this->user_id = $this->user->data['user_id'];
     }
 
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return [
             'core.viewtopic_before_f_read_check' => [
@@ -150,15 +151,18 @@ class logger_listener implements EventSubscriberInterface
     public function log_spam($event, $event_name)
     {
         $b = $this->config['snp_log_b_user_spam'];
-        if (!$b) { return false; }
+        if (!$b) {
+            return false;
+        }
         $b_success = $this->logger->validate_or_reset_user_visit_time($this->user_id);
-        if (!$b_success) { return false; }
+        if (!$b_success) {
+            return false;
+        }
         $curr = time();
         $oldest = $this->logger->get_user_oldest_visit_time($this->user_id);
         $interval = (int) $this->config['snp_log_user_spam_interval']; // In seconds
         $timedelta = $curr-$oldest;
-        if ($timedelta < $interval)
-        {
+        if ($timedelta < $interval) {
             $data = [
                 'type' => 'user_spam',
                 'name' => $event_name,
@@ -173,7 +177,9 @@ class logger_listener implements EventSubscriberInterface
 
     public function log_viewtopic($event, $event_name)
     {
-        if ($this->b_ban) { return false; }
+        if ($this->b_ban) {
+            return false;
+        }
         $event_name = (string) $event_name;
         $time = (string)(microtime(true) * 1000000);
         $data = [
@@ -186,7 +192,9 @@ class logger_listener implements EventSubscriberInterface
 
     public function log_posting($event, $event_name)
     {
-        if ($this->b_ban) { return false; }
+        if ($this->b_ban) {
+            return false;
+        }
         $event_name = (string) $event_name;
         $time = (string)(microtime(true) * 1000000);
         $data = [
@@ -196,5 +204,4 @@ class logger_listener implements EventSubscriberInterface
         ];
         $this->logger->log($data);
     }
-
 }

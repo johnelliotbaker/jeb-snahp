@@ -74,7 +74,6 @@ class CustomBannerHelper
         $newVisibility = $this->getVisibility() ? 0 : 1;
         $this->setVisibility($newVisibility);
     }
-
 }
 
 function weightedArrayRand($entry, $max=1000000, $valueKey=0, $probabilityKey=1)

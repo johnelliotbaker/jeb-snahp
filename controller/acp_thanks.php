@@ -1,21 +1,19 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
 class acp_thanks extends base
 {
-
     public function __construct(
-    )
-    {
+    ) {
     }
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'resync_all':
             $cfg = [];
             return $this->handle_resync_all($cfg);
@@ -28,7 +26,8 @@ class acp_thanks extends base
         trigger_error('You must specify valid mode.');
     }
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
@@ -55,17 +54,14 @@ class acp_thanks extends base
         $this->db->sql_freeresult($result);
         $total = $row['total'];
         $start = 0;
-        while($start < $total)
-        {
+        while ($start < $total) {
             $this->db->sql_return_on_error(true);
-            try
-            {
+            try {
                 $this->db->sql_transaction('begin');
                 $sql = 'SELECT DISTINCT user_id FROM ' . $tbl['thanks'] . ' ORDER BY user_id';
                 $result = $this->db->sql_query_limit($sql, $limit, $start);
                 $rowset = $this->db->sql_fetchrowset($result);
-                foreach($rowset as $row)
-                {
+                foreach ($rowset as $row) {
                     $user_id = $row['user_id'];
                     $sql = 'SELECT COUNT(*) as total FROM ' . $tbl['thanks'] . ' WHERE user_id='. $user_id;
                     $result0 = $this->db->sql_query($sql);
@@ -76,14 +72,11 @@ class acp_thanks extends base
                     $this->db->sql_query($sql);
                 }
                 $this->db->sql_freeresult($result);
-                if ($this->db->get_sql_error_triggered())
-                {
+                if ($this->db->get_sql_error_triggered()) {
                     throw new \Exception();
                 }
                 $this->db->sql_transaction('commit');
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 $this->db->sql_transaction('rollback');
                 $this->db->sql_transaction('commit');
                 $error_query = $this->db->get_sql_error_sql();
@@ -120,17 +113,14 @@ class acp_thanks extends base
         $total = $row['total'];
         // Process thanks received
         $start = 0;
-        while($start < $total)
-        {
+        while ($start < $total) {
             $this->db->sql_return_on_error(true);
-            try
-            {
+            try {
                 $this->db->sql_transaction('begin');
                 $sql = 'SELECT DISTINCT poster_id FROM ' . $tbl['thanks'] . ' ORDER BY poster_id';
                 $result = $this->db->sql_query_limit($sql, $limit, $start);
                 $rowset = $this->db->sql_fetchrowset($result);
-                foreach($rowset as $row)
-                {
+                foreach ($rowset as $row) {
                     $poster_id = $row['poster_id'];
                     $sql = 'SELECT COUNT(*) as total FROM ' . $tbl['thanks'] . ' WHERE poster_id='. $poster_id;
                     $result0 = $this->db->sql_query($sql);
@@ -141,14 +131,11 @@ class acp_thanks extends base
                     $this->db->sql_query($sql);
                 }
                 $this->db->sql_freeresult($result);
-                if ($this->db->get_sql_error_triggered())
-                {
+                if ($this->db->get_sql_error_triggered()) {
                     throw new \Exception();
                 }
                 $this->db->sql_transaction('commit');
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 $this->db->sql_transaction('rollback');
                 $this->db->sql_transaction('commit');
                 $error_query = $this->db->get_sql_error_sql();
@@ -186,5 +173,4 @@ class acp_thanks extends base
         $this->reject_non_admin();
         return $this->helper->render('@jeb_snahp/acp_thanks/resync_all.html');
     }
-
 }

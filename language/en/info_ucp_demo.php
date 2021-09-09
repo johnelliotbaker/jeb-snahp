@@ -8,19 +8,17 @@
  *
  */
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (!defined('IN_PHPBB')) {
+    exit;
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty($lang) || !is_array($lang)) {
+    $lang = array();
 }
 
 $lang = array_merge($lang, array(
-	'UCP_SNP'            => 'Settings',
-	'UCP_SNP_TITLE'      => 'Snahp',
+    'UCP_SNP'            => 'Settings',
+    'UCP_SNP_TITLE'      => 'Snahp',
     'UCP_SNP_VIS'        => 'Visibility',
     'UCP_SNP_VIS_TITLE'  => 'Visibility',
     'UCP_SNP_INVITE'        => 'Invite',

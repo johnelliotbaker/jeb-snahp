@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
@@ -10,10 +11,15 @@ class test extends base
     protected $prefix;
     protected $allowed_groupset;
 
-    public function __construct($prefix, $bank_helper, $market_helper, $user_inventory_helper,
-        $bank_user_account, $user_inventory, $product_class
-    )
-    {
+    public function __construct(
+        $prefix,
+        $bank_helper,
+        $market_helper,
+        $user_inventory_helper,
+        $bank_user_account,
+        $user_inventory,
+        $product_class
+    ) {
         $this->prefix = $prefix;
         $this->bank_helper = $bank_helper;
         $this->market_helper = $market_helper;
@@ -29,8 +35,7 @@ class test extends base
         $allowed_groupset = 'Red Team';
         $this->user_id = (int) $this->user->data['user_id'];
         $this->reject_user_not_in_groupset($this->user_id, $allowed_groupset);
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'user_manager':
             $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/user_manager/base.html';
             return $this->handle_user_manager($cfg);
@@ -60,13 +65,11 @@ class test extends base
     private function set_user_balance()
     {
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $balance = $this->request->variable('b', -1);
-        if ($balance < 0)
-        {
+        if ($balance < 0) {
             return false;
         }
         $js = new \phpbb\json_response();
@@ -77,8 +80,7 @@ class test extends base
     private function reset_user()
     {
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             return false;
         }
         $js = new \phpbb\json_response();
@@ -89,8 +91,7 @@ class test extends base
     private function has_enough_token($total_cost, $user_id)
     {
         $n_token = (int) $this->bank_helper->get_account_balance($user_id);
-        if ((int) $total_cost > $n_token)
-        {
+        if ((int) $total_cost > $n_token) {
             return false;
         }
         return true;
@@ -106,15 +107,21 @@ class test extends base
         $product_class_id = (int) $product_class_id;
         // Check if requested quantity doesn't violate max_per_user
         $prod_data = $this->market_helper->get_product_class($product_class_id);
-        if (!$prod_data) return [0, 'That item does not exist.'];
+        if (!$prod_data) {
+            return [0, 'That item does not exist.'];
+        }
         $max_per_user = $prod_data['max_per_user'];
-        $inv_data = $this->user_inventory_helper->get_single_inventory("product_class_id=${product_class_id}" , $user_id);
+        $inv_data = $this->user_inventory_helper->get_single_inventory("product_class_id=${product_class_id}", $user_id);
         $existing_quantity = $inv_data ? $inv_data['quantity'] : 0;
         $purchasable_quantity = $max_per_user - $existing_quantity;
-        if ($required_quantity > $purchasable_quantity) return [0, "You cannot purchase more than ${purchasable_quantity}."];
+        if ($required_quantity > $purchasable_quantity) {
+            return [0, "You cannot purchase more than ${purchasable_quantity}."];
+        }
         // Check if there is enough fund
         $total_cost = $this->get_total_cost($required_quantity, $product_class_id);
-        if (!$this->has_enough_token($total_cost, $user_id)) return [0, 'Insufficient fund.'];
+        if (!$this->has_enough_token($total_cost, $user_id)) {
+            return [0, 'Insufficient fund.'];
+        }
         return [1, 'Success'];
     }/*}}}*/
 
@@ -130,21 +137,18 @@ class test extends base
         $user_id = $user_id > 0 ? $user_id : $this->user_id;
         $total_cost = $this->get_total_cost($quantity, $product_class_id);
         [$b_purchasable, $reason] = $this->can_buy($quantity, $product_class_id, $user_id);
-        if (!$b_purchasable)
-        {
+        if (!$b_purchasable) {
             return $js->send(['status'=> 0, 'reason' => $reason]);
         }
         $b_inv = $uinv->do_add_item($product_class_id, $quantity, $user_id);
-        if (!$b_inv)
-        {
+        if (!$b_inv) {
             return $js->send(['status' => 0, 'reason'=> 'Could not add inventory to the user.']);
         }
         $broker_id = -1;
         $product_class_data = $mk->get_product_class($product_class_id);
         $comment = "Purchasing ${quantity} x ${product_class_data['display_name']} for total price of ${total_cost}";
         $b_bank = $bank->create_transaction_and_withdraw($total_cost, $user_id, $broker_id, $comment);
-        if (!$b_bank)
-        {
+        if (!$b_bank) {
             return $js->send(['status'=> 0, 'reason' => 'Could not process banking transaction.']);
         }
         return $js->send(['status' => 1, 'reason'=> 'Success']);
@@ -167,33 +171,26 @@ class test extends base
         $time = microtime(true);
         $bua = $this->bank_user_account;
         $user_id = $this->request->variable('u', 0);
-        if (!$user_id)
-        {
+        if (!$user_id) {
             $this->template->assign_vars([
                 'ERROR' => 'That user does not exist. Error Code: 2ee4fe201a',
             ]);
             return $this->helper->render($cfg['tpl_name'], 'Snahp Economy Manager');
         }
         $balance = $bua->get_balance($user_id);
-        if ($balance===null)
-        {
+        if ($balance===null) {
             trigger_error('Could not get user balance. Error Code: 8d7fa5195e');
         }
         $pclasses = $this->product_class->get_product_classes();
         $inventory = $this->user_inventory->get_inventory($user_id);
         $tmp = [];
-        foreach ($inventory as $inv)
-        {
+        foreach ($inventory as $inv) {
             $tmp[$inv['product_class_id']] = $inv;
-        } 
-        foreach ($pclasses as $pc)
-        {
-            if (array_key_exists($pc['id'], $tmp))
-            {
+        }
+        foreach ($pclasses as $pc) {
+            if (array_key_exists($pc['id'], $tmp)) {
                 $pc['quantity'] = $tmp[$pc['id']]['quantity'];
-            }
-            else
-            {
+            } else {
                 $pc['quantity'] = 0;
             }
             $pc['json'] = json_encode($pc);
@@ -215,8 +212,7 @@ class test extends base
         $user_id = $this->user->data['user_id'];
         $n_token = $this->get_token($user_id);
         $transaction_history = $this->bank_helper->get_transaction_history($user_id);
-        foreach($transaction_history as $entry)
-        {
+        foreach ($transaction_history as $entry) {
             $this->template->assign_block_vars('HISTORY', $entry);
         }
         $elapsed_time = microtime(true) - $time;
@@ -239,16 +235,14 @@ class test extends base
         $n_avail_inv_pts = $this->get_available_invite_points($user_id);
 
         $exchange_rates = $this->bank_helper->get_exchange_rates();
-        foreach($exchange_rates as $entry)
-        {
+        foreach ($exchange_rates as $entry) {
             $entry['sell_rate_formatted'] = number_format($entry['sell_rate']);
             $entry['json'] = json_encode($entry);
             $this->template->assign_block_vars('EXCHANGE_RATE', $entry);
         }
 
         $transaction_history = $this->bank_helper->get_transaction_history($user_id);
-        foreach($transaction_history as $entry)
-        {
+        foreach ($transaction_history as $entry) {
             $type = $entry['type'];
             $data = unserialize($entry['data']);
             $comment = $data['comment'];
@@ -261,8 +255,7 @@ class test extends base
 
         $mk = $this->market_helper;
         $product_classes = $mk->get_product_classes();
-        foreach($product_classes as $entry)
-        {
+        foreach ($product_classes as $entry) {
             $id = $entry['id'];
             $entry['n_bought'] = array_key_exists($id, $inv_count) ? $inv_count[$id] : 0;
             $entry['b_buy'] = $entry['n_bought'] < $entry['max_per_user'];
@@ -296,8 +289,7 @@ class test extends base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row)
-        {
+        if ($row) {
             return (int) $row['snp_bank_n_token'];
         }
         return 0;
@@ -306,14 +298,19 @@ class test extends base
     private function get_available_invite_points($user_id)
     {
         $ih = new invite_helper(
-            $this->container, $this->user, $this->auth, null,
-            $this->db, $this->config, null, null);
+            $this->container,
+            $this->user,
+            $this->auth,
+            null,
+            $this->db,
+            $this->config,
+            null,
+            null
+        );
         $invite_user_data = $ih->select_invite_user($user_id);
-        if (!$invite_user_data)
-        {
+        if (!$invite_user_data) {
             return 0;
         }
         return $invite_user_data['n_available'];
     }/*}}}*/
-
 }

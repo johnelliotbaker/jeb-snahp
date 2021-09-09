@@ -4,7 +4,6 @@ namespace jeb\snahp\Apps\UserRestrictor;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 class UserRestrictorEventListener implements EventSubscriberInterface
 {
     protected $user;
@@ -64,6 +63,7 @@ class UserRestrictorEventListener implements EventSubscriberInterface
         switch ($mode) {
         case 'quote':
             $this->rejectPostMode($mode);
+            // no break
         case 'pm':
         case 'post':
             $this->rejectLongPosts($message, 500);

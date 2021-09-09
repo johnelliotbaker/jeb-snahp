@@ -138,7 +138,7 @@ class EntryListCreateAPIView extends ListCreateAPIView
     }
 }
 
-class RequestDoesNotExist extends \Exception 
+class RequestDoesNotExist extends \Exception
 {
     public function __construct($strn='Request does not exist. Error Code: f52224f58d')
     {
@@ -146,7 +146,7 @@ class RequestDoesNotExist extends \Exception
     }
 }
 
-class ReportDoesNotExist extends \Exception 
+class ReportDoesNotExist extends \Exception
 {
     public function __construct($strn='Report does not exist. Error Code: 1169cbc3e1')
     {
@@ -154,7 +154,7 @@ class ReportDoesNotExist extends \Exception
     }
 }
 
-class PendingActionError extends \Exception 
+class PendingActionError extends \Exception
 {
     public function __construct($strn='This topic has a pending action. Error Code: 71426ecd63')
     {
@@ -162,7 +162,7 @@ class PendingActionError extends \Exception
     }
 }
 
-class PendingRequestError extends \Exception 
+class PendingRequestError extends \Exception
 {
     public function __construct($strn='This topic has a pending request. Error Code: 05b7d48d54')
     {
@@ -170,7 +170,7 @@ class PendingRequestError extends \Exception
     }
 }
 
-class PendingReportError extends \Exception 
+class PendingReportError extends \Exception
 {
     public function __construct($strn='This topic has a pending report. Error Code: bf583cf637')
     {

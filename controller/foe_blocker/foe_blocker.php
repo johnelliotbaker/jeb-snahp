@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\foe_blocker;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -20,11 +21,17 @@ class foe_blocker
     protected $sauth;
     protected $foe_helper;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth, $foe_helper
-    )
-    {
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $tbl,
+        $sauth,
+        $foe_helper
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -43,13 +50,11 @@ class foe_blocker
 
     public function handle($mode)
     {
-        if (!$this->sauth->user_belongs_to_groupset($this->user_id, 'TU+'))
-        {
+        if (!$this->sauth->user_belongs_to_groupset($this->user_id, 'TU+')) {
             meta_refresh($this->redirect_delay_long, '/');
             trigger_error("You do not have permission to view this page. Error Code: 805345a533. Redirecting in {$this->redirect_delay_long} seconds ...");
         }
-        switch($mode)
-        {
+        switch ($mode) {
         case 'manage':
             $cfg['tpl_name'] = '@jeb_snahp/foe_blocker/base.html';
             return $this->respond_manage($cfg);
@@ -69,8 +74,7 @@ class foe_blocker
     {
         $blocker_id = $blocker_id===null ? $this->user_id : (int) $blocker_id;
         $where = "a.blocker_id=${blocker_id}";
-        if ($blocked_id!==null)
-        {
+        if ($blocked_id!==null) {
             $blocked_id = (int) $blocked_id;
             $where .= " AND a.blocked_id=${blocked_id}";
         }
@@ -127,8 +131,7 @@ class foe_blocker
     private function get_or_reject_post($post_id)
     {
         $post_data = $this->select_post($post_id);
-        if (!$post_data)
-        {
+        if (!$post_data) {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("That post does not exist. Error Code: 64dfda57e1. Redirecting in {$this->redirect_delay} seconds ...");
         }
@@ -140,8 +143,7 @@ class foe_blocker
         $duration_strn = (string) $duration_strn;
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
         $a_duration = $params['duration'];
-        if (!array_key_exists($duration_strn, $a_duration))
-        {
+        if (!array_key_exists($duration_strn, $a_duration)) {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("Invalid duration. Error Code: a53f11de32. Redirecting in {$this->redirect_delay} seconds ...");
         }
@@ -151,8 +153,7 @@ class foe_blocker
     private function validate_or_reject_block_reason($reason)
     {
         $reason = (string) $reason;
-        if (!$reason)
-        {
+        if (!$reason) {
             meta_refresh($this->redirect_delay, $this->u_manage);
             trigger_error("You must provide a reason for blocking a user. Error Code: 4816c4661f. Redirecting in {$this->redirect_delay} seconds ...");
         }
@@ -162,8 +163,7 @@ class foe_blocker
     private function reject_on_frozen($blocked_id, $blocker_id)
     {
         $block_data = $this->foe_helper->select_blocked_data($blocked_id, $blocker_id);
-        if ($block_data && $block_data['b_frozen'] && !$this->sauth->is_dev())
-        {
+        if ($block_data && $block_data['b_frozen'] && !$this->sauth->is_dev()) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("This block has been frozen and cannot be changed. Error Code: 1400805639");
         }
@@ -172,17 +172,14 @@ class foe_blocker
     private function respond_block()
     {
         $params = $this->container->getParameter('jeb.snahp.foe_blocker');
-        if ($this->request->is_set_post('block'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        if ($this->request->is_set_post('block')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
             $post_id = $this->request->variable('post_id', 0);
             $blocker_id = $this->user_id;
             $triage_username = $this->request->variable('triage_username', '');
-            if (!$post_id && $triage_username)
-            {
+            if (!$post_id && $triage_username) {
                 $blocked_id = $this->foe_helper->username2userid($triage_username);
                 $this->reject_on_frozen($blocked_id, $blocker_id);
                 return $this->respond_triage_block();
@@ -208,8 +205,7 @@ class foe_blocker
     private function get_or_reject_user_id_from_username($username)
     {
         $blocked_id = $this->username2userid($username);
-        if (!$blocked_id)
-        {
+        if (!$blocked_id) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("<b>${username}</b> does not exist. Redirecting in {$this->redirect_delay} seconds ...");
         }
@@ -252,8 +248,7 @@ class foe_blocker
 
     private function generate_order_by_strn($order_by, $order_dir)
     {
-        switch($order_by)
-        {
+        switch ($order_by) {
         case 'id':
         case 'user_id':
         case 'target_id':
@@ -261,8 +256,7 @@ class foe_blocker
         default:
             $order_by = 'id';
         }
-        switch($order_dir)
-        {
+        switch ($order_dir) {
         case 'desc':
         case 'DESC':
         case 'asc':
@@ -283,15 +277,13 @@ class foe_blocker
         $order_by_strn = $this->generate_order_by_strn($order_by, $order_dir);
         $log = $this->container->get('jeb.snahp.logger');
         [$rowset, $total] = $log->select_foe_block($start, $per_page, $order_by_strn);
-        foreach($rowset as &$row)
-        {
+        foreach ($rowset as &$row) {
             $extra = unserialize($row['data']);
             $row['extra'] = $extra;
             $created_time = isset($extra['created_time']) ? $extra['created_time'] : 0;
             $duration = isset($extra['duration']) ? $extra['duration'] : 0;
             $post_id = isset($extra['post_id']) ? $extra['post_id'] : 0;
-            if ($created_time > 0)
-            {
+            if ($created_time > 0) {
                 $row['local_time'] = $this->user->format_date($created_time, '\'y.m.d');
                 $row['expires'] = $this->user->format_date($created_time + $duration, '\'y.m.d');
                 $row['post_id'] = $post_id;
@@ -307,8 +299,7 @@ class foe_blocker
 
     private function block_user($post_data, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)
     {
-        if (!$this->foe_helper->can_block($post_data['poster_id']))
-        {
+        if (!$this->foe_helper->can_block($post_data['poster_id'])) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("You cannot block <b>${post_data['username']}</b>. Error Code: 0dd26bc1a3. Redirecting in {$this->redirect_delay_long} seconds ...");
         }
@@ -335,13 +326,11 @@ class foe_blocker
     private function emergency_block_user($blocked_id, $triage_username, $duration, $block_reason, $blocker_id=null, $allow_viewtopic=0, $allow_reply=0, $allow_pm=0, $allow_quote=0)
     {
         $blocked_id = (int) $blocked_id;
-        if (!$this->sauth->is_valid_user_id($blocked_id))
-        {
+        if (!$this->sauth->is_valid_user_id($blocked_id)) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("That user does not exist. Error Code: 8413238905. Redirecting in {$this->redirect_delay_long} seconds ...");
         }
-        if (!$this->foe_helper->can_block($blocked_id))
-        {
+        if (!$this->foe_helper->can_block($blocked_id)) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("You cannot block <b>${triage_username}</b>. Error Code: 0dd26bc1a3. Redirecting in {$this->redirect_delay_long} seconds ...");
         }
@@ -378,8 +367,7 @@ class foe_blocker
         $blocker_id = $this->user_id;
         $this->reject_on_frozen($blocked_id, $blocker_id);
         $rowset = $this->select_blocked_users($this->user_id, $blocked_id);
-        if (!$rowset)
-        {
+        if (!$rowset) {
             meta_refresh($this->redirect_delay_long, $this->u_manage);
             trigger_error("Invalid action. Error Code: 7447f12588. Redirecting in {$this->redirect_delay_long} seconds ...");
         }
@@ -406,5 +394,4 @@ class foe_blocker
         $log = $this->container->get('jeb.snahp.logger');
         $log->log_foe_block($this->user_id, 'REMOVE_USER', false, $extra=$data);
     }/*}}}*/
-
 }

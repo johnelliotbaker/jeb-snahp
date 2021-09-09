@@ -10,10 +10,14 @@ use phpbb\db\migration\container_aware_migration;
 class v_0_36_3 extends container_aware_migration
 {
     public function effectively_installed()
-    { return false; }
+    {
+        return false;
+    }
 
-    static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_36_2']; }
+    public static function depends_on()
+    {
+        return ['\jeb\snahp\migrations\v_0_36_2'];
+    }
 
     public function update_schema()
     {
@@ -38,5 +42,4 @@ class v_0_36_3 extends container_aware_migration
             ['custom', [[$this, 'set_utf8mb4']]],
         ];
     }
-
 }

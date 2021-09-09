@@ -8,21 +8,21 @@ use \ger\feedpostbot\classes\driver;
 
 class cron extends base
 {
-
     protected $base_url = '';
     protected $db;
     protected $cron_helper;
     protected $feedpostbot;
     protected $reputation_helper;
 
-    public function __construct($table_prefix, $var1,
+    public function __construct(
+        $table_prefix,
+        $var1,
         $db,
         $cron_helper,
         $feedpostbot,
         $reputation_helper,
         $jukeboxHelper
-    )
-    {
+    ) {
         $this->table_prefix = $table_prefix;
         $this->db = $db;
         $this->cron_helper = $cron_helper;
@@ -36,8 +36,7 @@ class cron extends base
         $this->reject_non_dev();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'hourly':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -65,13 +64,11 @@ class cron extends base
         $this->jukeboxHelper->updateList();
         // $this->cron_helper->log('jukebox', 'hourly', 'after');
         // Giving reputation points
-        if ($this->config['snp_rep_b_master'] && $this->config['snp_rep_b_cron_giveaway'])
-        {
+        if ($this->config['snp_rep_b_master'] && $this->config['snp_rep_b_cron_giveaway']) {
             $rep_minimum_target     = (int) $this->config['snp_rep_giveaway_minimum'];
             $rep_giveaway_last_time = (int) $this->config['snp_rep_giveaway_last_time'];
             $rep_giveaway_duration  = (int) $this->config['snp_rep_giveaway_duration'];
-            if (time() > $rep_giveaway_last_time + $rep_giveaway_duration)
-            {
+            if (time() > $rep_giveaway_last_time + $rep_giveaway_duration) {
                 $this->cron_helper->log('reputation', 'hourly', 'before');
                 $this->reputation_helper->set_min($rep_minimum_target);
                 $this->cron_helper->log('reputation', 'hourly', 'after');
@@ -84,5 +81,4 @@ class cron extends base
                         <p>4) reputation->set_min</p>
                         ');
     }
-
 }

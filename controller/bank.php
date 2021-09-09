@@ -8,7 +8,6 @@ use jeb\snahp\core\bank_helper;
 
 class bank extends base
 {
-
     protected $prefix;
     protected $bank_helper;
 
@@ -18,11 +17,10 @@ class bank extends base
         $this->bank_helper = $helper;
     }
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_anon();
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'test':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -37,7 +35,7 @@ class bank extends base
             trigger_error('Error Code: 85d7d3d7a2');
             break;
         }
-	}
+    }
 
     public function test($cfg)
     {
@@ -47,5 +45,4 @@ class bank extends base
         $js = new \phpbb\json_response();
         return $js->send([]);
     }
-
 }

@@ -326,5 +326,4 @@ class user_auth
         $profileURL = "/memberlist.php?mode=viewprofile&u=";
         return '<a href="' . $profileURL . '" style="color: ' . $userColor . ';" class="username-coloured">' . $username . '</a>';
     }
-
 }

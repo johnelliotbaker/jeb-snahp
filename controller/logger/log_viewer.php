@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\logger;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -18,11 +19,18 @@ class log_viewer
     protected $tbl;
     protected $logger;
     public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper, $config_text,
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $config_text,
         $tbl,
-        $sauth, $logger
-    )
-    {
+        $sauth,
+        $logger
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -40,8 +48,7 @@ class log_viewer
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'view':
             $cfg['tpl_name'] = '@jeb_snahp/logger/viewer/base.html';
             $cfg['title'] = 'Log Viewer';
@@ -61,13 +68,11 @@ class log_viewer
     public function set_user_spam_config_as_json()
     {
         $interval = $this->request->variable('interval', -1);
-        if ($interval >= 0)
-        {
+        if ($interval >= 0) {
             $this->config->set('snp_log_user_spam_interval', $interval);
         }
         $buffer_length = $this->request->variable('buffer_length', 1);
-        if ($buffer_length >= 1)
-        {
+        if ($buffer_length >= 1) {
             $this->config->set('snp_log_user_spam_buffer_length', $buffer_length);
         }
         return new JsonResponse(['status' => 1]);
@@ -77,8 +82,7 @@ class log_viewer
     {
         $type = $this->request->variable('type', '');
         $b = $this->request->variable('val', 0);
-        switch ($type)
-        {
+        switch ($type) {
         case 'master':
             $this->config->set('snp_log_b_master', $b);
             return new JsonResponse(['status' => $this->config['snp_log_b_master']]);
@@ -97,8 +101,7 @@ class log_viewer
     public function respond_is_log_as_json()
     {
         $type = $this->request->variable('type', '');
-        switch ($type)
-        {
+        switch ($type) {
         case 'master':
             return new JsonResponse(['status' => $this->config['snp_log_b_master']]);
         case 'posting':
@@ -115,16 +118,14 @@ class log_viewer
     {
         $type = $this->request->variable('type', 'posting');
         $data = $this->logger->get_log_by_type($type);
-        for($i=0; $i<count($data); $i++)
-        {
+        for ($i=0; $i<count($data); $i++) {
             $curr = $data[$i];
             $time = $curr['created_time'] / 1000000;
             $curr['datetime'] = $this->user->format_date($time);
             $curr['time'] = $time;
             $data[$i] = $curr;
         }
-        for($i=0; $i<count($data)-1; $i++)
-        {
+        for ($i=0; $i<count($data)-1; $i++) {
             $nexx = $data[$i+1];
             $curr = $data[$i];
             $timedelta = $curr['time'] - $nexx['time'];
@@ -140,5 +141,4 @@ class log_viewer
         ]);
         return $this->helper->render($cfg['tpl_name'], $cfg['title']);
     }/*}}}*/
-
 }

@@ -160,18 +160,18 @@ class MysqlSearchHelper
     }
 }
 
-class UserPermissionError extends \Exception 
+class UserPermissionError extends \Exception
 {
 }
 
-class InvalidForumTypeError extends \Exception 
+class InvalidForumTypeError extends \Exception
 {
 }
 
-class SearchFloodingError extends \Exception 
+class SearchFloodingError extends \Exception
 {
 }
 
-class InvalidUser extends \Exception 
+class InvalidUser extends \Exception
 {
 }

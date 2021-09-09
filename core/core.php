@@ -10,7 +10,6 @@ namespace jeb\snahp\core;
 use phpbb\template\context;
 use phpbb\user;
 
-
 abstract class core
 {
     protected $user;
@@ -25,6 +24,4 @@ abstract class core
     {
         $this->template_context = $ctx;
     }
-
 }
-

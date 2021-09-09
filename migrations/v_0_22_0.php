@@ -5,10 +5,14 @@ namespace jeb\snahp\migrations;
 class v_0_22_0 extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
-    { return false; }
+    {
+        return false;
+    }
 
-    static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_21_4']; }
+    public static function depends_on()
+    {
+        return ['\jeb\snahp\migrations\v_0_21_4'];
+    }
 
     public function update_schema()
     {
@@ -23,7 +27,7 @@ class v_0_22_0 extends \phpbb\db\migration\migration
         return [
             ['module.add', [
                 'mcp',
-                'MCP_SNP_TITLE', 
+                'MCP_SNP_TITLE',
                 [
                     'module_basename' => '\jeb\snahp\mcp\main_module',
                     'modes'           => [ 'scripts', ],
@@ -32,5 +36,4 @@ class v_0_22_0 extends \phpbb\db\migration\migration
 
         ];
     }
-
 }

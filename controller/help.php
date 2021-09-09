@@ -6,20 +6,18 @@ use jeb\snahp\core\base;
 
 class help extends base
 {
-
     protected $base_url = '';
 
     public function __construct()
     {
     }/*}}}*/
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_anon();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'docs':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -34,7 +32,7 @@ class help extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-	}/*}}}*/
+    }/*}}}*/
 
     public function docs($cfg)
     {
@@ -44,8 +42,7 @@ class help extends base
     private function show_docs($cfg)
     {
         $name = $this->request->variable('name', '');
-        switch($name)
-        {
+        switch ($name) {
         case 'ucp_custom_rank':
             return $this->helper->render('@jeb_snahp/help/component/ucp/component/custom_rank/base.html');
         case 'digg_digg':
@@ -54,6 +51,4 @@ class help extends base
             return $this->helper->render('@jeb_snahp/help/component/digg/component/register/base.html');
         }
     }/*}}}*/
-
-
 }

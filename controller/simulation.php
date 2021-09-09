@@ -16,18 +16,16 @@ include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
 class simulation extends base
 {
-
     public function __construct()
     {
     }
 
-	public function handle($mode)
-	{
-		$this->user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = $this->user->lang('Post Snahp Request');
+    public function handle($mode)
+    {
+        $this->user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = $this->user->lang('Post Snahp Request');
         $cfg = [];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'spam':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -43,10 +41,11 @@ class simulation extends base
             trigger_error('Invalid request category. Error Code: c9299cfd2d');
             break;
         }
-	}
+    }
 
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
@@ -77,11 +76,10 @@ class simulation extends base
         $result = $this->db->sql_query_limit($sql, 1000, 0);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        $a_topic_id = array_map(function($arr) {
+        $a_topic_id = array_map(function ($arr) {
             return $arr['topic_id'];
         }, $rowset);
-        if (is_array($a_topic_id))
-        {
+        if (is_array($a_topic_id)) {
             move_topics($a_topic_id, $fid_graveyard, $auto_sync=true);
         }
         return false;
@@ -92,8 +90,7 @@ class simulation extends base
         $this->reject_non_admin();
         $fid = $this->request->variable('f', 0);
         $n_spam = $this->request->variable('n', 0);
-        if (!$fid || !$n_spam)
-        {
+        if (!$fid || !$n_spam) {
             return false;
         }
         header('Content-Type: text/event-stream');
@@ -130,13 +127,11 @@ class simulation extends base
         $i = 0;
         set_time_limit(0);
         $total = $n_spam;
-        while($i < $total)
-        {
+        while ($i < $total) {
             $subject = join(' :: ', [(string) $i, uniqid()]);
             submit_post($mode, $subject, $username, $topic_type, $poll_ary, $data_ary, $update_message = true, $update_search_index = true);
             $i += 1;
-            if ($i % 1000 == 0)
-            {
+            if ($i % 1000 == 0) {
                 $data = [
                     'status' => 'PROGRESS', 'i' => $i, 'n' => $total,
                     'message' => "$i of $total",
@@ -147,5 +142,4 @@ class simulation extends base
             }
         }
     }
-
 }

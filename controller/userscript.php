@@ -19,8 +19,7 @@ class userscript extends base
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'bump_topic':
             $cfg['tpl_name'] = '';
             $cfg['base_url'] = '/app.php/snahp/userscript/bump_topic/';
@@ -67,8 +66,7 @@ class userscript extends base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return false;
         }
         $group_id = $row['group_id'];
@@ -76,8 +74,7 @@ class userscript extends base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return false;
         }
         $group_colour = $row['group_colour'];
@@ -101,17 +98,14 @@ class userscript extends base
         $profile_id = $this->request->variable('p', 0);
         $user_colour = $this->request->variable('c', '000000');
         $reset = $this->request->variable('r', 0);
-        if (!$profile_id || !$this->is_valid_user($profile_id))
-        {
+        if (!$profile_id || !$this->is_valid_user($profile_id)) {
             return new JsonResponse(['status' => 'Invalid user']);
         }
-        if ($reset)
-        {
+        if ($reset) {
             $b_success = $this->reset_user_colour($profile_id) ? 1 : 0;
             return new JsonResponse(['status' => $b_success]);
         }
-        if (!$this->is_valid_user_colour($user_colour))
-        {
+        if (!$this->is_valid_user_colour($user_colour)) {
             return new JsonResponse(['status' => 'Invalid user color']);
         }
         $b_success = $this->set_user_colour($profile_id, $user_colour) ? 1 : 0;
@@ -123,15 +117,13 @@ class userscript extends base
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
         $data = [];
-        if ($partial and strlen($partial)>2)
-        {
+        if ($partial and strlen($partial)>2) {
             $sql = 'SELECT user_id, username_clean FROM ' . USERS_TABLE .
                 " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
-            foreach($rowset as $row)
-            {
+            foreach ($rowset as $row) {
                 $tmp = [];
                 $tmp['username'] = $row['username_clean'];
                 $tmp['user_id'] = $row['user_id'];
@@ -147,15 +139,13 @@ class userscript extends base
         $partial = $this->request->variable('partial', '');
         $partial = utf8_clean_string($partial);
         $data = [];
-        if ($partial and strlen($partial)>2)
-        {
+        if ($partial and strlen($partial)>2) {
             $sql = 'SELECT username_clean FROM ' . USERS_TABLE .
                 " WHERE username_clean LIKE '$partial%'";
             $result = $this->db->sql_query_limit($sql, 10);
             $rowset = $this->db->sql_fetchrowset($result);
             $this->db->sql_freeresult($result);
-            foreach($rowset as $row)
-            {
+            foreach ($rowset as $row) {
                 $data[] = $row['username_clean'];
             }
         }
@@ -165,13 +155,11 @@ class userscript extends base
 
     public function get_or_reject_topic_data($tid)
     {
-        if (!$tid)
-        {
+        if (!$tid) {
             trigger_error('No topic_id was provided.');
         }
         $topicdata = $this->select_topic($tid);
-        if (!$topicdata)
-        {
+        if (!$topicdata) {
             trigger_error('That topic does not exist.');
         }
         return $topicdata;
@@ -187,25 +175,21 @@ class userscript extends base
         $bumpData = $ctx['bumpData'];
         $topicData = $ctx['topicData'];
         $def = $ctx['def'];
-        if (!$topicData) trigger_error("Topic $tid does not exist.");
+        if (!$topicData) {
+            trigger_error("Topic $tid does not exist.");
+        }
         $forumId = $topicData['forum_id'];
         $fidListings = $this->config['snp_fid_listings'];
         $aFid = $this->select_subforum($fidListings);
-        if (!in_array($forumId, $aFid))
-        {
+        if (!in_array($forumId, $aFid)) {
             trigger_error('You can only bump topics in listings.');
         }
-        if ($bEnable)
-        {
-            if ($perm['enable'])
-            {
-                if (!$bumpData)
-                { // If no bump data, create bump
+        if ($bEnable) {
+            if ($perm['enable']) {
+                if (!$bumpData) { // If no bump data, create bump
                     $this->create_bump_topic($topicData);
                     $scriptStatus[] = 'You can now start bumping this topic.';
-                }
-                else
-                {
+                } else {
                     $data = [
                         'status' => $def['enable'],
                         'topic_time' => $time,
@@ -214,17 +198,12 @@ class userscript extends base
                     $this->update_bump_topic($tid, $data);
                     $scriptStatus[] = 'Bumping has been enabled.';
                 }
-            }
-            else
-            {
+            } else {
                 // Error if op is trying to enable a topic disabled by mod.
                 trigger_error('You cannot enable bumping, please ask a moderator.');
             }
-        }
-        else
-        {
-            if ($perm['disable'])
-            {
+        } else {
+            if ($perm['disable']) {
                 $data = [
                     'status' => $def['disable'],
                     'topic_time' => 0,
@@ -232,28 +211,24 @@ class userscript extends base
                 ];
                 $this->update_bump_topic($tid, $data);
                 $scriptStatus[] = 'Bumping has been disabled.';
-            }
-            else
-            {
+            } else {
                 trigger_error('You cannot disble bumping.');
             }
         }
         $strn = implode('<br>', $scriptStatus);
         $returnUrl = '/viewtopic.php?t='.$tid;
-        if (array_key_exists('forum_id', $topicData))
-        {
+        if (array_key_exists('forum_id', $topicData)) {
             $returnUrl .= '&f='.$topicData['forum_id'];
         }
         meta_refresh(2, $returnUrl);
         trigger_error($strn);
     }/*}}}*/
 
-    function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
+    public function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
     {
         // From includes/functions_posting.php
         global $config, $db, $user, $phpEx, $phpbb_root_path, $phpbb_log;
-        if ($bump_time === false)
-        {
+        if ($bump_time === false) {
             $bump_time = time();
         }
         // Begin bumping
@@ -277,8 +252,7 @@ class userscript extends base
         $db->sql_transaction('commit');
         markread('post', $forum_id, $topic_id, $bump_time);
         markread('topic', $forum_id, $topic_id, $bump_time);
-        if ($config['load_db_lastread'] && $user->data['is_registered'])
-        {
+        if ($config['load_db_lastread'] && $user->data['is_registered']) {
             $sql = 'SELECT mark_time
                 FROM ' . FORUMS_TRACK_TABLE . '
                 WHERE user_id = ' . $user->data['user_id'] . '
@@ -286,13 +260,10 @@ class userscript extends base
             $result = $db->sql_query($sql);
             $f_mark_time = (int) $db->sql_fetchfield('mark_time');
             $db->sql_freeresult($result);
-        }
-        else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-        {
+        } elseif ($config['load_anon_lastread'] || $user->data['is_registered']) {
             $f_mark_time = false;
         }
-        if (($config['load_db_lastread'] && $user->data['is_registered']) || $config['load_anon_lastread'] || $user->data['is_registered'])
-        {
+        if (($config['load_db_lastread'] && $user->data['is_registered']) || $config['load_anon_lastread'] || $user->data['is_registered']) {
             $sql = 'SELECT forum_last_post_time
                 FROM ' . FORUMS_TABLE . '
                 WHERE forum_id = ' . $forum_id;
@@ -312,24 +283,20 @@ class userscript extends base
         $topicData = $ctx['topicData'];
         $def = $ctx['def'];
         $bBump = $perm['bump'];
-        if (!$bBump)
-        {
+        if (!$bBump) {
             trigger_error('You don\'t have the permission to bump this topic.');
         }
         $cooldown = $this->topicBumpHelper->getBumpCooldown($this->userId);
         $bMod = $this->is_dev();
         $time = time();
         $scriptStatus = [];
-        if (!$bumpData)
-        {
+        if (!$bumpData) {
             $this->enable_bump_topic($b_enable=true);
         }
         $nBump = $bumpData['n_bump'];
-        if (!$bMod && $nBump > 0 && $time < ($bumpData['topic_time'] + $cooldown))
-        {
+        if (!$bMod && $nBump > 0 && $time < ($bumpData['topic_time'] + $cooldown)) {
             $returnUrl = '/viewtopic.php?t='.$tid;
-            if (array_key_exists('forum_id', $topicData))
-            {
+            if (array_key_exists('forum_id', $topicData)) {
                 $returnUrl .= '&f='.$topicData['forum_id'];
             }
             meta_refresh(8, $returnUrl);
@@ -352,8 +319,7 @@ class userscript extends base
         $title = $topicData['topic_title'];
         $strn = "$title has been bumped on " . $this->user->format_date($time);
         $returnUrl = '/viewtopic.php?t='.$tid;
-        if (array_key_exists('forum_id', $topicData))
-        {
+        if (array_key_exists('forum_id', $topicData)) {
             $returnUrl .= '&f='.$topicData['forum_id'];
         }
         meta_refresh(2, $returnUrl);
@@ -378,17 +344,14 @@ class userscript extends base
             trigger_error($message);
         }
         $snp_bump_b_topic = $this->config['snp_bump_b_topic'];
-        if (!$snp_bump_b_topic)
-        {
+        if (!$snp_bump_b_topic) {
             trigger_error('The administrator has disabled bumping sitewide.');
         }
         $action = $this->request->variable('action', '');
-        if (!$action)
-        {
+        if (!$action) {
             trigger_error('Must specify a valid action.');
         }
-        switch ($action)
-        {
+        switch ($action) {
         case 'enable':
             $this->enable_bump_topic(true);
             break;
@@ -402,8 +365,7 @@ class userscript extends base
             trigger_error('Invalid action.');
         }
         $return_url = '/viewtopic.php?t='.$tid;
-        if (array_key_exists('forum_id', $topic_data))
-        {
+        if (array_key_exists('forum_id', $topic_data)) {
             $return_url .= '&f='.$topic_data['forum_id'];
         }
         meta_refresh(2, $return_url);
@@ -414,18 +376,21 @@ class userscript extends base
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $base_url = $cfg['base_url'];
             $pagination = $this->container->get('pagination');
             $per_page = $this->config['posts_per_page'];
             $start = $this->request->variable('start', 0);
             [$data, $total] = $this->select_thanks_given($per_page, $start);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['topic_id'];
                 $pid = $row['post_id'];
                 $post_time = $this->user->format_date($row['post_time']);
@@ -456,8 +421,7 @@ class userscript extends base
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $base_url = $cfg['base_url'];
             $fid_listings = $this->config['snp_fid_listings'];
             $pagination = $this->container->get('pagination');
@@ -466,10 +430,14 @@ class userscript extends base
             $sort_mode = $cfg['sort_mode'];
             [$data, $total] = $this->select_one_day($fid_listings, $per_page, $start, $sort_mode);
             $pagination->generate_template_pagination(
-                $base_url, 'pagination', 'start', $total, $per_page, $start
+                $base_url,
+                'pagination',
+                'start',
+                $total,
+                $per_page,
+                $start
             );
-            foreach ($data as $row)
-            {
+            foreach ($data as $row) {
                 $tid = $row['topic_id'];
                 $topic_time = $this->user->format_date($row['topic_time']);
                 $u_details = '/viewtopic.php?t=' . $tid;

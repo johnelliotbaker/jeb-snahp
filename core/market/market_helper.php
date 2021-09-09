@@ -1,13 +1,11 @@
 <?php
 
 namespace jeb\snahp\core\market;
-use jeb\snahp\core\invite_helper;
 
+use jeb\snahp\core\invite_helper;
 
 class market_helper
 {
-
-
     protected $config;
     protected $db;
     protected $auth;
@@ -24,8 +22,8 @@ class market_helper
         \phpbb\user $user,
         \phpbb\cache\driver\driver_interface $cache,
         $phpbb_container,
-        $tbl) 
-    {
+        $tbl
+    ) {
         $this->config = $config;
         $this->db = $db;
         $this->auth = $auth;
@@ -79,7 +77,9 @@ class market_helper
     {
         $user_id = (int) $user_id;
         $broker_id = (int) $broker_id;
-        if ($user_id < 1) return false;
+        if ($user_id < 1) {
+            return false;
+        }
         $data = [
             'created_time' => time(),
             'user_id' => $user_id,
@@ -95,12 +95,10 @@ class market_helper
         $product_class_id = (int) $product_class_id;
         $amount = (int) $amount;
         $product_class_data = $this->get_product_class($product_class_id);
-        if (!$product_class_data)
-        {
+        if (!$product_class_data) {
             return false;
         }
         $price = $product_class_data['price'];
         return abs($price * $amount);
     }
-
 }

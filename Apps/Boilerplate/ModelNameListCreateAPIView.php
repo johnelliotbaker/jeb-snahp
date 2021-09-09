@@ -25,7 +25,7 @@ class ModelNameListCreateAPIView extends ListCreateAPIView
         $this->sauth = $sauth;
         $this->model = $model;
         $this->permissionClasses = [
-            new AllowDevPermission($sauth),
+                    new AllowDevPermission($sauth),
             // new AllowAnyPermission($sauth),
         ];
     }

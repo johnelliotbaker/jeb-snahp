@@ -6,23 +6,20 @@ use jeb\snahp\core\base;
 
 class achievements extends base
 {
-
     protected $base_url = '';
 
     public function __construct()
     {
     }
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_anon();
-        if (!$this->config['snp_achi_b_master'])
-        {
+        if (!$this->config['snp_achi_b_master']) {
             trigger_error('This achievement system has been disabled by the administrator. Error Code: a089bce09c');
         }
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'update':
             $this->reject_non_dev(', d4c39e1065');
             $cfg['tpl_name'] = '@jeb_snahp/mcp/component/mcp_achievements_update/base.html';
@@ -36,7 +33,7 @@ class achievements extends base
             trigger_error('Invalid update mode. Error Code: d3761802f0');
             break;
         }
-	}
+    }
 
     public function update($cfg)
     {
@@ -44,8 +41,7 @@ class achievements extends base
         $type = $this->request->variable('type', '');
         $data = $this->update_achievements($type);
         $time = microtime(true) - $time;
-        foreach ($data as $entry)
-        {
+        foreach ($data as $entry) {
             $user_data = $this->select_user($entry['user_id']);
             $username = $this->make_username($user_data);
             $entry['username'] = $username;
@@ -78,14 +74,11 @@ class achievements extends base
         $data[] = $this->update_size_matters();
         $data[] = $this->update_child_at_heart();
         $data[] = $this->update_solar_powered();
-        foreach ($data as $entry)
-        {
-            if (!$entry)
-            {
+        foreach ($data as $entry) {
+            if (!$entry) {
                 continue;
             }
-            if ($entry['unique'])
-            {
+            if ($entry['unique']) {
                 $sql = 'DELETE FROM ' . $this->tbl['achievements'] . " WHERE type='{$entry['type']}'";
                 $this->db->sql_query($sql);
                 unset($entry['unique']);
@@ -147,7 +140,9 @@ class achievements extends base
     {
         // TODO: Don't hard code this
         $root_fid = 9;
-        if ($this->is_dev_server()) { $root_fid = 51; }
+        if ($this->is_dev_server()) {
+            $root_fid = 51;
+        }
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
         $a_fid = $this->select_subforum($root_fid);
         $include = $this->db->sql_in_set('forum_id', $a_fid);
@@ -186,7 +181,7 @@ class achievements extends base
     public function update_life_giver()
     {
         $def = $this->container->getParameter('jeb.snahp.req')['def'];
-        $sql = 'SELECT fulfiller_uid, COUNT(*) as count FROM ' . $this->tbl['req'] . 
+        $sql = 'SELECT fulfiller_uid, COUNT(*) as count FROM ' . $this->tbl['req'] .
             ' WHERE status=' . $def['solve'] . ' GROUP BY fulfiller_uid ORDER BY count DESC';
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
@@ -204,8 +199,7 @@ class achievements extends base
     public function update_gambler()
     {
         $user_id = 49485;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -221,8 +215,7 @@ class achievements extends base
     public function update_the_gourmet()
     {
         $user_id = 5495;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -238,8 +231,7 @@ class achievements extends base
     public function update_solar_powered()
     {
         $user_id = 0;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 0;
         }
         $data = [
@@ -255,8 +247,7 @@ class achievements extends base
     public function update_intense_training()
     {
         $user_id = 58626;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -272,8 +263,7 @@ class achievements extends base
     public function update_bone_head()
     {
         $user_id = 150397;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -289,8 +279,7 @@ class achievements extends base
     public function update_size_matters()
     {
         $user_id = 49485;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -306,8 +295,7 @@ class achievements extends base
     public function update_child_at_heart()
     {
         $user_id = 51956;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $user_id = 2;
         }
         $data = [
@@ -324,8 +312,7 @@ class achievements extends base
     {
         $js = new \phpbb\json_response();
         $profile_id = $this->request->variable('u', 0);
-        if ($profile_id < 2)
-        {
+        if ($profile_id < 2) {
             $js->send([]);
         }
         $stylename = $this->select_style_name();
@@ -337,8 +324,7 @@ class achievements extends base
         $user_data = array_map('log', [$row['snp_req_n_solve'], $row['snp_rep_n_received'], $row['snp_thanks_n_received']]);
         $user_data = $this->normalize_achievements($user_data, $ref_data);
         $average_data = $this->config['snp_rep_average_data'];
-        if (!$average_data)
-        {
+        if (!$average_data) {
             $average_data = array_map('log', [0, 0, 4]);
         }
         $average_data = $this->normalize_achievements($average_data, $ref_data);
@@ -365,8 +351,7 @@ class achievements extends base
     {
         $max = log(100);
         $min = log(3.5);
-        foreach ($data as $key => $val)
-        {
+        foreach ($data as $key => $val) {
             $data[$key] = min(max(($max * $data[$key] / $reference[$key]), $min), $max);
         }
         return $data;
@@ -382,5 +367,4 @@ class achievements extends base
         $this->db->sql_freeresult($result);
         return $row;
     }
-
 }

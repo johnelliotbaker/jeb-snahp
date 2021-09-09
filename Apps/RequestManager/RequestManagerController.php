@@ -34,7 +34,8 @@ class RequestManagerController
             [
             'status' => 'FAILURE',
             'reason' => 'Could not resolve username'
-            ], 404
+            ],
+            404
         );
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 use jeb\snahp\core\topic_mover;
@@ -35,10 +36,10 @@ class graveyard_request extends base
         $batch_limit = 50;
         $requestdata = $this->select_request_closed($batch_limit);
         $a_tid = [];
-        foreach ($requestdata as $req)
+        foreach ($requestdata as $req) {
             $a_tid[] = $req['tid'];
-        if (!$a_tid)
-        {
+        }
+        if (!$a_tid) {
             trigger_error("There are no closed requests to move.");
         }
         $td = $this->get_topic_data($a_tid);
@@ -55,11 +56,9 @@ class graveyard_request extends base
 
     protected function get_topic_data(array $topic_ids)
     {
-        if (!function_exists('phpbb_get_topic_data'))
-        {
+        if (!function_exists('phpbb_get_topic_data')) {
             include('includes/functions_mcp.php');
         }
         return phpbb_get_topic_data($topic_ids);
     }
-
 }

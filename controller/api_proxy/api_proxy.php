@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\api_proxy;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -16,9 +17,15 @@ class api_proxy
     protected $sauth;
     protected $key;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $tbl,
+        $sauth
     )/*{{{*/
     {
         $this->db = $db;
@@ -36,12 +43,10 @@ class api_proxy
 
     public function handle($mode)/*{{{*/
     {
-        if ($this->sauth->user_belongs_to_groupset($this->user_id, 'Basic'))
-        {
+        if ($this->sauth->user_belongs_to_groupset($this->user_id, 'Basic')) {
             trigger_error('You do not have permission to view this page. Error Code: 80d6d3faf5');
         }
-        switch($mode)
-        {
+        switch ($mode) {
         case 'goodreads':
             return $this->respond_goodreads_as_json();
         }
@@ -90,5 +95,4 @@ class api_proxy
         $res = $contents['search']['results']['work'];
         return new JsonResponse($res);
     }
-
 }

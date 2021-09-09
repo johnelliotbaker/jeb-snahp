@@ -16,8 +16,7 @@ class acp_fiximdb extends base
     public function handle($mode)
     {
         $this->reject_non_admin('Error Code: 9e8f5608d8');
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'test':
             $cfg = [];
             return $this->test($cfg);
@@ -35,8 +34,7 @@ class acp_fiximdb extends base
     {
         $this->reject_anon();
         $tpl_name = $cfg['tpl_name'];
-        if ($tpl_name)
-        {
+        if ($tpl_name) {
             $rowset = $this->select_groups();
             foreach ($rowset as $row) {
                 $this->template->assign_block_vars('A', $row);
@@ -54,8 +52,7 @@ class acp_fiximdb extends base
         header('Cache-Control: no-cache');
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $forum_id = (int) $this->request->variable('f', '0');
-        if (!$forum_id)
-        {
+        if (!$forum_id) {
             $this->send_message(['status'=>'ERROR']);
             $js = new \phpbb\json_response();
             return $js->send([]);
@@ -70,14 +67,14 @@ class acp_fiximdb extends base
         $sql = 'SELECT * FROM ' . TOPICS_TABLE . " WHERE $where";
         $i = 0;
         $this->send_message(['status'=>'START', 'i' => $i, 'total' => $total]);
-        try
-        {
+        try {
             $result_loop = $this->db->sql_query($sql);
-            while($row = $this->db->sql_fetchrow($result_loop))
-            {
+            while ($row = $this->db->sql_fetchrow($result_loop)) {
                 $i += 1;
                 $post_id = $row['topic_first_post_id'];
-                if (!$post_id) continue;
+                if (!$post_id) {
+                    continue;
+                }
                 $sql = 'SELECT post_text, poster_id, forum_id, post_id, post_subject FROM ' . POSTS_TABLE . " WHERE post_id={$post_id}";
                 $this->db->sql_query($sql);
                 $result = $this->db->sql_query($sql);
@@ -88,7 +85,9 @@ class acp_fiximdb extends base
                 // generate_text_for_display($text, '0', '0', 0);
                 $ptn = '/tt(\d{7})]<\/s>IMDb<e>/';
                 $b_match = preg_match($ptn, $text, $match);
-                if (!$b_match) continue;
+                if (!$b_match) {
+                    continue;
+                }
                 $imdb_id = $match[1];
                 $text = preg_replace($ptn, 'tt$1]</s>IMDb tt$1<e>', $text);
                 $data['post_text'] = $text;
@@ -100,15 +99,12 @@ class acp_fiximdb extends base
                 $mode = 'edit_first_post';
                 $subject = $row['post_subject'] . " tt{$imdb_id}";
                 $search->index($mode, $row['post_id'], $text, $subject, $row['poster_id'], $row['forum_id']);
-                if ($i % 100 == 0)
-                {
+                if ($i % 100 == 0) {
                     $this->send_message(['status' => 'PROGRESS', 'i' => $i, 'total' => $total]);
                 }
             }
             $this->db->sql_freeresult($result_loop);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
         }
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
@@ -123,11 +119,11 @@ class acp_fiximdb extends base
         $js->send($data);
     }
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }
-
 }

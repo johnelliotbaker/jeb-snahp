@@ -12,8 +12,7 @@ namespace jeb\snahp\migrations;
 
 class v_0_9_0 extends \phpbb\db\migration\migration
 {
-
-    static public function depends_on()
+    public static function depends_on()
     {
         return array('\jeb\snahp\migrations\v_0_8_0');
     }

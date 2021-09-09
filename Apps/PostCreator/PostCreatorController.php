@@ -77,8 +77,13 @@ class PostCreatorController
             $subject = "[TAoE] ${i} ";
             $data_ary['topic_title'] = $subject;
             submit_post(
-                $mode, $subject, $username, $topic_type,
-                $poll_ary, $data_ary, $update_message = true,
+                $mode,
+                $subject,
+                $username,
+                $topic_type,
+                $poll_ary,
+                $data_ary,
+                $update_message = true,
                 $update_search_index = true
             );
             if ($i % 10 == 0) {
@@ -93,7 +98,6 @@ class PostCreatorController
         }
         return new JsonResponse(["method"=>$subject]);
     }
-
 }
 
 function sendMessage($data)

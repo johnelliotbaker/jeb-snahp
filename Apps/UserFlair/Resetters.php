@@ -53,7 +53,7 @@ const FIELDS = [
 //     // "HIDDEN_DRAGON" =>  [],
 // ];
 
-class TypeResetter 
+class TypeResetter
 {
     public function __construct($itemdata, $typeModel)
     {
@@ -112,7 +112,7 @@ class TypeResetter
     }
 }
 
-class FlairResetter 
+class FlairResetter
 {
     public function __construct($userdata, $itemdata, $flairModel)
     {

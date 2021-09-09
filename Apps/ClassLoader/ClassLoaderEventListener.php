@@ -40,5 +40,4 @@ class ClassLoaderEventListener implements EventSubscriberInterface
     {
         error_reporting(error_reporting() & ~E_USER_NOTICE);
     }
-
 }

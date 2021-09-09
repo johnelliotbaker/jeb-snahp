@@ -9,10 +9,14 @@ namespace jeb\snahp\migrations;
 class v_0_31_2 extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
-    { return false; }
+    {
+        return false;
+    }
 
-    static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_31_0']; }
+    public static function depends_on()
+    {
+        return ['\jeb\snahp\migrations\v_0_31_0'];
+    }
 
     public function update_schema()
     {
@@ -44,5 +48,4 @@ class v_0_31_2 extends \phpbb\db\migration\migration
             ['config.add', ['snp_log_user_spam_buffer_length', 10]],
         ];
     }
-
 }

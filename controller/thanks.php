@@ -1,22 +1,20 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 
 class thanks extends base
 {
-
     public function __construct(
-    )
-    {
+    ) {
         // $this->u_action = 'app.php/snahp/admin/';
     }
 
     public function handle($mode)
     {
-        switch($mode)
-        {
+        switch ($mode) {
         case 'datn':
             $cfg = [];
             return $this->delete_all_thanks_notifications($cfg);
@@ -58,8 +56,7 @@ class thanks extends base
         $total = count($rowset);
         $this->db->sql_freeresult($result);
         $tpl_name = $cfg['tpl_name'];
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $row['user_regdate_strn'] = $this->user->format_date($row['user_regdate']);
             $this->template->assign_block_vars('USERS', $row);
         }
@@ -72,8 +69,7 @@ class thanks extends base
     public function handle_thanks_given($cfg)
     {
         $user_id = (int) $this->request->variable('user_id', '0');
-        if (!$user_id)
-        {
+        if (!$user_id) {
             trigger_error('You must provide a valid user_id. Error Code: c519466f1a');
         }
         $tpl_name = $cfg['tpl_name'];
@@ -84,10 +80,14 @@ class thanks extends base
         $start = $this->request->variable('start', 0);
         [$data, $total] = $this->select_thanks_given($per_page, $start, $user_id);
         $pagination->generate_template_pagination(
-            $url, 'pagination', 'start', $total, $per_page, $start
+            $url,
+            'pagination',
+            'start',
+            $total,
+            $per_page,
+            $start
         );
-        foreach ($data as $row)
-        {
+        foreach ($data as $row) {
             $tid = $row['topic_id'];
             $pid = $row['post_id'];
             $post_time = $this->user->format_date($row['post_time']);
@@ -121,5 +121,4 @@ class thanks extends base
         $js = new JsonResponse(['status' => 'success']);
         return $js;
     }
-
 }

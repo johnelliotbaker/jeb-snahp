@@ -53,7 +53,6 @@ class PostingViolationEventListener implements EventSubscriberInterface
                 ]
             );
         }
-
     }
 
     public function incrementUserViolation($event)

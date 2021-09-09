@@ -14,7 +14,8 @@ class JukeboxHelper
 
     public function selectCandidates($numPosts)
     {
-        $topicId = ($this->sauth->is_dev_server()) ? 21121 : 218385;;
+        $topicId = ($this->sauth->is_dev_server()) ? 21121 : 218385;
+        ;
         $sqlArray = [
             'SELECT'    => 'a.post_text, b.username, b.user_colour, b.user_avatar',
             'FROM'      => [ POSTS_TABLE => 'a', ],
@@ -90,5 +91,4 @@ class JukeboxHelper
         preg_match('#\<s>\[tub]</s>(.*?)<e>\[/tub]</e>#s', $message, $match);
         return json_decode($match[1], true);
     }
-
 }

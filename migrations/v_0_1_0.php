@@ -18,7 +18,7 @@ class v_0_1_0 extends \phpbb\db\migration\migration
         return false;
     }
 
-    static public function depends_on()
+    public static function depends_on()
     {
         return array(
             '\jeb\snahp\migrations\install_user_schema',
@@ -65,5 +65,4 @@ class v_0_1_0 extends \phpbb\db\migration\migration
             )),
         );
     }
-
 }

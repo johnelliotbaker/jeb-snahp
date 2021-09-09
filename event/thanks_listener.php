@@ -23,8 +23,7 @@ class thanks_listener implements EventSubscriberInterface
         $tbl,
         $sauth,
         $thanksUsers
-    )
-    {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -65,7 +64,7 @@ class thanks_listener implements EventSubscriberInterface
         $this->thanksUsers->insertTimestamp($fromId, $topicId);
     }
 
-    public function modify_avatar_thanks($event) 
+    public function modify_avatar_thanks($event)
     {
         $poster_id = $event['poster_id'];
         $sql = 'SELECT snp_disable_avatar_thanks_link FROM ' . USERS_TABLE . ' WHERE user_id=' . $poster_id;

@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\switchboard;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -9,7 +10,6 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class switchboard
 {
-
     protected $db;
     protected $user;
     protected $config;
@@ -21,11 +21,16 @@ class switchboard
     protected $sauth;
     protected $input;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth
-    )
-    {
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $tbl,
+        $sauth
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -41,8 +46,7 @@ class switchboard
     {
         $this->sauth->reject_non_dev('Error Code: f8c0b3bd3a');
         $command = $this->request->variable('command', '');
-        switch($command)
-        {
+        switch ($command) {
         case 'start_logging':
             $this->start_logging();
             break;
@@ -100,8 +104,7 @@ class switchboard
     private function set_form_checkboxes($a_checkbox_data)
     {
         $data = [];
-        foreach($a_checkbox_data as $key => $val)
-        {
+        foreach ($a_checkbox_data as $key => $val) {
             $data[strtoupper($key)] = $val;
         }
         $this->template->assign_vars($data);
@@ -109,8 +112,7 @@ class switchboard
 
     private function process_manifest($manifest)
     {
-        foreach($manifest as $job)
-        {
+        foreach ($manifest as $job) {
             $varname = $job['varname'];
             $job['value'] = $this->request->variable((string)$varname, $job['default']);
             $this->{$job['func_set']}($job);
@@ -122,8 +124,7 @@ class switchboard
     private function set_template_vars_from_manifest($manifest)
     {
         $tpl_vars = [];
-        foreach ($manifest as $job)
-        {
+        foreach ($manifest as $job) {
             $tpl_varname = strtoupper($job['tpl_varname']);
             $stored_value = $this->{$job['func_get']}($job);
             $tpl_vars[$tpl_varname] = $stored_value;
@@ -140,10 +141,8 @@ class switchboard
         // $a_checkbox_data = $this->process_checkboxes($a_checkbox_name);
         // $this->set_form_checkboxes($a_checkbox_data);
         add_form_key('jeb_snp');
-        if ($this->request->is_set_post('submit'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        if ($this->request->is_set_post('submit')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
         }
@@ -152,5 +151,4 @@ class switchboard
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Switchboard');
     }
-
 }

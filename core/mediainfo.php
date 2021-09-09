@@ -11,9 +11,8 @@ class mediainfo
     protected $data;
     protected $language_lut;
 
-	public function __construct(
-	)
-	{
+    public function __construct(
+    ) {
         $this->general_category = ['General'];
         $this->video_category = ['Video', 'Video #1', 'Video #2', 'Video #3', 'Video #4', 'Video #5', 'Video #6', 'Video #7', 'Video #8', 'Video #9'];
         $this->audio_category = ['Audio', 'Audio #1', 'Audio #2', 'Audio #3', 'Audio #4', 'Audio #5', 'Audio #6', 'Audio #7', 'Audio #8', 'Audio #9'];
@@ -48,7 +47,7 @@ class mediainfo
             'thai'       => 'th',
             // 'danish'     => 'dk',
         ];
-	}
+    }
 
     private function normalize_newline($strn)
     {
@@ -62,39 +61,29 @@ class mediainfo
         $allowed_category = $this->allowed_category;
         $aggro = [];
         $b_processing = false;
-        foreach ($arr as $line)
-        {
-            if (!$line) continue;
-            if (strpos($line, ':') == false)
-            {
-                if (in_array($line, $allowed_category))
-                {
+        foreach ($arr as $line) {
+            if (!$line) {
+                continue;
+            }
+            if (strpos($line, ':') == false) {
+                if (in_array($line, $allowed_category)) {
                     $b_processing = true;
                     $major = $line;
-                    if (array_key_exists($major, $aggro))
-                    {
+                    if (array_key_exists($major, $aggro)) {
                         return false;
                     }
                     $aggro[$major] = [];
-                }
-                else
-                {
+                } else {
                     $b_processing = false;
                 }
-            }
-            else
-            {
-                if ($b_processing)
-                {
+            } else {
+                if ($b_processing) {
                     $tmp = array_map('trim', explode(':', $line));
                     $n = count($tmp);
                     // Special: display aspect has a ':' in value
-                    if ($n == 3 && $tmp[0] == 'Display aspect ratio')
-                    {
+                    if ($n == 3 && $tmp[0] == 'Display aspect ratio') {
                         $aggro[$major][$tmp[0]] = implode(':', array_slice($tmp, 1));
-                    }
-                    else if (count($tmp) == 2)
-                    {
+                    } elseif (count($tmp) == 2) {
                         $tmp = array_map('trim', $tmp);
                         $aggro[$major][$tmp[0]] = $tmp[1];
                     }
@@ -107,8 +96,7 @@ class mediainfo
     private function collect_key_info($type, $key='Language')
     {
         $collection = $this->data;
-        switch ($type)
-        {
+        switch ($type) {
         case 'audio':
             $a_category = $this->audio_category;
             break;
@@ -119,23 +107,21 @@ class mediainfo
             return [];
         }
         $a_aggro = [];
-        foreach ($a_category as $major)
-        {
-            if (isset($collection[$major]))
-            {
+        foreach ($a_category as $major) {
+            if (isset($collection[$major])) {
                 $data = $collection[$major];
                 $a_aggro[] = isset($data[$key]) ? $data[$key] : '';
             }
         }
         $a_aggro = array_unique($a_aggro);
-        if (!$a_aggro) return [];
+        if (!$a_aggro) {
+            return [];
+        }
         $res = [];
         $i = 1;
         $key_capital = ucfirst($key);
-        foreach ($a_aggro as $val)
-        {
-            if ($val)
-            {
+        foreach ($a_aggro as $val) {
+            if ($val) {
                 $res["${key_capital} ${i}"] = $val;
                 $i += 1;
             }
@@ -185,8 +171,7 @@ class mediainfo
             ['f' => 'bitrate'  , 'alias' => 'Bit rate'],
             ['f' => 'format'   , 'alias' => 'Format'],
         ];
-        foreach ($a_element as $element)
-        {
+        foreach ($a_element as $element) {
             $entry['type'] = 'kv';
             $entry['content'] = $this->{$function_prefix . $element['f']}($data);
             $res[$element['alias']] = $entry;
@@ -254,11 +239,9 @@ class mediainfo
             ['f' => 'framerate', 'alias' => 'Frame rate',],
             ['f' => 'bitrate',   'alias' => 'Bit rate',],
         ];
-        foreach ($a_data as $data)
-        {
+        foreach ($a_data as $data) {
             $tmp = [];
-            foreach ($a_element as $element)
-            {
+            foreach ($a_element as $element) {
                 $entry['type'] = 'kv';
                 $entry['content'] = $this->{$function_prefix . $element['f']}($data);
                 $tmp[$element['alias']] = $entry;
@@ -266,9 +249,10 @@ class mediainfo
             $res[] = $tmp;
         }
         $n_video = count($res);
-        if ($n_video < 1) { return $res; }
-        if ($n_video == 1)
-        {
+        if ($n_video < 1) {
+            return $res;
+        }
+        if ($n_video == 1) {
             $html = $this->auto_convert_to_html($res[0], $cfg);
             $res = [];
             $res['Video']['type'] = 'fullwidth';
@@ -279,8 +263,7 @@ class mediainfo
         $html = $this->auto_convert_to_html($res[0], $cfg);
         $tmp['Video']['type'] = 'fullwidth';
         $tmp['Video']['content'] = $html;
-        for ($i=1; $i < $n_video; $i++)
-        {
+        for ($i=1; $i < $n_video; $i++) {
             $a = $this->auto_convert_to_html($res[$i], $cfg);
             $video_name = 'Video ' . (string) ($i+1);
             $b = [];
@@ -295,10 +278,8 @@ class mediainfo
     {
         $res = [];
         $allowed = $this->video_category;
-        foreach($allowed as $major)
-        {
-            if (array_key_exists($major, $a_data))
-            {
+        foreach ($allowed as $major) {
+            if (array_key_exists($major, $a_data)) {
                 $res[] = $a_data[$major];
             }
         }
@@ -309,10 +290,8 @@ class mediainfo
     {
         $res = [];
         $allowed = $this->subtitle_category;
-        foreach($allowed as $major)
-        {
-            if (array_key_exists($major, $a_data))
-            {
+        foreach ($allowed as $major) {
+            if (array_key_exists($major, $a_data)) {
                 $res[] = $a_data[$major];
             }
         }
@@ -339,15 +318,13 @@ class mediainfo
             ['f' => 'format' , 'alias' => 'Format'],
         ];
         $i = 1;
-        foreach ($a_data as $data)
-        {
+        foreach ($a_data as $data) {
             $tmp = ['id' => $i];
-            foreach ($a_element as $element)
-            {
+            foreach ($a_element as $element) {
                 $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
             }
             $entry['type'] = 'fullwidth';
-            $language =  $this->get_language_image_or_strn($tmp['Language'] , ['append_text' => true])['value'];
+            $language =  $this->get_language_image_or_strn($tmp['Language'], ['append_text' => true])['value'];
             $format = $tmp['Format'];
             $html = '<div class="row"><div class="col-auto subtitle_key">#' . $i .  ':</div><div class="float-right subtitle_value col">' . $language . " ${format}</div></div>";
             $entry['content'] =  $html;
@@ -355,8 +332,7 @@ class mediainfo
             $i += 1;
         }
         $tmp = [];
-        if ($res)
-        {
+        if ($res) {
             $tmp['Subtitle'] = $this->make_collapsable($res, 'Subtitles');
         }
         return array_merge($tmp, $extra);
@@ -366,10 +342,8 @@ class mediainfo
     {
         $res = [];
         $allowed = $this->audio_category;
-        foreach($allowed as $major)
-        {
-            if (array_key_exists($major, $a_data))
-            {
+        foreach ($allowed as $major) {
+            if (array_key_exists($major, $a_data)) {
                 $res[] = $a_data[$major];
             }
         }
@@ -410,10 +384,11 @@ class mediainfo
     private function get_audio_channels($data)
     {
         $b = preg_match('#(\d+).*#is', $this->get_val_or_null('Channel(s)', $data), $match);
-        if (!$b) { return ''; }
+        if (!$b) {
+            return '';
+        }
         $ch = (string) $match[1];
-        switch ($ch)
-        {
+        switch ($ch) {
         case '1':
             return '(Mono)';
         case '2':
@@ -431,10 +406,11 @@ class mediainfo
 
     private function get_country_code_from_language($strn)
     {
-        if (!$strn) return null;
+        if (!$strn) {
+            return null;
+        }
         $strn = strtolower($strn);
-        if (array_key_exists($strn, $this->language_lut))
-        {
+        if (array_key_exists($strn, $this->language_lut)) {
             return $this->language_lut[$strn];
         }
         return null;
@@ -443,13 +419,11 @@ class mediainfo
     private function get_language_image_or_strn($strn, $options=[])
     {
         $country_code = $this->get_country_code_from_language($strn);
-        if (!$country_code)
-        {
+        if (!$country_code) {
             return ['type' => 'string', 'value' => $strn];
         }
         $img_html = '<img class="flag" src="/ext/jeb/snahp/styles/all/template/flags/4x3/' . $country_code . '.svg" title="' . $strn . '"></img>';
-        if (isset($options['append_text']) && $options['append_text'])
-        {
+        if (isset($options['append_text']) && $options['append_text']) {
             $img_html .= " $strn";
         }
         return ['type' => 'html', 'value' => $img_html];
@@ -457,8 +431,7 @@ class mediainfo
 
     private function join_or_first($first, $second, $delimiter=' @ ')
     {
-        if ($second)
-        {
+        if ($second) {
             return join($delimiter, [$first, $second]);
         }
         return $first;
@@ -479,24 +452,18 @@ class mediainfo
             ['f' => 'bitrate' , 'alias' => 'Bit rate'],
         ];
         $i = 1;
-        foreach ($a_data as $data)
-        {
+        foreach ($a_data as $data) {
             $tmp = [];
             $separator = '|';
-            foreach ($a_element as $element)
-            {
+            foreach ($a_element as $element) {
                 $tmp[$element['alias']] = $this->{$function_prefix . $element['f']}($data);
             }
             $language = '';
-            if ($tmp['Language'])
-            {
+            if ($tmp['Language']) {
                 $lang = $this->get_language_image_or_strn($tmp['Language']);
-                if ($lang['type'] == 'html')
-                {
+                if ($lang['type'] == 'html') {
                     $language = $lang['value'];
-                }
-                else
-                {
+                } else {
                     $language = "${lang['value']} ${separator}";
                 }
             }
@@ -504,7 +471,9 @@ class mediainfo
             $bitrate = $tmp['Bit rate'];
             $specs = $this->join_or_first($format, $bitrate);
             $row_data = [$language, $specs];
-            if ($tmp['Channels']) $row_data[] = $tmp['Channels'];
+            if ($tmp['Channels']) {
+                $row_data[] = $tmp['Channels'];
+            }
             $value = implode(" ", $row_data);
             $html = '<div class="row"><div class="col-auto audio_key">#' . $i .  ':</div><div class="float-right audio_value col">' . $value . '</div></div>';
             $entry['type'] = 'fullwidth';
@@ -514,8 +483,7 @@ class mediainfo
         }
         $a_remain = array_slice($res, $max_audio_entry);
         $res = array_slice($res, 0, $max_audio_entry);
-        if (isset($a_remain) && $a_remain)
-        {
+        if (isset($a_remain) && $a_remain) {
             $res[] = $this->make_collapsable($a_remain, 'Additional Audio');
         }
         return array_merge($res, $extra);
@@ -523,9 +491,15 @@ class mediainfo
 
     private function validate_data($data)
     {
-        if (!array_key_exists('General', $this->data)) return false;
-        if (!(array_key_exists('Video', $this->data) || array_key_exists('Video #1', $this->data))) return false;
-        if (!(array_key_exists('Audio', $this->data) || array_key_exists('Audio #1', $this->data))) return false;
+        if (!array_key_exists('General', $this->data)) {
+            return false;
+        }
+        if (!(array_key_exists('Video', $this->data) || array_key_exists('Video #1', $this->data))) {
+            return false;
+        }
+        if (!(array_key_exists('Audio', $this->data) || array_key_exists('Audio #1', $this->data))) {
+            return false;
+        }
         return true;
     }
 
@@ -534,8 +508,12 @@ class mediainfo
         $strn = $this->normalize_newline($strn);
         $original = trim($strn);
         $this->data = $this->string2dict($strn);
-        if ($this->data === false) { return ''; }
-        if (!$this->validate_data($this->data)) return '';
+        if ($this->data === false) {
+            return '';
+        }
+        if (!$this->validate_data($this->data)) {
+            return '';
+        }
         $subtitle = $this->generate_subtitle_content($this->data);
         $res[] = '';
         $res[] = '<div class="twbs mediainfo"><div class="container-fluid"><div class="row">';
@@ -578,11 +556,9 @@ class mediainfo
     private function auto_convert_to_html($a_data, $cfg=[])
     {
         $res = [];
-        foreach ($a_data as $k=>$v)
-        {
+        foreach ($a_data as $k=>$v) {
             $type = $v['type'];
-            switch ($type)
-            {
+            switch ($type) {
             case 'fullwidth':
                 $res[] = $this->convert_to_fullwidth_html($v['content'], $cfg);
                 break;
@@ -621,10 +597,8 @@ class mediainfo
       </div></div></div>';
         $i = 0;
         $res = [];
-        foreach($data as $k=>$v)
-        {
-            switch($v['type'])
-            {
+        foreach ($data as $k=>$v) {
+            switch ($v['type']) {
             case 'kv':
                 $res[] = $this->convert_to_kv_html($k, $v['content'], $cfg);
                 break;
@@ -635,5 +609,4 @@ class mediainfo
         }
         return join("\n", $res);
     }
-
 }

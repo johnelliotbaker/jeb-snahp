@@ -105,7 +105,8 @@ class PostingViolationHelper
             $warningArray[] = ">> $violationReason<br/><br/>";
         }
         $warningArray = array_merge(
-            $warningArray, [
+            $warningArray,
+            [
             'You will receive a rule violation for replying to this topic.<br/><br/><br/>',
             '</h1>',
             '<p>',

@@ -1,16 +1,17 @@
 <?php
 namespace jeb\snahp\ucp;
 
-function prn($var, $b_html=false) {
-    if (is_array($var))
-    { foreach ($var as $k => $v) { echo "... $k => "; prn($v, $b_html); }
-    } else {
-        if ($b_html)
-        {
-            echo htmlspecialchars($var) . '<br>';
+function prn($var, $b_html=false)
+{
+    if (is_array($var)) {
+        foreach ($var as $k => $v) {
+            echo "... $k => ";
+            prn($v, $b_html);
         }
-        else
-        {
+    } else {
+        if ($b_html) {
+            echo htmlspecialchars($var) . '<br>';
+        } else {
             echo $var . '<br>';
         }
     }
@@ -19,15 +20,14 @@ function prn($var, $b_html=false) {
 
 class main_module
 {
-    var $u_action;
+    public $u_action;
 
-    function main($id, $mode)
+    public function main($id, $mode)
     {
         global $db, $request, $template, $user;
 
         $cfg = array();
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'visibility':
             $cfg['tpl_name'] = 'ucp_snp_vis';
             $cfg['b_feedback'] = true;
@@ -49,7 +49,7 @@ class main_module
             $this->handle_block($cfg);
             break;
         }
-        if (!empty($cfg)){
+        if (!empty($cfg)) {
             $this->handle_mode($cfg);
         }
     }
@@ -62,13 +62,17 @@ class main_module
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
-        if (!$row) { return false; }
+        if (!$row) {
+            return false;
+        }
         $pcid = $row['id'];
         $sql = 'SELECT * FROM ' . $tbl['user_inventory'] . " WHERE user_id=${user_id} AND product_class_id=${pcid}";
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
-        if (!$row) { return false; }
+        if (!$row) {
+            return false;
+        }
         return true ? $row['quantity'] > 0 : false;
     }
 
@@ -86,14 +90,13 @@ class main_module
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
-        if ($row)
-        {
+        if ($row) {
             return $row['quantity'];
         }
         return 0;
     }
 
-    function handle_block($cfg)
+    public function handle_block($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
         $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
@@ -116,11 +119,10 @@ class main_module
         $template->assign_var('B_THANKS_RESET', $shouldShow);
     }
 
-    function handle_custom($cfg)
+    public function handle_custom($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
-        if (!$config['snp_ucp_custom_b_master'])
-        {
+        if (!$config['snp_ucp_custom_b_master']) {
             return;
         }
         $sauth = $phpbb_container->get('jeb.snahp.auth.user_auth');
@@ -141,11 +143,10 @@ class main_module
         // Using config custom master switch
     }
 
-    function handle_invite($cfg)
+    public function handle_invite($cfg)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
-        if (!$config['snp_inv_b_master'])
-        {
+        if (!$config['snp_inv_b_master']) {
             return;
         }
         $user_id = $user->data['user_id'];
@@ -154,8 +155,7 @@ class main_module
         $template->assign_vars([ 'B_ENABLE' => $b_enable, ]);
         $ih = new \jeb\snahp\core\invite_helper($phpbb_container, $user, $auth, $request, $db, $config, $helper, $template);
         $invite_users_data = $ih->select_invite_users($where="i.user_id={$user_id}");
-        if ($invite_users_data)
-        {
+        if ($invite_users_data) {
             $invite_users_data = $invite_users_data[0];
             $template->assign_vars([
                 'B_INVITE_USER_EXISTS' => true,
@@ -163,9 +163,7 @@ class main_module
                 'B_BAN' => $invite_users_data['b_ban'],
                 'S_BAN_MSG_PUBLIC' => $invite_users_data['ban_msg_public'],
             ]);
-        }
-        else
-        {
+        } else {
             $template->assign_vars([
                 'B_INVITE_USER_EXISTS' => false,
                 'N_AVAILABLE' => 0,
@@ -182,22 +180,20 @@ class main_module
             'PAGINATION' => $pagination,
         ]);
         // Data retrieval using pagination
-        $invite_data = $ih->get_invite_list($user_id, $b_digest=true , $start=$start, $limit=$per_page);
-        if ($invite_data)
-        {
+        $invite_data = $ih->get_invite_list($user_id, $b_digest=true, $start=$start, $limit=$per_page);
+        if ($invite_data) {
             $template->assign_vars([
                 'B_INVITE_EXISTS' => true,
             ]);
             $count = $start;
-            foreach ($invite_data as $row)
-            {
+            foreach ($invite_data as $row) {
                 $row['id'] = $total - $count++;
                 $template->assign_block_vars('A_INVITE', $row);
             }
         }
     }
 
-    function handle_visibility($cfg)
+    public function handle_visibility($cfg)
     {
         global $db, $request, $template, $user;
         $user_id = $user->data['user_id'];
@@ -213,10 +209,8 @@ class main_module
             'snp_achi_b_avatar'              => $request->variable('snp_achi_b_avatar', $user->data['snp_achi_b_avatar']),
             'snp_achi_b_profile'             => $request->variable('snp_achi_b_profile', $user->data['snp_achi_b_profile']),
         ];
-        if ($request->is_set_post('submit'))
-        {
-            if (!check_form_key('jeb/snahp'))
-            {
+        if ($request->is_set_post('submit')) {
+            if (!check_form_key('jeb/snahp')) {
                 trigger_error($user->lang('FORM_INVALID'));
             }
             $sql = 'UPDATE ' . USERS_TABLE . '
@@ -224,8 +218,7 @@ class main_module
                 WHERE user_id = ' . $user->data['user_id'];
             $result = $db->sql_query($sql);
             $db->sql_freeresult($result);
-            if ($cfg['b_feedback'])
-            {
+            if ($cfg['b_feedback']) {
                 meta_refresh(2, $this->u_action);
                 $message = $user->lang('UCP_SNP_SAVED') . '<br /><br />' . $user->lang('RETURN_UCP', '<a href="' . $this->u_action . '">', '</a>');
                 trigger_error($message);
@@ -244,20 +237,17 @@ class main_module
         $template->assign_vars($template_vars);
     }
 
-    function handle_mode($cfg)
+    public function handle_mode($cfg)
     {
         global $db, $request, $template, $user;
         $this->tpl_name = $cfg['tpl_name'];
         $this->page_title = $user->lang('UCP_SNP_TITLE');
         add_form_key('jeb/snahp');
-        if ($request->is_set_post('submit'))
-        {
-            if (!check_form_key('jeb/snahp'))
-            {
+        if ($request->is_set_post('submit')) {
+            if (!check_form_key('jeb/snahp')) {
                 trigger_error($user->lang('FORM_INVALID'));
             }
-            if ($cfg['b_feedback'])
-            {
+            if ($cfg['b_feedback']) {
                 meta_refresh(2, $this->u_action);
                 $message = $user->lang('UCP_SNP_SAVED') . '<br /><br />' . $user->lang('RETURN_UCP', '<a href="' . $this->u_action . '">', '</a>');
                 trigger_error($message);
@@ -268,8 +258,7 @@ class main_module
 
     public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
-        if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
-        {
+        if (!$this->user_belongs_to_groupset($user_id, $groupset_name)) {
             trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
         }
     }
@@ -277,18 +266,14 @@ class main_module
     public function user_belongs_to_groupset($user_id, $groupset_name)
     {
         global $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template;
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $groupset = $phpbb_container->getParameter('jeb.snahp.groups')['dev']['set'];
-        }
-        else
-        {
+        } else {
             $groupset = $phpbb_container->getParameter('jeb.snahp.groups')['production']['set'];
         }
         include_once('includes/functions_user.php');
         $user_id_ary = [$user_id];
-        if (!array_key_exists($groupset_name, $groupset))
-        {
+        if (!array_key_exists($groupset_name, $groupset)) {
             return false;
         }
         $group_id_ary = $groupset[$groupset_name];
@@ -313,5 +298,4 @@ class main_module
         $db->sql_freeresult($result);
         return $row;
     }
-
 }

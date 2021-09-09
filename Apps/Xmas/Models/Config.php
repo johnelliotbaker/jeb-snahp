@@ -27,5 +27,4 @@ class Config extends Model
             'data' => new JsonField(['default' => json_encode([])]),
         ];
     }
-
 }

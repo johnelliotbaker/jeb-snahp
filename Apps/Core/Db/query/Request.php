@@ -32,5 +32,4 @@ class Request
             WHERE tid=${topicId}";
         $this->db->sql_query($sql);
     }
-
 }

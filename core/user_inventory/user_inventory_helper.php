@@ -5,8 +5,6 @@ namespace jeb\snahp\core\user_inventory;
 
 class user_inventory_helper
 {
-
-
     protected $config;
     protected $db;
     protected $auth;
@@ -23,8 +21,8 @@ class user_inventory_helper
         \phpbb\user $user,
         \phpbb\cache\driver\driver_interface $cache,
         $phpbb_container,
-        $tbl) 
-    {
+        $tbl
+    ) {
         $this->config = $config;
         $this->db = $db;
         $this->auth = $auth;
@@ -70,10 +68,11 @@ class user_inventory_helper
     public function get_inventory_count_by_product_class($user_id)
     {
         $rowset = $this->get_inventory((int)$user_id);
-        if (!$rowset) return [];
+        if (!$rowset) {
+            return [];
+        }
         $res = [];
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $res[$row['product_class_id']] = (int) $row['quantity'];
         }
         return $res;
@@ -82,15 +81,12 @@ class user_inventory_helper
     public function add_item($product_class_id, $quantity, $user_id=null)
     {
         $row = $this->get_inventory_by_product_class($product_class_id, $user_id);
-        if ($row)
-        {
-            $sql = 'UPDATE ' . $this->tbl_inventory . " SET quantity=quantity+${quantity}" . 
+        if ($row) {
+            $sql = 'UPDATE ' . $this->tbl_inventory . " SET quantity=quantity+${quantity}" .
                 " WHERE user_id=${user_id} AND product_class_id=${product_class_id}";
             $this->db->sql_query($sql);
             return $this->db->sql_affectedrows() > 0;
-        }
-        else
-        {
+        } else {
             $data = [
                 'user_id' => $user_id,
                 'product_class_id' => $product_class_id,
@@ -116,5 +112,4 @@ class user_inventory_helper
     private function insert_or_update_inventory($product_class_id, $quantity, $user_id)
     {
     }
-
 }

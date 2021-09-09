@@ -3,7 +3,6 @@ namespace jeb\snahp\controller;
 
 class reputation
 {
-
     protected $base_url = '';
     protected $db;
     protected $user;
@@ -18,11 +17,19 @@ class reputation
     protected $user_inventory;
     protected $product_class;
     public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper, $notification,
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $notification,
         $tbl,
-        $sauth, $user_inventory, $product_class
-    )
-    {
+        $sauth,
+        $user_inventory,
+        $product_class
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -37,17 +44,15 @@ class reputation
         $this->product_class = $product_class;
     }/*}}}*/
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->sauth->reject_anon();
-        if (!$this->config['snp_rep_b_master'])
-        {
+        if (!$this->config['snp_rep_b_master']) {
             trigger_error('Reputation system has been disabled by the administrator. Error Code: 11f4a36948');
         }
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'add':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -67,15 +72,13 @@ class reputation
             trigger_error('Error Code: 22b8e0e0a5');
             break;
         }
-	}/*}}}*/
+    }/*}}}*/
 
     public function mcp_rep_giveaways($cfg)
     {
         add_form_key('jeb_snp');
-        if ($this->request->is_set_post('set_target'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        if ($this->request->is_set_post('set_target')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('Error Code: f75bc84034');
             }
             $cfg['target'] = $this->request->variable('n_target', 0);
@@ -83,10 +86,8 @@ class reputation
             $this->mcp_set($cfg);
             trigger_error('Error Code: 69eecfe7ac');
         }
-        if ($this->request->is_set_post('set_minimum_target'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        if ($this->request->is_set_post('set_minimum_target')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('Error Code: f75bc84034');
             }
             $cfg['target'] = $this->request->variable('n_minimum_target', 0);
@@ -100,8 +101,7 @@ class reputation
     public function mcp_set($cfg)
     {
         $target = $cfg['target'];
-        if (!$target)
-        {
+        if (!$target) {
             meta_refresh(3, $cfg['u_action']);
             trigger_error('Cannot set target to 0.');
         }
@@ -133,8 +133,7 @@ class reputation
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        foreach($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $user_id = $row['user_id'];
             $quantity = $row['quantity'] + $target;
             $this->add_user_reputation_pool($user_id, $quantity);
@@ -145,13 +144,12 @@ class reputation
     {
         // A cron script runs this method to replenish user rep points
         $target = $cfg['target'];
-        if (!$target)
-        {
+        if (!$target) {
             meta_refresh(3, $cfg['u_action']);
             trigger_error('Cannot set minimum target to 0.');
         }
         $time = microtime(true);
-        $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}" . 
+        $sql = 'UPDATE ' . USERS_TABLE . " SET snp_rep_n_available={$target}" .
             " WHERE snp_rep_n_available < {$target}";
         $this->db->sql_query($sql);
         $this->config->set('snp_rep_giveaway_last_time', time());
@@ -171,13 +169,11 @@ class reputation
     {
         $refresh = 2.5;
         $post_id = $this->request->variable('p', 0);
-        if (!$post_id)
-        {
+        if (!$post_id) {
             trigger_error('You must provide a valid post id. Error Code: 5797460b62');
         }
         $post_data = $this->select_post($post_id);
-        if (!$post_data)
-        {
+        if (!$post_data) {
             meta_refresh($refresh, "/viewtopic.php?p={$post_id}#{$post_id}");
             trigger_error('That post does not exist. Error Code: 889ed1c48b');
         }
@@ -187,13 +183,11 @@ class reputation
         $forum_id = $post_data['forum_id'];
         $topic_id = $post_data['topic_id'];
         add_form_key('jeb_snp');
-        if ($this->request->is_set_post('cancel'))
-        {
+        if ($this->request->is_set_post('cancel')) {
             meta_refresh(0, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
             trigger_error('Error Code: b466a0bb05');
         }
-        if ($this->request->is_set_post('confirm'))
-        {
+        if ($this->request->is_set_post('confirm')) {
             $cfg = [
                 'post_id' => $post_id,
                 'topic_id' => $topic_id,
@@ -225,20 +219,17 @@ class reputation
         $giver_id = $cfg['giver_id'];
         $poster_id = $cfg['poster_id'];
         $post_data = $cfg['post_data'];
-        if ($poster_id == $giver_id)
-        {
+        if ($poster_id == $giver_id) {
             meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
             trigger_error('You cannot give yourself reputation points. But nice try. Error Code: 18c307e8e6');
         }
         $n_avail = $this->user->data['snp_rep_n_available'];
-        if ($n_avail < 1)
-        {
+        if ($n_avail < 1) {
             meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
             trigger_error('You have used all of your reputation points. Error Code: 17d5424110');
         }
         $reputation_data = $this->select_reputation("post_id={$post_id} AND giver_id={$giver_id}");
-        if ($reputation_data)
-        {
+        if ($reputation_data) {
             meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
             trigger_error('You have already given a reputation point for this post. Error Code: c65721c22f');
         }
@@ -249,8 +240,7 @@ class reputation
             'time'      => time(),
         ];
         $b_success = $this->insert_reputation($data);
-        if ($b_success)
-        {
+        if ($b_success) {
             $this->update_giver_on_add($giver_id);
             $this->update_poster_on_add($poster_id);
             $rep_total = $this->select_rep_total_for_post($post_id, 0);
@@ -259,17 +249,17 @@ class reputation
             $data['post_subject'] = $post_data['post_subject'];
             $data['rep_total'] = $rep_total;
             $b_notify = $this->is_notify($poster_id);
-            if ($b_notify)
-            {
+            if ($b_notify) {
                 $this->notification->add_notifications(
-                    'jeb.snahp.notification.type.reputation', $data
+                    'jeb.snahp.notification.type.reputation',
+                    $data
                 );
                 $this->update_notifications('jeb.snahp.notification.type.reputation', $post_id, $rep_total);
             }
         }
         $n_avail -= 1;
         meta_refresh($refresh, "/viewtopic.php?f={$forum_id}&t={$topic_id}&p={$post_id}#{$post_id}");
-        trigger_error("You now have {$n_avail} reputation points left." );
+        trigger_error("You now have {$n_avail} reputation points left.");
     }/*}}}*/
 
     private function select_reputation($where)
@@ -284,8 +274,7 @@ class reputation
 
     private function select_reputation_count($type='post_id', $id)
     {
-        switch ($type)
-        {
+        switch ($type) {
         case 'post_id':
             $where = "post_id={$id}";
             break;
@@ -302,8 +291,7 @@ class reputation
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return 0;
         }
         return $row['count'];
@@ -368,7 +356,7 @@ class reputation
 
     public function delete_reputation_notifications()
     {
-        $sql = 'SELECT * FROM ' . 
+        $sql = 'SELECT * FROM ' .
             NOTIFICATION_TYPES_TABLE . '
             WHERE notification_type_name="jeb.snahp.notification.type.reputation"';
         $result = $this->db->sql_query($sql);
@@ -390,8 +378,7 @@ class reputation
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row && $row['notify']==0)
-        {
+        if ($row && $row['notify']==0) {
             return false;
         }
         return true;
@@ -428,11 +415,9 @@ class reputation
         $result = $this->db->sql_query($sql, $cachetime);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return 0;
         }
         return (int) $row['count'];
     }/*}}}*/
-
 }

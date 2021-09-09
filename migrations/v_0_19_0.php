@@ -5,10 +5,14 @@ namespace jeb\snahp\migrations;
 class v_0_19_0 extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
-    { return false; }
+    {
+        return false;
+    }
 
-    static public function depends_on()
-    { return ['\jeb\snahp\migrations\v_0_18_0']; }
+    public static function depends_on()
+    {
+        return ['\jeb\snahp\migrations\v_0_18_0'];
+    }
 
     public function update_data()
     {
@@ -39,5 +43,4 @@ class v_0_19_0 extends \phpbb\db\migration\migration
             ]],
         ];
     }
-
 }

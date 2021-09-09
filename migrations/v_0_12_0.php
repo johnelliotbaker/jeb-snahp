@@ -17,7 +17,7 @@ class v_0_12_0 extends \phpbb\db\migration\migration
         return false;
     }
 
-    static public function depends_on()
+    public static function depends_on()
     {
         return array(
             '\jeb\snahp\migrations\v_0_11_2',
@@ -38,5 +38,4 @@ class v_0_12_0 extends \phpbb\db\migration\migration
             array('config.add', array('snp_req_postform_fid', serialize($snp_req_postform_fid))),
         );
     }
-
 }

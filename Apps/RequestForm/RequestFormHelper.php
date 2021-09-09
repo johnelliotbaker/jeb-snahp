@@ -17,8 +17,6 @@ use \Symfony\Component\Validator\Validation;
 use jeb\snahp\Apps\RequestForm\Types as Type;
 use \Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-
-
 const FORM_TYPE_REGISTRY = [
     // form names & request forum names are used interchangeably
     // app, game, misc, movie, music, tv

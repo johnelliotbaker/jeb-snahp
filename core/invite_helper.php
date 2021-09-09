@@ -18,7 +18,6 @@ use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\notification\manager;
 
-
 class invite_helper
 {
     protected $phpbb_container;
@@ -30,10 +29,16 @@ class invite_helper
     protected $helper;
     protected $template;
 
-	public function __construct(
-        $phpbb_container, $user, $auth, $request, $db, $config, $helper, $template
-	)
-	{
+    public function __construct(
+        $phpbb_container,
+        $user,
+        $auth,
+        $request,
+        $db,
+        $config,
+        $helper,
+        $template
+    ) {
         $this->phpbb_container = $phpbb_container;
         $this->user = $user;
         $this->auth = $auth;
@@ -42,7 +47,7 @@ class invite_helper
         $this->config = $config;
         $this->helper = $helper;
         $this->template = $template;
-	}
+    }
 
 
     // DATABASE Functions
@@ -102,12 +107,13 @@ class invite_helper
     public function decrease_invite_points($user_id, $amount)
     {
         $user_data = $this->select_invite_user($user_id);
-        if (!$user_data) return false;
+        if (!$user_data) {
+            return false;
+        }
         $n_available = $user_data['n_available'];
         $amount = (int) $amount;
         $user_id = (int) $user_id;
-        if ($amount > $n_available)
-        {
+        if ($amount > $n_available) {
             return false;
         }
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite_users'];
@@ -131,12 +137,13 @@ class invite_helper
 
     public function redeem_invite($keyphrase='', $user_id)
     {
-        if (!$keyphrase)
-        {
+        if (!$keyphrase) {
             trigger_error('You must provide a valid invitation code.');
         }
         $invite_data = $this->select_invite($where="keyphrase='$keyphrase'");
-        if (!$invite_data) trigger_error('The invititation code is invalid.');
+        if (!$invite_data) {
+            trigger_error('The invititation code is invalid.');
+        }
         $invite_data = $invite_data[0];
         $data = [
             'b_active' => 0,
@@ -149,12 +156,15 @@ class invite_helper
     public function update_invite_users($a_user_id, $data)
     {
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables');
-        foreach ($a_user_id as $key=>$user_id)
-        {
+        foreach ($a_user_id as $key=>$user_id) {
             $user_data = $this->select_user($where="user_id=$user_id");
-            if (!$user_data) continue;
+            if (!$user_data) {
+                continue;
+            }
             $invite_user_data = $this->select_invite_users($where="i.user_id={$user_id}");
-            if (!$invite_user_data) continue;
+            if (!$invite_user_data) {
+                continue;
+            }
             $sql = 'UPDATE ' . $tbl['invite_users'] . ' SET ' .
                 $this->db->sql_build_array('UPDATE', $data) . '
                 WHERE user_id=' . $user_id;
@@ -165,12 +175,15 @@ class invite_helper
     public function insert_invite_users($a_user_id, $n_available=0)
     {
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables');
-        foreach ($a_user_id as $user_id)
-        {
+        foreach ($a_user_id as $user_id) {
             $user_data = $this->select_user($where="user_id=$user_id");
-            if (!$user_data) continue;
+            if (!$user_data) {
+                continue;
+            }
             $invite_user_data = $this->select_invite_users($where="i.user_id={$user_id}");
-            if ($invite_user_data) continue;
+            if ($invite_user_data) {
+                continue;
+            }
             $data = [
                 'user_id'   => $user_id,
                 'ban_msg_private'  => '', // Unicode text needs manual init
@@ -191,9 +204,13 @@ class invite_helper
     public function insert_invite($inviter_id)
     {
         $invite_user_data = $this->select_invite_users($where="i.user_id={$inviter_id}");
-        if (!$invite_user_data) return false;
+        if (!$invite_user_data) {
+            return false;
+        }
         $invite_user_data = $invite_user_data[0];
-        if ($invite_user_data['n_available'] <= 0 || $invite_user_data['b_ban']) return false;
+        if ($invite_user_data['n_available'] <= 0 || $invite_user_data['b_ban']) {
+            return false;
+        }
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables');
         $uuid = uniqid('', true);
         $data = [
@@ -246,28 +263,33 @@ class invite_helper
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row)
-        {
+        if ($row) {
             return $row['total'];
         }
         return 0;
     }
 
-    function delete_valid_invite_from_user($user_id)
+    public function delete_valid_invite_from_user($user_id)
     {
         $user_data = $this->select_user($where="user_id={$user_id}");
-        if (!$user_data) return false;
+        if (!$user_data) {
+            return false;
+        }
         $tbl = $this->phpbb_container->getParameter('jeb.snahp.tables')['invite'];
         $sql = 'DELETE FROM ' . $tbl . " WHERE inviter_id={$user_id} AND b_active=1";
         $this->db->sql_query($sql);
         return true;
     }
 
-    function get_invite_user_list($user_id=null)
+    public function get_invite_user_list($user_id=null)
     {
-        if (!$user_id) $user_id = $this->user->data['user_id'];
+        if (!$user_id) {
+            $user_id = $this->user->data['user_id'];
+        }
         $rowset = $this->select_invite_users($where="i.user_id={$user_id}");
-        if (!$rowset) return [];
+        if (!$rowset) {
+            return [];
+        }
         $row = $rowset[0];
         $entry = [];
         $entry['invitation_id'] = $row['id'];
@@ -283,7 +305,7 @@ class invite_helper
         return $entry;
     }
 
-    function select_user($where)
+    public function select_user($where)
     {
         $sql = 'SELECT * FROM ' . USERS_TABLE .
             " WHERE $where";
@@ -293,20 +315,18 @@ class invite_helper
         return $row;
     }
 
-    function get_invite_list($user_id=null, $b_digest=true, $start=0, $limit=50)
+    public function get_invite_list($user_id=null, $b_digest=true, $start=0, $limit=50)
     {
-        if (!$user_id) $user_id = $this->user->data['user_id'];
+        if (!$user_id) {
+            $user_id = $this->user->data['user_id'];
+        }
         $rowset = $this->select_invite($where="inviter_id={$user_id}", $order_by='id DESC', $start=$start, $limit=$limit);
-        foreach ($rowset as $k => $row)
-        {
-            if ($b_digest)
-            {
+        foreach ($rowset as $k => $row) {
+            if ($b_digest) {
                 unset($row['create_time']);
                 unset($row['id']);
                 unset($row['expiration_time']);
-            }
-            else
-            {
+            } else {
                 $row['create_time'] = $row['create_time'] ? $this->user->format_date($row['create_time']) : '';
                 $row['expiration_time'] = $row['expiration_time'] ? $this->user->format_date($row['expiration_time']) : '';
             }
@@ -343,5 +363,4 @@ class invite_helper
     //     $this->db->sql_freeresult($result);
     //     return $row;
     // }
-
 }

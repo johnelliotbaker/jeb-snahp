@@ -8,7 +8,6 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class invite extends base
 {
-
     protected $table_prefix;
     protected $invite_helper;
 
@@ -17,16 +16,14 @@ class invite extends base
         $this->table_prefix = $table_prefix;
     }
 
-	public function handle($mode)
+    public function handle($mode)
     {
-        if (!$this->config['snp_inv_b_master'])
-        {
+        if (!$this->config['snp_inv_b_master']) {
             trigger_error('Invite system is disabled by the administrator.');
         }
         $this->reject_anon();
         $this->invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
-        switch ($mode)
-        {
+        switch ($mode) {
             case 'list_json': // To solve request
                 $cfg = [];
                 $this->get_list_json($cfg);
@@ -58,19 +55,25 @@ class invite extends base
     public function handle_insert_invite_user($cfg)
     {
         $username = $this->request->variable('u', '');
-        if (!$username) $username = $this->user->data['username_clean'];
+        if (!$username) {
+            $username = $this->user->data['username_clean'];
+        }
         $username = utf8_clean_string($username);
         $user_data = $this->invite_helper->select_user($where="username_clean='$username'");
         $uid = $user_data['user_id'];
         $js = new \phpbb\json_response();
-        if (!$uid) $js->send([]);
+        if (!$uid) {
+            $js->send([]);
+        }
         $this->invite_helper->insert_invite_users([$uid]);
     }
 
     public function handle_disable_invite($cfg)
     {
         $iid = (int) $this->request->variable('iid', '');
-        if (!$iid) return false;
+        if (!$iid) {
+            return false;
+        }
         $this->invite_helper->disable_invite($iid);
         $js = new \phpbb\json_response();
         $js->send(['iid' => $iid]);
@@ -79,19 +82,21 @@ class invite extends base
     public function get_list_json($cfg)
     {
         $uid = (int) $this->request->variable('uid', '0');
-        if (!$uid)
-        {
+        if (!$uid) {
             $username = $this->request->variable('u', '');
-            if (!$username) $username = $this->user->data['username_clean'];
+            if (!$username) {
+                $username = $this->user->data['username_clean'];
+            }
             $username = utf8_clean_string($username);
             $user_data = $this->invite_helper->select_user($where="username_clean='$username'");
             $uid = $user_data['user_id'];
         }
         $js = new \phpbb\json_response();
-        if (!$uid) $js->send([]);
+        if (!$uid) {
+            $js->send([]);
+        }
         // Reject non-mod and non-self
-        if (!$this->is_self($uid) && !$this->is_mod())
-        {
+        if (!$this->is_self($uid) && !$this->is_mod()) {
             trigger_error('You cannot view this page. Code: 110be1da0f');
         }
         $rowset = $this->invite_helper->get_invite_list($uid, false);
@@ -102,15 +107,18 @@ class invite extends base
     public function get_invite_user_json($cfg)
     {
         $username = $this->request->variable('u', '');
-        if (!$username) $username = $this->user->data['username_clean'];
+        if (!$username) {
+            $username = $this->user->data['username_clean'];
+        }
         $username = utf8_clean_string($username);
         $user_data = $this->invite_helper->select_user($where="username_clean='$username'");
         $uid = $user_data['user_id'];
         $js = new \phpbb\json_response();
-        if (!$uid) $js->send(['invitation_id' => -1]);
+        if (!$uid) {
+            $js->send(['invitation_id' => -1]);
+        }
         // Reject non-self and non-mod
-        if (!$this->is_self($uid) && !$this->is_mod())
-        {
+        if (!$this->is_self($uid) && !$this->is_mod()) {
             trigger_error('You cannot view this page. Error Code: 76532699d2');
         }
         $rowset = $this->invite_helper->get_invite_user_list($uid);
@@ -120,15 +128,15 @@ class invite extends base
     public function generate_invite_json($cfg)
     {
         $uid = (int) $this->request->variable('uid', '');
-        if (!$uid) $uid = $this->user->data['user_id'];
+        if (!$uid) {
+            $uid = $this->user->data['user_id'];
+        }
         // Reject request from non-self
-        if (!$this->is_self($uid))
-        {
+        if (!$this->is_self($uid)) {
             trigger_error('You cannot create that invite. Error Code: 6e5e603f32');
         }
         $uuid = $this->invite_helper->insert_invite($uid);
         $js = new \phpbb\json_response();
         $js->send(['keyphrase' => $uuid]);
     }
-
 }

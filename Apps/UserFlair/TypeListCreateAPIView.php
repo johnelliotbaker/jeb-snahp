@@ -10,7 +10,6 @@ use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
-
 class TypeListCreateAPIView extends ListCreateAPIView
 {
     protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';

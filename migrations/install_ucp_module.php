@@ -12,30 +12,30 @@ namespace jeb\snahp\migrations;
 
 class install_ucp_module extends \phpbb\db\migration\migration
 {
-	public function effectively_installed()
-	{
-		$sql = 'SELECT module_id
+    public function effectively_installed()
+    {
+        $sql = 'SELECT module_id
 			FROM ' . $this->table_prefix . "modules
 			WHERE module_class = 'ucp'
 				AND module_langname = 'UCP_SNP_TITLE'";
-		$result = $this->db->sql_query($sql);
-		$module_id = $this->db->sql_fetchfield('module_id');
-		$this->db->sql_freeresult($result);
+        $result = $this->db->sql_query($sql);
+        $module_id = $this->db->sql_fetchfield('module_id');
+        $this->db->sql_freeresult($result);
 
-		return $module_id !== false;
-	}
+        return $module_id !== false;
+    }
 
-	static public function depends_on()
-	{
-		return array('\jeb\snahp\migrations\install_user_schema');
-	}
+    public static function depends_on()
+    {
+        return array('\jeb\snahp\migrations\install_user_schema');
+    }
 
-	public function update_data()
-	{
-		return array(
-			array('module.add', array(
-				'ucp',
-				0,
+    public function update_data()
+    {
+        return array(
+            array('module.add', array(
+                'ucp',
+                0,
                 'UCP_SNP_TITLE')
             ),
             array('module.add', array(
@@ -48,6 +48,6 @@ class install_ucp_module extends \phpbb\db\migration\migration
                                                 ),
                 ),
             )),
-		);
-	}
+        );
+    }
 }

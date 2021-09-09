@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\economy;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -14,16 +15,14 @@ class economy_init
     public function __construct(
         $db,
         $tbl
-    )
-    {
+    ) {
         $this->db = $db;
         $this->tbl = $tbl;
     }
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'initialize_database':
             return $this->init();
         default:
@@ -45,21 +44,16 @@ class economy_init
     private function make_row($data, $id_name, $tbl_name)
     {
         $name = $data[$id_name];
-        if ($this->check_row_exists($data, $id_name, $tbl_name))
-        {
+        if ($this->check_row_exists($data, $id_name, $tbl_name)) {
             prn("${name} exists.");
-        }
-        else
-        {
+        } else {
             prn("Creating ${name}");
             $sql = 'INSERT INTO ' . $tbl_name . $this->db->sql_build_array('INSERT', $data);
             $this->db->sql_query($sql);
         }
-
     }
     private function init()
     {
-
         $data = [
             'type'         => 'invitation_points',
             'display_name' => 'Invitation Points',
@@ -114,5 +108,4 @@ class economy_init
         $this->make_row($data, 'name', $this->tbl['mrkt_product_classes']);
         trigger_error('Economy Initialized');
     }
-
 }

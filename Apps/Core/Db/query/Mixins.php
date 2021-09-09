@@ -46,5 +46,4 @@ trait BaseQueryMixin
         }
         return implode(', ', $fields);
     }
-
 }

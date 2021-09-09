@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\wiki;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -9,7 +10,6 @@ use \Symfony\Component\HttpFoundation\JsonResponse;
 
 class wiki
 {
-
     protected $db;
     protected $user;
     protected $config;
@@ -22,11 +22,17 @@ class wiki
     protected $parsedown;
     protected $basedir;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth, $parsedown
-    )
-    {
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $tbl,
+        $sauth,
+        $parsedown
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -55,8 +61,7 @@ class wiki
     public function handle_editor($mode)
     {
         $this->sauth->reject_user_not_in_groupset($this->user_id, 'Keepers');
-        switch($mode)
-        {
+        switch ($mode) {
         case 'edit':
             return $this->respond_editor();
         case 'delete':
@@ -69,8 +74,7 @@ class wiki
     private function respond_delete_entry_as_json()
     {
         $name = $this->request->variable('name', '');
-        if (!$name)
-        {
+        if (!$name) {
             return new JsonResponse(['status' => 0]);
         }
         $b_success = $this->delete_entry($name) ? 1 : 0;
@@ -101,17 +105,14 @@ class wiki
         $tbl = $this->tbl['wiki'];
         $tpl_name = $this->editordir . 'base.html';
         add_form_key('jeb_snp');
-        if ($this->request->is_set_post('submit'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        if ($this->request->is_set_post('submit')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
             $text = $this->request->variable('wiki_editor_textarea', '');
             $name = $this->request->variable('wiki_editor_name', '');
             $b_public = $this->request->variable('wiki_editor_cb_public', 'off') === 'on' ? 1 : 0;
-            if (!$name || !$text)
-            {
+            if (!$name || !$text) {
                 trigger_error('Invalid name or text. Error Code: f2692b4560');
             }
             $this->template->assign_vars([
@@ -120,20 +121,15 @@ class wiki
                 'B_PUBLIC' => $b_public,
             ]);
             $this->add_or_edit_entry($name, $text, $b_public);
-        }
-        elseif ($this->request->is_set_post('load'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        } elseif ($this->request->is_set_post('load')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
             $name = $this->request->variable('wiki_editor_name', '');
-            if (!$name)
-            {
+            if (!$name) {
                 trigger_error('Invalid name or text. Error Code: ce6fbd713f');
             }
-            if ($row = $this->select_entry($name))
-            {
+            if ($row = $this->select_entry($name)) {
                 $text = $row['text'];
                 $b_public = $row['b_public'];
                 $this->template->assign_vars([
@@ -142,25 +138,18 @@ class wiki
                     'B_PUBLIC' => $b_public,
                 ]);
             }
-        }
-        elseif ($this->request->is_set_post('delete'))
-        {
-            if (!check_form_key('jeb_snp'))
-            {
+        } elseif ($this->request->is_set_post('delete')) {
+            if (!check_form_key('jeb_snp')) {
                 trigger_error('FORM_INVALID', E_USER_WARNING);
             }
             $name = $this->request->variable('wiki_editor_name', '');
-            if (!$name)
-            {
+            if (!$name) {
                 trigger_error('Invalid name or text. Error Code: 87b2dd3a83');
             }
             $this->delete_entry($name);
-        }
-        else
-        {
+        } else {
             $name = $this->request->variable('name', '');
-            if ($row = $this->select_entry($name))
-            {
+            if ($row = $this->select_entry($name)) {
                 $text = $row['text'];
                 $b_public = $row['b_public'];
                 $this->template->assign_vars([
@@ -171,8 +160,7 @@ class wiki
             }
         }
         $wiki_names = $this->get_list();
-        foreach($wiki_names as $name)
-        {
+        foreach ($wiki_names as $name) {
             $this->template->assign_block_vars('WIKI_NAMES', $name);
         }
         return $this->helper->render($tpl_name, 'Wikipedia Editor');
@@ -188,12 +176,9 @@ class wiki
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $b_exist = isset($row) && !empty($row);
-        if ($b_exist)
-        {
+        if ($b_exist) {
             $created_time = $row['created_time'];
-        }
-        else
-        {
+        } else {
             $created_time = $time;
         }
         $editor_id = $this->user_id;
@@ -206,15 +191,12 @@ class wiki
             'created_time' => $created_time,
             'b_public' => $b_public,
         ];
-        if ($b_exist)
-        {
+        if ($b_exist) {
             $sql = 'UPDATE ' . $tbl . '
                 SET '. $this->db->sql_build_array('UPDATE', $data) . "
                 WHERE name='${name}'";
             $this->db->sql_query($sql);
-        }
-        else
-        {
+        } else {
             $sql = 'INSERT INTO ' . $tbl .
                 $this->db->sql_build_array('INSERT', $data);
             $this->db->sql_query($sql);
@@ -244,8 +226,7 @@ class wiki
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $b_exist = isset($row) && !empty($row);
-        if (!$b_exist)
-        {
+        if (!$b_exist) {
             return '';
         }
         $row['text'] = htmlspecialchars_decode($row['text']);
@@ -288,38 +269,31 @@ class wiki
     {
         $text = $this->get_nav_text();
         $res = json_decode($text, true);
-        if (!$navdata = $res['navigation'])
-        {
+        if (!$navdata = $res['navigation']) {
             return '';
         };
         $res = [];
-        foreach($navdata as $entry)
-        {
-                $res[] = $this->parse_navigation_entry($entry);
+        foreach ($navdata as $entry) {
+            $res[] = $this->parse_navigation_entry($entry);
         }
         return implode(PHP_EOL, $res);
     }/*}}}*/
 
     private function parse_navigation_entry($entry)
     {
-        if (isset($entry['private']) && $entry['private'] && !$this->b_keepers)
-        {
+        if (isset($entry['private']) && $entry['private'] && !$this->b_keepers) {
             return '';
         }
-        if (isset($entry['children']) && !empty($entry['children']))
-        {
+        if (isset($entry['children']) && !empty($entry['children'])) {
             $children = $entry['children'];
             $tmp = [];
             $tmp[] = $this->make_nav_parent_elem_before($entry['name']);
-            foreach($children as $child)
-            {
+            foreach ($children as $child) {
                 $tmp[] = $this->parse_navigation_entry($child);
             }
             $tmp[] = $this->make_nav_parent_elem_after($entry['name']);
             $strn = implode(PHP_EOL, $tmp);
-        }
-        else
-        {
+        } else {
             $strn = $this->make_nav_leaf_elem($entry);
         }
         return $strn;
@@ -329,8 +303,7 @@ class wiki
     {
         $name = $cfg['name'];
         $row = $this->select_entry($name);
-        if (!$row)
-        {
+        if (!$row) {
             trigger_error("Wikipedia article for <b>${name}</b> does not exist. Error Code: 23a75a95b0");
         }
         $this->b_keepers = $this->sauth->user_belongs_to_groupset($this->user_id, 'Keepers');
@@ -338,10 +311,8 @@ class wiki
         $b_public = $row['b_public'];
         $text = $row['text'];
         $b_hidden = false;
-        if (!$b_public)
-        {
-            if (!$this->b_keepers)
-            {
+        if (!$b_public) {
+            if (!$this->b_keepers) {
                 trigger_error('You do not have the permission to view this wikipedia article. Error Code: 9888c98c71');
             }
             $b_hidden = true;
@@ -361,5 +332,4 @@ class wiki
         ]);
         return $this->helper->render($cfg['tpl_name'], 'Wikipedia');
     }/*}}}*/
-
 }

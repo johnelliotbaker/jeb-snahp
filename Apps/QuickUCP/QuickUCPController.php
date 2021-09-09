@@ -28,7 +28,7 @@ class QuickUCPController
             try {
                 $data = $this->helper->getSettings($this->userId);
                 return new JsonResponse($data);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 return new JsonResponse(
                     [
                     'status'=> 400,

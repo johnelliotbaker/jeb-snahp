@@ -9,12 +9,15 @@ class user_inventory
     protected $sauth;
     protected $market_transaction_logger;
     protected $product_class;
-	public function __construct(
-        $db, $user, $container,
+    public function __construct(
+        $db,
+        $user,
+        $container,
         $tbl,
-        $sauth, $market_transaction_logger, $product_class
-	)
-	{
+        $sauth,
+        $market_transaction_logger,
+        $product_class
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->container = $container;
@@ -23,7 +26,7 @@ class user_inventory
         $this->market_transaction_logger = $market_transaction_logger;
         $this->product_class = $product_class;
         $this->user_id = $this->user->data['user_id'];
-	}
+    }
 
     public function reset($user_id, $broker_id=-1)
     {
@@ -90,10 +93,11 @@ class user_inventory
     public function get_inventory_count_by_product_class($user_id)
     {
         $rowset = $this->get_inventory((int)$user_id);
-        if (!$rowset) return [];
+        if (!$rowset) {
+            return [];
+        }
         $res = [];
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $res[$row['product_class_id']] = (int) $row['quantity'];
         }
         return $res;
@@ -102,15 +106,12 @@ class user_inventory
     public function add_item($product_class_id, $quantity, $user_id=null)
     {
         $row = $this->get_inventory_by_product_class($product_class_id, $user_id);
-        if ($row)
-        {
+        if ($row) {
             $sql = 'UPDATE ' . $this->tbl['user_inventory'] . " SET quantity=quantity+${quantity}" .
                 " WHERE user_id=${user_id} AND product_class_id=${product_class_id}";
             $this->db->sql_query($sql);
             return $this->db->sql_affectedrows() > 0;
-        }
-        else
-        {
+        } else {
             $data = [
                 'user_id' => $user_id,
                 'product_class_id' => $product_class_id,
@@ -131,8 +132,7 @@ class user_inventory
         $price = $product_class['price'];
         $name = $product_class['display_name'];
         $price_formatted = number_format($product_class['price'] * $quantity);
-        if (!$comment)
-        {
+        if (!$comment) {
             $comment = "Purchasing ${quantity} ${name} for $${price_formatted}";
         }
         $data = [
@@ -203,16 +203,12 @@ class user_inventory
     public function set_item_quantity_public($product_class_id, $quantity, $user_id, $broker_id=-1)
     {
         $b_success = false;
-        if ($quantity < 1)
-        {
+        if ($quantity < 1) {
             $b_success = $this->delete_item($product_class_id, $user_id, $broker_id);
-        }
-        else
-        {
+        } else {
             $b_success = $this->upsert_inventory($product_class_id, $quantity, $user_id, $broker_id);
         }
-        if ($b_success)
-        {
+        if ($b_success) {
             return true;
         }
         return false;
@@ -222,16 +218,12 @@ class user_inventory
     {
         $this->sauth->reject_non_dev('Error Code: b48e5f2a69');
         $b_success = false;
-        if ($quantity < 1)
-        {
+        if ($quantity < 1) {
             $b_success = $this->delete_item($product_class_id, $user_id, $broker_id);
-        }
-        else
-        {
+        } else {
             $b_success = $this->upsert_inventory($product_class_id, $quantity, $user_id, $broker_id);
         }
-        if ($b_success)
-        {
+        if ($b_success) {
             return true;
         }
         return false;
@@ -284,15 +276,12 @@ class user_inventory
 
     private function log($user_id, $broker_id, $data)
     {
-        if ($this->db->sql_affectedrows() < 1)
-        {
+        if ($this->db->sql_affectedrows() < 1) {
             return false;
         }
-        if ($data===null)
-        {
+        if ($data===null) {
             return false;
         }
         return $this->market_transaction_logger->create_single_item_invoice($user_id, $broker_id, $data);
     }
-
 }

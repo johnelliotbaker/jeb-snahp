@@ -15,7 +15,7 @@ namespace jeb\snahp\ucp;
  */
 class main_info
 {
-    function module()
+    public function module()
     {
         return [
             'filename'  => '\jeb\snahp\ucp\main_module',

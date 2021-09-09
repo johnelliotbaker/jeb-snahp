@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\core\bank;
+
 use jeb\snahp\core\invite_helper;
 
 class user_account
@@ -12,11 +13,14 @@ class user_account
     protected $exchange_rates;
     protected $invite_helper;
 
-	public function __construct(
-        $db, $user, $container,
-        $sauth, $bank_transaction_logger, $exchange_rates
-	)
-	{
+    public function __construct(
+        $db,
+        $user,
+        $container,
+        $sauth,
+        $bank_transaction_logger,
+        $exchange_rates
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->container = $container;
@@ -27,8 +31,16 @@ class user_account
         // TODO: Injecte invite_helper
         global $auth, $config;
         $this->invite_helper = new invite_helper(
-            $container, $user, $auth, null, $db, $config, null, null);
-	}
+            $container,
+            $user,
+            $auth,
+            null,
+            $db,
+            $config,
+            null,
+            null
+        );
+    }
 
     public function reset($user_id)
     {
@@ -45,8 +57,7 @@ class user_account
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row)
-        {
+        if ($row) {
             return $row['snp_bank_n_balance'];
         }
         return null;
@@ -97,29 +108,23 @@ class user_account
         $direction = $this->db->sql_escape($direction);
         $amount = (int) $amount;
         $exchange_rate = $this->exchange_rates->get_exchange_rate($exchange_rate_id);
-        if (!$exchange_rate) return [0, 'Exchange rate does not exist.'];
-        if ($direction == 'buy')
-        {
-            $rate = $exchange_rate['buy_rate'];
+        if (!$exchange_rate) {
+            return [0, 'Exchange rate does not exist.'];
         }
-        elseif ($direction == 'sell')
-        {
-            if ($exchange_rate['type'] == 'invitation_points')
-            {
+        if ($direction == 'buy') {
+            $rate = $exchange_rate['buy_rate'];
+        } elseif ($direction == 'sell') {
+            if ($exchange_rate['type'] == 'invitation_points') {
                 [$b, $status] = $this->sell_invitation_points($amount, $user_id, $exchange_rate);
-                if (!$b)
-                {
+                if (!$b) {
                     return [$b, $status];
                 }
                 $b_log = $this->log_exchange($amount, $user_id, $exchange_rate, $broker_id);
-                if ($b_log)
-                {
+                if ($b_log) {
                     $status .= ' Bank_Transaction_Logger_Success';
                 }
             }
-        }
-        else
-        {
+        } else {
             return [0, 'Error Code: 2e1f685f1b'];
         }
         return [1, 'Success'];
@@ -130,8 +135,7 @@ class user_account
         global $auth, $config;
         $invite_user_data = $this->invite_helper->select_invite_user($user_id);
         $fund = $invite_user_data && $invite_user_data['n_available'] ? $invite_user_data['n_available'] : 0;
-        if (!$invite_user_data || $invite_user_data['n_available'] < $amount)
-        {
+        if (!$invite_user_data || $invite_user_data['n_available'] < $amount) {
             return [0, "You are trying to sell ${amount} invitation points but you only have ${fund} available."];
         }
         $rate = $exchange_rate['sell_rate'];
@@ -235,5 +239,4 @@ class user_account
     {
         $this->invite_helper->decrease_invite_points($user_id, $amount);
     }/*}}}*/
-
 }

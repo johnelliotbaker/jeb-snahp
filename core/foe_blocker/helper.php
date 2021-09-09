@@ -8,12 +8,14 @@ class helper
     protected $user;
     protected $container;
     protected $this_user_id;
-	public function __construct(
-        $db, $user, $auth, $container,
+    public function __construct(
+        $db,
+        $user,
+        $auth,
+        $container,
         $tbl,
         $sauth
-	)
-	{
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -22,7 +24,7 @@ class helper
         $this->sauth = $sauth;
         $this->user_id = $this->user->data['user_id'];
         $this->block_data = [];
-	}
+    }
 
     public function setup_block_data()
     {
@@ -34,19 +36,20 @@ class helper
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        $this->block_data = array_map(function($arg){return $arg['blocked_id'];}, $rowset);
+        $this->block_data = array_map(function ($arg) {
+            return $arg['blocked_id'];
+        }, $rowset);
         $this->block_data[] = $user_id;
     }/*}}}*/
 
     public function can_block($blocked_id, $blocker_id=null)
     {
-        if ($blocker_id===null) $blocker_id = $this->user_id;
-        if ($blocker_id==$blocked_id || $this->sauth->user_belongs_to_groupset($blocked_id, 'Staff'))
-        {
-            return false;
+        if ($blocker_id===null) {
+            $blocker_id = $this->user_id;
         }
-        else
-        {
+        if ($blocker_id==$blocked_id || $this->sauth->user_belongs_to_groupset($blocked_id, 'Staff')) {
+            return false;
+        } else {
             return in_array($blocked_id, $this->block_data) ? false : true;
         }
     }/*}}}*/
@@ -198,12 +201,10 @@ class helper
         $blocked_id = (int) $blocked_id;
         $blocker_id = (int) $blocker_id;
         $permission_type =  $this->db->sql_escape($permission_type);
-        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
-        {
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id)) {
             return false;
         }
-        if (!array_key_exists($permission_type, $allowed_permission_types))
-        {
+        if (!array_key_exists($permission_type, $allowed_permission_types)) {
             return false;
         }
         $column_name = $allowed_permission_types[$permission_type];
@@ -217,8 +218,7 @@ class helper
     {
         $blocked_id = (int) $blocked_id;
         $blocker_id = (int) $blocker_id;
-        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
-        {
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id)) {
             return false;
         }
         $sql = 'UPDATE ' . $this->tbl['foe'] . ' SET b_permanent=1-b_permanent' .
@@ -231,8 +231,7 @@ class helper
     {
         $blocked_id = (int) $blocked_id;
         $blocker_id = (int) $blocker_id;
-        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
-        {
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id)) {
             return false;
         }
         $sql = 'UPDATE ' . $this->tbl['foe'] . ' SET b_frozen=1-b_frozen' .
@@ -246,8 +245,7 @@ class helper
         $blocked_id = (int) $blocked_id;
         $blocker_id = (int) $blocker_id;
         // $mod_reason = $this->db->sql_escape((string) $mod_reason);
-        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id))
-        {
+        if (!$this->is_blocked_with_blocker_id($blocked_id, $blocker_id)) {
             return false;
         }
         $data = [
@@ -273,8 +271,7 @@ class helper
 
     public function format_userlist($rowset)
     {
-        foreach($rowset as &$row)
-        {
+        foreach ($rowset as &$row) {
             $created_time = $row['created_time'];
             $duration = $row['duration'];
             $row['local_time'] = $this->user->format_date($created_time, 'y.m.d');
@@ -284,5 +281,4 @@ class helper
         }
         return $rowset;
     }/*}}}*/
-
 }

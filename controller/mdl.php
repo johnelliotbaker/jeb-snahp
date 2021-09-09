@@ -6,20 +6,18 @@ use jeb\snahp\core\base;
 
 class mdl extends base
 {
-
     protected $base_url = '';
 
     public function __construct()
     {
     }
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_anon();
         $this->tbl = $this->container->getParameter('jeb.snahp.tables');
         $this->user_id = $this->user->data['user_id'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'title':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -34,7 +32,7 @@ class mdl extends base
             trigger_error('Error Code: 12e1ae39b6');
             break;
         }
-	}
+    }
 
     public function title($cfg)
     {
@@ -45,8 +43,7 @@ class mdl extends base
     {
         $js = new \phpbb\json_response();
         $id = $this->request->variable('id', 0);
-        if (!$id)
-        {
+        if (!$id) {
             $js->send(['status' => 'Error Code: 5acbebee45']);
         }
         $url = "https://api.mydramalist.com/v1/titles/{$id}";
@@ -59,7 +56,7 @@ class mdl extends base
             'mdl-api-key: 6e820ce645f4988dc5ec802984bba446dc1668c7'
         ]);
         $result = curl_exec($ch);
-		$js->send($result);
+        $js->send($result);
         trigger_error($result);
     }
 
@@ -72,8 +69,7 @@ class mdl extends base
     {
         $js = new \phpbb\json_response();
         $title = $this->request->variable('title', '');
-        if (!$title)
-        {
+        if (!$title) {
             $js->send(['status' => 'Error Code: d64c7f38fc']);
         }
         $url = "https://api.mydramalist.com/v1/search/titles?q={$title}";
@@ -86,8 +82,7 @@ class mdl extends base
             'mdl-api-key: 6e820ce645f4988dc5ec802984bba446dc1668c7'
         ]);
         $result = curl_exec($ch);
-		$js->send($result);
+        $js->send($result);
         trigger_error($result);
     }
-
 }

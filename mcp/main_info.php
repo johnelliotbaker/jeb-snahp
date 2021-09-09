@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\mcp;
+
 class main_info
 {
     public function module()

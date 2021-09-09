@@ -7,17 +7,17 @@ class exchange_rates
     protected $user;
     protected $sauth;
     protected $tbl;
-	public function __construct(
-        $db, $user,
+    public function __construct(
+        $db,
+        $user,
         $tbl,
         $sauth
-	)
-	{
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->sauth = $sauth;
         $this->tbl = $tbl;
-	}
+    }
 
     public function get_exchange_rate($id)
     {
@@ -31,11 +31,9 @@ class exchange_rates
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        if ($b_firstrow && count($rowset)>0)
-        {
+        if ($b_firstrow && count($rowset)>0) {
             return $rowset[0];
         }
         return $rowset;
     }/*}}}*/
-
 }

@@ -17,8 +17,7 @@ class acp_fixmediainfo extends base
     public function handle($mode)/*{{{*/
     {
         $this->reject_non_admin('Error Code: e7fbfe4e4c');
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'test':
             $cfg = [];
             return $this->test($cfg);
@@ -46,7 +45,7 @@ class acp_fixmediainfo extends base
 
     private function get_first_codebox_content($text)/*{{{*/
     {
-		$ptn_edit = '#\[code\](.*?)\[\/code\]#is';
+        $ptn_edit = '#\[code\](.*?)\[\/code\]#is';
         $b_match = preg_match($ptn_edit, $text, $match);
         return $b_match ? trim($match[1]) : null;
     }
@@ -65,8 +64,7 @@ class acp_fixmediainfo extends base
         header('Cache-Control: no-cache');
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $forum_id = (int) $this->request->variable('f', '0');
-        if (!$forum_id)
-        {
+        if (!$forum_id) {
             $this->send_message(['status'=>'ERROR: Must provide forum id']);
             $js = new \phpbb\json_response();
             return $js->send([]);
@@ -81,20 +79,19 @@ class acp_fixmediainfo extends base
         $sql = 'SELECT * FROM ' . TOPICS_TABLE . " WHERE $where order by topic_id desc";
         $i = 0;
         $this->send_message(['status'=>'START', 'i' => $i, 'total' => $total]);
-        try
-        {
+        try {
             $result_loop = $this->db->sql_query($sql);
             $start_time = microtime(true);
-            while($row = $this->db->sql_fetchrow($result_loop))
-            {
+            while ($row = $this->db->sql_fetchrow($result_loop)) {
                 $i += 1;
-                if ($i % 100 == 0)
-                {
+                if ($i % 100 == 0) {
                     $elapesed_time = microtime(true) - $start_time;
                     $this->send_message(['time' => $elapesed_time, 'status' => 'PROGRESS', 'i' => $i, 'total' => $total]);
                 }
                 $post_id = (int) $row['topic_first_post_id'];
-                if (!$post_id) continue;
+                if (!$post_id) {
+                    continue;
+                }
                 $sql = 'SELECT post_text, poster_id, forum_id, post_id, post_subject FROM ' . POSTS_TABLE . " WHERE post_id={$post_id}";
                 $this->db->sql_query($sql);
                 $result = $this->db->sql_query($sql);
@@ -102,18 +99,22 @@ class acp_fixmediainfo extends base
                 $this->db->sql_freeresult($result);
                 $text = $row['post_text'];
                 $edit = generate_text_for_edit($text, 0, 0)['text'];
-                if ($this->mediainfo_tag_exists($edit)) continue;
+                if ($this->mediainfo_tag_exists($edit)) {
+                    continue;
+                }
                 $content = $this->get_first_codebox_content($edit);
-                if (!$content) continue;
-                if (!$this->text_contains_mediainfo($content)) continue;
+                if (!$content) {
+                    continue;
+                }
+                if (!$this->text_contains_mediainfo($content)) {
+                    continue;
+                }
                 $text = $this->replace_codebox_with_mediainfo($text);
                 $data['post_text'] = $text;
                 $this->update_post($post_id, $data);
             }
             $this->db->sql_freeresult($result_loop);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->send_message(['status'=>'ERROR', 'i' => $total, 'total' => $total]);
         }
         $this->send_message(['status'=>'COMPLETE', 'i' => $total, 'total' => $total]);
@@ -128,11 +129,11 @@ class acp_fixmediainfo extends base
         $js->send($data);
     }
 
-    public function send_message($data) {/*{{{*/
+    public function send_message($data)
+    {/*{{{*/
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }
-
 }

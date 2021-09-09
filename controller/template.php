@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller;
+
 use \Symfony\Component\HttpFoundation\Response;
 use jeb\snahp\core\base;
 
@@ -16,8 +17,7 @@ class template extends base
     {
         $group_id = $this->user->data['group_id'];
         $this->reject_group('snp_customtemplate_enable', $group_id);
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'serialize':
             $cfg = [];
             return $this->get_serialize($cfg);
@@ -57,16 +57,14 @@ class template extends base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             $js->send(['status' => 'fail', 'reason' => 'Error Code: 6a9f4aa7ab']);
             trigger_error('Error Code: d4b7daa1b9');
         }
         $n_max = $row['snp_customtemplate_n_max'];
         $rowset = $this->select_tpl($user_id, false);
         $count = count($rowset);
-        if ($count >= $n_max)
-        {
+        if ($count >= $n_max) {
             $js->send(['status' => 'fail', 'reason' => 'You have exceeded your quota. Error Code: 6ab9e5ab1d']);
             trigger_error('You have exceeded your quota. Error Code: 6ab9e5ab1d');
         }
@@ -80,9 +78,8 @@ class template extends base
         $name = $this->request->variable('name', '');
         $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
         $text = $this->request->variable('text', '', true);
-        if ($text)
-        {
-          $sql = $this->upsert_tpl($user_id, $name, $text);
+        if ($text) {
+            $sql = $this->upsert_tpl($user_id, $name, $text);
         }
         $js->send(['status' => $sql ? 'success' : 'fail']);
     }
@@ -94,9 +91,8 @@ class template extends base
         $name = $this->request->variable('name', '');
         $text = $this->request->variable('text', '', true);
         $priority = $this->request->variable('priority', 0);
-        if ($text)
-        {
-          $sql = $this->update_tpl($user_id, $name, $text, $priority);
+        if ($text) {
+            $sql = $this->update_tpl($user_id, $name, $text, $priority);
         }
         $js->send(['status' => $sql ? 'success' : 'fail']);
     }
@@ -106,12 +102,11 @@ class template extends base
         $js = new \phpbb\json_response();
         $user_id = $this->user->data['user_id'];
         $items = json_decode(htmlspecialchars_decode($this->request->variable('items', '', true)), true);
-        foreach($items as $item)
-        {
-          $priority = (int) $item['priority'];
-          $name = $this->db->sql_escape($item['name']);
-          $sql = "UPDATE phpbb_snahp_tpl SET priority=${priority} WHERE user_id=${user_id} AND name='${name}';";
-          $this->db->sql_query($sql);
+        foreach ($items as $item) {
+            $priority = (int) $item['priority'];
+            $name = $this->db->sql_escape($item['name']);
+            $sql = "UPDATE phpbb_snahp_tpl SET priority=${priority} WHERE user_id=${user_id} AND name='${name}';";
+            $this->db->sql_query($sql);
         }
         $status = true;
         $js->send([ 'status' => $status ? 'success' : 'fail', ]);
@@ -135,5 +130,4 @@ class template extends base
         $rowset = $this->select_tpl($user_id, $b_full, $name);
         $js->send($rowset);
     }
-
 }

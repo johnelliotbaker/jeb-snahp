@@ -229,7 +229,7 @@ class XmasHelper
 }
 
 
-class Simulator 
+class Simulator
 {
     public function __construct($board, $draws)
     {
@@ -242,7 +242,6 @@ class Simulator
         $pool = (array) $this->board->pool;
         return array_slice($pool, 0, $this->draws);
     }
-
 }
 
 

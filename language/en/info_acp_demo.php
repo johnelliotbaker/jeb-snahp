@@ -8,14 +8,12 @@
  *
  */
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (!defined('IN_PHPBB')) {
+    exit;
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty($lang) || !is_array($lang)) {
+    $lang = array();
 }
 
 $lang = array_merge($lang, array(
@@ -33,5 +31,5 @@ $lang = array_merge($lang, array(
     'ACP_SNP_EMOTES'        => 'Emoticons',
     'ACP_SNP_THANKS'        => 'Thanks',
     'ACP_SNP_INVITE'        => 'Invite',
-	'ACP_SNP_SETTING_SAVED' => 'Settings have been saved successfully!',
+    'ACP_SNP_SETTING_SAVED' => 'Settings have been saved successfully!',
 ));

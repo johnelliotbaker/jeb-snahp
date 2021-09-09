@@ -12,11 +12,14 @@ class helper
     protected $sauth;
     protected $user_id;
     public function __construct(
-        $db, $user, $auth, $config, $container,
+        $db,
+        $user,
+        $auth,
+        $config,
+        $container,
         $tbl,
         $sauth
-    )
-    {
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -45,5 +48,4 @@ class helper
         ];
         $this->add_log_item($data);
     }
-
 }

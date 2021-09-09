@@ -13,8 +13,6 @@ use jeb\snahp\core\Rest\Fields\FunctionField;
 
 use \R as R;
 
-
-
 class Topic extends Model
 {
     const TABLE_NAME = MINITOPICS_TABLE;

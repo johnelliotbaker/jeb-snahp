@@ -17,10 +17,11 @@
 #
 
 namespace jeb\snahp\core\parsers;
+
 use jeb\snahp\core\parsers\parsedown_extra;
 
-class parsedown_extra_plugin extends parsedown_extra {
-
+class parsedown_extra_plugin extends parsedown_extra
+{
     const version = '1.2.0-beta-3';
 
 
@@ -80,7 +81,8 @@ class parsedown_extra_plugin extends parsedown_extra {
     protected $regexAttribute = '(?:[#.][-\w:\\\]+[ ]*|[-\w:\\\]+(?:=(?:["\'][^\n]*?["\']|[^\s]+)?)?[ ]*)';
 
     # Method aliases for every configuration property
-    public function __call($key, array $arguments = array()) {
+    public function __call($key, array $arguments = array())
+    {
         $property = lcfirst(substr($key, 3));
         if (strpos($key, 'set') === 0 && property_exists($this, $property)) {
             $this->{$property} = $arguments[0];
@@ -89,14 +91,16 @@ class parsedown_extra_plugin extends parsedown_extra {
         throw new Exception('Method ' . $key . ' does not exists.');
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         if (version_compare(parent::version, '0.8.0-beta-1') < 0) {
             throw new Exception('ParsedownExtraPlugin requires a later version of Parsedown');
         }
         parent::__construct();
     }
 
-    protected function blockAbbreviation($Line) {
+    protected function blockAbbreviation($Line)
+    {
         # Allow empty abbreviations
         if (preg_match('/^\*\[(.+?)\]:[ ]*$/', $Line['text'], $matches)) {
             $this->DefinitionData['Abbreviation'][$matches[1]] = null;
@@ -106,7 +110,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return parent::blockAbbreviation($Line);
     }
 
-    protected function blockCodeComplete($Block) {
+    protected function blockCodeComplete($Block)
+    {
         $this->doSetAttributes($Block['element']['element'], $this->blockCodeAttributes);
         $this->doSetContent($Block['element']['element'], $this->blockCodeHtml, true);
         # Put code attributes on parent tag
@@ -120,7 +125,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Block;
     }
 
-    protected function blockFencedCode($Line) {
+    protected function blockFencedCode($Line)
+    {
         # Re-enable the multiple class name feature
         $Line['text'] = strtr(trim($Line['text']), array(
             ' ' => "\x1A",
@@ -138,7 +144,7 @@ class parsedown_extra_plugin extends parsedown_extra {
         }
         if ($Attributes) {
             $Block['element']['element']['attributes'] = $Attributes;
-        } else if (isset($Block['element']['element']['attributes']['class'])) {
+        } elseif (isset($Block['element']['element']['attributes']['class'])) {
             $Classes = explode("\x1A", strtr($Block['element']['element']['attributes']['class'], ' ', "\x1A"));
             // `~~~ php` → `<pre><code class="language-php">`
             // `~~~ php html` → `<pre><code class="language-php language-html">`
@@ -162,11 +168,13 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Block;
     }
 
-    protected function blockFencedCodeComplete($Block) {
+    protected function blockFencedCodeComplete($Block)
+    {
         return $this->blockCodeComplete($Block);
     }
 
-    protected function blockHeader($Line) {
+    protected function blockHeader($Line)
+    {
         if (!$Block = parent::blockHeader($Line)) {
             return;
         }
@@ -176,13 +184,15 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Block;
     }
 
-    protected function blockQuoteComplete($Block) {
+    protected function blockQuoteComplete($Block)
+    {
         $this->doSetAttributes($Block['element'], $this->blockQuoteAttributes);
         $this->doSetContent($Block['element'], $this->blockQuoteText, false, 'arguments');
         return $Block;
     }
 
-    protected function blockSetextHeader($Line, array $Block = null) {
+    protected function blockSetextHeader($Line, array $Block = null)
+    {
         if (!$Block = parent::blockSetextHeader($Line, $Block)) {
             return;
         }
@@ -192,7 +202,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Block;
     }
 
-    protected function blockTableContinue($Line, array $Block) {
+    protected function blockTableContinue($Line, array $Block)
+    {
         if (!$Block = parent::blockTableContinue($Line, $Block)) {
             return;
         }
@@ -210,12 +221,14 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Block;
     }
 
-    protected function blockTableComplete($Block) {
+    protected function blockTableComplete($Block)
+    {
         $this->doSetAttributes($Block['element'], $this->tableAttributes);
         return $Block;
     }
 
-    protected function buildFootnoteElement() {
+    protected function buildFootnoteElement()
+    {
         $DefinitionData = $this->DefinitionData['Footnote'];
         if (!$Footnotes = parent::buildFootnoteElement()) {
             return;
@@ -243,14 +256,16 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Footnotes;
     }
 
-    protected function doGetAttributes($Element) {
+    protected function doGetAttributes($Element)
+    {
         if (isset($Element['attributes'])) {
             return (array) $Element['attributes'];
         }
         return array();
     }
 
-    protected function doGetContent($Element) {
+    protected function doGetContent($Element)
+    {
         if (isset($Element['text'])) {
             return $Element['text'];
         }
@@ -263,7 +278,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return null;
     }
 
-    private function doSetLink($Excerpt, $Function) {
+    private function doSetLink($Excerpt, $Function)
+    {
         if (!$Inline = call_user_func('parent::' . $Function, $Excerpt)) {
             return;
         }
@@ -272,7 +288,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Inline;
     }
 
-    protected function doSetAttributes(&$Element, $From, $Args = array()) {
+    protected function doSetAttributes(&$Element, $From, $Args = array())
+    {
         $Attributes = $this->doGetAttributes($Element);
         $Content = $this->doGetContent($Element);
         if (is_callable($From)) {
@@ -283,7 +300,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         }
     }
 
-    protected function doSetContent(&$Element, $From, $Esc = false, $Mode = 'text', $Args = array()) {
+    protected function doSetContent(&$Element, $From, $Esc = false, $Mode = 'text', $Args = array())
+    {
         $Attributes = $this->doGetAttributes($Element);
         $Content = $this->doGetContent($Element);
         if ($Esc) {
@@ -292,23 +310,25 @@ class parsedown_extra_plugin extends parsedown_extra {
         if (is_callable($From)) {
             $Args = array_merge(array($Content, $Attributes, &$Element), $Args);
             $Content = call_user_func_array($From, $Args);
-        } else if (!empty($From)) {
+        } elseif (!empty($From)) {
             $Content = sprintf($From, $Content);
         }
         if ($Mode === 'arguments') {
             $Element['handler']['argument'] = explode("\n", $Content);
-        } else if ($Mode === 'argument') {
+        } elseif ($Mode === 'argument') {
             $Element['handler']['argument'] = $Content;
         } else {
             $Element[$Mode] = $Content;
         }
     }
 
-    protected function doSetData(&$To, $From) {
+    protected function doSetData(&$To, $From)
+    {
         $To = array_replace((array) $To, (array) $From);
     }
 
-    protected function element(array $Element) {
+    protected function element(array $Element)
+    {
         if (!$Any = parent::element($Element)) {
             return;
         }
@@ -325,7 +345,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Any;
     }
 
-    protected function inlineCode($Excerpt) {
+    protected function inlineCode($Excerpt)
+    {
         if (!$Inline = parent::inlineCode($Excerpt)) {
             return;
         }
@@ -337,7 +358,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Inline;
     }
 
-    protected function inlineFootnoteMarker($Excerpt) {
+    protected function inlineFootnoteMarker($Excerpt)
+    {
         if (!$Inline = parent::inlineFootnoteMarker($Excerpt)) {
             return;
         }
@@ -355,7 +377,8 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Inline;
     }
 
-    protected function inlineImage($Excerpt) {
+    protected function inlineImage($Excerpt)
+    {
         if (!$Inline = parent::inlineImage($Excerpt)) {
             return;
         }
@@ -363,19 +386,23 @@ class parsedown_extra_plugin extends parsedown_extra {
         return $Inline;
     }
 
-    protected function inlineLink($Excerpt) {
+    protected function inlineLink($Excerpt)
+    {
         return $this->doSetLink($Excerpt, __FUNCTION__);
     }
 
-    protected function inlineUrl($Excerpt) {
+    protected function inlineUrl($Excerpt)
+    {
         return $this->doSetLink($Excerpt, __FUNCTION__);
     }
 
-    protected function inlineUrlTag($Excerpt) {
+    protected function inlineUrlTag($Excerpt)
+    {
         return $this->doSetLink($Excerpt, __FUNCTION__);
     }
 
-    protected function isLocal($Element, $Key) {
+    protected function isLocal($Element, $Key)
+    {
         $Link = isset($Element['attributes'][$Key]) ? (string) $Element['attributes'][$Key] : null;
         if (
             // `<a href="">`
@@ -410,14 +437,15 @@ class parsedown_extra_plugin extends parsedown_extra {
         return strpos($Link, '://') === false;
     }
 
-    protected function parseAttributeData($attributeString) {
+    protected function parseAttributeData($attributeString)
+    {
         # Allow compact attributes
         $attributeString = strtr($attributeString, array(
             '#' => ' #',
             '.' => ' .'
         ));
         if (strpos($attributeString, '="') !== false || strpos($attributeString, "='") !== false) {
-            $attributeString = preg_replace_callback('#([-\w]+=)(["\'])([^\n]*?)\2#', function($matches) {
+            $attributeString = preg_replace_callback('#([-\w]+=)(["\'])([^\n]*?)\2#', function ($matches) {
                 $value = strtr($matches[3], array(
                     ' #' => '#',
                     ' .' => '.',
@@ -435,23 +463,23 @@ class parsedown_extra_plugin extends parsedown_extra {
             if ($v[0] === '#' && isset($v[1])) {
                 $Attributes['id'] = substr($v, 1);
             // `{.foo}`
-            } else if ($v[0] === '.' && isset($v[1])) {
+            } elseif ($v[0] === '.' && isset($v[1])) {
                 $Attributes['class'][] = substr($v, 1);
             // ~
-            } else if (strpos($v, '=') !== false) {
+            } elseif (strpos($v, '=') !== false) {
                 $vv = explode('=', $v, 2);
                 // `{foo=}`
                 if ($vv[1] === "") {
                     $Attributes[$vv[0]] = "";
                 // `{foo="bar baz"}`
                 // `{foo='bar baz'}`
-                } else if ($vv[1][0] === '"' && substr($vv[1], -1) === '"' || $vv[1][0] === "'" && substr($vv[1], -1) === "'") {
+                } elseif ($vv[1][0] === '"' && substr($vv[1], -1) === '"' || $vv[1][0] === "'" && substr($vv[1], -1) === "'") {
                     $Attributes[$vv[0]] = stripslashes(strtr(substr(substr($vv[1], 1), 0, -1), "\x1A", ' '));
                 // `{foo=bar}`
                 } else {
                     $Attributes[$vv[0]] = $vv[1];
                 }
-            // `{foo}`
+                // `{foo}`
             } else {
                 $Attributes[$v] = $v;
             }
@@ -461,5 +489,4 @@ class parsedown_extra_plugin extends parsedown_extra {
         }
         return $Attributes;
     }
-
 }

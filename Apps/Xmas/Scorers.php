@@ -1,7 +1,7 @@
 <?php
 namespace jeb\snahp\Apps\Xmas;
 
-class ScoreRule75 
+class ScoreRule75
 {
     public $sequence = [];
     public function scoreRow($rowData)
@@ -66,7 +66,7 @@ class ScoreRule75
 
 
 
-class ScoreRule75_1 
+class ScoreRule75_1
 {
     public function scoreRow($rowData)
     {

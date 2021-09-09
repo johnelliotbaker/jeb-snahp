@@ -17,7 +17,7 @@ class v_0_5_0 extends \phpbb\db\migration\migration
         return false;
     }
 
-    static public function depends_on()
+    public static function depends_on()
     {
         return array(
             '\jeb\snahp\migrations\v_0_4_0',
@@ -35,5 +35,4 @@ class v_0_5_0 extends \phpbb\db\migration\migration
             array('config.add', array('snp_pg_fid_book',    implode(',', $book))),
         );
     }
-
 }

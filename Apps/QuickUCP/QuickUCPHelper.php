@@ -41,6 +41,7 @@ function setSettingsContextually($userId, $key, $value)
         global $phpbb_container;
         $helper = $phpbb_container->get('jeb.snahp.Apps.DeadLinks.DeadLinksHelper');
         $helper->setDeadlinksVisibilityInSearch($userId, $value);
+        // no break
     default:
     }
 }

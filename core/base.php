@@ -1,6 +1,7 @@
 <?php
 
 namespace jeb\snahp\core;
+
 use phpbb\template\context;
 use phpbb\user;
 use phpbb\auth\auth;
@@ -11,6 +12,7 @@ use phpbb\controller\helper;
 use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\notification\manager;
+
 /*}}}*/
 
 global $phpbb_root_path;
@@ -30,7 +32,7 @@ abstract class base
     protected $template;
     protected $table_prefix;
     protected $notification;
-	protected $u_action;
+    protected $u_action;
     protected $allowed_directive = ['table', 'tr', 'td', 'a', 'img', 'span'];
     protected $count = 0;
     protected $icon_stack = [];
@@ -94,19 +96,16 @@ abstract class base
 
     public function set_cookie_new($key, $path, $data)
     {
-        if (!$data && $data!=0)
-        {
+        if (!$data && $data!=0) {
             return false;
         }
         $cookie = $this->get_cookie_new($key);
-        if (!$cookie && !is_array($cookie))
-        {
+        if (!$cookie && !is_array($cookie)) {
             $cookie = [];
         }
         $shadow = &$cookie;
         $a_name = explode('.', $path);
-        foreach($a_name as $name)
-        {
+        foreach ($a_name as $name) {
             $shadow = &$shadow[$name];
         }
         $shadow = $data;
@@ -119,23 +118,17 @@ abstract class base
         $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = htmlspecialchars_decode($cookie);
         $cookie = json_decode($cookie, true);
-        if (!$cookie || !is_array($cookie))
-        {
+        if (!$cookie || !is_array($cookie)) {
             return false;
         }
-        if ($path=='')
-        {
+        if ($path=='') {
             return $cookie;
         }
         $a_name = explode('.', $path);
-        foreach($a_name as $name)
-        {
-            if (isset($cookie[$name]))
-            {
+        foreach ($a_name as $name) {
+            if (isset($cookie[$name])) {
                 $cookie = $cookie[$name];
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -148,8 +141,7 @@ abstract class base
         $cookie = (string) $this->request->variable($this->config['cookie_name'] . '_' . $key, '', true, \phpbb\request\request_interface::COOKIE);
         $cookie = htmlspecialchars_decode($cookie);
         $cookie = json_decode($cookie, true);
-        if (!$cookie)
-        {
+        if (!$cookie) {
             $cookie = [];
             $this->set_cookie($key, $cookie);
         }
@@ -169,18 +161,15 @@ abstract class base
     {
         $cookie = $this->get_cookie($key);
         // If cookie exists
-        if ($cookie)
-        {
-            if ($b_return_first)
-            {
+        if ($cookie) {
+            if ($b_return_first) {
                 return $cookie[0];
             }
             return $cookie;
         }
         // If cookie doesn't exist
         $this->set_cookie($key, $data);
-        if ($b_return_first)
-        {
+        if ($b_return_first) {
             return $data[0];
         }
         return $data;
@@ -208,8 +197,7 @@ abstract class base
         $result = $this->db->sql_query($sql, $cachetime);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return 0;
         }
         return (int) $row['count'];
@@ -283,8 +271,7 @@ abstract class base
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
-        if (!$user_id || !$name || !$text)
-        {
+        if (!$user_id || !$name || !$text) {
             return false;
         }
         $data = [
@@ -303,8 +290,7 @@ abstract class base
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
-        if (!$user_id || !$name || !$text)
-        {
+        if (!$user_id || !$name || !$text) {
             return false;
         }
         $data['text'] = $text;
@@ -320,8 +306,7 @@ abstract class base
     {
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $user_id = (int) $user_id;
-        if (!$user_id || !$name)
-        {
+        if (!$user_id || !$name) {
             return false;
         }
         $sql = 'DELETE FROM '  . $tbl['tpl'] . "
@@ -335,8 +320,7 @@ abstract class base
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $s_fields = $b_full ? '*' : 'id, name, priority';
         $sql = "SELECT {$s_fields} FROM " . $tbl['tpl'] . ' WHERE user_id=' . (int)$user_id;
-        if ($name)
-        {
+        if ($name) {
             $sql .= ' AND ' . $this->db->sql_in_set('name', $name);
         }
         $sql .= " ORDER BY id DESC";
@@ -364,8 +348,7 @@ abstract class base
         $result = $this->db->sql_query($sql, $cachetime);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
-        {
+        if (!$row) {
             return 0;
         }
         return (int) $row['count'];
@@ -379,7 +362,9 @@ abstract class base
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        $type_ids = array_map(function($arg){return $arg['notification_type_id'];}, $rowset);
+        $type_ids = array_map(function ($arg) {
+            return $arg['notification_type_id'];
+        }, $rowset);
         $sql = 'DELETE FROM ' . NOTIFICATIONS_TABLE . '
             WHERE user_id=' . $this->user->data['user_id'] . '
         AND ' . $this->db->sql_in_set('notification_type_id', $type_ids);
@@ -460,8 +445,7 @@ abstract class base
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
         $sql = 'SELECT forum_id, forum_name FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
-        if ($b_immediate==true)
-        {
+        if ($b_immediate==true) {
             $sql .= ' AND parent_id=' . $parent_id;
         }
         $result = $this->db->sql_query($sql, $cooldown);
@@ -481,12 +465,13 @@ abstract class base
         $parent_left_id = $row['left_id'];
         $parent_right_id = $row['right_id'];
         $sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . ' WHERE parent_id = ' . $parent_id . ' OR (left_id BETWEEN ' . $parent_left_id . ' AND ' . $parent_right_id . ')';
-        if ($b_immediate==true)
-        {
+        if ($b_immediate==true) {
             $sql .= ' AND parent_id=' . $parent_id;
         }
         $result = $this->db->sql_query($sql, $cooldown);
-        $data = array_map(function($array){return $array['forum_id'];}, $this->db->sql_fetchrowset($result));
+        $data = array_map(function ($array) {
+            return $array['forum_id'];
+        }, $this->db->sql_fetchrowset($result));
         $this->db->sql_freeresult($result);
         return $data;
     }/*}}}*/
@@ -495,12 +480,10 @@ abstract class base
     public function select_accepted_requests($per_page, $start, $status_type='all', $user_id=null)
     {
         $maxi_query = 300;
-        if ($user_id===null)
-        {
+        if ($user_id===null) {
             $user_id = $this->user->data['user_id'];
         }
-        switch($status_type)
-        {
+        switch ($status_type) {
         case 'dib':
             $def = $this->container->getParameter('jeb.snahp.req')['def'];
             $def_dib = $def['dib'];
@@ -534,8 +517,7 @@ abstract class base
     public function select_fulfilled_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
-        if ($user_id===null)
-        {
+        if ($user_id===null) {
             $user_id = $this->user->data['user_id'];
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -566,8 +548,7 @@ abstract class base
     public function select_open_requests($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
-        if ($user_id===null)
-        {
+        if ($user_id===null) {
             $user_id = $this->user->data['user_id'];
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -598,8 +579,7 @@ abstract class base
     public function select_thanks_given($per_page, $start, $user_id=null)
     {
         $maxi_query = 300;
-        if ($user_id===null)
-        {
+        if ($user_id===null) {
             $user_id = $this->user->data['user_id'];
         }
         $tbl = $this->container->getParameter('jeb.snahp.tables');
@@ -642,8 +622,7 @@ abstract class base
     {
         // Note that cooldown isn't precise as it depends on $lastdt
         $a_fid = $this->select_subforum($parent_id);
-        if (is_array($a_exclude))
-        {
+        if (is_array($a_exclude)) {
             $a_fid = array_diff($a_fid, $a_exclude);
         }
         $maxi_query = $this->config['snp_ql_fav_limit'];
@@ -654,8 +633,7 @@ abstract class base
         $lastdt = (int)($lastdt/$cooldown)*$cooldown;
         $where = $a_fid ? $this->db->sql_in_set('t.forum_id', $a_fid) : 'false';
         $where .= ' AND t.topic_time>' . $lastdt;
-        switch ($sort_mode)
-        {
+        switch ($sort_mode) {
         case 'views':
             $order_by = 't.topic_views DESC';
             break;
@@ -718,8 +696,7 @@ abstract class base
     public function update_topic_title($fid, $tid, $pid, $ptn, $repl)
     {
         $topicdata = $this->select_topic($tid);
-        if (!$topicdata)
-        {
+        if (!$topicdata) {
             return 'That topic doesn\'t exist';
         }
         $topic_last_pid = $topicdata['topic_last_post_id'];
@@ -730,8 +707,7 @@ abstract class base
             'topic_title' => $topic_title,
             'topic_last_post_subject' => $topic_title,
         ]);
-        if ($postdata = $this->select_post($pid, 'post_subject'))
-        {
+        if ($postdata = $this->select_post($pid, 'post_subject')) {
             $post_subject = $postdata['post_subject'];
             $post_subject = preg_replace($ptn, '', $post_subject);
             $post_subject = implode(' ', [$repl, $post_subject]);
@@ -828,7 +804,9 @@ abstract class base
     {
         $username = utf8_clean_string($username);
         $userdata = $this->select_user_by_username($username);
-        if (!$userdata) return [];
+        if (!$userdata) {
+            return [];
+        }
         $user_id = $userdata['user_id'];
         $tbl = $this->container->getParameter('jeb.snahp.tables');
         $sql = 'SELECT * FROM ' . $tbl['requsr'] ." WHERE user_id=$user_id";
@@ -986,8 +964,7 @@ abstract class base
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         $b = $row && $row['count'] ? true : false;
-        if (!$b)
-        {
+        if (!$b) {
             trigger_error('Permission Error. Error Code: ca546fad27');
         }
         return true;
@@ -998,15 +975,17 @@ abstract class base
         // $BOT_GID = 6
         $BOTS_GID = 6;
         $gid = $this->user->data['group_id'];
-        if (!$gid || $gid == $BOTS_GID)
+        if (!$gid || $gid == $BOTS_GID) {
             trigger_error('Access to bots has been denied.');
+        }
     }/*}}}*/
 
     public function reject_anon()
     {
         $uid = $this->user->data['user_id'];
-        if ($uid == ANONYMOUS)
+        if ($uid == ANONYMOUS) {
             trigger_error('You must login before venturing forth.');
+        }
     }/*}}}*/
 
     public function is_admin()
@@ -1055,20 +1034,23 @@ abstract class base
 
     public function reject_non_dev($append='')
     {
-        if (!$this->is_dev())
+        if (!$this->is_dev()) {
             trigger_error('You don\'t have the permission to access this page. Error Code: d198252910' . $append);
+        }
     }/*}}}*/
 
     public function reject_non_admin($append='')
     {
-        if (!$this->is_admin())
+        if (!$this->is_admin()) {
             trigger_error('Only administrator may access this page. ' . $append);
+        }
     }/*}}}*/
 
     public function reject_non_moderator($append='')
     {
-        if (!$this->is_mod())
+        if (!$this->is_mod()) {
             trigger_error('Only moderators may access this page. ' . $append);
+        }
     }/*}}}*/
 
     public function reject_non_group($group_id, $perm_name)
@@ -1079,8 +1061,9 @@ abstract class base
         $result = $this->db->sql_query($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row)
+        if (!$row) {
             trigger_error('Your don\'t have the permission to access this page.');
+        }
     }/*}}}*/
 
     public function is_search_enhancer_allowed($topic_data)
@@ -1088,25 +1071,24 @@ abstract class base
         // Search enhancer is allowed for:
         // 1) members in the allowed group (in any forum)
         // 2) OP of a topic only in the listings forums
-        if (!$this->config['snp_search_b_enable'])
+        if (!$this->config['snp_search_b_enable']) {
             return false;
-        if (!$this->config['snp_search_b_enhancer'])
+        }
+        if (!$this->config['snp_search_b_enhancer']) {
             return false;
+        }
         $gid = $this->user->data['group_id'];
         $gd = $this->select_group($gid);
         $b_group = $gd['snp_search_index_b_enable'];
-        if ($b_group)
-        {
+        if ($b_group) {
             return true;
         }
         $b_op = $this->is_op($topic_data);
-        if (!$b_op)
-        {
+        if (!$b_op) {
             return false;
         }
         $b_listing = $this->is_listing($topic_data, 'topic_data');
-        if ($b_listing)
-        {
+        if ($b_listing) {
             return true;
         }
         return false;
@@ -1117,8 +1099,7 @@ abstract class base
         // To check if topic is in listings
         $cache_time = 5;
         $fid_listings = $this->config['snp_fid_listings'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'topic_id':
             $topic_data = $this->select_topic((int)$var);
             break;
@@ -1128,8 +1109,7 @@ abstract class base
         default:
             return false;
         }
-        if (!$topic_data)
-        {
+        if (!$topic_data) {
             return false;
         }
         $forum_id = $topic_data['forum_id'];
@@ -1144,8 +1124,7 @@ abstract class base
         // To check if topic is in requests
         $cache_time = 5;
         $fid_requests = $this->config['snp_fid_requests'];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'request_id':
             $topic_data = $this->select_topic((int)$var);
             break;
@@ -1155,8 +1134,7 @@ abstract class base
         default:
             return false;
         }
-        if (!$topic_data)
-        {
+        if (!$topic_data) {
             return false;
         }
         $forum_id = $topic_data['forum_id'];
@@ -1286,21 +1264,17 @@ abstract class base
         $len_opened = count($openedtags);
         $len_closed = count($closedtags);
         if ($len_closed != $len_opened) {
-            return False;
+            return false;
         }
         $openedtags = array_reverse($openedtags);
-        for ($i=0; $i < $len_opened; $i++)
-        {
-            if (!in_array($openedtags[$i], $closedtags))
-            {
-                return False;
-            }
-            else
-            {
+        for ($i=0; $i < $len_opened; $i++) {
+            if (!in_array($openedtags[$i], $closedtags)) {
+                return false;
+            } else {
                 unset($closedtags[array_search($openedtags[$i], $closedtags)]);
             }
         }
-        return True;
+        return true;
     }/*}}}*/
 
     public function interpolate_curly_table_autofill($strn)
@@ -1316,10 +1290,8 @@ abstract class base
         $res[] = '<table class="autofill search">';
         $res[] = '<thead><tr><th></th></tr></thead>';
         $res[] = '<tbody>';
-        foreach($arr as $entry)
-        {
-            if ($entry)
-            {
+        foreach ($arr as $entry) {
+            if ($entry) {
                 $res[] = "<tr><td style='text-align:left;'>$entry</td></tr>";
             }
         }
@@ -1332,31 +1304,23 @@ abstract class base
     public function interpolate_curly_table($strn)
     {
         $ptn = '#{([^}]*)}#is';
-        $strn = preg_replace_callback($ptn, function($m) {
+        $strn = preg_replace_callback($ptn, function ($m) {
             $allowed_directive = $this->allowed_directive;
             $sub = $m[1];
-            $b_open = False;
-            if ($sub && $sub[0] == '/')
-            {
+            $b_open = false;
+            if ($sub && $sub[0] == '/') {
                 $sub = substr($sub, 1);
-            }
-            else
-            {
-                $b_open = True;
+            } else {
+                $b_open = true;
             }
             preg_match('/(\w+)/is', $sub, $match);
-            if ($match && in_array($match[0], $allowed_directive))
-            {
-                switch ($match[0])
-                {
+            if ($match && in_array($match[0], $allowed_directive)) {
+                switch ($match[0]) {
                 case 'table':
-                    if ($b_open)
-                    {
+                    if ($b_open) {
                         $tag = '<div class="request_table container"><div class="request_table wrapper">';
                         $tag .= "<$m[1]>";
-                    }
-                    else
-                    {
+                    } else {
                         $tag = "<$m[1]>";
                         $tag .= '</div></div>';
                     }
@@ -1366,14 +1330,12 @@ abstract class base
                     $ptn = '#src=("|\')([^("|\')]*)("|\')#is';
                     $text = $m[1];
                     preg_match($ptn, $m[1], $match);
-                    if (!$match)
-                    {
+                    if (!$match) {
                         return "<$m[1]>";
                     }
                     $url = parse_url($match[2]);
                     $allowed_hosts = ['www.youtube.com'];
-                    if (in_array($url['host'], $allowed_hosts))
-                    {
+                    if (in_array($url['host'], $allowed_hosts)) {
                         return "<$m[1]>";
                     }
                     return '';
@@ -1386,8 +1348,7 @@ abstract class base
         $strn = $strn[0];
         $ptn = '#(.*)(<table.*</table>)(.*)#is';
         preg_match($ptn, $strn, $match);
-        if ($match)
-        {
+        if ($match) {
             $table = $match[2];
             $table = str_replace('<br>', '', $table);
             $strn = $match[1];
@@ -1409,7 +1370,9 @@ abstract class base
     public function interpolate_curly_tags($strn)
     {
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;
-        if (!$valid) return $strn;
+        if (!$valid) {
+            return $strn;
+        }
         $strn = $this->replace_snahp($strn);
         return $strn;
     }/*}}}*/
@@ -1417,14 +1380,15 @@ abstract class base
     public function interpolate_curly_tags_deprecated($strn)
     {
         $valid = $this->validate_curly_tags($strn) ? 1 : 0;
-        if (!$valid) return $strn;
+        if (!$valid) {
+            return $strn;
+        }
         $ptn = '#({snahp})(.*?)({/snahp})#is';
         $strn = preg_replace_callback($ptn, [&$this, 'interpolate_curly_table'], $strn);
         $strn = preg_replace_callback('#.*#', [&$this, 'interpolate_curly_table'], $strn);
         $ptn = '#(.*)(<table.*</table>)(.*)#is';
         preg_match($ptn, $strn, $match);
-        if ($match)
-        {
+        if ($match) {
             $table = $match[2];
             $table = str_replace('<br>', '', $table);
             $strn = $match[1];
@@ -1436,26 +1400,21 @@ abstract class base
 
     public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
-        if (!$this->user_belongs_to_groupset($user_id, $groupset_name))
-        {
+        if (!$this->user_belongs_to_groupset($user_id, $groupset_name)) {
             trigger_error('You do not have the permission to view this page. Error Code: ad5611c89b');
         }
     }/*}}}*/
 
     public function user_belongs_to_groupset($user_id, $groupset_name)
     {
-        if ($this->is_dev_server())
-        {
+        if ($this->is_dev_server()) {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['dev']['set'];
-        }
-        else
-        {
+        } else {
             $groupset = $this->container->getParameter('jeb.snahp.groups')['production']['set'];
         }
         include_once($this->phpbb_root_path . 'includes/functions_user.php');
         $user_id_ary = [$user_id];
-        if (!array_key_exists($groupset_name, $groupset))
-        {
+        if (!array_key_exists($groupset_name, $groupset)) {
             return false;
         }
         $group_id_ary = $groupset[$groupset_name];
@@ -1479,8 +1438,7 @@ abstract class base
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if ($row)
-        {
+        if ($row) {
             return [stripslashes($row['rank_title']), stripslashes($row['rank_img'])];
         }
         return false;
@@ -1503,11 +1461,9 @@ abstract class base
 
     public function trigger_dev_event($event_name)
     {
-        if ($this->is_only_dev())
-        {
+        if ($this->is_only_dev()) {
             $dispatcher = $this->container->get('dispatcher');
             extract($dispatcher->trigger_event($event_name));
         }
     }/*}}}*/
-
 }

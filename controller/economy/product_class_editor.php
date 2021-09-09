@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\economy;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -16,11 +17,17 @@ class product_class_editor
     protected $product_class;
     protected $tbl;
     public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper,
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
         $tbl,
-        $sauth, $product_class
-    )
-    {
+        $sauth,
+        $product_class
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -37,8 +44,7 @@ class product_class_editor
 
     public function handle($mode)
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'edit':
             $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/product_class_editor/base.html';
             return $this->handle_edit($cfg);
@@ -55,18 +61,14 @@ class product_class_editor
         $json = (string) htmlspecialchars_decode($this->request->variable('json', ''));
         $data = json_decode($json);
         $tmp = [];
-        foreach($data as $k=>$d)
-        {
+        foreach ($data as $k=>$d) {
             $tmp[$k] = $d;
         }
         $data = $tmp;
         $b_success = $this->product_class->update_product_class($data['id'], $data);
-        if ($b_success)
-        {
+        if ($b_success) {
             $rdata = [ 'status' => 'success', ];
-        }
-        else
-        {
+        } else {
             $rdata = [ 'status' => 'error', ];
         }
         $js = new \phpbb\json_response();
@@ -76,12 +78,10 @@ class product_class_editor
     private function handle_edit($cfg)
     {
         $rowset = $this->product_class->get_product_classes();
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $row['json'] = json_encode($row);
             $this->template->assign_block_vars('PC', $row);
         }
         return $this->helper->render($cfg['tpl_name'], 'Product Class Editor');
     }
-
 }

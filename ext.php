@@ -26,109 +26,106 @@ namespace jeb\snahp;
 */
 class ext extends \phpbb\extension\base
 {
-	/**
-	* Check whether or not the extension can be enabled.
-	* The current phpBB version should meet or exceed
-	* the minimum version required by this extension:
-	*
-	* Requires phpBB 3.2.0 due to new faq controller route for bbcodes,
-	* the revised notifications system, font awesome and the text reparser.
-	*
-	* @return bool
-	* @access public
-	*/
-	public function is_enableable()
-	{
-		return phpbb_version_compare(PHPBB_VERSION, '3.2.0', '>=');
-	}
+    /**
+    * Check whether or not the extension can be enabled.
+    * The current phpBB version should meet or exceed
+    * the minimum version required by this extension:
+    *
+    * Requires phpBB 3.2.0 due to new faq controller route for bbcodes,
+    * the revised notifications system, font awesome and the text reparser.
+    *
+    * @return bool
+    * @access public
+    */
+    public function is_enableable()
+    {
+        return phpbb_version_compare(PHPBB_VERSION, '3.2.0', '>=');
+    }
 
-	/**
-	* Overwrite enable_step to enable board rules notifications
-	* before any included migrations are installed.
-	*
-	* @param mixed $old_state State returned by previous call of this method
-	* @return mixed Returns false after last step, otherwise temporary state
-	* @access public
-	*/
-	public function enable_step($old_state)
-	{
-		switch ($old_state)
-		{
-			case '': // Empty means nothing has run yet
+    /**
+    * Overwrite enable_step to enable board rules notifications
+    * before any included migrations are installed.
+    *
+    * @param mixed $old_state State returned by previous call of this method
+    * @return mixed Returns false after last step, otherwise temporary state
+    * @access public
+    */
+    public function enable_step($old_state)
+    {
+        switch ($old_state) {
+            case '': // Empty means nothing has run yet
 
-				// Enable board rules notifications
-				$phpbb_notifications = $this->container->get('notification_manager');
-				$phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
-				return 'notifications';
+                // Enable board rules notifications
+                $phpbb_notifications = $this->container->get('notification_manager');
+                $phpbb_notifications->enable_notifications('jeb.snahp.notification.type.basic');
+                return 'notifications';
 
-			break;
+            break;
 
-			default:
+            default:
 
-				// Run parent enable step method
-				return parent::enable_step($old_state);
+                // Run parent enable step method
+                return parent::enable_step($old_state);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	/**
-	* Overwrite disable_step to disable board rules notifications
-	* before the extension is disabled.
-	*
-	* @param mixed $old_state State returned by previous call of this method
-	* @return mixed Returns false after last step, otherwise temporary state
-	* @access public
-	*/
-	public function disable_step($old_state)
-	{
-		switch ($old_state)
-		{
-			case '': // Empty means nothing has run yet
+    /**
+    * Overwrite disable_step to disable board rules notifications
+    * before the extension is disabled.
+    *
+    * @param mixed $old_state State returned by previous call of this method
+    * @return mixed Returns false after last step, otherwise temporary state
+    * @access public
+    */
+    public function disable_step($old_state)
+    {
+        switch ($old_state) {
+            case '': // Empty means nothing has run yet
 
-				// Disable board rules notifications
-				$phpbb_notifications = $this->container->get('notification_manager');
-				$phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
-				return 'notifications';
+                // Disable board rules notifications
+                $phpbb_notifications = $this->container->get('notification_manager');
+                $phpbb_notifications->disable_notifications('jeb.snahp.notification.type.basic');
+                return 'notifications';
 
-			break;
+            break;
 
-			default:
+            default:
 
-				// Run parent disable step method
-				return parent::disable_step($old_state);
+                // Run parent disable step method
+                return parent::disable_step($old_state);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	/**
-	* Overwrite purge_step to purge board rules notifications before
-	* any included and installed migrations are reverted.
-	*
-	* @param mixed $old_state State returned by previous call of this method
-	* @return mixed Returns false after last step, otherwise temporary state
-	* @access public
-	*/
-	public function purge_step($old_state)
-	{
-		switch ($old_state)
-		{
-			case '': // Empty means nothing has run yet
+    /**
+    * Overwrite purge_step to purge board rules notifications before
+    * any included and installed migrations are reverted.
+    *
+    * @param mixed $old_state State returned by previous call of this method
+    * @return mixed Returns false after last step, otherwise temporary state
+    * @access public
+    */
+    public function purge_step($old_state)
+    {
+        switch ($old_state) {
+            case '': // Empty means nothing has run yet
 
-				// Purge board rules notifications
-				$phpbb_notifications = $this->container->get('notification_manager');
-				$phpbb_notifications->purge_notifications('jeb.snahp.notification.type.basic');
-				return 'notifications';
+                // Purge board rules notifications
+                $phpbb_notifications = $this->container->get('notification_manager');
+                $phpbb_notifications->purge_notifications('jeb.snahp.notification.type.basic');
+                return 'notifications';
 
-			break;
+            break;
 
-			default:
+            default:
 
-				// Run parent purge step method
-				return parent::purge_step($old_state);
+                // Run parent purge step method
+                return parent::purge_step($old_state);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 }

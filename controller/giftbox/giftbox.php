@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\giftbox;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -20,11 +21,17 @@ class giftbox
     protected $sauth;
     protected $giftbox_helper;
     public function __construct(
-    $db, $user, $config, $request, $template, $container, $helper,
-    $tbl,
-    $sauth, $giftbox_helper
-    )
-    {
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
+        $tbl,
+        $sauth,
+        $giftbox_helper
+    ) {
         $this->db = $db;
         $this->user = $user;
         $this->config = $config;
@@ -45,8 +52,7 @@ class giftbox
     {
         trigger_error('Event is over. Error Code: 539e6cd572');
         $this->sauth->reject_anon();
-        switch($mode)
-        {
+        switch ($mode) {
         case 'unwrap_status':
             return $this->respond_unwrap_status_as_json();
         case 'history':
@@ -54,10 +60,14 @@ class giftbox
         case 'unwrap':
             return $this->respond_unwrap_as_json();
         case 'giveaway':
-            if(!$this->sauth->is_dev()) trigger_error('Error Code: a445f32ba5');
+            if (!$this->sauth->is_dev()) {
+                trigger_error('Error Code: a445f32ba5');
+            }
             return $this->respond_giveaway_as_stream();
         case 'simulate':
-            if(!$this->sauth->is_only_dev()) trigger_error('Error Code: 4a18be0eae');
+            if (!$this->sauth->is_only_dev()) {
+                trigger_error('Error Code: 4a18be0eae');
+            }
             return $this->respond_simulate_as_stream();
         case 'set_cycle_time':
             $this->sauth->reject_non_dev();
@@ -83,8 +93,7 @@ class giftbox
     private function respond_history_as_json()
     {
         $user_id = (int) $this->user_id;
-        if ($user_id < 1)
-        {
+        if ($user_id < 1) {
             return new JsonResponse(['status' => 'failure', 'history' => []]);
         }
         $history = array_reverse($this->giftbox_helper->get_user_history());
@@ -122,5 +131,4 @@ class giftbox
         $data = ['status' => 'success'];
         return new JsonResponse($data);
     }/*}}}*/
-
 }

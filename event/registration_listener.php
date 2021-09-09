@@ -13,7 +13,7 @@ class registration_listener extends base implements EventSubscriberInterface
         $this->table_prefix = $table_prefix;
     }
 
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return [
             'core.user_add_modify_data' => [
@@ -28,19 +28,16 @@ class registration_listener extends base implements EventSubscriberInterface
     public function validate_invite($event)
     {
         $keyphrase = $this->request->variable('invitation_code', '');
-        if (!$keyphrase)
-        {
+        if (!$keyphrase) {
             trigger_error('Invitation code is required. Error Code: 757f279fcb');
         }
         $invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
         $invite_data = $invite_helper->select_invite($where="keyphrase='$keyphrase'");
-        if (!$invite_data)
-        {
+        if (!$invite_data) {
             trigger_error('Sorry, that invitation code is invalid. Error Code: 1f3e01afef');
         }
         $invite_data = $invite_data[0];
-        if (!$invite_data['b_active'])
-        {
+        if (!$invite_data['b_active']) {
             trigger_error('Sorry, that invitation code has been deactivated. Error Code: d385410527');
         }
     }
@@ -52,5 +49,4 @@ class registration_listener extends base implements EventSubscriberInterface
         $invite_helper = new \jeb\snahp\core\invite_helper($this->container, $this->user, $this->auth, $this->request, $this->db, $this->config, $this->helper, $this->template);
         $invite_helper->redeem_invite($keyphrase, $user_id);
     }
-
 }

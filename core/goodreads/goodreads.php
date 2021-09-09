@@ -15,6 +15,7 @@
  * @author danielgwood <github.com/danielgwood>
  */
 namespace jeb\snahp\core\goodreads;
+
 class goodreads
 {
     /**
@@ -299,7 +300,7 @@ class goodreads
     {
         // Check the cache
         $cachedData = $this->getCache($endpoint, $params);
-        if($cachedData !== false) {
+        if ($cachedData !== false) {
             return $cachedData;
         }
 
@@ -308,7 +309,7 @@ class goodreads
         $headers = array(
             'Accept: application/xml',
         );
-        if(isset($params['format']) && $params['format'] === 'json') {
+        if (isset($params['format']) && $params['format'] === 'json') {
             $headers = array(
                 'Accept: application/json',
             );
@@ -316,7 +317,7 @@ class goodreads
 
         // Execute via CURL
         $response = null;
-        if(extension_loaded('curl')) {
+        if (extension_loaded('curl')) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -334,13 +335,13 @@ class goodreads
 
         // Try and cadge the results into a half-decent array
         $results = null;
-        if(isset($params['format']) && $params['format'] === 'json') {
+        if (isset($params['format']) && $params['format'] === 'json') {
             $results = json_decode($body);
         } else {
             $results = json_decode(json_encode((array)simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA)), 1); // I know, I'm a terrible human being
         }
 
-        if($results !== null) {
+        if ($results !== null) {
             return $results;
         }
     }
@@ -357,9 +358,9 @@ class goodreads
         if (file_exists($this->cacheDir) && is_writable($this->cacheDir)) {
             $filename = str_replace('/', '_', $endpoint) . '-' . md5(serialize($params));
             $filename = $this->cacheDir . '/' . $filename;
-            if(file_exists($filename)) {
+            if (file_exists($filename)) {
                 $contents = unserialize(file_get_contents($filename));
-                if(!is_array($contents) || $contents['cache_expiry'] <= time()) {
+                if (!is_array($contents) || $contents['cache_expiry'] <= time()) {
                     unlink($filename);
                     return false;
                 } else {

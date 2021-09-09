@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\controller\economy;
+
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -18,9 +19,18 @@ class economy_dashboard
     protected $product_class;
     protected $tbl;
     public function __construct(
-        $db, $user, $config, $request, $template, $container, $helper,
+        $db,
+        $user,
+        $config,
+        $request,
+        $template,
+        $container,
+        $helper,
         $tbl,
-        $sauth, $bank_user_account, $user_inventory, $product_class
+        $sauth,
+        $bank_user_account,
+        $user_inventory,
+        $product_class
     )/*{{{*/
     {
         $this->db = $db;
@@ -41,8 +51,7 @@ class economy_dashboard
 
     public function handle($mode)/*{{{*/
     {
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'overview':
             $cfg['tpl_name'] = '@jeb_snahp/economy/mcp/economy_dashboard/base.html';
             return $this->handle_overview($cfg);
@@ -87,8 +96,7 @@ class economy_dashboard
         $result = $this->db->sql_query_limit($sql, $per_page, $start);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        foreach($rowset as &$row)
-        {
+        foreach ($rowset as &$row) {
             $row['created_time'] = $this->user->format_date($row['created_time']);
         }
         return [$rowset, $total];
@@ -127,8 +135,7 @@ class economy_dashboard
         $result = $this->db->sql_query_limit($sql, $per_page, $start);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        foreach($rowset as &$row)
-        {
+        foreach ($rowset as &$row) {
             $row['created_time'] = $this->user->format_date($row['created_time']);
             $data = unserialize($row['data']);
             $row['comment'] = isset($data['comment']) ? $data['comment'] : '';
@@ -141,8 +148,7 @@ class economy_dashboard
         $type = $this->request->variable('t', 'bank');
         $start = $this->request->variable('start', 0);
         $per_page = $this->request->variable('per_page', 25);
-        switch($type)
-        {
+        switch ($type) {
         case 'bank':
             [$rowset, $total] = $this->get_bank_transaction_data_for_pagination($start, $per_page);
             $this->template->assign_var('type', 'bank');
@@ -154,10 +160,8 @@ class economy_dashboard
         default:
             trigger_error('Invalid type. Error Code: 408d9f2870');
         }
-        foreach ($rowset as $row)
-        {
-            if (array_key_exists('data', $row))
-            {
+        foreach ($rowset as $row) {
+            if (array_key_exists('data', $row)) {
                 $data = $row['data'];
                 $row['comment'] = $this->get_comment_or_empty($data);
             }
@@ -178,5 +182,4 @@ class economy_dashboard
         $comment = isset($data['comment']) ? $data['comment'] : '';
         return $comment;
     }
-
 }

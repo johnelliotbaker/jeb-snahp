@@ -1,5 +1,6 @@
 <?php
 namespace jeb\snahp\core\giftbox;
+
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use phpbb\notification\manager;
 
@@ -17,13 +18,19 @@ class helper
     protected $invite_helper;
     protected $market_transaction_logger;
     public function __construct(
-        $db, $user, $auth, $config, $container,
+        $db,
+        $user,
+        $auth,
+        $config,
+        $container,
         $tbl,
         $sauth,
-        $bank_user_account, $product_class, $user_inventory,
-        $invite_helper, $market_transaction_logger
-    )
-    {/*{{{*/
+        $bank_user_account,
+        $product_class,
+        $user_inventory,
+        $invite_helper,
+        $market_transaction_logger
+    ) {/*{{{*/
         $this->db = $db;
         $this->user = $user;
         $this->auth = $auth;
@@ -46,9 +53,10 @@ class helper
         // $this->cycle_time = 20;
     }
 
-// Public Functions to be called
+    // Public Functions to be called
 
-    public function send_message($data) {/*{{{*/
+    public function send_message($data)
+    {/*{{{*/
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
@@ -83,8 +91,7 @@ class helper
         $range = range($start_time, $end_time, $interval);
         for ($i = 0; $i < count($range)-1; $i++) {
             [$s, $e] = [$range[$i], $range[$i+1]];
-            if ($time >= $s && $time < $e && $latest_unwrap_time >= $s && $latest_unwrap_time < $e)
-            {
+            if ($time >= $s && $time < $e && $latest_unwrap_time >= $s && $latest_unwrap_time < $e) {
                 return [false, $e-$time];
             }
         }
@@ -95,16 +102,15 @@ class helper
     {
         $bin_type = 'from-last-prize';
         // if ($this->sauth->is_dev()) return ['ready', 0];
-        if ($this->is_gift_count_excess($user_id)) return ['after', 0];
+        if ($this->is_gift_count_excess($user_id)) {
+            return ['after', 0];
+        }
         $start_time = $this->config['snp_giv_start_time'];
         $end_time = $this->config['snp_giv_end_time'];
         $time = time();
-        if ($time < $start_time)
-        {
+        if ($time < $start_time) {
             return ['before', $start_time-$time];
-        }
-        elseif ($time >= $end_time)
-        {
+        } elseif ($time >= $end_time) {
             return ['after', 86400];
         }
         $user_id = (int) $user_id;
@@ -112,10 +118,11 @@ class helper
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        if (!$row) { return ['ready', 0]; }
+        if (!$row) {
+            return ['ready', 0];
+        }
         $created_time = $row['created_time'];
-        if ($bin_type==='from-last-prize')
-        {
+        if ($bin_type==='from-last-prize') {
             $time_left = max($created_time + $this->cycle_time - time(), 0);
             return [$time_left<=0 ? 'ready' : 'not_ready', $time_left];
         }
@@ -156,15 +163,14 @@ class helper
         $js = new \phpbb\json_response();
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
-				$item_defs = $this->event_def['items'];
+        $item_defs = $this->event_def['items'];
         $sql = 'SELECT user_id, count(*) as count FROM ' . $this->tbl['giveaways'] . ' group by user_id';
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         $notification = $this->container->get('notification_manager');
         $i_loop = 0;
-        if ($simulate)
-        {
+        if ($simulate) {
             $rowset = [
                 ['user_id' => 2, 'count' => 10],
                 ['user_id' => 10414, 'count' => 9],
@@ -175,12 +181,10 @@ class helper
         foreach ($rowset as $row) {
             $user_id = $row['user_id'];
             $count = $row['count'];
-            if ($simulate)
-            {
+            if ($simulate) {
                 $this->send_message(["Simulating: user: ${user_id} with count: ${count}"]);
             }
-            if ($i_loop%10==0)
-            {
+            if ($i_loop%10==0) {
                 $this->send_message(['i'=>$user_id]);
             }
             $i_loop += 1;
@@ -204,14 +208,10 @@ class helper
                 'item_id'     => 0,
                 'type'        => '2019 Christmas Event',
             ];
-            if ($count >=5 && !$b5)
-            {
-                if ($simulate)
-                {
+            if ($count >=5 && !$b5) {
+                if ($simulate) {
                     $this->send_message(['0'=>"Giving user_id: ${user_id} completion 5 - $5000"]);
-                }
-                else
-                {
+                } else {
                     $item_def = $item_def5;
                     $this->insert_item($item_def['type'], $user_id, $extra);
                     $this->process_job_queue($item_def['job_queue'], $user_id);
@@ -222,14 +222,10 @@ class helper
                 $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
                 $this->mark_unread($notification_data['item_id'], $user_id);
             }
-            if ($count >= 9 && !$b9)
-            {
-                if ($simulate)
-                {
+            if ($count >= 9 && !$b9) {
+                if ($simulate) {
                     $this->send_message(['0'=>"Giving user_id: ${user_id} completion 9 - $5000"]);
-                }
-                else
-                {
+                } else {
                     $item_def = $item_def9;
                     $this->insert_item($item_def['type'], $user_id, $extra);
                     $this->process_job_queue($item_def['job_queue'], $user_id);
@@ -240,14 +236,10 @@ class helper
                 $notification->update_notifications('jeb.snahp.notification.type.simple', $notification_data);
                 $this->mark_unread($notification_data['item_id'], $user_id);
             }
-            if ($count >= 10 && !$b10)
-            {
-                if ($simulate)
-                {
+            if ($count >= 10 && !$b10) {
+                if ($simulate) {
                     $this->send_message(['0'=>"Giving user_id: ${user_id} completion 10 - $10000"]);
-                }
-                else
-                {
+                } else {
                     $item_def = $item_def10;
                     $this->insert_item($item_def['type'], $user_id, $extra);
                     $this->process_job_queue($item_def['job_queue'], $user_id);
@@ -269,8 +261,7 @@ class helper
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
         for ($i = 0; $i < $n; $i++) {
-            if ($i%10000==0)
-            {
+            if ($i%10000==0) {
                 $this->send_message(['i'=>$i]);
             }
             $item_def = $this->randomly_generate_item();
@@ -286,27 +277,21 @@ class helper
     {
         $item_type = $item_def['type'];
         $job_queue = $item_def['job_queue'];
-        if ($item_type !== 'common')
-        {
+        if ($item_type !== 'common') {
             return $job_queue;
         }
         $rowset = $this->get_user_history($user_id);
         $count = 1;
-        foreach ($rowset as $row)
-        {
+        foreach ($rowset as $row) {
             $latest = $row['item_name'];
-            if ($latest === $item_type)
-            {
+            if ($latest === $item_type) {
                 $count += 1;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
         $count = min($count, 10);
-        if ($count > 2)
-        {
+        if ($count > 2) {
             $job_queue['apply_streak_multiplier'] = [
                 'display_name' => "x${count} Streak Multiplier",
                 'level' => $count
@@ -319,7 +304,9 @@ class helper
     {
         $user_id = $this->user_id;
         $b_unwrap = $this->can_unwrap($user_id);
-        if (!$b_unwrap) { return false; };
+        if (!$b_unwrap) {
+            return false;
+        };
         $item_def = $this->randomly_generate_item($user_id);
         $extra = [];
         $item_type = $item_def['type'];
@@ -335,15 +322,16 @@ class helper
         // see randomly_choose_item() for follow up
         $end_time = (int) $this->config['snp_giv_end_time'];
         $double_time = $end_time - 86400;
-        if (!$double_time || $double_time < 1) return false;
+        if (!$double_time || $double_time < 1) {
+            return false;
+        }
         return time() > $double_time;
     }
 
     private function randomly_generate_item()/*{{{*/
     {
         $mode = 'normal';
-        if ($this->is_after_double_time())
-        {
+        if ($this->is_after_double_time()) {
             $mode = 'double';
         }
         $item_type = $this->randomly_choose_item($mode);
@@ -353,7 +341,8 @@ class helper
 
     public function get_user_history($user_id=null)/*{{{*/
     {
-        $user_id = $user_id===null ? $user_id=$this->user_id : (int) $user_id;;
+        $user_id = $user_id===null ? $user_id=$this->user_id : (int) $user_id;
+        ;
         $sql = 'SELECT item_name FROM ' . $this->tbl['giveaways'] . " WHERE user_id=${user_id} ORDER BY id DESC LIMIT 10";
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
@@ -376,8 +365,7 @@ class helper
 
     private function process_job_queue($job_queue, $user_id)/*{{{*/
     {
-        foreach($job_queue as $job_name => $job_data)
-        {
+        foreach ($job_queue as $job_name => $job_data) {
             $callback_name = 'process_' . $job_name;
             $this->{$callback_name}($job_data, $user_id);
         }
@@ -386,16 +374,12 @@ class helper
     private function randomly_choose_item($mode='normal')/*{{{*/
     {
         foreach (array_reverse($this->item_defs) as $key => $item) {
-            if ($mode==='double')
-            {
+            if ($mode==='double') {
                 $rand = mt_rand(1, max(1, (int) (0.01 *$item['probability'])));
-            }
-            else
-            {
+            } else {
                 $rand = mt_rand(1, $item['probability']);
             }
-            if ($rand == 1)
-            {
+            if ($rand == 1) {
                 return $key;
             }
         }
@@ -410,8 +394,11 @@ class helper
     {
         $comment = $this->event_display_name . " (${jobdata['display_name']})";
         $this->user_inventory->do_add_item_with_logging(
-            $product_class_id=1, $quantity=1, $user_id,
-            $extra_comment=$comment);
+            $product_class_id=1,
+            $quantity=1,
+            $user_id,
+            $extra_comment=$comment
+        );
     }
 
     private function process_giveaway_shatners($jobdata, $user_id)/*{{{*/
@@ -428,8 +415,7 @@ class helper
         $amount = $jobdata['amount'];
         $comment = $this->event_display_name . " (${jobdata['display_name']})";
         $display_name = $jobdata['display_name'];
-        if (!$this->invite_helper->select_invite_user($user_id))
-        {
+        if (!$this->invite_helper->select_invite_user($user_id)) {
             $this->invite_helper->insert_invite_users([$user_id]);
         }
         $this->invite_helper->increase_invite_points($user_id, $amount);
@@ -485,8 +471,9 @@ class helper
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        $this->block_data = array_map(function($arg){return $arg['blocked_id'];}, $rowset);
+        $this->block_data = array_map(function ($arg) {
+            return $arg['blocked_id'];
+        }, $rowset);
         $this->block_data[] = $user_id;
     }
-
 }

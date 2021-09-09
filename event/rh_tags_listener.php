@@ -21,15 +21,15 @@ class rh_tags_listener implements EventSubscriberInterface
     protected $rh_tags_helper;
     public function __construct(
         $request,
-        $sauth, $rh_tags_helper
-    )
-    {
+        $sauth,
+        $rh_tags_helper
+    ) {
         $this->request = $request;
         $this->sauth = $sauth;
         $this->rh_tags_helper = $rh_tags_helper;
     }
 
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return [
             'robertheim.topictags.modify_groupset_permission' => [
@@ -45,16 +45,13 @@ class rh_tags_listener implements EventSubscriberInterface
     {
         $tags = $event['tags'];
         $forum_id = $this->request->variable('f', 0);
-        if (!$forum_id)
-        {
+        if (!$forum_id) {
             return false;
         }
         $a_groupname = $this->rh_tags_helper->get_groupnames_from_forum_map($forum_id);
         $tags = [];
-        foreach($a_groupname as $groupname)
-        {
-            if ($tmp = $this->rh_tags_helper->get_tagnames_from_group_map($groupname))
-            {
+        foreach ($a_groupname as $groupname) {
+            if ($tmp = $this->rh_tags_helper->get_tagnames_from_group_map($groupname)) {
                 sort($tmp);
                 $tags = array_merge($tags, $tmp);
             }
@@ -65,11 +62,9 @@ class rh_tags_listener implements EventSubscriberInterface
     public function modify_tags_permission($event, $event_name)
     {
         $permission = $event['permission'];
-        if ($this->sauth->user_belongs_to_groupset(null, 'JU+'))
-        {
+        if ($this->sauth->user_belongs_to_groupset(null, 'JU+')) {
             $permission = true;
             $event['permission'] = $permission;
         }
     }
-
 }

@@ -6,7 +6,6 @@ use jeb\snahp\core\base;
 
 class digg extends base
 {
-
     protected $topic_id = 0;
     protected $base_url = '';
     protected $topic_data = [];
@@ -15,44 +14,37 @@ class digg extends base
     {
     }/*}}}*/
 
-	public function handle($mode)
-	{
+    public function handle($mode)
+    {
         $this->reject_anon();
-        if (!$this->config['snp_b_snahp_notify'])
-        {
+        if (!$this->config['snp_b_snahp_notify']) {
             trigger_error('You cannot use digg when notification system is disabled. Error Code: 64be46f11b');
         }
-        if (!$this->config['snp_digg_b_master'])
-        {
+        if (!$this->config['snp_digg_b_master']) {
             trigger_error('digg system is currently disabled. Error Code: 2e2b753c43');
         }
-        if (!$this->config['snp_digg_b_notify'])
-        {
+        if (!$this->config['snp_digg_b_notify']) {
             trigger_error('digg notification system is currently disabled. Error Code: dcfb0260c2');
         }
         $topic_id = $this->request->variable('t', 0);
-        if (!$topic_id)
-        {
+        if (!$topic_id) {
             trigger_error('You must provide a topic id. Error Code: 6a46634247');
         }
         $topic_data = $this->select_topic($topic_id);
-        if (!$topic_data)
-        {
+        if (!$topic_data) {
             trigger_error('That topic does not exist. Error Code: a26b2222d0');
         }
         $this->topic_id = (int) $topic_id;
         $this->topic_data = $topic_data;
         $b_listings = $this->is_listing($topic_data);
-        if (!$b_listings)
-        {
+        if (!$b_listings) {
             trigger_error('You can only digg in listings. Error Code: 924e331d93');
         }
-		$this->user->add_lang_ext('jeb/snahp', 'common');
-		$this->page_title = 'Digg';
+        $this->user->add_lang_ext('jeb/snahp', 'common');
+        $this->page_title = 'Digg';
         $this->base_url = '/viewtopic.php?t=' . $topic_id;
         $cfg = [];
-        switch ($mode)
-        {
+        switch ($mode) {
         case 'unregister':
             $cfg['tpl_name'] = '';
             $cfg['b_feedback'] = false;
@@ -82,7 +74,7 @@ class digg extends base
             trigger_error('Invalid request category. Error Code: 57f43ea934');
             break;
         }
-	}/*}}}*/
+    }/*}}}*/
 
     public function subscribe($cfg)
     {
@@ -110,7 +102,10 @@ class digg extends base
         $user_id = $this->user->data['user_id'];
         $this->delete_digg_slave($topic_id, "user_id={$user_id}");
         $this->notification->delete_notifications(
-            'jeb.snahp.notification.type.digg', $topic_id, false, $user_id
+            'jeb.snahp.notification.type.digg',
+            $topic_id,
+            false,
+            $user_id
         );
     }/*}}}*/
 
@@ -125,15 +120,13 @@ class digg extends base
     public function confirm_unregister_digg($topic_id)
     {
         add_form_key('jeb_snp');
-        if ($this->request->is_set_post('cancel'))
-        {
+        if ($this->request->is_set_post('cancel')) {
             meta_refresh(0, "/viewtopic.php?f={$forum_id}&t={$topic_id}");
             trigger_error('Error Code: bd72a5e3ad');
         }
         $topic_data = $this->select_topic($topic_id);
         $forum_id = $topic_data['forum_id'];
-        if ($this->request->is_set_post('confirm'))
-        {
+        if ($this->request->is_set_post('confirm')) {
             $this->unregister_digg($topic_id);
             meta_refresh(2.5, "/viewtopic.php?f={$forum_id}&t={$topic_id}");
             trigger_error('Your digg was unregistered successfully.');
@@ -147,21 +140,22 @@ class digg extends base
     public function unregister_digg($topic_id)
     {
         $b_op = $this->is_op($this->topic_data);
-        if (!$b_op)
-        {
+        if (!$b_op) {
             meta_refresh(4, $this->base_url);
             trigger_error('Only opening poster can unregister. Error Code: 001ce75c61');
         }
         $master_data = $this->select_digg_master($topic_id);
-        if (!$master_data)
-        {
+        if (!$master_data) {
             meta_refresh(4, $this->base_url);
             trigger_error('Digg does not exist. Error Code: ec2743658e');
         }
         $this->delete_digg_master($topic_id);
         $this->delete_digg_slave($topic_id);
         $this->notification->delete_notifications(
-            'jeb.snahp.notification.type.digg', $topic_id, false, false
+            'jeb.snahp.notification.type.digg',
+            $topic_id,
+            false,
+            false
         );
     }/*}}}*/
 
@@ -175,14 +169,12 @@ class digg extends base
     public function register_digg($topic_id)
     {
         $b_op = $this->is_op($this->topic_data);
-        if (!$b_op)
-        {
+        if (!$b_op) {
             meta_refresh(4, $this->base_url);
             trigger_error('Only opening poster can register. Error Code: eca16dc835');
         }
         $master_data = $this->select_digg_master($topic_id);
-        if ($master_data)
-        {
+        if ($master_data) {
             meta_refresh(4, $this->base_url);
             trigger_error('You have already registered this digg. Error Code: 28c3e2247b');
         }
@@ -200,28 +192,26 @@ class digg extends base
     {
         $broadcast_delay = (int) $this->config['snp_digg_broadcast_cooldown'];
         $b_op = $this->is_op($this->topic_data);
-        if (!$b_op)
-        {
+        if (!$b_op) {
             meta_refresh(4, $this->base_url);
             trigger_error('Only opening poster can broadcast. Error Code: 763724b64a');
         }
         $master_data = $this->select_digg_master($topic_id);
-        if (!$master_data)
-        {
+        if (!$master_data) {
             meta_refresh(4, $this->base_url);
             trigger_error('You must first register a topic. Error Code: 67b4b00ad1');
         }
         $broadcast_time = $master_data['broadcast_time'];
         $allowed_time = $broadcast_time + $broadcast_delay;
-        if (time() < $allowed_time)
-        {
+        if (time() < $allowed_time) {
             meta_refresh(4, $this->base_url);
             trigger_error('You need to wait until ' . $this->user->format_date($allowed_time) . ' to broadcast this update.');
         }
         $this->upsert_digg_master($topic_id);
         // $this->notification->delete_notifications( 'jeb.snahp.notification.type.digg', $topic_id, false, false);
-        $this->notification->add_notifications (
-            'jeb.snahp.notification.type.digg', $this->topic_data
+        $this->notification->add_notifications(
+            'jeb.snahp.notification.type.digg',
+            $this->topic_data
         );
         $this->update_notifications('jeb.snahp.notification.type.digg', $topic_id);
     }/*}}}*/
@@ -281,11 +271,11 @@ class digg extends base
         $this->db->sql_query($sql);
     }/*}}}*/
 
-    public function send_message($data) {
+    public function send_message($data)
+    {
         echo "data: " . json_encode($data) . PHP_EOL;
         echo PHP_EOL;
         ob_flush();
         flush();
     }/*}}}*/
-
 }
