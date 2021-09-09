@@ -2,32 +2,29 @@
 .btn-register,
 .btn-broadcast,
 .btn-digg,
-.btn-undigg 
-{
-    /* font-family: 'Lobster', cursive !important; */
-    font-family: 'Anton', sans-serif !important;
-    font-size: 18px !important;
-    margin: 0px !important;
-    padding: 0px .3rem 0px .3rem !important;
-    padding-bottom: .05rem !important;
+.btn-undigg {
+  /* font-family: 'Lobster', cursive !important; */
+  font-family: "Anton", sans-serif !important;
+  font-size: 18px !important;
+  margin: 0px !important;
+  padding: 0px 0.3rem 0px 0.3rem !important;
+  padding-bottom: 0.05rem !important;
 }
 
-.btn.cls
-{
-    font-family: Arial, sans-serif !important;
-    font-weight: 900;
-    padding: 0px !important;
-    padding-right: 3px !important;
-    padding-left: 3px !important;
+.btn.cls {
+  font-family: Arial, sans-serif !important;
+  font-weight: 900;
+  padding: 0px !important;
+  padding-right: 3px !important;
+  padding-left: 3px !important;
 }
 
 .badge-unregister,
 .badge-register,
 .badge-broadcast,
 .badge-digg,
-.badge-undigg
-{
-    font-family: 'Arial', sans-serif !important;
-    font-size: .7rem !important;
-    margin-top: .42rem !important;
+.badge-undigg {
+  font-family: "Arial", sans-serif !important;
+  font-size: 0.7rem !important;
+  margin-top: 0.42rem !important;
 }

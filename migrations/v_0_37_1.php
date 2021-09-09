@@ -32,28 +32,27 @@ class v_0_37_1 extends container_aware_migration
     public function truncateThanksUsers()
     {
         global $table_prefix, $db;
-        $sql = 'TRUNCATE ' . $table_prefix . 'thanks_users';
+        $sql = "TRUNCATE " . $table_prefix . "thanks_users";
         $db->sql_query($sql);
     }
 
     public function toMediumText()
     {
         global $table_prefix, $db;
-        $sql = 'ALTER TABLE ' . $table_prefix . 'thanks_users'
-            . ' CHANGE COLUMN'
-            . " `timestamps` `timestamps` MEDIUMTEXT NOT NULL";
+        $sql =
+            "ALTER TABLE " .
+            $table_prefix .
+            "thanks_users" .
+            " CHANGE COLUMN" .
+            " `timestamps` `timestamps` MEDIUMTEXT NOT NULL";
         $db->sql_query($sql);
     }
 
     public function update_data()
     {
         return [
-            ['custom', [
-                [$this, 'truncateThanksUsers'],
-            ]],
-            ['custom', [
-                [$this, 'toMediumText'],
-            ]],
+            ["custom", [[$this, "truncateThanksUsers"]]],
+            ["custom", [[$this, "toMediumText"]]],
         ];
     }
 }

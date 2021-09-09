@@ -22,17 +22,17 @@ class v_0_37_0 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_tables' => [
-                $this->table_prefix . 'snahp_reaction' => [
-                    'COLUMNS' => [
-                        'id'      => ['UINT', null, 'auto_increment'],
-                        'type'    => ['VCHAR:20', ''],
-                        'user_id' => ['INT:11', 0],
-                        'post_id' => ['INT:11', 0],
-                        'message' => ['VCHAR:140', ''],
-                        'created' => ['INT:11', 0],
+            "add_tables" => [
+                $this->table_prefix . "snahp_reaction" => [
+                    "COLUMNS" => [
+                        "id" => ["UINT", null, "auto_increment"],
+                        "type" => ["VCHAR:20", ""],
+                        "user_id" => ["INT:11", 0],
+                        "post_id" => ["INT:11", 0],
+                        "message" => ["VCHAR:140", ""],
+                        "created" => ["INT:11", 0],
                     ],
-                    'PRIMARY_KEY' => 'id',
+                    "PRIMARY_KEY" => "id",
                 ],
                 // $this->table_prefix . 'snahp_reaction_type' => [
                 //     'COLUMNS' => [
@@ -43,11 +43,11 @@ class v_0_37_0 extends container_aware_migration
                 //     'PRIMARY_KEY' => 'id',
                 // ],
             ],
-            'add_index'    => [
-                $this->table_prefix . 'snahp_reaction' => [
-                    'type'    => ['type'],
-                    'post_id' => ['post_id'],
-                    'user_id' => ['user_id'],
+            "add_index" => [
+                $this->table_prefix . "snahp_reaction" => [
+                    "type" => ["type"],
+                    "post_id" => ["post_id"],
+                    "user_id" => ["user_id"],
                 ],
                 // $this->table_prefix . 'snahp_reaction_type' => [
                 //     'name' => ['name'],
@@ -59,8 +59,8 @@ class v_0_37_0 extends container_aware_migration
     public function revert_schema()
     {
         return [
-            'drop_tables' => [
-                $this->table_prefix . 'snahp_reaction',
+            "drop_tables" => [
+                $this->table_prefix . "snahp_reaction",
                 // $this->table_prefix . 'snahp_reaction_type',
             ],
         ];
@@ -69,16 +69,18 @@ class v_0_37_0 extends container_aware_migration
     public function set_utf8mb4()
     {
         global $table_prefix, $db;
-        $sql = 'ALTER TABLE ' . $table_prefix . 'snahp_reaction CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+        $sql =
+            "ALTER TABLE " .
+            $table_prefix .
+            "snahp_reaction CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
         $db->sql_query($sql);
     }
-
 
     public function update_data()
     {
         return [
-            ['config.add', ['snp_rxn_b_master', 1]],
-            ['custom', [[$this, 'set_utf8mb4']]],
+            ["config.add", ["snp_rxn_b_master", 1]],
+            ["custom", [[$this, "set_utf8mb4"]]],
         ];
     }
 }

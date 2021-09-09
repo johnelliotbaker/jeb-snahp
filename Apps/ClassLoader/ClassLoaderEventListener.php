@@ -2,7 +2,7 @@
 namespace jeb\snahp\Apps\ClassLoader;
 
 try {
-    include_once '/var/www/forum/ext/jeb/snahp/core/Rest/RedBeanSetup.php';
+    include_once "/var/www/forum/ext/jeb/snahp/core/Rest/RedBeanSetup.php";
 } catch (Exception $e) {
 }
 
@@ -15,25 +15,22 @@ class ClassLoaderEventListener implements EventSubscriberInterface
 {
     use RedBeanSetup;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'core.common' => [
-                ['loadClasses', 1],
-                ['setupErrorHandlers', 1000],
-            ],
+            "core.common" => [["loadClasses", 1], ["setupErrorHandlers", 1000]],
         ];
     }
 
     public function loadClasses($event)
     {
         $this->connectDatabase(true);
-        include_once '/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php';
-        include_once '/var/www/forum/ext/jeb/snahp/core/errors.php';
+        include_once "/var/www/forum/ext/jeb/snahp/Apps/ClassLoader/functions.php";
+        include_once "/var/www/forum/ext/jeb/snahp/core/errors.php";
     }
 
     public function setupErrorHandlers()

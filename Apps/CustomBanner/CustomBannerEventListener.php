@@ -7,17 +7,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CustomBannerEventListener implements EventSubscriberInterface
 {
     protected $helper;
-    public function __construct(
-        $helper
-    ) {
+    public function __construct($helper)
+    {
         $this->helper = $helper;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'core.user_setup_after' => [
-                ['showCustomBanners', 99], // Run this at high priority so BBCodeBanner can override
+            "core.user_setup_after" => [
+                ["showCustomBanners", 99], // Run this at high priority so BBCodeBanner can override
             ],
         ];
     }

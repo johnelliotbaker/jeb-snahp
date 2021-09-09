@@ -31,30 +31,30 @@ class AchievementsHelper
         $rep = $this->ToplistHelper->getReputationToplist();
         $count = 0;
         foreach ($rep as $k => $v) {
-            if ((int) $v['user_id'] === $userId) {
-                $res['reputation'] = $k + 1;
+            if ((int) $v["user_id"] === $userId) {
+                $res["reputation"] = $k + 1;
                 $count++;
                 break;
             }
         }
         $req = $this->ToplistHelper->getRequestSolvedToplist();
         foreach ($req as $k => $v) {
-            if ((int) $v['user_id'] === $userId) {
-                $res['requests_solved'] = $k + 1;
+            if ((int) $v["user_id"] === $userId) {
+                $res["requests_solved"] = $k + 1;
                 $count++;
                 break;
             }
         }
         $thanks = $this->ToplistHelper->getThanksToplist();
         foreach ($thanks as $k => $v) {
-            if ((int) $v['user_id'] === $userId) {
-                $res['thanks'] = $k + 1;
+            if ((int) $v["user_id"] === $userId) {
+                $res["thanks"] = $k + 1;
                 $count++;
                 break;
             }
         }
         if ($count > 0) {
-            $res['count'] = $count;
+            $res["count"] = $count;
         }
         return $res;
     }

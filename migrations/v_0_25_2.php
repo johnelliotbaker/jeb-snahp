@@ -26,8 +26,6 @@ class v_0_25_2 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        return [
-            ['config.add', ['snp_digg_broadcast_cooldown', 86400]],
-        ];
+        return [["config.add", ["snp_digg_broadcast_cooldown", 86400]]];
     }
 }

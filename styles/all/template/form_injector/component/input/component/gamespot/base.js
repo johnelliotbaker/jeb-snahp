@@ -1,137 +1,234 @@
 var Gamespot = {};
 
-Gamespot.API_KEY = ['3c07135c4058cc5bdf102c5c7e00673219d97723',
-    ['3c933606426b571022d5eac83821e700fab93929']
+Gamespot.API_KEY = [
+  "3c07135c4058cc5bdf102c5c7e00673219d97723",
+  ["3c933606426b571022d5eac83821e700fab93929"],
 ];
 
-Gamespot.select_key = function(aKey)
-{
-    var maxi = 1; var mini = 0;
-    var i = Math.floor(Math.random() * (maxi - mini + 1)) + mini;
-    return aKey[i];
-}
+Gamespot.select_key = function (aKey) {
+  var maxi = 1;
+  var mini = 0;
+  var i = Math.floor(Math.random() * (maxi - mini + 1)) + mini;
+  return aKey[i];
+};
 
-Gamespot.makeGamespotTemplate = function(data)
-{
-    try { var thumbnail     = data.image.original;} catch(e) { var thumbnail = "";};
-    try { var title         = data.name;} catch(e) { var title = "";};
-    try { var subtitle      = data['subtitle'];} catch(e) { var subtitle = "";};
-    try { var averageRating = data['averageRating'];} catch(e) { var averageRating = "";};
-    try { var url           = data.site_detail_url;} catch(e) { var url = "";};
-    try { var categories = []; for (var genre of data.genres) { categories.push(genre['name']); }
-    } catch(e) { var categories = "";};
-    try { var description   = data.description;} catch(e) { var description = "";};
-    try {
-        var previewLink   = data.videos_api_url;
-        match = /(.*)(&dq.*)/.exec(previewLink)
-        if (match && Array.isArray(match) && match.length > 2)
-            previewLink = match[1];
-    } catch(e) { var previewLink = "";};
-    try { var publishedDate = data.date;} catch(e) { var publishedDate = "";};
-    try { var publisher     = data['publisher'];} catch(e) { var publisher = "";};
-    try { var ratingsCount  = data['ratingsCount'];} catch(e) { var ratingsCount = "";};
-    var thumbnail     = getEntryOrEmpty(`[center][url={url}][img]{text}[/img][/url][/center]\n`, thumbnail, url);
-    var title         = getEntryOrEmpty(`[center][size=200][b][url={url}]{text} (${publishedDate})[/url] [/b][/size][/center]\n`, title, url);
-    var subtitle      = getEntryOrEmpty(`[center][size=120][b]{text}[/b][/size][/center]\n`, subtitle);
-    var authors       = getEntryOrEmpty(`[center][b][size=80]by[/size]\n\n[size=180]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(authors, ', '));
-    var averageRating = getEntryOrEmpty(`[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`, averageRating);
-    var categories    = getEntryOrEmpty(`[center][b][size=140]{text}[/size][/b][/center]\n`, joinArrayOrEmpty(categories, ', '));
-    var description   = getEntryOrEmpty(`[quote][center]{text}[/center][/quote]\n`, description);
-    var publishedDate = getEntryOrEmpty(`[color=#FF8000][b]Published Date[/b][/color]: {text}\n`, publishedDate);
-    var printType     = getEntryOrEmpty(`[color=#FF8000][b]Print Type[/b][/color]: {text}\n`, printType);
-    var language      = getEntryOrEmpty(`[color=#FF8000][b]Language[/b][/color]: {text}\n`, language);
-    var publisher     = getEntryOrEmpty(`[color=#FF8000][b]Publisher[/b][/color]: {text}\n`, publisher);
-    var pageCount     = getEntryOrEmpty(`[color=#FF8000][b]Page Count[/b][/color]: {text}\n`, pageCount);
-    var previewLink   = getEntryOrEmpty(`[color=#FF8000][b]Preview[/b][/color]: [url={url}]{text}[/url]\n`, "Google Books", previewLink);
-    var ratingsCount  = getEntryOrEmpty(`[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`, ratingsCount);
-    var ddl           = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
-    var dlink         = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
+Gamespot.makeGamespotTemplate = function (data) {
+  try {
+    var thumbnail = data.image.original;
+  } catch (e) {
+    var thumbnail = "";
+  }
+  try {
+    var title = data.name;
+  } catch (e) {
+    var title = "";
+  }
+  try {
+    var subtitle = data["subtitle"];
+  } catch (e) {
+    var subtitle = "";
+  }
+  try {
+    var averageRating = data["averageRating"];
+  } catch (e) {
+    var averageRating = "";
+  }
+  try {
+    var url = data.site_detail_url;
+  } catch (e) {
+    var url = "";
+  }
+  try {
+    var categories = [];
+    for (var genre of data.genres) {
+      categories.push(genre["name"]);
+    }
+  } catch (e) {
+    var categories = "";
+  }
+  try {
+    var description = data.description;
+  } catch (e) {
+    var description = "";
+  }
+  try {
+    var previewLink = data.videos_api_url;
+    match = /(.*)(&dq.*)/.exec(previewLink);
+    if (match && Array.isArray(match) && match.length > 2)
+      previewLink = match[1];
+  } catch (e) {
+    var previewLink = "";
+  }
+  try {
+    var publishedDate = data.date;
+  } catch (e) {
+    var publishedDate = "";
+  }
+  try {
+    var publisher = data["publisher"];
+  } catch (e) {
+    var publisher = "";
+  }
+  try {
+    var ratingsCount = data["ratingsCount"];
+  } catch (e) {
+    var ratingsCount = "";
+  }
+  var thumbnail = getEntryOrEmpty(
+    `[center][url={url}][img]{text}[/img][/url][/center]\n`,
+    thumbnail,
+    url
+  );
+  var title = getEntryOrEmpty(
+    `[center][size=200][b][url={url}]{text} (${publishedDate})[/url] [/b][/size][/center]\n`,
+    title,
+    url
+  );
+  var subtitle = getEntryOrEmpty(
+    `[center][size=120][b]{text}[/b][/size][/center]\n`,
+    subtitle
+  );
+  var authors = getEntryOrEmpty(
+    `[center][b][size=80]by[/size]\n\n[size=180]{text}[/size][/b][/center]\n`,
+    joinArrayOrEmpty(authors, ", ")
+  );
+  var averageRating = getEntryOrEmpty(
+    `[center][b][size=110]{text} / 5[/size][/b] (based on ${ratingsCount} reviews)[/center]\n`,
+    averageRating
+  );
+  var categories = getEntryOrEmpty(
+    `[center][b][size=140]{text}[/size][/b][/center]\n`,
+    joinArrayOrEmpty(categories, ", ")
+  );
+  var description = getEntryOrEmpty(
+    `[quote][center]{text}[/center][/quote]\n`,
+    description
+  );
+  var publishedDate = getEntryOrEmpty(
+    `[color=#FF8000][b]Published Date[/b][/color]: {text}\n`,
+    publishedDate
+  );
+  var printType = getEntryOrEmpty(
+    `[color=#FF8000][b]Print Type[/b][/color]: {text}\n`,
+    printType
+  );
+  var language = getEntryOrEmpty(
+    `[color=#FF8000][b]Language[/b][/color]: {text}\n`,
+    language
+  );
+  var publisher = getEntryOrEmpty(
+    `[color=#FF8000][b]Publisher[/b][/color]: {text}\n`,
+    publisher
+  );
+  var pageCount = getEntryOrEmpty(
+    `[color=#FF8000][b]Page Count[/b][/color]: {text}\n`,
+    pageCount
+  );
+  var previewLink = getEntryOrEmpty(
+    `[color=#FF8000][b]Preview[/b][/color]: [url={url}]{text}[/url]\n`,
+    "Google Books",
+    previewLink
+  );
+  var ratingsCount = getEntryOrEmpty(
+    `[color=#FF8000][b]Ratings Count[/b][/color]: {text}\n`,
+    ratingsCount
+  );
+  var ddl = `[color=#0000FF][b]Direct Download Links[/b][/color]: \n`;
+  var dlink = `[hide][b][url=https://links.snahp.it/xxxx][color=#FF0000]MEGA[/color][/url]
 [url=https://links.snahp.it/xxxx][color=#FF0000]ZippyShare[/color][/url]
-[/b][/hide]\n`
-    var text = '' + 
-        thumbnail + '\n\n\n' +
-        title + subtitle +'\n\n\n' +
-        authors +  '\n\n\n' +
-        averageRating + '\n\n\n' +
-        categories + '\n\n' +
-        description + '\n\n' +
-        // publishedDate + printType + language +
-        // publisher + pageCount + previewLink + '\n' +
-        ddl + dlink;
-    text = text.replace(/(<br>|<br\/>|<br \/>)/g, '');
-    text = text.replace(/(\r?\n|\r){5,99}/g, '\n\n\n\n');
-    return text;
-}
+[/b][/hide]\n`;
+  var text =
+    "" +
+    thumbnail +
+    "\n\n\n" +
+    title +
+    subtitle +
+    "\n\n\n" +
+    authors +
+    "\n\n\n" +
+    averageRating +
+    "\n\n\n" +
+    categories +
+    "\n\n" +
+    description +
+    "\n\n" +
+    // publishedDate + printType + language +
+    // publisher + pageCount + previewLink + '\n' +
+    ddl +
+    dlink;
+  text = text.replace(/(<br>|<br\/>|<br \/>)/g, "");
+  text = text.replace(/(\r?\n|\r){5,99}/g, "\n\n\n\n");
+  return text;
+};
 
-Gamespot.fillGamespotPostMessage = function(entry)
-{
-    var summary = Gamespot.makeGamespotTemplate(entry);
-    var text = summary;
-    $('#message').val(text);
-}
+Gamespot.fillGamespotPostMessage = function (entry) {
+  var summary = Gamespot.makeGamespotTemplate(entry);
+  var text = summary;
+  $("#message").val(text);
+};
 
-Gamespot.updateGamespotPosters = function(media)
-{
-    $gamespot_dialog = $("#gamespot_dialog");
-    $gamespot_header = $("#gamespot_header");
-    $gamespot_title  = $("#gamespot_title");
-    $gamespot_content = $("#gamespot_poster_list").empty();
-    var count = 0;
-    for (var entry of media)
-    {
-        name = entry.name;
-        description = entry.description;
-        releaseDate =  entry.releaseDate;
-        date = entry.date;
-        try {img = entry.image.original;} catch(e) {img = ''};
-        $li = $("<li/>")
-            .addClass("img_li")
-            .appendTo($gamespot_content);
-        $imgDiv = $('<div/>')
-            .addClass('img_container')
-            .appendTo($li);
-        $img = $('<img/>')
-            .attr({
-                "id": "img-" + count,
-                "src": img,
-                })
-            .width("150")
-            .height("225")
-            .click( function(e) {
-                target = e.target;
-                var tid = $(target).attr("id");
-                var match = tid.match(/img-(\d+)/);
-                tid = parseInt(match[1], 10);
-                var gamespotid = $(target).attr("gamespotid");
-                Gamespot.fillGamespotPostMessage(media[tid]);
-                $("#gamespot_dialog").remove();
-            })
-            .appendTo($imgDiv)
-        $type_txt = $("<div/>")
-        .addClass("bottom-right")
-            .html(`
+Gamespot.updateGamespotPosters = function (media) {
+  $gamespot_dialog = $("#gamespot_dialog");
+  $gamespot_header = $("#gamespot_header");
+  $gamespot_title = $("#gamespot_title");
+  $gamespot_content = $("#gamespot_poster_list").empty();
+  var count = 0;
+  for (var entry of media) {
+    name = entry.name;
+    description = entry.description;
+    releaseDate = entry.releaseDate;
+    date = entry.date;
+    try {
+      img = entry.image.original;
+    } catch (e) {
+      img = "";
+    }
+    $li = $("<li/>").addClass("img_li").appendTo($gamespot_content);
+    $imgDiv = $("<div/>").addClass("img_container").appendTo($li);
+    $img = $("<img/>")
+      .attr({
+        id: "img-" + count,
+        src: img,
+      })
+      .width("150")
+      .height("225")
+      .click(function (e) {
+        target = e.target;
+        var tid = $(target).attr("id");
+        var match = tid.match(/img-(\d+)/);
+        tid = parseInt(match[1], 10);
+        var gamespotid = $(target).attr("gamespotid");
+        Gamespot.fillGamespotPostMessage(media[tid]);
+        $("#gamespot_dialog").remove();
+      })
+      .appendTo($imgDiv);
+    $type_txt = $("<div/>")
+      .addClass("bottom-right")
+      .html(
+        `
             ${name}<br>
             ${date}<br>
-        `)
-        .appendTo($imgDiv);
-        count++;
+        `
+      )
+      .appendTo($imgDiv);
+    count++;
+  }
+  if (count == 0) {
+    $notfound = $("<h>Not Found</h>").css({ "font-size": "200%" });
+    $gamespot_content.append($notfound);
+  }
+  $('<a href="#gamespot_dialog" id="modalTriggerLink"></a>').appendTo(
+    $("body")
+  );
+  setTimeout(function () {
+    $("#modalTriggerLink")[0].click();
+    $("#modalTriggerLink").remove();
+    var match = /(.*)(#.*)/.exec(window.location.href);
+    if (match && match[1]) {
+      window.history.replaceState("", "", match[1]);
     }
-    if (count == 0)
-    {
-        $notfound = $("<h>Not Found</h>").css({"font-size": "200%"});
-        $gamespot_content.append($notfound);
-    }
-    $('<a href="#gamespot_dialog" id="modalTriggerLink"></a>').appendTo($("body"));
-    setTimeout(function(){
-        $("#modalTriggerLink")[0].click();
-        $("#modalTriggerLink").remove();
-        var match = /(.*)(#.*)/.exec(window.location.href);
-        if (match && match[1])
-        {
-            window.history.replaceState("", "", match[1]);
-        }
-    }, 100);
-}
+  }, 100);
+};
 
 Gamespot.gamespot_dialog_template = `
 <div id="gamespot_dialog" class="twbs modalDialog gamespot">
@@ -168,82 +265,74 @@ Gamespot.gamespot_dialog_template = `
 </div>
 `;
 
-Gamespot.filterGamespotMedia = function(media)
-{
-    var aType = [];
-    var selectedMedia = [];
-    for (var i in media)
-    {
-        var entry = media[i];
-        var releaseDate = entry['release_date'];
-        var match = /(\d{4})/.exec(releaseDate);
-        media[i].date = Array.isArray(match) ? parseInt(match[0]) : 0;
-        var type = entry['printType'];
-        selectedMedia.push(media[i]);
-    }
-    if ($("#cb_show_gamespot_enable_sort").prop("checked"))
-    {
-        selectedMedia = selectedMedia.sort(function(a, b){
-            if ($("#cb_show_gamespot_sort_asc").prop("checked"))
-                return -a.date+b.date;
-            return a.date-b.date;
-        });
-    }
-    return selectedMedia;
-}
+Gamespot.filterGamespotMedia = function (media) {
+  var aType = [];
+  var selectedMedia = [];
+  for (var i in media) {
+    var entry = media[i];
+    var releaseDate = entry["release_date"];
+    var match = /(\d{4})/.exec(releaseDate);
+    media[i].date = Array.isArray(match) ? parseInt(match[0]) : 0;
+    var type = entry["printType"];
+    selectedMedia.push(media[i]);
+  }
+  if ($("#cb_show_gamespot_enable_sort").prop("checked")) {
+    selectedMedia = selectedMedia.sort(function (a, b) {
+      if ($("#cb_show_gamespot_sort_asc").prop("checked"))
+        return -a.date + b.date;
+      return a.date - b.date;
+    });
+  }
+  return selectedMedia;
+};
 
-Gamespot.handle_gamespot = function(response, searchTerm)
-{
-    $gamespot_dialog = $(Gamespot.gamespot_dialog_template).appendTo($("body"));
-    $gamespot_dialog = $("#gamespot_dialog");
-    $gamespot_header = $("#gamespot_header");
-    $gamespot_title  = $("#gamespot_title").text(`Results for "${searchTerm}"`);
-    $gamespot_content = $("#gamespot_poster_list");
-    $close_btn = $("#close_btn")
-        .click(function(){
-            $('#gamespot_dialog').remove();
-        })
-    $("[id^=cb_show_gamespot]").change(function(event){
-            var selectedMedia = Gamespot.filterGamespotMedia(media);
-            Gamespot.updateGamespotPosters(selectedMedia);
-        });
-    var media = response.results;
+Gamespot.handle_gamespot = function (response, searchTerm) {
+  $gamespot_dialog = $(Gamespot.gamespot_dialog_template).appendTo($("body"));
+  $gamespot_dialog = $("#gamespot_dialog");
+  $gamespot_header = $("#gamespot_header");
+  $gamespot_title = $("#gamespot_title").text(`Results for "${searchTerm}"`);
+  $gamespot_content = $("#gamespot_poster_list");
+  $close_btn = $("#close_btn").click(function () {
+    $("#gamespot_dialog").remove();
+  });
+  $("[id^=cb_show_gamespot]").change(function (event) {
     var selectedMedia = Gamespot.filterGamespotMedia(media);
     Gamespot.updateGamespotPosters(selectedMedia);
-}
+  });
+  var media = response.results;
+  var selectedMedia = Gamespot.filterGamespotMedia(media);
+  Gamespot.updateGamespotPosters(selectedMedia);
+};
 
-Gamespot.startHandlingGamespotAjax = function()
-{
-    dict ={};
-    $gamespot_input = $("#gamespot_input");
-    var searchTerm = $gamespot_input.val();
-    // TODO: Run this through url encode
-    var mode = 'games';
-    var fieldname = 'name'
-    // var mode = 'reviews';
-    // var fieldname = 'title'
-    var limit = 40;
-    var dataFormat = 'jsonp';
-    var key = Gamespot.select_key(Gamespot.API_KEY)
-    var url = `https://www.gamespot.com/api/${mode}/?api_key=${key}&format=${dataFormat}&limit=${limit}&filter=${fieldname}:${searchTerm}`;
-    url = encodeURI(url);
-    $ajax = $.ajax(
-        {
-            url: url,
-            dataType: 'jsonp',
-            jsonp: 'json_callback',
-        }
-    );
-    $ajax.done(function(response){
-        Gamespot.handle_gamespot(response, searchTerm);
-    });
-}
+Gamespot.startHandlingGamespotAjax = function () {
+  dict = {};
+  $gamespot_input = $("#gamespot_input");
+  var searchTerm = $gamespot_input.val();
+  // TODO: Run this through url encode
+  var mode = "games";
+  var fieldname = "name";
+  // var mode = 'reviews';
+  // var fieldname = 'title'
+  var limit = 40;
+  var dataFormat = "jsonp";
+  var key = Gamespot.select_key(Gamespot.API_KEY);
+  var url = `https://www.gamespot.com/api/${mode}/?api_key=${key}&format=${dataFormat}&limit=${limit}&filter=${fieldname}:${searchTerm}`;
+  url = encodeURI(url);
+  $ajax = $.ajax({
+    url: url,
+    dataType: "jsonp",
+    jsonp: "json_callback",
+  });
+  $ajax.done(function (response) {
+    Gamespot.handle_gamespot(response, searchTerm);
+  });
+};
 
-$(document).ready(function() {
-    $("#gamespot_input").keydown(function(event){
-        if(event.keyCode == 13) {
-            event.preventDefault();
-            Gamespot.startHandlingGamespotAjax();
-        }
-    });
+$(document).ready(function () {
+  $("#gamespot_input").keydown(function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      Gamespot.startHandlingGamespotAjax();
+    }
+  });
 });

@@ -6,17 +6,17 @@ class CommaSeparatedStringField extends Field
 {
     public function validate($data)
     {
-        $data = preg_replace('#[\s,]+#', ',', $data);
-        $data = preg_replace('#,$#', '', $data);
-        if ($data === '') {
-            return '';
+        $data = preg_replace("#[\s,]+#", ",", $data);
+        $data = preg_replace('#,$#', "", $data);
+        if ($data === "") {
+            return "";
         }
-        $data = explode(',', $data);
+        $data = explode(",", $data);
         return $this->serialize($data);
     }
 
     public function serialize($validData)
     {
-        return implode(',', $validData);
+        return implode(",", $validData);
     }
 }

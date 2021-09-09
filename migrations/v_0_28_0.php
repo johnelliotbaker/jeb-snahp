@@ -27,15 +27,18 @@ class v_0_28_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['module.add', [
-                'acp',
-                'ACP_SNP_TITLE',
+            [
+                "module.add",
                 [
-                    'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> ['emotes'],
-                ]
-            ]],
-            ['config.add', ['snp_emo_b_master', 1]],
+                    "acp",
+                    "ACP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\acp\main_module",
+                        "modes" => ["emotes"],
+                    ],
+                ],
+            ],
+            ["config.add", ["snp_emo_b_master", 1]],
         ];
     }
 }

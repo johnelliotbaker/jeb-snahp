@@ -1,9 +1,10 @@
 /* fonts */
 @font-face {
-    font-family: "DejaVu Sans";
-    src: local("/ext/jeb/snahp/styles/all/template/DejaVuSans.ttf") format("truetype");
+  font-family: "DejaVu Sans";
+  src: local("/ext/jeb/snahp/styles/all/template/DejaVuSans.ttf")
+    format("truetype");
 }
 @font-face {
-    font-family: "RingsideRegularSSm-Book";
-    src: url("/ext/jeb/snahp/styles/all/template/fonts/RingsideRegularSSm-Book.woff2");
+  font-family: "RingsideRegularSSm-Book";
+  src: url("/ext/jeb/snahp/styles/all/template/fonts/RingsideRegularSSm-Book.woff2");
 }

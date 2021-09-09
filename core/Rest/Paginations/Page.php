@@ -46,7 +46,7 @@ class Page
         if ($this->paginator->count() === 0) {
             return 0;
         }
-        return ($this->paginator->perPage * ($this->number-1)) +1;
+        return $this->paginator->perPage * ($this->number - 1) + 1;
     }
 
     public function endIndex()

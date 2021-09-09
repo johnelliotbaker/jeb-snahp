@@ -24,15 +24,11 @@ class v_0_21_3 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        $snp_fid =  [
-            'requests' => '5',
-            'listings' => '4',
-            'graveyard' => '23',
+        $snp_fid = [
+            "requests" => "5",
+            "listings" => "4",
+            "graveyard" => "23",
         ];
-        return [
-            [
-                'config_text.add', [ 'snp_fid', serialize($snp_fid) ]
-            ],
-        ];
+        return [["config_text.add", ["snp_fid", serialize($snp_fid)]]];
     }
 }

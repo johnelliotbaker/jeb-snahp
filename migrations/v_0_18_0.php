@@ -17,9 +17,9 @@ class v_0_18_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns'	=> [
-                $this->table_prefix . 'groups'  => [
-                    'snp_ana_b_enable' => ['BOOL', 0],
+            "add_columns" => [
+                $this->table_prefix . "groups" => [
+                    "snp_ana_b_enable" => ["BOOL", 0],
                 ],
             ],
         ];
@@ -28,10 +28,8 @@ class v_0_18_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns'	=> [
-                $this->table_prefix . 'groups'  => [
-                    'snp_ana_b_enable',
-                ],
+            "drop_columns" => [
+                $this->table_prefix . "groups" => ["snp_ana_b_enable"],
             ],
         ];
     }
@@ -39,19 +37,22 @@ class v_0_18_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_ana_b_master', 1]],
-            ['config.add', ['snp_fid_requests', 5]],
-            ['config.add', ['snp_zebra_b_master', true]],
-            ['config.add', ['snp_zebra_b_topicview_block_foe', true]],
-            ['config.add', ['snp_zebra_b_topicview_friend_only', true]],
-            ['module.add', [
-                'acp',
-                'ACP_SNP_TITLE',
+            ["config.add", ["snp_ana_b_master", 1]],
+            ["config.add", ["snp_fid_requests", 5]],
+            ["config.add", ["snp_zebra_b_master", true]],
+            ["config.add", ["snp_zebra_b_topicview_block_foe", true]],
+            ["config.add", ["snp_zebra_b_topicview_friend_only", true]],
+            [
+                "module.add",
                 [
-                    'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> ['analytics'],
+                    "acp",
+                    "ACP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\acp\main_module",
+                        "modes" => ["analytics"],
+                    ],
                 ],
-            ]],
+            ],
         ];
     }
 }

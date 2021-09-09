@@ -2,26 +2,26 @@
 
 namespace jeb\snahp\core\Rest\Paginations;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/Page.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/DjangoPaginator.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Paginations/Page.php";
 
 use jeb\snahp\core\Rest\Paginations\InvalidPage;
 
-const DJANGO_PAGINATOR = 'jeb\snahp\core\Rest\Paginations\DjangoPaginator';
+const DJANGO_PAGINATOR = "jeb\snahp\core\Rest\Paginations\DjangoPaginator";
 const PAGE_SIZE = 10;
 
 class PageNumberPagination
 {
     public $pageSize = PAGE_SIZE;
     public $djangoPaginatorClass = DJANGO_PAGINATOR;
-    public $pageQueryParam = 'page';
+    public $pageQueryParam = "page";
     public $pageQueryDescription = "Number of results to return per page.";
     public $maxPageSize = null;
-    public $lastPageStrings = ['last'];
-    public $template = '';
-    public $invalidPageMessage = 'Invalid Page. Error Code: 814b1ceeaf';
+    public $lastPageStrings = ["last"];
+    public $template = "";
+    public $invalidPageMessage = "Invalid Page. Error Code: 814b1ceeaf";
 
-    public function paginateQueryset($queryset, $request, $view=null)
+    public function paginateQueryset($queryset, $request, $view = null)
     {
         $pageSize = $this->getPageSize($request);
         if (!$pageSize) {

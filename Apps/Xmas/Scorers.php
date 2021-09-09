@@ -26,13 +26,13 @@ class ScoreRule75
     public function scoreDiagonals($tiles, $rows, $columns)
     {
         [$toRight, $toLeft] = [1, 1];
-        foreach (range(0, $rows-1) as $r) {
+        foreach (range(0, $rows - 1) as $r) {
             if (!in_array($tiles[$r][$r], $this->sequence)) {
                 $toRight = 0;
                 break;
             }
         }
-        foreach (range(0, $rows-1) as $r) {
+        foreach (range(0, $rows - 1) as $r) {
             if (!in_array($tiles[$r][$columns - $r - 1], $this->sequence)) {
                 $toLeft = 0;
                 break;
@@ -54,7 +54,9 @@ class ScoreRule75
 
     public function score($board)
     {
-        $tiles = is_string($board->tiles) ? json_decode($board->tiles) : $board->tiles;
+        $tiles = is_string($board->tiles)
+            ? json_decode($board->tiles)
+            : $board->tiles;
         [$rows, $columns] = [$board->rows, $board->columns];
         $score = 0;
         $score += $this->scoreRows($tiles);
@@ -63,8 +65,6 @@ class ScoreRule75
         return $score;
     }
 }
-
-
 
 class ScoreRule75_1
 {
@@ -91,13 +91,13 @@ class ScoreRule75_1
     public function scoreDiagonals($tiles, $rows, $columns)
     {
         [$toRight, $toLeft] = [1, 1];
-        foreach (range(0, $rows-1) as $r) {
+        foreach (range(0, $rows - 1) as $r) {
             if ($tiles[$r][$r] >= 0) {
                 $toRight = 0;
                 break;
             }
         }
-        foreach (range(0, $rows-1) as $r) {
+        foreach (range(0, $rows - 1) as $r) {
             if ($tiles[$r][$columns - $r - 1] >= 0) {
                 $toLeft = 0;
                 break;
@@ -119,7 +119,9 @@ class ScoreRule75_1
 
     public function score($board)
     {
-        $tiles = is_string($board->tiles) ? json_decode($board->tiles) : $board->tiles;
+        $tiles = is_string($board->tiles)
+            ? json_decode($board->tiles)
+            : $board->tiles;
         [$rows, $columns] = [$board->rows, $board->columns];
         $score = 0;
         $score += $this->scoreRows($tiles);

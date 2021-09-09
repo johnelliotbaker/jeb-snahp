@@ -1,19 +1,16 @@
-.panel .inner
-{
-    min-height: 100px;
+.panel .inner {
+  min-height: 100px;
 }
 
-.custom_title_card
-{
-    font-size: 1.3em;
+.custom_title_card {
+  font-size: 1.3em;
 }
 
-.help_block
-{
-    background-color: #666;
-    border-radius: 3px;
-    padding-left: 3px;
-    padding-right: 4px;
-    padding-bottom: 2px;
-    color: #eee;
+.help_block {
+  background-color: #666;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+  color: #eee;
 }

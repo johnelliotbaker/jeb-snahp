@@ -17,9 +17,9 @@ class v_0_28_2 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'snahp_request_users'	=> [
-                    'n_use_per_cycle_override'  => ['INT:11', -1],
+            "add_columns" => [
+                $this->table_prefix . "snahp_request_users" => [
+                    "n_use_per_cycle_override" => ["INT:11", -1],
                 ],
             ],
         ];
@@ -28,9 +28,9 @@ class v_0_28_2 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                $this->table_prefix . 'snahp_request_users'	=> [
-                    'n_use_per_cycle_override',
+            "drop_columns" => [
+                $this->table_prefix . "snahp_request_users" => [
+                    "n_use_per_cycle_override",
                 ],
             ],
         ];

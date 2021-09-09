@@ -19,25 +19,25 @@ class v_0_36_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_tables' => [
-                $this->table_prefix . 'snahp_giveaways' => [
-                    'COLUMNS' => [
-                        'id'           => ['UINT', null, 'auto_increment'],
-                        'user_id' => ['INT:11', 0],
-                        'type_name'    => ['VCHAR:512', ''],
-                        'item_name'    => ['VCHAR:512', ''],
-                        'created_time' => ['INT:11', 0],
-                        'data'         => ['MTEXT_UNI', ''],
+            "add_tables" => [
+                $this->table_prefix . "snahp_giveaways" => [
+                    "COLUMNS" => [
+                        "id" => ["UINT", null, "auto_increment"],
+                        "user_id" => ["INT:11", 0],
+                        "type_name" => ["VCHAR:512", ""],
+                        "item_name" => ["VCHAR:512", ""],
+                        "created_time" => ["INT:11", 0],
+                        "data" => ["MTEXT_UNI", ""],
                     ],
-                    'PRIMARY_KEY' => 'id',
+                    "PRIMARY_KEY" => "id",
                 ],
             ],
-            'add_index'    => [
-                $this->table_prefix . 'snahp_giveaways' => [
-                    'user_id'      => ['user_id'],
-                    'type_name'    => ['type_name'],
-                    'item_name'    => ['item_name'],
-                    'created_time' => ['created_time'],
+            "add_index" => [
+                $this->table_prefix . "snahp_giveaways" => [
+                    "user_id" => ["user_id"],
+                    "type_name" => ["type_name"],
+                    "item_name" => ["item_name"],
+                    "created_time" => ["created_time"],
                 ],
             ],
         ];
@@ -46,20 +46,18 @@ class v_0_36_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_tables' => [
-                $this->table_prefix . 'snahp_giveaways',
-            ],
+            "drop_tables" => [$this->table_prefix . "snahp_giveaways"],
         ];
     }
 
     public function update_data()
     {
         return [
-            ['config.add', ['snp_giv_b_master', 1]],
-            ['config.add', ['snp_giv_cycle_time', 86400]],
-            ['config.add', ['snp_giv_injection_post_id', 548964]],
-            ['config.add', ['snp_giv_start_time', 1575907200]],
-            ['config.add', ['snp_giv_end_time', 1576166400]],
+            ["config.add", ["snp_giv_b_master", 1]],
+            ["config.add", ["snp_giv_cycle_time", 86400]],
+            ["config.add", ["snp_giv_injection_post_id", 548964]],
+            ["config.add", ["snp_giv_start_time", 1575907200]],
+            ["config.add", ["snp_giv_end_time", 1576166400]],
         ];
     }
 }

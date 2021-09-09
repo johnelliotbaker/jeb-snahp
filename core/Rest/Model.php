@@ -2,15 +2,15 @@
 
 namespace jeb\snahp\core\Rest;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Fields/All.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Fields/All.php";
 
 use \R as R;
 
-use \RedBeanPHP\RedException as RedException;
+use RedBeanPHP\RedException as RedException;
 
 class Model
 {
-    protected const FIELDS_NAMESPACE = 'jeb\\snahp\\core\\Rest\\Fields\\';
+    protected const FIELDS_NAMESPACE = "jeb\\snahp\\core\\Rest\\Fields\\";
     protected $requiredFields = [];
     protected $query = [];
 
@@ -18,10 +18,10 @@ class Model
     {
         global $db, $user;
         $this->db = $db;
-        $this->userId = $user->data['user_id'];
+        $this->userId = $user->data["user_id"];
         $this->query = [
-            'statement' => '1=1',
-            'data' => [],
+            "statement" => "1=1",
+            "data" => [],
         ];
     }
 
@@ -32,15 +32,15 @@ class Model
 
     public function all()
     {
-        return R::findAll($this::TABLE_NAME, 'LIMIT 500');
+        return R::findAll($this::TABLE_NAME, "LIMIT 500");
     }
 
-    public function getObject($statement='', $data=[])
+    public function getObject($statement = "", $data = [])
     {
         return R::findOne($this::TABLE_NAME, $statement, $data);
     }
 
-    public function getQueryset($statement='', $data=[])
+    public function getQueryset($statement = "", $data = [])
     {
         return R::find($this::TABLE_NAME, $statement, $data);
     }
@@ -59,7 +59,9 @@ class Model
         $data = $this->performPreCreate($data);
         foreach ($this->requiredFields as $field) {
             if (!in_array($field, array_keys($data))) {
-                throw new MissingRequiredField("${field} is missing. Error Code: 9d2e4f02b5");
+                throw new MissingRequiredField(
+                    "${field} is missing. Error Code: 9d2e4f02b5"
+                );
             }
         }
         $instance = R::xdispense($this::TABLE_NAME);
@@ -112,16 +114,13 @@ class Model
         return $instance;
     }
 
-    public function appendUserInfo($queryset, $userIdFieldName='author')
+    public function appendUserInfo($queryset, $userIdFieldName = "author")
     {
         $cache = [];
-        if (gettype($queryset) === 'array') {
-            $queryset = array_map(
-                function ($arg) {
-                    return clone $arg;
-                },
-                $queryset
-            );
+        if (gettype($queryset) === "array") {
+            $queryset = array_map(function ($arg) {
+                return clone $arg;
+            }, $queryset);
             foreach ($queryset as $key => $value) {
                 $userId = $value->$userIdFieldName;
                 if (!array_key_exists($userId, $cache)) {
@@ -132,7 +131,10 @@ class Model
         } else {
             $queryset = clone $queryset;
             $userId = $queryset->$userIdFieldName;
-            $queryset = $this->appendExtra($queryset, $this->getUserInfo($userId));
+            $queryset = $this->appendExtra(
+                $queryset,
+                $this->getUserInfo($userId)
+            );
         }
         return $queryset;
     }
@@ -140,7 +142,10 @@ class Model
     public function getUserInfo($userId)
     {
         global $db;
-        $sql = 'SELECT user_id, user_avatar, username, user_colour from ' . USERS_TABLE . " WHERE user_id=$userId";
+        $sql =
+            "SELECT user_id, user_avatar, username, user_colour from " .
+            USERS_TABLE .
+            " WHERE user_id=$userId";
         $result = $db->sql_query($sql, 60);
         $row = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
@@ -172,8 +177,7 @@ class Model
     }
 }
 
-
-class MissingRequiredField extends \Exception 
+class MissingRequiredField extends \Exception
 {
 }
 

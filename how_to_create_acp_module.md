@@ -1,5 +1,7 @@
 ### migration/
+
 #### Add update_data() entry
+
 ```
 public function update_data()
 {
@@ -18,8 +20,11 @@ public function update_data()
 ```
 
 ### acp/
+
 #### main_info.php
+
 - Add entry into the 'modes'
+
 ```
 'emotes' => array(
         'title' => 'ACP_SNP_EMOTES',
@@ -27,23 +32,29 @@ public function update_data()
         'cat'   => array('ACP_SNP_TITLE')
         ),
 ```
+
 ### language/
+
 #### en/info_acp_demo.php
+
 - Add title from main_info.php
+
 ```
 'ACP_SNP_EMOTES' => 'Emoticons',
 ```
 
 ### acp/
-#### main_module.php
-- add handler in the main_module.php
-In the handler function set
-`$this->tpl_name = $tpl_name;`
-So the template handler can correctly find the template.
 
+#### main_module.php
+
+- add handler in the main_module.php
+  In the handler function set
+  `$this->tpl_name = $tpl_name;`
+  So the template handler can correctly find the template.
 
 ### adm/styles/
-#### [module_name].html
-- add style template to be loaded
-The name should be same as $tpl_name from main_module.php
 
+#### [module_name].html
+
+- add style template to be loaded
+  The name should be same as $tpl_name from main_module.php

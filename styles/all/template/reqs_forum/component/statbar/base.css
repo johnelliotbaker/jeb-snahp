@@ -1,33 +1,33 @@
 .twbs {
-    font-weight: 900;
+  font-weight: 900;
 }
 .twbs .black {
-    color: black;
+  color: black;
 }
 .progress {
-    margin-top: 4px;
-    margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 10px;
 }
 .twbs .bg-success {
-    background-color: #128b09 !important;
+  background-color: #128b09 !important;
 }
 .twbs .bg-danger {
-    background-color: #b22117 !important;
+  background-color: #b22117 !important;
 }
 .twbs .bg-warning {
-    background-color: #f4bf42 !important;
+  background-color: #f4bf42 !important;
 }
 .twbs .bg-secondary {
-    background-color: #6c757d !important;
+  background-color: #6c757d !important;
 }
 .twbs .progress {
-    max-width: 8000px;
-    height: 22px;
-    font-size: 14px;
-    margin-right: 20px;
-    min-width: 400px;
+  max-width: 8000px;
+  height: 22px;
+  font-size: 14px;
+  margin-right: 20px;
+  min-width: 400px;
 }
 
 .reqs_statbar_wrapper {
-    flex-grow: 1000;
+  flex-grow: 1000;
 }

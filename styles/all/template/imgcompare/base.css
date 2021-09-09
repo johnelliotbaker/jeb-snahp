@@ -1,24 +1,20 @@
 span.imagecompare {
-    display: inline-block;
+  display: inline-block;
 }
 
-.imgcompare_thumbnail
-{
-    height: 150px;
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+.imgcompare_thumbnail {
+  height: 150px;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
 }
 
-.imgcompare_thumbnail_container
-{
-    position: relative;
-    height: 150px;
+.imgcompare_thumbnail_container {
+  position: relative;
+  height: 150px;
 }
-.crop_bottom
-{
-    position: absolute;
-    height: 75px;
-    overflow: hidden;
-    left: 0px;
+.crop_bottom {
+  position: absolute;
+  height: 75px;
+  overflow: hidden;
+  left: 0px;
 }
-

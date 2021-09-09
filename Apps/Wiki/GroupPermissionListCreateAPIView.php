@@ -2,18 +2,18 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
 class GroupPermissionListCreateAPIView extends ListCreateAPIView
 {
-    protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';
+    protected $serializerClass = "jeb\snahp\core\Rest\Serializers\ModelSerializer";
     protected $request;
     protected $sauth;
     protected $model;
@@ -35,24 +35,30 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         function makeCodenameList($data)
         {
             $res = [];
-            foreach ($data['userGroups'] as $userGroup) {
-                foreach ($data['actions'] as $action) {
-                    foreach ($data['resourceNames'] as $resourceName) {
-                        $res[] = ['codename' => "wiki.${action}__${resourceName}", 'user_group' => $userGroup];
+            foreach ($data["userGroups"] as $userGroup) {
+                foreach ($data["actions"] as $action) {
+                    foreach ($data["resourceNames"] as $resourceName) {
+                        $res[] = [
+                            "codename" => "wiki.${action}__${resourceName}",
+                            "user_group" => $userGroup,
+                        ];
                     }
                 }
             }
             return $res;
         }
-        $requiredFields = ['userGroups', 'actions', 'resourceNames'];
+        $requiredFields = ["userGroups", "actions", "resourceNames"];
         $data = getRequestData($this->request);
-        $missingFields = implode(', ', array_diff($requiredFields, array_keys($data)));
+        $missingFields = implode(
+            ", ",
+            array_diff($requiredFields, array_keys($data))
+        );
         if ($diff) {
             throw new \Exception("Missing $diff. Error Code: e61bfc1321");
         }
         $iterData = [];
         foreach ($requiredFields as $field) {
-            $iterData[$field] = explode(',', $data[$field]);
+            $iterData[$field] = explode(",", $data[$field]);
         }
         $perms = makeCodenameList($iterData);
         foreach ($perms as $perm) {
@@ -77,25 +83,25 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         $serializer = $this->getSerializer($queryset);
         $data = $serializer->data();
         $this->appendUserGroupName($data);
-        usort(
-            $data,
-            function ($a, $b) {
-                return ($a->user_group < $b->user_group) ? -1 : 1;
-            }
-        );
+        usort($data, function ($a, $b) {
+            return $a->user_group < $b->user_group ? -1 : 1;
+        });
         return new JsonResponse($data);
     }
 
     public function appendUserGroupName($data)
     {
         global $db;
-        $sql = 'SELECT group_id, group_name from ' . GROUPS_TABLE . ' ORDER BY group_id ASC';
+        $sql =
+            "SELECT group_id, group_name from " .
+            GROUPS_TABLE .
+            " ORDER BY group_id ASC";
         $result = $db->sql_query($sql);
         $groups = $db->sql_fetchrowset($result);
         $db->sql_freeresult($result);
         $cache = [];
         foreach ($groups as $group) {
-            $cache[$group['group_id']] = $group['group_name'];
+            $cache[$group["group_id"]] = $group["group_name"];
         }
         foreach ($data as $entry) {
             $entry->user_group_name = getDefault($cache, $entry->user_group, 0);

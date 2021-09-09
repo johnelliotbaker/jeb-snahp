@@ -12,7 +12,6 @@ namespace jeb\snahp\migrations;
 
 class install_mcp_module extends \phpbb\db\migration\migration
 {
-
     // public function effectively_installed()
     // {
     //     $sql = 'SELECT module_id
@@ -27,7 +26,7 @@ class install_mcp_module extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array('\phpbb\db\migration\data\v31x\v314');
+        return ['\phpbb\db\migration\data\v31x\v314'];
     }
 
     public function update_data()

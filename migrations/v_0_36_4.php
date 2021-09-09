@@ -19,14 +19,14 @@ class v_0_36_4 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'snahp_tpl' => [
-                    'priority'  => ['TINT:2', 0],
+            "add_columns" => [
+                $this->table_prefix . "snahp_tpl" => [
+                    "priority" => ["TINT:2", 0],
                 ],
             ],
-            'add_index'    => [
-                $this->table_prefix . 'snahp_tpl' => [
-                    'priority' => ['priority'],
+            "add_index" => [
+                $this->table_prefix . "snahp_tpl" => [
+                    "priority" => ["priority"],
                 ],
             ],
         ];
@@ -35,16 +35,14 @@ class v_0_36_4 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                $this->table_prefix . 'snahp_tpl' => [
-                    'priority',
-                ],
+            "drop_columns" => [
+                $this->table_prefix . "snahp_tpl" => ["priority"],
             ],
         ];
     }
 
     public function update_data()
     {
-        return [ ];
+        return [];
     }
 }

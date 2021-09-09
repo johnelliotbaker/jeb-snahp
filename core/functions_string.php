@@ -2,11 +2,11 @@
 
 function removeTags($strn, $tag)
 {
-    $ptn = '#\s*\[' . $tag . ']\s*#';
-    return preg_replace($ptn, '', $strn);
+    $ptn = "#\s*\[" . $tag . "]\s*#";
+    return preg_replace($ptn, "", $strn);
 }
 
-function prependTag($strn, $tag, $suffix='')
+function prependTag($strn, $tag, $suffix = "")
 {
-    return "[$tag]$suffix$strn" ;
+    return "[$tag]$suffix$strn";
 }

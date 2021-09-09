@@ -6,11 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BoilerplateEventListener implements EventSubscriberInterface
 {
-    public function __construct(
-        $config,
-        $sauth,
-        $helper
-    ) {
+    public function __construct($config, $sauth, $helper)
+    {
         $this->config = $config;
         $this->sauth = $sauth;
         $this->helper = $helper;
@@ -20,10 +17,10 @@ class BoilerplateEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            // 'core.viewtopic_modify_post_row' => [
-            //     ['showBoilerplates', 1],
-            // ],
-        ];
+                // 'core.viewtopic_modify_post_row' => [
+                //     ['showBoilerplates', 1],
+                // ],
+            ];
     }
 
     public function showBoilerplates($event)

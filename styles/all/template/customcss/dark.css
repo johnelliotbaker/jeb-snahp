@@ -2,24 +2,21 @@
 .twbs .pagination li a,
 .twbs .pagination li a:hover,
 .twbs .pagination li span,
-.twbs .pagination li span:hover
-{
-    font-weight: 700;
-    background-color: #383838;
-    color: white;
-    border: 1px solid #555;
+.twbs .pagination li span:hover {
+  font-weight: 700;
+  background-color: #383838;
+  color: white;
+  border: 1px solid #555;
 }
 
 .twbs .pagination li span,
-.twbs .pagination li span:hover
-{
-    background-color: #222;
-    color: #555;
+.twbs .pagination li span:hover {
+  background-color: #222;
+  color: #555;
 }
 
 /* AB Image Compare */
-.beer-slider
-{
-    font-weight: 900;
-    color: #880000;
+.beer-slider {
+  font-weight: 900;
+  color: #880000;
 }

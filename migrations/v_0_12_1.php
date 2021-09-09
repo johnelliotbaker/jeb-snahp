@@ -19,37 +19,33 @@ class v_0_12_1 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_12_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_12_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_columns'	=> array(
-                $this->table_prefix . 'snahp_request'  => array(
-                    'b_graveyard'  => array('BOOL', 0),
-                ),
-            ),
-            'add_index'	=> array(
-                $this->table_prefix . 'snahp_request'  => array(
-                    'status'      => array('status'),
-                    'fid'         => array('fid'),
-                    'b_graveyard' => array('b_graveyard'),
-                ),
-            ),
-        );
+        return [
+            "add_columns" => [
+                $this->table_prefix . "snahp_request" => [
+                    "b_graveyard" => ["BOOL", 0],
+                ],
+            ],
+            "add_index" => [
+                $this->table_prefix . "snahp_request" => [
+                    "status" => ["status"],
+                    "fid" => ["fid"],
+                    "b_graveyard" => ["b_graveyard"],
+                ],
+            ],
+        ];
     }
 
     public function revert_schema()
     {
-        return array(
-            'drop_columns'	=> array(
-                $this->table_prefix . 'snahp_request'  => array(
-                    'b_graveyard',
-                ),
-            ),
-        );
+        return [
+            "drop_columns" => [
+                $this->table_prefix . "snahp_request" => ["b_graveyard"],
+            ],
+        ];
     }
 }

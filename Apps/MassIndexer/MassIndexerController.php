@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\MassIndexer;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\Apps\MassIndexer\MassIndexerHelper;
 
 class MassIndexerController
@@ -39,14 +39,14 @@ class MassIndexerController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->myHelper = $myHelper;
-        $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_non_dev('Error Code: 75ae9f597c');
+        $this->userId = (int) $this->user->data["user_id"];
+        $this->sauth->reject_non_dev("Error Code: 75ae9f597c");
     }
 
     public function unindexUser($username)
     {
         $username = (string) $username;
-        $rootForum = $this->request->variable('f', 0);
+        $rootForum = $this->request->variable("f", 0);
         $total = $this->myHelper->unindexAllPostsByUsername(
             $username,
             $rootForum
@@ -77,11 +77,9 @@ class MassIndexerController
 
     private function standardJsonResponse($total)
     {
-        return new JsonResponse(
-            [
-                "status" => "SUCCESS",
-                "total_processed" => $total,
-            ]
-        );
+        return new JsonResponse([
+            "status" => "SUCCESS",
+            "total_processed" => $total,
+        ]);
     }
 }

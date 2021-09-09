@@ -1,7 +1,4 @@
-#wiki_editor_textarea
-{
-    font-size: 1.3em;
-    resize: vertical !important;
+#wiki_editor_textarea {
+  font-size: 1.3em;
+  resize: vertical !important;
 }
-
-

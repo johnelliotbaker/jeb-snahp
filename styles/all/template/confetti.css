@@ -1,27 +1,26 @@
 /* confetti */
 body {
-    margin: 0;
-    /* overflow: hidden; */
+  margin: 0;
+  /* overflow: hidden; */
 }
 
 .wrapper {
-    position: relative;
-    /* min-height: 100vh; */
+  position: relative;
+  /* min-height: 100vh; */
 }
 
 [class|="confetti"] {
-    position: absolute;
+  position: absolute;
 }
 
 .red {
-    background-color: #E94A3F;
+  background-color: #e94a3f;
 }
 
 .yellow {
-    background-color: #FAA040;
+  background-color: #faa040;
 }
 
 .blue {
-    background-color: #5FC9F5;
+  background-color: #5fc9f5;
 }
-

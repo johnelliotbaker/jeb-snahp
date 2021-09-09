@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\UserRestrictor;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserRestrictorController
 {
@@ -38,8 +38,8 @@ class UserRestrictorController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->userId = (int) $this->user->data["user_id"];
+        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
     }
 
     public function restrict($userId)

@@ -22,10 +22,10 @@ class v_0_38_1 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
+            "add_columns" => [
                 TOPICS_TABLE => [
-                    'snp_ded_b_dead'  => ['TINT:1', 0],
-                    'snp_search_enhance'  => ['TINT:1', 0],
+                    "snp_ded_b_dead" => ["TINT:1", 0],
+                    "snp_search_enhance" => ["TINT:1", 0],
                 ],
             ],
         ];
@@ -34,18 +34,14 @@ class v_0_38_1 extends container_aware_migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                TOPICS_TABLE => [
-                    'snp_ded_b_dead',
-                    'snp_search_enhance',
-                ],
+            "drop_columns" => [
+                TOPICS_TABLE => ["snp_ded_b_dead", "snp_search_enhance"],
             ],
         ];
     }
 
     public function update_data()
     {
-        return [
-        ];
+        return [];
     }
 }

@@ -17,11 +17,11 @@ class v_0_27_1 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
+            "add_columns" => [
                 USERS_TABLE => [
-                    'snp_rep_b_profile'  => ['BOOL', 1],
-                    'snp_achi_b_avatar'  => ['BOOL', 1],
-                    'snp_achi_b_profile' => ['BOOL', 1],
+                    "snp_rep_b_profile" => ["BOOL", 1],
+                    "snp_achi_b_avatar" => ["BOOL", 1],
+                    "snp_achi_b_profile" => ["BOOL", 1],
                 ],
             ],
         ];
@@ -30,11 +30,11 @@ class v_0_27_1 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
+            "drop_columns" => [
                 USERS_TABLE => [
-                    'snp_rep_b_profile',
-                    'snp_achi_b_avatar',
-                    'snp_achi_b_profile',
+                    "snp_rep_b_profile",
+                    "snp_achi_b_avatar",
+                    "snp_achi_b_profile",
                 ],
             ],
         ];
@@ -42,7 +42,6 @@ class v_0_27_1 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        return [
-        ];
+        return [];
     }
 }

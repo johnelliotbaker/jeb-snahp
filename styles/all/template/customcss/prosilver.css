@@ -1,30 +1,27 @@
 /* Favorites */
-.title .topictitle
-{
-    font-size: 16px;
+.title .topictitle {
+  font-size: 16px;
 }
 
 /* hidebox */
-.hidebox.unhide
-{
-    background-color: #F8F8FA;
+.hidebox.unhide {
+  background-color: #f8f8fa;
 }
 
 /* curlies */
-table.autofill td{
-    color: black;
+table.autofill td {
+  color: black;
 }
-table.autofill tr{
-    background:#FFF;
+table.autofill tr {
+  background: #fff;
 }
 table.autofill tr:nth-child(odd) {
-    background:#F4F4F4;
+  background: #f4f4f4;
 }
 
 /* defaults */
-.default_text_color
-{
-    color: black !important;
+.default_text_color {
+  color: black !important;
 }
 
 /* rh_tags */
@@ -35,36 +32,30 @@ table.autofill tr:nth-child(odd) {
 /*     color: black !important; */
 /* } */
 
-
 /* banner */
 
-.headerbar.thanksgiving
-{
-    background-color: transparent;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 74px;
+.headerbar.thanksgiving {
+  background-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 74px;
 }
 
 #site-description > h1,
-#site-description > p:nth-child(3)
-{
+#site-description > p:nth-child(3) {
+  display: none;
+}
+
+.site_logo.thanksgiving {
+  background-image: url(https://i.imgur.com/ubNxk9H.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@media (max-width: 700px) {
+  .headerbar.thanksgiving {
     display: none;
-}
-
-.site_logo.thanksgiving
-{
-    background-image: url(https://i.imgur.com/ubNxk9H.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-@media( max-width: 700px )
-{
-    .headerbar.thanksgiving
-    {
-        display: none;
-    }
+  }
 }

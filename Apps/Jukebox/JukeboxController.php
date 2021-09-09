@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\Jukebox;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JukeboxController
 {

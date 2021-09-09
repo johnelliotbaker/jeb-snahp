@@ -1,7 +1,6 @@
-.inline_block
-{
-    display: inline-block;
-    font-size: .9rem !important;
-    padding-left: 4px;
-    padding-right: 4px;
+.inline_block {
+  display: inline-block;
+  font-size: 0.9rem !important;
+  padding-left: 4px;
+  padding-right: 4px;
 }

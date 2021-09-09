@@ -18,9 +18,9 @@ class v_0_28_1 extends \phpbb\db\migration\migration
     {
         $allowed = serialize([0]);
         return [
-            'add_columns' => [
+            "add_columns" => [
                 GROUPS_TABLE => [
-                    'snp_emo_allowed_types'  => ['VCHAR:255', $allowed],
+                    "snp_emo_allowed_types" => ["VCHAR:255", $allowed],
                 ],
             ],
         ];
@@ -29,10 +29,8 @@ class v_0_28_1 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                GROUPS_TABLE => [
-                    'snp_emo_allowed_types',
-                ],
+            "drop_columns" => [
+                GROUPS_TABLE => ["snp_emo_allowed_types"],
             ],
         ];
     }

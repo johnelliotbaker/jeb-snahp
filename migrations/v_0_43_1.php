@@ -22,9 +22,9 @@ class v_0_43_1 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
+            "add_columns" => [
                 USERS_TABLE => [
-                    'snp_ded_show_in_search' => ['BOOL', 0],
+                    "snp_ded_show_in_search" => ["BOOL", 0],
                 ],
             ],
         ];
@@ -33,8 +33,8 @@ class v_0_43_1 extends container_aware_migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                USERS_TABLE => ['snp_ded_show_in_search'],
+            "drop_columns" => [
+                USERS_TABLE => ["snp_ded_show_in_search"],
             ],
         ];
     }

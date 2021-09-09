@@ -17,9 +17,9 @@ class v_0_24_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                USERS_TABLE  => [
-                    'snp_fav_fid_exclude' => ['TEXT', ''],
+            "add_columns" => [
+                USERS_TABLE => [
+                    "snp_fav_fid_exclude" => ["TEXT", ""],
                 ],
             ],
         ];
@@ -28,10 +28,8 @@ class v_0_24_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                USERS_TABLE => [
-                    'snp_fav_fid_exclude',
-                ],
+            "drop_columns" => [
+                USERS_TABLE => ["snp_fav_fid_exclude"],
             ],
         ];
     }

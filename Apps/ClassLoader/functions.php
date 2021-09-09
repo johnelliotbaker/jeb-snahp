@@ -11,5 +11,5 @@ function selectFirstValid(...$args)
 
 function convertArrayToHTMLAttribute($data)
 {
-    return htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(json_encode($data), ENT_QUOTES, "UTF-8");
 }

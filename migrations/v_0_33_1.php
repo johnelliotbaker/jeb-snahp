@@ -19,10 +19,10 @@ class v_0_33_1 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'snahp_request' => [
-                    'terminator_uid'  => ['INT:11', 0],
-                    'termination_reason'  => ['VCHAR:1000', ''],
+            "add_columns" => [
+                $this->table_prefix . "snahp_request" => [
+                    "terminator_uid" => ["INT:11", 0],
+                    "termination_reason" => ["VCHAR:1000", ""],
                 ],
             ],
         ];

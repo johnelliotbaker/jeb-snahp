@@ -8,11 +8,15 @@ class string_util
     {
         $encode = function ($ptn, $strn) {
             $storage = [];
-            $html = preg_replace_callback($ptn, function ($match) use (&$storage) {
-                $uid = uniqid();
-                $storage[$uid] = $match[0];
-                return $uid;
-            }, $strn);
+            $html = preg_replace_callback(
+                $ptn,
+                function ($match) use (&$storage) {
+                    $uid = uniqid();
+                    $storage[$uid] = $match[0];
+                    return $uid;
+                },
+                $strn
+            );
             return [$html, $storage];
         };
         $decode = function ($strn, $storage) {
@@ -32,7 +36,7 @@ class string_util
 
     public function ignore_codeblock($f)
     {
-        $ptn_code = '#\<code\>(.*?)\<\/code\>#s';
+        $ptn_code = "#\<code\>(.*?)\<\/code\>#s";
         return $this->ignore_pattern($f, $ptn_code);
     }
 }

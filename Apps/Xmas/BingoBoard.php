@@ -16,13 +16,12 @@ class BingoBoard
     {
         print_r("<br/>");
         foreach ($this->tiles as $row) {
-            $strn = implode(' ', $row);
+            $strn = implode(" ", $row);
             print_r($strn);
             print_r("<br/>");
         }
         print_r("<br/>");
     }
-
 
     public function make($numbers)
     {

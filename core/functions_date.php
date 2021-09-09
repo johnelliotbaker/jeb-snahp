@@ -2,5 +2,5 @@
 
 function getCurrentDate()
 {
-    return (int) date('d', time());
+    return (int) date("d", time());
 }

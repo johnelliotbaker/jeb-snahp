@@ -2,17 +2,18 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
 use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
 use jeb\snahp\core\Rest\Serializers\ModelSerializer;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
-class ArticleGroupRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
+class ArticleGroupRetrieveUpdateDestroyAPIView extends
+    RetrieveUpdateDestroyAPIView
 {
-    protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';
+    protected $serializerClass = "jeb\snahp\core\Rest\Serializers\ModelSerializer";
     protected $request;
     protected $sauth;
     protected $model;

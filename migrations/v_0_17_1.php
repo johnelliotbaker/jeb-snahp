@@ -27,13 +27,17 @@ class v_0_17_1 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['module.add', [
-                'mcp',
-                'MCP_SNP_TITLE', [
-                    'module_basename'	=> '\jeb\snahp\mcp\main_module',
-                    'modes'				=> [ 'topic_bump', ],
+            [
+                "module.add",
+                [
+                    "mcp",
+                    "MCP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\mcp\main_module",
+                        "modes" => ["topic_bump"],
+                    ],
                 ],
-            ]],
+            ],
         ];
     }
 }

@@ -1,6 +1,4 @@
-td i
-{
-    color: white; /* blue colors for links too */
-    text-decoration: none; /* no underline */
-
+td i {
+  color: white; /* blue colors for links too */
+  text-decoration: none; /* no underline */
 }

@@ -8,21 +8,21 @@
  *
  */
 
-if (!defined('IN_PHPBB')) {
-    exit;
+if (!defined("IN_PHPBB")) {
+    exit();
 }
 
 if (empty($lang) || !is_array($lang)) {
-    $lang = array();
+    $lang = [];
 }
 
-$lang = array_merge($lang, array(
-    'MCP_SNP'         => 'Snahp',
-    'MCP_SNP_TITLE'   => 'Snahp',
-    'MCP_SNP_REQUEST' => 'List Requests',
-    'MCP_SNP_DIBS'    => 'List Undibs',
-    'MCP_SNP_BAN'     => 'Manage Users',
-    'MCP_SNP_TOPIC_BUMP' => 'List Bumps',
-    'MCP_SNP_INVITE'  => 'Invite',
-    'MCP_SNP_SCRIPTS' => 'Scripts',
-));
+$lang = array_merge($lang, [
+    "MCP_SNP" => "Snahp",
+    "MCP_SNP_TITLE" => "Snahp",
+    "MCP_SNP_REQUEST" => "List Requests",
+    "MCP_SNP_DIBS" => "List Undibs",
+    "MCP_SNP_BAN" => "Manage Users",
+    "MCP_SNP_TOPIC_BUMP" => "List Bumps",
+    "MCP_SNP_INVITE" => "Invite",
+    "MCP_SNP_SCRIPTS" => "Scripts",
+]);

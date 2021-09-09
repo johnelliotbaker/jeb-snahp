@@ -26,8 +26,6 @@ class v_0_19_2 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        return [
-            ['config.add', ['snp_req_b_statbar', 1]],
-        ];
+        return [["config.add", ["snp_req_b_statbar", 1]]];
     }
 }

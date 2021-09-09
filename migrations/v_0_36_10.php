@@ -20,9 +20,9 @@ class v_0_36_10 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'users' => [
-                    'snp_mute_created' => ['INT:11', 0],
+            "add_columns" => [
+                $this->table_prefix . "users" => [
+                    "snp_mute_created" => ["INT:11", 0],
                 ],
             ],
         ];
@@ -31,10 +31,8 @@ class v_0_36_10 extends container_aware_migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                $this->table_prefix . 'users' => [
-                    'snp_mute_created',
-                ],
+            "drop_columns" => [
+                $this->table_prefix . "users" => ["snp_mute_created"],
             ],
         ];
     }

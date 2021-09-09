@@ -24,34 +24,33 @@ class PostingViolationEventListener implements EventSubscriberInterface
         $this->template = $template;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'core.posting_modify_submit_post_before' => [
-                ['submitPostWithConfirmation', 1],
+            "core.posting_modify_submit_post_before" => [
+                ["submitPostWithConfirmation", 1],
             ],
-            'core.posting_modify_submit_post_after' => [
-                ['incrementUserViolation', 1],
+            "core.posting_modify_submit_post_after" => [
+                ["incrementUserViolation", 1],
             ],
-            'core.viewtopic_assign_template_vars_before' => [
-                ['showViolationWarning', 1],
+            "core.viewtopic_assign_template_vars_before" => [
+                ["showViolationWarning", 1],
             ],
         ];
     }
 
     public function showViolationWarning($event)
     {
-        $topicData = $event['topic_data'];
-        if ($topicData['snp_violation']) {
-            $this->template->assign_vars(
-                [
-                'TOPIC_IS_IN_POSTING_VIOLATION' => true,
-                'POSTING_VIOLATION_REASON' => $topicData['snp_violation_reason'],
-                ]
-            );
+        $topicData = $event["topic_data"];
+        if ($topicData["snp_violation"]) {
+            $this->template->assign_vars([
+                "TOPIC_IS_IN_POSTING_VIOLATION" => true,
+                "POSTING_VIOLATION_REASON" =>
+                    $topicData["snp_violation_reason"],
+            ]);
         }
     }
 
@@ -60,15 +59,19 @@ class PostingViolationEventListener implements EventSubscriberInterface
         if ($this->sauth->is_dev()) {
             return;
         }
-        $postData = $event['post_data'];
+        $postData = $event["post_data"];
         $posterId = $this->sauth->userId;
-        if ($posterId && (int) $postData['snp_violation'] === 1) {
+        if ($posterId && (int) $postData["snp_violation"] === 1) {
             $this->helper->incrementUserViolation($posterId);
-            $data = $event['data'];
-            $postId = (int) $data['post_id'];
-            $postText = $data['message'];
-            $this->helper->addPostingViolationEntry($posterId, $postId, $postText);
-        };
+            $data = $event["data"];
+            $postId = (int) $data["post_id"];
+            $postText = $data["message"];
+            $this->helper->addPostingViolationEntry(
+                $posterId,
+                $postId,
+                $postText
+            );
+        }
     }
 
     public function submitPostWithConfirmation($event)
@@ -76,13 +79,15 @@ class PostingViolationEventListener implements EventSubscriberInterface
         if ($this->sauth->is_dev()) {
             return;
         }
-        $topicId = (int) $event['topic_id'];
+        $topicId = (int) $event["topic_id"];
         if (!$topicId) {
             return;
         }
         $topicData = $this->helper->getTopicData($topicId);
-        if ($topicData['snp_violation']) {
-            $this->helper->submitPostWithConfirmation($topicData['snp_violation_reason']);
+        if ($topicData["snp_violation"]) {
+            $this->helper->submitPostWithConfirmation(
+                $topicData["snp_violation_reason"]
+            );
         }
     }
 }

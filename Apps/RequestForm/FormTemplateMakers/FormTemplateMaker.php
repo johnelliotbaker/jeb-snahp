@@ -2,24 +2,24 @@
 namespace jeb\snahp\Apps\RequestForm\FormTemplateMakers;
 
 const TYPE_TO_LABEL = [
-    'filehost' => 'File Host',
-    'isbn' => 'ISBN',
-    'videoResolution' => 'Resolution',
+    "filehost" => "File Host",
+    "isbn" => "ISBN",
+    "videoResolution" => "Resolution",
 ];
 
 class FormFieldParser
 {
     const _PARSERS = [
-        'filehost' => 'filehostParser',
-        'link' => 'linkParser',
-        'isbn' => 'isbnParser',
+        "filehost" => "filehostParser",
+        "link" => "linkParser",
+        "isbn" => "isbnParser",
     ];
 
-    const ALLOWED_FILEHOSTS = ['mega', 'zippy'];
+    const ALLOWED_FILEHOSTS = ["mega", "zippy"];
 
     public function getParser($type)
     {
-        return getDefault(self::_PARSERS, $type, 'stringParser');
+        return getDefault(self::_PARSERS, $type, "stringParser");
     }
 
     public function genericCompoundParser($arr)
@@ -31,7 +31,7 @@ class FormFieldParser
         foreach ($arr as $value) {
             $res[] = (string) $value;
         }
-        return implode(', ', $res);
+        return implode(", ", $res);
     }
 
     public function filehostParser($value)
@@ -40,28 +40,30 @@ class FormFieldParser
             return;
         }
         $res = [];
-        $filehosts = preg_split('#,\s*#s', $value);
+        $filehosts = preg_split("#,\s*#s", $value);
         $filehosts = array_unique($filehosts);
-        $filehosts = array_filter(
-            $filehosts,
-            function ($arg) {
-                return in_array($arg, self::ALLOWED_FILEHOSTS);
-            }
-        );
+        $filehosts = array_filter($filehosts, function ($arg) {
+            return in_array($arg, self::ALLOWED_FILEHOSTS);
+        });
         foreach ($filehosts as $filehost) {
             switch ($filehost) {
-            case 'mega':
-                $partial = '<img src="https://i.imgur.com/w5aP33F.png" title="mega" style="height: 2.0em;">';
-                break;
-            case 'zippy':
-                $partial = '<img src="https://i.imgur.com/qD95AzT.png" title="zippy" style="height: 2.0em;">';
-                break;
-            default:
-                $partial = '';
+                case "mega":
+                    $partial =
+                        '<img src="https://i.imgur.com/w5aP33F.png" title="mega" style="height: 2.0em;">';
+                    break;
+                case "zippy":
+                    $partial =
+                        '<img src="https://i.imgur.com/qD95AzT.png" title="zippy" style="height: 2.0em;">';
+                    break;
+                default:
+                    $partial = "";
             }
             $res[] = $partial;
         }
-        return implode('<span style="margin-left:8px;margin-right:8px;">or</span>', $res);
+        return implode(
+            '<span style="margin-left:8px;margin-right:8px;">or</span>',
+            $res
+        );
     }
 
     public function isbnParser($isbn)
@@ -96,9 +98,9 @@ class FormFieldParser
 class FormTemplateMaker
 {
     const _BANNERS = [
-        'game' => 'https://i.imgur.com/5WhPsfz.png',
-        'anime' => 'https://i.imgur.com/CelJcub.png',
-        'ebook' => 'https://i.imgur.com/aARcbcT.png',
+        "game" => "https://i.imgur.com/5WhPsfz.png",
+        "anime" => "https://i.imgur.com/CelJcub.png",
+        "ebook" => "https://i.imgur.com/aARcbcT.png",
     ];
 
     public function parseData($data)
@@ -119,20 +121,19 @@ class FormTemplateMaker
 
     public function makeRequestTemplateHTML($data)
     {
-        $type = getDefault($data, 'type', '');
-        $title = getDefault($data, 'title', 'No Title');
+        $type = getDefault($data, "type", "");
+        $title = getDefault($data, "title", "No Title");
         $bannerImageURL = $this->getBannerImage($type);
-        $content = getDefault($data, 'content', []);
+        $content = getDefault($data, "content", []);
         $content = $this->parseData($content);
-        $renderer = getTwigRenderer(['/var/www/forum/ext/jeb/snahp/Apps/RequestForm/FormTemplateMakers']);
-        $html = $renderer->render(
-            'main.html.twig',
-            [
-                'title' => $title,
-                'bannerImageURL' => $bannerImageURL,
-                'content' => $content,
-            ]
-        );
+        $renderer = getTwigRenderer([
+            "/var/www/forum/ext/jeb/snahp/Apps/RequestForm/FormTemplateMakers",
+        ]);
+        $html = $renderer->render("main.html.twig", [
+            "title" => $title,
+            "bannerImageURL" => $bannerImageURL,
+            "content" => $content,
+        ]);
         return $html;
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
-
 namespace jeb\snahp\Apps\MiniBoard\Models;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Model.php";
 
 use jeb\snahp\core\Rest\Model;
 use jeb\snahp\core\Rest\Fields\StringField;
@@ -19,99 +18,103 @@ class Topic extends Model
     const FOREIGN_NAME = MINIFORUMS_TABLE;
 
     protected $fields;
-    protected $requiredFields = ['subject', 'author', 'status', 'created'];
+    protected $requiredFields = ["subject", "author", "status", "created"];
 
     public function __construct()
     {
         parent::__construct();
         $this->fields = [
-            'subject' => new StringField(),
-            'author' => new IntegerField(),
-            'status' => new StringField(),
-            'created' => new DateField(),
-            'modified' => new DateField(),
+            "subject" => new StringField(),
+            "author" => new IntegerField(),
+            "status" => new StringField(),
+            "created" => new DateField(),
+            "modified" => new DateField(),
         ];
         $this->query = [
-            'statement' => '1=1',
-            'data' => [],
+            "statement" => "1=1",
+            "data" => [],
         ];
     }
 
     public function forum($request)
     {
-        $value = $request->variable('miniforum', 0);
+        $value = $request->variable("miniforum", 0);
         if ($value === 0) {
             return [
-                'statement' => '',
-                'data' => [],
+                "statement" => "",
+                "data" => [],
             ];
         }
-        $foreignPkName = $this::FOREIGN_NAME . '_id';
+        $foreignPkName = $this::FOREIGN_NAME . "_id";
         return [
-            'statement' => "AND ${foreignPkName}=:miniforum",
-            'data' => [ 'miniforum' => $value],
+            "statement" => "AND ${foreignPkName}=:miniforum",
+            "data" => ["miniforum" => $value],
         ];
     }
 
     public function search($request)
     {
-        $value = $request->variable('search', '');
-        if ($value === '') {
+        $value = $request->variable("search", "");
+        if ($value === "") {
             return [
-                'statement' => '',
-                'data' => [],
+                "statement" => "",
+                "data" => [],
             ];
         }
         return [
-            'statement' => 'AND subject LIKE :search',
-            'data' => [ 'search' => '%' . $value . '%', ],
+            "statement" => "AND subject LIKE :search",
+            "data" => ["search" => "%" . $value . "%"],
         ];
     }
 
     public function status($request)
     {
-        $value = $request->variable('status', '');
-        if ($value === '') {
+        $value = $request->variable("status", "");
+        if ($value === "") {
             return [
-                'statement' => '',
-                'data' => [],
+                "statement" => "",
+                "data" => [],
             ];
         }
         return [
-            'statement' => 'AND status=:status',
-            'data' => [ 'status' => $value],
+            "statement" => "AND status=:status",
+            "data" => ["status" => $value],
         ];
     }
 
     public function sort($request)
     {
-        $allowedSortKeys = ['id'];
-        $sortBy = $request->variable('sortBy', '');
+        $allowedSortKeys = ["id"];
+        $sortBy = $request->variable("sortBy", "");
         if (!in_array($sortBy, $allowedSortKeys)) {
-            return '';
+            return "";
         }
-        $sortOrder = $request->variable('sortOrder', 'DESC');
-        $sortOrder = $sortOrder === 'DESC' ? 'DESC' : 'ASC';
-        if ($sortBy === '') {
-            return '';
+        $sortOrder = $request->variable("sortOrder", "DESC");
+        $sortOrder = $sortOrder === "DESC" ? "DESC" : "ASC";
+        if ($sortBy === "") {
+            return "";
         }
         return "ORDER BY {$sortBy} {$sortOrder}";
     }
 
     public function mergeQuery($newQuery)
     {
-        if (!$newQuery['statement']) {
+        if (!$newQuery["statement"]) {
             return $this->query;
         }
-        $this->query['statement'] .= ' ' . $newQuery['statement'];
-        $this->query['data'] = array_merge($this->query['data'], $newQuery['data']);
+        $this->query["statement"] .= " " . $newQuery["statement"];
+        $this->query["data"] = array_merge(
+            $this->query["data"],
+            $newQuery["data"]
+        );
         return $this->query;
     }
 
     public function getName($n)
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
+        $characters =
+            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $randomString = "";
         for ($i = 0; $i < $n; $i++) {
             $index = rand(0, strlen($characters) - 1);
             $randomString .= $characters[$index];
@@ -121,7 +124,7 @@ class Topic extends Model
 
     public function filter($request)
     {
-        $forumId = $request->variable('miniforum', 0);
+        $forumId = $request->variable("miniforum", 0);
         if (!$forumId) {
             return [];
         }
@@ -132,7 +135,12 @@ class Topic extends Model
             $this->mergeQuery($sql);
         }
         $sortSnippet = $this->sort($request);
-        $result = R::find($this::TABLE_NAME, $this->query['statement'], $this->query['data'], $sortSnippet);
+        $result = R::find(
+            $this::TABLE_NAME,
+            $this->query["statement"],
+            $this->query["data"],
+            $sortSnippet
+        );
         return $result;
     }
 
@@ -140,7 +148,7 @@ class Topic extends Model
     {
         # in-place for performance
         global $user;
-        $instance->author = $user->data['user_id'];
+        $instance->author = $user->data["user_id"];
     }
 
     public function makeDummyTopics($request)

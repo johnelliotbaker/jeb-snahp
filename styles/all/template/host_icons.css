@@ -3,21 +3,19 @@ img.mega_icon,
 img.gdrive_icon,
 img.zippy_icon,
 img.android_icon,
-img.ios_icon
-{
-    height: 24px;
-    margin-right: 3px;
-    vertical-align: middle;
+img.ios_icon {
+  height: 24px;
+  margin-right: 3px;
+  vertical-align: middle;
 }
 
 .small_host_icon img.mega_icon,
 .small_host_icon img.gdrive_icon,
 .small_host_icon img.zippy_icon,
 .small_host_icon img.android_icon,
-.small_host_icon img.ios_icon
-{
-    height: 20px;
-    margin-left: 0px;
-    margin-right: 1px;
-    margin-bottom: 3px;
+.small_host_icon img.ios_icon {
+  height: 20px;
+  margin-left: 0px;
+  margin-right: 1px;
+  margin-bottom: 3px;
 }

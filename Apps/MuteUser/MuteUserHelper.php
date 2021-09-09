@@ -7,27 +7,29 @@ class MuteUserHelper
     protected $user;
     protected $tbl;
     protected $sauth;
-    public function __construct(
-        $db,
-        $user,
-        $tbl,
-        $sauth
-    ) {
+    public function __construct($db, $user, $tbl, $sauth)
+    {
         $this->db = $db;
         $this->user = $user;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 
-    public function getMutedUserList($start=0, $limit=10)
+    public function getMutedUserList($start = 0, $limit = 10)
     {
         $fields = [
-            'user_id', 'username', 'user_colour',
-            'snp_mute_topic', 'snp_mute_reply', 'snp_mute_created',
+            "user_id",
+            "username",
+            "user_colour",
+            "snp_mute_topic",
+            "snp_mute_reply",
+            "snp_mute_created",
         ];
-        $fields = implode(', ', $fields);
-        $sql = "SELECT ${fields} FROM " . USERS_TABLE .
+        $fields = implode(", ", $fields);
+        $sql =
+            "SELECT ${fields} FROM " .
+            USERS_TABLE .
             " WHERE snp_mute_topic=1 OR snp_mute_reply=1";
         $result = $this->db->sql_query_limit($sql, $limit, $start);
         $rowset = $this->db->sql_fetchrowset($result);
@@ -37,12 +39,14 @@ class MuteUserHelper
 
     public function getMutedUserCount()
     {
-        $sql = 'SELECT count(*) as total FROM ' . USERS_TABLE .
+        $sql =
+            "SELECT count(*) as total FROM " .
+            USERS_TABLE .
             " WHERE snp_mute_topic=1 OR snp_mute_reply=1";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        return $row ? $row['total'] : 0;
+        return $row ? $row["total"] : 0;
     }
 
     private function _setNewTopicStatus($userId, $mute)
@@ -50,7 +54,9 @@ class MuteUserHelper
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
         $created = time();
-        $sql = 'UPDATE ' . USERS_TABLE .
+        $sql =
+            "UPDATE " .
+            USERS_TABLE .
             " SET snp_mute_topic=${status}, snp_mute_created=${created}" .
             " WHERE user_id=${userId}";
         $this->db->sql_query($sql);
@@ -61,7 +67,9 @@ class MuteUserHelper
         $status = $mute ? 1 : 0;
         $userId = (int) $userId;
         $created = time();
-        $sql = 'UPDATE ' . USERS_TABLE .
+        $sql =
+            "UPDATE " .
+            USERS_TABLE .
             " SET snp_mute_reply=${status}, snp_mute_created=${created}" .
             " WHERE user_id=${userId}";
         $this->db->sql_query($sql);

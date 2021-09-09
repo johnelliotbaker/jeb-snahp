@@ -1,14 +1,16 @@
 @media (min-width: 701px) and (max-width: 950px) {
+  ul.topiclist dt {
+    margin-right: -80px;
+  }
 
-    ul.topiclist dt {
-        margin-right: -80px;
-    }
+  ul.topiclist dt .list-inner {
+    margin-right: 80px;
+  }
 
-    ul.topiclist dt .list-inner {
-        margin-right: 80px;
-    }
-
-    dd.mark, dd.posts, dd.topics, dd.views {
-        width: 80px;
-    }
+  dd.mark,
+  dd.posts,
+  dd.topics,
+  dd.views {
+    width: 80px;
+  }
 }

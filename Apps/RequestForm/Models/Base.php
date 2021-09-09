@@ -3,7 +3,7 @@ namespace jeb\snahp\Apps\RequestForm\Models;
 
 class Base
 {
-    const TYPE = 'BASE';
+    const TYPE = "BASE";
 
     public $data;
     public $contentFields = [];
@@ -20,24 +20,24 @@ class Base
     public function __construct()
     {
         $this->data = [
-            'type' => strtolower($this::TYPE),
-            'title' => 'No Title',
-            'content' => [],
+            "type" => strtolower($this::TYPE),
+            "title" => "No Title",
+            "content" => [],
         ];
     }
 
     public function makeBBCode()
     {
         if ($this->canMakeBBCode()) {
-            return '[request]'
-                . json_encode($this->makeData(), JSON_PRETTY_PRINT)
-                . '[/request]';
+            return "[request]" .
+                json_encode($this->makeData(), JSON_PRETTY_PRINT) .
+                "[/request]";
         }
     }
 
     public function canMakeBBCode()
     {
-        return $this::TYPE !== 'NULL';
+        return $this::TYPE !== "NULL";
     }
 
     public function makeData()
@@ -49,11 +49,11 @@ class Base
                     $arr = flattenArray($value);
                     foreach ($arr as $k => $v) {
                         if ($v !== null) {
-                            $this->data['content'][$k] = $v;
+                            $this->data["content"][$k] = $v;
                         }
                     }
                 } else {
-                    $this->data['content'][$field] = $this->{$field};
+                    $this->data["content"][$field] = $this->{$field};
                 }
             }
         }

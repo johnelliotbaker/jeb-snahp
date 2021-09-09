@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use \R as R;
 
 class UserView
@@ -13,7 +13,7 @@ class UserView
     {
         $this->request = $request;
         $this->sauth = $sauth;
-        $this->sauth->reject_anon('Error Code: cee5910f65');
+        $this->sauth->reject_anon("Error Code: cee5910f65");
     }
 
     public function view()
@@ -21,11 +21,13 @@ class UserView
         $userId = $this->sauth->userId;
         $isDev = $this->sauth->is_dev();
         // $isDev = true;
-        $isKeeper = $isDev || $this->sauth->user_belongs_to_groupset($userId, 'Keepers');
+        $isKeeper =
+            $isDev ||
+            $this->sauth->user_belongs_to_groupset($userId, "Keepers");
         $data = [
-            'userId' => (int) $userId,
-            'isDev' => $isDev,
-            'isKeeper' => $isKeeper,
+            "userId" => (int) $userId,
+            "isDev" => $isDev,
+            "isKeeper" => $isKeeper,
         ];
         return new JsonResponse($data);
     }

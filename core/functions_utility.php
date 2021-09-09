@@ -1,28 +1,30 @@
 <?php
 
-function prn($var, $b_html=false, $depth=0)
+function prn($var, $b_html = false, $depth = 0)
 {
-    $nl = $b_html ? '<br>' : PHP_EOL;
-    $nbsp = $b_html ? '&nbsp;' : ' ';
+    $nl = $b_html ? "<br>" : PHP_EOL;
+    $nbsp = $b_html ? "&nbsp;" : " ";
     $tab = $nbsp . $nbsp . $nbsp . $nbsp;
-    if ($depth===0) {
+    if ($depth === 0) {
         $stack = debug_backtrace();
         array_shift($stack);
         foreach ($stack as $call) {
-            echo $nl . $tab . $call['class'] . '->' . $call['function'];
+            echo $nl . $tab . $call["class"] . "->" . $call["function"];
         }
-        echo $nl . $tab . '----------------------------------------------------------------------------------------------------';
+        echo $nl .
+            $tab .
+            "----------------------------------------------------------------------------------------------------";
     }
     $indent = [];
-    for ($i=0; $i<$depth; $i++) {
-        $indent[] = '...';
+    for ($i = 0; $i < $depth; $i++) {
+        $indent[] = "...";
     }
-    $indent = join('', $indent);
+    $indent = join("", $indent);
     if (is_array($var)) {
         foreach ($var as $k => $v) {
             echo $nl;
             echo "$indent$k => ";
-            prn($v, $b_html, $depth+1);
+            prn($v, $b_html, $depth + 1);
         }
     } else {
         if ($b_html) {
@@ -31,12 +33,12 @@ function prn($var, $b_html=false, $depth=0)
             echo $var;
         }
     }
-    if ($depth===0) {
+    if ($depth === 0) {
         echo $nl;
     }
 }
 
-function getDefault($dict, $key, $defualt=null)
+function getDefault($dict, $key, $defualt = null)
 {
     if (!array_key_exists($key, $dict)) {
         return $defualt;
@@ -48,7 +50,7 @@ function uuid4()
 {
     // https://www.php.net/manual/en/function.uniqid.php
     return sprintf(
-        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
         // 32 bits for "time_low"
         mt_rand(0, 0xffff),
         mt_rand(0, 0xffff),
@@ -71,41 +73,47 @@ function uuid4()
 function getStyleName()
 {
     global $db, $user;
-    $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
-        WHERE style_id=' . (int) $user->data['user_style'];
+    $sql =
+        "SELECT style_name FROM " .
+        STYLES_TABLE .
+        '
+        WHERE style_id=' .
+        (int) $user->data["user_style"];
     $result = $db->sql_query($sql, 3600);
     $row = $db->sql_fetchrow($result);
     $db->sql_freeresult($result);
-    switch ($row['style_name']) {
-    case 'Hexagon':
-        return [$row['style_name'], 'hexagon'];
-    case 'Acieeed!':
-        return [$row['style_name'], 'acieeed!'];
-    case 'prosilver':
-        return [$row['style_name'], 'prosilver'];
-    case 'Basic':
-        return [$row['style_name'], 'basic'];
-    case 'Digi Orange':
-    default:
-        return [$row['style_name'], 'digi_orange'];
+    switch ($row["style_name"]) {
+        case "Hexagon":
+            return [$row["style_name"], "hexagon"];
+        case "Acieeed!":
+            return [$row["style_name"], "acieeed!"];
+        case "prosilver":
+            return [$row["style_name"], "prosilver"];
+        case "Basic":
+            return [$row["style_name"], "basic"];
+        case "Digi Orange":
+        default:
+            return [$row["style_name"], "digi_orange"];
     }
 }
 
 function getRequestMethod($request)
 {
-    return $request->server('REQUEST_METHOD', 'GET');
+    return $request->server("REQUEST_METHOD", "GET");
 }
 
 function getRequestData($request)
 {
     $method = getRequestMethod($request);
-    if (in_array($method, ['PUT', 'PATCH'])) {
-        $params = file_get_contents('php://input');
+    if (in_array($method, ["PUT", "PATCH"])) {
+        $params = file_get_contents("php://input");
         return json_decode($params, true);
     }
     $data = [];
     foreach ($request->variable_names() as $varname) {
-        $data[$varname] = htmlspecialchars_decode($request->variable($varname, '', true));
+        $data[$varname] = htmlspecialchars_decode(
+            $request->variable($varname, "", true)
+        );
     }
     return $data;
 }
@@ -117,11 +125,11 @@ function getRequestFormData($rootName)
     $data = getDefault($_REQUEST, $rootName);
     $request->disable_super_globals();
     $res = [];
-    $collect = function ($arr, &$res, $names=[]) use (&$collect) {
+    $collect = function ($arr, &$res, $names = []) use (&$collect) {
         foreach ($arr as $key => $value) {
             $newNames = array_merge($names, [$key]);
             if (!is_array($value)) {
-                $res[implode('__', $newNames)] = $value;
+                $res[implode("__", $newNames)] = $value;
             } else {
                 $collect($value, $res, $newNames);
             }
@@ -131,12 +139,10 @@ function getRequestFormData($rootName)
     return $res;
 }
 
-function getTwigRenderer($templateDirs=[], $extensions=[])
+function getTwigRenderer($templateDirs = [], $extensions = [])
 {
-    $templateDir = '/var/www/forum/ext/jeb/snahp/styles/all/template';
-    $defaultTemplateDir = [
-        ''
-    ];
+    $templateDir = "/var/www/forum/ext/jeb/snahp/styles/all/template";
+    $defaultTemplateDir = [""];
     $twig = new \Twig\Environment(
         new \Twig\Loader\FilesystemLoader($templateDirs)
     );
@@ -144,13 +150,17 @@ function getTwigRenderer($templateDirs=[], $extensions=[])
     // $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine([$defaultTheme], $twig);
     $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine([], $twig);
     $twig->addRuntimeLoader(
-        new \Twig\RuntimeLoader\FactoryRuntimeLoader(
-            [
-                \Symfony\Component\Form\FormRenderer::class => function () use ($formEngine, $csrfManager) {
-                    return new \Symfony\Component\Form\FormRenderer($formEngine, $csrfManager);
-                },
-            ]
-        )
+        new \Twig\RuntimeLoader\FactoryRuntimeLoader([
+            \Symfony\Component\Form\FormRenderer::class => function () use (
+                $formEngine,
+                $csrfManager
+            ) {
+                return new \Symfony\Component\Form\FormRenderer(
+                    $formEngine,
+                    $csrfManager
+                );
+            },
+        ])
     );
     foreach ($extensions as $extension) {
         $twig->addExtension($extension);

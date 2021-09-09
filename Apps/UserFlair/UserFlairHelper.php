@@ -1,9 +1,7 @@
 <?php
 namespace jeb\snahp\Apps\UserFlair;
 
-const EXCLUDED_FIELDS = [
-    'fields', 'template', 'template_type', 'description',
-];
+const EXCLUDED_FIELDS = ["fields", "template", "template_type", "description"];
 
 class UserFlairHelper
 {
@@ -28,13 +26,13 @@ class UserFlairHelper
         $this->user = $user;
         $this->template = $template;
         $this->tbl = $tbl;
-        $this->rxnTbl = $tbl['UserFlair'];
+        $this->rxnTbl = $tbl["UserFlair"];
         $this->sauth = $sauth;
         $this->userId = $sauth->userId;
         $this->typeModel = $typeModel;
         $this->flairModel = $flairModel;
-        $this->styleName = 'prosilver';
-        $this->styleType = 'light';
+        $this->styleName = "prosilver";
+        $this->styleType = "light";
         $this->cache = [];
         $this->setupStyleInfo();
     }
@@ -51,16 +49,16 @@ class UserFlairHelper
 
     public function getData($bean)
     {
-        return json_decode(($bean->data), true);
+        return json_decode($bean->data, true);
     }
 
     public function getTypeData($bean)
     {
         // Not sure why flair type has two levels of "data"
         $data = $this->getData($bean);
-        if (isset($data['data'])) {
-            $datadata = $data['data'];
-            unset($data['data']);
+        if (isset($data["data"])) {
+            $datadata = $data["data"];
+            unset($data["data"]);
         }
         return array_merge($data, $datadata);
     }
@@ -77,11 +75,11 @@ class UserFlairHelper
 
     public function makeHtml($user)
     {
-        $userId = (int) $user['id'];
+        $userId = (int) $user["id"];
         if (isset($this->cache[$userId])) {
             return $this->cache[$userId];
         }
-        $flairs = $this->flairModel->getQueryset('user=?', [$userId]);
+        $flairs = $this->flairModel->getQueryset("user=?", [$userId]);
         $res = [];
         $flairTypes = $this->getFlairTypes();
         foreach ($flairs as $flair) {
@@ -94,19 +92,19 @@ class UserFlairHelper
             $flairTypeData = $this->getTypeData($flairTypes[$flairType]);
             $flairData = array_merge($flairTypeData, $flairData);
 
-            $fields = $flairData['fields']['required'];
+            $fields = $flairData["fields"]["required"];
             if (!hasRequiredFields($flairData, $fields)) {
                 continue;
             }
             $flairData = removeFields($flairData, EXCLUDED_FIELDS);
             $flairData = $this->chooseStyleData($flairData);
             $flairData = chooseRandomData($flairData);
-            $res['results'][$flairType] = $flairData;
+            $res["results"][$flairType] = $flairData;
         }
         if (!$res) {
-            return '';
+            return "";
         }
-        $res['user'] = $user;
+        $res["user"] = $user;
         $res = json_encode($res);
         // Embedding data as data attribute. Escape single quotes.
         $res = str_replace("'", "&#39;", $res);
@@ -119,7 +117,7 @@ class UserFlairHelper
     public function chooseStyleData($data)
     {
         // Every style is guaranteed to include this style
-        $FIXED_STYLE_NAME = 'prosilver';
+        $FIXED_STYLE_NAME = "prosilver";
         foreach ($data as $key => $value) {
             if (is_array($value) && isset($value[$FIXED_STYLE_NAME])) {
                 $data[$key] = $value[$this->styleName];
@@ -130,30 +128,34 @@ class UserFlairHelper
 
     public function setupStyleInfo()
     {
-        $userStyle = $this->user->data['user_style'];
-        $sql = 'SELECT style_name FROM ' . STYLES_TABLE . '
-            WHERE style_id=' . $userStyle;
+        $userStyle = $this->user->data["user_style"];
+        $sql =
+            "SELECT style_name FROM " .
+            STYLES_TABLE .
+            '
+            WHERE style_id=' .
+            $userStyle;
         $result = $this->db->sql_query($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        $styleName = $row['style_name'];
+        $styleName = $row["style_name"];
         switch ($styleName) {
-        case 'Acieeed!':
-            $this->styleType = 'dark';
-            $this->styleName = 'acieeed!';
-            break;
-        case 'Basic':
-            $this->styleType = 'light';
-            $this->styleName = 'basic';
-            break;
-        case 'Digi Orange':
-            $this->styleType = 'dark';
-            $this->styleName = 'digi_orange';
-            break;
-        case 'Hexagon':
-            $this->styleType = 'dark';
-            $this->styleName = 'hexagon';
-            break;
+            case "Acieeed!":
+                $this->styleType = "dark";
+                $this->styleName = "acieeed!";
+                break;
+            case "Basic":
+                $this->styleType = "light";
+                $this->styleName = "basic";
+                break;
+            case "Digi Orange":
+                $this->styleType = "dark";
+                $this->styleName = "digi_orange";
+                break;
+            case "Hexagon":
+                $this->styleType = "dark";
+                $this->styleName = "hexagon";
+                break;
         }
     }
 }
@@ -175,7 +177,7 @@ function chooseRandomData($data)
 {
     // If field is array, choose random element
     // But some fields like "style" should pass through
-    $_PASS_THROUGH = ['style'];
+    $_PASS_THROUGH = ["style"];
     foreach ($data as $key => $value) {
         if (is_array($value) && !in_array($key, $_PASS_THROUGH)) {
             $data[$key] = $value[array_rand($value)];

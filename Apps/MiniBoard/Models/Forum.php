@@ -2,7 +2,7 @@
 
 namespace jeb\snahp\Apps\MiniBoard\Models;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Model.php";
 
 use jeb\snahp\core\Rest\Model;
 use jeb\snahp\core\Rest\Fields\IntegerField;
@@ -14,15 +14,15 @@ class Forum extends Model
     const TABLE_NAME = MINIFORUMS_TABLE;
 
     protected $fields;
-    protected $requiredFields = ['mainpost', 'owner'];
+    protected $requiredFields = ["mainpost", "owner"];
 
     public function __construct()
     {
         parent::__construct();
         $this->fields = [
-            'mainpost' => new IntegerField(),
-            'owner' => new IntegerField(),
-            'moderators' => new CommaSeparatedPositiveIntegerField(),
+            "mainpost" => new IntegerField(),
+            "owner" => new IntegerField(),
+            "moderators" => new CommaSeparatedPositiveIntegerField(),
         ];
     }
 

@@ -17,9 +17,9 @@ class v_0_21_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns'	=> [
-                GROUPS_TABLE  => [
-                    'snp_req_b_solve' => ['BOOL', 0],
+            "add_columns" => [
+                GROUPS_TABLE => [
+                    "snp_req_b_solve" => ["BOOL", 0],
                 ],
             ],
         ];
@@ -28,10 +28,8 @@ class v_0_21_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns'	=> [
-                GROUPS_TABLE  => [
-                    'snp_req_b_solve',
-                ],
+            "drop_columns" => [
+                GROUPS_TABLE => ["snp_req_b_solve"],
             ],
         ];
     }

@@ -1,16 +1,16 @@
 <?php
 namespace jeb\snahp\Apps\Reaction;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\Apps\Reaction\ReactionHelper;
 
 class ReactionController
 {
-    const SUCCESS = 'SUCCESS';
-    const FAILURE = 'FAILURE';
+    const SUCCESS = "SUCCESS";
+    const FAILURE = "FAILURE";
     const POST_REACTION_LIMIT = 100;
-    const TYPES = ['ack', 'music', 'more']; // Match vs rx:config/config.js
+    const TYPES = ["ack", "music", "more"]; // Match vs rx:config/config.js
 
     protected $db;
     protected $user;
@@ -44,14 +44,14 @@ class ReactionController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->myHelper = $myHelper;
-        $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: 6572a0d111');
+        $this->userId = (int) $this->user->data["user_id"];
+        $this->sauth->reject_anon("Error Code: 6572a0d111");
     }
 
     public function retrieveView($id)
     {
-        $methodName = $this->request->server('REQUEST_METHOD', 'GET');
-        if ($methodName != 'GET') {
+        $methodName = $this->request->server("REQUEST_METHOD", "GET");
+        if ($methodName != "GET") {
             return new JsonResponse([]);
         }
         return $this->respondRetrieveAsJson($id);
@@ -59,7 +59,7 @@ class ReactionController
 
     public function respondRetrieveAsJson($id)
     {
-        if ($id===0) {
+        if ($id === 0) {
             return new JsonResponse([]);
         }
         $row = $this->myHelper->getReactionById($id);
@@ -68,30 +68,30 @@ class ReactionController
 
     public function createListView()
     {
-        $methodName = $this->request->server('REQUEST_METHOD', 'GET');
+        $methodName = $this->request->server("REQUEST_METHOD", "GET");
         switch ($methodName) {
-        case 'POST':
-        case 'PATCH':
-        case 'PUT':
-            return $this->respondAddOrUpdateAsJson();
-        default:
-            return $this->respondReactionsAsJson();
+            case "POST":
+            case "PATCH":
+            case "PUT":
+                return $this->respondAddOrUpdateAsJson();
+            default:
+                return $this->respondReactionsAsJson();
         }
-        return new JsonResponse(["method"=>$methodName]);
+        return new JsonResponse(["method" => $methodName]);
     }
 
     private function respondAddOrUpdateAsJson()
     {
         $userId = (int) $this->userId;
         // $userId = rand(48, 73);
-        $type = $this->request->variable('type', '');
-        $postId = $this->request->variable('postId', 0);
+        $type = $this->request->variable("type", "");
+        $postId = $this->request->variable("postId", 0);
         $message = htmlspecialchars_decode(
-            $this->request->variable('message', '', true)
+            $this->request->variable("message", "", true)
         );
         $this->validateAddReactionData($userId, $postId, $type);
         $this->myHelper->addOrUpdate($userId, $type, $postId, $message);
-        return new JsonResponse(['status' => $this::SUCCESS]);
+        return new JsonResponse(["status" => $this::SUCCESS]);
     }
 
     private function validateAddReactionData($userId, $postId, $type)
@@ -103,7 +103,7 @@ class ReactionController
 
     private function respondReactionsAsJson()
     {
-        $postId = $this->request->variable('p', 0);
+        $postId = $this->request->variable("p", 0);
         if (!$postId) {
             trigger_error("Invalid data. Error Code: 260e135020");
         }

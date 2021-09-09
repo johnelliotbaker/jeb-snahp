@@ -1,14 +1,10 @@
-#wiki_editor_textarea
-{
-    font-size: 1.3em;
-    resize: vertical !important;
+#wiki_editor_textarea {
+  font-size: 1.3em;
+  resize: vertical !important;
 }
 
-.badge
-{
-    float: left;
-    font-size: 1em !important;
-    margin: 2px;
+.badge {
+  float: left;
+  font-size: 1em !important;
+  margin: 2px;
 }
-
-

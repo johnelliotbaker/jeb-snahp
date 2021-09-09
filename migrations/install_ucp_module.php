@@ -14,12 +14,15 @@ class install_ucp_module extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
     {
-        $sql = 'SELECT module_id
-			FROM ' . $this->table_prefix . "modules
+        $sql =
+            'SELECT module_id
+			FROM ' .
+            $this->table_prefix .
+            "modules
 			WHERE module_class = 'ucp'
 				AND module_langname = 'UCP_SNP_TITLE'";
         $result = $this->db->sql_query($sql);
-        $module_id = $this->db->sql_fetchfield('module_id');
+        $module_id = $this->db->sql_fetchfield("module_id");
         $this->db->sql_freeresult($result);
 
         return $module_id !== false;
@@ -27,27 +30,24 @@ class install_ucp_module extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array('\jeb\snahp\migrations\install_user_schema');
+        return ["\jeb\snahp\migrations\install_user_schema"];
     }
 
     public function update_data()
     {
-        return array(
-            array('module.add', array(
-                'ucp',
-                0,
-                'UCP_SNP_TITLE')
-            ),
-            array('module.add', array(
-                'ucp',
-                'UCP_SNP_TITLE',
-                array(
-                    'module_basename'	=> '\jeb\snahp\ucp\main_module',
-                    'modes'				=> array(
-                                                'visibility',
-                                                ),
-                ),
-            )),
-        );
+        return [
+            ["module.add", ["ucp", 0, "UCP_SNP_TITLE"]],
+            [
+                "module.add",
+                [
+                    "ucp",
+                    "UCP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\ucp\main_module",
+                        "modes" => ["visibility"],
+                    ],
+                ],
+            ],
+        ];
     }
 }

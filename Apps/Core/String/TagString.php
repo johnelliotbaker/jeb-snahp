@@ -10,27 +10,26 @@ class TagString
 
     public function decodeTags($strn, $tags)
     {
-        $decoderTable = $this->def['decode']['small'];
-        $prefix = '';
+        $decoderTable = $this->def["decode"]["small"];
+        $prefix = "";
         foreach ($tags as $tag) {
             $prefix .= $decoderTable[$tag];
         }
         return $prefix . $strn;
     }
 
-
     public function stripTags($strn)
     {
         $tags = [];
-        $encoderTable = $this->def['encode'];
-        $ptn = '#\s*((\(|\[|\{)(\w+)(\)|\]|\}))\s*#is';
+        $encoderTable = $this->def["encode"];
+        $ptn = "#\s*((\(|\[|\{)(\w+)(\)|\]|\}))\s*#is";
         $strn = preg_replace_callback(
             $ptn,
             function ($match) use (&$tags, $encoderTable) {
                 $tag = strtolower($match[3]);
                 if (array_key_exists($tag, $encoderTable)) {
                     $tags[] = $tag;
-                    return '';
+                    return "";
                 }
                 return $match[0];
             },

@@ -1,21 +1,23 @@
-table, th, td {
-    border: 1px solid black;
+table,
+th,
+td {
+  border: 1px solid black;
 }
 td {
-    text-align: right;
-    color: black;
+  text-align: right;
+  color: black;
 }
-td a{
-    color: #0080EE;
+td a {
+  color: #0080ee;
 }
 td > input {
-    border:0px;
-    text-align: right;
+  border: 0px;
+  text-align: right;
 }
 #user_id {
-    width: 25px;
+  width: 25px;
 }
 
 .mcp_table td {
-    padding: 4px 10px 4px 10px;
+  padding: 4px 10px 4px 10px;
 }

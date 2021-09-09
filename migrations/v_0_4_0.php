@@ -19,30 +19,26 @@ class v_0_4_0 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_3_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_3_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_googlebooks_enable' => array('BOOL', 0),
-                ),
-            ),
-        );
+        return [
+            "add_columns" => [
+                $this->table_prefix . "groups" => [
+                    "snp_googlebooks_enable" => ["BOOL", 0],
+                ],
+            ],
+        ];
     }
 
     public function revert_schema()
     {
-        return array(
-            'drop_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_googlebooks_enable',
-                ),
-            ),
-        );
+        return [
+            "drop_columns" => [
+                $this->table_prefix . "groups" => ["snp_googlebooks_enable"],
+            ],
+        ];
     }
 }

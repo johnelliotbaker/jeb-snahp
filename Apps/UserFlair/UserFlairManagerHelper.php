@@ -13,12 +13,8 @@ class UserFlairManagerHelper
     protected $sauth;
     protected $Type;
     protected $Flair;
-    public function __construct(
-        $db,
-        $sauth,
-        $Type,
-        $Flair
-    ) {
+    public function __construct($db, $sauth, $Type, $Flair)
+    {
         $this->db = $db;
         $this->sauth = $sauth;
         $this->Type = $Type;
@@ -28,13 +24,13 @@ class UserFlairManagerHelper
 
     public function getFlairs()
     {
-        $flairs = $this->Flair->getQueryset('');
+        $flairs = $this->Flair->getQueryset("");
         return $flairs;
     }
 
     public function fixTypedataUnderscores()
     {
-        $types = $this->Type->getQueryset('', []);
+        $types = $this->Type->getQueryset("", []);
         foreach ($types as $key => $type) {
             $outerdata = json_decode($type->data);
             if ($val = $outerdata->data->img_url) {

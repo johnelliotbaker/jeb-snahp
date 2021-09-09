@@ -6,7 +6,7 @@ use jeb\snahp\core\base;
 
 class emotes extends base
 {
-    protected $base_url = '';
+    protected $base_url = "";
 
     public function __construct()
     {
@@ -15,21 +15,21 @@ class emotes extends base
     public function handle($mode)
     {
         $this->reject_anon();
-        $this->tbl = $this->container->getParameter('jeb.snahp.tables');
-        $this->lut = $this->container->getParameter('jeb.snahp.emotes');
-        $this->user_id = $this->user->data['user_id'];
+        $this->tbl = $this->container->getParameter("jeb.snahp.tables");
+        $this->lut = $this->container->getParameter("jeb.snahp.emotes");
+        $this->user_id = $this->user->data["user_id"];
         switch ($mode) {
-        // case 'ls':
-        //     $cfg['tpl_name'] = '';
-        //     $cfg['b_feedback'] = false;
-        //     return $this->ls($cfg);
-        //     break;
-        case 'lsa':
-            return $this->respond_listings_as_json();
-            break;
-        default:
-            trigger_error('Error Code: f8c1f1638f');
-            break;
+            // case 'ls':
+            //     $cfg['tpl_name'] = '';
+            //     $cfg['b_feedback'] = false;
+            //     return $this->ls($cfg);
+            //     break;
+            case "lsa":
+                return $this->respond_listings_as_json();
+                break;
+            default:
+                trigger_error("Error Code: f8c1f1638f");
+                break;
         }
     }
 
@@ -42,18 +42,18 @@ class emotes extends base
     {
         $lut = $this->lut;
         $data = [];
-        $group_id = $this->user->data['group_id'];
+        $group_id = $this->user->data["group_id"];
         $group_data = $this->select_group($group_id);
-        $allowed_types = unserialize($group_data['snp_emo_allowed_types']);
-        foreach ($lut as $key=>$entry) {
-            if (in_array($entry['type'], $allowed_types)) {
-                $data[] = ['name'=>$key] + $entry;
+        $allowed_types = unserialize($group_data["snp_emo_allowed_types"]);
+        foreach ($lut as $key => $entry) {
+            if (in_array($entry["type"], $allowed_types)) {
+                $data[] = ["name" => $key] + $entry;
             }
         }
         $js = new \phpbb\json_response();
         $js->send([
-            'status' => 'success',
-            'data' => $data,
+            "status" => "success",
+            "data" => $data,
         ]);
     }
 
@@ -61,11 +61,11 @@ class emotes extends base
     {
         $lut = $this->lut;
         $data = [];
-        $group_id = $this->user->data['group_id'];
+        $group_id = $this->user->data["group_id"];
         $group_data = $this->select_group($group_id);
-        $allowed_types = unserialize($group_data['snp_emo_allowed_types']);
-        foreach ($lut as $key=>$entry) {
-            if (in_array($entry['type'], $allowed_types)) {
+        $allowed_types = unserialize($group_data["snp_emo_allowed_types"]);
+        foreach ($lut as $key => $entry) {
+            if (in_array($entry["type"], $allowed_types)) {
                 $data[$key] = $entry;
             }
         }
@@ -81,8 +81,8 @@ class emotes extends base
             $status = -1;
         }
         $js->send([
-            'status' => $status,
-            'data' => $data,
+            "status" => $status,
+            "data" => $data,
         ]);
     }
 }

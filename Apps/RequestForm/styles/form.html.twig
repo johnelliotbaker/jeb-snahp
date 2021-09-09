@@ -1,33 +1,22 @@
 <style>
-dd input {
-  padding: 2px;
-  background-color: inherit;
-}
-dt label.required,
-dd label.required {
-  color: inherit;
-}
-dd p.help-text {
-  font-size: 1em;
-  margin-top: 4px;
-  margin-bottom: 0;
-}
+  dd input { padding: 2px; background-color: inherit; } dt label.required, dd
+  label.required { color: inherit; } dd p.help-text { font-size: 1em;
+  margin-top: 4px; margin-bottom: 0; }
 </style>
 
-{% spaceless  %}
-{% for elem in form %}
-  {% set name = elem.vars.name %}
-  {% set compound = elem.vars.compound %}
-  {% if not compound %}
-    {% set leaf = elem %}
-    {% if leaf.vars.block_prefixes.1 == 'hidden' %}
-      {{ form_widget(leaf) }}
+{% spaceless %}
+  {% for elem in form %}
+    {% set name = elem.vars.name %}
+    {% set compound = elem.vars.compound %}
+    {% if not compound %}
+      {% set leaf = elem %}
+      {% if leaf.vars.block_prefixes[1] == 'hidden' %}
+        {{ form_widget(leaf) }}
+      {% else %}
+        {{ block('leafBlock', 'entry.html.twig') }}
+      {% endif %}
     {% else %}
-      {{ block('leafBlock', 'entry.html.twig') }}
+      {{ block(name, 'entry.html.twig') }}
     {% endif %}
-  {% else %}
-    {{ block(name, 'entry.html.twig') }}
-  {% endif %}
-{% endfor %}
+  {% endfor %}
 {% endspaceless %}
-

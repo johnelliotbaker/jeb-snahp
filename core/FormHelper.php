@@ -5,10 +5,8 @@ class FormHelper
 {
     protected $request;
     protected $template;
-    public function __construct(
-        $request,
-        $template
-    ) {
+    public function __construct($request, $template)
+    {
         $this->request = $request;
         $this->template = $template;
     }
@@ -16,7 +14,7 @@ class FormHelper
     public function getRequestVars($varDict)
     {
         $res = [];
-        foreach ($varDict as $varname=>$default) {
+        foreach ($varDict as $varname => $default) {
             $res[$varname] = $this->request->variable($varname, $default);
         }
         return $res;
@@ -24,7 +22,7 @@ class FormHelper
 
     public function setTemplateVars($vars)
     {
-        foreach ($vars as $varname=>$value) {
+        foreach ($vars as $varname => $value) {
             $varname = strtoupper($varname);
             $this->template->assign_var($varname, $value);
         }

@@ -19,38 +19,32 @@ class v_0_11_0 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_10_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_10_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_gamespot_enable'  => array('BOOL', 0),
-                ),
-            ),
-        );
+        return [
+            "add_columns" => [
+                $this->table_prefix . "groups" => [
+                    "snp_gamespot_enable" => ["BOOL", 0],
+                ],
+            ],
+        ];
     }
 
     public function revert_schema()
     {
-        return array(
-            'drop_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_gamespot_enable',
-                ),
-            ),
-        );
+        return [
+            "drop_columns" => [
+                $this->table_prefix . "groups" => ["snp_gamespot_enable"],
+            ],
+        ];
     }
 
     public function update_data()
     {
         $game = [10, 25, 41, 82];
-        return array(
-            array('config.add', array('snp_pg_fid_game',    implode(',', $game))),
-        );
+        return [["config.add", ["snp_pg_fid_game", implode(",", $game)]]];
     }
 }

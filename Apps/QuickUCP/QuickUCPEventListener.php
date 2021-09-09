@@ -10,26 +10,22 @@ class QuickUCPEventListener implements EventSubscriberInterface
     protected $config;
     protected $sauth;
     protected $helper;
-    public function __construct(
-        $user,
-        $config,
-        $sauth,
-        $helper
-    ) {
+    public function __construct($user, $config, $sauth, $helper)
+    {
         $this->user = $user;
         $this->config = $config;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            // 'core.viewtopic_modify_post_row' => [
-            //     ['showQuickUCPs', 1],
-            // ],
-        ];
+                // 'core.viewtopic_modify_post_row' => [
+                //     ['showQuickUCPs', 1],
+                // ],
+            ];
     }
 
     public function showQuickUCPs($event)

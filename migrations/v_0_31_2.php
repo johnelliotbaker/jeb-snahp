@@ -21,9 +21,12 @@ class v_0_31_2 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
+            "add_columns" => [
                 USERS_TABLE => [
-                    'snp_log_visit_timestamps'  => ['VCHAR:1000', '0,0,0,0,0,0,0,0,0,0'],
+                    "snp_log_visit_timestamps" => [
+                        "VCHAR:1000",
+                        "0,0,0,0,0,0,0,0,0,0",
+                    ],
                 ],
             ],
         ];
@@ -32,10 +35,8 @@ class v_0_31_2 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns'	=> [
-                USERS_TABLE => [
-                    'snp_log_visit_timestamps',
-                ],
+            "drop_columns" => [
+                USERS_TABLE => ["snp_log_visit_timestamps"],
             ],
         ];
     }
@@ -43,9 +44,9 @@ class v_0_31_2 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_log_b_user_spam', 1]],
-            ['config.add', ['snp_log_user_spam_interval', 10]],
-            ['config.add', ['snp_log_user_spam_buffer_length', 10]],
+            ["config.add", ["snp_log_b_user_spam", 1]],
+            ["config.add", ["snp_log_user_spam_interval", 10]],
+            ["config.add", ["snp_log_user_spam_buffer_length", 10]],
         ];
     }
 }

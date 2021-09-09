@@ -29,14 +29,18 @@ class v_0_29_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_ucp_custom_b_master', 1]],
-            ['module.add', [
-                'ucp',
-                'UCP_SNP_TITLE', [
-                    'module_basename' => '\jeb\snahp\ucp\main_module',
-                    'modes'           => [ 'custom', ],
+            ["config.add", ["snp_ucp_custom_b_master", 1]],
+            [
+                "module.add",
+                [
+                    "ucp",
+                    "UCP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\ucp\main_module",
+                        "modes" => ["custom"],
+                    ],
                 ],
-            ]],
+            ],
         ];
     }
 }

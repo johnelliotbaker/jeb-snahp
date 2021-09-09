@@ -24,8 +24,6 @@ class v_0_21_1 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        return [
-            ['config.add', ['snp_ql_req_accepted_requests', 1]],
-        ];
+        return [["config.add", ["snp_ql_req_accepted_requests", 1]]];
     }
 }

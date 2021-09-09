@@ -27,24 +27,31 @@ class helper
         $this->container = $container;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
-        $this->user_id = (int) $this->user->data['user_id'];
+        $this->user_id = (int) $this->user->data["user_id"];
     }
 
     public function add_log_item($data)
     {
-        $sql = 'INSERT INTO ' . $this->tbl['cron_log'] . ' ' . $this->db->sql_build_array('INSERT', $data);
+        $sql =
+            "INSERT INTO " .
+            $this->tbl["cron_log"] .
+            " " .
+            $this->db->sql_build_array("INSERT", $data);
         $this->db->sql_query($sql);
     }
 
-    public function log($type_name='feedpostbot', $item_name='hourly', $status='log')
-    {
+    public function log(
+        $type_name = "feedpostbot",
+        $item_name = "hourly",
+        $status = "log"
+    ) {
         $data = [
-            'user_id' => $this->user_id,
-            'created_time' => time(),
-            'type_name' => $type_name,
-            'item_name' => $item_name,
-            'status' => $status,
-            'data' => serialize([]),
+            "user_id" => $this->user_id,
+            "created_time" => time(),
+            "type_name" => $type_name,
+            "item_name" => $item_name,
+            "status" => $status,
+            "data" => serialize([]),
         ];
         $this->add_log_item($data);
     }

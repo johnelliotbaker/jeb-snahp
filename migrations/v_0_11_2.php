@@ -19,19 +19,17 @@ class v_0_11_2 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_11_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_11_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_index'	=> array(
-                $this->table_prefix . 'users'  => array(
-                    'snp_req_dib_enable'  => array('snp_req_dib_enable'),
-                ),
-            ),
-        );
+        return [
+            "add_index" => [
+                $this->table_prefix . "users" => [
+                    "snp_req_dib_enable" => ["snp_req_dib_enable"],
+                ],
+            ],
+        ];
     }
 }

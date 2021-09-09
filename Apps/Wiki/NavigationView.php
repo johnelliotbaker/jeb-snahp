@@ -2,11 +2,11 @@
 
 namespace jeb\snahp\Apps\Wiki;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/Apps/Wiki/Models/ArticleGroup.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Views\SortByPriorityMixin;
 use jeb\snahp\core\Rest\Permissions\UserPermission;
@@ -19,10 +19,10 @@ class NavigationView extends ListCreateAPIView
 {
     use SortByPriorityMixin;
 
-    const ARTICLE_GROUP_TABLE = 'phpbb_snahp_wiki_article_group';
-    const ARTICLE_ENTRY_TABLE = 'phpbb_snahp_wiki_article_entry';
+    const ARTICLE_GROUP_TABLE = "phpbb_snahp_wiki_article_group";
+    const ARTICLE_ENTRY_TABLE = "phpbb_snahp_wiki_article_entry";
 
-    protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';
+    protected $serializerClass = "jeb\snahp\core\Rest\Serializers\ModelSerializer";
     protected $request;
     protected $sauth;
     protected $model;
@@ -34,7 +34,7 @@ class NavigationView extends ListCreateAPIView
         $this->model = $model;
         $this->permissionClasses = [new AllowNonePermission()];
         $this->permission = new NavPermission($permissionModel, $sauth);
-        $this->sauth->reject_anon('Error Code: db7f8ce167');
+        $this->sauth->reject_anon("Error Code: db7f8ce167");
     }
 
     public function view()
@@ -56,8 +56,13 @@ class NavigationView extends ListCreateAPIView
         $data = [];
         foreach ($groups as $group) {
             $results = $this->makeGroup($group);
-            if ($results || $this->sauth->user_belongs_to_groupset(null, 'Keepers')) {
-                $data[] = array_merge($group->export(), ['results' => $results]);
+            if (
+                $results ||
+                $this->sauth->user_belongs_to_groupset(null, "Keepers")
+            ) {
+                $data[] = array_merge($group->export(), [
+                    "results" => $results,
+                ]);
             }
         }
         return new JsonResponse($data);
@@ -68,20 +73,19 @@ class NavigationView extends ListCreateAPIView
         $name = $group->name;
         $id = $group->id;
         $group = R::load($this::ARTICLE_GROUP_TABLE, $id);
-        $entries = getOwnList($group->with(' ORDER BY priority DESC, subject ASC'), $this::ARTICLE_ENTRY_TABLE);
-        $entries = array_map(
-            function ($arg) use ($name) {
-                $data['id'] = $arg->id;
-                $data['subject'] = $arg->subject;
-                $data['group'] = $name;
-                return $data;
-            },
-            $entries
+        $entries = getOwnList(
+            $group->with(" ORDER BY priority DESC, subject ASC"),
+            $this::ARTICLE_ENTRY_TABLE
         );
+        $entries = array_map(function ($arg) use ($name) {
+            $data["id"] = $arg->id;
+            $data["subject"] = $arg->subject;
+            $data["group"] = $name;
+            return $data;
+        }, $entries);
         return array_values($entries);
     }
 }
-
 
 class NavPermission extends UserPermission
 {
@@ -97,21 +101,29 @@ class NavPermission extends UserPermission
             return $articleGroups;
         }
         $perms = $this->getPermissions();
-        return array_filter(
-            $articleGroups,
-            function ($articleGroup) use ($perms, $request) {
-                $targetCodename = $this->makePermissionCodename($request, 'wiki', $articleGroup->name);
-                foreach ($perms as $permObject) {
-                    $codename = $permObject->codename;
-                    $perm = $this->parsePermissionCodename($codename);
-                    if ($perm['action'] === 'all') {
-                        $codename = $this->makePermissionCodename($request, 'wiki', $perm['resourceName']);
-                    }
-                    if ($codename === $targetCodename) {
-                        return true;
-                    }
+        return array_filter($articleGroups, function ($articleGroup) use (
+            $perms,
+            $request
+        ) {
+            $targetCodename = $this->makePermissionCodename(
+                $request,
+                "wiki",
+                $articleGroup->name
+            );
+            foreach ($perms as $permObject) {
+                $codename = $permObject->codename;
+                $perm = $this->parsePermissionCodename($codename);
+                if ($perm["action"] === "all") {
+                    $codename = $this->makePermissionCodename(
+                        $request,
+                        "wiki",
+                        $perm["resourceName"]
+                    );
+                }
+                if ($codename === $targetCodename) {
+                    return true;
                 }
             }
-        );
+        });
     }
 }

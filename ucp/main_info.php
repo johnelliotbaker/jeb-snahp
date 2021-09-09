@@ -18,28 +18,28 @@ class main_info
     public function module()
     {
         return [
-            'filename'  => '\jeb\snahp\ucp\main_module',
-            'title'   => 'UCP_SNP_TITLE',
-            'modes'   => [
-                'visibility'  => [
-                    'title' => 'UCP_SNP_VIS',
-                    'auth'  => 'ext_jeb/snahp',
-                    'cat' => ['UCP_SNP_VIS_TITLE']
+            "filename" => "\jeb\snahp\ucp\main_module",
+            "title" => "UCP_SNP_TITLE",
+            "modes" => [
+                "visibility" => [
+                    "title" => "UCP_SNP_VIS",
+                    "auth" => "ext_jeb/snahp",
+                    "cat" => ["UCP_SNP_VIS_TITLE"],
                 ],
-                'invite'  => [
-                    'title' => 'UCP_SNP_INVITE',
-                    'auth'  => 'ext_jeb/snahp',
-                    'cat' => ['UCP_SNP_INVITE_TITLE']
+                "invite" => [
+                    "title" => "UCP_SNP_INVITE",
+                    "auth" => "ext_jeb/snahp",
+                    "cat" => ["UCP_SNP_INVITE_TITLE"],
                 ],
-                'custom'  => [
-                    'title' => 'UCP_SNP_CUSTOM',
-                    'auth'  => 'ext_jeb/snahp',
-                    'cat' => ['UCP_SNP_CUSTOM_TITLE']
+                "custom" => [
+                    "title" => "UCP_SNP_CUSTOM",
+                    "auth" => "ext_jeb/snahp",
+                    "cat" => ["UCP_SNP_CUSTOM_TITLE"],
                 ],
-                'block'  => [
-                    'title' => 'UCP_SNP_BLOCK',
-                    'auth'  => 'ext_jeb/snahp',
-                    'cat' => ['UCP_SNP_BLOCK_TITLE']
+                "block" => [
+                    "title" => "UCP_SNP_BLOCK",
+                    "auth" => "ext_jeb/snahp",
+                    "cat" => ["UCP_SNP_BLOCK_TITLE"],
                 ],
             ],
         ];

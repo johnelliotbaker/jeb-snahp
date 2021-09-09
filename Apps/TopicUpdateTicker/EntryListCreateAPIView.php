@@ -2,15 +2,15 @@
 
 namespace jeb\snahp\Apps\TopicUpdateTicker;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 
 class EntryListCreateAPIView extends ListCreateAPIView
 {
-    protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';
+    protected $serializerClass = "jeb\snahp\core\Rest\Serializers\ModelSerializer";
     protected $request;
     protected $sauth;
     protected $model;
@@ -28,8 +28,8 @@ class EntryListCreateAPIView extends ListCreateAPIView
 
     public function viewByTopicId($topicId)
     {
-        $this->orderBySqlStatement = 'ORDER BY id DESC';
-        $this->request->overwrite('topic', (int) $topicId);
+        $this->orderBySqlStatement = "ORDER BY id DESC";
+        $this->request->overwrite("topic", (int) $topicId);
         return parent::dispatch();
     }
 }

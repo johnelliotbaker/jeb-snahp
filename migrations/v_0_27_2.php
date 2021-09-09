@@ -17,9 +17,9 @@ class v_0_27_2 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
+            "add_columns" => [
                 GROUPS_TABLE => [
-                    'snp_mydramalist_enable'  => ['BOOL', 0],
+                    "snp_mydramalist_enable" => ["BOOL", 0],
                 ],
             ],
         ];
@@ -28,18 +28,14 @@ class v_0_27_2 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                GROUPS_TABLE => [
-                    'snp_mydramalist_enable',
-                ],
+            "drop_columns" => [
+                GROUPS_TABLE => ["snp_mydramalist_enable"],
             ],
         ];
     }
 
     public function update_data()
     {
-        return [
-            ['config.add', ['snp_pg_fid_mydramalist', '72,73,74,75']],
-        ];
+        return [["config.add", ["snp_pg_fid_mydramalist", "72,73,74,75"]]];
     }
 }

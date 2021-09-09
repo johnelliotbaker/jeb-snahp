@@ -1,44 +1,35 @@
-table
-{
-    font-size: 1.1em;
+table {
+  font-size: 1.1em;
 }
 
-th.icon_column
-{
-    width: 10px;
+th.icon_column {
+  width: 10px;
 }
 
-i.fa-unlock
-{
-    color: #3b3 !important;
+i.fa-unlock {
+  color: #3b3 !important;
 }
 
-td i
-{
-    font-size: 1.3em !important;
+td i {
+  font-size: 1.3em !important;
 }
 
-i.fa-close
-{
-    color: #cc3545 !important;
+i.fa-close {
+  color: #cc3545 !important;
 }
 
-i.fa-check
-{
-    color: #3a3 !important;
+i.fa-check {
+  color: #3a3 !important;
 }
 
-i.fa-external-link-square
-{
-    color: #aaa !important;
+i.fa-external-link-square {
+  color: #aaa !important;
 }
 
-i.fa-ambulance
-{
-    color: #1089ff !important;
+i.fa-ambulance {
+  color: #1089ff !important;
 }
 
-p.legend
-{
-    font-size: .9em;
+p.legend {
+  font-size: 0.9em;
 }

@@ -4,95 +4,88 @@ img.mega_icon,
 img.gdrive_icon,
 img.zippy_icon,
 img.android_icon,
-img.ios_icon
-{
-    margin-bottom: -6px !important;
+img.ios_icon {
+  margin-bottom: -6px !important;
 }
 
 /* Favorites */
-tr.favorite:hover
-{
-    background-color: #f0f0f0 !important;
+tr.favorite:hover {
+  background-color: #f0f0f0 !important;
 }
 
-table.table1 tbody td.body
-{
-    padding-top: 0px !important;
-    vertical-align: top !important;
+table.table1 tbody td.body {
+  padding-top: 0px !important;
+  vertical-align: top !important;
 }
 
 tbody td.body .title,
-tbody td.body .title a
-{
-    padding: 0px;
-    font-weight: 700;
-    font-size: 15px;
+tbody td.body .title a {
+  padding: 0px;
+  font-weight: 700;
+  font-size: 15px;
 }
 
-.title .topictitle
-{
-    font-size: 17px;
+.title .topictitle {
+  font-size: 17px;
 }
 
-td.content .details
-{
-    font-size: 11px;
+td.content .details {
+  font-size: 11px;
 }
 
 /* hidebox */
-.hidebox.unhide
-{
-    background-color: #EEEEE4;
+.hidebox.unhide {
+  background-color: #eeeee4;
 }
 
 /* curlies */
-table.autofill td{
-    color: black;
+table.autofill td {
+  color: black;
 }
-table.autofill tr{
-    background:#FFF;
+table.autofill tr {
+  background: #fff;
 }
 table.autofill tr:nth-child(odd) {
-    background:#F4F4F4;
+  background: #f4f4f4;
 }
 
 /* Favorite quick links */
-thead, tbody, tfoot { vertical-align: middle }
-td.category, tr { vertical-align: inherit }
-
+thead,
+tbody,
+tfoot {
+  vertical-align: middle;
+}
+td.category,
+tr {
+  vertical-align: inherit;
+}
 
 /* defaults */
-.default_text_color
-{
-    color: #141414 !important;
+.default_text_color {
+  color: #141414 !important;
 }
 
 /* mediainfo */
-.mediainfo .collapse_plus
-{
-    margin: 0px;
-    line-height: 16px;
+.mediainfo .collapse_plus {
+  margin: 0px;
+  line-height: 16px;
 }
 
 /* rh_tags */
 .rh_tag,
-.rh_tag a
-{
-    background-color: #cadceb !important;
-    color: black !important;
+.rh_tag a {
+  background-color: #cadceb !important;
+  color: black !important;
 }
 
 /* custom_rank */
-dd.profile-rank > img
-{
+dd.profile-rank > img {
   max-width: 140px !important;
 }
 
 /* Christmas */
 .giftbox_countdown_hours,
 .giftbox_countdown_minutes,
-.giftbox_countdown_seconds
-{
+.giftbox_countdown_seconds {
   bottom: 107px !important;
 }
-

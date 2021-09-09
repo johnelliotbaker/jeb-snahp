@@ -1,38 +1,32 @@
-#close_btn:focus{
-    outline:none!important;
+#close_btn:focus {
+  outline: none !important;
 }
 
 .bottom-right {
-    position: absolute;
-    bottom: 8px;
-    right: 16px;
-    text-align: right;
-    font-weight: bold;
-    color: #FD8;
-    font-size: 125%;
-    text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  text-align: right;
+  font-weight: bold;
+  color: #fd8;
+  font-size: 125%;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
 }
 
-.bottom-right a{
-    color: #4bf;
+.bottom-right a {
+  color: #4bf;
 }
 
 .img_container {
-    position: relative;
-    text-align: center;
-    color: white;
-
+  position: relative;
+  text-align: center;
+  color: white;
 }
 
 .img_li {
-    display: inline-block;
+  display: inline-block;
 }
-
-
 
 /* For Modal */
 /* Sourced from */
@@ -50,8 +44,6 @@
 /* } */
 
 /* 1. Ensure this sits above everything when visible */
-
-
 
 .modal_imdb {
   position: absolute;
@@ -102,13 +94,13 @@
 .modal-transition {
   transition: all 0.3s 0.12s;
   -webkit-transform: translateY(-10%);
-          transform: translateY(-10%);
+  transform: translateY(-10%);
   opacity: 0;
 }
 
 .modal_imdb.is-visible .modal-transition {
   -webkit-transform: translateY(0);
-          transform: translateY(0);
+  transform: translateY(0);
   opacity: 1;
 }
 
@@ -157,4 +149,3 @@
 .modal-content > *:last-child {
   margin-bottom: 0;
 }
-

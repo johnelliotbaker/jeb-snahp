@@ -2,8 +2,8 @@
 
 namespace jeb\snahp\Apps\UserFlair;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
 use jeb\snahp\core\Rest\Serializers\Serializer;
 use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
@@ -17,7 +17,7 @@ use \R as R;
 
 class FlairRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
 {
-    protected $serializerClass = 'jeb\snahp\core\Rest\Serializers\ModelSerializer';
+    protected $serializerClass = "jeb\snahp\core\Rest\Serializers\ModelSerializer";
     protected $request;
     protected $sauth;
     protected $model;
@@ -28,8 +28,6 @@ class FlairRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
         $this->sauth = $sauth;
         $this->model = $model;
 
-        $this->permissionClasses = [
-            new AllowDevPermission($sauth),
-        ];
+        $this->permissionClasses = [new AllowDevPermission($sauth)];
     }
 }

@@ -25,15 +25,17 @@ class v_0_22_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['module.add', [
-                'mcp',
-                'MCP_SNP_TITLE',
+            [
+                "module.add",
                 [
-                    'module_basename' => '\jeb\snahp\mcp\main_module',
-                    'modes'           => [ 'scripts', ],
+                    "mcp",
+                    "MCP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\mcp\main_module",
+                        "modes" => ["scripts"],
+                    ],
                 ],
-            ]],
-
+            ],
         ];
     }
 }

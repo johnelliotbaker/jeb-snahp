@@ -8,42 +8,44 @@ trait BaseQueryMixin
     {
         $id = (int) $id;
         $idString = $this->ID_STRING;
-        $sql = 'UPDATE ' . $this->OWN_TABLE_NAME . '
-            SET ' . $this->db->sql_build_array('UPDATE', $data) . "
+        $sql =
+            "UPDATE " .
+            $this->OWN_TABLE_NAME .
+            '
+            SET ' .
+            $this->db->sql_build_array("UPDATE", $data) .
+            "
             WHERE ${idString}=${id}";
         $this->db->sql_query($sql);
     }
 
-    public function get($id, $options=null)
+    public function get($id, $options = null)
     {
-        $fields = $options['fields'] ?? ['*'];
+        $fields = $options["fields"] ?? ["*"];
 
         $id = (int) $id;
         $sqlArray = [
-            'SELECT' => $this->makeFieldString($fields, 'a'),
-            'FROM' => [$this->OWN_TABLE_NAME => 'a'],
-            'WHERE' => $this->ID_STRING . "=${id}",
+            "SELECT" => $this->makeFieldString($fields, "a"),
+            "FROM" => [$this->OWN_TABLE_NAME => "a"],
+            "WHERE" => $this->ID_STRING . "=${id}",
         ];
-        $sql = $this->db->sql_build_query('SELECT', $sqlArray);
+        $sql = $this->db->sql_build_query("SELECT", $sqlArray);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         return $row;
     }
 
-    public function makeFieldString($fields, $tablename=null)
+    public function makeFieldString($fields, $tablename = null)
     {
         if (is_string($fields)) {
-            $fields = explode(',', $fields);
+            $fields = explode(",", $fields);
         }
         if ($tablename) {
-            $fields = array_map(
-                function ($field) use ($tablename) {
-                    return "$tablename.$field";
-                },
-                $fields
-            );
+            $fields = array_map(function ($field) use ($tablename) {
+                return "$tablename.$field";
+            }, $fields);
         }
-        return implode(', ', $fields);
+        return implode(", ", $fields);
     }
 }

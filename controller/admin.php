@@ -2,8 +2,8 @@
 
 namespace jeb\snahp\controller;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\base;
 use jeb\snahp\core\topic_mover;
 
@@ -15,13 +15,13 @@ class admin extends base
     {
         $this->prefix = $prefix;
         $this->topic_mover = $topic_mover;
-        $this->u_action = 'app.php/snahp/admin/';
+        $this->u_action = "app.php/snahp/admin/";
     }
 
     protected function get_topic_data(array $topic_ids)
     {
-        if (!function_exists('phpbb_get_topic_data')) {
-            include('includes/functions_mcp.php');
+        if (!function_exists("phpbb_get_topic_data")) {
+            include "includes/functions_mcp.php";
         }
         return phpbb_get_topic_data($topic_ids);
     }
@@ -32,7 +32,7 @@ class admin extends base
         $a_tid = [$tid];
         $td = $this->get_topic_data($a_tid);
         $this->topic_mover->move_topics($td, $fid);
-        $data = ['status' => 'SUCCESS'];
+        $data = ["status" => "SUCCESS"];
         $json = new JsonResponse($data);
         return $json;
     }
@@ -40,7 +40,7 @@ class admin extends base
     public function sync_forum($fid)
     {
         $this->reject_non_admin();
-        $url = '/adm/index.php?i=acp_forums&f=46&action=sync_forum';
+        $url = "/adm/index.php?i=acp_forums&f=46&action=sync_forum";
         $url = append_sid($url);
         prn($url);
         // meta_refresh(2, $this->u_action);
@@ -51,20 +51,20 @@ class admin extends base
         $data = $this->user->data;
         $auth = $this->auth;
         $request = $this->request;
-        if (!$auth->acl_gets('a_')) {
+        if (!$auth->acl_gets("a_")) {
             // If not site admin, throw error
             // $auth->acl_gets('a_', 'm_') to include moderators
-            trigger_error('Lasciate ogne speranza, voi ch’intrate.');
+            trigger_error("Lasciate ogne speranza, voi ch’intrate.");
         }
         // Add security for CSRF
-        add_form_key('jeb/snahp');
-        if ($request->is_set_post('submit')) {
-            if (!check_form_key('jeb/snahp')) {
-                trigger_error('Form Key Error');
+        add_form_key("jeb/snahp");
+        if ($request->is_set_post("submit")) {
+            if (!check_form_key("jeb/snahp")) {
+                trigger_error("Form Key Error");
             }
             // Check form for processing parameters
-            $thanks_limit = (int)$request->variable('thanks_limit', '0');
-            $hidden_limit = (int)$request->variable('hidden_limit', '0');
+            $thanks_limit = (int) $request->variable("thanks_limit", "0");
+            $hidden_limit = (int) $request->variable("hidden_limit", "0");
             if ($thanks_limit > 0) {
                 $this->set_thanks($thanks_limit);
             }
@@ -74,30 +74,47 @@ class admin extends base
             // Show processing output
             if (true) {
                 meta_refresh(2, $this->u_action);
-                $message = 'Processed without an error.';
+                $message = "Processed without an error.";
                 trigger_error($message);
             }
         }
-        return $this->helper->render('snahp_admin.html');
+        return $this->helper->render("snahp_admin.html");
     }
 
     public function set_hidden($limit)
     {
         $SQL_LIMIT = $limit;
-        $sql = 'SELECT topic_id, topic_first_post_id from ' . TOPICS_TABLE . ' ORDER BY topic_id DESC';
+        $sql =
+            "SELECT topic_id, topic_first_post_id from " .
+            TOPICS_TABLE .
+            " ORDER BY topic_id DESC";
         $result = $this->db->sql_query_limit($sql, (int) $SQL_LIMIT);
         while ($row = $this->db->sql_fetchrow($result)) {
-            $pid = $row['topic_first_post_id'];
-            $tid = $row['topic_id'];
-            $sql_post = 'SELECT post_text from ' . POSTS_TABLE . ' where post_id=' . $pid;
+            $pid = $row["topic_first_post_id"];
+            $tid = $row["topic_id"];
+            $sql_post =
+                "SELECT post_text from " .
+                POSTS_TABLE .
+                " where post_id=" .
+                $pid;
             $result_post = $this->db->sql_query($sql_post);
             $row_post = $this->db->sql_fetchrow($result_post);
-            $ptn_hide = '`<s>\[hide\]`';
-            if (preg_match($ptn_hide, '`' . $row_post['post_text'] . '`')) {
-                $sql_strn = 'UPDATE ' . TOPICS_TABLE . ' SET snp_hidden=1 WHERE topic_id=' . $tid . ';';
+            $ptn_hide = "`<s>\[hide\]`";
+            if (preg_match($ptn_hide, "`" . $row_post["post_text"] . "`")) {
+                $sql_strn =
+                    "UPDATE " .
+                    TOPICS_TABLE .
+                    " SET snp_hidden=1 WHERE topic_id=" .
+                    $tid .
+                    ";";
                 $this->db->sql_query($sql_strn);
             } else {
-                $sql_strn = 'UPDATE ' . TOPICS_TABLE . ' SET snp_hidden=0 WHERE topic_id=' . $tid . ';';
+                $sql_strn =
+                    "UPDATE " .
+                    TOPICS_TABLE .
+                    " SET snp_hidden=0 WHERE topic_id=" .
+                    $tid .
+                    ";";
                 $this->db->sql_query($sql_strn);
             }
         }
@@ -106,18 +123,30 @@ class admin extends base
 
     public function set_thanks($limit)
     {
-        define('THANKS_TABLE', 'phpbb_thanks');
+        define("THANKS_TABLE", "phpbb_thanks");
         $SQL_LIMIT = $limit;
-        $sql = 'SELECT topic_id from ' . TOPICS_TABLE . ' ORDER BY topic_id DESC';
+        $sql =
+            "SELECT topic_id from " . TOPICS_TABLE . " ORDER BY topic_id DESC";
         $result = $this->db->sql_query_limit($sql, (int) $SQL_LIMIT);
         while ($row = $this->db->sql_fetchrow($result)) {
-            $tid = $row['topic_id'];
-            $sql_thanks = 'SELECT count(*) as cnt from ' . THANKS_TABLE . ' where topic_id=' . $tid;
+            $tid = $row["topic_id"];
+            $sql_thanks =
+                "SELECT count(*) as cnt from " .
+                THANKS_TABLE .
+                " where topic_id=" .
+                $tid;
             $result_thanks = $this->db->sql_query($sql_thanks);
             $row_thanks = $this->db->sql_fetchrow($result_thanks);
             if ($row_thanks) {
-                $cnt = $row_thanks['cnt'];
-                $sql_strn = 'UPDATE ' . TOPICS_TABLE . ' SET snp_thanks_count=' . $cnt . ' WHERE topic_id=' . $tid . ';';
+                $cnt = $row_thanks["cnt"];
+                $sql_strn =
+                    "UPDATE " .
+                    TOPICS_TABLE .
+                    " SET snp_thanks_count=" .
+                    $cnt .
+                    " WHERE topic_id=" .
+                    $tid .
+                    ";";
                 $this->db->sql_query($sql_strn);
             }
         }

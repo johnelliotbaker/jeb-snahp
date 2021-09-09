@@ -17,9 +17,9 @@ class v_0_16_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns'	=> [
-                $this->table_prefix . 'groups'  => [
-                    'snp_search_interval' => ['INT:10', 0],
+            "add_columns" => [
+                $this->table_prefix . "groups" => [
+                    "snp_search_interval" => ["INT:10", 0],
                 ],
             ],
             // 'add_tables' => [
@@ -40,10 +40,8 @@ class v_0_16_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns'	=> [
-                $this->table_prefix . 'groups'  => [
-                    'snp_search_interval',
-                ],
+            "drop_columns" => [
+                $this->table_prefix . "groups" => ["snp_search_interval"],
             ],
             // 'drop_tables' => [
             //     $this->table_prefix . 'snahp_bump_topic',
@@ -54,16 +52,19 @@ class v_0_16_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_search_b_enable', true]],
+            ["config.add", ["snp_search_b_enable", true]],
             // ['config.add', ['snp_easter_chicken_chance', 10000]],
-            ['module.add', [
-                'acp',
-                'ACP_SNP_TITLE',
+            [
+                "module.add",
                 [
-                    'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> ['group_based_search'],
+                    "acp",
+                    "ACP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\acp\main_module",
+                        "modes" => ["group_based_search"],
+                    ],
                 ],
-            ]],
+            ],
         ];
     }
 }

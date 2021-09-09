@@ -46,12 +46,17 @@ class bbcodes_installer
      * @param string           $php_ext
      * @access public
      */
-    public function __construct(driver_interface $db, request $request, user $user, $phpbb_root_path, $php_ext)
-    {
+    public function __construct(
+        driver_interface $db,
+        request $request,
+        user $user,
+        $phpbb_root_path,
+        $php_ext
+    ) {
         $this->phpbb_root_path = $phpbb_root_path;
-        $this->php_ext         = $php_ext;
+        $this->php_ext = $php_ext;
 
-        $this->acp_bbcodes     = $this->get_acp_bbcodes();
+        $this->acp_bbcodes = $this->get_acp_bbcodes();
         $this->db = $db;
     }
 
@@ -66,7 +71,12 @@ class bbcodes_installer
         foreach ($bbcodes as $bbcode_name => $bbcode_data) {
             $bbcode_data = $this->build_bbcode($bbcode_data);
 
-            if ($bbcode = $this->bbcode_exists($bbcode_name, $bbcode_data['bbcode_tag'])) {
+            if (
+                $bbcode = $this->bbcode_exists(
+                    $bbcode_name,
+                    $bbcode_data["bbcode_tag"]
+                )
+            ) {
                 $this->update_bbcode($bbcode, $bbcode_data);
             } else {
                 $this->add_bbcode($bbcode_data);
@@ -82,8 +92,10 @@ class bbcodes_installer
      */
     protected function get_acp_bbcodes()
     {
-        if (!class_exists('acp_bbcodes')) {
-            include($this->phpbb_root_path . 'includes/acp/acp_bbcodes.' . $this->php_ext);
+        if (!class_exists("acp_bbcodes")) {
+            include $this->phpbb_root_path .
+                "includes/acp/acp_bbcodes." .
+                $this->php_ext;
         }
 
         return new \acp_bbcodes();
@@ -98,15 +110,18 @@ class bbcodes_installer
      */
     protected function build_bbcode(array $bbcode_data)
     {
-        $data = $this->acp_bbcodes->build_regexp($bbcode_data['bbcode_match'], $bbcode_data['bbcode_tpl']);
-
-        $bbcode_data += array(
-            'bbcode_tag'          => $data['bbcode_tag'],
-            'first_pass_match'    => $data['first_pass_match'],
-            'first_pass_replace'  => $data['first_pass_replace'],
-            'second_pass_match'   => $data['second_pass_match'],
-            'second_pass_replace' => $data['second_pass_replace'],
+        $data = $this->acp_bbcodes->build_regexp(
+            $bbcode_data["bbcode_match"],
+            $bbcode_data["bbcode_tpl"]
         );
+
+        $bbcode_data += [
+            "bbcode_tag" => $data["bbcode_tag"],
+            "first_pass_match" => $data["first_pass_match"],
+            "first_pass_replace" => $data["first_pass_replace"],
+            "second_pass_match" => $data["second_pass_match"],
+            "second_pass_replace" => $data["second_pass_replace"],
+        ];
 
         return $bbcode_data;
     }
@@ -119,7 +134,7 @@ class bbcodes_installer
      */
     protected function get_max_bbcode_id()
     {
-        return $this->get_max_column_value('bbcode_id');
+        return $this->get_max_column_value("bbcode_id");
     }
 
     /**
@@ -131,10 +146,14 @@ class bbcodes_installer
      */
     private function get_max_column_value($column)
     {
-        $sql = 'SELECT MAX(' . $this->db->sql_escape($column) . ') AS maximum
-			FROM ' . BBCODES_TABLE;
+        $sql =
+            "SELECT MAX(" .
+            $this->db->sql_escape($column) .
+            ') AS maximum
+			FROM ' .
+            BBCODES_TABLE;
         $result = $this->db->sql_query($sql);
-        $maximum = $this->db->sql_fetchfield('maximum');
+        $maximum = $this->db->sql_fetchfield("maximum");
         $this->db->sql_freeresult($result);
 
         return (int) $maximum;
@@ -150,10 +169,17 @@ class bbcodes_installer
      */
     protected function bbcode_exists($bbcode_name, $bbcode_tag)
     {
-        $sql = 'SELECT bbcode_id
-			FROM ' . BBCODES_TABLE . "
-			WHERE LOWER(bbcode_tag) = '" . strtolower($bbcode_name) . "'
-			OR LOWER(bbcode_tag) = '" . strtolower($bbcode_tag) . "'";
+        $sql =
+            'SELECT bbcode_id
+			FROM ' .
+            BBCODES_TABLE .
+            "
+			WHERE LOWER(bbcode_tag) = '" .
+            strtolower($bbcode_name) .
+            "'
+			OR LOWER(bbcode_tag) = '" .
+            strtolower($bbcode_tag) .
+            "'";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -171,9 +197,15 @@ class bbcodes_installer
      */
     protected function update_bbcode(array $old_bbcode, array $new_bbcode)
     {
-        $sql = 'UPDATE ' . BBCODES_TABLE . '
-			SET ' . $this->db->sql_build_array('UPDATE', $new_bbcode) . '
-			WHERE bbcode_id = ' . (int) $old_bbcode['bbcode_id'];
+        $sql =
+            "UPDATE " .
+            BBCODES_TABLE .
+            '
+			SET ' .
+            $this->db->sql_build_array("UPDATE", $new_bbcode) .
+            '
+			WHERE bbcode_id = ' .
+            (int) $old_bbcode["bbcode_id"];
         $this->db->sql_query($sql);
     }
 
@@ -193,11 +225,18 @@ class bbcodes_installer
         }
 
         if ($bbcode_id <= BBCODE_LIMIT) {
-            $bbcode_data['bbcode_id'] = (int) $bbcode_id;
+            $bbcode_data["bbcode_id"] = (int) $bbcode_id;
             // set display_on_posting to 1 by default, so if 0 is desired, set it in our data array
-            $bbcode_data['display_on_posting'] = (int) !isset($bbcode_data['display_on_posting']);
+            $bbcode_data["display_on_posting"] = (int) !isset(
+                $bbcode_data["display_on_posting"]
+            );
 
-            $this->db->sql_query('INSERT INTO ' . BBCODES_TABLE . ' ' . $this->db->sql_build_array('INSERT', $bbcode_data));
+            $this->db->sql_query(
+                "INSERT INTO " .
+                    BBCODES_TABLE .
+                    " " .
+                    $this->db->sql_build_array("INSERT", $bbcode_data)
+            );
         }
     }
 }

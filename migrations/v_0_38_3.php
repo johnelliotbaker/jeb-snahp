@@ -21,37 +21,40 @@ class v_0_38_3 extends container_aware_migration
 
     public function update_schema()
     {
-        return [ ];
+        return [];
     }
 
     public function revert_schema()
     {
-        return [ ];
+        return [];
     }
 
     public function install_bbcodes()
     {
-        $install = new bbcodes_installer($this->db, $this->container->get('request'), $this->container->get('user'), $this->phpbb_root_path, $this->php_ext);
-        $install->install_bbcodes(
-            [
-                'banner' => [
-                    'display_on_posting' => false,
-                    'bbcode_match'       => '[banner]{URL}[/banner]',
-                    'bbcode_tpl'         => '',
-                ],
-                's' => [
-                    'display_on_posting' => true,
-                    'bbcode_match'       => '[s]{TEXT}[/s]',
-                    'bbcode_tpl'         => '<span style="text-decoration: line-through;">{TEXT}</span>',
-                ],
-            ]
+        $install = new bbcodes_installer(
+            $this->db,
+            $this->container->get("request"),
+            $this->container->get("user"),
+            $this->phpbb_root_path,
+            $this->php_ext
         );
+        $install->install_bbcodes([
+            "banner" => [
+                "display_on_posting" => false,
+                "bbcode_match" => "[banner]{URL}[/banner]",
+                "bbcode_tpl" => "",
+            ],
+            "s" => [
+                "display_on_posting" => true,
+                "bbcode_match" => "[s]{TEXT}[/s]",
+                "bbcode_tpl" =>
+                    '<span style="text-decoration: line-through;">{TEXT}</span>',
+            ],
+        ]);
     }
 
     public function update_data()
     {
-        return [
-            ['custom', [[$this, 'install_bbcodes']]],
-        ];
+        return [["custom", [[$this, "install_bbcodes"]]]];
     }
 }

@@ -22,28 +22,28 @@ class v_0_43_0 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_tables' => [
-                $this->table_prefix . 'snahp_bump_user' => [
-                    'COLUMNS' => [
-                        'id' => ['UINT', null, 'auto_increment'],
-                        'user' => ['INT:11', 0],
-                        'banned' => ['BOOL', 0],
-                        'ban_start' => ['INT:11', 0],
-                        'ban_end' => ['INT:11', 0],
-                        'ban_reason' => ['TEXT_UNI', ''],
-                        'ban_by' => ['INT:11', 0],
+            "add_tables" => [
+                $this->table_prefix . "snahp_bump_user" => [
+                    "COLUMNS" => [
+                        "id" => ["UINT", null, "auto_increment"],
+                        "user" => ["INT:11", 0],
+                        "banned" => ["BOOL", 0],
+                        "ban_start" => ["INT:11", 0],
+                        "ban_end" => ["INT:11", 0],
+                        "ban_reason" => ["TEXT_UNI", ""],
+                        "ban_by" => ["INT:11", 0],
                     ],
-                    'PRIMARY_KEY' => 'id',
+                    "PRIMARY_KEY" => "id",
                 ],
             ],
-            'add_index' => [
-                $this->table_prefix . 'snahp_bump_user' => [
-                    'banned' => ['banned'],
+            "add_index" => [
+                $this->table_prefix . "snahp_bump_user" => [
+                    "banned" => ["banned"],
                 ],
             ],
-            'add_unique_index'    => [
-                $this->table_prefix . 'snahp_bump_user' => [
-                    'user' => ['user'],
+            "add_unique_index" => [
+                $this->table_prefix . "snahp_bump_user" => [
+                    "user" => ["user"],
                 ],
             ],
         ];
@@ -52,9 +52,7 @@ class v_0_43_0 extends container_aware_migration
     public function revert_schema()
     {
         return [
-            'drop_tables' => [
-                $this->table_prefix . 'snahp_bump_user',
-            ],
+            "drop_tables" => [$this->table_prefix . "snahp_bump_user"],
         ];
     }
 

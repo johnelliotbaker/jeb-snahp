@@ -1,2 +1,178 @@
-@font-face{font-family:segment7;src:url(/ext/jeb/snahp/styles/all/template/giftbox/dist/Segment7Standard.otf) format("woff")}#christmas-giveaway{width:430px;box-sizing:border-box!important;margin:0 auto;min-height:300px}#christmas-giveaway button:focus{outline:0!important}#christmas-giveaway button{-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-tap-highlight-color:transparent}@media (max-width:480px){#christmas-giveaway{width:300px;min-height:210px}}.event_over_wrapper{text-align:center}.countdown_image{width:100%;vertical-align:bottom}.countdown_content{position:relative}.countdown_text{font-size:17px;color:#eee;z-index:10;width:100%;margin:0;text-align:center;box-sizing:border-box!important;font-family:segment7}.countdown_hours{position:absolute;left:153px;top:161px}.countdown_minutes{position:absolute;left:204px;top:161px}.countdown_seconds{position:absolute;left:258px;top:161px}@media (max-width:480px){.countdown_text{font-size:12px!important}.countdown_hours{left:107px!important;top:109px!important}.countdown_minutes{left:143px!important;top:109px!important}.countdown_seconds{left:180px!important;top:109px!important}}.received_gift_image{margin-top:8px;margin-bottom:8px;width:100%}.unwrapper_content{position:relative;width:100%}.unwrapper_button{background-color:transparent;border:0;cursor:pointer;margin-top:10px;margin-bottom:10px;-webkit-transition:-webkit-transform .1s ease;transition:-webkit-transform .1s ease;transition:transform .1s ease;transition:transform .1s ease,-webkit-transform .1s ease}.unwrapper_button:hover{-webkit-transform:scale(1.1);transform:scale(1.1)}.unwrapper_button_image{width:100%;vertical-align:bottom}@font-face{font-family:comic;src:url(/ext/jeb/snahp/styles/all/template/giftbox/dist/ComicSansBold.ttf) format("truetype")}.history_item_image{margin:0 2px 2px;width:50px;box-sizing:border-box}.history_item_wrapper{display:inline-block;position:relative}.history_item_multiplier{font-family:comic;position:absolute;bottom:2px;right:4px;color:#0a0}.history_item_list_content{width:100%;margin:0 auto;max-width:270px}@font-face{font-family:xmas;src:url(/ext/jeb/snahp/styles/all/template/giftbox/dist/MerryChristmasStar.ttf) format("truetype")}@font-face{font-family:lobster;src:url(/ext/jeb/snahp/styles/all/template/giftbox/dist/Lobster.ttf) format("truetype")}.event_over_wrapper{margin-bottom:10px}.event_over_content,.event_over_content p{font-family:xmas!important}.event_over_content p{margin:0;font-size:3em}.event_over_content span{font-family:lobster;font-size:.7em;font-style:italic}.event_over_content .soundcloud{margin-top:10px}.event_over_image{width:100%}@media (max-width:480px){.event_over_content p{font-size:2em}}.soundcloud_wrapper{margin-top:10px;text-align:center;margin-bottom:10px}
+@font-face {
+  font-family: segment7;
+  src: url(/ext/jeb/snahp/styles/all/template/giftbox/dist/Segment7Standard.otf)
+    format("woff");
+}
+#christmas-giveaway {
+  width: 430px;
+  box-sizing: border-box !important;
+  margin: 0 auto;
+  min-height: 300px;
+}
+#christmas-giveaway button:focus {
+  outline: 0 !important;
+}
+#christmas-giveaway button {
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+@media (max-width: 480px) {
+  #christmas-giveaway {
+    width: 300px;
+    min-height: 210px;
+  }
+}
+.event_over_wrapper {
+  text-align: center;
+}
+.countdown_image {
+  width: 100%;
+  vertical-align: bottom;
+}
+.countdown_content {
+  position: relative;
+}
+.countdown_text {
+  font-size: 17px;
+  color: #eee;
+  z-index: 10;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  box-sizing: border-box !important;
+  font-family: segment7;
+}
+.countdown_hours {
+  position: absolute;
+  left: 153px;
+  top: 161px;
+}
+.countdown_minutes {
+  position: absolute;
+  left: 204px;
+  top: 161px;
+}
+.countdown_seconds {
+  position: absolute;
+  left: 258px;
+  top: 161px;
+}
+@media (max-width: 480px) {
+  .countdown_text {
+    font-size: 12px !important;
+  }
+  .countdown_hours {
+    left: 107px !important;
+    top: 109px !important;
+  }
+  .countdown_minutes {
+    left: 143px !important;
+    top: 109px !important;
+  }
+  .countdown_seconds {
+    left: 180px !important;
+    top: 109px !important;
+  }
+}
+.received_gift_image {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.unwrapper_content {
+  position: relative;
+  width: 100%;
+}
+.unwrapper_button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-transition: -webkit-transform 0.1s ease;
+  transition: -webkit-transform 0.1s ease;
+  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, -webkit-transform 0.1s ease;
+}
+.unwrapper_button:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+.unwrapper_button_image {
+  width: 100%;
+  vertical-align: bottom;
+}
+@font-face {
+  font-family: comic;
+  src: url(/ext/jeb/snahp/styles/all/template/giftbox/dist/ComicSansBold.ttf)
+    format("truetype");
+}
+.history_item_image {
+  margin: 0 2px 2px;
+  width: 50px;
+  box-sizing: border-box;
+}
+.history_item_wrapper {
+  display: inline-block;
+  position: relative;
+}
+.history_item_multiplier {
+  font-family: comic;
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  color: #0a0;
+}
+.history_item_list_content {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 270px;
+}
+@font-face {
+  font-family: xmas;
+  src: url(/ext/jeb/snahp/styles/all/template/giftbox/dist/MerryChristmasStar.ttf)
+    format("truetype");
+}
+@font-face {
+  font-family: lobster;
+  src: url(/ext/jeb/snahp/styles/all/template/giftbox/dist/Lobster.ttf)
+    format("truetype");
+}
+.event_over_wrapper {
+  margin-bottom: 10px;
+}
+.event_over_content,
+.event_over_content p {
+  font-family: xmas !important;
+}
+.event_over_content p {
+  margin: 0;
+  font-size: 3em;
+}
+.event_over_content span {
+  font-family: lobster;
+  font-size: 0.7em;
+  font-style: italic;
+}
+.event_over_content .soundcloud {
+  margin-top: 10px;
+}
+.event_over_image {
+  width: 100%;
+}
+@media (max-width: 480px) {
+  .event_over_content p {
+    font-size: 2em;
+  }
+}
+.soundcloud_wrapper {
+  margin-top: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+}
 /*# sourceMappingURL=main.d5e2c61f.chunk.css.map */

@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\controller\switchboard;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Forum switchboard
@@ -44,39 +44,39 @@ class switchboard
 
     public function handle_commands()
     {
-        $this->sauth->reject_non_dev('Error Code: f8c0b3bd3a');
-        $command = $this->request->variable('command', '');
+        $this->sauth->reject_non_dev("Error Code: f8c0b3bd3a");
+        $command = $this->request->variable("command", "");
         switch ($command) {
-        case 'start_logging':
-            $this->start_logging();
-            break;
-        case 'clear_log':
-            $this->clear_log();
-            break;
-        case 'stop_logging':
-            $this->stop_logging();
-            break;
-        default:
+            case "start_logging":
+                $this->start_logging();
+                break;
+            case "clear_log":
+                $this->clear_log();
+                break;
+            case "stop_logging":
+                $this->stop_logging();
+                break;
+            default:
         }
-        $cfg['tpl_name'] = '@jeb_snahp/switchboard/base.html';
+        $cfg["tpl_name"] = "@jeb_snahp/switchboard/base.html";
         return $this->respond_query($cfg);
     }
 
     private function set_config_var($data)
     {
-        prn("Setting config ${data['tpl_varname']} = ${data['value']}");
-        $this->config->set($data['tpl_varname'], $data['value']);
+        prn("Setting config ${data["tpl_varname"]} = ${data["value"]}");
+        $this->config->set($data["tpl_varname"], $data["value"]);
     }
 
     private function get_config_var($data)
     {
-        return $this->config[$data['tpl_varname']];
+        return $this->config[$data["tpl_varname"]];
     }
 
     public function handle()
     {
-        $this->sauth->reject_non_dev('Error Code: 381baba2ed');
-        $cfg['tpl_name'] = '@jeb_snahp/switchboard/base.html';
+        $this->sauth->reject_non_dev("Error Code: 381baba2ed");
+        $cfg["tpl_name"] = "@jeb_snahp/switchboard/base.html";
         return $this->respond_query($cfg);
     }
 
@@ -84,18 +84,18 @@ class switchboard
     {
         $manifest = [
             [
-                'varname' => 'snp_track_b_sup',
-                'tpl_varname' => 'snp_track_b_sup',
-                'func_set' => 'set_config_var',
-                'func_get' => 'get_config_var',
-                'default' => '1',
+                "varname" => "snp_track_b_sup",
+                "tpl_varname" => "snp_track_b_sup",
+                "func_set" => "set_config_var",
+                "func_get" => "get_config_var",
+                "default" => "1",
             ],
             [
-                'varname' => 'snp_track_b_markread',
-                'tpl_varname' => 'snp_track_b_markread',
-                'func_set' => 'set_config_var',
-                'func_get' => 'get_config_var',
-                'default' => '1',
+                "varname" => "snp_track_b_markread",
+                "tpl_varname" => "snp_track_b_markread",
+                "func_set" => "set_config_var",
+                "func_get" => "get_config_var",
+                "default" => "1",
             ],
         ];
         return $manifest;
@@ -113,9 +113,12 @@ class switchboard
     private function process_manifest($manifest)
     {
         foreach ($manifest as $job) {
-            $varname = $job['varname'];
-            $job['value'] = $this->request->variable((string)$varname, $job['default']);
-            $this->{$job['func_set']}($job);
+            $varname = $job["varname"];
+            $job["value"] = $this->request->variable(
+                (string) $varname,
+                $job["default"]
+            );
+            $this->{$job["func_set"]}($job);
         }
         $data = [];
         return $data;
@@ -125,8 +128,8 @@ class switchboard
     {
         $tpl_vars = [];
         foreach ($manifest as $job) {
-            $tpl_varname = strtoupper($job['tpl_varname']);
-            $stored_value = $this->{$job['func_get']}($job);
+            $tpl_varname = strtoupper($job["tpl_varname"]);
+            $stored_value = $this->{$job["func_get"]}($job);
             $tpl_vars[$tpl_varname] = $stored_value;
             prn("Setting template ${tpl_varname} = ${stored_value}");
         }
@@ -140,15 +143,15 @@ class switchboard
         $this->set_template_vars_from_manifest($manifest);
         // $a_checkbox_data = $this->process_checkboxes($a_checkbox_name);
         // $this->set_form_checkboxes($a_checkbox_data);
-        add_form_key('jeb_snp');
-        if ($this->request->is_set_post('submit')) {
-            if (!check_form_key('jeb_snp')) {
-                trigger_error('FORM_INVALID', E_USER_WARNING);
+        add_form_key("jeb_snp");
+        if ($this->request->is_set_post("submit")) {
+            if (!check_form_key("jeb_snp")) {
+                trigger_error("FORM_INVALID", E_USER_WARNING);
             }
         }
         $this->template->assign_vars([
-            'SWITCHBOARD_STATEMENT' => 'asdf',
+            "SWITCHBOARD_STATEMENT" => "asdf",
         ]);
-        return $this->helper->render($cfg['tpl_name'], 'Switchboard');
+        return $this->helper->render($cfg["tpl_name"], "Switchboard");
     }
 }

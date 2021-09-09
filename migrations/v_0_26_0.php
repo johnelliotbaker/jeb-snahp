@@ -17,21 +17,21 @@ class v_0_26_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_tables' => [
-                $this->table_prefix . 'snahp_achievements' => [
-                    'COLUMNS' => [
-                        'id'  => ['UINT', null, 'auto_increment'],
-                        'type'  => ['VCHAR:255', 0],
-                        'user_id'  => ['INT:11', 0],
-                        'modified_time'  => ['INT:11', 0],
+            "add_tables" => [
+                $this->table_prefix . "snahp_achievements" => [
+                    "COLUMNS" => [
+                        "id" => ["UINT", null, "auto_increment"],
+                        "type" => ["VCHAR:255", 0],
+                        "user_id" => ["INT:11", 0],
+                        "modified_time" => ["INT:11", 0],
                     ],
-                    'PRIMARY_KEY' => 'id',
+                    "PRIMARY_KEY" => "id",
                 ],
             ],
-            'add_index'    => [
-                $this->table_prefix . 'snahp_achievements'  => [
-                    'type' => ['type'],
-                    'user_id' => ['user_id'],
+            "add_index" => [
+                $this->table_prefix . "snahp_achievements" => [
+                    "type" => ["type"],
+                    "user_id" => ["user_id"],
                 ],
             ],
             // 'add_unique_index'    => [
@@ -45,17 +45,15 @@ class v_0_26_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_tables' => [
-                $this->table_prefix . 'snahp_achievements',
-            ],
+            "drop_tables" => [$this->table_prefix . "snahp_achievements"],
         ];
     }
 
     public function update_data()
     {
         return [
-            ['config.add', ['snp_achi_b_master', 1]],
-            ['config.add', ['snp_achi_b_show', 1]],
+            ["config.add", ["snp_achi_b_master", 1]],
+            ["config.add", ["snp_achi_b_show", 1]],
         ];
     }
 }

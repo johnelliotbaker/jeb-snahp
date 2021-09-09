@@ -5,7 +5,7 @@ class ThanksResetCycleHelper
 {
     const CACHE_DURATION = 0;
     const CACHE_DURATION_LONG = 0;
-    const THANKS_RESET_PRODUCT_CLASS_NAME = 'thanks_reset_token';
+    const THANKS_RESET_PRODUCT_CLASS_NAME = "thanks_reset_token";
 
     protected $db;
     protected $user;
@@ -29,12 +29,12 @@ class ThanksResetCycleHelper
         $this->user = $user;
         $this->template = $template;
         $this->tbl = $tbl;
-        $this->rxnTbl = $tbl['ThanksResetCycle'];
+        $this->rxnTbl = $tbl["ThanksResetCycle"];
         $this->sauth = $sauth;
         $this->thanksUsers = $thanksUsers;
         $this->productClass = $productClass;
         $this->userInventory = $userInventory;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 
     public function hasGivenAllAvailableThanks($userId)
@@ -50,14 +50,16 @@ class ThanksResetCycleHelper
     public function getThanksResetTokenCount($userId)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
-        $productClassData = $this->productClass
-            ->get_product_class_by_name($product_class_name);
+        $productClassData = $this->productClass->get_product_class_by_name(
+            $product_class_name
+        );
         if ($productClassData) {
-            $pcid = (int)$productClassData['id'];
-            $invData = $this->userInventory
-                ->get_single_inventory("product_class_id=${pcid}");
+            $pcid = (int) $productClassData["id"];
+            $invData = $this->userInventory->get_single_inventory(
+                "product_class_id=${pcid}"
+            );
             if ($invData) {
-                return (int) $invData['quantity'];
+                return (int) $invData["quantity"];
             }
         }
         return 0;
@@ -71,27 +73,34 @@ class ThanksResetCycleHelper
     public function reduceThanksToken($userId, $tokenCost)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
-        $productClassData = $this->productClass
-            ->get_product_class_by_name($product_class_name);
+        $productClassData = $this->productClass->get_product_class_by_name(
+            $product_class_name
+        );
         if (!$productClassData) {
             trigger_error(
                 "{$product_class_name} does not exist. Error Code: efe67a05d8"
             );
         }
-        $pcid = (int) $productClassData['id'];
-        $this->userInventory
-            ->doRemoveItemWithLogging($pcid, $tokenCost, $userId);
+        $pcid = (int) $productClassData["id"];
+        $this->userInventory->doRemoveItemWithLogging(
+            $pcid,
+            $tokenCost,
+            $userId
+        );
     }
 
     public function getUserThanksInventory($userId)
     {
         $product_class_name = $this::THANKS_RESET_PRODUCT_CLASS_NAME;
-        $productClassData = $this->productClass
-            ->get_product_class_by_name($product_class_name);
+        $productClassData = $this->productClass->get_product_class_by_name(
+            $product_class_name
+        );
         if ($productClassData) {
-            $pcid = (int)$productClassData['id'];
-            $invData = $this->userInventory
-                ->get_single_inventory("product_class_id=${pcid}", $userId);
+            $pcid = (int) $productClassData["id"];
+            $invData = $this->userInventory->get_single_inventory(
+                "product_class_id=${pcid}",
+                $userId
+            );
             if ($invData) {
                 return $invData;
             }
@@ -101,13 +110,13 @@ class ThanksResetCycleHelper
     public function getThanksResetTokens($userId)
     {
         $data = $this->getUserThanksInventory($userId);
-        if (!$data || !array_key_exists('quantity', $data)) {
+        if (!$data || !array_key_exists("quantity", $data)) {
             trigger_error("Invalid thanks user data. Error Code: 51d82c6242");
         }
-        return (int) $data['quantity'];
+        return (int) $data["quantity"];
     }
 
-    public function hasRequiredTokens($userId, $tokenCost=1)
+    public function hasRequiredTokens($userId, $tokenCost = 1)
     {
         $tokens = $this->getThanksResetTokens($userId);
         return $tokens >= $tokenCost;
@@ -129,26 +138,23 @@ class ThanksResetCycleHelper
         $res = [];
         $now = time();
         foreach ($timestamps as $timestamp) {
-            if (($timestamp['t'] + $cycleDuration) < $now) {
+            if ($timestamp["t"] + $cycleDuration < $now) {
                 continue;
             }
-            $tid = $timestamp['tid'];
-            $timestamp['tt'] = $topicTitleDict[$tid];
+            $tid = $timestamp["tid"];
+            $timestamp["tt"] = $topicTitleDict[$tid];
             $res[] = $timestamp;
         }
         $now = new \datetime();
-        $res = array_map(
-            function ($arg) use ($cycleDuration, $now) {
-                $next = $cycleDuration + (int) $arg['t'];
-                $next = new \datetime("@$next");
-                $arg['tl'] = date_diff($now, $next)->format('%R%dd %hh %im %ss');
-                $arg['t'] = $arg['t']
-                    ? $this->user->format_date($arg['t'], 'M d, g:i a')
-                    : '';
-                return $arg;
-            },
-            $res
-        );
+        $res = array_map(function ($arg) use ($cycleDuration, $now) {
+            $next = $cycleDuration + (int) $arg["t"];
+            $next = new \datetime("@$next");
+            $arg["tl"] = date_diff($now, $next)->format("%R%dd %hh %im %ss");
+            $arg["t"] = $arg["t"]
+                ? $this->user->format_date($arg["t"], "M d, g:i a")
+                : "";
+            return $arg;
+        }, $res);
         return $res;
     }
 
@@ -157,26 +163,23 @@ class ThanksResetCycleHelper
         if (!$timestamps) {
             return [];
         }
-        $topicIds = array_map(
-            function ($arg) {
-                return $arg['tid'];
-            },
-            $timestamps
-        );
-        $inset = $this->db->sql_in_set('a.topic_id', $topicIds);
+        $topicIds = array_map(function ($arg) {
+            return $arg["tid"];
+        }, $timestamps);
+        $inset = $this->db->sql_in_set("a.topic_id", $topicIds);
         $where = "$inset";
         $sql_ary = [
-            'SELECT' => 'a.topic_id, a.topic_title',
-            'FROM' => [TOPICS_TABLE => 'a'],
-            'WHERE'    => $where,
+            "SELECT" => "a.topic_id, a.topic_title",
+            "FROM" => [TOPICS_TABLE => "a"],
+            "WHERE" => $where,
         ];
-        $sql = $this->db->sql_build_query('SELECT', $sql_ary);
+        $sql = $this->db->sql_build_query("SELECT", $sql_ary);
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
         $res = [];
         foreach ($rowset as $row) {
-            $res[$row['topic_id']] = $row['topic_title'];
+            $res[$row["topic_id"]] = $row["topic_title"];
         }
         return $res;
     }

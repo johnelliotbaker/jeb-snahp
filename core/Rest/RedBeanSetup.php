@@ -2,10 +2,10 @@
 
 namespace jeb\snahp\core\Rest;
 
-define('REDBEAN_MODEL_PREFIX', 'jeb\\snahp\\Apps\\MiniBoard\\Models\\');
+define("REDBEAN_MODEL_PREFIX", "jeb\\snahp\\Apps\\MiniBoard\\Models\\");
 
 try {
-    include_once '/var/www/forum/ext/jeb/snahp/core/RedBean/rb.php';
+    include_once "/var/www/forum/ext/jeb/snahp/core/RedBean/rb.php";
 } catch (Exception $e) {
 }
 
@@ -15,21 +15,14 @@ use \R as R;
 
 trait RedBeanSetup
 {
-    public function connectDatabase($frozen=false)
+    public function connectDatabase($frozen = false)
     {
         global $phpbb_root_path, $phpEx;
-        include $phpbb_root_path . 'config.' . $phpEx;
-        R::setup(
-            "mysql:host=localhost;dbname=${dbname}",
-            $dbuser,
-            $dbpasswd
-        );
+        include $phpbb_root_path . "config." . $phpEx;
+        R::setup("mysql:host=localhost;dbname=${dbname}", $dbuser, $dbpasswd);
         R::freeze($frozen);
-        R::ext(
-            'xdispense',
-            function ($type) {
-                return R::getRedBean()->dispense($type);
-            }
-        );
+        R::ext("xdispense", function ($type) {
+            return R::getRedBean()->dispense($type);
+        });
     }
 }

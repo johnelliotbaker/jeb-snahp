@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\UserFlair;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use \R as R;
 
@@ -40,7 +40,7 @@ class UserFlairManagerController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->userId = (int) $this->user->data['user_id'];
+        $this->userId = (int) $this->user->data["user_id"];
         // $this->sauth->reject_non_dev('Error Code: 298bc72da9');
     }
 
@@ -54,12 +54,11 @@ class UserFlairManagerController
     public function manager()
     {
         $cfg = [
-            'tpl_name' => '@jeb_snahp/user_flair_manager/base.html',
-            'title' => 'User Flair Manager App',
+            "tpl_name" => "@jeb_snahp/user_flair_manager/base.html",
+            "title" => "User Flair Manager App",
         ];
-        return $this->phpHelper->render($cfg['tpl_name'], $cfg['title']);
+        return $this->phpHelper->render($cfg["tpl_name"], $cfg["title"]);
     }
-
 
     public function fixTypedataUnderscores()
     {

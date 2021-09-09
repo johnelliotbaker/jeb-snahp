@@ -21,7 +21,7 @@ class goodreads
     /**
      * Root URL of the API (no trailing slash).
      */
-    const API_URL = 'https://www.goodreads.com';
+    const API_URL = "https://www.goodreads.com";
 
     /**
      * How long do cached items live for? (seconds)
@@ -36,12 +36,12 @@ class goodreads
     /**
      * @var string Your API key.
      */
-    protected $apiKey = '';
+    protected $apiKey = "";
 
     /**
      * @var string Cache directory (defaults to ./cache).
      */
-    protected $cacheDir = 'cache';
+    protected $cacheDir = "cache";
 
     /**
      * @var integer When was the last request made?
@@ -54,9 +54,9 @@ class goodreads
      * @param string $apiKey
      * @param string $cacheDirectory
      */
-    public function __construct($apiKey, $cacheDirectory = '')
+    public function __construct($apiKey, $cacheDirectory = "")
     {
-        $this->apiKey = (string)$apiKey;
+        $this->apiKey = (string) $apiKey;
     }
 
     /**
@@ -67,13 +67,10 @@ class goodreads
      */
     public function getAuthor($authorId)
     {
-        return $this->request(
-            'author/show',
-            array(
-                'key' => $this->apiKey,
-                'id' => (int)$authorId
-            )
-        );
+        return $this->request("author/show", [
+            "key" => $this->apiKey,
+            "id" => (int) $authorId,
+        ]);
     }
 
     /**
@@ -85,14 +82,11 @@ class goodreads
      */
     public function getBooksByAuthor($authorId, $page = 1)
     {
-        return $this->request(
-            'author/list',
-            array(
-                'key' => $this->apiKey,
-                'id' => (int)$authorId,
-                'page' => (int)$page
-            )
-        );
+        return $this->request("author/list", [
+            "key" => $this->apiKey,
+            "id" => (int) $authorId,
+            "page" => (int) $page,
+        ]);
     }
 
     /**
@@ -103,13 +97,10 @@ class goodreads
      */
     public function getBook($bookId)
     {
-        return $this->request(
-            'book/show',
-            array(
-                'key' => $this->apiKey,
-                'id' => (int)$bookId
-            )
-        );
+        return $this->request("book/show", [
+            "key" => $this->apiKey,
+            "id" => (int) $bookId,
+        ]);
     }
 
     /**
@@ -120,12 +111,9 @@ class goodreads
      */
     public function getBookByISBN($isbn)
     {
-        return $this->request(
-            'book/isbn/' . urlencode($isbn),
-            array(
-                'key' => $this->apiKey
-            )
-        );
+        return $this->request("book/isbn/" . urlencode($isbn), [
+            "key" => $this->apiKey,
+        ]);
     }
 
     /**
@@ -135,16 +123,13 @@ class goodreads
      * @param  string $author Optionally provide this for more accuracy.
      * @return array
      */
-    public function getBookByTitle($title, $author = '')
+    public function getBookByTitle($title, $author = "")
     {
-        return $this->request(
-            'book/title',
-            array(
-                'key' => $this->apiKey,
-                'title' => urlencode($title),
-                'author' => $author
-            )
-        );
+        return $this->request("book/title", [
+            "key" => $this->apiKey,
+            "title" => urlencode($title),
+            "author" => $author,
+        ]);
     }
 
     /**
@@ -155,13 +140,10 @@ class goodreads
      */
     public function getUser($userId)
     {
-        return $this->request(
-            'user/show',
-            array(
-                'key' => $this->apiKey,
-                'id' => (int)$userId
-            )
-        );
+        return $this->request("user/show", [
+            "key" => $this->apiKey,
+            "id" => (int) $userId,
+        ]);
     }
 
     /**
@@ -172,13 +154,10 @@ class goodreads
      */
     public function getUserByUsername($username)
     {
-        return $this->request(
-            'user/show',
-            array(
-                'key' => $this->apiKey,
-                'username' => $username
-            )
-        );
+        return $this->request("user/show", [
+            "key" => $this->apiKey,
+            "username" => $username,
+        ]);
     }
 
     /**
@@ -190,14 +169,11 @@ class goodreads
      */
     public function getReview($reviewId, $page = 1)
     {
-        return $this->request(
-            'review/show',
-            array(
-                'key' => $this->apiKey,
-                'id' => (int)$reviewId,
-                'page' => (int)$page
-            )
-        );
+        return $this->request("review/show", [
+            "key" => $this->apiKey,
+            "id" => (int) $reviewId,
+            "page" => (int) $page,
+        ]);
     }
 
     /**
@@ -210,21 +186,23 @@ class goodreads
      * @param  integer $page   1-N
      * @return array
      */
-    public function getShelf($userId, $shelf, $sort = 'title', $limit = 100, $page = 1)
-    {
-        return $this->request(
-            'review/list',
-            array(
-                'v' => 2,
-                'format' => 'xml',     // :( GoodReads still doesn't support JSON for this endpoint
-                'key' => $this->apiKey,
-                'id' => (int)$userId,
-                'shelf' => $shelf,
-                'sort' => $sort,
-                'page' => $page,
-                'per_page' => $limit
-            )
-        );
+    public function getShelf(
+        $userId,
+        $shelf,
+        $sort = "title",
+        $limit = 100,
+        $page = 1
+    ) {
+        return $this->request("review/list", [
+            "v" => 2,
+            "format" => "xml", // :( GoodReads still doesn't support JSON for this endpoint
+            "key" => $this->apiKey,
+            "id" => (int) $userId,
+            "shelf" => $shelf,
+            "sort" => $sort,
+            "page" => $page,
+            "per_page" => $limit,
+        ]);
     }
 
     /**
@@ -236,20 +214,21 @@ class goodreads
      * @param  integer $page   1-N
      * @return array
      */
-    public function getAllBooks($userId, $sort = 'title', $limit = 100, $page = 1)
-    {
-        return $this->request(
-            'review/list',
-            array(
-                'v' => 2,
-                'format' => 'xml',     // :( GoodReads still doesn't support JSON for this endpoint
-                'key' => $this->apiKey,
-                'id' => (int)$userId,
-                'sort' => $sort,
-                'page' => $page,
-                'per_page' => $limit
-            )
-        );
+    public function getAllBooks(
+        $userId,
+        $sort = "title",
+        $limit = 100,
+        $page = 1
+    ) {
+        return $this->request("review/list", [
+            "v" => 2,
+            "format" => "xml", // :( GoodReads still doesn't support JSON for this endpoint
+            "key" => $this->apiKey,
+            "id" => (int) $userId,
+            "sort" => $sort,
+            "page" => $page,
+            "per_page" => $limit,
+        ]);
     }
 
     /**
@@ -283,9 +262,13 @@ class goodreads
      * @param  integer $page   1-N
      * @return array
      */
-    public function getLatestReads($userId, $sort = 'date_read', $limit = 100, $page = 1)
-    {
-        return $this->getShelf($userId, 'read', $sort, $limit, $page);
+    public function getLatestReads(
+        $userId,
+        $sort = "date_read",
+        $limit = 100,
+        $page = 1
+    ) {
+        return $this->getShelf($userId, "read", $sort, $limit, $page);
     }
 
     /**
@@ -296,7 +279,7 @@ class goodreads
      * @return array
      * @throws Exception If it didn't work
      */
-    private function request($endpoint, array $params = array())
+    private function request($endpoint, array $params = [])
     {
         // Check the cache
         $cachedData = $this->getCache($endpoint, $params);
@@ -305,19 +288,20 @@ class goodreads
         }
 
         // Prepare the URL and headers
-        $url = self::API_URL .'/'. $endpoint . '?' . ((!empty($params)) ? http_build_query($params, '', '&') : '');
-        $headers = array(
-            'Accept: application/xml',
-        );
-        if (isset($params['format']) && $params['format'] === 'json') {
-            $headers = array(
-                'Accept: application/json',
-            );
+        $url =
+            self::API_URL .
+            "/" .
+            $endpoint .
+            "?" .
+            (!empty($params) ? http_build_query($params, "", "&") : "");
+        $headers = ["Accept: application/xml"];
+        if (isset($params["format"]) && $params["format"] === "json") {
+            $headers = ["Accept: application/json"];
         }
 
         // Execute via CURL
         $response = null;
-        if (extension_loaded('curl')) {
+        if (extension_loaded("curl")) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -335,10 +319,19 @@ class goodreads
 
         // Try and cadge the results into a half-decent array
         $results = null;
-        if (isset($params['format']) && $params['format'] === 'json') {
+        if (isset($params["format"]) && $params["format"] === "json") {
             $results = json_decode($body);
         } else {
-            $results = json_decode(json_encode((array)simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA)), 1); // I know, I'm a terrible human being
+            $results = json_decode(
+                json_encode(
+                    (array) simplexml_load_string(
+                        $body,
+                        "SimpleXMLElement",
+                        LIBXML_NOCDATA
+                    )
+                ),
+                1
+            ); // I know, I'm a terrible human being
         }
 
         if ($results !== null) {
@@ -353,24 +346,30 @@ class goodreads
      * @param  array  $params
      * @return array|false
      */
-    private function getCache($endpoint, array $params = array())
+    private function getCache($endpoint, array $params = [])
     {
         if (file_exists($this->cacheDir) && is_writable($this->cacheDir)) {
-            $filename = str_replace('/', '_', $endpoint) . '-' . md5(serialize($params));
-            $filename = $this->cacheDir . '/' . $filename;
+            $filename =
+                str_replace("/", "_", $endpoint) .
+                "-" .
+                md5(serialize($params));
+            $filename = $this->cacheDir . "/" . $filename;
             if (file_exists($filename)) {
                 $contents = unserialize(file_get_contents($filename));
-                if (!is_array($contents) || $contents['cache_expiry'] <= time()) {
+                if (
+                    !is_array($contents) ||
+                    $contents["cache_expiry"] <= time()
+                ) {
                     unlink($filename);
                     return false;
                 } else {
-                    unset($contents['cache_expiry']);
+                    unset($contents["cache_expiry"]);
                     return $contents;
                 }
             }
             return false;
         } else {
-            throw new Exception('Cache directory not writable.');
+            throw new Exception("Cache directory not writable.");
         }
     }
 
@@ -382,15 +381,18 @@ class goodreads
      * @param array  $contents
      * @return boolean
      */
-    private function addCache($endpoint, array $params = array(), array $contents)
+    private function addCache($endpoint, array $params = [], array $contents)
     {
         if (file_exists($this->cacheDir) && is_writable($this->cacheDir)) {
-            $filename = str_replace('/', '_', $endpoint) . '-' . md5(serialize($params));
-            $filename = $this->cacheDir . '/' . $filename;
-            $contents['cache_expiry'] = time() + self::CACHE_TTL;
+            $filename =
+                str_replace("/", "_", $endpoint) .
+                "-" .
+                md5(serialize($params));
+            $filename = $this->cacheDir . "/" . $filename;
+            $contents["cache_expiry"] = time() + self::CACHE_TTL;
             return file_put_contents($filename, serialize($contents));
         } else {
-            throw new Exception('Cache directory not writable.');
+            throw new Exception("Cache directory not writable.");
         }
     }
 
@@ -409,7 +411,7 @@ class goodreads
                 }
             }
         } else {
-            throw new Exception('Cache directory not writable.');
+            throw new Exception("Cache directory not writable.");
         }
     }
 }

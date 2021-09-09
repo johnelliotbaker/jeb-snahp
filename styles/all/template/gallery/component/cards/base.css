@@ -1,188 +1,170 @@
-.icon-black
-{
-    color: #333 !important;
+.icon-black {
+  color: #333 !important;
 }
 
 .gallery-block.cards-gallery .card {
-    margin-bottom: 30px; 
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-.gallery-block.cards-gallery .item
-{
-    padding: 0px 11px 0px 11px;
+.gallery-block.cards-gallery .item {
+  padding: 0px 11px 0px 11px;
 }
 
-.gallery-block.cards-gallery .item.hi
-{
-    opacity: .8;
+.gallery-block.cards-gallery .item.hi {
+  opacity: 0.8;
 }
 
-.gallery-block.cards-gallery .item.hi .card span
-{
-    opacity: .7;
+.gallery-block.cards-gallery .item.hi .card span {
+  opacity: 0.7;
 }
 
-.gallery-block.cards-gallery .item .card-body
-{
-    padding: 12px 12px 12px 12px;
+.gallery-block.cards-gallery .item .card-body {
+  padding: 12px 12px 12px 12px;
 }
 
 .gallery-block.cards-gallery .sm .card {
-    margin-bottom: 22px; 
+  margin-bottom: 22px;
 }
 
-.gallery-block.cards-gallery .sm.item
-{
-    padding: 0px 8px 0px 8px;
+.gallery-block.cards-gallery .sm.item {
+  padding: 0px 8px 0px 8px;
 }
 
-.gallery-block.cards-gallery .sm.item .card-body
-{
-    padding: 15px 15px 15px 15px;
+.gallery-block.cards-gallery .sm.item .card-body {
+  padding: 15px 15px 15px 15px;
 }
 
 .gallery-block.cards-gallery .lg .card {
-    margin-bottom: 36px; 
+  margin-bottom: 36px;
 }
 
-.gallery-block.cards-gallery .lg.item
-{
-    padding: 0px 20px 0px 20px;
+.gallery-block.cards-gallery .lg.item {
+  padding: 0px 20px 0px 20px;
 }
 
-.gallery-block.cards-gallery .lg.item .card-body
-{
-    padding: 22px 22px 22px 22px;
+.gallery-block.cards-gallery .lg.item .card-body {
+  padding: 22px 22px 22px 22px;
 }
 
-.gallery-block.cards-gallery{
-    padding-bottom: 4px;
-    padding-top: 20px;
+.gallery-block.cards-gallery {
+  padding-bottom: 4px;
+  padding-top: 20px;
 }
 
-.gallery-block .heading{
-    margin-bottom: 50px;
-    text-align: center;
+.gallery-block .heading {
+  margin-bottom: 50px;
+  text-align: center;
 }
 
-.gallery-block .heading h2{
-    font-weight: bold;
-    font-size: 1.4rem;
-    text-transform: uppercase;
+.gallery-block .heading h2 {
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-transform: uppercase;
 }
 
 .gallery-block.cards-gallery h6 {
-    font-size: 17px;
-    font-weight: bold; 
+  font-size: 17px;
+  font-weight: bold;
 }
 
-.gallery-block.cards-gallery .card{
-    transition: 0.4s ease; 
+.gallery-block.cards-gallery .card {
+  transition: 0.4s ease;
 }
 
 .gallery-block.cards-gallery .card img {
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .gallery-block.cards-gallery .card-body {
-    text-align: center; 
+  text-align: center;
 }
 
 .gallery-block.cards-gallery .card-body p {
-    font-size: 15px; 
+  font-size: 15px;
 }
 
 .gallery-block.cards-gallery a {
-    color: #212529; 
+  color: #212529;
 }
 
 .gallery-block.cards-gallery a:hover {
-    text-decoration: none; 
+  text-decoration: none;
 }
 
-.gallery-block.cards-gallery sm
-{
-    margin-top: 4px;
-    text-align: left;
-    display: block;
-    line-height: 1.2em !important;
-    font-size: .8em !important;
+.gallery-block.cards-gallery sm {
+  margin-top: 4px;
+  text-align: left;
+  display: block;
+  line-height: 1.2em !important;
+  font-size: 0.8em !important;
 }
 
-.gallery-block.cards-gallery .hiddencorner
-{
-    z-index: 10;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.15) !important; 
-    visibility: hidden;
+.gallery-block.cards-gallery .hiddencorner {
+  z-index: 10;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.15) !important;
+  visibility: hidden;
 }
 
-.gallery-block.cards-gallery .hiddencorner.hi
-{
-    visibility: visible;
+.gallery-block.cards-gallery .hiddencorner.hi {
+  visibility: visible;
 }
 
-.gallery-block.cards-gallery .hiddencorner img
-{
-    max-width: 100px;
-    z-index: 10;
-    opacity: .6;
+.gallery-block.cards-gallery .hiddencorner img {
+  max-width: 100px;
+  z-index: 10;
+  opacity: 0.6;
 }
 
-.gallery-block.cards-gallery .pastebin img
-{
-    width: 36px;
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important; 
+.gallery-block.cards-gallery .pastebin img {
+  width: 36px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important;
 }
 
-.gallery-block.cards-gallery .pastebin
-{
-    z-index: 5;
-    position: absolute;
-    top: 26px;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    /* transform: translate(0%, 0%); */
-    /* -ms-transform: translate(-50%, -50%); */
-    color: white;
-    font-size: 0px;
-    border: none;
-    cursor: pointer;
+.gallery-block.cards-gallery .pastebin {
+  z-index: 5;
+  position: absolute;
+  top: 26px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  /* transform: translate(0%, 0%); */
+  /* -ms-transform: translate(-50%, -50%); */
+  color: white;
+  font-size: 0px;
+  border: none;
+  cursor: pointer;
 }
 
-.gallery-block.cards-gallery .clipboard
-{
-    z-index: 1000;
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 20px;
-    height: 20px;
-    /* transform: translate(0%, 0%); */
-    /* -ms-transform: translate(-50%, -50%); */
-    background-color: #fff;
-    color: white;
-    font-size: 0px;
-    padding: 3px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+.gallery-block.cards-gallery .clipboard {
+  z-index: 1000;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  /* transform: translate(0%, 0%); */
+  /* -ms-transform: translate(-50%, -50%); */
+  background-color: #fff;
+  color: white;
+  font-size: 0px;
+  padding: 3px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 @media (min-width: 576px) {
-
-    .gallery-block .transform-on-hover:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.15) !important; 
-    }
+  .gallery-block .transform-on-hover:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.15) !important;
+  }
 }
 
 /* rx_menu */
-.rx_menu
-{
-    margin-top: -8px;
+.rx_menu {
+  margin-top: -8px;
 }

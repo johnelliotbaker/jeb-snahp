@@ -1,35 +1,42 @@
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter" rel="stylesheet">
-<link href="/ext/jeb/snahp/Apps/RequestForm/FormTemplateMakers/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite"
+  rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter"
+  rel="stylesheet" />
+<link href="/ext/jeb/snahp/Apps/RequestForm/FormTemplateMakers/style.css"
+  rel="stylesheet" />
 
 {% spaceless %}
-<div class="twbs">
-  <div class="requestcard container mb-3">
-    <div class="row items-row">
-      <div class="col-xs-12 mx-auto" style="max-width: 800px;">
-        <div class="card">
-          {% if bannerImageURL %}
-            <div class="card-image text-center">
-              <img src="{{ bannerImageURL }}" alt="">
+  <div class="twbs">
+    <div class="requestcard container mb-3">
+      <div class="row items-row">
+        <div class="col-xs-12 mx-auto" style="max-width: 800px;">
+          <div class="card">
+            {% if bannerImageURL %}
+              <div class="card-image text-center">
+                <img src="{{ bannerImageURL }}" alt="" />
+              </div>
+            {% endif %}
+            <div class="card-title">
+              <h5 class="text-center">
+                {{ title }}
+              </h5>
+              <div class="divider"></div>
             </div>
-          {% endif %}
-          <div class="card-title">
-            <h5 class="text-center">
-              {{ title }}
-            </h5>
-            <div class="divider"></div>
-          </div>
-          <div class="card-body card-cup p-0" style="font-size: 1.3em;">
-            <div class="t-row">
-              {% for key, value in content %}
-                <div class="box box1">{{ key }}</div>
-                <div class="box box2 dont-break-out">{{ value|raw }}</div>
-              {% endfor %}
+            <div class="card-body card-cup p-0" style="font-size: 1.3em;">
+              <div class="t-row">
+                {% for key, value in content %}
+                  <div class="box box1">
+                    {{ key }}
+                  </div>
+                  <div class="box box2 dont-break-out">
+                    {{ value|raw }}
+                  </div>
+                {% endfor %}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 {% endspaceless %}

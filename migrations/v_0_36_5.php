@@ -18,19 +18,19 @@ class v_0_36_5 extends \phpbb\db\migration\migration
 
     public function update_schema()
     {
-        return [ ];
+        return [];
     }
 
     public function revert_schema()
     {
-        return [ ];
+        return [];
     }
 
     public function update_data()
     {
         return [
-        ['config.add', [ 'snp_spot_b_master', true ]],
-        ['config_text.add', [ 'snp_spot_cache', '' ]],
-      ];
+            ["config.add", ["snp_spot_b_master", true]],
+            ["config_text.add", ["snp_spot_cache", ""]],
+        ];
     }
 }

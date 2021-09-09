@@ -1,24 +1,19 @@
-.markdown-body h1
-{
-    color: #EFEFEF;
+.markdown-body h1 {
+  color: #efefef;
 }
 
-.img_border
-{
-    border: 3px solid #de7300 !important;
+.img_border {
+  border: 3px solid #de7300 !important;
 }
 
-.mt_2
-{
-    margin-top: 2px !important;
+.mt_2 {
+  margin-top: 2px !important;
 }
 
-.mt_4
-{
-    margin-top: 4px !important;
+.mt_4 {
+  margin-top: 4px !important;
 }
 
-.mt_8
-{
-    margin-top: 8px !important;
+.mt_8 {
+  margin-top: 8px !important;
 }

@@ -14,10 +14,15 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
         $this->sqlArray = $sqlArray;
     }
 
-    public function slice($offset, $length, $many=true, $cacheTimeout=0)
+    public function slice($offset, $length, $many = true, $cacheTimeout = 0)
     {
         $sql = $this->buildSql();
-        $result = $this->db->sql_query_limit($sql, $length, $offset, $cacheTimeout);
+        $result = $this->db->sql_query_limit(
+            $sql,
+            $length,
+            $offset,
+            $cacheTimeout
+        );
         if ($many) {
             $data = $this->db->sql_fetchrowset($result);
         } else {
@@ -29,7 +34,7 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
 
     public function buildSql()
     {
-        return $this->db->sql_build_query('SELECT', $this->sqlArray);
+        return $this->db->sql_build_query("SELECT", $this->sqlArray);
     }
 
     public function getIterator()
@@ -63,23 +68,23 @@ class QuerySet implements \IteratorAggregate, \Countable, \ArrayAccess
     public function count()
     {
         $sqlCountArray = $this->cloneSqlArray();
-        $sqlCountArray['SELECT'] = 'COUNT(*) as total';
-        $sql = $this->db->sql_build_query('SELECT', $sqlCountArray);
+        $sqlCountArray["SELECT"] = "COUNT(*) as total";
+        $sql = $this->db->sql_build_query("SELECT", $sqlCountArray);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
-        return $row['total'];
+        return $row["total"];
     }
 
-    public function filterInSet($column, $set, $negate=false)
+    public function filterInSet($column, $set, $negate = false)
     {
         if (!$set) {
             return;
         }
-        $where = $this->sqlArray['WHERE'] ?? '1=1';
+        $where = $this->sqlArray["WHERE"] ?? "1=1";
         $where = [$where];
         $where[] = $this->db->sql_in_set($column, $set, $negate);
-        $where = implode($where, ' AND ');
-        $this->sqlArray['WHERE'] = $where;
+        $where = implode($where, " AND ");
+        $this->sqlArray["WHERE"] = $where;
     }
 }

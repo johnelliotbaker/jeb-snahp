@@ -1,7 +1,7 @@
 <?php
 namespace jeb\snahp\Apps\Xmas\Models;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Model.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Model.php";
 
 use jeb\snahp\core\Rest\Model;
 use jeb\snahp\core\Rest\Fields\IntegerField;
@@ -14,17 +14,17 @@ use jeb\snahp\Apps\Xmas\BingoBoard;
 
 class Config extends Model
 {
-    const TABLE_NAME = 'phpbb_snahp_xmas_config';
+    const TABLE_NAME = "phpbb_snahp_xmas_config";
 
     protected $fields;
-    protected $requiredFields = ['name', 'data'];
+    protected $requiredFields = ["name", "data"];
 
     public function __construct()
     {
         parent::__construct();
         $this->fields = [
-            'name' => new StringField(),
-            'data' => new JsonField(['default' => json_encode([])]),
+            "name" => new StringField(),
+            "data" => new JsonField(["default" => json_encode([])]),
         ];
     }
 }

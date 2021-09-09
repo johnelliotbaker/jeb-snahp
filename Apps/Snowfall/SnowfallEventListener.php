@@ -18,9 +18,7 @@ class SnowfallEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'core.user_setup' => [
-                ['embedData', 0],
-            ],
+            "core.user_setup" => [["embedData", 0]],
         ];
     }
 

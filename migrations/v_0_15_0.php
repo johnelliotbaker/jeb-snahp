@@ -17,10 +17,10 @@ class v_0_15_0 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns'	=> [
-                $this->table_prefix . 'users'  => [
-                    'snp_req_n_solve' => ['INT:10', 0],
-                    'snp_thanks_b_notification' => ['BOOL', 1],
+            "add_columns" => [
+                $this->table_prefix . "users" => [
+                    "snp_req_n_solve" => ["INT:10", 0],
+                    "snp_thanks_b_notification" => ["BOOL", 1],
                 ],
             ],
             // 'add_tables' => [
@@ -51,10 +51,10 @@ class v_0_15_0 extends \phpbb\db\migration\migration
     public function revert_schema()
     {
         return [
-            'drop_columns'	=> [
-                $this->table_prefix . 'users'  => [
-                    'snp_req_n_solve',
-                    'snp_thanks_b_notification',
+            "drop_columns" => [
+                $this->table_prefix . "users" => [
+                    "snp_req_n_solve",
+                    "snp_thanks_b_notification",
                 ],
             ],
             // 'drop_tables' => [
@@ -66,7 +66,7 @@ class v_0_15_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_req_b_avatar', true]],
+            ["config.add", ["snp_req_b_avatar", true]],
             // ['config.add', ['snp_ql_your_topics', true]],
             // ['config.add', ['snp_easter_b_chicken', true]],
             // ['config.add', ['snp_easter_chicken_chance', 10000]],

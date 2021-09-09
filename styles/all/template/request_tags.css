@@ -7,8 +7,8 @@ span.btn {
   padding: 1px 3px 2px 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  font: normal normal bold 16px/normal Verdana, Geneva, sans-serif;
-  color: rgba(255,255,255,0.9);
+  font: normal normal bold 16px / normal Verdana, Geneva, sans-serif;
+  color: rgba(255, 255, 255, 0.9);
   -o-text-overflow: clip;
   text-overflow: clip;
   font-size: 1em;

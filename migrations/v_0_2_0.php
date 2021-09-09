@@ -20,44 +20,43 @@ class v_0_2_0 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_1_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_1_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_imdb_enable' => array('BOOL', 0),
-                ),
-            ),
-        );
+        return [
+            "add_columns" => [
+                $this->table_prefix . "groups" => [
+                    "snp_imdb_enable" => ["BOOL", 0],
+                ],
+            ],
+        ];
     }
 
     public function revert_schema()
     {
-        return array(
-            'drop_columns'	=> array(
-                $this->table_prefix . 'groups'  => array(
-                    'snp_imdb_enable',
-                ),
-            ),
-        );
+        return [
+            "drop_columns" => [
+                $this->table_prefix . "groups" => ["snp_imdb_enable"],
+            ],
+        ];
     }
 
     public function update_data()
     {
-        return array(
-            array('module.add', array(
-                'acp',
-                'ACP_SNP_TITLE',
-                array(
-                    'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> array('imdb'),
-                ),
-            )),
-        );
+        return [
+            [
+                "module.add",
+                [
+                    "acp",
+                    "ACP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\acp\main_module",
+                        "modes" => ["imdb"],
+                    ],
+                ],
+            ],
+        ];
     }
 }

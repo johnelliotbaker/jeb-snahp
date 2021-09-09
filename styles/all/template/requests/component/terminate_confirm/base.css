@@ -1,16 +1,14 @@
-.card-body.request_termination_warning
-{
-    font-size: 1.4em;
+.card-body.request_termination_warning {
+  font-size: 1.4em;
 }
 
-.card-body .icon.big
-{
-    font-size: 35px;
+.card-body .icon.big {
+  font-size: 35px;
 }
 
 span.btn.fulfill {
-    color: white;
-    font-weight: 900;
-    background: #007bff;
-    border: 1px solid #007bff;
+  color: white;
+  font-weight: 900;
+  background: #007bff;
+  border: 1px solid #007bff;
 }

@@ -1,6 +1,6 @@
 /* Override */
 li div.dropdown-extended {
-    z-index: 10;
+  z-index: 10;
 }
 
 /* Generic class */
@@ -362,23 +362,23 @@ img.emotes_default.height_70 {
 }
 
 .emoji.smilies {
-    height: 2.25em;
-    width: 2.25em;
-    margin-left: 2px;
-    margin-right: 2px;
-    display: inline-block;
+  height: 2.25em;
+  width: 2.25em;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: inline-block;
 }
 
 .rx button {
-    outline: none;
+  outline: none;
 }
 
 .avatar__achievements__icon {
-    font-size: 1.25em;
-    cursor: help;
-    letter-spacing: -0.3em
+  font-size: 1.25em;
+  cursor: help;
+  letter-spacing: -0.3em;
 }
 
 .reported_post_info {
-    display: hidden;
+  display: hidden;
 }

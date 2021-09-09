@@ -2,11 +2,11 @@
 
 namespace jeb\snahp\core\Rest\Views;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Serializers.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Serializers.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php";
 
 use \R as R;
 
@@ -23,9 +23,9 @@ trait View
         return $perms;
     }
 
-    public function checkPermissions($request, $userId, $kwargs=[])
+    public function checkPermissions($request, $userId, $kwargs = [])
     {
-        if (!$perms = $this->getPermissions()) {
+        if (!($perms = $this->getPermissions())) {
             return;
         }
         foreach ($perms as $perm) {
@@ -33,29 +33,39 @@ trait View
                 return;
             }
         }
-        throw new \Exception('You do not have the permission to view this resource. Error Code: afb80c4efc');
+        throw new \Exception(
+            "You do not have the permission to view this resource. Error Code: afb80c4efc"
+        );
     }
 
-    public function checkObjectPermissions($request, $userId, $object, $kwargs=[])
-    {
-        if (!$perms = $this->getPermissions()) {
+    public function checkObjectPermissions(
+        $request,
+        $userId,
+        $object,
+        $kwargs = []
+    ) {
+        if (!($perms = $this->getPermissions())) {
             return;
         }
         foreach ($perms as $perm) {
-            if ($perm->hasObjectPermission($request, $userId, $object, $kwargs)) {
+            if (
+                $perm->hasObjectPermission($request, $userId, $object, $kwargs)
+            ) {
                 return;
             }
         }
-        throw new \Exception('You do not have the permission to view this resource. Error Code: 17f3c0bc47');
+        throw new \Exception(
+            "You do not have the permission to view this resource. Error Code: 17f3c0bc47"
+        );
     }
 }
 
 trait ModelSerializerMixin
 {
-    public function getSerializer($instance=null, $data=null, $kwargs=[])
+    public function getSerializer($instance = null, $data = null, $kwargs = [])
     {
         if ($this->model) {
-            $kwargs['model'] = $this->model;
+            $kwargs["model"] = $this->model;
         }
         return new $this->serializerClass($instance, $data, $kwargs);
     }
@@ -67,14 +77,16 @@ trait SortByPriorityMixin
     {
         $data = getRequestData($this->request);
         if (!$data) {
-            return array_values(R::find($this->model::TABLE_NAME, 'ORDER BY priority DESC'));
+            return array_values(
+                R::find($this->model::TABLE_NAME, "ORDER BY priority DESC")
+            );
         }
         $sqlAry = [];
         foreach ($data as $varname => $value) {
             $sqlAry[] = "${varname}='${value}'";
         }
-        $sqlAry[] = 'ORDER BY priority DESC';
-        $where = implode(' AND ', $sqlAry);
+        $sqlAry[] = "ORDER BY priority DESC";
+        $where = implode(" AND ", $sqlAry);
         return array_values(R::find($this->model::TABLE_NAME, $where));
     }
 }
@@ -88,7 +100,6 @@ class GenericAPIView
     protected $serializerClass;
     protected $paginationClass;
 
-
     // public function getSerializer($instance=null, $data=null, $kwargs=[])
     // {
     //     return new $this->serializerClass($instance, $data, $kwargs);
@@ -96,12 +107,18 @@ class GenericAPIView
 
     public function getObject()
     {
-        $pk = (int) $this->params['pk'];
-        $object = R::findOne($this->model::TABLE_NAME, 'id=?', [$pk]);
+        $pk = (int) $this->params["pk"];
+        $object = R::findOne($this->model::TABLE_NAME, "id=?", [$pk]);
         if (!$object) {
-            throw new \Exception('Request resource was not found. Error Code: 3807589034');
+            throw new \Exception(
+                "Request resource was not found. Error Code: 3807589034"
+            );
         }
-        $this->checkObjectPermissions($this->request, $this->sauth->userId, $object);
+        $this->checkObjectPermissions(
+            $this->request,
+            $this->sauth->userId,
+            $object
+        );
         return $object;
     }
 
@@ -114,9 +131,9 @@ class GenericAPIView
             }
         }
         // Must be the last one
-        $where = implode(' AND ', $sqlAry);
+        $where = implode(" AND ", $sqlAry);
         if (isset($this->orderBySqlStatement)) {
-            $where .= ' ' . $this->orderBySqlStatement;
+            $where .= " " . $this->orderBySqlStatement;
         }
         return array_values(R::find($this->model::TABLE_NAME, $where));
 
@@ -149,12 +166,11 @@ class GenericAPIView
         return $this->paginator->getPaginatedResponse($data);
     }
 
-    public function getForeignPk($default='')
+    public function getForeignPk($default = "")
     {
         return $this->request->variable($this->foreignNameParam, $default);
     }
 }
-
 
 class RetrieveUpdateDestroyAPIView extends GenericAPIView
 {
@@ -165,20 +181,20 @@ class RetrieveUpdateDestroyAPIView extends GenericAPIView
     public function dispatch($id)
     {
         $methodName = getRequestMethod($this->request);
-        $this->params['pk'] = $id;
+        $this->params["pk"] = $id;
         switch ($methodName) {
-        case 'OPTIONS':
-            return new JsonResponse([], 200);
-        case 'GET':
-            return $this->get($this->request);
-        case 'DELETE':
-            return $this->delete($this->request);
-        // case 'PUT':
+            case "OPTIONS":
+                return new JsonResponse([], 200);
+            case "GET":
+                return $this->get($this->request);
+            case "DELETE":
+                return $this->delete($this->request);
+            // case 'PUT':
             // return $this->put($this->request);
-        case 'PATCH':
-            return $this->patch($this->request);
-        default:
-            return new JsonResponse(["method"=>$methodName], 404);
+            case "PATCH":
+                return $this->patch($this->request);
+            default:
+                return new JsonResponse(["method" => $methodName], 404);
         }
     }
 
@@ -212,14 +228,14 @@ class ListCreateAPIView extends GenericAPIView
     {
         $methodName = getRequestMethod($this->request);
         switch ($methodName) {
-        case 'OPTIONS':
-            return new JsonResponse([], 200);
-        case 'GET':
-            return $this->get($this->request);
-        case 'POST':
-            return $this->post($this->request);
-        default:
-            return new JsonResponse(["method"=>$methodName], 404);
+            case "OPTIONS":
+                return new JsonResponse([], 200);
+            case "GET":
+                return $this->get($this->request);
+            case "POST":
+                return $this->post($this->request);
+            default:
+                return new JsonResponse(["method" => $methodName], 404);
         }
     }
 
@@ -236,7 +252,7 @@ class ListCreateAPIView extends GenericAPIView
 
 trait UpdateModelMixin
 {
-    public function update($request, $partial=false)
+    public function update($request, $partial = false)
     {
         [$instance, $data] = [$this->getObject(), getRequestData($request)];
         if (!$instance) {
@@ -274,7 +290,7 @@ trait RetrieveModelMixin
         $serializer->fillInitialDataWithDefaultValues();
         $serializer->isValid();
         $serializedData = $serializer->serialize();
-        $serializedData['id'] = $instance->id;
+        $serializedData["id"] = $instance->id;
         return new JsonResponse($serializedData);
     }
 }
@@ -306,14 +322,14 @@ trait CreateModelMixin
             $instance = $this->performCreate($serializer);
             return new JsonResponse($instance, 201);
         }
-        return new Response('Could not create.', 400);
+        return new Response("Could not create.", 400);
     }
 
     public function performCreate($serializer)
     {
         $serializer = $this->performPreCreate($serializer);
         $model = $this->model;
-        if (defined(get_class($model).'::FOREIGN_NAME')) {
+        if (defined(get_class($model) . "::FOREIGN_NAME")) {
             $instance = $this->performCreateWithForeignKey($serializer);
         } else {
             $instance = $serializer->save();
@@ -337,7 +353,7 @@ trait CreateModelMixin
         $instance = $serializer->save();
         $foreignInstance = $this->getForeignObject();
         $selfName = $this->model::TABLE_NAME;
-        $ownlistname = 'own' . ucfirst($selfName) . 'List';
+        $ownlistname = "own" . ucfirst($selfName) . "List";
         $foreignInstance->$ownlistname[] = $instance;
         R::store($foreignInstance);
         return $instance;
@@ -347,12 +363,14 @@ trait CreateModelMixin
     {
         $foreignName = $this->model::FOREIGN_NAME;
         $foreignPk = $this->getForeignPk(0);
-        $foreignInstance = R::findOne($foreignName, 'id=?', [$foreignPk]);
+        $foreignInstance = R::findOne($foreignName, "id=?", [$foreignPk]);
         if (!$foreignInstance) {
             http_response_code(404);
             $selfName = $this->model::TABLE_NAME;
-            $resp = ucfirst("${selfName} must have a valid parent ${foreignName}. Error Code: e65ca2603a");
-            print($resp);
+            $resp = ucfirst(
+                "${selfName} must have a valid parent ${foreignName}. Error Code: e65ca2603a"
+            );
+            print $resp;
             die();
         }
         return $foreignInstance;

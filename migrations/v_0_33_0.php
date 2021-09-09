@@ -29,16 +29,19 @@ class v_0_33_0 extends \phpbb\db\migration\migration
     public function update_data()
     {
         return [
-            ['config.add', ['snp_thanks_b_limit_cycle', 1]],
-            ['config.add', ['snp_thanks_cycle_duration', 86400]],
-            ['module.add', [
-                'acp',
-                'ACP_SNP_TITLE',
+            ["config.add", ["snp_thanks_b_limit_cycle", 1]],
+            ["config.add", ["snp_thanks_cycle_duration", 86400]],
+            [
+                "module.add",
                 [
-                    'module_basename'	=> '\jeb\snahp\acp\main_module',
-                    'modes'				=> ['thanks'],
-                ]
-            ]],
+                    "acp",
+                    "ACP_SNP_TITLE",
+                    [
+                        "module_basename" => "\jeb\snahp\acp\main_module",
+                        "modes" => ["thanks"],
+                    ],
+                ],
+            ],
         ];
     }
 }

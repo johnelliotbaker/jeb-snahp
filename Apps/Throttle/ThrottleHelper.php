@@ -17,26 +17,26 @@ class Toplist
 
     public function getToplist($order_by)
     {
-        $username = $this->request->variable('username', '');
+        $username = $this->request->variable("username", "");
         $sqlAry = [
-            'SELECT' => 'b.username, b.user_colour, a.*',
-            'FROM' => [$this->tbl['throttle'] => 'a'],
-            'LEFT_JOIN' => [
+            "SELECT" => "b.username, b.user_colour, a.*",
+            "FROM" => [$this->tbl["throttle"] => "a"],
+            "LEFT_JOIN" => [
                 [
-                    'FROM' => [USERS_TABLE => 'b'],
-                    'ON' => 'a.user_id = b.user_id',
-                ]
+                    "FROM" => [USERS_TABLE => "b"],
+                    "ON" => "a.user_id = b.user_id",
+                ],
             ],
-            'ORDER_BY' => "a.{$order_by} DESC"
+            "ORDER_BY" => "a.{$order_by} DESC",
         ];
         if ($username) {
-            $sqlAry['WHERE'] = "b.username='$username'";
+            $sqlAry["WHERE"] = "b.username='$username'";
         }
         $qs = $this->QuerySetFactory->fromSqlArray($sqlAry);
         $qs = $this->paginator->paginateQueryset($qs, $this->request);
         $qs = $this->paginator->getPaginatedResult($qs);
-        foreach ($qs['results'] as $k => &$v) {
-            $v['data'] = unserialize($v['data']);
+        foreach ($qs["results"] as $k => &$v) {
+            $v["data"] = unserialize($v["data"]);
         }
         return $qs;
     }
@@ -62,32 +62,42 @@ class ThrottleHelper
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
 
-        $this->col = $this->userVisitTimestampColumnName = 'snp_log_visit_timestamps';
+        $this->col = $this->userVisitTimestampColumnName =
+            "snp_log_visit_timestamps";
     }
 
     public function getToplist($orderBy)
     {
-        $tl = new Toplist($this->request, $this->tbl, $this->paginator, $this->QuerySetFactory);
+        $tl = new Toplist(
+            $this->request,
+            $this->tbl,
+            $this->paginator,
+            $this->QuerySetFactory
+        );
         return $tl->getToplist($orderBy);
     }
 
     public function logUserVisitStatistics($userId, $isFlooding)
     {
         $stats = $this->getOrCreateVisitStatistics($userId);
-        $extraData = new ExtraData($stats['data']);
-        $nowMonth = (int) date('m');
+        $extraData = new ExtraData($stats["data"]);
+        $nowMonth = (int) date("m");
         if ($extraData->getTrackedMonth() !== $nowMonth) {
-            $extraData->startNewMonth($nowMonth, $stats['monthly_visit'], $stats['monthly_flood']);
-            $stats['data'] = (string) $extraData;
-            $stats['monthly_visit'] = 0;
-            $stats['monthly_flood'] = 0;
+            $extraData->startNewMonth(
+                $nowMonth,
+                $stats["monthly_visit"],
+                $stats["monthly_flood"]
+            );
+            $stats["data"] = (string) $extraData;
+            $stats["monthly_visit"] = 0;
+            $stats["monthly_flood"] = 0;
         }
 
-        $stats['total_visit'] += 1;
-        $stats['monthly_visit'] += 1;
+        $stats["total_visit"] += 1;
+        $stats["monthly_visit"] += 1;
         if ($isFlooding) {
-            $stats['total_flood'] += 1;
-            $stats['monthly_flood'] += 1;
+            $stats["total_flood"] += 1;
+            $stats["monthly_flood"] += 1;
         }
         $this->updateUserVisitStatistics($userId, $stats);
     }
@@ -97,8 +107,11 @@ class ThrottleHelper
         try {
             $row = $this->getUserVisitStatistics($userId);
         } catch (DBEntryDoesNotExist $e) {
-            $extraData = (new ExtraData());
-            $stats = ['user_id' => (int) $userId, 'data' => (string) $extraData];
+            $extraData = new ExtraData();
+            $stats = [
+                "user_id" => (int) $userId,
+                "data" => (string) $extraData,
+            ];
             $this->createUserVisitStatistics($userId, $stats);
             $row = $this->getUserVisitStatistics($userId);
         }
@@ -107,71 +120,83 @@ class ThrottleHelper
 
     public function createUserVisitStatistics($userId, $data)
     {
-        $sql = 'INSERT INTO ' . $this->tbl['throttle'] . $this->db->sql_build_array('INSERT', $data);
+        $sql =
+            "INSERT INTO " .
+            $this->tbl["throttle"] .
+            $this->db->sql_build_array("INSERT", $data);
         $this->db->sql_query($sql);
     }
 
     public function updateUserVisitStatistics($userId, $data)
     {
         $ary = [
-            'UPDATE',
-            $this->tbl['throttle'],
-            'SET',
-            $this->db->sql_build_array('UPDATE', $data),
-            "WHERE user_id=${userId}"
+            "UPDATE",
+            $this->tbl["throttle"],
+            "SET",
+            $this->db->sql_build_array("UPDATE", $data),
+            "WHERE user_id=${userId}",
         ];
-        $sql = implode(' ', $ary);
+        $sql = implode(" ", $ary);
         $this->db->sql_query($sql);
     }
 
     public function getUserVisitStatistics($userId)
     {
         $sqlAry = [
-            'SELECT'   => '*',
-            'FROM'     => [$this->tbl['throttle'] => 'a'],
-            'WHERE'    => "user_id={$userId}",
+            "SELECT" => "*",
+            "FROM" => [$this->tbl["throttle"] => "a"],
+            "WHERE" => "user_id={$userId}",
         ];
-        $row = $this->QuerySetFactory->fromSqlArray($sqlAry)->slice(0, 1, false);
+        $row = $this->QuerySetFactory
+            ->fromSqlArray($sqlAry)
+            ->slice(0, 1, false);
         if (!$row) {
-            throw new DBEntryDoesNotExist("User does not exist. Error Code: 3b2b11fee9");
+            throw new DBEntryDoesNotExist(
+                "User does not exist. Error Code: 3b2b11fee9"
+            );
         }
         return $row;
     }
 
     public function banUserUntil($userId, $duration)
     {
-        $data['ban_until'] = time() + $duration;
+        $data["ban_until"] = time() + $duration;
         $this->updateUserVisitStatistics($userId, $data);
     }
 
     public function throttleUser($userId, $cfg)
     {
-        $isLogging = $cfg['enable_logging'];
-        $isThrottling = $cfg['enable_throttle'];
+        $isLogging = $cfg["enable_logging"];
+        $isThrottling = $cfg["enable_throttle"];
         if ($isLogging) {
-            $this->recordUserVisit($userId, $timestamps, $cfg['count']);
+            $this->recordUserVisit($userId, $timestamps, $cfg["count"]);
         }
-        $timestamps = $this->getOrCreateVisitTimestamps($userId, $cfg['count']);
-        $isFlooding = $this->isFlooding($timestamps, $cfg['interval']);
+        $timestamps = $this->getOrCreateVisitTimestamps($userId, $cfg["count"]);
+        $isFlooding = $this->isFlooding($timestamps, $cfg["interval"]);
         if ($isLogging) {
             $this->logUserVisitStatistics($userId, $isFlooding);
         }
         if ($isFlooding && $isLogging) {
-            $this->banUserUntil($userId, $cfg['ban_duration']);
+            $this->banUserUntil($userId, $cfg["ban_duration"]);
         }
-        if ($isThrottling && $banDuration=$this->getUserBanDuration($userId)) {
+        if (
+            $isThrottling &&
+            ($banDuration = $this->getUserBanDuration($userId))
+        ) {
             if ($this->request->is_ajax()) {
                 http_response_code(429);
                 exit();
             }
-            trigger_error("You cannot access the forum for ${banDuration} seconds. Error Code: e1003e6f6f");
+            trigger_error(
+                "You cannot access the forum for ${banDuration} seconds. Error Code: e1003e6f6f"
+            );
         }
     }
 
     public function getUserBanDuration($userId)
     {
         $stats = $this->getOrCreateVisitStatistics($userId);
-        return max(0, $stats['ban_until'] - time());
+        return max(0, $stats["ban_until"] - time());
     }
 
     public function getOrCreateVisitTimestamps($userId, $length)
@@ -181,7 +206,7 @@ class ThrottleHelper
             $this->resetTimestamps($userId, $length);
             $ts = $this->getUserVisitTimestamps($userId);
             if (!$this->validateUserTimestamps($ts, $length)) {
-                throw new \Exception('Error Code: 2f9e4972be');
+                throw new \Exception("Error Code: 2f9e4972be");
             }
         }
         return $ts;
@@ -189,7 +214,10 @@ class ThrottleHelper
 
     public function getUserVisitTimestamps($userId)
     {
-        $sql = "SELECT {$this->col} FROM " . USERS_TABLE . " WHERE user_id=${userId}";
+        $sql =
+            "SELECT {$this->col} FROM " .
+            USERS_TABLE .
+            " WHERE user_id=${userId}";
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -236,7 +264,7 @@ class ThrottleHelper
     public function isFlooding($timestamps, $interval)
     {
         $time = time();
-        if ($time < (reset($timestamps) + $interval)) {
+        if ($time < reset($timestamps) + $interval) {
             return true;
         }
         return false;
@@ -244,46 +272,45 @@ class ThrottleHelper
 
     public function enableMaster()
     {
-        $this->config->set('snp_throttle_enable_master', 1);
+        $this->config->set("snp_throttle_enable_master", 1);
     }
 
     public function disableMaster()
     {
-        $this->config->set('snp_throttle_enable_master', 0);
+        $this->config->set("snp_throttle_enable_master", 0);
     }
 
     public function enableLogging()
     {
-        $this->config->set('snp_throttle_enable_logging', 1);
+        $this->config->set("snp_throttle_enable_logging", 1);
     }
 
     public function disableLogging()
     {
-        $this->config->set('snp_throttle_enable_logging', 0);
+        $this->config->set("snp_throttle_enable_logging", 0);
     }
 
     public function enableThrottle()
     {
-        $this->config->set('snp_throttle_enable_throttle', 1);
+        $this->config->set("snp_throttle_enable_throttle", 1);
     }
 
     public function disableThrottle()
     {
-        $this->config->set('snp_throttle_enable_throttle', 0);
+        $this->config->set("snp_throttle_enable_throttle", 0);
     }
 }
 
-
 class ExtraData
 {
-    public function __construct($serializedData=null)
+    public function __construct($serializedData = null)
     {
         if ($serializedData === null) {
             $this->initializeData();
         } else {
             $this->data = unserialize($serializedData);
         }
-        $this->currentMonth = (int) date('m');
+        $this->currentMonth = (int) date("m");
     }
 
     public function __toString()
@@ -294,11 +321,10 @@ class ExtraData
     public function initializeData()
     {
         $this->data = [
-            'tracking' => [
-                'month' => null,
+            "tracking" => [
+                "month" => null,
             ],
-            'monthly_stats' => [
-            ],
+            "monthly_stats" => [],
         ];
     }
 
@@ -309,12 +335,12 @@ class ExtraData
 
     public function getTrackedMonth()
     {
-        return $this->data['tracking']['month'];
+        return $this->data["tracking"]["month"];
     }
 
-    public function startNewMonth($month, $visit=0, $flood=0)
+    public function startNewMonth($month, $visit = 0, $flood = 0)
     {
-        $previousMonth = $this->data['tracking']['month'];
+        $previousMonth = $this->data["tracking"]["month"];
         if ($previousMonth !== null) {
             $this->setMonthlyVisitData($previousMonth, $visit);
             $this->setMonthlyFloodData($previousMonth, $flood);
@@ -324,16 +350,16 @@ class ExtraData
 
     public function setTrackedMonthData($month)
     {
-        $this->data['tracking']['month'] = (int) $month;
+        $this->data["tracking"]["month"] = (int) $month;
     }
 
     public function setMonthlyFloodData($month, $val)
     {
-        $this->data['monthly_stats'][$month]['flood'] = (int) $val;
+        $this->data["monthly_stats"][$month]["flood"] = (int) $val;
     }
 
     public function setMonthlyVisitData($month, $val)
     {
-        $this->data['monthly_stats'][$month]['visit'] = (int) $val;
+        $this->data["monthly_stats"][$month]["visit"] = (int) $val;
     }
 }

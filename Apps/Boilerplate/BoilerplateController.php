@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\Boilerplate;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BoilerplateController
 {
@@ -39,11 +39,11 @@ class BoilerplateController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = $sauth->userId;
-        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
     }
 
     public function view()
     {
-        return new Response('Hello World');
+        return new Response("Hello World");
     }
 }

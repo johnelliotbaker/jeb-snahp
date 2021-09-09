@@ -1,20 +1,15 @@
 <?php
 namespace jeb\snahp\Apps\Xmas;
 
-require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/BingoBoard.php';
-require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/Scorers.php';
-require_once '/var/www/forum/ext/jeb/snahp/Apps/Xmas/utility.php';
+require_once "/var/www/forum/ext/jeb/snahp/Apps/Xmas/BingoBoard.php";
+require_once "/var/www/forum/ext/jeb/snahp/Apps/Xmas/Scorers.php";
+require_once "/var/www/forum/ext/jeb/snahp/Apps/Xmas/utility.php";
 
 class XmasHelper
 {
     protected $sauth;
-    public function __construct(
-        $cache,
-        $sauth,
-        $Board,
-        $Vote,
-        $Config
-    ) {
+    public function __construct($cache, $sauth, $Board, $Vote, $Config)
+    {
         $this->cache = $cache;
         $this->sauth = $sauth;
         $this->userId = $sauth->userId;
@@ -25,7 +20,7 @@ class XmasHelper
         $this->boardConfig = null;
     }
 
-    public function simulateVoting($period=0)
+    public function simulateVoting($period = 0)
     {
         $startTime = microtime(true);
         $this->Vote->simulate($period);
@@ -39,11 +34,11 @@ class XmasHelper
         $votes = getVotes();
         $availableVotes = getAvailableVotes();
         $user = $this->sauth->userId;
-        $board = $this->Board->getObject('user=?', [$user]);
+        $board = $this->Board->getObject("user=?", [$user]);
         if (!$board) {
             $data = [
-                'user' => $user,
-                'created' => time(),
+                "user" => $user,
+                "created" => time(),
             ];
             $board = $this->Board->create($data);
         }
@@ -58,19 +53,19 @@ class XmasHelper
         $timeToNext = $nextPeriodStart - time();
         $elapsed = microtime(true) - $startTime;
         $data = [
-            'period' => (int) $period,
-            'votes' => $votes,
-            'availableVotes' => array_values($availableVotes),
-            'score' => (int) $score,
-            'voteDistribution' => $voteDistribution,
-            'nextPeriodStart' => $nextPeriodStart,
-            'timeToNext' => $timeToNext,
-            'distribution' => $distribution,
-            'totalPlayers' => (int) $totalPlayers,
-            'currentVote' => (int) $currentVote,
-            'elapsed' => $elapsed,
-            'board' => [
-                'tiles' => json_decode($board->tiles, true),
+            "period" => (int) $period,
+            "votes" => $votes,
+            "availableVotes" => array_values($availableVotes),
+            "score" => (int) $score,
+            "voteDistribution" => $voteDistribution,
+            "nextPeriodStart" => $nextPeriodStart,
+            "timeToNext" => $timeToNext,
+            "distribution" => $distribution,
+            "totalPlayers" => (int) $totalPlayers,
+            "currentVote" => (int) $currentVote,
+            "elapsed" => $elapsed,
+            "board" => [
+                "tiles" => json_decode($board->tiles, true),
             ],
         ];
         return $data;
@@ -80,14 +75,20 @@ class XmasHelper
     {
         $period = $this->getPeriod();
         $schedule = $this->getSchedule();
-        [$start, $interval] = [$schedule['start'], $schedule['duration'] / $schedule['division']];
+        [$start, $interval] = [
+            $schedule["start"],
+            $schedule["duration"] / $schedule["division"],
+        ];
         return $start + $interval * ($period + 1);
     }
 
     public function getCurrentUserVote($userId)
     {
         $index = $this->getPeriod();
-        $instance = $this->Vote->getObject('user=? AND period=?', [$userId, $index]);
+        $instance = $this->Vote->getObject("user=? AND period=?", [
+            $userId,
+            $index,
+        ]);
         if ($instance) {
             return $instance->tile;
         }
@@ -95,18 +96,16 @@ class XmasHelper
 
     public function createBoard($userId)
     {
-        $this->Board->create(
-            [
-                'user' => $userId,
-                'created' => time(),
-            ]
-        );
+        $this->Board->create([
+            "user" => $userId,
+            "created" => time(),
+        ]);
     }
 
     public function getSchedule()
     {
         if ($this->schedule === null) {
-            $this->schedule = getXmasConfig('schedule', 0);
+            $this->schedule = getXmasConfig("schedule", 0);
         }
         return $this->schedule;
     }
@@ -115,14 +114,27 @@ class XmasHelper
     {
         // TODO::
         $cacheDuration = 0;
-        $varname = 'snp_xmas_score_distribution';
+        $varname = "snp_xmas_score_distribution";
         $distribution = $this->cache->get($varname);
         if (!$distribution) {
-            $distribution = [0=>0, 1=>0, 2=>0, 3=>0, 4=>0, 5=>0, 6=>0, 8=>0];
+            $distribution = [
+                0 => 0,
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+                6 => 0,
+                8 => 0,
+            ];
             $votes = getVotes();
             $boards = $this->Board->getQueryset();
             $boardConfig = $this->getBoardConfig();
-            $bingoBoard = new BingoBoard($boardConfig['rows'], $boardConfig['columns'], $boardConfig['poolSize']);
+            $bingoBoard = new BingoBoard(
+                $boardConfig["rows"],
+                $boardConfig["columns"],
+                $boardConfig["poolSize"]
+            );
             $scorer = new ScoreRule75();
             $scorer->sequence = $votes;
             foreach ($boards as $board) {
@@ -145,9 +157,13 @@ class XmasHelper
     public function scoreUser($userId)
     {
         $votes = getVotes();
-        $board = $this->Board->getObject('user=?', [$userId]);
+        $board = $this->Board->getObject("user=?", [$userId]);
         $boardConfig = $this->getBoardConfig();
-        $bingoBoard = new BingoBoard($boardConfig['rows'], $boardConfig['columns'], $boardConfig['poolSize']);
+        $bingoBoard = new BingoBoard(
+            $boardConfig["rows"],
+            $boardConfig["columns"],
+            $boardConfig["poolSize"]
+        );
         $bingoBoard->tiles = $board->tiles;
         $scorer = new ScoreRule75();
         $scorer->sequence = $votes;
@@ -165,69 +181,68 @@ class XmasHelper
     public function getBoardConfig()
     {
         if ($this->boardConfig === null) {
-            $this->boardConfig = getXmasConfig('board');
+            $this->boardConfig = getXmasConfig("board");
         }
         return $this->boardConfig;
     }
 
-    public function resetTimer($mode=0)
+    public function resetTimer($mode = 0)
     {
         $now = time();
         $cfg = [
             // Real event
             0 => [
-                'start' => 1607990400,
-                'duration' => 864000,
-                'end' => 1608854400,
-                'division' => 10,
+                "start" => 1607990400,
+                "duration" => 864000,
+                "end" => 1608854400,
+                "division" => 10,
             ],
             // Very Short for checking scoring
             1 => [
-                'start' => $now,
-                'duration' => 2,
-                'end' => $now + 2,
-                'division' => 10,
+                "start" => $now,
+                "duration" => 2,
+                "end" => $now + 2,
+                "division" => 10,
             ],
             // Short for checking progression
             2 => [
-                'start' => $now + 10,
-                'duration' => 100,
-                'end' => $now + 10 + 100,
-                'division' => 10,
+                "start" => $now + 10,
+                "duration" => 100,
+                "end" => $now + 10 + 100,
+                "division" => 10,
             ],
             // Short for checking progression
             3 => [
-                'start' => $now,
-                'duration' => 900,
-                'end' => $now + 900,
-                'division' => 10,
+                "start" => $now,
+                "duration" => 900,
+                "end" => $now + 900,
+                "division" => 10,
             ],
             // Beta Tester Run
             4 => [
-                'start' => $now + 3600,
-                'duration' => 86400,
-                'end' => $now + 3600 + 86400,
-                'division' => 10,
+                "start" => $now + 3600,
+                "duration" => 86400,
+                "end" => $now + 3600 + 86400,
+                "division" => 10,
             ],
             // Beta Tester Run
             5 => [
-                'start' => $now,
-                'duration' => 864000,
-                'end' => $now + 864000,
-                'division' => 10,
+                "start" => $now,
+                "duration" => 864000,
+                "end" => $now + 864000,
+                "division" => 10,
             ],
         ];
         $Config = $this->Config;
-        $instance = $Config->getObject('name=?', ['schedule']);
+        $instance = $Config->getObject("name=?", ["schedule"]);
         $data = $cfg[(int) $mode];
-        $Config->update($instance, ['data' => json_encode($data)]);
-        $instance = $Config->getObject('name=?', ['votes']);
-        $Config->update($instance, ['data' => json_encode([])]);
+        $Config->update($instance, ["data" => json_encode($data)]);
+        $instance = $Config->getObject("name=?", ["votes"]);
+        $Config->update($instance, ["data" => json_encode([])]);
         $this->Vote->wipe();
         return $data;
     }
 }
-
 
 class Simulator
 {
@@ -244,13 +259,12 @@ class Simulator
     }
 }
 
-
 class AlreadyVotedError extends \jeb\snahp\core\errors\SnahpException
 {
-    const MESSAGE_PREFIX = 'AlreadyVotedError';
+    const MESSAGE_PREFIX = "AlreadyVotedError";
 }
 
 class BoardDoesNotExistError extends \jeb\snahp\core\errors\SnahpException
 {
-    const MESSAGE_PREFIX = 'BoardDoesNotExistError';
+    const MESSAGE_PREFIX = "BoardDoesNotExistError";
 }

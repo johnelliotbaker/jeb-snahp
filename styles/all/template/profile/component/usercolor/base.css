@@ -1,6 +1,4 @@
-input[name='custom_usercolor']
-{
-    margin-top: -2px;
-    height:14px;
+input[name="custom_usercolor"] {
+  margin-top: -2px;
+  height: 14px;
 }
-

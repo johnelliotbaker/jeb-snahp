@@ -22,26 +22,22 @@ class v_0_39_0 extends container_aware_migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'users' => [
-                    'snp_restricted' => ['INT:11', 0],
+            "add_columns" => [
+                $this->table_prefix . "users" => [
+                    "snp_restricted" => ["INT:11", 0],
                 ],
             ],
         ];
     }
-
 
     public function revert_schema()
     {
         return [
-            'drop_columns' => [
-                $this->table_prefix . 'users' => [
-                    'snp_restricted',
-                ],
+            "drop_columns" => [
+                $this->table_prefix . "users" => ["snp_restricted"],
             ],
         ];
     }
-
 
     public function update_data()
     {

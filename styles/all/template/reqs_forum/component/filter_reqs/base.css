@@ -1,17 +1,15 @@
-.btn.selector
-{
-    padding:10px;
+.btn.selector {
+  padding: 10px;
 }
 span.btn.all {
-    background:#111;
-    border: 1px solid #777;
+  background: #111;
+  border: 1px solid #777;
 }
 li.row.bg1.hidden,
-li.row.bg2.hidden
-{
-    display: none;
+li.row.bg2.hidden {
+  display: none;
 }
 .reqs_tags_wrapper {
-    margin-top: 4px;
-    flex-grow: 1;
+  margin-top: 4px;
+  flex-grow: 1;
 }

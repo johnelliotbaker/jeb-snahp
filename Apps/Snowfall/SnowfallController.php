@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\Snowfall;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SnowfallController
 {
@@ -38,13 +38,13 @@ class SnowfallController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->userId = (int) $this->user->data["user_id"];
+        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
     }
 
     public function reset()
     {
-        $this->sauth->reject_non_dev('Error Code: ada9625f21');
+        $this->sauth->reject_non_dev("Error Code: ada9625f21");
         $this->helper->reset();
         return new JsonResponse([]);
     }
@@ -57,10 +57,10 @@ class SnowfallController
 
     public function changeText()
     {
-        $text = $this->request->variable('text', '');
+        $text = $this->request->variable("text", "");
         $success = $this->helper->changeText($text);
         $statusCode = $success ? 200 : 400;
-        return new JsonResponse(['text' => $text], $statusCode);
+        return new JsonResponse(["text" => $text], $statusCode);
     }
 
     public function changeColor($color)

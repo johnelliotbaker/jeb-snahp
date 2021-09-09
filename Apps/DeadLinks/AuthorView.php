@@ -2,10 +2,10 @@
 
 namespace jeb\snahp\Apps\DeadLinks;
 
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php';
-require_once '/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php';
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
+require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use \R as R;
 
 class AuthorView
@@ -20,7 +20,7 @@ class AuthorView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->Entry = $Entry;
-        $this->sauth->reject_new_users('Error Code: 090a034eab');
+        $this->sauth->reject_new_users("Error Code: 090a034eab");
     }
 
     public function view()
@@ -28,7 +28,6 @@ class AuthorView
         $data = $this->getReports();
         return new JsonResponse($data);
     }
-
 
     public function getReports()
     {

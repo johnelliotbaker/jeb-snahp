@@ -10,23 +10,18 @@ class MuteUserListener implements EventSubscriberInterface
     protected $config;
     protected $user;
     protected $sauth;
-    public function __construct(
-        $config,
-        $user,
-        $sauth
-    ) {
+    public function __construct($config, $user, $sauth)
+    {
         $this->config = $config;
         $this->user = $user;
         $this->sauth = $sauth;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'core.modify_posting_auth' => [
-                ['muteUser', 0],
-            ],
+            "core.modify_posting_auth" => [["muteUser", 0]],
         ];
     }
 

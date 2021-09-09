@@ -24,8 +24,6 @@ class v_0_21_2 extends \phpbb\db\migration\migration
 
     public function update_data()
     {
-        return [
-            ['config.add', ['snp_thanks_b_op', 1]],
-        ];
+        return [["config.add", ["snp_thanks_b_op", 1]]];
     }
 }

@@ -1,66 +1,55 @@
-.digg_btn
-{
-    position: absolute;
-    top: 6px;
-    right: 4px;
-    font-size: 0px;
+.digg_btn {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  font-size: 0px;
 }
 
-.digg_btn .container
-{
-    background-color: #333;
-    border-radius: 2px;
-    height: 1rem;
-    line-height: 1rem;
+.digg_btn .container {
+  background-color: #333;
+  border-radius: 2px;
+  height: 1rem;
+  line-height: 1rem;
 }
 
-.inline_block
-{
-    display: inline-block;
-    font-size: .9rem !important;
-    padding-left: 4px;
-    padding-right: 4px;
-    border-right: 1px solid #aaa;
+.inline_block {
+  display: inline-block;
+  font-size: 0.9rem !important;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-right: 1px solid #aaa;
 }
 
-.digg_btn .digg
-{
-    color: #4a4;
+.digg_btn .digg {
+  color: #4a4;
 }
 
-.digg_btn .undigg
-{
-    color: #888;
+.digg_btn .undigg {
+  color: #888;
 }
 
-.digg_btn .close
-{
-    color: #b22;
+.digg_btn .close {
+  color: #b22;
 }
 
-.digg_btn .count
-{
-    color: #eee;
-    font-weight: 700;
+.digg_btn .count {
+  color: #eee;
+  font-weight: 700;
 }
 
-.digg_btn .register
-{
-    color: #f8c301;
+.digg_btn .register {
+  color: #f8c301;
 }
 
-.digg_btn .broadcast
-{
-    color: #4a4;
+.digg_btn .broadcast {
+  color: #4a4;
 }
 
-.digg_btn .help
-{
-    color: #ccc;
-    border-right: none;
+.digg_btn .help {
+  color: #ccc;
+  border-right: none;
 }
 
-.inline_block.undigg a:hover
-{
-    text-decoration: none !important;
+.inline_block.undigg a:hover {
+  text-decoration: none !important;
 }

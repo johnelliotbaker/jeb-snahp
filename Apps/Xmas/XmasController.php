@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\Apps\Xmas;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use \R as R;
 
@@ -40,8 +40,8 @@ class XmasController
         $this->tbl = $tbl;
         $this->sauth = $sauth;
         $this->helper = $helper;
-        $this->userId = (int) $this->user->data['user_id'];
-        $this->sauth->reject_anon('Error Code: a5e8ee80c7');
+        $this->userId = (int) $this->user->data["user_id"];
+        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
     }
 
     public function resetTimer($mode)

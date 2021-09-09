@@ -1,8 +1,8 @@
 <?php
 namespace jeb\snahp\core;
 
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ForumStructureHelper
 {
@@ -14,21 +14,21 @@ class ForumStructureHelper
         $this->php_ext = $php_ext;
     }
 
-    public function selectSubforum($parent_id, $cooldown=0, $b_immediate=false)
-    {
-        include_once $this->root_path . 'includes/functions_admin.php';
-        $fid = get_forum_branch($parent_id, 'children');
-        return array_map(
-            function ($array) {
-                return $array['forum_id'];
-            },
-            $fid
-        );
+    public function selectSubforum(
+        $parent_id,
+        $cooldown = 0,
+        $b_immediate = false
+    ) {
+        include_once $this->root_path . "includes/functions_admin.php";
+        $fid = get_forum_branch($parent_id, "children");
+        return array_map(function ($array) {
+            return $array["forum_id"];
+        }, $fid);
     }
 
     public function makeSubforumSelectorHTML($selectId)
     {
-        include_once 'includes/functions_admin.php';
+        include_once "includes/functions_admin.php";
         return make_forum_select(
             $select_id = $selectId,
             $ignore_id = false,

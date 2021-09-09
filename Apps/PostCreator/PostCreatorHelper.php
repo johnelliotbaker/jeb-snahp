@@ -11,19 +11,14 @@ class PostCreatorHelper
     protected $template;
     protected $tbl;
     protected $sauth;
-    public function __construct(
-        $db,
-        $user,
-        $template,
-        $tbl,
-        $sauth
-    ) {
+    public function __construct($db, $user, $template, $tbl, $sauth)
+    {
         $this->db = $db;
         $this->user = $user;
         $this->template = $template;
         $this->tbl = $tbl;
-        $this->rxnTbl = $tbl['PostCreator'];
+        $this->rxnTbl = $tbl["PostCreator"];
         $this->sauth = $sauth;
-        $this->user_id = $this->user->data['user_id'];
+        $this->user_id = $this->user->data["user_id"];
     }
 }

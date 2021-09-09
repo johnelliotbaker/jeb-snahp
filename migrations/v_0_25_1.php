@@ -39,13 +39,6 @@ class v_0_25_1 extends \phpbb\db\migration\migration
     }
     public function update_data()
     {
-        return [
-            [
-                'custom',
-                [
-                    [ $this, 'set_default' ]
-                ]
-            ]
-        ];
+        return [["custom", [[$this, "set_default"]]]];
     }
 }

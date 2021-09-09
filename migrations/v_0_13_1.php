@@ -19,35 +19,33 @@ class v_0_13_1 extends \phpbb\db\migration\migration
 
     public static function depends_on()
     {
-        return array(
-            '\jeb\snahp\migrations\v_0_13_0',
-        );
+        return ['\jeb\snahp\migrations\v_0_13_0'];
     }
 
     public function update_schema()
     {
-        return array(
-            'add_index'	=> array(
-                $this->table_prefix . 'topics'  => array(
-                    'topic_views' => array('topic_views'),
-                    'topic_time'  => array('topic_time'),
-                ),
-            ),
-        );
+        return [
+            "add_index" => [
+                $this->table_prefix . "topics" => [
+                    "topic_views" => ["topic_views"],
+                    "topic_time" => ["topic_time"],
+                ],
+            ],
+        ];
     }
 
     public function update_data()
     {
         $duration = 60 * 60 * 24 * 7;
-        return array(
-            array('config.add', array('snp_ql_fav_limit', 300)),
-            array('config.add', array('snp_ql_fav_duration', $duration)),
-            array('config.add', array('snp_ql_fav_b_replies', 0)),
-            array('config.add', array('snp_ql_fav_b_views', 1)),
-            array('config.add', array('snp_ql_fav_b_time', 1)),
-            array('config.add', array('snp_ql_thanks_given', 1)),
-            array('config.add', array('snp_ql_ucp_bookmark', 1)),
-            array('config.add', array('snp_ql_req_open_requests', 1)),
-        );
+        return [
+            ["config.add", ["snp_ql_fav_limit", 300]],
+            ["config.add", ["snp_ql_fav_duration", $duration]],
+            ["config.add", ["snp_ql_fav_b_replies", 0]],
+            ["config.add", ["snp_ql_fav_b_views", 1]],
+            ["config.add", ["snp_ql_fav_b_time", 1]],
+            ["config.add", ["snp_ql_thanks_given", 1]],
+            ["config.add", ["snp_ql_ucp_bookmark", 1]],
+            ["config.add", ["snp_ql_req_open_requests", 1]],
+        ];
     }
 }

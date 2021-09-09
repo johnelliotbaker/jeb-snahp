@@ -19,16 +19,16 @@ class v_0_35_1 extends \phpbb\db\migration\migration
     public function update_schema()
     {
         return [
-            'add_columns' => [
-                $this->table_prefix . 'snahp_foe' => [
-                    'b_permanent'  => ['BOOL', 0],
-                    'b_frozen'  => ['BOOL', 0],
+            "add_columns" => [
+                $this->table_prefix . "snahp_foe" => [
+                    "b_permanent" => ["BOOL", 0],
+                    "b_frozen" => ["BOOL", 0],
                 ],
             ],
-            'add_index'    => [
-                $this->table_prefix . 'snahp_foe' => [
-                    'b_permanent' => ['b_permanent'],
-                    'mod_id' => ['mod_id'],
+            "add_index" => [
+                $this->table_prefix . "snahp_foe" => [
+                    "b_permanent" => ["b_permanent"],
+                    "mod_id" => ["mod_id"],
                 ],
             ],
         ];
@@ -36,11 +36,11 @@ class v_0_35_1 extends \phpbb\db\migration\migration
 
     public function revert_schema()
     {
-        return [ ];
+        return [];
     }
 
     public function update_data()
     {
-        return [ ];
+        return [];
     }
 }
