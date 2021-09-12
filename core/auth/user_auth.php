@@ -40,7 +40,8 @@ class user_auth
         $this->db->sql_freeresult($result);
         $b = $row && $row["count"] ? true : false;
         if (!$b) {
-            trigger_error("Permission Error. Error Code: ca546fad27");
+            $message = "Permission Error. Error Code: ca546fad27";
+            throwHttpException(403, $message);
         }
         return true;
     }
@@ -51,7 +52,8 @@ class user_auth
         $BOTS_GID = 6;
         $gid = $this->user->data["group_id"];
         if (!$gid || $gid == $BOTS_GID) {
-            trigger_error("Access to bots has been denied.");
+            $message = "Access to bots has been denied.";
+            throwHttpException(403, $message);
         }
     }
 
@@ -59,7 +61,8 @@ class user_auth
     {
         $uid = $this->user->data["user_id"];
         if ($uid == ANONYMOUS) {
-            trigger_error("You must login before venturing forth.");
+            $message = "You must login before venturing forth.";
+            throwHttpException(403, $message);
         }
     }
 
@@ -67,18 +70,17 @@ class user_auth
     {
         $groups = [1, 7]; // GUESTS=1, NEWLY_REGISTERED=7
         if (in_array((int) $this->user->data["group_id"], $groups)) {
-            throw new \Exception(
-                "You do not have the permission to access this page. $suffix"
-            );
+            $message = "You do not have the permission to access this page. $suffix";
+            throwHttpException($message);
         }
     }
 
     public function rejectRestrictedUser()
     {
         if ($this->user->data["snp_restricted"]) {
-            trigger_error(
-                "Your account has been restricted. Error Code: 4c8ad9def6"
-            );
+            $message =
+                "Your account has been restricted. Error Code: 4c8ad9def6";
+            throwHttpException(403, $message);
         }
     }
 
@@ -144,9 +146,8 @@ class user_auth
     {
         if (!($this->is_dev() || $this->is_self($user_id))) {
             $ec = $append ? $append : "Error Code: 63c3a68b37";
-            trigger_error(
-                "You don't have the permission to access this page. ${ec}"
-            );
+            $message = "You don't have the permission to access this page. ${ec}";
+            throwHttpException(403, $message);
         }
     }
 
@@ -158,7 +159,8 @@ class user_auth
                 "Error Code: 7695d3509e",
             ];
             if ($this->user->data["snp_mute_topic"]) {
-                trigger_error(implode(" ", $no_topic_msg));
+                $message = implode(" ", $no_topic_msg);
+                throwHttpException(403, $message);
             }
         } elseif ($mode == "reply") {
             $no_reply_msg = [
@@ -166,7 +168,8 @@ class user_auth
                 "Error Code: af6a453392",
             ];
             if ($this->user->data["snp_mute_reply"]) {
-                trigger_error(implode(" ", $no_reply_msg));
+                $message = implode(" ", $no_reply_msg);
+                throwHttpException(403, $message);
             }
         }
     }
@@ -175,9 +178,8 @@ class user_auth
     {
         if (!($this->is_dev() || $this->is_self())) {
             $ec = $append ? $append : "Error Code: 2672a575d9";
-            trigger_error(
-                "You don't have the permission to access this page. ${ec}"
-            );
+            $message = "You don't have the permission to access this page. ${ec}";
+            throwHttpException(403, $message);
         }
     }
 
@@ -185,9 +187,8 @@ class user_auth
     {
         if (!$this->is_dev()) {
             $ec = $append ? $append : "Error Code: 0302f34660";
-            trigger_error(
-                "You don't have the permission to access this page. ${ec}"
-            );
+            $message = "You don't have the permission to access this page. ${ec}";
+            throwHttpException(403, $message);
         }
     }
 
@@ -195,7 +196,8 @@ class user_auth
     {
         if (!$this->is_admin()) {
             $ec = $append ? $append : "Error Code: b1d917f9e3";
-            trigger_error("Only administrator may access this page. ${ec}");
+            $message = "Only administrator may access this page. ${ec}";
+            throwHttpException(403, $message);
         }
     }
 
@@ -203,7 +205,8 @@ class user_auth
     {
         if (!$this->is_mod()) {
             $ec = $append ? $append : "Error Code: 0302f34660";
-            trigger_error("Only moderators may access this page. ${ec}");
+            $message = "Only moderators may access this page. ${ec}";
+            throwHttpException(403, $message);
         }
     }
 
@@ -223,18 +226,17 @@ class user_auth
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
         if (!$row) {
-            trigger_error(
-                'Your don\'t have the permission to access this page.'
-            );
+            $message = 'Your don\'t have the permission to access this page.';
+            throwHttpException(403, $message);
         }
     }
 
     public function reject_user_not_in_groupset($user_id, $groupset_name)
     {
         if (!$this->user_belongs_to_groupset($user_id, $groupset_name)) {
-            trigger_error(
-                "You do not have the permission to view this page. Error Code: ad5611c89b"
-            );
+            $message =
+                "You do not have the permission to view this page. Error Code: ad5611c89b";
+            throwHttpException(403, $message);
         }
     }
 
@@ -346,9 +348,8 @@ class user_auth
             $row = $this->db->sql_fetchrow($result);
             $this->db->sql_freeresult($result);
             if (!$row) {
-                throw new \Exception(
-                    "User ${userId} not found: Error Code: 3c4e5cf47e"
-                );
+                $message = "User ${userId} not found: Error Code: 3c4e5cf47e";
+                throwHttpException(403, $message);
             }
             [$username, $userColor] = [$row["username"], $row["user_colour"]];
         }
