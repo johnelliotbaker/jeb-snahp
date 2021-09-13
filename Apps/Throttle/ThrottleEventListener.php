@@ -42,7 +42,7 @@ class ThrottleEventListener implements EventSubscriberInterface
         $enable_logging = $this->config["snp_throttle_enable_logging"] ?? 0;
         $enable_throttle = $this->config["snp_throttle_enable_throttle"] ?? 0;
         $cfg = [
-            "count" => 25,
+            "count" => 20,
             "interval" => 10,
             "ban_duration" => 30,
             "enable_master" => $enable_master,
