@@ -1204,6 +1204,9 @@ class main_listener extends base implements EventSubscriberInterface
         $poster_data = $this->poster_data;
         $post_row["USER_POSTING_VIOLATIONS"] =
             $poster_data["snp_violation_count"];
+        if ($poster_data["snp_restricted"]) {
+            $post_row["RESTRICTED"] = true;
+        }
         $event["post_row"] = $post_row;
     }
 
