@@ -161,6 +161,11 @@ class Model
         return R::load($this::FOREIGN_NAME, $pk);
     }
 
+    public function delete($instance)
+    {
+        R::trash($instance);
+    }
+
     public function wipe()
     {
         R::wipe($this::TABLE_NAME);

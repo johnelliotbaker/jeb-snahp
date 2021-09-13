@@ -99,7 +99,7 @@ function getStyleName()
 
 function getRequestMethod($request)
 {
-    return $request->server("REQUEST_METHOD", "GET");
+    return strtoupper($request->server("REQUEST_METHOD", "GET"));
 }
 
 function getRequestData($request)

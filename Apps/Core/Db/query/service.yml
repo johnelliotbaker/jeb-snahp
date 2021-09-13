@@ -6,6 +6,16 @@ services:
             - "@dbal.conn"
             - "%jeb.snahp.tables%"
 
+    jeb.snahp.Apps.Core.Db.query.BaseQuery:
+        class: jeb\snahp\Apps\Core\Db\query\BaseQuery
+        arguments:
+            - "@dbal.conn"
+
+    jeb.snahp.Apps.Core.Db.query.Post:
+        class: jeb\snahp\Apps\Core\Db\query\Post
+        arguments:
+            - "@dbal.conn"
+
     jeb.snahp.Apps.Core.Db.query.Topic:
         class: jeb\snahp\Apps\Core\Db\query\Topic
         arguments:

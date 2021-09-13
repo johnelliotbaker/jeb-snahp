@@ -7,7 +7,9 @@ class IntegerField extends Field
     public function validate($data)
     {
         if (!is_numeric($data)) {
-            throw new \Exception("Expected an integer.");
+            $name = $this->getName();
+            $name = "($name)";
+            throw new \Exception("$name Expected an integer.");
         }
         return (int) $data;
     }

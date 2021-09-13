@@ -33,9 +33,9 @@ trait View
                 return;
             }
         }
-        throw new \Exception(
-            "You do not have the permission to view this resource. Error Code: afb80c4efc"
-        );
+        $message =
+            "You do not have the permission to view this resource. Error Code: afb80c4efc";
+        throwHttpException(403, $message);
     }
 
     public function checkObjectPermissions(
@@ -54,9 +54,9 @@ trait View
                 return;
             }
         }
-        throw new \Exception(
-            "You do not have the permission to view this resource. Error Code: 17f3c0bc47"
-        );
+        $message =
+            "You do not have the permission to view this resource. Error Code: 17f3c0bc47";
+        throwHttpException(403, $message);
     }
 }
 
@@ -110,9 +110,8 @@ class GenericAPIView
         $pk = (int) $this->params["pk"];
         $object = R::findOne($this->model::TABLE_NAME, "id=?", [$pk]);
         if (!$object) {
-            throw new \Exception(
-                "Request resource was not found. Error Code: 3807589034"
-            );
+            $message = "Request resource was not found. Error Code: 3807589034";
+            throwHttpException(404, $message);
         }
         $this->checkObjectPermissions(
             $this->request,
@@ -256,8 +255,14 @@ trait UpdateModelMixin
     {
         [$instance, $data] = [$this->getObject(), getRequestData($request)];
         if (!$instance) {
-            trigger_error("Instance not found. Error Code: d9718fb2e8");
+            $message = "Instance not found. Error Code: d9718fb2e8";
+            throwHttpException(404, $message);
         }
+        $this->checkObjectPermissions(
+            $request,
+            $this->sauth->userId,
+            $instance
+        );
         $serializer = $this->getSerializer($instance, $data);
         if ($serializer->isValid()) {
             $data = $this->performUpdate($serializer);
@@ -365,13 +370,9 @@ trait CreateModelMixin
         $foreignPk = $this->getForeignPk(0);
         $foreignInstance = R::findOne($foreignName, "id=?", [$foreignPk]);
         if (!$foreignInstance) {
-            http_response_code(404);
             $selfName = $this->model::TABLE_NAME;
-            $resp = ucfirst(
-                "${selfName} must have a valid parent ${foreignName}. Error Code: e65ca2603a"
-            );
-            print $resp;
-            die();
+            $message = "${selfName} must have a valid parent ${foreignName}. Error Code: e65ca2603a";
+            throwHttpException(404, $message);
         }
         return $foreignInstance;
     }

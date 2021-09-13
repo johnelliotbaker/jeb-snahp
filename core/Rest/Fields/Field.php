@@ -21,4 +21,9 @@ class Field
     {
         return $validData;
     }
+
+    public function getName()
+    {
+        return $this->_options["name"] ?? "";
+    }
 }

@@ -1,5 +1,6 @@
 $(function () {
-  var tid = { S_TOPIC_ID };
+  // prettier-ignore
+  var tid = {S_TOPIC_ID};
   $to_forum_id = $("#to_forum_id");
   var fid = $to_forum_id.children("option:selected").val();
   $to_forum_id.change(() => {
