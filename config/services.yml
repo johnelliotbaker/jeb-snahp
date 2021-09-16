@@ -57,6 +57,9 @@ imports:
     - { resource: ../Apps/QuickUCP/service.yml }
     - { resource: ../Apps/Emoticon/service.yml }
     - { resource: ../Apps/Spotlight/service.yml }
+    - { resource: ../Apps/Maze/service.yml }
+    - { resource: ../Apps/Database/service.yml }
+    - { resource: ../Apps/MrRobot/service.yml }
 
 services:
     jeb.snahp.core:

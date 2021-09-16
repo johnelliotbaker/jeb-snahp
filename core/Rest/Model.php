@@ -25,6 +25,20 @@ class Model
         ];
     }
 
+    public function exportFields($instance, $fields)
+    {
+        if (is_array($fields) && count($fields)) {
+            $propNames = array_keys($instance->getProperties());
+            $fields = asSet($fields);
+            foreach ($propNames as $propName) {
+                if (!array_key_exists($propName, $fields)) {
+                    unset($instance->{$propName});
+                }
+            }
+        }
+        return $instance;
+    }
+
     public function getFields()
     {
         return $this->fields;

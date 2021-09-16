@@ -1,34 +1,34 @@
 {
-  "name": "jeb/snahp",
-  "type": "phpbb-extension",
-  "description": "Snahp Extension",
-  "version": "0.40.1 Fast and Furious",
-  "time": "2021-06-25",
-  "license": "GPL-2.0-only",
-  "authors": [
-    {
-      "name": "jeb",
-      "role": ""
+    "name": "jeb/snahp",
+    "type": "phpbb-extension",
+    "description": "Snahp Extension",
+    "version": "0.44.1 Ratatouille",
+    "time": "2021-09-15",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "jeb",
+            "role": ""
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "composer/installers": "~1.0",
+        "symfony/form": "^4.4",
+        "symfony/twig-bridge": "^4.4",
+        "twig/twig": "1.41.0",
+        "symfony/security-csrf": "^4.4",
+        "symfony/validator": "^4.4"
+    },
+    "extra": {
+        "version": "b254cb62c1a6ef7ae3dea32b2893ebf3cdfb9946",
+        "features": "Throttle",
+        "display-name": "Snahp",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.1.4,<3.2.2"
+        }
+    },
+    "require-dev": {
+        "phing/phing": "2.4.*"
     }
-  ],
-  "require": {
-    "php": ">=5.3.3",
-    "composer/installers": "~1.0",
-    "symfony/form": "^4.4",
-    "symfony/twig-bridge": "^4.4",
-    "twig/twig": "1.41.0",
-    "symfony/security-csrf": "^4.4",
-    "symfony/validator": "^4.4"
-  },
-  "extra": {
-    "version": "06493c284ef94f4db00b8aacabaee6694ff00039",
-    "features": "Throttle",
-    "display-name": "Snahp",
-    "soft-require": {
-      "phpbb/phpbb": ">=3.1.4,<3.2.2"
-    }
-  },
-  "require-dev": {
-    "phing/phing": "2.4.*"
-  }
 }
