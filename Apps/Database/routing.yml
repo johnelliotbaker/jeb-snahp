@@ -1,0 +1,23 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.database.main:
+    path: /snahp/database
+    defaults: { _controller: jeb.snahp.Apps.Database.DatabaseController:view}
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.database.list_database:
+    path: /snahp/database/database
+    defaults: { _controller: jeb.snahp.Apps.Database.DatabaseListCreateAPIView:dispatch}
+jeb.snahp.routing.database.retrieve_database:
+    path: /snahp/database/database/{id}
+    defaults: { _controller: jeb.snahp.Apps.Database.DatabaseRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

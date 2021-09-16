@@ -1,0 +1,52 @@
+<!-- INCLUDE overall_header.html -->
+<style>
+{% include '@jeb_snahp/database_manager/base.css' %}
+{% if STYLE_NAME=='hexagon' or STYLE_NAME=='acieeed' %}
+  {% include '@jeb_snahp/database_manager/dark.css' %}
+{% endif %}
+</style>
+
+<div class="twbs">
+  <p class="text-center pt-0 mt-0">{STATEMENT}</p>
+  <p class="text-center pt-0 mt-0">{PROCESS_TIME|number_format(6)} seconds</p>
+  <div>
+    <form method="post">
+      {S_FORM_TOKEN}
+      {% include '@jeb_snahp/database/table-selector.html' %}
+      <div class="input-group mb-3">
+        <input type="checkbox" {% if PARSE=='on' %}checked{% endif %} name="parse"></input>
+        <label for="parse" class="ml-1">Parse</label>
+      </div>
+      <div class="input-group mb-2">
+        {% include '@jeb_snahp/database/fields.html' %}
+        {% include '@jeb_snahp/database/where.html' %}
+        {% include '@jeb_snahp/database/order-by.html' %}
+        {% include '@jeb_snahp/database/limit.html' %}
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit" name="submit" value="submit" id="list_btn">Submit</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-sm table-dark">
+              <tr>
+                {% for column in COLUMNS %}
+                  <th>{{ column|e }}</th>
+                {% endfor %}
+              </tr>
+            <tbody>
+              {% for row in ROWSET %}
+                <tr>
+                  {% for entry in row %}
+                    <td>{{ entry }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- INCLUDE overall_footer.html -->

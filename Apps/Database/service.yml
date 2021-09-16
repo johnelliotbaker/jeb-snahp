@@ -1,0 +1,49 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Database.DatabaseController:
+        class: jeb\snahp\Apps\Database\DatabaseController
+        arguments:
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Database.DatabaseHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Database.DatabaseHelper:
+        class: jeb\snahp\Apps\Database\DatabaseHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Database.DatabaseEventListener:
+        class: jeb\snahp\Apps\Database\DatabaseEventListener
+        arguments:
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Database.DatabaseHelper"
+        tags:
+            - { name: event.listener }

@@ -1,0 +1,16 @@
+<div class="input-group mb-3" style="font-size: 22px; text-align: middle;">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="table">Table</label>
+  </div>
+  <select class="custom-select" id="table" name="table">
+    {% for TABLE_NAME in TABLE_NAMES %}
+        {% if TABLE %}
+        <option value="{TABLE_NAME}"{% if TABLE_NAME==TABLE %} selected{% endif %}>
+        {% else  %}
+        <option value="{TABLE_NAME}"{% if TABLE_NAME=='phpbb_posts' %} selected{% endif %}>
+        {% endif %}
+        {TABLE_NAME}
+        </option>
+    {% endfor %}
+  </select>
+</div>
