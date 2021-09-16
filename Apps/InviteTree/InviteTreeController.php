@@ -54,7 +54,9 @@ class InviteTreeController
 
     public function view()
     {
-        $users = $this->helper->getCompleteTree();
+        // $rowset = $this->helper->fromCSV();
+        $rowset = $this->helper->fromDatabase();
+        $users = $this->helper->processData($rowset);
         $this->template->assign_vars([
             "USERS" => $users,
         ]);

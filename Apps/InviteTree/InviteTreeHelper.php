@@ -35,17 +35,19 @@ class User
 
     public function str($depth = 0)
     {
-        $padding = str_repeat("&nbsp;", $depth * 1);
-        $name = $this->name == "" ? "Banned User" : $this->name;
         $strn = [];
-        $color = "#" . trim($this->data["user_colour"]);
-        $name = "$padding <span style='color: {$color};'>$name</span>";
+        $padding = str_repeat("&nbsp;", $depth * 1);
+        $color = "#" . $this->data["user_colour"];
+        $id = $this->data["id"];
+        $name = $this->name == "" ? "Banned User" : $this->name;
+        $name = "<span style='color:{$color};'>$name</span>";
+        $name = "<a href='https://forum.snahp.it/memberlist.php?mode=viewprofile&u=${id}' style='text-decoration:none;'>$name</a>";
         if ($this->root) {
             $myDepth = $this->getDepth();
             $strn[] = "";
-            $strn[] = "$name ($myDepth)";
+            $strn[] = "$padding $name ($myDepth)";
         } else {
-            $strn[] = $name;
+            $strn[] = "$padding $name";
         }
         foreach ($this->children as $child) {
             $strn = array_merge($strn, $child->str($depth + 1));
@@ -89,14 +91,13 @@ class InviteTreeHelper
         return $records;
     }
 
-    public function getCompleteTree()
+    public function processData($rowset)
     {
-        // $rowset = $this->fromCSV();
-        $rowset = $this->fromDatabase();
         $users = [];
         foreach ($rowset as &$row) {
-            $inviterName = trim($row["inviter"]);
-            $inviteeName = trim($row["invitee"]);
+            $row = array_map("trim", $row);
+            $inviterName = $row["inviter"];
+            $inviteeName = $row["invitee"];
             if (!$inviteeName) {
                 continue;
             }
