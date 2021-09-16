@@ -1,0 +1,70 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.maze.main:
+    path: /snahp/maze/{postId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:view}
+    requirements:
+        postId: \d+
+
+jeb.snahp.routing.maze.viewPrivateMaze:
+    path: /snahp/maze/private/{mazeId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:viewPrivateMaze}
+    requirements:
+        mazeId: \d+
+
+jeb.snahp.routing.maze.viewUsersInMazes:
+    path: /snahp/maze/users-in-mazes/{mazeIds}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:viewUsersInMazes}
+    requirements:
+        mazeIds: ^[\d,]+
+
+jeb.snahp.routing.maze.createMazeInPost:
+    path: /snahp/maze/create/{postId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:createMazeInPost}
+    requirements:
+        postId: \d+
+
+jeb.snahp.routing.maze.deleteMaze:
+    path: /snahp/maze/delete/{mazeId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:deleteMaze}
+    requirements:
+        mazeId: \d+
+
+jeb.snahp.routing.maze.markPost:
+    path: /snahp/maze/mark-post/{postId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:markPost}
+    requirements:
+        mazeId: \d+
+
+jeb.snahp.routing.maze.unMarkPost:
+    path: /snahp/maze/unmark-post/{postId}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeController:unMarkPost}
+    requirements:
+        mazeId: \d+
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.maze.list_maze:
+    path: /snahp/maze/maze
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeListCreateAPIView:dispatch}
+jeb.snahp.routing.maze.retrieve_maze:
+    path: /snahp/maze/maze/{id}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.maze.list_maze_user:
+    path: /snahp/maze/maze-user
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeUserListCreateAPIView:dispatch}
+jeb.snahp.routing.maze.retrieve_maze_user:
+    path: /snahp/maze/maze-user/{id}
+    defaults: { _controller: jeb.snahp.Apps.Maze.MazeUserRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

@@ -1,0 +1,97 @@
+# imports:
+#     - { resource: 'dir/parameters.yml' }
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Maze.MazeController:
+        class: jeb\snahp\Apps\Maze\MazeController
+        arguments:
+            - "@dbal.conn"
+            - "@user"
+            - "@config"
+            - "@request"
+            - "@template"
+            - "@service_container"
+            - "@controller.helper"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.MazeHelper"
+
+##############
+#  API VIEW  #
+##############
+
+    jeb.snahp.Apps.Maze.MazeListCreateAPIView:
+        class: jeb\snahp\Apps\Maze\MazeListCreateAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.Models.Maze"
+    jeb.snahp.Apps.Maze.MazeRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Maze\MazeRetrieveUpdateDestroyAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.Models.Maze"
+
+    jeb.snahp.Apps.Maze.MazeUserListCreateAPIView:
+        class: jeb\snahp\Apps\Maze\MazeUserListCreateAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.Models.MazeUser"
+    jeb.snahp.Apps.Maze.MazeUserRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Maze\MazeUserRetrieveUpdateDestroyAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.Models.MazeUser"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Maze.MazeHelper:
+        class: jeb\snahp\Apps\Maze\MazeHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.Models.Maze"
+            - "@jeb.snahp.Apps.Maze.Models.MazeUser"
+            - "@jeb.snahp.Apps.Core.Db.query.Post"
+            - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
+            - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+###########
+#  MODEL  #
+###########
+
+
+    jeb.snahp.Apps.Maze.Models.Maze:
+        class: jeb\snahp\Apps\Maze\Models\Maze
+
+
+    jeb.snahp.Apps.Maze.Models.MazeUser:
+        class: jeb\snahp\Apps\Maze\Models\MazeUser
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Maze.MazeEventListener:
+        class: jeb\snahp\Apps\Maze\MazeEventListener
+        arguments:
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Maze.MazeHelper"
+        tags:
+            - { name: event.listener }
