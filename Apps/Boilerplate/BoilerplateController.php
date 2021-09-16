@@ -4,6 +4,16 @@ namespace jeb\snahp\Apps\Boilerplate;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+// use phpbb\config\config;
+// use phpbb\controller\helper;
+// use phpbb\db\driver\driver_interface;
+// use phpbb\install\helper\container_factory;
+// use phpbb\request\request_interface;
+// use phpbb\template\template;
+// use phpbb\user;
+// use jeb\snahp\Apps\Boilerplate\BoilerplateHelper;
+// use jeb\snahp\core\auth\user_auth;
+
 class BoilerplateController
 {
     protected $db;

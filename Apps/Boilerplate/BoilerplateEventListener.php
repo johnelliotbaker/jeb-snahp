@@ -1,11 +1,18 @@
 <?php
 namespace jeb\snahp\Apps\Boilerplate;
 
-use Symfony\Component\EventDispatcher\Event;
+// use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+// use phpbb\config\config;
+// use jeb\snahp\Apps\Boilerplate\BoilerplateHelper;
+// use jeb\snahp\core\auth\user_auth;
 
 class BoilerplateEventListener implements EventSubscriberInterface
 {
+    public $config;
+    public $sauth;
+    public $helper;
     public function __construct($config, $sauth, $helper)
     {
         $this->config = $config;

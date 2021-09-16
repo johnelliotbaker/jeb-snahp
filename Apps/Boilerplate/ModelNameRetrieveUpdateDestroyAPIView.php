@@ -5,9 +5,14 @@ namespace jeb\snahp\Apps\Boilerplate;
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
-use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
+
+// use phpbb\request\request_interface;
+// use jeb\snahp\Apps\Boilerplate\Models\ModelName;
+// use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
+// use jeb\snahp\core\Rest\Serializers\ModelSerializer;
+// use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
+// use jeb\snahp\core\auth\user_auth;
 
 class ModelNameRetrieveUpdateDestroyAPIView extends RetrieveUpdateDestroyAPIView
 {
