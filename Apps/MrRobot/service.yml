@@ -1,0 +1,27 @@
+services:
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.MrRobot.MrRobotHelper:
+        class: jeb\snahp\Apps\MrRobot\MrRobotHelper
+        arguments:
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Core.Db.query.User"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.MrRobot.MrRobotEventListener:
+        class: jeb\snahp\Apps\MrRobot\MrRobotEventListener
+        arguments:
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.MrRobot.MrRobotHelper"
+        tags:
+            - { name: event.listener }
