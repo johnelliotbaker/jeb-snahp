@@ -1,6 +1,34 @@
 <?php
 namespace jeb\snahp\core\template;
 
+function getClipboardEl($options)
+{
+    $clipboardEl =
+        '<div class="clipboard" onClick="Clipboard.copy_gallery_link(event);"><i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i></div>';
+    switch ($options["clipboard"]) {
+        case "none":
+            return "";
+        default:
+            return $clipboardEl;
+    }
+}
+
+function getPastebin($options, $data)
+{
+    if (!$data) {
+        return "";
+    }
+    $pastebinEl =
+        '<div class="pastebin"><a href="' .
+        $data .
+        '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>';
+    switch ($options["paste"]) {
+        case "none":
+            return "";
+        default:
+            return $pastebinEl;
+    }
+}
 class gallery
 {
     protected $def;
@@ -19,17 +47,18 @@ class gallery
 
     private function set_default_options($options)
     {
-        $this->options["justify_content"] = array_key_exists(
-            "justify_content",
-            $options
-        )
-            ? $options["justify_content"]
-            : "justify-content-left";
+        $defaultOptions = [
+            "size" => "default",
+            "justify_content" => "justify-content-left",
+            "clipboard" => "default",
+            "paste" => "default",
+        ];
+        return $this->options = array_merge($defaultOptions, $options);
     }
 
     public function handle($mode, $data, $options = [])
     {
-        $this->set_default_options($options);
+        $options = $this->set_default_options($options);
         switch ($mode) {
             case "compact":
                 return $this->handle_compact($data, $options);
@@ -76,20 +105,13 @@ class gallery
     {
         $column_size = $this->def["column_sizes"][$options["size"]];
         $html["begin"][] =
-            '
-<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/cards/base.css">
-<div class="twbs">
-<section class="gallery-block cards-gallery">
-    <div class="container">
-        <div class="row ' .
-            $this->options["justify_content"] .
-            '">
-';
-        $html["end"][] = '
-    </div>
-  </div>
-</section>
-</div>';
+            '<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/cards/base.css">';
+        $html["begin"][] = '<div class="twbs">';
+        $html["begin"][] = '<section class="gallery-block cards-gallery">';
+        $html["begin"][] = '<div class="container">';
+        $html["begin"][] =
+            '<div class="row ' . $options["justify_content"] . '">';
+        $html["end"][] = "</div></div></section></div>";
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ["", " hi"];
         $elem = ["a", "span"];
@@ -118,48 +140,17 @@ class gallery
                 '<\1>',
                 $d[1]
             );
-            // <div class="card border-0 transform-on-hover"> ' . $pastebin . ' // For hover effect
-            $body[] =
-                '<div class="' .
-                $column_size .
-                " item" .
-                $cls .
-                '">
-                    <div class="card border-0"> ' .
-                $pastebin .
-                '
-                        <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
-                            <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
-                        </div>
-                        <' .
-                $el .
-                ' href="' .
-                $link .
-                '" target="_blank">
-                            <img src="' .
-                $d[3] .
-                '" alt="Card Image" class="card-img-top" loading="lazy">
-                            <div class="hiddencorner ' .
-                $cls .
-                '">
-                                <img src="https://i.imgur.com/Q07cXb4.png">
-                            </div>
-                        </' .
-                $el .
-                '>
-                        <div class="card-body">
-                            <h6>' .
-                $d[0] .
-                '</h6>
-                            <p class="text-muted card-text">' .
-                $d[1] .
-                '</p>
-                          ' .
-                $rx_menu_html .
-                '
-                        </div>
-                    </div>
-                </div>';
+            $body[] = "<div class='$column_size item$cls'><div class='card border-0'>";
+            $body[] = $pastebin;
+            $body[] = getClipboardEl($options);
+            $body[] = "<$el href='$link' target='_blank'>";
+            $body[] = "<img src='$d[3]' alt='Card Image' class='card-img-top' loading='lazy'>";
+            $body[] = "<div class='hiddencorner $cls'>";
+            $body[] = "<img src='https://i.imgur.com/Q07cXb4.png'></div> </$el>";
+            $body[] = "<div class='card-body'><h6>$d[0]</h6>";
+            $body[] = "<p class='text-muted card-text'>$d[1]</p>";
+            $body[] = $rx_menu_html;
+            $body[] = "</div></div></div>";
         }
         $html["body"] = $body;
         $sequence = ["begin", "body", "end"];
@@ -173,18 +164,12 @@ class gallery
     private function handle_grid($data, $options = [])
     {
         $column_size = $this->def["column_sizes"][$options["size"]];
-        $html["begin"][] = '
-<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/grid/base.css">
-<div class="twbs">
-<section class="gallery-block grid-gallery">
-    <div class="container">
-        <div class="row">
-';
-        $html["end"][] = '
-    </div>
-  </div>
-</section>
-</div>';
+        $html["begin"][] =
+            '<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/grid/base.css">';
+        $html["begin"][] = '<div class="twbs">';
+        $html["begin"][] =
+            '<section class="gallery-block grid-gallery"><div class="container"><div class="row">';
+        $html["end"][] = "</div></div></section></div>";
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ["", " hi"];
         $elem = ["a", "span"];
@@ -199,24 +184,10 @@ class gallery
             }
             $cls = $class[$choice];
             $el = $elem[$choice];
-            $body[] =
-                '<div class="' .
-                $column_size .
-                " item" .
-                $cls .
-                '">
-                           <' .
-                $el .
-                ' href="' .
-                $link .
-                '" target="_blank">
-                               <img class="img-fluid image scale-on-hover" src="' .
-                $d[3] .
-                '" loading="lazy">
-                           </' .
-                $el .
-                '>
-                       </div>';
+            $body[] = "<div class='$column_size item$cls'>";
+            $body[] = "<$el href='$link' target='_blank'>";
+            $body[] = "<img class='img-fluid image scale-on-hover' src='$d[3]' loading='lazy'>";
+            $body[] = "</$el></div>";
         }
         $html["body"] = $body;
         $sequence = ["begin", "body", "end"];
@@ -231,20 +202,13 @@ class gallery
     {
         $column_size = $this->def["column_sizes"][$options["size"]];
         $html["begin"][] =
-            '
-<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/compact/base.css">
-<div class="twbs">
-<section class="gallery-block compact-gallery">
-  <div class="container">
-    <div class="row no-gutters ' .
-            $this->options["justify_content"] .
-            '">
-';
-        $html["end"][] = '
-    </div>
-  </div>
-</section>
-</div>';
+            '<link rel="stylesheet" type="text/css" href="/ext/jeb/snahp/styles/all/template/gallery/component/compact/base.css">';
+        $html["begin"][] = '<div class="twbs">';
+        $html["begin"][] =
+            '<section class="gallery-block compact-gallery"><div class="container">';
+        $justify = $options["justify_content"];
+        $html["begin"][] = "<div class='row no-gutters $justify'>";
+        $html["end"][] = "</div></div></section></div>";
         $ptn = '<dl class="hidebox (\w+)">';
         $class = ["", " hi"];
         $elem = ["a", "span"];
@@ -257,13 +221,14 @@ class gallery
                     $choice = 1;
                 }
             }
-            $pastebin = "";
-            if (isset($d[4])) {
-                $pastebin =
-                    '<div class="pastebin"><a href="' .
-                    $d[4] .
-                    '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>';
-            }
+            $pastebin = getPastebin($options, $d[4]);
+            // $pastebin = "";
+            // if (isset($d[4])) {
+            //     $pastebin =
+            //         '<div class="pastebin"><a href="' .
+            //         $d[4] .
+            //         '" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/en/3/35/Pastebin.com_logo.png"></a></div>';
+            // }
             $cls = $class[$choice];
             $el = $elem[$choice];
             $d[0] = preg_replace("#&lt;(br)&gt;#", '<\1>', $d[0]);
@@ -272,42 +237,18 @@ class gallery
                 '<\1>',
                 $d[1]
             );
-            $body[] =
-                '<div class="' .
-                $column_size .
-                " item zoom-on-hover" .
-                $cls .
-                '"> ' .
-                $pastebin .
-                '
-                <div class="clipboard" onClick="Clipboard.copy_gallery_link(event);">
-                    <i class="icon fa-clipboard fa-fw icon-black" aria-hidden="true"></i>
-                </div>
-                <' .
-                $el .
-                ' href="' .
-                $link .
-                '" target="_blank">
-                  <img class="img-fluid image" src="' .
-                $d[3] .
-                '" loading="lazy">
-                  <div class="hiddencorner ' .
-                $cls .
-                '">
-                      <img src="https://i.imgur.com/Q07cXb4.png">
-                  </div>
-                  <span class="description">
-                    <span class="description-heading">' .
-                $d[0] .
-                '</span>
-                    <span class="description-body">' .
-                $d[1] .
-                '</span>
-                  </span>
-                </' .
-                $el .
-                '>
-              </div>';
+            $body[] = "<div class='$column_size item zoom-on-hover $cls'>";
+            $body[] = $pastebin;
+            $body[] = getClipboardEl($options);
+            $body[] = "<$el href='$link' target='_blank'>";
+            $body[] = "<img class='img-fluid image' src='$d[3]' loading='lazy'>";
+            $body[] = "<div class='hiddencorner $cls'>";
+            $body[] = '<img src="https://i.imgur.com/Q07cXb4.png">';
+            $body[] = "</div>";
+            $body[] = '<span class="description">';
+            $body[] = "<span class='description-heading'>$d[0]</span>";
+            $body[] = "<span class='description-body'>$d[1]</span>";
+            $body[] = "</span></$el></div>";
         }
         $html["body"] = $body;
         $sequence = ["begin", "body", "end"];

@@ -104,9 +104,37 @@ class curly_parser
         return $strn;
     }
 
-    public function interpolate_gallery($strn, $tag_name, $type, $options = [])
+    public function interpolate_gallery($strn, $tagName)
     {
-        $ptn = "#{" . $tag_name . "}(.*?){/" . $tag_name . "}#is";
+        $parse = function ($tagName) {
+            $options = [];
+            $type = "cards";
+            $def = [
+                "sm" => ["size" => "sm"],
+                "lg" => ["size" => "lg"],
+                "c" => ["justify_content" => "justify-content-center"],
+                "center" => ["justify_content" => "justify-content-center"],
+                "noclip" => ["clipboard" => "none"],
+                "nopaste" => ["paste" => "none"],
+            ];
+            $args = asSet(explode("_", $tagName));
+            if (array_key_exists("cards", $args)) {
+                $type = "cards";
+            } elseif (array_key_exists("compact", $args)) {
+                $type = "compact";
+            } elseif (array_key_exists("grid", $args)) {
+                $type = "grid";
+            }
+            foreach ($args as $key => $value) {
+                $opt = $def[$key] ?? null;
+                if ($opt) {
+                    $options = array_merge($options, $opt);
+                }
+            }
+            return [$type, $options];
+        };
+        [$type, $options] = $parse($tagName);
+        $ptn = "#{" . $tagName . "}(.*?){/" . $tagName . "}#is";
         preg_match($ptn, $strn, $match);
         $content = $match[1];
         $content = preg_replace("#<br>#", PHP_EOL, $content);
@@ -384,17 +412,17 @@ class curly_parser
                 if ($content[0] != "{") {
                     return $this->return_malformed($match[0]);
                 }
-                preg_match("#{([a-zA-Z_]*?)}#is", $content, $tag_type);
-                if (!$tag_type || count($tag_type) < 2) {
+                preg_match("#{([a-zA-Z_]*?)}#is", $content, $tagType);
+                if (!$tagType || count($tagType) < 2) {
                     return $this->return_malformed($match[0]);
                 }
-                $tag_type = $tag_type[1];
-                switch ($tag_type) {
+                $tagType = $tagType[1];
+                if (substr($tagType, 0, 7) == "gallery") {
+                    return $this->interpolate_gallery($content, $tagType);
+                }
+                switch ($tagType) {
                     case "mi":
-                        $res = $this->interpolate_mediainfo(
-                            $content,
-                            $tag_type
-                        );
+                        $res = $this->interpolate_mediainfo($content, $tagType);
                         break;
                     case "table":
                         $res = $this->interpolate_curly_table($content);
@@ -402,147 +430,42 @@ class curly_parser
                     case "table_autofill":
                         $res = $this->interpolate_curly_table_autofill(
                             $content,
-                            $tag_type
+                            $tagType
                         );
                         break;
                     case "table_autofill_search":
                         $res = $this->interpolate_curly_table_autofill(
                             $content,
-                            $tag_type,
+                            $tagType,
                             true
                         );
                         break;
                     case "table_search_master":
                         $res = $this->interpolate_table_search_master(
                             $content,
-                            $tag_type
+                            $tagType
                         );
                         break;
                     case "img":
-                        $res = $this->interpolate_img($content, $tag_type);
+                        $res = $this->interpolate_img($content, $tagType);
                         break;
                     case "gfycat":
-                        $res = $this->interpolate_gfycat($content, $tag_type);
-                        break;
-                    case "gallery_cards":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "cards",
-                            ["size" => "default"]
-                        );
-                        break;
-                    case "gallery_cards_c":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "cards",
-                            [
-                                "size" => "default",
-                                "justify_content" => "justify-content-center",
-                            ]
-                        );
-                        break;
-                    case "gallery_cards_sm":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "cards",
-                            ["size" => "sm"]
-                        );
-                        break;
-                    case "gallery_cards_sm_c":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "cards",
-                            [
-                                "size" => "sm",
-                                "justify_content" => "justify-content-center",
-                            ]
-                        );
-                        break;
-                    case "gallery_cards_lg":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "cards",
-                            ["size" => "lg"]
-                        );
-                        break;
-                    case "gallery_grid":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "grid",
-                            ["size" => "default"]
-                        );
-                        break;
-                    case "gallery_grid_sm":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "grid",
-                            ["size" => "sm"]
-                        );
-                        break;
-                    case "gallery_grid_lg":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "grid",
-                            ["size" => "lg"]
-                        );
-                        break;
-                    case "gallery_compact":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "compact",
-                            ["size" => "default"]
-                        );
-                        break;
-                    case "gallery_compact_sm":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "compact",
-                            ["size" => "sm"]
-                        );
-                        break;
-                    case "gallery_compact_sm_c":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "compact",
-                            [
-                                "size" => "sm",
-                                "justify_content" => "justify-content-center",
-                            ]
-                        );
-                        break;
-                    case "gallery_compact_lg":
-                        $res = $this->interpolate_gallery(
-                            $content,
-                            $tag_type,
-                            "compact",
-                            ["size" => "lg"]
-                        );
+                        $res = $this->interpolate_gfycat($content, $tagType);
                         break;
                     case "ab":
-                        $res = $this->interpolate_ab($content, $tag_type);
+                        $res = $this->interpolate_ab($content, $tagType);
                         break;
                     case "youtube":
-                        $res = $this->interpolate_youtube($content, $tag_type);
+                        $res = $this->interpolate_youtube($content, $tagType);
                         break;
                     case "mv":
                         $res = $this->interpolate_mega_video(
                             $content,
-                            $tag_type
+                            $tagType
                         );
                         break;
                     case "fulfill":
-                        $res = $this->interpolate_fulfill($content, $tag_type);
+                        $res = $this->interpolate_fulfill($content, $tagType);
                         break;
                     default:
                         $res = "default";

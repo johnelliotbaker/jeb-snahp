@@ -105,6 +105,10 @@ class user_auth
         // TODO Get better method for checking for developer roles
         $gid_developer = 13;
         $uid_developer = 10414;
+        if ($this->is_dev_server()) {
+            $gid_developer = 4;
+            $uid_developer = 2;
+        }
         $user_id = $this->user->data["user_id"];
         $b_dev =
             group_memberships($gid_developer, $user_id, true) &&
