@@ -16,7 +16,8 @@ class QuickUCPHelper
 
     public function getSettings($userId)
     {
-        $fields = "user_id, username, user_colour, snp_ded_show_in_search";
+        $fields =
+            "user_id, username, user_colour, snp_search_hide_robot, snp_search_hide_deadlink";
         $User = $this->container->get("jeb.snahp.Apps.Core.Db.query.User");
         return $User->get($userId, ["fields" => $fields]);
     }
@@ -24,22 +25,27 @@ class QuickUCPHelper
     public function setSettings($userId, $data)
     {
         foreach ($data as $key => $value) {
-            setSettingsContextually($userId, $key, $value);
+            $this->setSettingsBasedOnKey($userId, $key, $value);
         }
         return $this->getSettings($userId, $data);
     }
-}
 
-function setSettingsContextually($userId, $key, $value)
-{
-    switch ($key) {
-        case "snp_ded_show_in_search":
-            global $phpbb_container;
-            $helper = $phpbb_container->get(
-                "jeb.snahp.Apps.DeadLinks.DeadLinksHelper"
-            );
-            $helper->setDeadlinksVisibilityInSearch($userId, $value);
-        // no break
-        default:
+    public function setSettingsBasedOnKey($userId, $key, $value)
+    {
+        switch ($key) {
+            case "snp_search_hide_deadlink":
+                $helper = $this->container->get(
+                    "jeb.snahp.Apps.DeadLinks.DeadLinksHelper"
+                );
+                $helper->setDeadlinksVisibilityInSearch($userId, $value);
+                break;
+            case "snp_search_hide_robot":
+                $helper = $this->container->get(
+                    "jeb.snahp.Apps.MrRobot.MrRobotHelper"
+                );
+                $helper->setMrRobotVisibilityInSearch($userId, $value);
+                break;
+            default:
+        }
     }
 }

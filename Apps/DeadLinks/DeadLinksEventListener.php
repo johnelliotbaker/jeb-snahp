@@ -78,7 +78,7 @@ class DeadlinksEventListener implements EventSubscriberInterface
             $sql_where = $event["sql_where"];
             if (
                 $sql_where &&
-                !$this->sauth->user->data["snp_ded_show_in_search"]
+                $this->sauth->user->data["snp_search_hide_deadlink"]
             ) {
                 $sql_where .= " AND t.snp_ded_b_dead<>1";
                 $event["sql_where"] = $sql_where;

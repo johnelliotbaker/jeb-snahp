@@ -26,15 +26,15 @@ class DeadLinksHelper
     {
         $userId = (int) $userId;
         $value = (int) (bool) $value;
-        $this->User->update($userId, ["snp_ded_show_in_search" => $value]);
+        $this->User->update($userId, ["snp_search_hide_deadlink" => $value]);
     }
 
     public function getDeadlinksVisibilityInSearch($userId)
     {
         $userId = (int) $userId;
         $data = $this->User->get($userId, [
-            "fields" => "snp_ded_show_in_search",
+            "fields" => "snp_search_hide_deadlink",
         ]);
-        return $data["snp_ded_show_in_search"];
+        return $data["snp_search_hide_deadlink"];
     }
 }
