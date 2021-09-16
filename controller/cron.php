@@ -56,12 +56,12 @@ class cron extends base
     private function hourly($cfg)
     {
         // Feedpostbot fetch
-        $this->cron_helper->log("feedpostbot", "hourly", "before");
+        // $this->cron_helper->log("feedpostbot", "hourly", "before");
         $this->feedpostbot->fetch_all();
-        $this->cron_helper->log("feedpostbot", "hourly", "after");
+        // $this->cron_helper->log("feedpostbot", "hourly", "after");
         // Jukebox Updates
         // $this->cron_helper->log('jukebox', 'hourly', 'before');
-        $this->jukeboxHelper->updateList();
+        // $this->jukeboxHelper->updateList();
         // $this->cron_helper->log('jukebox', 'hourly', 'after');
         // Giving reputation points
         if (
@@ -75,16 +75,16 @@ class cron extends base
             $rep_giveaway_duration =
                 (int) $this->config["snp_rep_giveaway_duration"];
             if (time() > $rep_giveaway_last_time + $rep_giveaway_duration) {
-                $this->cron_helper->log("reputation", "hourly", "before");
+                // $this->cron_helper->log("reputation", "hourly", "before");
                 $this->reputation_helper->set_min($rep_minimum_target);
                 $this->cron_helper->log("reputation", "hourly", "after");
             }
         }
+        // <p>2) spotlight->update_list</p>
+        // <p>3) jukebox->updateList</p>
         trigger_error('Following hourly task was performed.
                         <p>1) feedpostbot->fetch_all</p>
-                        <p>2) spotlight->update_list</p>
-                        <p>3) jukebox->updateList</p>
-                        <p>4) reputation->set_min</p>
+                        <p>2) reputation->set_min</p>
                         ');
     }
 }
