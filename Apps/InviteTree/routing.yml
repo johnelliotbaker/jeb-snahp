@@ -6,18 +6,3 @@
 jeb.snahp.routing.invite_tree.main:
     path: /snahp/invite-tree
     defaults: { _controller: jeb.snahp.Apps.InviteTree.InviteTreeController:view}
-
-
-##############
-#  API VIEW  #
-##############
-
-
-jeb.snahp.routing.invite_tree.list_invite_tree:
-    path: /snahp/invite-tree/invite-tree
-    defaults: { _controller: jeb.snahp.Apps.InviteTree.InviteTreeListCreateAPIView:dispatch}
-jeb.snahp.routing.invite_tree.retrieve_invite_tree:
-    path: /snahp/invite-tree/invite-tree/{id}
-    defaults: { _controller: jeb.snahp.Apps.InviteTree.InviteTreeRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+

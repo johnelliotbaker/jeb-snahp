@@ -16,7 +16,7 @@ class v_0_44_0 extends container_aware_migration
 
     public static function depends_on()
     {
-        return ['\jeb\snahp\migrations\v_0_43_1'];
+        return ['\jeb\snahp\migrations\v_0_43_0'];
     }
 
     public function update_schema()

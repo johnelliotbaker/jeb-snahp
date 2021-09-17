@@ -1,5 +1,3 @@
-# imports:
-#     - { resource: 'dir/parameters.yml' }
 services:
 
 ##########
@@ -20,23 +18,6 @@ services:
             - "@jeb.snahp.auth.user_auth"
             - "@jeb.snahp.Apps.InviteTree.InviteTreeHelper"
 
-##############
-#  API VIEW  #
-##############
-
-    jeb.snahp.Apps.InviteTree.InviteTreeListCreateAPIView:
-        class: jeb\snahp\Apps\InviteTree\InviteTreeListCreateAPIView
-        arguments:
-            - "@request"
-            - "@jeb.snahp.auth.user_auth"
-            - "@jeb.snahp.Apps.InviteTree.Models.InviteTree"
-    jeb.snahp.Apps.InviteTree.InviteTreeRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\InviteTree\InviteTreeRetrieveUpdateDestroyAPIView
-        arguments:
-            - "@request"
-            - "@jeb.snahp.auth.user_auth"
-            - "@jeb.snahp.Apps.InviteTree.Models.InviteTree"
-
 
 ############
 #  HELPER  #
@@ -51,27 +32,3 @@ services:
             - "@jeb.snahp.auth.user_auth"
             - "@jeb.snahp.Apps.Core.Pagination.LimitOffsetPagination"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
-
-
-###########
-#  MODEL  #
-###########
-
-
-    jeb.snahp.Apps.InviteTree.Models.InviteTree:
-        class: jeb\snahp\Apps\InviteTree\Models\InviteTree
-
-
-####################
-#  EVENT LISTENER  #
-####################
-
-
-    jeb.snahp.Apps.InviteTree.InviteTreeEventListener:
-        class: jeb\snahp\Apps\InviteTree\InviteTreeEventListener
-        arguments:
-            - "@config"
-            - "@jeb.snahp.auth.user_auth"
-            - "@jeb.snahp.Apps.InviteTree.InviteTreeHelper"
-        tags:
-            - { name: event.listener }
