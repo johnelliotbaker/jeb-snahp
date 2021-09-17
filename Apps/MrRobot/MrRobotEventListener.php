@@ -43,7 +43,7 @@ class MrRobotEventListener implements EventSubscriberInterface
                 $sqlWhere &&
                 $this->sauth->user->data["snp_search_hide_robot"]
             ) {
-                $sqlWhere .= " AND p.poster_id <> 72";
+                $sqlWhere .= " AND p.poster_id <> 54";
                 $event["sql_where"] = $sqlWhere;
             }
         }
