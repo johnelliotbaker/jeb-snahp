@@ -13,4 +13,10 @@ class User
         $this->OWN_TABLE_NAME = USERS_TABLE;
         $this->ID_STRING = "user_id";
     }
+
+    public function getWithUsername($username)
+    {
+        $username = utf8_clean_string($this->db->sql_escape($username));
+        return $this->where("username='$username'", ["many" => false]);
+    }
 }

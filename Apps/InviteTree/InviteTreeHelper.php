@@ -41,13 +41,17 @@ class User
         $id = $this->data["id"];
         $name = $this->name == "" ? "Banned User" : $this->name;
         $name = "<span style='color:{$color};'>$name</span>";
-        $name = "<a href='https://forum.snahp.it/memberlist.php?mode=viewprofile&u=${id}' style='text-decoration:none;'>$name</a>";
+        $name = "<a href='/memberlist.php?mode=viewprofile&u=${id}' style='text-decoration:none;'>$name</a>";
+        $regdate = substr($this->data["user_regdate"], 2, 8);
+        $lastvisit = substr($this->data["lastvisit"], 2, 8);
+        $sessionTime = substr($this->data["session_time"], 2, 8);
+        $lastvisit = max($lastvisit, $sessionTime);
         if ($this->root) {
             $myDepth = $this->getDepth();
             $strn[] = "";
             $strn[] = "$padding $name ($myDepth)";
         } else {
-            $strn[] = "$padding $name";
+            $strn[] = "$padding $name [$regdate | $lastvisit]";
         }
         foreach ($this->children as $child) {
             $strn = array_merge($strn, $child->str($depth + 1));
@@ -57,7 +61,10 @@ class User
 
     public function __toString()
     {
-        return implode("<br/>", $this->str()) . "<br/>";
+        $pre = '<div style="font-size:15px; line-height: 1.3;">';
+        $body = implode("<br/>", $this->str()) . "<br/>";
+        $post = "</div>";
+        return $pre . $body . $post;
     }
 }
 
@@ -85,6 +92,12 @@ class InviteTreeHelper
     public function addNewUser($records, $username, $data)
     {
         if (array_key_exists($username, $records)) {
+            $prev = $records[$username];
+            foreach ($data as $k => $v) {
+                if (!$prev->data[$k]) {
+                    $prev->data[$k] = $v;
+                }
+            }
             return $records;
         }
         $records[$username] = new User($username, $data);
@@ -108,10 +121,13 @@ class InviteTreeHelper
                 "user_colour" => $row["inviter_colour"],
             ];
             $inviteeData = [
-                "id" => $row["invitee_id"],
+                "id" => $row["redeemer_id"],
                 "username" => $row["invitee"],
                 "email" => $row["email"],
                 "user_colour" => $row["invitee_colour"],
+                "user_regdate" => $row["user_regdate"],
+                "lastvisit" => $row["invitee_lastvisit"],
+                "session_time" => $row["invitee_session_time"],
             ];
             $users = $this->addNewUser($users, $inviterName, $inviterData);
             $users = $this->addNewUser($users, $inviteeName, $inviteeData);
@@ -150,10 +166,10 @@ class InviteTreeHelper
             "inviter_email",
             "inviter_colour",
             "invitee",
-            "invitee_id",
+            "redeemer_id",
             "invitee_email",
             "invitee_colour",
-            "user_regdata",
+            "user_regdate",
         ];
         $res = [];
         if (
@@ -180,7 +196,9 @@ class InviteTreeHelper
                 "d.group_name,e.n_available,e.n_total_issued," .
                 "b.username as inviter,a.inviter_id,b.user_email,b.user_colour as inviter_colour," .
                 "c.username as invitee,a.redeemer_id,c.user_email as email,c.user_colour as invitee_colour," .
-                "FROM_UNIXTIME(c.user_regdate)",
+                "FROM_UNIXTIME(c.user_lastvisit) as invitee_lastvisit," .
+                "FROM_UNIXTIME(f.session_time) as invitee_session_time," .
+                "FROM_UNIXTIME(c.user_regdate) as user_regdate",
             "FROM" => [$this->tbl["invite"] => "a"],
             "LEFT_JOIN" => [
                 [
@@ -198,6 +216,10 @@ class InviteTreeHelper
                 [
                     "FROM" => [$this->tbl["invite_users"] => "e"],
                     "ON" => "e.user_id=b.user_id",
+                ],
+                [
+                    "FROM" => [SESSIONS_TABLE => "f"],
+                    "ON" => "f.session_user_id=c.user_id",
                 ],
             ],
             // "WHERE" => "user_id={$user_id}",

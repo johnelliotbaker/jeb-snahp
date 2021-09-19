@@ -20,3 +20,11 @@ function throwHttpException(...$args)
 {
     throw new http_exception(...$args);
 }
+
+function throwJsonException($code, $data)
+{
+    http_response_code($code);
+    header("Content-type: application/json");
+    echo json_encode($data);
+    exit();
+}

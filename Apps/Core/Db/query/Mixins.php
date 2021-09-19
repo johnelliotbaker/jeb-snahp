@@ -36,6 +36,26 @@ trait BaseQueryMixin
         return $row;
     }
 
+    public function where($where, $options = null)
+    {
+        $fields = $options["fields"] ?? ["*"];
+        $sqlArray = [
+            "SELECT" => $this->makeFieldString($fields, "a"),
+            "FROM" => [$this->OWN_TABLE_NAME => "a"],
+            "WHERE" => $where,
+        ];
+        $sql = $this->db->sql_build_query("SELECT", $sqlArray);
+        $result = $this->db->sql_query($sql);
+        $many = $options["many"] ?? true;
+        if ($many) {
+            $res = $this->db->sql_fetchrowset($result);
+        } else {
+            $res = $this->db->sql_fetchrow($result);
+        }
+        $this->db->sql_freeresult($result);
+        return $res;
+    }
+
     public function makeFieldString($fields, $tablename = null)
     {
         if (is_string($fields)) {
