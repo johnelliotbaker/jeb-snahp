@@ -29,7 +29,7 @@ class MazeController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = $sauth->userId;
-        // $this->sauth->reject_anon("Error Code: a5e8ee80c7");
+        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
     }
 
     public function view($postId)
@@ -39,7 +39,7 @@ class MazeController
         // DEBUG
         // $postId = 21609;
         // $userId = 63;
-        // $userTypes = ["poster"];
+        // $userTypes = ["mod"];
         try {
             if (in_array("mod", $userTypes)) {
                 $data = $this->helper->getModData($postId, $userTypes);
@@ -60,6 +60,7 @@ class MazeController
 
     public function viewPrivateMaze($mazeId)
     {
+        // No permissions: Will throw.
         $userId = $this->userId;
         // Additionally, throws if no maze or not a private maze
         $privateMaze = $this->helper->getPrivateMaze($mazeId, ["text"]);
@@ -70,6 +71,7 @@ class MazeController
 
     public function viewUsersInMazes($mazeIds)
     {
+        $this->sauth->reject_non_dev("Error Code: 7d66b95150");
         $data = $this->helper->viewUsersInMazes($mazeIds);
         return new JsonResponse($data);
     }
@@ -90,18 +92,21 @@ class MazeController
 
     public function removeMazeFromPost($mazeId)
     {
+        $this->sauth->reject_non_dev("Error Code: 5b9cc183fc");
         $this->helper->removeMazeFromPost($mazeId);
         return new Response();
     }
 
     public function markPost($postId)
     {
+        $this->sauth->reject_non_dev("Error Code: f416a2197e");
         $this->helper->markPost($postId);
         return new Response();
     }
 
     public function unMarkPost($postId)
     {
+        $this->sauth->reject_non_dev("Error Code: 91e4b659db");
         $this->helper->unMarkPost($postId);
         return new Response();
     }

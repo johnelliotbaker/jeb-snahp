@@ -256,6 +256,7 @@ class MazeHelper
         $this->db->sql_freeresult($result);
         foreach ($mazeUsers as $mazeUser) {
             $mazeId = $mazeUser["phpbb_snahp_maze_id"];
+            $mazeUser["user_colour"] = "#" . $mazeUser["user_colour"];
             $res[$mazeId]["users"][] = $mazeUser;
         }
         return array_values($res);
