@@ -39,18 +39,36 @@ class UserRestrictorController
         $this->sauth = $sauth;
         $this->helper = $helper;
         $this->userId = (int) $this->user->data["user_id"];
-        $this->sauth->reject_anon("Error Code: a5e8ee80c7");
+        $this->sauth->reject_non_dev("Error Code: 065f8c7039");
+    }
+
+    public function viewRestrictedUsers()
+    {
+        $data = $this->helper->getRestrictedUsers();
+        return new JsonResponse($data);
     }
 
     public function restrict($userId)
     {
         $this->helper->restrictUser($userId);
-        return new Response("Hello World, $userId");
+        return new JsonResponse([]);
+    }
+
+    public function restrictWithUsername($username)
+    {
+        $this->helper->restrictWithUsername($username);
+        return new JsonResponse([]);
     }
 
     public function free($userId)
     {
         $this->helper->freeUser($userId);
-        return new Response("Hello World, $userId");
+        return new JsonResponse([]);
+    }
+
+    public function freeWithUsername($username)
+    {
+        $this->helper->freeWithUsername($username);
+        return new JsonResponse([]);
     }
 }

@@ -3,14 +3,30 @@
 ##########
 
 
+jeb.snahp.routing.user_restrictor.viewRestrictedUsers:
+    path: /snahp/user-restrictor/view-restricted-users
+    defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:viewRestrictedUsers}
+
 jeb.snahp.routing.user_restrictor.restrict:
     path: /snahp/user-restrictor/restrict/{userId}
     defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:restrict}
     requirements:
         userId: \d+
 
+jeb.snahp.routing.user_restrictor.restrictWithUsername:
+    path: /snahp/user-restrictor/restrict-with-username/{username}
+    defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:restrictWithUsername}
+    requirements:
+        username: \w+
+
 jeb.snahp.routing.user_restrictor.free:
     path: /snahp/user-restrictor/free/{userId}
     defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:free}
     requirements:
         userId: \d+
+
+jeb.snahp.routing.user_restrictor.freeWithUsername:
+    path: /snahp/user-restrictor/free-with-username/{username}
+    defaults: { _controller: jeb.snahp.Apps.UserRestrictor.UserRestrictorController:freeWithUsername}
+    requirements:
+        username: \w+
