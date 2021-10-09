@@ -43,8 +43,7 @@ class UserscriptHelper
           <button id='btnGroupDrop1' type='button' class='btn btn-sm btn-primary shadow-none dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
           </button>
           <div class='dropdown-menu' aria-labelledby='btnGroupDrop1'>
-            <a class='dropdown-item' href='https://www.tampermonkey.net/?browser=chrome' target='_blank'>Tampermonkey for Chrome</a>
-            <a class='dropdown-item' href='https://www.tampermonkey.net/?browser=firefox' target='_blank'>Tampermonkey for Firefox</a>
+            <a class='dropdown-item' href='https://violentmonkey.github.io/get-it/' target='_blank'>Get Violentmonkey</a>
           </div>
         </div>
       </div>
