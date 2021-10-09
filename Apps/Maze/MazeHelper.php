@@ -31,8 +31,14 @@ class MazeHelper
         $mazeIds = array_unique(explode(",", $mazeIds));
         [$M, $MU] = [MAZE, MAZE_USER];
         $sqlArray = [
-            "SELECT" => "*",
+            "SELECT" => "a.*, b.username, b.user_colour",
             "FROM" => [$MU => "a"],
+            "LEFT_JOIN" => [
+                [
+                    "FROM" => [USERS_TABLE => "b"],
+                    "ON" => "b.user_id=a.user",
+                ],
+            ],
             "WHERE" => $this->db->sql_in_set("{$M}_id", $mazeIds),
             "ORDER_BY" => "{$M}_id ASC",
         ];
@@ -40,6 +46,9 @@ class MazeHelper
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
+        foreach ($rowset as &$row) {
+            $row["log"] = unserialize($row["log"]);
+        }
         return $rowset;
     }
 
