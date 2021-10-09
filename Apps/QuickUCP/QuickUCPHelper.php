@@ -17,7 +17,7 @@ class QuickUCPHelper
     public function getSettings($userId)
     {
         $fields =
-            "user_id, username, user_colour, snp_search_hide_robot, snp_search_hide_deadlink";
+            "user_id, username, user_colour, snp_search_hide_deadlink";
         $User = $this->container->get("jeb.snahp.Apps.Core.Db.query.User");
         return $User->get($userId, ["fields" => $fields]);
     }
@@ -38,12 +38,6 @@ class QuickUCPHelper
                     "jeb.snahp.Apps.DeadLinks.DeadLinksHelper"
                 );
                 $helper->setDeadlinksVisibilityInSearch($userId, $value);
-                break;
-            case "snp_search_hide_robot":
-                $helper = $this->container->get(
-                    "jeb.snahp.Apps.MrRobot.MrRobotHelper"
-                );
-                $helper->setMrRobotVisibilityInSearch($userId, $value);
                 break;
             default:
         }

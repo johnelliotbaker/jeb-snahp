@@ -5,61 +5,93 @@
 <!-- ENDIF -->
 
 {% if B_MOD %}
-  <input type="hidden" name="snp_mod" value="1" />
-{% endif %}
-{S_HIDDEN_FIELDS_ALT} {S_STYLE_INFO} {S_REQ_HIDDEN_FIELDS}
+    <input type="hidden" name="snp_mod" value="1" />
+{% endif %} 
+{S_HIDDEN_FIELDS_ALT} {S_STYLE_INFO} {S_REQ_HIDDEN_FIELDS} 
 {% if S_VIEWTOPIC %}
-<input type="hidden" name="snp_topic_id" value="{TOPIC_ID}" />
-<input type="hidden" name="snp_topic_poster" value="{TOPIC_POSTER}" />
-{% if S_USER_ID == TOPIC_POSTER  %}
-<input type="hidden" name="snp_is_author" value="1" />
+    <input type="hidden" name="snp_topic_id" value="{TOPIC_ID}" />
+    <input type="hidden" name="snp_topic_poster" value="{TOPIC_POSTER}" />
+    {% if S_USER_ID == TOPIC_POSTER %}
+        <input type="hidden" name="snp_is_author" value="1" />
+    {% endif %}
 {% endif %}
-{% endif %}
-
 {% if S_DISPLAY_PREVIEW %}
-<input type="hidden" name="snp_preview" value="1" />
+    <input type="hidden" name="snp_preview" value="1" />
 {% endif %}
-
-
 {# When javascript contains curly braces, including with twig will have erratic behavior. #}
 {# So include using INCLUDEJS directive. #}
 {# However, INCLUDEJS directive will add javascript at the end. #}
 {# So if javascript is needed in flow dependent location, use twig to embed the code. #}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" ></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"
+></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 {# INCLUDECSS @jeb_snahp/bootstrap4-ns.min.css #}
-<link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,700&display=swap" rel="stylesheet" />
-<link href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf" rel="application/font-sfnt">
-<link href="./ext/jeb/snahp/styles/all/template/fonts/RingsideRegularSSm-Book.woff2" rel="application/font-sfnt">
-{# <link href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf" rel="application/font-sfnt"> #}
-{# <link href="./ext/jeb/snahp/styles/all/template/fonts/MerryChristmasFlake.ttf" rel="application/font-sfnt"> #}
-{# <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet"> #}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<link
+  href="https://fonts.googleapis.com/css?family=Anton&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf"
+  rel="application/font-sfnt"
+/>
+<link
+  href="./ext/jeb/snahp/styles/all/template/fonts/RingsideRegularSSm-Book.woff2"
+  rel="application/font-sfnt"
+/>
+{# <link href="./ext/jeb/snahp/styles/all/template/fonts/holly_and_berries.ttf" rel="application/font-sfnt" /> #}
+{# <link href="./ext/jeb/snahp/styles/all/template/fonts/MerryChristmasFlake.ttf" rel="application/font-sfnt" /> #}
+{# <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet" /> #}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
+/>
 
 <!-- preload -->
-<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/dereferrer.js?assets_version={ASSETS_VERSION}" ></script>
-<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/cookie.js?assets_version={ASSETS_VERSION}" ></script>
-<script type="text/javascript" src="/ext/jeb/snahp/styles/all/template/dict.js?assets_version={ASSETS_VERSION}" ></script>
+<script
+  type="text/javascript"
+  src="/ext/jeb/snahp/styles/all/template/dereferrer.js?assets_version={ASSETS_VERSION}"
+></script>
+<script
+  type="text/javascript"
+  src="/ext/jeb/snahp/styles/all/template/cookie.js?assets_version={ASSETS_VERSION}"
+></script>
+<script
+  type="text/javascript"
+  src="/ext/jeb/snahp/styles/all/template/dict.js?assets_version={ASSETS_VERSION}"
+></script>
 <!-- preload -->
 
 <!-- volatile -->
-{# While in development, add scripts here. When stable, move to either preload or lastload #}
+{# While in development, add scripts here. When stable, move to either preload
+or lastload #}
 <!-- volatile -->
-
 
 <!-- INCLUDECSS @jeb_snahp/base.css -->
 <!-- INCLUDECSS @jeb_snahp/atomic.css -->
 {# Style Css has to come after base.css to override #}
 {% if STYLE_NAME %}
-<style>
-  {% include '@jeb_snahp/customcss/nocache/' ~ STYLE_NAME ~ '.css' %}
-</style>
-<!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_TYPE}.css -->
-<!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_NAME}.css -->
-<!-- INCLUDEJS @jeb_snahp/customcss/{STYLE_NAME}.js -->
+    <style>
+      {% include '@jeb_snahp/customcss/nocache/' ~ STYLE_NAME ~ '.css' %}
+    </style>
+    <!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_TYPE}.css -->
+    <!-- INCLUDECSS @jeb_snahp/customcss/{STYLE_NAME}.css -->
+    <!-- INCLUDEJS @jeb_snahp/customcss/{STYLE_NAME}.js -->
 {% endif %}
 
 <!-- loadlast -->
@@ -92,52 +124,49 @@
 {# <!-- INCLUDEJS @jeb_snahp/spotlight/rx_spotlight/bundle.js --> #}
 {# <!-- INCLUDECSS @jeb_snahp/spotlight/rx_spotlight/bundle.css --> #}
 {# <!-- ENDIF --> #}
-
 {% if S_VIEWTOPIC or S_DISPLAY_PREVIEW %}
-  <!-- IF not $rx_menu -->
-  <!-- DEFINE $rx_menu = true -->
-  <!-- INCLUDEJS @jeb_snahp/widgets/rx_menu/bundle.js -->
-  <!-- INCLUDECSS @jeb_snahp/widgets/rx_menu/bundle.css -->
-  <!-- ENDIF -->
+    <!-- IF not $rx_menu -->
+    <!-- DEFINE $rx_menu = true -->
+    <!-- INCLUDEJS @jeb_snahp/widgets/rx_menu/bundle.js -->
+    <!-- INCLUDECSS @jeb_snahp/widgets/rx_menu/bundle.css -->
+    <!-- ENDIF -->
 
-  <!-- IF not $rx_imdb_template -->
-  <!-- DEFINE $rx_imdb_template = true -->
-  <!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.js -->
-  <!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.css -->
-  <!-- ENDIF -->
+    {# <!-- IF not $rx_imdb_template --> #}
+    {# <!-- DEFINE $rx_imdb_template = true --> #}
+    {# <!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.js --> #}
+    {# <!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_imdb_template/bundle.css --> #}
+    {# <!-- ENDIF --> #}
+    {# <!-- IF not $rx_disco_template --> #}
+    {# <!-- DEFINE $rx_disco_template = true --> #}
+    {# <!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.js --> #}
+    {# <!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.css --> #}
+    {# <!-- ENDIF --> #}
 
-  <!-- IF not $rx_disco_template -->
-  <!-- DEFINE $rx_disco_template = true -->
-  <!-- INCLUDEJS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.js -->
-  <!-- INCLUDECSS @jeb_snahp/form_injector/component/templates/component/rx_discogs_template/bundle.css -->
-  <!-- ENDIF -->
+    <!-- IF not $rx_mini_board -->
+    <!-- DEFINE $rx_mini_board = true -->
+    <!-- INCLUDEJS @jeb_snahp/mini_board/rx_mini_board/bundle.js -->
+    <!-- INCLUDECSS @jeb_snahp/mini_board/rx_mini_board/bundle.css -->
+    <!-- ENDIF -->
 
-  {# <!-- IF not $rx_mini_board --> #}
-  {# <!-- DEFINE $rx_mini_board = true --> #}
-  {# <!-- INCLUDEJS @jeb_snahp/mini_board/rx_mini_board/bundle.js --> #}
-  {# <!-- INCLUDECSS @jeb_snahp/mini_board/rx_mini_board/bundle.css --> #}
-  {# <!-- ENDIF --> #}
+    {# <!-- IF not $rx_topic_update_ticker --> #}
+    {# <!-- DEFINE $rx_topic_update_ticker = true --> #}
+    {# <!-- INCLUDEJS @jeb_snahp/topic_update_ticker/rx_topic_update_ticker/bundle.js --> #}
+    {# <!-- INCLUDECSS @jeb_snahp/topic_update_ticker/rx_topic_update_ticker/bundle.css --> #}
+    {# <!-- ENDIF --> #}
+    {# <!-- IF not $rx_xmas --> #}
+    {# <!-- DEFINE $rx_xmas = true --> #}
+    {# <!-- INCLUDEJS @jeb_snahp/xmas/rx_xmas/bundle.js --> #}
+    {# <!-- INCLUDECSS @jeb_snahp/xmas/rx_xmas/bundle.css --> #}
+    {# <!-- ENDIF --> #}
 
-  {# <!-- IF not $rx_topic_update_ticker --> #}
-  {# <!-- DEFINE $rx_topic_update_ticker = true --> #}
-  {# <!-- INCLUDEJS @jeb_snahp/topic_update_ticker/rx_topic_update_ticker/bundle.js --> #}
-  {# <!-- INCLUDECSS @jeb_snahp/topic_update_ticker/rx_topic_update_ticker/bundle.css --> #}
-  {# <!-- ENDIF --> #}
-
-  {# <!-- IF not $rx_xmas --> #}
-  {# <!-- DEFINE $rx_xmas = true --> #}
-  {# <!-- INCLUDEJS @jeb_snahp/xmas/rx_xmas/bundle.js --> #}
-  {# <!-- INCLUDECSS @jeb_snahp/xmas/rx_xmas/bundle.css --> #}
-  {# <!-- ENDIF --> #}
-
-  <!-- IF not $rx_snahplyr -->
-  <!-- DEFINE $rx_snahplyr = true -->
-  <!-- INCLUDEJS @jeb_snahp/snahplyr/rx_snahplyr/bundle.js -->
-  <!-- INCLUDECSS @jeb_snahp/snahplyr/rx_snahplyr/bundle.css -->
-  {% if STYLE_TYPE=='light' %}
-  <!-- INCLUDECSS @jeb_snahp/snahplyr/base.css -->
-  {% endif %}
-  <!-- ENDIF -->
+    <!-- IF not $rx_snahplyr -->
+    <!-- DEFINE $rx_snahplyr = true -->
+    <!-- INCLUDEJS @jeb_snahp/snahplyr/rx_snahplyr/bundle.js -->
+    <!-- INCLUDECSS @jeb_snahp/snahplyr/rx_snahplyr/bundle.css -->
+    {% if STYLE_TYPE=='light' %}
+        <!-- INCLUDECSS @jeb_snahp/snahplyr/base.css -->
+    {% endif %}
+    <!-- ENDIF -->
 {% endif %}
 
 <!-- loadlast -->
@@ -147,8 +176,7 @@
   <div id="rx_snowfall" {SNOWFALL_PROPS}></div>
 </div>
 {% endif %}
-
 {% if S_VIEWTOPIC %}
-  {# Deactivates report button when already reported and shows reported time #}
-  <!-- INCLUDEJS @jeb_snahp/report_tool/run_once.js -->
+    {# Deactivates report button when already reported and shows reported time #}
+    <!-- INCLUDEJS @jeb_snahp/report_tool/run_once.js -->
 {% endif %}

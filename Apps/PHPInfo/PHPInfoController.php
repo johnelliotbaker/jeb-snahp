@@ -2,7 +2,6 @@
 namespace jeb\snahp\Apps\PHPInfo;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PHPInfoController
 {

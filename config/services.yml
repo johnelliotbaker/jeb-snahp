@@ -59,7 +59,6 @@ imports:
     - { resource: ../Apps/Spotlight/service.yml }
     - { resource: ../Apps/Maze/service.yml }
     - { resource: ../Apps/Database/service.yml }
-    - { resource: ../Apps/MrRobot/service.yml }
     - { resource: ../Apps/InviteTree/service.yml }
 
 services:

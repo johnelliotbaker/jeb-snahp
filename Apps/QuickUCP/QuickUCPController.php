@@ -1,7 +1,6 @@
 <?php
 namespace jeb\snahp\Apps\QuickUCP;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class QuickUCPController
@@ -17,6 +16,7 @@ class QuickUCPController
 
     public function generalSettings()
     {
+        $data = [];
         if (getRequestMethod($this->request) === "POST") {
             $data = getRequestData($this->request);
             $data = $this->helper->setSettings($this->userId, $data);
