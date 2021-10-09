@@ -11,8 +11,6 @@ use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
 use jeb\snahp\Apps\Wiki\Models\GroupPermission;
 use jeb\snahp\core\Rest\Permissions\UserPermission;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
-use jeb\snahp\core\Rest\Fields\BoolField;
 use jeb\snahp\core\Rest\Fields\IntegerField;
 use jeb\snahp\core\Rest\Fields\StringField;
 use jeb\snahp\core\Rest\Fields\FunctionField;
@@ -35,7 +33,6 @@ class ArticleEntryRetrieveUpdateDestroyAPIView extends
         $this->model = $model;
 
         $this->permissionClasses = [
-            // new AllowAnyPermission($sauth),
             new ArticleEntryUserPermission(
                 new GroupPermission(),
                 $sauth->userId
@@ -47,7 +44,7 @@ class ArticleEntryRetrieveUpdateDestroyAPIView extends
     public function viewByName($articleName)
     {
         $this->serializerClass = __NAMESPACE__ . "\MySerializer";
-        $entry = R::findOne("phpbb_snahp_wiki_article_entry", "subject=?", [
+        $entry = R::findOne("phpbb_snahp_wiki_article_entry", "name=?", [
             $articleName,
         ]);
         $g = $entry->phpbb_snahp_wiki_article_group;
@@ -102,6 +99,7 @@ class MySerializer extends Serializer
                 return $this->instance->phpbb_snahp_wiki_article_group->id;
             }),
             "subject" => new StringField(),
+            "name" => new StringField(),
             "text" => new StringField(),
             "hash" => new StringField(),
             "priority" => new IntegerField(["default" => 500]),

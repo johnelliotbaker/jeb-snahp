@@ -6,9 +6,7 @@ require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
-use jeb\snahp\core\Rest\Serializers\ModelSerializer;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
 class ArticleGroupListCreateAPIView extends ListCreateAPIView
 {
@@ -22,9 +20,6 @@ class ArticleGroupListCreateAPIView extends ListCreateAPIView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->model = $model;
-        $this->permissionClasses = [
-            // new AllowAnyPermission($sauth),
-            new AllowDevPermission($sauth),
-        ];
+        $this->permissionClasses = [new AllowDevPermission($sauth)];
     }
 }

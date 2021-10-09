@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
 class GroupPermissionListCreateAPIView extends ListCreateAPIView
 {
@@ -23,10 +22,7 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         $this->request = $request;
         $this->sauth = $sauth;
         $this->model = $model;
-        $this->permissionClasses = [
-            new AllowDevPermission($sauth),
-            // new AllowAnyPermission($sauth),
-        ];
+        $this->permissionClasses = [new AllowDevPermission($sauth)];
     }
 
     public function createMany()
@@ -35,9 +31,9 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
         function makeCodenameList($data)
         {
             $res = [];
-            foreach ($data["userGroups"] as $userGroup) {
+            foreach ($data["user_groups"] as $userGroup) {
                 foreach ($data["actions"] as $action) {
-                    foreach ($data["resourceNames"] as $resourceName) {
+                    foreach ($data["resource_names"] as $resourceName) {
                         $res[] = [
                             "codename" => "wiki.${action}__${resourceName}",
                             "user_group" => $userGroup,
@@ -47,14 +43,16 @@ class GroupPermissionListCreateAPIView extends ListCreateAPIView
             }
             return $res;
         }
-        $requiredFields = ["userGroups", "actions", "resourceNames"];
+        $requiredFields = ["user_groups", "actions", "resource_names"];
         $data = getRequestData($this->request);
         $missingFields = implode(
             ", ",
             array_diff($requiredFields, array_keys($data))
         );
-        if ($diff) {
-            throw new \Exception("Missing $diff. Error Code: e61bfc1321");
+        if ($missingFields) {
+            throw new \Exception(
+                "Missing $missingFields. Error Code: e61bfc1321"
+            );
         }
         $iterData = [];
         foreach ($requiredFields as $field) {

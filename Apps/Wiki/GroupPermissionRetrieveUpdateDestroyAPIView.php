@@ -6,7 +6,6 @@ require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Views/Generics.php";
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Permissions/Permission.php";
 
 use jeb\snahp\core\Rest\Views\RetrieveUpdateDestroyAPIView;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
 
 class GroupPermissionRetrieveUpdateDestroyAPIView extends
@@ -22,9 +21,6 @@ class GroupPermissionRetrieveUpdateDestroyAPIView extends
         $this->request = $request;
         $this->sauth = $sauth;
         $this->model = $model;
-        $this->permissionClasses = [
-            new AllowDevPermission($sauth),
-            // new AllowAnyPermission($sauth),
-        ];
+        $this->permissionClasses = [new AllowDevPermission($sauth)];
     }
 }

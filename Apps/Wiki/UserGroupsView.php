@@ -1,9 +1,7 @@
 <?php
-
 namespace jeb\snahp\Apps\Wiki;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use \R as R;
 
 class UserGroupsView
 {
@@ -24,7 +22,6 @@ class UserGroupsView
                 "You do not have the permission to access this page. Error Code: 08c20676d9"
             );
         }
-
         $sql =
             "SELECT group_id, group_name from " .
             GROUPS_TABLE .

@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use jeb\snahp\core\Rest\Views\ListCreateAPIView;
 use jeb\snahp\core\Rest\Views\SortByPriorityMixin;
 use jeb\snahp\core\Rest\Permissions\UserPermission;
-use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 use jeb\snahp\core\Rest\Permissions\AllowNonePermission;
 use \R as R;
 
@@ -44,6 +42,8 @@ class NavigationView extends ListCreateAPIView
 
     public function filterQueryset($queryset)
     {
+        // $serializer = $this->getSerializer($queryset);
+        // return $serializer->data();
         $serializer = $this->getSerializer($queryset);
         return $this->permission->filter($this->request, $serializer->data());
     }
@@ -79,6 +79,7 @@ class NavigationView extends ListCreateAPIView
         );
         $entries = array_map(function ($arg) use ($name) {
             $data["id"] = $arg->id;
+            $data["name"] = $arg->name;
             $data["subject"] = $arg->subject;
             $data["group"] = $name;
             return $data;

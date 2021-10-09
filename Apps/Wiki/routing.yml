@@ -24,6 +24,11 @@ jeb.snahp.routing.wiki.setup_database:
     defaults: { _controller: jeb.snahp.apps.Wiki.SetupDatabaseView:view}
 
 
+jeb.snahp.routing.wiki.convert_to_kebab:
+    path: /snahp/wiki/convert-to-kebab
+    defaults: { _controller: jeb.snahp.Apps.Wiki.WikiController:convertToKebab}
+
+
 #########
 #  API  #
 #########

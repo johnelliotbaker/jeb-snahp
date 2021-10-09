@@ -12,7 +12,6 @@ use jeb\snahp\Apps\Wiki\Models\ArticleGroup;
 use jeb\snahp\Apps\Wiki\Models\GroupPermission;
 use jeb\snahp\core\Rest\Permissions\UserPermission;
 use jeb\snahp\core\Rest\Permissions\AllowDevPermission;
-use jeb\snahp\core\Rest\Permissions\AllowAnyPermission;
 
 class ArticleEntryUserPermission extends UserPermission
 {
@@ -21,7 +20,7 @@ class ArticleEntryUserPermission extends UserPermission
         // Article group permission controls article entry permission
         // This articleGroupId requires checkPermissions to set
         // articleGroupId in $kwargs
-        $articleGroupId = getDefault($kwargs, "articleGroupId");
+        $articleGroupId = getDefault($kwargs, "article_group_id");
         if ($articleGroupId === null) {
             throw new \Exception(
                 "articleGroupId is missing. Error Code: 95f861eb9e"
@@ -61,7 +60,7 @@ class ArticleEntryListCreateAPIView extends ListCreateAPIView
     protected $request;
     protected $sauth;
     protected $model;
-    protected $foreignNameParam = "articleGroupId";
+    protected $foreignNameParam = "article_group_id";
 
     public function __construct($request, $sauth, $model)
     {
@@ -70,7 +69,6 @@ class ArticleEntryListCreateAPIView extends ListCreateAPIView
         $this->model = $model;
 
         $this->permissionClasses = [
-            // new AllowAnyPermission($sauth),
             new ArticleEntryUserPermission(
                 new GroupPermission(),
                 $sauth->userId

@@ -1,9 +1,7 @@
 <?php
-
 namespace jeb\snahp\Apps\Wiki;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use \R as R;
 
 class UserView
 {
@@ -18,9 +16,14 @@ class UserView
 
     public function view()
     {
+        // $data = [
+        //     "userId" => (int) $this->sauth->userId,
+        //     "isDev" => true,
+        //     "isKeeper" => true,
+        // ];
+        // return new JsonResponse($data);
         $userId = $this->sauth->userId;
         $isDev = $this->sauth->is_dev();
-        // $isDev = true;
         $isKeeper =
             $isDev ||
             $this->sauth->user_belongs_to_groupset($userId, "Keepers");

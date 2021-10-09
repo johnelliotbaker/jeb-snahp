@@ -36,6 +36,7 @@ class ArticleEntry extends Model
         $this->fields = [
             "author" => new IntegerField(["default" => $this->userId]),
             "subject" => new StringField(),
+            "name" => new StringField(),
             "text" => new StringField(),
             "created_time" => new IntegerField(["default" => time()]),
             "modified_time" => new IntegerField(["default" => 0]),
@@ -43,6 +44,23 @@ class ArticleEntry extends Model
             "priority" => new IntegerField(["default" => 500]),
             "hash" => new StringField(["default" => uuid4()]),
         ];
+    }
+
+    public function convertAllToKebab()
+    {
+        include_once "/var/www/forum/ext/jeb/snahp/core/functions_string.php";
+        R::freeze(false);
+        $rows = R::findAll($this::TABLE_NAME);
+        if (is_array($rows)) {
+            foreach ($rows as $key => $entry) {
+                $entry->name = kebabCase($entry->subject);
+                try {
+                    R::store($entry);
+                } catch (\Exception $e) {
+                }
+            }
+        }
+        return $rows;
     }
 
     public function getDiff($instance)
