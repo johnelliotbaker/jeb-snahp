@@ -1,0 +1,39 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Userscript.UserscriptController:
+        class: jeb\snahp\Apps\Userscript\UserscriptController
+        arguments:
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Userscript.UserscriptHelper"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Userscript.UserscriptHelper:
+        class: jeb\snahp\Apps\Userscript\UserscriptHelper
+        arguments:
+            - "@dbal.conn"
+            - "@cache"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Userscript.UserscriptEventListener:
+        class: jeb\snahp\Apps\Userscript\UserscriptEventListener
+        arguments:
+          - "@jeb.snahp.auth.user_auth"
+          - "@jeb.snahp.Apps.Userscript.UserscriptHelper"
+        tags:
+            - { name: event.listener }

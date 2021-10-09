@@ -1,0 +1,5 @@
+jeb.snahp.routing.userscript.view_userscript:
+    path: /snahp/userscript/{uuid}.user.js
+    defaults: { _controller: jeb.snahp.Apps.Userscript.UserscriptController:viewUserscript}
+    requirements:
+      uuid: ^[\w\W]+$
