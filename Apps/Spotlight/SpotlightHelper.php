@@ -106,6 +106,7 @@ class SpotlightHelper
             }
             foreach ($jobQueue as $job) {
                 if ($tmp = $job["processor"]($row)) {
+                    $tmp["title"] = htmlspecialchars_decode($tmp["title"]);
                     $res[] = $tmp;
                     if (count($res) >= $this::MAX_LIST) {
                         return $res;
