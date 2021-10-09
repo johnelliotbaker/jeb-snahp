@@ -56,6 +56,15 @@ class ThrottleController
         return new JsonResponse($res);
     }
 
+    public function viewUserVisit($username)
+    {
+        $data = $this->helper->getUserVisitWithUsername($username);
+        $response = (new JsonResponse($data))->setEncodingOptions(
+            JSON_UNESCAPED_SLASHES
+        );
+        return $response;
+    }
+
     public function toplist()
     {
         $orderBy = $this->request->variable("order-by", "id");
@@ -89,6 +98,20 @@ class ThrottleController
         $this->sauth->reject_non_dev("Error Code: aaf7261f10");
         $this->helper->enableLogging();
         return new Response("Enabled Logging");
+    }
+
+    public function disableLoggingVisit()
+    {
+        $this->sauth->reject_non_dev("Error Code: aeb6f7a16c");
+        $this->helper->disableLoggingVisit();
+        return new Response("Disabled Logging Visit");
+    }
+
+    public function enableLoggingVisit()
+    {
+        $this->sauth->reject_non_dev("Error Code: 5dec7706f2");
+        $this->helper->enableLoggingVisit();
+        return new Response("Enabled Logging Visit");
     }
 
     public function disableThrottle()

@@ -1,55 +1,17 @@
 <?php
 namespace jeb\snahp\Apps\Throttle;
 
-class DBEntryDoesNotExist extends \Exception
-{
-}
-
-class Toplist
-{
-    public function __construct($request, $tbl, $paginator, $QuerySetFactory)
-    {
-        $this->request = $request;
-        $this->tbl = $tbl;
-        $this->QuerySetFactory = $QuerySetFactory;
-        $this->paginator = $paginator;
-    }
-
-    public function getToplist($order_by)
-    {
-        $username = $this->request->variable("username", "");
-        $sqlAry = [
-            "SELECT" => "b.username, b.user_colour, a.*",
-            "FROM" => [$this->tbl["throttle"] => "a"],
-            "LEFT_JOIN" => [
-                [
-                    "FROM" => [USERS_TABLE => "b"],
-                    "ON" => "a.user_id = b.user_id",
-                ],
-            ],
-            "ORDER_BY" => "a.{$order_by} DESC",
-        ];
-        if ($username) {
-            $sqlAry["WHERE"] = "b.username='$username'";
-        }
-        $qs = $this->QuerySetFactory->fromSqlArray($sqlAry);
-        $qs = $this->paginator->paginateQueryset($qs, $this->request);
-        $qs = $this->paginator->getPaginatedResult($qs);
-        foreach ($qs["results"] as $k => &$v) {
-            $v["data"] = unserialize($v["data"]);
-        }
-        return $qs;
-    }
-}
-
 class ThrottleHelper
 {
+    const MAX_URL_LENGTH = 100;
+
     public function __construct(
         $db,
         $request,
         $config,
         $tbl,
         $sauth,
+        $Visit,
         $pageNumberPagination,
         $QuerySetFactory
     ) {
@@ -58,6 +20,7 @@ class ThrottleHelper
         $this->config = $config;
         $this->tbl = $tbl;
         $this->sauth = $sauth;
+        $this->Visit = $Visit;
         $this->paginator = $pageNumberPagination;
         $this->QuerySetFactory = $QuerySetFactory;
         $this->userId = $sauth->userId;
@@ -75,6 +38,17 @@ class ThrottleHelper
             $this->QuerySetFactory
         );
         return $tl->getToplist($orderBy);
+    }
+
+    public function getUserVisitWithUsername($username)
+    {
+        $userId = $this->sauth->userNameToUserId($username);
+        $instance = $this->Visit->getObject('user=?', [$userId]);
+        if ($instance) {
+            $instance->data = unserialize($instance->data);
+        }
+        $default = ['message' => "Could not find the user ${username}"];
+        return $instance ?? $default;
     }
 
     public function logUserVisitStatistics($userId, $isFlooding)
@@ -109,7 +83,6 @@ class ThrottleHelper
         } catch (DBEntryDoesNotExist $e) {
             $extraData = new ExtraData();
             $stats = [
-                "user_id" => (int) $userId,
                 "data" => (string) $extraData,
             ];
             $this->createUserVisitStatistics($userId, $stats);
@@ -120,6 +93,7 @@ class ThrottleHelper
 
     public function createUserVisitStatistics($userId, $data)
     {
+        $data['user_id'] = (int) $userId;
         $sql =
             "INSERT INTO " .
             $this->tbl["throttle"] .
@@ -138,6 +112,13 @@ class ThrottleHelper
         ];
         $sql = implode(" ", $ary);
         $this->db->sql_query($sql);
+    }
+
+    public function updateVisitLog($userId)
+    {
+        $userId = (int) $userId;
+        $url = substr(getRequestUrl($this->request), 0, $this::MAX_URL_LENGTH);
+        $this->Visit->updateOrCreateTimestamp($userId, $url);
     }
 
     public function getUserVisitStatistics($userId)
@@ -167,9 +148,14 @@ class ThrottleHelper
     public function throttleUser($userId, $cfg)
     {
         $isLogging = $cfg["enable_logging"];
+        $isLoggingVisit = $cfg["enable_logging_visit"];
         $isThrottling = $cfg["enable_throttle"];
+        $timestamps = null;
         if ($isLogging) {
             $this->recordUserVisit($userId, $timestamps, $cfg["count"]);
+        }
+        if ($isLoggingVisit) {
+            $this->updateVisitLog($userId);
         }
         $timestamps = $this->getOrCreateVisitTimestamps($userId, $cfg["count"]);
         $isFlooding = $this->isFlooding($timestamps, $cfg["interval"]);
@@ -183,13 +169,16 @@ class ThrottleHelper
             $isThrottling &&
             ($banDuration = $this->getUserBanDuration($userId))
         ) {
+            $message = [
+                'You are flooding the server.',
+                'This is likely caused by browser extensions or by using the developer tools.',
+                "Please do not access the forum for the next ${banDuration} seconds.",
+                'Error Code: e1003e6f6f',
+            ];
             if ($this->request->is_ajax()) {
-                http_response_code(429);
-                exit();
+                throwJsonException(429, ['message' => $message]);
             }
-            trigger_error(
-                "You cannot access the forum for ${banDuration} seconds. Error Code: e1003e6f6f"
-            );
+            trigger_error(implode('<br/>', $message));
         }
     }
 
@@ -290,6 +279,16 @@ class ThrottleHelper
         $this->config->set("snp_throttle_enable_logging", 0);
     }
 
+    public function enableLoggingVisit()
+    {
+        $this->config->set("snp_throttle_enable_logging_visit", 1);
+    }
+
+    public function disableLoggingVisit()
+    {
+        $this->config->set("snp_throttle_enable_logging_visit", 0);
+    }
+
     public function enableThrottle()
     {
         $this->config->set("snp_throttle_enable_throttle", 1);
@@ -362,4 +361,45 @@ class ExtraData
     {
         $this->data["monthly_stats"][$month]["visit"] = (int) $val;
     }
+}
+
+class Toplist
+{
+    public function __construct($request, $tbl, $paginator, $QuerySetFactory)
+    {
+        $this->request = $request;
+        $this->tbl = $tbl;
+        $this->QuerySetFactory = $QuerySetFactory;
+        $this->paginator = $paginator;
+    }
+
+    public function getToplist($order_by)
+    {
+        $username = $this->request->variable("username", "");
+        $sqlAry = [
+            "SELECT" => "b.username, b.user_colour, a.*",
+            "FROM" => [$this->tbl["throttle"] => "a"],
+            "LEFT_JOIN" => [
+                [
+                    "FROM" => [USERS_TABLE => "b"],
+                    "ON" => "a.user_id = b.user_id",
+                ],
+            ],
+            "ORDER_BY" => "a.{$order_by} DESC",
+        ];
+        if ($username) {
+            $sqlAry["WHERE"] = "b.username='$username'";
+        }
+        $qs = $this->QuerySetFactory->fromSqlArray($sqlAry);
+        $qs = $this->paginator->paginateQueryset($qs, $this->request);
+        $qs = $this->paginator->getPaginatedResult($qs);
+        foreach ($qs["results"] as &$v) {
+            $v["data"] = unserialize($v["data"]);
+        }
+        return $qs;
+    }
+}
+
+class DBEntryDoesNotExist extends \Exception
+{
 }

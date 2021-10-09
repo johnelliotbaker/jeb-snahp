@@ -33,13 +33,18 @@ class ThrottleEventListener implements EventSubscriberInterface
             return;
         }
         if (
-            $this->sauth->user_belongs_to_groupset($this->userId, "TU+") ||
+            $this->sauth->user_belongs_to_groupset(
+                $this->userId,
+                "TUDonors+"
+            ) ||
             $this->sauth->is_dev() ||
             $this->userId === ANONYMOUS
         ) {
             return;
         }
         $enable_logging = $this->config["snp_throttle_enable_logging"] ?? 0;
+        $enable_logging_visit =
+            $this->config["snp_throttle_enable_logging_visit"] ?? 0;
         $enable_throttle = $this->config["snp_throttle_enable_throttle"] ?? 0;
         $cfg = [
             "count" => 20,
@@ -47,6 +52,7 @@ class ThrottleEventListener implements EventSubscriberInterface
             "ban_duration" => 30,
             "enable_master" => $enable_master,
             "enable_logging" => $enable_logging,
+            "enable_logging_visit" => $enable_logging_visit,
             "enable_throttle" => $enable_throttle,
         ];
         $this->helper->throttleUser($this->userId, $cfg);

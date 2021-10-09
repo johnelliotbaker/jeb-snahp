@@ -2,6 +2,12 @@ jeb.snahp.routing.throttle.settings:
     path: /snahp/throttle/settings
     defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:settings}
 
+jeb.snahp.routing.throttle.viewUserVisit:
+    path: /snahp/throttle/view-user-visit/{username}
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:viewUserVisit}
+    requirements:
+        username: \w+
+
 jeb.snahp.routing.throttle.toplist:
     path: /snahp/throttle/toplist
     defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:toplist}
@@ -30,3 +36,10 @@ jeb.snahp.routing.throttle.disableLogging:
     path: /snahp/throttle/disable-logging
     defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:disableLogging}
 
+jeb.snahp.routing.throttle.enableLoggingVisit:
+    path: /snahp/throttle/enable-logging-visit
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:enableLoggingVisit}
+
+jeb.snahp.routing.throttle.disableLoggingVisit:
+    path: /snahp/throttle/disable-logging-visit
+    defaults: { _controller: jeb.snahp.Apps.Throttle.ThrottleController:disableLoggingVisit}

@@ -32,8 +32,20 @@ services:
             - "@config"
             - "%jeb.snahp.tables%"
             - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Throttle.Models.Visit"
             - "@jeb.snahp.Apps.Core.Pagination.PageNumberPagination"
             - "@jeb.snahp.Apps.Core.Db.QuerySetFactory"
+
+
+###########
+#  MODEL  #
+###########
+
+
+    jeb.snahp.Apps.Throttle.Models.Visit:
+        class: jeb\snahp\Apps\Throttle\Models\Visit
+        arguments:
+          - "@jeb.snahp.Apps.Core.Db.query.User"
 
 
 ####################
