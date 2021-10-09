@@ -29,6 +29,30 @@ class ThanksUsers
         $this->userId = $this->user->data["user_id"];
     }
 
+    public function hasGivenThanksToPost($userId, $postId)
+    {
+        $t = $this->tbl["thanks"];
+        $postId = (int) $postId;
+        $userId = (int) $userId;
+        $sql = "SELECT 1 FROM $t WHERE post_id=${postId} AND user_id=${userId}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !!$row;
+    }
+
+    public function hasGivenThanksToTopic($userId, $topicId)
+    {
+        $t = $this->tbl["thanks"];
+        $topicId = (int) $topicId;
+        $userId = (int) $userId;
+        $sql = "SELECT 1 FROM $t WHERE topic_id=${topicId} AND user_id=${userId}";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return !!$row;
+    }
+
     public function hasGivenAllAvailableThanks($userId)
     {
         $exempted = $this->sauth->is_dev();
