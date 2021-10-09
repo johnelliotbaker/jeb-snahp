@@ -32,6 +32,23 @@ class AllowNonePermission extends Permission
     }
 }
 
+class AllowLoggedInUserPermission extends Permission
+{
+    public function hasPermission($request, $userId, $kwargs = [])
+    {
+        return (int) $userId !== ANONYMOUS;
+    }
+
+    public function hasObjectPermission(
+        $request,
+        $userId,
+        $object,
+        $kwargs = []
+    ) {
+        return (int) $userId !== ANONYMOUS;
+    }
+}
+
 class AllowDevPermission extends Permission
 {
     public function __construct($sauth)

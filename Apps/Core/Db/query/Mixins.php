@@ -36,6 +36,18 @@ trait BaseQueryMixin
         return $row;
     }
 
+    public function getOrRaiseException($id, $options = null)
+    {
+        $instance = $this->get($id, $options);
+        if (!$instance) {
+            if (isset($options["exception"])) {
+                throw new $options["exception"]();
+            }
+            throw new \Exception("Could not get. Error Code: 01f6e3f066");
+        }
+        return $instance;
+    }
+
     public function where($where, $options = null)
     {
         $fields = $options["fields"] ?? ["*"];

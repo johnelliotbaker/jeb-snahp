@@ -155,6 +155,11 @@ class Serializer
         return $this->_validatedData;
     }
 
+    public function updateValidatedData($data)
+    {
+        $this->_validatedData = array_merge($this->_validatedData, $data);
+    }
+
     public function data()
     {
         return $this->instance;

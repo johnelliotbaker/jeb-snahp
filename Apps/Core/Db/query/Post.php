@@ -4,7 +4,6 @@ namespace jeb\snahp\Apps\Core\Db\query;
 require_once "/var/www/forum/ext/jeb/snahp/Apps/Core/Db/query/BaseQuery.php";
 
 use jeb\snahp\Apps\Core\Db\query\BaseQuery;
-use phpbb\exception\http_exception;
 
 class Post extends BaseQuery
 {
@@ -32,6 +31,33 @@ class Post extends BaseQuery
         $post = $this->get($postId);
         if ($post) {
             return (int) $post["poster_id"] === $userId;
+        }
+        return false;
+    }
+
+    public function isOP($postId, $userId)
+    {
+        $postId = (int) $postId;
+        $userId = (int) $userId;
+        $post = $this->get($postId);
+        if (!$post) {
+            return false;
+        }
+        $topicId = (int) $post["topic_id"];
+        $tbl = TOPICS_TABLE;
+        $sql = "SELECT topic_poster FROM $tbl WHERE topic_id=${topicId};";
+        $result = $this->db->sql_query($sql);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+        return (int) $row["topic_poster"] === (int) $userId;
+    }
+
+    public function getForumId($postId)
+    {
+        $postId = (int) $postId;
+        $post = $this->get($postId);
+        if ($post) {
+            return (int) $post["forum_id"];
         }
         return false;
     }

@@ -49,6 +49,17 @@ class Model
         return R::findAll($this::TABLE_NAME, "LIMIT 500");
     }
 
+    public function getOwn($instance, $foreignTableName, $options)
+    {
+        $fname = "own" . ucfirst($foreignTableName);
+        if (isset($options["withCondition"])) {
+            $instance = $instance->withCondition($options["withCondition"]);
+        } elseif (isset($options["with"])) {
+            $instance = $instance->with($options["with"]);
+        }
+        return $instance->{$fname};
+    }
+
     public function getObject($statement = "", $data = [])
     {
         return R::findOne($this::TABLE_NAME, $statement, $data);

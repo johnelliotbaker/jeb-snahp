@@ -1,13 +1,11 @@
 <?php
-
 namespace jeb\snahp\core\Rest\Views;
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Serializers.php";
 require_once "/var/www/forum/ext/jeb/snahp/core/Rest/Utils.php";
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use \R as R;
 
 trait View
@@ -249,6 +247,29 @@ class ListCreateAPIView extends GenericAPIView
     }
 }
 
+class CreateAPIView extends GenericAPIView
+{
+    use CreateModelMixin;
+
+    public function dispatch()
+    {
+        $methodName = getRequestMethod($this->request);
+        switch ($methodName) {
+            case "OPTIONS":
+                return new JsonResponse([], 200);
+            case "POST":
+                return $this->post($this->request);
+            default:
+                return new JsonResponse(["method" => $methodName], 404);
+        }
+    }
+
+    public function post($request)
+    {
+        return $this->create($request);
+    }
+}
+
 trait UpdateModelMixin
 {
     public function update($request, $partial = false)
@@ -355,8 +376,8 @@ trait CreateModelMixin
 
     public function performCreateWithForeignKey($serializer)
     {
-        $instance = $serializer->save();
         $foreignInstance = $this->getForeignObject();
+        $instance = $serializer->save();
         $selfName = $this->model::TABLE_NAME;
         $ownlistname = "own" . ucfirst($selfName) . "List";
         $foreignInstance->$ownlistname[] = $instance;
