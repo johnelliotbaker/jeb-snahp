@@ -21,6 +21,7 @@ imports:
     - { resource: reputation/service.yml }
     - { resource: poi/service.yml }
     - { resource: theme_switch/service.yml }
+    # - { resource: ../Apps/MiniBoard/service.yml }
     - { resource: ../Apps/MuteUser/service.yml }
     - { resource: ../Apps/MassMover/service.yml }
     - { resource: ../Apps/Reaction/service.yml }
@@ -28,7 +29,6 @@ imports:
     - { resource: ../core/Thanks/service.yml }
     - { resource: ../Apps/ThanksResetCycle/service.yml }
     - { resource: ../Apps/MassTagger/service.yml }
-    - { resource: ../Apps/MiniBoard/service.yml }
     - { resource: ../Apps/MysqlSearch/service.yml }
     - { resource: ../Apps/Wiki/service.yml }
     - { resource: ../Apps/UserFlair/service.yml }
@@ -60,6 +60,9 @@ imports:
     - { resource: ../Apps/Maze/service.yml }
     - { resource: ../Apps/Database/service.yml }
     - { resource: ../Apps/InviteTree/service.yml }
+    - { resource: ../Apps/Coop/service.yml }
+    - { resource: ../Apps/Userscript/service.yml }
+    # - { resource: ../Apps/Test/service.yml }
 
 services:
     jeb.snahp.core:
