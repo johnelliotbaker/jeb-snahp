@@ -39,8 +39,10 @@ class CoopEventListener implements EventSubscriberInterface
     {
         $data = $event["data"];
         $postId = (int) $data["post_id"];
-        $this->helper->hideCoopInPost($postId);
-        $this->helper->createForum($postId);
+        $replaced = $this->helper->hideCoopInPost($postId);
+        if ($replaced) {
+            $this->helper->createForum($postId);
+        }
     }
 
     public function embedBbCode($event)

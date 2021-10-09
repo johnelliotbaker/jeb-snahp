@@ -58,6 +58,7 @@ class CoopHelper
     {
         $post = $this->PhpbbPost->get($postId);
         $postText = $post["post_text"];
+        $replaced = false;
         if (substr($postText, 0, 3) === "<r>") {
             $ptn =
                 "#(<HIDE><s>\[hide]</s>)*<COOP><s>\[coop]</s>(.*?)<e>\[/coop]</e></COOP>(<e>\[/hide]</e></HIDE>)*#is";
@@ -74,7 +75,8 @@ class CoopHelper
         }
         $postText = preg_replace_callback(
             $ptn,
-            function ($match) use ($repl) {
+            function ($match) use ($repl, &$replaced) {
+                $replaced = true;
                 return $repl($match);
             },
             $postText,
@@ -83,6 +85,7 @@ class CoopHelper
         $this->PhpbbPost->update($postId, [
             "post_text" => $postText,
         ]);
+        return $replaced;
     }
 
     public function getTopics($forum, $count)
