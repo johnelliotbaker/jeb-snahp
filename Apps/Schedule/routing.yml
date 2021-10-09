@@ -1,0 +1,23 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.schedule.main:
+    path: /snahp/schedule
+    defaults: { _controller: jeb.snahp.Apps.Schedule.ScheduleController:view}
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.schedule.list_schedule:
+    path: /snahp/schedule/schedule
+    defaults: { _controller: jeb.snahp.Apps.Schedule.ScheduleListCreateAPIView:dispatch}
+jeb.snahp.routing.schedule.retrieve_schedule:
+    path: /snahp/schedule/schedule/{id}
+    defaults: { _controller: jeb.snahp.Apps.Schedule.ScheduleRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

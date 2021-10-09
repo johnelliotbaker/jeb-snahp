@@ -62,6 +62,7 @@ imports:
     - { resource: ../Apps/InviteTree/service.yml }
     - { resource: ../Apps/Coop/service.yml }
     - { resource: ../Apps/Userscript/service.yml }
+    - { resource: ../Apps/Schedule/service.yml }
     # - { resource: ../Apps/Test/service.yml }
 
 services:

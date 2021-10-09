@@ -1,0 +1,46 @@
+services:
+
+##########
+#  View  #
+##########
+
+    # jeb.snahp.Apps.Schedule.ScheduleController:
+    #     class: jeb\snahp\Apps\Schedule\ScheduleController
+    #     arguments:
+    #         - "@dbal.conn"
+    #         - "@user"
+    #         - "@config"
+    #         - "@request"
+    #         - "@template"
+    #         - "@service_container"
+    #         - "@controller.helper"
+    #         - "%jeb.snahp.tables%"
+    #         - "@jeb.snahp.auth.user_auth"
+    #         - "@jeb.snahp.Apps.Schedule.ScheduleHelper"
+    #
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Schedule.ScheduleHelper:
+        class: jeb\snahp\Apps\Schedule\ScheduleHelper
+        arguments:
+            - "@config"
+            - "@cache"
+            - '@jeb.snahp.reputation_helper'
+            - "@jeb.snahp.auth.user_auth"
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Schedule.ScheduleEventListener:
+        class: jeb\snahp\Apps\Schedule\ScheduleEventListener
+        arguments:
+            - "@jeb.snahp.Apps.Schedule.ScheduleHelper"
+        tags:
+            - { name: event.listener }
