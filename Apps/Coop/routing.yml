@@ -1,0 +1,46 @@
+##########
+#  VIEW  #
+##########
+
+
+jeb.snahp.routing.coop.posts_in_topic:
+    path: /snahp/coop/posts-in-topic/{topicId}
+    defaults: { _controller: jeb.snahp.Apps.Coop.CoopController:postsInTopic}
+    requirements:
+      topicId: \d+
+
+
+##############
+#  API VIEW  #
+##############
+
+
+jeb.snahp.routing.coop.list_forum:
+    path: /snahp/coop/forum
+    defaults: { _controller: jeb.snahp.Apps.Coop.ForumListCreateAPIView:dispatch}
+
+jeb.snahp.routing.coop.retrieve_forum:
+    path: /snahp/coop/forum/{id}
+    defaults: { _controller: jeb.snahp.Apps.Coop.ForumRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.coop.list_topic:
+    path: /snahp/coop/topic
+    defaults: { _controller: jeb.snahp.Apps.Coop.TopicListCreateAPIView:dispatch}
+
+jeb.snahp.routing.coop.retrieve_topic:
+    path: /snahp/coop/topic/{id}
+    defaults: { _controller: jeb.snahp.Apps.Coop.TopicRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+
+
+jeb.snahp.routing.coop.list_post:
+    path: /snahp/coop/post
+    defaults: { _controller: jeb.snahp.Apps.Coop.PostListCreateAPIView:dispatch}
+
+jeb.snahp.routing.coop.retrieve_post:
+    path: /snahp/coop/post/{id}
+    defaults: { _controller: jeb.snahp.Apps.Coop.PostRetrieveUpdateDestroyAPIView:dispatch}
+    requirements:
+        id: \d+

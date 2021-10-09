@@ -1,0 +1,105 @@
+services:
+
+##########
+#  View  #
+##########
+
+    jeb.snahp.Apps.Coop.CoopController:
+        class: jeb\snahp\Apps\Coop\CoopController
+        arguments:
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.CoopHelper"
+
+# ##############
+# #  API VIEW  #
+# ##############
+
+    jeb.snahp.Apps.Coop.ForumListCreateAPIView:
+        class: jeb\snahp\Apps\Coop\ForumListCreateAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Forum"
+
+    jeb.snahp.Apps.Coop.ForumRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Coop\ForumRetrieveUpdateDestroyAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Forum"
+
+    jeb.snahp.Apps.Coop.TopicListCreateAPIView:
+        class: jeb\snahp\Apps\Coop\TopicListCreateAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Topic"
+
+    jeb.snahp.Apps.Coop.TopicRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Coop\TopicRetrieveUpdateDestroyAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Topic"
+
+    jeb.snahp.Apps.Coop.PostListCreateAPIView:
+        class: jeb\snahp\Apps\Coop\PostListCreateAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Post"
+
+    jeb.snahp.Apps.Coop.PostRetrieveUpdateDestroyAPIView:
+        class: jeb\snahp\Apps\Coop\PostRetrieveUpdateDestroyAPIView
+        arguments:
+            - "@request"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Post"
+
+
+############
+#  HELPER  #
+############
+
+
+    jeb.snahp.Apps.Coop.CoopHelper:
+        class: jeb\snahp\Apps\Coop\CoopHelper
+        arguments:
+            - "@dbal.conn"
+            - "%jeb.snahp.tables%"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.Models.Forum"
+            - "@jeb.snahp.Apps.Coop.Models.Topic"
+            - "@jeb.snahp.Apps.Coop.Models.Post"
+            - "@jeb.snahp.Apps.Core.Db.query.Post"
+            - "@jeb.snahp.ThanksUsers"
+
+
+###########
+#  MODEL  #
+###########
+
+
+    jeb.snahp.Apps.Coop.Models.Forum:
+        class: jeb\snahp\Apps\Coop\Models\Forum
+
+    jeb.snahp.Apps.Coop.Models.Post:
+        class: jeb\snahp\Apps\Coop\Models\Post
+
+    jeb.snahp.Apps.Coop.Models.Topic:
+        class: jeb\snahp\Apps\Coop\Models\Topic
+
+
+####################
+#  EVENT LISTENER  #
+####################
+
+
+    jeb.snahp.Apps.Coop.CoopEventListener:
+        class: jeb\snahp\Apps\Coop\CoopEventListener
+        arguments:
+            - "@config"
+            - "@jeb.snahp.auth.user_auth"
+            - "@jeb.snahp.Apps.Coop.CoopHelper"
+        tags:
+            - { name: event.listener }
