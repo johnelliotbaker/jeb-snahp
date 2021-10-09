@@ -1,25 +1,25 @@
-jeb_snahp_routing.miniboard.mcp:
-    path: /snahp/mini-board/mcp
-    defaults: { _controller: jeb.snahp.miniboard.MiniBoardMCP:manage}
-
-jeb_snahp_routing.mini_board.retrieve_forum:
-    path: /snahp/mini-board/forum/{id}
-    defaults: { _controller: jeb.snahp.ForumRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
-jeb_snahp_routing.mini_board.list_forum:
-    path: /snahp/mini-board/forum
-    defaults: { _controller: jeb.snahp.ForumListCreateAPIView:dispatch}
-    requirements:
-        id: \d+
-
-jeb_snahp_routing.mini_board.retrieve_topic:
-    path: /snahp/mini-board/topic/{id}
-    defaults: { _controller: jeb.snahp.TopicRetrieveUpdateDestroyAPIView:dispatch}
-    requirements:
-        id: \d+
-jeb_snahp_routing.mini_board.list_topic:
-    path: /snahp/mini-board/topic
-    defaults: { _controller: jeb.snahp.TopicListCreateAPIView:dispatch}
-    requirements:
-        id: \d+
+# jeb_snahp_routing.miniboard.mcp:
+#     path: /snahp/mini-board/mcp
+#     defaults: { _controller: jeb.snahp.miniboard.MiniBoardMCP:manage}
+#
+# jeb_snahp_routing.mini_board.retrieve_forum:
+#     path: /snahp/mini-board/forum/{id}
+#     defaults: { _controller: jeb.snahp.ForumRetrieveUpdateDestroyAPIView:dispatch}
+#     requirements:
+#         id: \d+
+# jeb_snahp_routing.mini_board.list_forum:
+#     path: /snahp/mini-board/forum
+#     defaults: { _controller: jeb.snahp.ForumListCreateAPIView:dispatch}
+#     requirements:
+#         id: \d+
+#
+# jeb_snahp_routing.mini_board.retrieve_topic:
+#     path: /snahp/mini-board/topic/{id}
+#     defaults: { _controller: jeb.snahp.TopicRetrieveUpdateDestroyAPIView:dispatch}
+#     requirements:
+#         id: \d+
+# jeb_snahp_routing.mini_board.list_topic:
+#     path: /snahp/mini-board/topic
+#     defaults: { _controller: jeb.snahp.TopicListCreateAPIView:dispatch}
+#     requirements:
+#         id: \d+

@@ -148,7 +148,8 @@ class Topic extends Model
     {
         # in-place for performance
         global $user;
-        $instance->author = $user->data["user_id"];
+        $instance['author'] = $user->data["user_id"];
+        return $instance;
     }
 
     public function makeDummyTopics($request)

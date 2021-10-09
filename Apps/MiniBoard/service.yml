@@ -1,36 +1,55 @@
 services:
-
-    jeb.snahp.miniboard.MiniBoardMCP:
-        class: jeb\snahp\Apps\MiniBoard\MiniBoardMCP
-        arguments:
-            - '@request'
-            - '@template'
-            - '@controller.helper'
-            - '@jeb.snahp.auth.user_auth'
-
-    jeb.snahp.ForumListCreateAPIView:
-        class: jeb\snahp\Apps\MiniBoard\ForumListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.ForumRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\MiniBoard\ForumRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-
-    jeb.snahp.TopicListCreateAPIView:
-        class: jeb\snahp\Apps\MiniBoard\TopicListCreateAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-    jeb.snahp.TopicRetrieveUpdateDestroyAPIView:
-        class: jeb\snahp\Apps\MiniBoard\TopicRetrieveUpdateDestroyAPIView
-        arguments:
-            - '@request'
-            - '@jeb.snahp.auth.user_auth'
-
-    jeb.snahp.MiniBoardEventListener:
-        class: jeb\snahp\Apps\MiniBoard\MiniBoardEventListener
-        tags:
-            - { name: event.listener }
+#
+#     jeb.snahp.miniboard.MiniBoardMCP:
+#         class: jeb\snahp\Apps\MiniBoard\MiniBoardMCP
+#         arguments:
+#             - "@request"
+#             - "@template"
+#             - "@controller.helper"
+#             - "@jeb.snahp.auth.user_auth"
+#
+#     jeb.snahp.ForumListCreateAPIView:
+#         class: jeb\snahp\Apps\MiniBoard\ForumListCreateAPIView
+#         arguments:
+#             - "@request"
+#             - "@jeb.snahp.auth.user_auth"
+#             - "@jeb.snahp.Apps.MiniBoard.Models.Forum"
+#
+#     jeb.snahp.ForumRetrieveUpdateDestroyAPIView:
+#         class: jeb\snahp\Apps\MiniBoard\ForumRetrieveUpdateDestroyAPIView
+#         arguments:
+#             - "@request"
+#             - "@jeb.snahp.auth.user_auth"
+#             - "@jeb.snahp.Apps.MiniBoard.Models.Forum"
+#
+#     jeb.snahp.TopicListCreateAPIView:
+#         class: jeb\snahp\Apps\MiniBoard\TopicListCreateAPIView
+#         arguments:
+#             - "@request"
+#             - "@jeb.snahp.auth.user_auth"
+#             - "@jeb.snahp.Apps.MiniBoard.Models.Topic"
+#
+#     jeb.snahp.TopicRetrieveUpdateDestroyAPIView:
+#         class: jeb\snahp\Apps\MiniBoard\TopicRetrieveUpdateDestroyAPIView
+#         arguments:
+#             - "@request"
+#             - "@jeb.snahp.auth.user_auth"
+#             - "@jeb.snahp.Apps.MiniBoard.Models.Topic"
+#
+# ###########
+# #  MODEL  #
+# ###########
+#
+#     jeb.snahp.Apps.MiniBoard.Models.Forum:
+#         class: jeb\snahp\Apps\MiniBoard\Models\Forum
+#
+#     jeb.snahp.Apps.MiniBoard.Models.Post:
+#         class: jeb\snahp\Apps\MiniBoard\Models\Post
+#
+#     jeb.snahp.Apps.MiniBoard.Models.Topic:
+#         class: jeb\snahp\Apps\MiniBoard\Models\Topic
+#
+#     jeb.snahp.MiniBoardEventListener:
+#         class: jeb\snahp\Apps\MiniBoard\MiniBoardEventListener
+#         tags:
+#             - { name: event.listener }
