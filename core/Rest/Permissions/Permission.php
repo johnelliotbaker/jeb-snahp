@@ -1,6 +1,7 @@
 <?php
-
 namespace jeb\snahp\core\Rest\Permissions;
+
+const GROUP_ID_FOR_ANY_USER = 9999;
 
 class UserPermission extends Permission
 {
@@ -181,15 +182,18 @@ trait UserModelMixin
         $result = $this->db->sql_query($sql);
         $rowset = $this->db->sql_fetchrowset($result);
         $this->db->sql_freeresult($result);
-        return array_map(function ($arg) {
-            return (int) $arg["group_id"];
-        }, $rowset);
+        return array_merge(
+            [GROUP_ID_FOR_ANY_USER],
+            array_map(function ($arg) {
+                return (int) $arg["group_id"];
+            }, $rowset)
+        );
     }
 
     public function getPermissions()
     {
         $this->checkModel();
-        $groups = $this->getUserGroups($userId);
+        $groups = $this->getUserGroups();
         return $this->model->getAllowedGroups($groups);
     }
 
