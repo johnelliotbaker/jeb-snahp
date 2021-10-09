@@ -118,6 +118,14 @@ function getRequestData($request)
     return $data;
 }
 
+function getRequestUrl($request)
+{
+    $request->enable_super_globals();
+    $url = $_SERVER["REQUEST_URI"];
+    $request->disable_super_globals();
+    return $url;
+}
+
 function getRequestFormData($rootName)
 {
     global $request;
@@ -197,4 +205,32 @@ function asSet($array)
 function choice($array)
 {
     return $array[array_rand($array, 1)];
+}
+
+/*************************************************************************
+ *                            LODASH IMPORTS                             *
+ *************************************************************************/
+const asciiWords = '/[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/';
+
+function kebabCase(string $string)
+{
+    return implode(
+        "-",
+        array_map(
+            "strtolower",
+            words(preg_replace("/['\x{2019}]/u", "", $string))
+        )
+    );
+}
+
+function words(string $string, string $pattern = null): array
+{
+    if (null === $pattern) {
+        preg_match_all(asciiWords, $string, $matches);
+        return $matches[0] ?? [];
+    }
+    if (preg_match_all($pattern, $string, $matches) > 0) {
+        return $matches[0];
+    }
+    return [];
 }

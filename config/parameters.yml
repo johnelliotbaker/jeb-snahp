@@ -37,6 +37,10 @@ parameters:
             ps: 16
             xbox: 17
             exclusive: 18
+            1fich: 19
+            switch: 20
+            ps4: 21
+            mfire: 22
         decode:
             default:
                 request:   '<span class="btn open">R</span>'
@@ -56,9 +60,14 @@ parameters:
                 updating: &updating '<img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating">'
                 ongoing: *updating
                 deadlinks: '🐞'
-                ps: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg">'
+                ps: &ps '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg">'
+                ps4: *ps
+                ps5: *ps
                 xbox: '<img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg">'
                 exclusive: '<img class="ios_icon" src="https://i.imgur.com/u6gOz1T.png" />'
+                1fich: '<img class="ios_icon" src="https://i.imgur.com/MdzmEAl.png" />'
+                switch: '<img class="ios_icon" src="https://i.imgur.com/5GuiqMH.png" />'
+                mfire: '<img class="ios_icon" src="https://cdn.cdnlogo.com/logos/m/26/mediafire.svg" />'
             small:
                 request:   '<span class="small_host_icon"><span class="btn open">R</span></span>'
                 solved:    '<span class="small_host_icon"><span class="btn solve">S</span></span>'
@@ -77,9 +86,14 @@ parameters:
                 updating: &updating '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/rgplXx8.png" title="updating"></span>'
                 ongoing: *updating
                 deadlinks: '🐞'
-                ps: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg"></span>'
+                ps: &ps '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg"></span>'
+                ps4: *ps
+                ps5: *ps
                 xbox: '<span class="small_host_icon"><img class="ios_icon" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg"></span>'
                 exclusive: '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/u6gOz1T.png" /></span>'
+                1fich: '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/MdzmEAl.png" /></span>'
+                switch: '<span class="small_host_icon"><img class="ios_icon" src="https://i.imgur.com/5GuiqMH.png" /></span>'
+                mfire: '<span class="small_host_icon"><img class="ios_icon" src="https://cdn.cdnlogo.com/logos/m/26/mediafire.svg" /></span>'
 
     jeb.snahp.req:
         def:
